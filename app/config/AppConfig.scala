@@ -35,4 +35,7 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
     controllers.routes.AddressLookupController.callback("").url
 
+  lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
+
+
 }

@@ -38,10 +38,10 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit request: Reque
 
     val version: Int = 2
 
-    val navTitle: Messages => String = message => "TBC"
+    val navTitle: Messages => String = message => conf.appName
 
     val timeoutConfig: JsObject = Json.obj(
-      "timeoutAmount" -> 120,
+      "timeoutAmount" -> conf.timeoutPeriod,
       "timeoutUrl" -> "TBC"
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(

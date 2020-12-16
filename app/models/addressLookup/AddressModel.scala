@@ -17,8 +17,7 @@
 package models.addressLookup
 
 import models.JsonReadUtil
-import play.api.libs.functional.syntax._
-import play.api.libs.json.{Writes, _}
+import play.api.libs.json._
 
 case class AddressModel(line1: Option[String],
                         line2: Option[String],
@@ -36,36 +35,16 @@ object AddressModel extends JsonReadUtil {
   } yield {
     lines match {
       case Some(someSequence) => AddressModel(
-        extractValue(someSequence, 0),
-        extractValue(someSequence, 1),
-        extractValue(someSequence, 2),
-        extractValue(someSequence, 3),
+        someSequence.headOption,
+        someSequence.lift(1),
+        someSequence.lift(2),
+        someSequence.lift(3),
         postcode, countryCode)
       case None => AddressModel(None, None, None, None, postcode, countryCode)
     }
   }
 
-  def extractValue(input: Seq[String], index: Int): Option[String] = {
-    if(input.size > index) Some(input(index)) else None
-  }
-
   implicit val format: Format[AddressModel] = Json.format[AddressModel]
-
-  private val line1Path = JsPath \ "line1"
-  private val line2Path =  JsPath \ "line2"
-  private val line3Path = JsPath \ "line3"
-  private val line4Path = JsPath \ "line4"
-  private val postCodePath = JsPath \ "postCode"
-  private val countryCodePath = JsPath \ "countryCode"
-
-  val auditWrites: Writes[AddressModel] = (
-    line1Path.writeNullable[String] and
-      line2Path.writeNullable[String] and
-      line3Path.writeNullable[String] and
-      line4Path.writeNullable[String] and
-      postCodePath.writeNullable[String] and
-      countryCodePath.writeNullable[String]
-  )(unlift(AddressModel.unapply))
 
 }
 

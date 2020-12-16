@@ -32,13 +32,13 @@ class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnec
                                      implicit val messagesApi: MessagesApi,
                                      implicit val appConfig: AppConfig) {
 
-  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
-    addressLookupConnector.getAddress(id)
-  }
-
   def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[AnyContent]):
     Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
       val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
       addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
+  }
+
+  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
+    addressLookupConnector.getAddress(id)
   }
 }
