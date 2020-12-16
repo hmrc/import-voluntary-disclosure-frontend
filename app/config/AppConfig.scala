@@ -30,4 +30,9 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
 
+  lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
+
+  lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
+    controllers.routes.AddressLookupController.callback("").url
+
 }
