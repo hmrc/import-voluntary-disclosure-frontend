@@ -21,7 +21,6 @@ import assets.BaseTestConstants.errorModel
 import base.ControllerSpecBase
 import mocks.services.MockAddressLookupService
 import models.addressLookup.AddressLookupOnRampModel
-import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
@@ -47,8 +46,6 @@ class AddressLookupControllerSpec extends ControllerSpecBase with MockAddressLoo
 
     "address lookup service returns success" when {
 
-      "and business address service returns success" should {
-
         def controller: AddressLookupController = setup(
           addressLookupResponse = Right(customerAddressMax),
         )
@@ -61,10 +58,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase with MockAddressLoo
             status(result) mustBe Status.OK
           }
         }
-      }
     }
-
-    "address lookup service returns success" when {
 
       "and business address lookup service returns an error" should {
 
@@ -76,7 +70,6 @@ class AddressLookupControllerSpec extends ControllerSpecBase with MockAddressLoo
           status(result) mustBe Status.INTERNAL_SERVER_ERROR
         }
       }
-    }
   }
 
       "Calling .initialiseJourney" when {

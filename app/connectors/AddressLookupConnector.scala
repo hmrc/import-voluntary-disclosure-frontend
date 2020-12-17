@@ -22,7 +22,6 @@ import connectors.httpParsers.InitialiseAddressLookupHttpParser.InitialiseAddres
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import javax.inject.{Inject, Singleton}
 import models.addressLookup.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
-import play.api.Logger
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import scala.concurrent.{ExecutionContext, Future}

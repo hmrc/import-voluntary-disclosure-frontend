@@ -19,7 +19,6 @@ package connectors.httpParsers
 import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import models.ErrorModel
 import models.addressLookup.AddressLookupOnRampModel
-import play.api.Logger
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}

@@ -14,20 +14,11 @@
  * limitations under the License.
  */
 
-package messages
+package assets
 
-object AddressLookupMessages {
+object AddressLookupITConstants {
 
   val startHeading = "Find your address"
-  val filter = "Property name or number (optional)"
-  val postcode = "UK postcode"
-  val postcodeLink = "The address does not have a post code"
-  val selectHeading = "Select the new address"
-  val editAddressLinkText = "Edit the address manually"
-  val confirmHeading = "Confirm address"
-  val submitLabel = "Find Address"
-
   val startHeadingCy = "Find your address"
-
 
 }
