@@ -39,7 +39,7 @@ class AddressLookupController @Inject()(identity: IdentifierAction,
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         Redirect(response.redirectUrl)
-      case Left(_) => Logger.warn("[AddressLookupController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) =>
         serviceErrorHandler.showInternalServerError
     }
   }
@@ -48,7 +48,7 @@ class AddressLookupController @Inject()(identity: IdentifierAction,
     addressLookupService.retrieveAddress(id) map {
       case Right(address) =>
        Ok(address.toString)
-      case Left(_) => Logger.warn("[AddressLookupController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) =>
         serviceErrorHandler.showInternalServerError
     }
   }

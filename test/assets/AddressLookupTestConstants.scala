@@ -87,6 +87,12 @@ object AddressLookupTestConstants extends BaseMessages {
 
   val customerAddressToJsonMin: JsObject = Json.obj()
 
+  val customerAddressJsonError: JsObject = Json.obj(
+    "address" -> Json.obj(
+      "lines" -> 4
+    )
+  )
+
   val addressLookupV2Json: JsObject = Json.obj(fields =
     "version" -> 2,
     "options" -> Json.obj(

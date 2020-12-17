@@ -32,17 +32,14 @@ object AddressLookupHttpParser {
 
       response.status match {
         case Status.OK => {
-          Logger.debug("[AddressLookupHttpParser][read]: Status OK")
           response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
-              Logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Logger.warn(s"[AddressLookupHttpParser][read]: Unexpected Response, Status $status returned")
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }

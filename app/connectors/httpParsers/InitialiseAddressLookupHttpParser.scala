@@ -36,11 +36,9 @@ object InitialiseAddressLookupHttpParser {
           response.header(LOCATION) match {
             case Some(redirectUrl) => Right(AddressLookupOnRampModel(redirectUrl))
             case _ =>
-              Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Response Header did not contain location redirect")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
           }
         case status =>
-          Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Unexpected Response, Status $status returned")
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }
