@@ -17,16 +17,15 @@
 package mocks.connectors
 
 import models.ErrorModel
-import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
+import models.addressLookup.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import org.scalatestplus.play.PlaySpec
-import scala.concurrent.Future
-import connectors.AddressLookupConnector
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar
 
-trait MockAddressLookupConnector extends PlaySpec with MockitoSugar with BeforeAndAfterEach {
+import scala.concurrent.{ExecutionContext, Future}
+import connectors.AddressLookupConnector
+import org.scalamock.scalatest.MockFactory
+import uk.gov.hmrc.http.HeaderCarrier
+
+trait MockAddressLookupConnector extends PlaySpec with MockFactory {
 
   val mockAddressLookupConnector: AddressLookupConnector = mock[AddressLookupConnector]
 
@@ -34,19 +33,16 @@ trait MockAddressLookupConnector extends PlaySpec with MockitoSugar with BeforeA
 
   type AddressLookupInitialiseResponse = Either[ErrorModel, AddressLookupOnRampModel]
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(mockAddressLookupConnector)
-  }
-
   def setupMockGetAddress(response: Either[ErrorModel, AddressModel]): Unit = {
-    when(mockAddressLookupConnector.getAddress(any())(any(), any()))
-      .thenReturn(Future.successful(response))
+    (mockAddressLookupConnector.getAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*,*,*)
+      .returns(Future.successful(response))
   }
 
   def setupMockInitialiseJourney(response: Either[ErrorModel, AddressLookupOnRampModel]): Unit = {
-    when(mockAddressLookupConnector.initialiseJourney(any())(any(), any()))
-      .thenReturn(Future.successful(response))
+    (mockAddressLookupConnector.initialiseJourney(_: AddressLookupJsonBuilder)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*,*,*)
+      .returns(Future.successful(response))
   }
 }
 
