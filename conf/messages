@@ -1,8 +1,9 @@
-service.name = import-voluntary-disclosure-frontend
+service.name = Disclose an underpayment of import duties
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
 
 common.button.confirmAndContinue = Confirm and continue
+common.button.continue = Continue
 
 footer.cookies.text = Cookies
 footer.cookies.url = /help/cookies
@@ -12,3 +13,12 @@ footer.termsConditions.text = Terms and conditions
 footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
+
+entryDetails.pageTitle = Entry details
+entryDetails.title = Entry details
+entryDetails.epu.label = EPU number
+entryDetails.epu.hint = This is 3 numbers, for example ‘121’
+entryDetails.epu.error.missing = Enter an EPU number
+entryDetails.entryNumber.label = Entry number
+entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ‘123456Q’
+entryDetails.entryNumber.error.missing = Enter an entry number
