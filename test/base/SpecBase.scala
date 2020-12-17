@@ -16,7 +16,7 @@
 
 package base
 
-import config.{AppConfig, ErrorHandler}
+import config.{AppConfig, ErrorHandler, ServiceErrorHandler}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -55,6 +55,8 @@ trait SpecBase extends PlaySpec
   lazy val injector: Injector = app.injector
 
   implicit lazy val appConfig: AppConfig = injector.instanceOf[AppConfig]
+
+  implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
 
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
