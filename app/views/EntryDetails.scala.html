@@ -51,6 +51,13 @@
                 classes = Some("govuk-input--width-10")
             )
 
+            @inputDate(
+                form = form,
+                id = "entryDate",
+                legendContent = messages("entryDetails.entryDate.label"),
+                hintText = Some(messages("entryDetails.entryDate.hint"))
+            )
+
 
             @button("common.button.continue")
         }

@@ -22,6 +22,7 @@ import forms.EntryDetailsFormProvider
 import javax.inject.{Inject, Singleton}
 import models.UserAnswers
 import pages.EntryDetailsPage
+import play.api.i18n.Messages.Implicits.applicationMessages
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
@@ -43,11 +44,10 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
 
   implicit val config: AppConfig = appConfig
 
-  val form = formProvider()
-
   def onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    Future.successful(Ok(view(form, userAnswers)))
+    // need to fill form if exists
+    Future.successful(Ok(view(formProvider(), userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>

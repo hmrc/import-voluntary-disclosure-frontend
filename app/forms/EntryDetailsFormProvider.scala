@@ -28,18 +28,18 @@ import play.api.i18n.Messages
 
 class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
-  def apply(): Form[EntryDetails] = {
+  def apply()(implicit messages: Messages): Form[EntryDetails] = {
 
     Form( mapping(
       "epu" -> text("entryDetails.epu.error.missing"),
-      "entryNumber" -> text("entryDetails.entryNumber.error.missing")
+      "entryNumber" -> text("entryDetails.entryNumber.error.missing"),
+      "entryDate" -> localDate(
+        invalidKey = "entryDetails.entryDate.error.invalid",
+        allRequiredKey = "entryDetails.entryDate.error.required.all",
+        twoRequiredKey = "entryDetails.entryDate.error.required.two",
+        requiredKey = "entryDetails.entryDate.error.required"
+      )
     )(EntryDetails.apply)(EntryDetails.unapply)
-//      "date" -> localDate(
-//        invalidKey = "claimPeriodStartDate.error.invalid",
-//        allRequiredKey = "claimPeriodStartDate.error.required.all",
-//        twoRequiredKey = "claimPeriodStartDate.error.required.two",
-//        requiredKey = "claimPeriodStartDate.error.required"
-//      )
     )
   }
 }
