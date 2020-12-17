@@ -20,11 +20,10 @@ import base.SpecBase
 import mocks.connectors.MockAddressLookupConnector
 import models.addressLookup.AddressLookupOnRampModel
 import assets.AddressLookupTestConstants._
-import org.scalatest.Matchers.convertToAnyShouldWrapper
 
 class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector {
 
-  "Calling .retrieveAddress" must {
+  "Calling .getAddress" must {
 
     def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
       setupMockGetAddress(addressLookupGetResponse)
@@ -36,7 +35,7 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
       lazy val result = service.retrieveAddress("12345")
 
       "return successful SubscriptionUpdateResponseModel" in {
-        await(result) shouldBe Right(customerAddressMax)
+        await(result) mustBe Right(customerAddressMax)
       }
     }
   }
@@ -54,7 +53,7 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
       lazy val result = service.initialiseJourney(hc, ec, fakeRequest)
 
       "return successful SubscriptionUpdateResponseModel" in {
-        await(result) shouldBe Right(AddressLookupOnRampModel("redirect-url"))
+        await(result) mustBe Right(AddressLookupOnRampModel("redirect-url"))
       }
     }
   }

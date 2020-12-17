@@ -1,3 +1,5 @@
+common.continue = Continue
+
 service.name = import-voluntary-disclosure-frontend
 service.homePageUrl = /import-voluntary-disclosure/hello-world
 service.text = This is your new service
@@ -26,5 +28,5 @@ address_lookupPage.postcode = UK postcode
 address_lookupPage.postcode.link = The address does not have a post code
 address_lookupPage.selectPage.heading = Select the new address
 address_lookupPage.selectPage.editLink = Edit the address manually
-address_lookupPage.confirmPage.heading = Confirm the new principal place of business
+address_lookupPage.confirmPage.heading = Confirm address
 address_lookupPage.lookupPage.submit = Find Address
