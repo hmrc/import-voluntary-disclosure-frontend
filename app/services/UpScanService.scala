@@ -19,7 +19,12 @@ package services
 import com.google.inject.Inject
 import config.AppConfig
 import connectors.UpScanConnector
+import connectors.httpParsers.UpScanInitiateHttpParser.ErrorResponse
+import models.FileStatusEnum.{NO_RESPONSE, READY}
+import models.responses.UpScanInitiateResponseModel
+import models.{FileUpload, UpScanInitiateBody, UpscanError, UpscanSuccess}
 import play.api.Logger
+import repositories.FileUploadRepository
 import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +39,6 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   lazy val errorRedirectForUser: String = appConfig.upScanErrorRedirectForUser
   lazy val minFileSize: Int = appConfig.upScanMinFileSize
   lazy val maxFileSize: Int = appConfig.upScanMaxFileSize
-
   lazy val buildUpScanBodyFromConfig: UpScanInitiateBody = {
     UpScanInitiateBody(
       callbackUrlForSuccessOrFailureOfFileUpload,
@@ -44,6 +48,7 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
       maxFileSize
     )
   }
+  private val logger = Logger("application." + getClass.getCanonicalName)
 
   def initiateNewJourney(upScanInitiateBody: UpScanInitiateBody = buildUpScanBodyFromConfig)
                         (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponseModel] = {
@@ -56,15 +61,15 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   def downloadStatus(reference: String): Future[Either[UpscanError, (UpscanSuccess, String)]] =
     fileUploadRepository.getRecord(reference).map {
       case Some(FileUpload(_, _, None)) =>
-        Logger.info("[UpScanService][downloadStatus] No Response received")
+        logger.info("[UpScanService][downloadStatus] No Response received")
         Left(NO_RESPONSE)
       case Some(FileUpload(_, _, Some(err: UpscanError))) =>
-        Logger.info(s"[UpScanService][downloadStatus] Error Response received: $err")
+        logger.info(s"[UpScanService][downloadStatus] Error Response received: $err")
         Left(err)
       case Some(FileUpload(_, Some(url), Some(READY))) =>
         Right(READY -> url)
       case _ =>
-        Logger.info(s"[UpScanService][downloadStatus] No upscan reference held in session")
+        logger.info(s"[UpScanService][downloadStatus] No upscan reference held in session")
         throw new IllegalArgumentException(s"No file upload journey exists for reference $reference")
     }
 }

@@ -18,10 +18,14 @@
 
 @this(
         layout: templates.Layout,
-        button: components.button
+        button: components.button,
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets,
+        panelIndent: components.panelIndent
 )
 
-@(model: models.upscan.UpScanInitiateResponseModel)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+@(model: models.responses.UpScanInitiateResponseModel)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @layout(pageTitle = Some(messages("uploadAFile.title"))) {
 
@@ -50,7 +54,7 @@
             <input class="govuk-file-upload" id="file-upload-1" name="file" type="file" accept="@appConfig.upScanAcceptedMimeTypes">
         </div>
 
-        @button("site.continue")
+        @button("common.button.continue")
 
     </form>
 

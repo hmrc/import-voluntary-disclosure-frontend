@@ -23,6 +23,8 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 @Singleton
 class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
 
+  lazy val host: String = servicesConfig.getString("host")
+
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
   lazy val appName: String = servicesConfig.getString("appName")
@@ -33,5 +35,10 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val cacheTtl: Int = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
-
+  lazy val upScanAcceptedMimeTypes: String = servicesConfig.getString("upscan.acceptedMimeTypes")
+  lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
+  lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
+  lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
+  lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
+  lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
 }

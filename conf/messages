@@ -3,6 +3,7 @@ service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
 
 common.button.confirmAndContinue = Confirm and continue
+common.button.continue = Continue
 
 footer.cookies.text = Cookies
 footer.cookies.url = /help/cookies
@@ -12,3 +13,14 @@ footer.termsConditions.text = Terms and conditions
 footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
+
+# UploadAFilePage Messages
+# ----------------------------------------------------------
+uploadAFile.title = Upload the employees’ details
+uploadAFile.heading = Upload the employees’ details
+uploadAFile.p1 = You need to tell us the following details for each of the furloughed employees in this claim period:
+uploadAFile.bullet1 = full name
+uploadAFile.bullet2 = National Insurance number
+uploadAFile.bullet3 = payroll number (optional)
+uploadAFile.fileTypes = Accepted file types: jpeg, xml, text, xls, xlsx
+uploadAFile.label = Upload a file
