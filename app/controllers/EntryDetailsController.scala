@@ -44,9 +44,10 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
 
   implicit val config: AppConfig = appConfig
 
+  //TODO Do we need check mode now or later
   def onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    // TODO need to fill form if exists
+    //TODO need to fill form if exists also for Check Mode (will need to pass mode into view)
     Future.successful(Ok(view(formProvider(), userAnswers)))
   }
 

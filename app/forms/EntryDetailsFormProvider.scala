@@ -37,9 +37,10 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
         invalidKey = "entryDetails.entryDate.error.invalid",
         allRequiredKey = "entryDetails.entryDate.error.required.all",
         twoRequiredKey = "entryDetails.entryDate.error.required.two",
-        requiredKey = "entryDetails.entryDate.error.required"
+        requiredKey = "entryDetails.entryDate.error.required",
+        yearLengthKey = "entryDetails.entryDate.error.year.length",
+        validatePastKey = Some("entryDetails.entryDate.error.past")
       )
-      //TODO need to check if date in future
     )(EntryDetails.formApply)(EntryDetails.unapply)
     )
   }

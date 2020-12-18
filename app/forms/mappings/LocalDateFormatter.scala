@@ -31,6 +31,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
                                            requiredKey: String,
                                            dayMonthLengthKey: String,
                                            yearLengthKey: String,
+                                           validatePastKey: Option[String],
                                            args: Seq[String] = Seq.empty)(implicit messages: Messages) extends Formatter[LocalDate] with Formatters with Constraints {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
@@ -55,12 +56,21 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
       args
     )
 
-    for {
+    val date = for {
       day <- int.bind(s"$key.day", data).right
       month <- int.bind(s"$key.month", data).right
       year <- int.bind(s"$key.year", data).right
       date <- toDate(key, day, month, year).right
     } yield date
+
+    if (validatePastKey.isDefined) {
+      date.fold(
+        err => Left(err),
+        dt => if(dt.isAfter(LocalDate.now)) Left(List(FormError(key, validatePastKey.get))) else Right(dt)
+      )
+    } else {
+      date
+    }
   }
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
