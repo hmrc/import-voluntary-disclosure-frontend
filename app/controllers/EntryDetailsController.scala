@@ -46,7 +46,7 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
 
   def onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    // need to fill form if exists
+    // TODO need to fill form if exists
     Future.successful(Ok(view(formProvider(), userAnswers)))
   }
 
@@ -54,10 +54,7 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        println(Console.BLUE + formWithErrors + Console.RESET)
-        Future.successful(BadRequest(
-          view(formWithErrors, userAnswers)))},
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, userAnswers))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(userAnswers.set(EntryDetailsPage, value))
