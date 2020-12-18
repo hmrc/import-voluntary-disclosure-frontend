@@ -20,7 +20,7 @@ footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
 
 error.date.length = You have entered too many numbers for {0}
-error.year.length = Entry date year must be 4 numbers
+error.year.length = Year must be 4 numbers
 error.summary.title = There is a problem
 
 entryDetails.pageTitle = Entry details
@@ -39,3 +39,5 @@ entryDetails.entryDate.error.invalid = Enter a real date
 entryDetails.entryDate.error.required.all = Enter an entry date and include a day, month and year
 entryDetails.entryDate.error.required.two = Entry date must include {0} and {1}
 entryDetails.entryDate.error.required = Entry date must include {0}
+entryDetails.entryDate.error.year.length = Entry date year must be 4 numbers
+entryDetails.entryDate.error.past = Entry date must be today or in the past
