@@ -22,6 +22,7 @@
   legendClasses: String = "govuk-fieldset__legend--xl",
   id: String = "date",
   hintText: Option[String] = None,
+  legendHidden: Boolean = false,
   legendAsPageHeading: Boolean = false)(implicit messages: Messages)
 
 @govukDateInput(DateInput(
@@ -30,7 +31,7 @@
             Legend(
                 content = Text(messages(legendContent)),
                 isPageHeading = legendAsPageHeading,
-                classes = if (legendAsPageHeading) "govuk-label--l" else "govuk-visually-hidden"
+                classes = if (legendAsPageHeading) "govuk-label--l" else if (legendHidden) "govuk-visually-hidden" else ""
             )
         )
     )),
@@ -59,5 +60,5 @@
         )
     ),
     hint = hintText.map(hint => Hint(content = Text(messages(hint)))),
-    errorMessage = form(id).error.fold(form.errors.find(_.key.isEmpty))(err => Some(err)).map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    errorMessage = if (form(id).errors.isEmpty) None else Some(ErrorMessage(content = HtmlContent(form(id).errors.map(err => messages(err.message, err.args:_*)).mkString("<br>"))))
 ))

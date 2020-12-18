@@ -20,12 +20,12 @@ import java.time.LocalDate
 
 import play.api.libs.json.Json
 
-case class EntryDetails(epu: String,
-                       entryNumber: String,
-                       entryDate: LocalDate)
+case class EntryDetails(epu: String, entryNumber: String, entryDate: LocalDate)
 
 object EntryDetails {
   implicit val format = Json.format[EntryDetails]
-
+  def formApply(epu: String, entryNumber: String, entryDate: LocalDate): EntryDetails = {
+    EntryDetails(epu, entryNumber.toUpperCase, entryDate)
+  }
 }
 
