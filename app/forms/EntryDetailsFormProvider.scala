@@ -16,8 +16,6 @@
 
 package forms
 
-import java.time.LocalDate
-
 import config.AppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
@@ -41,6 +39,7 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
         twoRequiredKey = "entryDetails.entryDate.error.required.two",
         requiredKey = "entryDetails.entryDate.error.required"
       )
+      //TODO need to check if date in future
     )(EntryDetails.formApply)(EntryDetails.unapply)
     )
   }
