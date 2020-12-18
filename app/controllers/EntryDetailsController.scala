@@ -17,7 +17,7 @@
 package controllers
 
 import config.AppConfig
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EntryDetailsFormProvider
 import javax.inject.{Inject, Singleton}
 import models.UserAnswers
@@ -35,6 +35,7 @@ import scala.concurrent.Future
 @Singleton
 class EntryDetailsController @Inject()(identity: IdentifierAction,
                                        getData: DataRetrievalAction,
+                                       requireData: DataRequiredAction,
                                        sessionRepository: SessionRepository,
                                        appConfig: AppConfig,
                                        mcc: MessagesControllerComponents,
@@ -45,17 +46,15 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
   implicit val config: AppConfig = appConfig
 
   //TODO Do we need check mode now or later
-  def onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    //TODO need to fill form if exists also for Check Mode (will need to pass mode into view)
-    Future.successful(Ok(view(formProvider(), userAnswers)))
+  def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+    Future.successful(Ok(view(formProvider())))
   }
 
-  def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+  def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+    val userAnswers = request.userAnswers
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, userAnswers))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(userAnswers.set(EntryDetailsPage, value))
