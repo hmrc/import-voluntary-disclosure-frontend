@@ -1,0 +1,57 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.AppConfig
+
+@this(
+        layout: templates.Layout,
+        button: components.button
+)
+
+@(model: models.upscan.UpScanInitiateResponseModel)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@layout(pageTitle = Some(messages("uploadAFile.title"))) {
+
+    @h1(messages("uploadAFile.title"))
+
+    @p{ @messages("uploadAFile.p1") }
+
+    @bullets(Seq(
+        Html(messages("uploadAFile.bullet1")),
+        Html(messages("uploadAFile.bullet2")),
+        Html(messages("uploadAFile.bullet3"))
+    ))
+
+    @panelIndent{ @messages("uploadAFile.fileTypes") }
+
+    <form action="@model.uploadFormTemplate.href" method="POST" enctype="multipart/form-data">
+
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="file-upload-1">
+                @messages("uploadAFile.label")
+            </label>
+
+            @model.uploadFormTemplate.fields.map { row =>
+                <input type="hidden" name="@row._1" value="@row._2">
+            }
+            <input class="govuk-file-upload" id="file-upload-1" name="file" type="file" accept="@appConfig.upScanAcceptedMimeTypes">
+        </div>
+
+        @button("site.continue")
+
+    </form>
+
+}

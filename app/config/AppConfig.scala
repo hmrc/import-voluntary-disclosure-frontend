@@ -30,6 +30,8 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
 
-  lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+  lazy val cacheTtl: Int = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+
+  lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
 
 }
