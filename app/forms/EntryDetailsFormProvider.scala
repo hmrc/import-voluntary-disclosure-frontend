@@ -31,15 +31,17 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
   def apply()(implicit messages: Messages): Form[EntryDetails] = {
 
     Form( mapping(
-      "epu" -> text("entryDetails.epu.error.missing"),
-      "entryNumber" -> text("entryDetails.entryNumber.error.missing"),
+      "epu" -> text("entryDetails.epu.error.missing")
+        .verifying(regexp("[0-9]{3}","entryDetails.epu.error.format")),
+      "entryNumber" -> text("entryDetails.entryNumber.error.missing")
+        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format")),
       "entryDate" -> localDate(
         invalidKey = "entryDetails.entryDate.error.invalid",
         allRequiredKey = "entryDetails.entryDate.error.required.all",
         twoRequiredKey = "entryDetails.entryDate.error.required.two",
         requiredKey = "entryDetails.entryDate.error.required"
       )
-    )(EntryDetails.apply)(EntryDetails.unapply)
+    )(EntryDetails.formApply)(EntryDetails.unapply)
     )
   }
 }

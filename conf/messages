@@ -6,6 +6,7 @@ date.day = Day
 date.month = Month
 date.year = Year
 
+site.and = ' and '
 common.button.confirmAndContinue = Confirm and continue
 common.button.continue = Continue
 
@@ -18,14 +19,20 @@ footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
 
+error.date.length = You have entered too many numbers for {0}
+error.year.length = Entry date year must be 4 numbers
+error.summary.title = There is a problem
+
 entryDetails.pageTitle = Entry details
 entryDetails.title = Entry details
 entryDetails.epu.label = EPU number
 entryDetails.epu.hint = This is 3 numbers, for example ‘121’
 entryDetails.epu.error.missing = Enter an EPU number
+entryDetails.epu.error.format = Enter an EPU number in the correct format
 entryDetails.entryNumber.label = Entry number
 entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ‘123456Q’
 entryDetails.entryNumber.error.missing = Enter an entry number
+entryDetails.entryNumber.error.format = Enter an entry number in the correct format
 entryDetails.entryDate.label = Entry date
 entryDetails.entryDate.hint = For example, 27 3 2020
 entryDetails.entryDate.error.invalid = Enter a real date

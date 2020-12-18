@@ -29,12 +29,13 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
                                            allRequiredKey: String,
                                            twoRequiredKey: String,
                                            requiredKey: String,
-                                           fieldLengthKey: String,
+                                           dayMonthLengthKey: String,
+                                           yearLengthKey: String,
                                            args: Seq[String] = Seq.empty)(implicit messages: Messages) extends Formatter[LocalDate] with Formatters with Constraints {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
 
-  private val yearLengthMax = 4
+  private val yearLength = 4
   private val dayMonthLengthMax = 2
 
   private def toDate(key: String, day: Int, month: Int, year: Int): Either[Seq[FormError], LocalDate] =
@@ -78,14 +79,19 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
     fields.count(_._2.isDefined) match {
       case 3 =>
         val lengthErrors = fields.collect {
-          case (id, value) if id.contains("year") && value.exists(_.length > yearLengthMax) => id
           case (id, value) if !id.contains("year") && value.exists(_.length > dayMonthLengthMax) => id
         }
 
-        if (lengthErrors.nonEmpty) {
-          Left(List(FormError(key, fieldLengthKey, Seq(lengthErrors.mkString(messages("site.and"))))))
-        } else {
-          formatDate(key, data).left.map {
+        val yearLengthError = fields.collect {
+          case (id, value) if id.contains("year") && value.exists(_.length != yearLength) => id
+        }
+
+        (lengthErrors.nonEmpty, yearLengthError.nonEmpty) match {
+          case (true, true) => Left(List(FormError(key, dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and")))),
+                                          FormError(key, yearLengthKey)))
+          case (true, false) => Left(List(FormError(key, dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and"))))))
+          case (false, true) => Left(List(FormError(key, yearLengthKey)))
+          case _ => formatDate(key, data).left.map {
             _.map(_.copy(key = key, args = args))
           }
         }

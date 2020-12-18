@@ -54,9 +54,10 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
 
     formProvider().bindFromRequest().fold(
-      formWithErrors =>
+      formWithErrors => {
+        println(Console.BLUE + formWithErrors + Console.RESET)
         Future.successful(BadRequest(
-          view(formWithErrors, userAnswers))),
+          view(formWithErrors, userAnswers)))},
       value => {
         for {
           updatedAnswers <- Future.fromTry(userAnswers.set(EntryDetailsPage, value))

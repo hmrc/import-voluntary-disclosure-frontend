@@ -52,7 +52,8 @@ trait Mappings extends Formatters with Constraints {
                            allRequiredKey: String,
                            twoRequiredKey: String,
                            requiredKey: String,
-                           fieldLengthKey: String = "error.date.length",
+                           dayMonthLengthKey: String = "error.date.length",
+                           yearLengthKey: String = "error.year.length",
                            args: Seq[String] = Seq.empty)(implicit messages: Messages): FieldMapping[LocalDate] =
-    of(new LocalDateFormatter(invalidKey, allRequiredKey, twoRequiredKey, requiredKey, fieldLengthKey, args))
+    of(new LocalDateFormatter(invalidKey, allRequiredKey, twoRequiredKey, requiredKey, dayMonthLengthKey, yearLengthKey, args))
 }

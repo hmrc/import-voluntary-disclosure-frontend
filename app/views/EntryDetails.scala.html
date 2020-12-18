@@ -18,6 +18,7 @@
         formHelper: FormWithCSRF,
         h1: components.h1,
         back_link: components.back_link,
+        errorSummary: components.errorSummary,
         inputNumber: components.inputNumber,
         inputText: components.inputText,
         inputDate: components.inputDate,
@@ -27,6 +28,8 @@
 
     @layout(pageTitle = Some(messages("entryDetails.pageTitle"))) {
         @back_link()
+
+        @errorSummary(form.errors)
 
         @h1(messages("entryDetails.title"))
 
