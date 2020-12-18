@@ -37,5 +37,6 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
 
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
 
+  lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
 }
