@@ -35,11 +35,11 @@ address_lookupPage.confirmPage.heading = Confirm address
 address_lookupPage.lookupPage.submit = Find Address
 
 # User Type Page
-userType.pageTitle = Importer or Representative?
+userType.pageTitle = Importer or representative?
 userType.heading = Are you the importer or their representative?
 userType.importer = Importer
 userType.representative = Representative
-userType.error.required = Select either importer or representative
+userType.error.required = Select if you are the importer or their representative
 
 # Error Summary
 # ----------------------------------------------
