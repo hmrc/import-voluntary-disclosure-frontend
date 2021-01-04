@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package views
+package base
 
-import base.SpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion

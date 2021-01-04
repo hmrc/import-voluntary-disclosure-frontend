@@ -16,11 +16,12 @@
 
 package messages
 
-object UserTypeMessages {
+object UserTypeMessages extends BaseMessages {
 
   val title: String = "Importer or representative?"
   val h1: String = "Are you the importer or their representative?"
   val radioButtonOne: String = "Importer"
   val radioButtonTwo: String = "Representative"
+  val requiredError: String = "Select if you are the importer or their representative"
 
 }
