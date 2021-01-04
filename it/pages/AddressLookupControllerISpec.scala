@@ -16,14 +16,13 @@
 
 package pages
 
-import assets.AddressLookupITConstants.{startHeading, startHeadingCy}
 import config.AppConfig
 import models.addressLookup.AddressLookupOnRampModel
 import play.api.http.Status
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
-import stubs.{AddressLookupStub, AuthStub}
+import stubs.{AddressLookupStub, AuditStub, AuthStub}
 import support.IntegrationSpec
 
 class AddressLookupControllerISpec extends IntegrationSpec {
@@ -35,24 +34,9 @@ class AddressLookupControllerISpec extends IntegrationSpec {
         "handoff to address lookup frontend with the correct english and welsh messages" in {
 
           AuthStub.authorised()
+          AuditStub.audit()
 
           AddressLookupStub.postInitV2Journey(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
-
-          val alfBody = Json.stringify(Json.obj(
-            "labels" -> Json.obj(
-              "en" -> Json.obj(
-                "lookupPageLabels" -> Json.obj(
-                  "title" -> s"$startHeading"
-                )
-              ),
-              "cy" -> Json.obj(
-                "lookupPageLabels" -> Json.obj(
-                  "title" -> s"$startHeadingCy"
-                )
-              )
-            )
-          ))
-
 
           val request: WSRequest = buildRequest("/initialise")
 
@@ -65,24 +49,9 @@ class AddressLookupControllerISpec extends IntegrationSpec {
     "Address Lookup returns UNAUTHORISED" in {
 
       AuthStub.authorised()
+      AuditStub.audit()
 
       AddressLookupStub.postInitV2Journey(UNAUTHORIZED, AddressLookupOnRampModel("redirect/url"))
-
-      val alfBody = Json.stringify(Json.obj(
-        "labels" -> Json.obj(
-          "en" -> Json.obj(
-            "lookupPageLabels" -> Json.obj(
-              "title" -> s"$startHeading"
-            )
-          ),
-          "cy" -> Json.obj(
-            "lookupPageLabels" -> Json.obj(
-              "title" -> s"$startHeadingCy"
-            )
-          )
-        )
-      ))
-
 
       val request: WSRequest = buildRequest("/initialise")
 
@@ -98,6 +67,7 @@ class AddressLookupControllerISpec extends IntegrationSpec {
       "Status OK received" in {
 
         AuthStub.authorised()
+        AuditStub.audit()
 
         AddressLookupStub.getAddress(OK, Json.obj(
           "lines" -> Json.arr("line1", "line2"),

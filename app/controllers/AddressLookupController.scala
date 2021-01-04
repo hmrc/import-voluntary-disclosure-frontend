@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.{AppConfig, ServiceErrorHandler}
+import config.{AppConfig, ErrorHandler}
 import controllers.actions.IdentifierAction
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class AddressLookupController @Inject()(identity: IdentifierAction,
                                          addressLookupService: AddressLookupService,
-                                          val serviceErrorHandler: ServiceErrorHandler,
+                                          val errorHandler: ErrorHandler,
                                           val mcc: MessagesControllerComponents,
                                           implicit val appConfig: AppConfig,
                                           implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
@@ -39,7 +39,7 @@ class AddressLookupController @Inject()(identity: IdentifierAction,
       case Right(response) =>
         Redirect(response.redirectUrl)
       case Left(_) =>
-        serviceErrorHandler.showInternalServerError
+        errorHandler.showInternalServerError
     }
   }
 
@@ -48,7 +48,7 @@ class AddressLookupController @Inject()(identity: IdentifierAction,
       case Right(address) =>
        Ok(address.toString)
       case Left(_) =>
-        serviceErrorHandler.showInternalServerError
+        errorHandler.showInternalServerError
     }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 package models.addressLookup
 
-import models.JsonReadUtil
 import play.api.libs.json._
 
 case class AddressModel(line1: Option[String],
@@ -26,7 +25,7 @@ case class AddressModel(line1: Option[String],
                         postcode: Option[String],
                         countryCode: Option[String])
 
-object AddressModel extends JsonReadUtil {
+object AddressModel {
 
   val customerAddressReads: Reads[AddressModel] = for {
     lines <- (__ \\ "lines").readNullable[Seq[String]]

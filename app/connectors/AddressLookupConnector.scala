@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,14 +33,14 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
-    val url = s"${config.addressLookupFrontend}/api/v2/init"
+    val url = s"${config.addressLookupFrontend}${config.addressLookupInitialise}"
 
     http.POST[AddressLookupJsonBuilder, HttpPostResult[AddressLookupOnRampModel]](
-      url,addressLookupJsonBuilder
+      url, addressLookupJsonBuilder
     )(implicitly, InitialiseAddressLookupReads, hc, ec)
   }
 
-  private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupFrontend}/api/confirmed?id=$id"
+  private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupFrontend}${config.addressLookupConfirmed}?id=$id"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] ={
     http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)

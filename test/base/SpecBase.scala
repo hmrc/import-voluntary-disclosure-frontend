@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package base
 
-import config.{AppConfig, ErrorHandler, ServiceErrorHandler}
+import config.{AppConfig, ErrorHandler}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.TryValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
@@ -55,8 +55,6 @@ trait SpecBase extends PlaySpec
   lazy val injector: Injector = app.injector
 
   implicit lazy val appConfig: AppConfig = injector.instanceOf[AppConfig]
-
-  implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
 
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 

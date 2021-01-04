@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit request: Reque
   val showPhaseBanner: Boolean = true
   val ukMode: Boolean = true
   val conf: AppConfig = config
-  val deskproServiceName: String = "TBC"
-  val accessibilityFooterUrl: String = "TBC"
+  val deskproServiceName: String = "TBC" //TODO: Needs to contain name if we need it
+  val accessibilityFooterUrl: String = "TBC" //TODO: Needs to point somewhere
 
   object Version2 {
 
@@ -42,7 +42,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit request: Reque
 
     val timeoutConfig: JsObject = Json.obj(
       "timeoutAmount" -> conf.timeoutPeriod,
-      "timeoutUrl" -> "TBC"
+      "timeoutUrl" -> "TBC" //TODO: Needs to point somewhere
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("address_lookupPage.selectPage.heading"),
@@ -71,7 +71,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit request: Reque
 
     val phaseBannerHtml: Messages => String = message =>
       s"${message("feedback.before")}" +
-        s" <a id='beta-banner-feedback' href='${"TBC"}'>${message("feedback.link")}</a>" +
+        s" <a id='beta-banner-feedback' href='${config.addressLookupFeedbackUrl}'>${message("feedback.link")}</a>" +
         s" ${message("feedback.after")}"
   }
 

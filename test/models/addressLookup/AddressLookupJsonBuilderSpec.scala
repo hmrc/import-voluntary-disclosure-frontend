@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package models.addressLookup
 
 import assets.AddressLookupTestConstants.addressLookupV2Json
 import base.SpecBase
+import mocks.config.MockAppConfig
 import play.api.libs.json.Json
 
 class AddressLookupJsonBuilderSpec extends SpecBase {
@@ -28,7 +29,7 @@ class AddressLookupJsonBuilderSpec extends SpecBase {
 
       "the continueUrl is given to the user" in {
 
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(fakeRequest, messagesApi, appConfig)) mustBe addressLookupV2Json
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(fakeRequest, messagesApi, MockAppConfig)) mustBe addressLookupV2Json
       }
     }
   }

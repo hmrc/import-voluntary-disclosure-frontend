@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,12 @@ class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnec
                                      implicit val appConfig: AppConfig) {
 
   def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[AnyContent]):
-    Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
-      val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
-      addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
-  }
+    Future[Either[ErrorModel, AddressLookupOnRampModel]] =
+      addressLookupConnector.initialiseJourney(
+        AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
+      )
 
-  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
+  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] =
     addressLookupConnector.getAddress(id)
-  }
+
 }
