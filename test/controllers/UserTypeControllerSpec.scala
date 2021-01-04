@@ -37,7 +37,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
   val form = formProvider
 
   private lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
-    sessionRepository, appConfig, messagesControllerComponents, form, userTypePage)
+    sessionRepository, messagesControllerComponents, form, userTypePage)
 
   "GET /" should {
     "return 200" in {

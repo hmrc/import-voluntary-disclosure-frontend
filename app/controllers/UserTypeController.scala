@@ -16,34 +16,30 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
 import models.UserAnswers
 import pages.UserTypePage
 import play.api.i18n.I18nSupport
+import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UserTypeView
-import javax.inject.{Inject, Singleton}
-import play.api.libs.json.Format.GenericFormat
 
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 @Singleton
 class UserTypeController @Inject()(identity: IdentifierAction,
                                    getData: DataRetrievalAction,
                                    sessionRepository: SessionRepository,
-                                   appConfig: AppConfig,
                                    mcc: MessagesControllerComponents,
                                    formProvider: UserTypeFormProvider,
                                    view: UserTypeView)
   extends FrontendController(mcc) with I18nSupport {
-
-  implicit val config: AppConfig = appConfig
 
   val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
