@@ -11,6 +11,9 @@ GET        /callback              controllers.AddressLookupController.callback(i
 GET         /hello-world           controllers.HelloWorldController.onLoad
 POST        /hello-world           controllers.HelloWorldController.onSubmit
 
+GET         /who-is-disclosing     controllers.UserTypeController.onLoad
+POST        /who-is-disclosing     controllers.UserTypeController.onSubmit
+
 GET         /unauthorised          controllers.errors.UnauthorisedController.onPageLoad
 
 GET         /disclosure/entry-details   controllers.EntryDetailsController.onLoad

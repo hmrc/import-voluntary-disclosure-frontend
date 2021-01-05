@@ -61,3 +61,10 @@ entryDetails.entryDate.error.required.two = Entry date must include {0} and {1}
 entryDetails.entryDate.error.required = Entry date must include {0}
 entryDetails.entryDate.error.year.length = Entry date year must be 4 numbers
 entryDetails.entryDate.error.past = Entry date must be today or in the past
+
+# User Type Page
+userType.pageTitle = Importer or representative?
+userType.heading = Are you the importer or their representative?
+userType.importer = Importer
+userType.representative = Representative
+userType.error.required = Select if you are the importer or their representative
