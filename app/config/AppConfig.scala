@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,30 @@ package config
 
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import play.api.mvc.RequestHeader
+import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
-class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig) {
+class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
+  private val contactHost = servicesConfig.getString("contact-frontend.host")
 
-  lazy val host: String = servicesConfig.getString("host")
+  private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
+  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.service-identifier")
+  lazy val contactUrl = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
+  lazy val host = servicesConfig.getString("urls.host")
+
+  def feedbackUrl(implicit request: RequestHeader): String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$requestUri"
 
   lazy val appName: String = servicesConfig.getString("appName")
   lazy val loginUrl: String = servicesConfig.getString("urls.login")
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
 
-  lazy val cacheTtl: Int = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+  lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
   lazy val upScanAcceptedMimeTypes: String = servicesConfig.getString("upscan.acceptedMimeTypes")
@@ -41,4 +50,30 @@ class AppConfig @Inject()(config: Configuration, servicesConfig: ServicesConfig)
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
+}
+
+trait AppConfig {
+  val footerLinkItems: Seq[String]
+  val contactFormServiceIdentifier: String
+  val contactUrl: String
+  val host: String
+  def feedbackUrl(implicit request: RequestHeader): String
+  val appName: String
+  val loginUrl: String
+  val signOutUrl: String
+  val loginContinueUrl: String
+  val addressLookupFrontend: String
+  val addressLookupInitialise: String
+  val addressLookupConfirmed: String
+  val addressLookupFeedbackUrl: String
+  val addressLookupCallbackUrl: String
+  val timeoutPeriod: Int
+  val cacheTtl: Int
+  val upScanInitiateBaseUrl: String
+  val upScanAcceptedMimeTypes: String
+  val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String
+  val upScanSuccessRedirectForUser: String
+  val upScanErrorRedirectForUser: String
+  val upScanMinFileSize: Int
+  val upScanMaxFileSize: Int
 }

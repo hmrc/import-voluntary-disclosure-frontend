@@ -1,4 +1,6 @@
-service.name = import-voluntary-disclosure-frontend
+common.continue = Continue
+
+service.name = Disclose an underpayment of import duties
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
 
@@ -14,8 +16,35 @@ footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
 
+#Feedback
+feedback.title = Give feedback
+feedback.before = This is a new service – your
+feedback.link = feedback
+feedback.after = will help us to improve it.
+banner.phaseName = BETA
+
+#Address Lookup
+address_lookupPage.title = Find your address
+address_lookupPage.heading = Find your address
+address_lookupPage.filter = Property name or number (optional)
+address_lookupPage.postcode = UK postcode
+address_lookupPage.postcode.link = The address does not have a post code
+address_lookupPage.selectPage.heading = Select the new address
+address_lookupPage.selectPage.editLink = Edit the address manually
+address_lookupPage.confirmPage.heading = Confirm address
+address_lookupPage.lookupPage.submit = Find Address
+
+# User Type Page
+userType.pageTitle = Importer or representative?
+userType.heading = Are you the importer or their representative?
+userType.importer = Importer
+userType.representative = Representative
+userType.error.required = Select if you are the importer or their representative
+
+# Error Summary
+error.summary.title = There is a problem
+
 # UploadAFilePage Messages
-# ----------------------------------------------------------
 uploadAFile.title = Upload the employees’ details
 uploadAFile.heading = Upload the employees’ details
 uploadAFile.p1 = You need to tell us the following details for each of the furloughed employees in this claim period:

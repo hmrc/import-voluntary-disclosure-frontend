@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package config
 import controllers.actions._
 import play.api.inject.{Binding, Module}
 import play.api.{Configuration, Environment}
-import repositories.{FileUploadRepository, FileUploadRepositoryImpl, SessionRepository, UserAnswersRepository}
+import repositories._
 
 class ModuleBindings extends Module {
 
@@ -27,6 +27,7 @@ class ModuleBindings extends Module {
     bind[IdentifierAction].to(classOf[AuthenticatedIdentifierAction]),
     bind[DataRequiredAction].to(classOf[DataRequiredActionImpl]),
     bind[DataRetrievalAction].to(classOf[DataRetrievalActionImpl]),
+    bind[AppConfig].to(classOf[AppConfigImpl]),
     bind[SessionRepository].to(classOf[UserAnswersRepository]),
     bind[FileUploadRepository].to(classOf[FileUploadRepositoryImpl])
   )

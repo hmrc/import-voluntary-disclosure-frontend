@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ class IndexControllerSpec extends ControllerSpecBase {
     "return 303" in {
       val result = controller.onPageLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
-      redirectLocation(result) mustBe Some(controllers.routes.HelloWorldController.onLoad().url)
+      redirectLocation(result) mustBe Some(controllers.routes.UserTypeController.onLoad().url)
     }
 
   }

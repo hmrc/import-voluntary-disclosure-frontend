@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ object Enumerable {
     new Enumerable[A] {
       override def withName(str: String): Option[A] =
         entries.toMap.get(str)
-     }
+    }
 
   trait Implicits {
 
@@ -41,7 +41,7 @@ object Enumerable {
           }.getOrElse(JsError("error.invalid"))
         case _ =>
           JsError("error.invalid")
-       }
+      }
     }
 
     implicit def writes[A : Enumerable]: Writes[A] = {
