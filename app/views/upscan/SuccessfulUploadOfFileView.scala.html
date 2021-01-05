@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package config
+@import config.AppConfig
 
-object SessionKeys {
-  val upscanReference = "CIVDT_UPSCAN_REFERENCE"
-  val successRedirectForUser = "CIVDT_UPLOAD_SUCCESS_REDIRECT_URL"
+@this(
+        formHelper: FormWithCSRF,
+        layout: templates.Layout,
+        h1: components.h1,
+        button: components.button
+)
+
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
+
+@layout(pageTitle = Some(messages("successfulUploadOfFile.title"))) {
+
+ @h1( messages("successfulUploadOfFile.heading") )
+
+ @formHelper(Call("POST", controllers.routes.UpScanController.fileUploadSuccess())) {
+  @button("site.continue")
+ }
+
 }

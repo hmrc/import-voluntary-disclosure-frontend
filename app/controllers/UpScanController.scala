@@ -33,8 +33,8 @@ class UpScanController @Inject()(val mcc: MessagesControllerComponents,
                                  getData: DataRetrievalAction,
                                  requireData: DataRequiredAction,
                                  upScanService: UpScanService,
-                                 uploadFileView: views.html.upscan.UploadAFileView
-                                 //,successfulUploadOfFileView: views.html.upscan.SuccessfulUploadOfFileView
+                                 uploadFileView: views.html.upscan.UploadAFileView,
+                                 successfulUploadOfFileView: views.html.upscan.SuccessfulUploadOfFileView
                                 )(implicit appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
   implicit lazy val ec: ExecutionContext = controllerComponents.executionContext
@@ -48,8 +48,6 @@ class UpScanController @Inject()(val mcc: MessagesControllerComponents,
   }
 
   def fileUploadSuccess: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-//      Ok(successfulUploadOfFileView(navigator.nextPage(SuccessfulUploadOfFilePage, NormalMode, request.userAnswers)))
-//        .addingToSession(SessionKeys.successRedirectForUser -> upScanService.successRedirectForUser)
-    ???
+      Ok(successfulUploadOfFileView()).addingToSession(SessionKeys.successRedirectForUser -> upScanService.successRedirectForUser)
   }
 }
