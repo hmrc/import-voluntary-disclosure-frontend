@@ -40,7 +40,14 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val loginUrl: String = servicesConfig.getString("urls.login")
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
-
+  lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
+  lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
+  lazy val addressLookupConfirmed: String = servicesConfig.getString("urls.addressLookupConfirmedUri")
+  val addressLookupFeedbackUrl: String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
+  lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
+    controllers.routes.AddressLookupController.callback("").url
+  lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
