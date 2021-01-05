@@ -19,6 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UserTypeFormProvider
+import mocks.repositories.MockSessionRepository
 import models.UserType
 import play.api.http.Status
 import play.api.mvc.Result
@@ -29,47 +30,61 @@ import scala.concurrent.Future
 
 class UserTypeControllerSpec extends ControllerSpecBase {
 
-  private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
+  trait Test extends MockSessionRepository {
+    private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
 
-  private lazy val dataRetrievalAction = new FakeDataRetrievalAction(None)
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(None)
 
-  val formProvider = injector.instanceOf[UserTypeFormProvider]
-  val form = formProvider
+    val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
+    val form: UserTypeFormProvider = formProvider
 
-  private lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
-    sessionRepository, messagesControllerComponents, form, userTypePage)
+    MockedSessionRepository.set(Future.successful(true))
+
+    lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
+      mockSessionRepository, messagesControllerComponents, form, userTypePage)
+  }
 
   "GET /" should {
-    "return 200" in {
+    "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in {
+    "return HTML" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
   }
 
-  "POST /" should {
-    "return a OK, write UserAnswers and redirect to next page" in {
+  "POST /" when {
+    "payload contains valid data" should {
 
-      val request = fakeRequest.withFormUrlEncodedBody(
-        "value" -> UserType.Importer.toString
-      )
+      "return a SEE OTHER response" in new Test {
 
-      val result: Future[Result] = controller.onSubmit(request)
-      status(result) mustBe Status.SEE_OTHER
-      redirectLocation(result) mustBe Some(controllers.routes.UserTypeController.onLoad().url)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "return the correct location header" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.UserTypeController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        await(controller.onSubmit(request))
+        MockedSessionRepository.verifyCalls()
+      }
     }
 
-    "return a BAD REQUEST and errors when invalid data is submitted" in {
-
-      val result: Future[Result] = controller.onSubmit(fakeRequest)
-      status(result) mustBe Status.BAD_REQUEST
-
+    "payload contains invalid data" should {
+      "return a BAD REQUEST" in new Test {
+        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
+      }
     }
   }
-
 }
