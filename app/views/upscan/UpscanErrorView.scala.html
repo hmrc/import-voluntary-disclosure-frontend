@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package config
+@import config.AppConfig
 
-object SessionKeys {
-  val upscanReference = "CIVDT_UPSCAN_REFERENCE"
-  val successRedirectForUser = "CIVDT_UPLOAD_SUCCESS_REDIRECT_URL"
-  val errorRedirectForUser = "CIVDT_UPLOAD_FAILURE_REDIRECT_URL"
+@this(
+        layout: templates.Layout,
+        h1: components.h1,
+        p: components.p,
+        button: components.button,
+        formHelper: FormWithCSRF
+)
+
+@(getCall: Call)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+
+@layout(pageTitle = Some(messages("upscanError.title"))) {
+
+   @h1("upscanError.heading")
+
+   @p { @messages("upscanError.p1") }
+
+   @formHelper(getCall) {
+      @button("site.tryAgain")
+   }
+
 }

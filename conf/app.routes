@@ -18,3 +18,5 @@ GET         /unauthorised                      controllers.errors.UnauthorisedCo
 
 GET         /initiate-new-file-upload          controllers.UpScanController.initiateFileUpload
 GET         /file-uploaded-successfully        controllers.UpScanController.fileUploadSuccess
+
+GET         /error-processing-your-file        controllers.UpscanErrorController.onPageLoad()
