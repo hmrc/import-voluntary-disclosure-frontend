@@ -20,14 +20,13 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EntryDetailsFormProvider
 import javax.inject.{Inject, Singleton}
-import models.UserAnswers
+import models.EntryDetails
 import pages.EntryDetailsPage
-import play.api.i18n.Messages.Implicits.applicationMessages
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.EntryDetails
+import views.html.EntryDetailsView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -40,30 +39,38 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
                                        appConfig: AppConfig,
                                        mcc: MessagesControllerComponents,
                                        formProvider: EntryDetailsFormProvider,
-                                       view: EntryDetails)
+                                       view: EntryDetailsView)
   extends FrontendController(mcc) with I18nSupport {
 
   implicit val config: AppConfig = appConfig
 
-  //TODO Do we need check mode now or later
   def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(formProvider())))
+
+    val form = request.userAnswers.get(EntryDetailsPage).fold(formProvider()) {
+      formProvider().fill
+    }
+
+    Future.successful(Ok(view(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    val userAnswers = request.userAnswers
-
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(userAnswers.set(EntryDetailsPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.EntryDetailsController.onLoad())
+          redirect(value)
         }
       }
     )
   }
+
+  private def redirect(entryDetails: EntryDetails): Result =
+    entryDetails.entryDate.isAfter(appConfig.euExitDate) match {
+      case true => Redirect(controllers.routes.EntryDetailsController.onLoad())
+      case false => Redirect(controllers.routes.EntryDetailsController.onLoad()) // Acceptance Entry Page
+    }
 
 }

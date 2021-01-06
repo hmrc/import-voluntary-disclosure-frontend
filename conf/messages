@@ -55,10 +55,10 @@ entryDetails.entryNumber.error.missing = Enter an entry number
 entryDetails.entryNumber.error.format = Enter an entry number in the correct format
 entryDetails.entryDate.label = Entry date
 entryDetails.entryDate.hint = For example, 27 3 2020
-entryDetails.entryDate.error.invalid = Enter a real date
+entryDetails.entryDate.error.invalid = Entry date must be a real date
 entryDetails.entryDate.error.required.all = Enter an entry date and include a day, month and year
-entryDetails.entryDate.error.required.two = Entry date must include {0} and {1}
-entryDetails.entryDate.error.required = Entry date must include {0}
+entryDetails.entryDate.error.required.two = Entry date must include a {0} and {1}
+entryDetails.entryDate.error.required = Entry date must include a {0}
 entryDetails.entryDate.error.year.length = Entry date year must be 4 numbers
 entryDetails.entryDate.error.past = Entry date must be today or in the past
 
