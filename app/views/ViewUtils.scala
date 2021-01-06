@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package views
 
-@(headingMsg: String)(implicit messages: Messages)
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 
-<header class="hmrc-page-heading">
- <h1 class="govuk-heading-l">@messages(headingMsg)</h1>
-</header>
+object ViewUtils  {
 
-@{
- //$COVERAGE-OFF$
+  def hint(messageKey: String, hintMessageArgs: String*)(implicit messages: Messages): Hint = Hint(content = HtmlContent(messages(messageKey, hintMessageArgs: _*)))
+
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package messages
 
-@(headingMsg: String)(implicit messages: Messages)
+object NumberOfEntriesMessages extends BaseMessages {
 
-<header class="hmrc-page-heading">
- <h1 class="govuk-heading-l">@messages(headingMsg)</h1>
-</header>
+  val title: String = "How many entries are you disclosing an underpayment for?"
+  val h1: String = "How many entries are you disclosing an underpayment for?"
+  val radioButtonOne: String = "One entry"
+  val radioButtonTwo: String = "More than one entry"
+  val hint: String = "Multiple entries must be for the same importer, and have the same reason for underpayment."
+  val requiredError: String = "Select if you are disclosing an underpayment for one declaration or more than one declaration"
 
-@{
- //$COVERAGE-OFF$
 }

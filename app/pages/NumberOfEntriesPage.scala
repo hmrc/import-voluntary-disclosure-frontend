@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package pages
 
-@(headingMsg: String)(implicit messages: Messages)
+import models.NumberOfEntries
+import play.api.libs.json.JsPath
 
-<header class="hmrc-page-heading">
- <h1 class="govuk-heading-l">@messages(headingMsg)</h1>
-</header>
+case object NumberOfEntriesPage extends QuestionPage[NumberOfEntries] {
 
-@{
- //$COVERAGE-OFF$
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "number-of-entries"
+
 }

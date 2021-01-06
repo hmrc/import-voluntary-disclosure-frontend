@@ -21,11 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.EntryDetailsFormProvider
 import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
+import models.{EntryDetails, UserAnswers}
+import pages.EntryDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.EntryDetailsView
+import java.time.LocalDate
 
 import scala.concurrent.Future
 
@@ -53,6 +55,8 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(EntryDetailsPage, EntryDetails("123","123456Q",LocalDate.now)).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")

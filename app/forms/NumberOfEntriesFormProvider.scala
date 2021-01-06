@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package forms
 
-@(headingMsg: String)(implicit messages: Messages)
+import forms.mappings.Mappings
+import javax.inject.Inject
+import models.NumberOfEntries
+import play.api.data.Form
 
-<header class="hmrc-page-heading">
- <h1 class="govuk-heading-l">@messages(headingMsg)</h1>
-</header>
 
-@{
- //$COVERAGE-OFF$
+class NumberOfEntriesFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[NumberOfEntries] =
+    Form(
+      "value" -> enumerable[NumberOfEntries]("numberOfEntries.error.required")
+    )
 }
