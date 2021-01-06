@@ -22,19 +22,22 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.UnderpaymentTypeView
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            sessionRepository: SessionRepository,
                                            appConfig: AppConfig,
-                                           mcc: MessagesControllerComponents
+                                           mcc: MessagesControllerComponents,
+                                           underpaymentTypeView: UnderpaymentTypeView
                                           )
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    ???
+    Future.successful(Ok(underpaymentTypeView()))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>

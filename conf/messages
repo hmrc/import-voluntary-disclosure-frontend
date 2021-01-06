@@ -44,3 +44,7 @@ userType.error.required = Select if you are the importer or their representative
 # Error Summary
 # ----------------------------------------------
 error.summary.title = There is a problem
+
+# Underpayment Type
+underpaymentType.pageTitle = What type of duty was underpaid?
+underpaymentType.pageHeader = What have you underpaid?
