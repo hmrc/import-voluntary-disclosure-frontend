@@ -24,11 +24,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 sealed trait UnderpaymentType
 
 object UnderpaymentType extends Enumerable.Implicits {
-
-  case object CustomsDuty extends WithName("customsDuty") with UnderpaymentType
-  case object ImportVAT extends WithName("importVAT") with UnderpaymentType
-  case object ExciseDuty extends WithName("exciseDuty") with UnderpaymentType
-
   val values: Seq[UnderpaymentType] = Seq(
     CustomsDuty, ImportVAT, ExciseDuty
   )
@@ -42,7 +37,12 @@ object UnderpaymentType extends Enumerable.Implicits {
       )
   }
 
-  implicit val enumerable: Enumerable[UnderpaymentType] =
-    Enumerable(values.map(v => v.toString -> v): _*)
+  case object CustomsDuty extends WithName("customsDuty") with UnderpaymentType
+
+  case object ImportVAT extends WithName("importVAT") with UnderpaymentType
+
+  case object ExciseDuty extends WithName("exciseDuty") with UnderpaymentType
+
+  implicit val enumerable: Enumerable[UnderpaymentType] = Enumerable(values.map(v => v.toString -> v): _*)
 
 }

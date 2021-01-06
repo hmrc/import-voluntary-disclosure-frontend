@@ -20,6 +20,7 @@ import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentTypeFormProvider
 import models.UserAnswers
+import pages.UnderpaymentTypePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -28,11 +29,11 @@ import views.html.UnderpaymentTypeView
 
 import javax.inject.Inject
 import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            sessionRepository: SessionRepository,
-                                           appConfig: AppConfig,
                                            mcc: MessagesControllerComponents,
                                            underpaymentTypeView: UnderpaymentTypeView,
                                            formProvider: UnderpaymentTypeFormProvider
@@ -40,13 +41,30 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-
-    Future.successful(Ok(underpaymentTypeView(formProvider.apply(), userAnswers)))
+    Future.successful(
+      Ok(underpaymentTypeView(formProvider.apply(), request.userAnswers.getOrElse(UserAnswers(request.credId))))
+    )
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    ???
+    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+
+    formProvider().bindFromRequest().fold(
+      formWithErrors => {
+        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        formWithErrors.errors.foreach(println)
+        Future.successful(BadRequest(underpaymentTypeView(formWithErrors, userAnswers)))
+      },
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(userAnswers.set(UnderpaymentTypePage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.UnderpaymentTypeController.onLoad())
+        }
+      }
+    )
+
   }
 
 }

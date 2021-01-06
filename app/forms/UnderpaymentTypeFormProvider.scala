@@ -17,7 +17,7 @@
 package forms
 
 import forms.mappings.Mappings
-import models.{UnderpaymentType, UserType}
+import models.UnderpaymentType
 import play.api.data.Form
 
 import javax.inject.Inject
