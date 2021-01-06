@@ -51,8 +51,6 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
 
     formProvider().bindFromRequest().fold(
       formWithErrors => {
-        println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-        formWithErrors.errors.foreach(println)
         Future.successful(BadRequest(underpaymentTypeView(formWithErrors, userAnswers)))
       },
       value => {

@@ -19,7 +19,7 @@ package models
 import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 
 sealed trait UnderpaymentType
 
@@ -31,7 +31,7 @@ object UnderpaymentType extends Enumerable.Implicits {
   def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
     value =>
       CheckboxItem(
-        value = Some(value.toString),
+        value = value.toString,
         content = Text(messages(s"underpaymentType.${value.toString}")),
         checked = form("value").value.contains(value.toString)
       )
