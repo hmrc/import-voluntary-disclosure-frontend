@@ -18,6 +18,8 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import forms.UnderpaymentTypeFormProvider
+import models.UserAnswers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -32,12 +34,15 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            sessionRepository: SessionRepository,
                                            appConfig: AppConfig,
                                            mcc: MessagesControllerComponents,
-                                           underpaymentTypeView: UnderpaymentTypeView
+                                           underpaymentTypeView: UnderpaymentTypeView,
+                                           formProvider: UnderpaymentTypeFormProvider
                                           )
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    Future.successful(Ok(underpaymentTypeView()))
+    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+
+    Future.successful(Ok(underpaymentTypeView(formProvider.apply(), userAnswers)))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>

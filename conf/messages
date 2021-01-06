@@ -42,9 +42,13 @@ userType.representative = Representative
 userType.error.required = Select if you are the importer or their representative
 
 # Error Summary
-# ----------------------------------------------
 error.summary.title = There is a problem
 
 # Underpayment Type
 underpaymentType.pageTitle = What type of duty was underpaid?
 underpaymentType.pageHeader = What have you underpaid?
+underpaymentType.pageWarning = Select all that apply.
+underpaymentType.error.required = Select if you have underpaid Customs Duty, Import VAT or Excise Duty
+underpaymentType.customsDuty = Customs Duty
+underpaymentType.importVAT = Import VAT
+underpaymentType.exciseDuty = Excise Duty
