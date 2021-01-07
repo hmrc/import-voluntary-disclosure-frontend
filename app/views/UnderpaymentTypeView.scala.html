@@ -14,7 +14,8 @@
  * limitations under the License.
  *@
 
-@this(layout: templates.Layout,
+@this(
+        layout: templates.Layout,
         formHelper: FormWithCSRF,
         h1: components.h1,
         errorSummary: components.errorSummary,
@@ -23,7 +24,7 @@
         govukCheckboxes: GovukCheckboxes
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[UnderpaymentType], data: UnderpaymentType)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("underpaymentType.pageTitle"))) {
 
@@ -50,17 +51,20 @@
                 CheckboxItem(
                     name = Some("customsDuty"),
                     content = Text(messages("underpaymentType.customsDuty")),
-                    value = "true"
+                    value = "true",
+                    checked = data.customsDuty
                 ),
                 CheckboxItem(
                     name = Some("importVAT"),
                     content = Text(messages("underpaymentType.importVAT")),
-                    value = "true"
+                    value = "true",
+                    checked = data.importVAT
                 ),
                 CheckboxItem(
                     name = Some("exciseDuty"),
                     content = Text(messages("underpaymentType.exciseDuty")),
-                    value = "true"
+                    value = "true",
+                    checked = data.exciseDuty
                 )
             )
         ))
