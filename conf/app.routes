@@ -14,10 +14,10 @@ POST        /hello-world                                controllers.HelloWorldCo
 GET         /who-is-disclosing                          controllers.UserTypeController.onLoad
 POST        /who-is-disclosing                          controllers.UserTypeController.onSubmit
 
-GET         /one-or-more-entries   controllers.NumberOfEntriesController.onLoad
-POST        /one-or-more-entries   controllers.NumberOfEntriesController.onSubmit
+GET         /one-or-more-entries                        controllers.NumberOfEntriesController.onLoad
+POST        /one-or-more-entries                        controllers.NumberOfEntriesController.onSubmit
 
-GET         /unauthorised          controllers.errors.UnauthorisedController.onPageLoad
+GET         /unauthorised                               controllers.errors.UnauthorisedController.onPageLoad
 
 GET         /disclosure/what-duty-type-underpaid        controllers.UnderpaymentTypeController.onLoad
 POST        /disclosure/what-duty-type-underpaid        controllers.UnderpaymentTypeController.onSubmit
