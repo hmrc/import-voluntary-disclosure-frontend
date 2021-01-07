@@ -16,7 +16,7 @@
 
 package controllers
 
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentTypeFormProvider
 import models.UserAnswers
 import pages.UnderpaymentTypePage
@@ -32,6 +32,7 @@ import scala.concurrent.Future
 
 class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            getData: DataRetrievalAction,
+                                           requireData: DataRequiredAction,
                                            sessionRepository: SessionRepository,
                                            mcc: MessagesControllerComponents,
                                            underpaymentTypeView: UnderpaymentTypeView,
@@ -39,17 +40,18 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                           )
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-    Future.successful(
-      Ok(underpaymentTypeView(formProvider.apply(), request.userAnswers.getOrElse(UserAnswers(request.credId))))
-    )
+  val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+    val form = request.userAnswers.get(UnderpaymentTypePage).fold(formProvider()) {
+      formProvider().fill
+    }
+    Future.successful(Ok(underpaymentTypeView(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
     formProvider().bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(BadRequest(underpaymentTypeView(formWithErrors, userAnswers)))
+        Future.successful(BadRequest(underpaymentTypeView(formWithErrors)))
       },
       value => {
         for {
