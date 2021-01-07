@@ -70,7 +70,7 @@ class NumberOfEntriesController @Inject()(identity: IdentifierAction,
   }
 
   private def redirect(entries: NumberOfEntries): Result = entries match {
-    case OneEntry => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+    case OneEntry => Redirect(controllers.routes.EntryDetailsController.onLoad())
     case MoreThanOneEntry => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
   }
 }
