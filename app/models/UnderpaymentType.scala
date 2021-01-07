@@ -16,33 +16,10 @@
 
 package models
 
-import play.api.data.Form
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
-import uk.gov.hmrc.govukfrontend.views.Aliases.Text
+import play.api.libs.json.Json
 
-sealed trait UnderpaymentType
+case class UnderpaymentType(customsDuty: Boolean, importVAT: Boolean, exciseDuty: Boolean)
 
-object UnderpaymentType extends Enumerable.Implicits {
-  val values: Seq[UnderpaymentType] = Seq(
-    CustomsDuty, ImportVAT, ExciseDuty
-  )
-
-  def options(form: Form[_])(implicit messages: Messages): Seq[CheckboxItem] = values.map {
-    value =>
-      CheckboxItem(
-        value = value.toString,
-        content = Text(messages(s"underpaymentType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
-      )
-  }
-
-  case object CustomsDuty extends WithName("customsDuty") with UnderpaymentType
-
-  case object ImportVAT extends WithName("importVAT") with UnderpaymentType
-
-  case object ExciseDuty extends WithName("exciseDuty") with UnderpaymentType
-
-  implicit val enumerable: Enumerable[UnderpaymentType] = Enumerable(values.map(v => v.toString -> v): _*)
-
+object UnderpaymentType {
+  implicit val format = Json.format[UnderpaymentType]
 }

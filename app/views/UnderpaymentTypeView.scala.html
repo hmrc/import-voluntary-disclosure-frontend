@@ -14,38 +14,60 @@
  * limitations under the License.
  *@
 
- @import models.UnderpaymentType
-
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         h1: components.h1,
         errorSummary: components.errorSummary,
         button: components.button,
         back_link: components.back_link,
-        checkboxes: components.inputCheckboxes
+        govukCheckboxes: GovukCheckboxes
 )
 
 @(form: Form[_], userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = Some(messages("underpaymentType.pageTitle"))) {
 
- @back_link()
+    @back_link()
 
- @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
- @formHelper(action = controllers.routes.UnderpaymentTypeController.onSubmit()) {
+    @formHelper(action = controllers.routes.UnderpaymentTypeController.onSubmit()) {
 
-  @checkboxes(
-   form = form,
-   legend = messages("underpaymentType.pageHeader"),
-   items = UnderpaymentType.options(form),
-   legendAsHeading = true,
-   hint = Some(Html("Select all that apply."))
-  )
+        @govukCheckboxes(Checkboxes(
+            fieldset = Some(Fieldset(
+                legend = Some(Legend(
+                    content = Text(messages("underpaymentType.pageTitle")),
+                    classes = "govuk-fieldset__legend--l",
+                    isPageHeading = true
+                ))
+            )),
+            hint = Some(Hint(
+                content = Text(messages("underpaymentType.pageWarning"))
+            )),
+            idPrefix = Some(""),
+            name = "waste",
+            items = Seq(
+                CheckboxItem(
+                    name = Some("customsDuty"),
+                    content = Text(messages("underpaymentType.customsDuty")),
+                    value = "true"
+                ),
+                CheckboxItem(
+                    name = Some("importVAT"),
+                    content = Text(messages("underpaymentType.importVAT")),
+                    value = "true"
+                ),
+                CheckboxItem(
+                    name = Some("exciseDuty"),
+                    content = Text(messages("underpaymentType.exciseDuty")),
+                    value = "true"
+                )
+            )
+        ))
 
-  @button("common.button.continue")
+        @button("common.button.continue")
 
- }
+    }
 
 }
 

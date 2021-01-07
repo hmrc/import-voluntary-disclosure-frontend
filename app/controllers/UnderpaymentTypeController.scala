@@ -16,7 +16,6 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentTypeFormProvider
 import models.UserAnswers
@@ -28,8 +27,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UnderpaymentTypeView
 
 import javax.inject.Inject
-import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            getData: DataRetrievalAction,
@@ -48,7 +47,6 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         Future.successful(BadRequest(underpaymentTypeView(formWithErrors, userAnswers)))
@@ -62,7 +60,6 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
         }
       }
     )
-
   }
 
 }

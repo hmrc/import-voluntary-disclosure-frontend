@@ -16,18 +16,24 @@
 
 package forms
 
-import forms.mappings.Mappings
 import models.UnderpaymentType
 import play.api.data.Form
+import play.api.data.Forms.{boolean, mapping}
+import play.api.i18n.Messages
 
-import javax.inject.Inject
+class UnderpaymentTypeFormProvider {
 
-
-class UnderpaymentTypeFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[UnderpaymentType] =
+  def apply()(implicit messages: Messages): Form[UnderpaymentType] = {
     Form(
-      "value" -> enumerable[UnderpaymentType]("underpaymentType.error.required")
+      mapping(
+        "customsDuty" -> boolean,
+        "importVAT" -> boolean,
+        "exciseDuty" -> boolean
+      )(UnderpaymentType.apply)(UnderpaymentType.unapply).verifying(
+        messages("underpaymentType.error.required"),
+        fields => fields.customsDuty || fields.exciseDuty || fields.importVAT
+      )
     )
+  }
 
 }
