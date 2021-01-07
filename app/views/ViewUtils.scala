@@ -22,6 +22,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 
 object ViewUtils  {
 
-  def hint(messageKey: String, hintMessageArgs: String*)(implicit messages: Messages): Hint = Hint(content = HtmlContent(messages(messageKey, hintMessageArgs: _*)))
+  def hint(messageKey: String, hintMessageArgs: String*)(implicit messages: Messages): Hint =
+    Hint(content = HtmlContent(messages(messageKey, hintMessageArgs: _*)))
 
 }

@@ -48,8 +48,7 @@ trait Mappings extends Formatters with Constraints {
                         invalidKey: String = "error.boolean"): FieldMapping[Boolean] =
     of(booleanFormatter(requiredKey, invalidKey))
 
-  protected def localDate(
-                           invalidKey: String,
+  protected def localDate(invalidKey: String,
                            allRequiredKey: String,
                            twoRequiredKey: String,
                            requiredKey: String,

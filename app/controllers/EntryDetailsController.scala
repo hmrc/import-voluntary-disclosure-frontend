@@ -42,8 +42,6 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
                                        view: EntryDetailsView)
   extends FrontendController(mcc) with I18nSupport {
 
-  implicit val config: AppConfig = appConfig
-
   def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
 
     val form = request.userAnswers.get(EntryDetailsPage).fold(formProvider()) {
@@ -68,9 +66,11 @@ class EntryDetailsController @Inject()(identity: IdentifierAction,
   }
 
   private def redirect(entryDetails: EntryDetails): Result =
-    entryDetails.entryDate.isAfter(appConfig.euExitDate) match {
-      case true => Redirect(controllers.routes.EntryDetailsController.onLoad())
-      case false => Redirect(controllers.routes.EntryDetailsController.onLoad()) // Acceptance Entry Page
+    if (entryDetails.entryDate.isBefore(appConfig.euExitDate)) {
+      Redirect(controllers.routes.EntryDetailsController.onLoad()) // Acceptance Entry Page
+    } else {
+      Redirect(controllers.routes.EntryDetailsController.onLoad())
     }
+
 
 }

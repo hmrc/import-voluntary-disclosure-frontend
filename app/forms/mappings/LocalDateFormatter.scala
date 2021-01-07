@@ -32,7 +32,8 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
                                            dayMonthLengthKey: String,
                                            yearLengthKey: String,
                                            validatePastKey: Option[String],
-                                           args: Seq[String] = Seq.empty)(implicit messages: Messages) extends Formatter[LocalDate] with Formatters with Constraints {
+                                           args: Seq[String] = Seq.empty)(implicit messages: Messages)
+  extends Formatter[LocalDate] with Formatters with Constraints {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
 

@@ -32,7 +32,8 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
       "epu" -> text("entryDetails.epu.error.missing")
         .verifying(regexp("[0-9]{3}","entryDetails.epu.error.format")),
       "entryNumber" -> text("entryDetails.entryNumber.error.missing")
-        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format")),
+        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format"))
+        .transform[String](_.toUpperCase, _.toUpperCase),
       "entryDate" -> localDate(
         invalidKey = "entryDetails.entryDate.error.invalid",
         allRequiredKey = "entryDetails.entryDate.error.required.all",
@@ -41,7 +42,7 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
         yearLengthKey = "entryDetails.entryDate.error.year.length",
         validatePastKey = Some("entryDetails.entryDate.error.past")
       )
-    )(EntryDetails.formApply)(EntryDetails.unapply)
+    )(EntryDetails.apply)(EntryDetails.unapply)
     )
   }
 }
