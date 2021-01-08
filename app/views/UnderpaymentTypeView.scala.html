@@ -27,8 +27,6 @@
 
 @layout(pageTitle = Some(messages("underpaymentType.pageTitle"))) {
 
-    @back_link()
-
     @errorSummary(form.errors)
 
     @formHelper(action = controllers.routes.UnderpaymentTypeController.onSubmit()) {
