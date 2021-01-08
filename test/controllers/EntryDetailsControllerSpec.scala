@@ -33,6 +33,19 @@ import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends ControllerSpecBase {
 
+  def buildForm(epu: Option[String] = Some("123"),
+                    entryNumber: Option[String] = Some("123456Q"),
+                    day: Option[String] = Some("31"),
+                    month: Option[String] = Some("12"),
+                    year: Option[String] = Some("2020")): Seq[(String, String)] =
+    (
+      (epu.map(_ => "epu" -> epu.get) ++
+        entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
+        day.map(_ => "entryDate.day" -> day.get) ++
+        month.map(_ => "entryDate.month" -> month.get) ++
+        year.map(_ => "entryDate.year" -> year.get)).toSeq
+      )
+
   trait Test extends MockSessionRepository {
     private lazy val entryDetailsView: EntryDetailsView = app.injector.instanceOf[EntryDetailsView]
 
@@ -67,39 +80,21 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response and redirect to correct location for date BEFORE EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "12",
-          "entryDate.month" -> "12",
-          "entryDate.year" -> "2020"
-        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day=Some("31"),month=Some("12"),year=Some("2020")):_*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
       }
 
       "return a SEE OTHER response and redirect to correct location for date AFTER EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "02",
-          "entryDate.month" -> "01",
-          "entryDate.year" -> "2021"
-        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day=Some("02"),month=Some("01"),year=Some("2021")):_*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "12",
-          "entryDate.month" -> "12",
-          "entryDate.year" -> "2020"
-        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm():_*)
         await(controller.onSubmit(request))
         MockedSessionRepository.verifyCalls()
       }
