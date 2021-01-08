@@ -45,7 +45,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
       case Success(date) =>
         Right(date)
       case Failure(_) =>
-        Left(Seq(FormError(key, invalidKey, args)))
+        Left(Seq(FormError(s"$key.day", invalidKey, fieldKeys ++ args)))
     }
 
   private def formatDate(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
@@ -67,7 +67,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
     if (validatePastKey.isDefined) {
       date.fold(
         err => Left(err),
-        dt => if(dt.isAfter(LocalDate.now)) Left(List(FormError(key, validatePastKey.get))) else Right(dt)
+        dt => if(dt.isAfter(LocalDate.now)) Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys))) else Right(dt)
       )
     } else {
       date
@@ -98,20 +98,18 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
         }
 
         (lengthErrors.nonEmpty, yearLengthError.nonEmpty) match {
-          case (true, true) => Left(List(FormError(key, dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and")))),
-                                          FormError(key, yearLengthKey)))
-          case (true, false) => Left(List(FormError(key, dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and"))))))
-          case (false, true) => Left(List(FormError(key, yearLengthKey)))
-          case _ => formatDate(key, data).left.map {
-            _.map(_.copy(key = key, args = args))
-          }
+          case (true, true) => Left(List(FormError(s"$key.${lengthErrors.head}", dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and")))),
+                                          FormError(s"$key.year", yearLengthKey, Seq(yearLengthError))))
+          case (true, false) => Left(List(FormError(s"$key.${lengthErrors.head}", dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and"))))))
+          case (false, true) => Left(List(FormError(s"$key.year", yearLengthKey, Seq(yearLengthError))))
+          case _ => formatDate(key, data)
         }
       case 2 =>
-        Left(List(FormError(key, requiredKey, missingFields ++ args)))
+        Left(List(FormError(s"$key.${missingFields.head}", requiredKey, missingFields ++ args)))
       case 1 =>
-        Left(List(FormError(key, twoRequiredKey, missingFields ++ args)))
+        Left(List(FormError(s"$key.${missingFields.head}", twoRequiredKey, missingFields ++ args)))
       case _ =>
-        Left(List(FormError(key, allRequiredKey, args)))
+        Left(List(FormError(s"$key.day", allRequiredKey, fieldKeys ++ args)))
     }
 
   }

@@ -35,7 +35,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors mustBe Seq(
           FormError("epu", "entryDetails.epu.error.missing"),
           FormError("entryNumber", "entryDetails.entryNumber.error.missing"),
-          FormError("entryDate", "entryDetails.entryDate.error.required.all")
+          FormError("entryDate.day", "entryDetails.entryDate.error.required.all", List("day","month","year"))
         )
       }
     }
@@ -51,7 +51,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.required"
         form.errors.head.args mustBe List("day")
       }
@@ -67,7 +67,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.month"
         form.errors.head.message mustBe "entryDetails.entryDate.error.required"
         form.errors.head.args mustBe List("month")
       }
@@ -83,7 +83,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.required"
         form.errors.head.args mustBe List("year")
       }
@@ -98,7 +98,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.required.two"
         form.errors.head.args mustBe List("day", "year")
       }
@@ -150,7 +150,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Month format error" in {
@@ -164,7 +164,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year format error" in {
@@ -178,7 +178,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year length error" in {
@@ -192,7 +192,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.year.length"
       }
       "result in a form with Date in Past error" in {
@@ -206,7 +206,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.past"
       }
       "result in a form with Not A Date error" in {
@@ -220,7 +220,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
 
         form.errors.size mustBe 1
-        form.errors.head.key mustBe "entryDate"
+        form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
 
