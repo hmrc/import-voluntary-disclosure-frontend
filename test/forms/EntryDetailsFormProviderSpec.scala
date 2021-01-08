@@ -25,6 +25,19 @@ import play.api.data.FormError
 
 class EntryDetailsFormProviderSpec extends SpecBase {
 
+  def buildFormData(epu: Option[String] = Some("123"),
+                    entryNumber: Option[String] = Some("123456Q"),
+                    day: Option[String] = Some("31"),
+                    month: Option[String] = Some("12"),
+                    year: Option[String] = Some("2020")): Map[String, String] =
+    (
+      epu.map(_ => "epu" -> epu.get) ++
+      entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
+      day.map(_ => "entryDate.day" -> day.get) ++
+      month.map(_ => "entryDate.month" -> month.get) ++
+      year.map(_ => "entryDate.year" -> year.get)
+    ).toMap
+
   "Binding a form with invalid data" when {
 
     "no values provided" should {
@@ -35,19 +48,13 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors mustBe Seq(
           FormError("epu", "entryDetails.epu.error.missing"),
           FormError("entryNumber", "entryDetails.entryNumber.error.missing"),
-          FormError("entryDate.day", "entryDetails.entryDate.error.required.all", List("day","month","year"))
+          FormError("entryDate.day", "entryDetails.entryDate.error.required.all", List("day", "month", "year"))
         )
       }
     }
 
     "missing entry date day" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "123",
-        "entryNumber" -> "123456Q",
-        "entryDate.month" -> "12",
-        "entryDate.year" -> "2020"
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -57,13 +64,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing entry date month" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "123",
-        "entryNumber" -> "123456Q",
-        "entryDate.day" -> "12",
-        "entryDate.year" -> "2020"
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(month = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -73,13 +74,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing entry date year" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "123",
-        "entryNumber" -> "123456Q",
-        "entryDate.day" -> "12",
-        "entryDate.month" -> "12",
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -89,12 +84,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing multiple entry date fields" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "123",
-        "entryNumber" -> "123456Q",
-        "entryDate.month" -> "12",
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = None, year = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -105,14 +95,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "epu invalid" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "aaa",
-        "entryNumber" -> "123456Q",
-        "entryDate.day" -> "12",
-        "entryDate.month" -> "12",
-        "entryDate.year" -> "2020"
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(epu = Some("aaa")))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -122,14 +105,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "entryNumber invalid" should {
-      val formData: Map[String, String] = Map(
-        "epu" -> "123",
-        "entryNumber" -> "12345Q",
-        "entryDate.day" -> "12",
-        "entryDate.month" -> "12",
-        "entryDate.year" -> "2020"
-      )
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(entryNumber = Some("12345Q")))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -140,84 +116,47 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
     "entryDate invalid" should {
       "result in a form with Day format error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "32",
-          "entryDate.month" -> "12",
-          "entryDate.year" -> "2020"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = Some("32")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Month format error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "12",
-          "entryDate.month" -> "13",
-          "entryDate.year" -> "2020"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(month = Some("13")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year format error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "12",
-          "entryDate.month" -> "12",
-          "entryDate.year" -> "202A"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = Some("202A")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year length error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "12",
-          "entryDate.month" -> "12",
-          "entryDate.year" -> "20"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = Some("20")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.year.length"
       }
       "result in a form with Date in Past error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> s"${LocalDate.now().getDayOfMonth + 1}",
-          "entryDate.month" -> s"${LocalDate.now().getMonthValue}",
-          "entryDate.year" -> s"${LocalDate.now().getYear}"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(
+          buildFormData(
+            day = Some(s"${LocalDate.now().getDayOfMonth + 1}"),
+            month = Some(s"${LocalDate.now().getMonthValue}"),
+            year = Some(s"${LocalDate.now().getYear}")
+          ))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.past"
       }
       "result in a form with Not A Date error" in {
-        val formData: Map[String, String] = Map(
-          "epu" -> "123",
-          "entryNumber" -> "123456Q",
-          "entryDate.day" -> "43",
-          "entryDate.month" -> s"${LocalDate.now().getMonthValue}",
-          "entryDate.year" -> s"${LocalDate.now().getYear}"
-        )
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = Some("43")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
@@ -229,36 +168,22 @@ class EntryDetailsFormProviderSpec extends SpecBase {
   }
 
   "Binding a form with valid data" should {
-
-    val formData: Map[String, String] = Map(
-      "epu" -> "123",
-      "entryNumber" -> "123456Q",
-      "entryDate.day" -> "12",
-      "entryDate.month" -> "12",
-      "entryDate.year" -> "2020"
-    )
-    val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(formData)
+    val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData())
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
     }
 
     "generate the correct model" in {
-      form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 12)))
+      form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
     }
   }
 
   "A form built from a valid model" should {
     "generate the correct mapping" in {
-      val model = EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 12))
+      val model = EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31))
       val form = new EntryDetailsFormProvider()(MockAppConfig).apply().fill(model)
-      form.data mustBe Map(
-        "epu" -> "123",
-        "entryNumber" -> "123456Q",
-        "entryDate.day" -> "12",
-        "entryDate.month" -> "12",
-        "entryDate.year" -> "2020"
-      )
+      form.data mustBe buildFormData()
     }
   }
 

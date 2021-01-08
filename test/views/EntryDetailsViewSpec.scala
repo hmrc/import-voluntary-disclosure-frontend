@@ -33,6 +33,19 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   val currMonth = LocalDate.now().getMonthValue
   val currYear = LocalDate.now().getYear
 
+  def buildMap(epu: Option[String] = Some("123"),
+                    entryNumber: Option[String] = Some("123456Q"),
+                    day: Option[String] = Some(s"${currDay}"),
+                    month: Option[String] = Some(s"${currMonth}"),
+                    year: Option[String] = Some(s"${currYear}")): Map[String, String] =
+    (
+      epu.map(_ => "epu" -> epu.get) ++
+        entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
+        day.map(_ => "entryDate.day" -> day.get) ++
+        month.map(_ => "entryDate.month" -> month.get) ++
+        year.map(_ => "entryDate.year" -> year.get)
+      ).toMap
+
   private lazy val injectedView: EntryDetailsView = app.injector.instanceOf[EntryDetailsView]
 
   val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
@@ -98,20 +111,20 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists" should {
-      val missingEpu: Map[String, String] = Map("entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val missingEntryNumber: Map[String, String] = Map("epu" -> "123", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val missingEntryDate: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q")
-      val missingEntryDateDay: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val missingEntryDateDayAndMonth: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.year" -> s"${currYear}")
-      val missingEntryDateDayAndYear: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.month" -> s"${currMonth}")
-      val missingEntryDateMonth: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}", "entryDate.year" -> s"${currYear}")
-      val missingEntryDateMonthAndYear: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}")
-      val missingEntryDateYear: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}")
-      val formatEpu: Map[String, String] = Map("epu" -> "12", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val formatEntryNumber: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "1234Q56Q", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val realEntryDateError: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> "43", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val pastEntryDateError: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay+1}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"${currYear}")
-      val twoDigitEntryDateYearError: Map[String, String] = Map("epu" -> "123", "entryNumber" -> "123456Q", "entryDate.day" -> s"${currDay}", "entryDate.month" -> s"${currMonth}", "entryDate.year" -> s"20")
+      val missingEpu: Map[String, String] = buildMap(epu=None)
+      val missingEntryNumber: Map[String, String] = buildMap(entryNumber=None)
+      val missingEntryDate: Map[String, String] = buildMap(day=None,month=None,year=None)
+      val missingEntryDateDay: Map[String, String] = buildMap(day=None)
+      val missingEntryDateDayAndMonth: Map[String, String] = buildMap(day=None,month=None)
+      val missingEntryDateDayAndYear: Map[String, String] = buildMap(day=None,year=None)
+      val missingEntryDateMonth: Map[String, String] = buildMap(month=None)
+      val missingEntryDateMonthAndYear: Map[String, String] = buildMap(month=None,year=None)
+      val missingEntryDateYear: Map[String, String] = buildMap(year=None)
+      val formatEpu: Map[String, String] = buildMap(epu=Some("12"))
+      val formatEntryNumber: Map[String, String] = buildMap(entryNumber=Some("12"))
+      val realEntryDateError: Map[String, String] = buildMap(day=Some("34"))
+      val pastEntryDateError: Map[String, String] = buildMap(day=Some(s"${currDay+1}"))
+      val twoDigitEntryDateYearError: Map[String, String] = buildMap(year=Some("20"))
 
       val errors: Map[String, Map[String, String]] = Map(
         EntryDetailsMessages.epuRequiredError -> missingEpu,
