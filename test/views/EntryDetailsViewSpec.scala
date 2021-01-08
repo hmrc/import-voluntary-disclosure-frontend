@@ -61,10 +61,6 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         document.title mustBe EntryDetailsMessages.title
       }
 
-      s"have Back link" in {
-        elementText(".govuk-back-link") mustBe back_link
-      }
-
       s"have the correct h1 of '${EntryDetailsMessages.h1}'" in {
         elementText("h1") mustBe EntryDetailsMessages.h1
       }

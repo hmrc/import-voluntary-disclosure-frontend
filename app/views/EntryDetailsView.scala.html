@@ -27,8 +27,6 @@
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = Some(messages("entryDetails.pageTitle"))) {
-        @back_link()
-
         @errorSummary(form.errors)
 
         @h1(messages("entryDetails.title"))
