@@ -15,3 +15,6 @@ GET         /who-is-disclosing     controllers.UserTypeController.onLoad
 POST        /who-is-disclosing     controllers.UserTypeController.onSubmit
 
 GET         /unauthorised          controllers.errors.UnauthorisedController.onPageLoad
+
+GET         /disclaimer            controllers.SupportingDocController.onLoad
+POST        /disclaimer            controllers.SupportingDocController.onSubmit

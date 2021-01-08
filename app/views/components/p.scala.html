@@ -16,8 +16,10 @@
 
 @this()
 
-@(headingMsg: String)(implicit messages: Messages)
+@(content: Html, classes: String = "govuk-body", id: Option[String] = None)(implicit messages: Messages)
 
-<header class="hmrc-page-heading">
- <h1 class="govuk-heading-l">@messages(headingMsg)</h1>
-</header>
+@if(id.isDefined){
+    <p class="@classes", id ="@id">@content</p>
+} else {
+    <p class="@classes">@content</p>
+    }
