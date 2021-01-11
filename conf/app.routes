@@ -19,5 +19,8 @@ POST        /one-or-more-entries                        controllers.NumberOfEntr
 
 GET         /unauthorised                               controllers.errors.UnauthorisedController.onPageLoad
 
+GET         /disclosure/entry-details        controllers.EntryDetailsController.onLoad
+POST        /disclosure/entry-details        controllers.EntryDetailsController.onSubmit
+
 GET         /disclosure/what-duty-type-underpaid        controllers.UnderpaymentTypeController.onLoad
 POST        /disclosure/what-duty-type-underpaid        controllers.UnderpaymentTypeController.onSubmit
