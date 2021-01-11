@@ -16,13 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
+import filters.InputFilter
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import play.api.i18n.Messages
 
-trait Constraints {
-
+trait Constraints extends InputFilter {
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint {
       input =>
@@ -116,5 +113,4 @@ trait Constraints {
       case _ =>
         Invalid(errorKey)
     }
-
 }

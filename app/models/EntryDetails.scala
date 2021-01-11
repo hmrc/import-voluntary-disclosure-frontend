@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package base
+package models
 
-import controllers.actions._
+import java.time.LocalDate
 
-trait ControllerSpecBase extends SpecBase {
-  lazy val authenticatedAction: IdentifierAction =
-    FakeIdentifierAction.identifierAction(messagesControllerComponents.parsers.anyContent, "some_external_id")
+import play.api.libs.json.Json
 
-  lazy val dataRequiredAction: DataRequiredAction = injector.instanceOf[DataRequiredActionImpl]
+case class EntryDetails(epu: String, entryNumber: String, entryDate: LocalDate)
+
+object EntryDetails {
+  implicit val format = Json.format[EntryDetails]
 }
+

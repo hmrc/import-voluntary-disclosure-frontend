@@ -14,26 +14,28 @@
  * limitations under the License.
  *@
 
-@import models.UserType
+@import models.NumberOfEntries
 
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         h1: components.h1,
+        back_link: components.back_link,
         errorSummary: components.errorSummary,
         inputRadio: components.inputRadio,
         button: components.button)
 
-@(form: Form[_], userAnswers: UserAnswers)(implicit request: Request[_], messages: Messages)
+@(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = Some(messages("userType.pageTitle"))) {
+    @layout(pageTitle = Some(messages("numberOfEntries.pageTitle"))) {
+        @back_link()
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.UserTypeController.onSubmit()) {
+        @formHelper(action = controllers.routes.NumberOfEntriesController.onSubmit()) {
             @inputRadio(
                 form = form,
-                legend = messages("userType.heading"),
-                items = UserType.options(form),
+                legend = messages("numberOfEntries.title"),
+                items = NumberOfEntries.options(form),
                 inline = true,
                 legendAsHeading = true
             )
