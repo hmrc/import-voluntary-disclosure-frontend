@@ -42,6 +42,9 @@
             hint = Some(Hint(
                 content = Text(messages("underpaymentType.pageWarning"))
             )),
+            errorMessage = if(form.hasErrors) {Some(ErrorMessage(
+                content = Text(messages("underpaymentType.error.required"))
+            ))} else None,
             idPrefix = Some(""),
             name = "waste",
             items = Seq(
