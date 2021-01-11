@@ -27,7 +27,7 @@
 @layout(
     pageTitle = Some(messages("underpaymentType.pageTitle")),
     form = Some(form),
-    customBackLinkUrl = None
+    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)
 ) {
 
     @errorSummary(form.errors)

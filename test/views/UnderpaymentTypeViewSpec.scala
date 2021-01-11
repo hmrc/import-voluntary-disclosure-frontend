@@ -67,6 +67,11 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
           "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
         ) mustBe UnderpaymentTypeMessages.exciseDuty
       }
+
+      "render a back link with the correct URL " in {
+        elementAttributes("#back-link") must contain("href" -> controllers.routes.UnderpaymentTypeController.onLoad().url)
+      }
+
     }
 
     "an error exists (no option has been selected)" should {
