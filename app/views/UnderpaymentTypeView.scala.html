@@ -19,15 +19,16 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        back_link: components.back_link,
         govukCheckboxes: GovukCheckboxes
 )
 
 @(form: Form[UnderpaymentType], data: UnderpaymentType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some(messages("underpaymentType.pageTitle"))) {
-
-
+@layout(
+    pageTitle = Some(messages("underpaymentType.pageTitle")),
+    form = Some(form),
+    customBackLinkUrl = None
+) {
 
     @errorSummary(form.errors)
 
