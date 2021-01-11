@@ -25,12 +25,21 @@ import pages.UnderpaymentTypePage
 import play.api.http.Status
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UnderpaymentTypeView
 
 import scala.concurrent.Future
 
 class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
+
+  private def fakeRequestGenerator(customsDuty: String = "false",
+                                   importVAT: String = "false",
+                                   exciseDuty: String = "false") =
+    fakeRequest.withFormUrlEncodedBody(
+      "customsDuty" -> customsDuty,
+      "importVAT" -> importVAT,
+      "exciseDuty" -> exciseDuty
+    )
 
   trait Test extends MockSessionRepository {
     lazy val controller = new UnderpaymentTypeController(
@@ -60,13 +69,57 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Option(
         UserAnswers("some-cred-id").set(
           UnderpaymentTypePage,
-          UnderpaymentType(false, false, false)
+          UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
         ).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+  }
+
+  "POST /" should {
+
+    "payload contains valid data" should {
+      "return a SEE OTHER response to to Customs Duty page when all boxes are ticked" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator(customsDuty = "true", importVAT = "true", exciseDuty = "true")
+        )
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentTypeController.onLoad().url) // Customs Duty
+      }
+
+      "return a SEE OTHER response to to Customs Duty page when Customs Duty is selected" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator(customsDuty = "true")
+        )
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentTypeController.onLoad().url) // Customs Duty
+      }
+
+      "return a SEE OTHER response to to Import VAT page when Import VAT is selected" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator(importVAT = "true"))
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentTypeController.onLoad().url) // Import VAT
+      }
+
+      "return a SEE OTHER response to to Excise Duty page when Excise Duty is selected" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator(exciseDuty = "true"))
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentTypeController.onLoad().url) // Excise Duty
+      }
+
+      "update the UserAnswers in session" in new Test {
+        await(controller.onSubmit(fakeRequestGenerator(customsDuty = "true")))
+        MockedSessionRepository.verifyCalls()
+      }
+
+
+    }
+
+    "payload contains invalid data" should {
+      "return BAD REQUEST" in new Test {
+        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+
   }
 
 }
