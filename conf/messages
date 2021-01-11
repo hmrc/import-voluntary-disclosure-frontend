@@ -53,7 +53,7 @@ numberOfEntries.error.required = Select if you are disclosing an underpayment fo
 error.summary.title = There is a problem
 
 # Underpayment Type
-underpaymentType.pageTitle = What type of duty was underpaid?
+underpaymentType.pageTitle = What have you underpaid?
 underpaymentType.pageHeader = What have you underpaid?
 underpaymentType.pageWarning = Select all that apply.
 underpaymentType.error.required = Select if you have underpaid Customs Duty, Import VAT or Excise Duty

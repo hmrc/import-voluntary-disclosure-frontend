@@ -45,7 +45,9 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
       Ok(
         underpaymentTypeView(
           formProvider.apply(),
-          request.userAnswers.get(UnderpaymentTypePage).getOrElse(UnderpaymentType(false, false, false))
+          request.userAnswers.get(UnderpaymentTypePage).getOrElse(
+            UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
+          )
         )
       )
     )
@@ -58,7 +60,7 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
           BadRequest(
             underpaymentTypeView(
               formWithErrors,
-              UnderpaymentType(false, false, false)
+              UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
             )
           )
         )
