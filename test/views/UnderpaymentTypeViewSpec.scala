@@ -16,9 +16,10 @@
 
 package views
 
+import base.ViewBaseSpec
 import forms.UnderpaymentTypeFormProvider
-import messages.{BaseMessages, NumberOfEntriesMessages, UnderpaymentTypeMessages}
-import models.{NumberOfEntries, UnderpaymentType}
+import messages.{BaseMessages, UnderpaymentTypeMessages}
+import models.UnderpaymentType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -42,7 +43,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page heading of '${UnderpaymentTypeMessages.pageTitle}'" in {
-        document.title mustBe UnderpaymentTypeMessages.pageTitle
+        document.title mustBe Some(UnderpaymentTypeMessages.pageTitle).toString
       }
 
       s"have the correct page h1 of '${UnderpaymentTypeMessages.pageHeader}'" in {
