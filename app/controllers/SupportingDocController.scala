@@ -16,7 +16,6 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport

@@ -23,6 +23,9 @@ object SupportingDocMessages  extends BaseMessages {
   val disclosure: String = "You will need to upload files as supporting documentation for this disclosure."
   val fileSize: String = "Each file must be 30MB or less, and in one of the following formats:"
   val bullet1: String = "DOC"
-
+  val bullet2: String = "JPG"
+  val bullet3: String = "PDF"
+  val bullet4: String = "PNG"
+  val bullet5: String = "XLS"
 
 }

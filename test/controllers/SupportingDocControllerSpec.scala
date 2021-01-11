@@ -22,7 +22,7 @@ import mocks.repositories.MockSessionRepository
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.{HelloWorldPage, SupportingDocView}
+import views.html.SupportingDocView
 
 import scala.concurrent.Future
 
