@@ -15,6 +15,7 @@
  *@
 
 @import models.UnderpaymentSummary
+@import views.ViewUtils.asCurrency
 
 @this(layout: templates.Layout,
         h1: components.h1,
@@ -65,7 +66,7 @@
             ),
             value = Value(
                 content = HtmlContent(
-                    underpayment.original.toString + "<br>" + underpayment.amended
+                    asCurrency(underpayment.original) + "<br>" + asCurrency(underpayment.amended)
                 )
             ),
             actions = Some(Actions(
@@ -86,10 +87,11 @@
             ),
             value = Value(
                 content = HtmlContent(
-                    "<b>" + (underpayment.amended - underpayment.original).toString + "</b>"
+                    "<b>" + asCurrency(underpayment.amended - underpayment.original) + "</b>"
                 )
             ))
-    ))
+    ),
+    additionalClasses = "govuk-!-margin-bottom-9")
 }
 
 @{

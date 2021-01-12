@@ -16,6 +16,6 @@
 
 @this(govukSummaryList : GovukSummaryList)
 
-@(rows: Seq[SummaryListRow])(implicit messages: Messages)
+@(rows: Seq[SummaryListRow], additionalClasses: String = "")(implicit messages: Messages)
 
-@govukSummaryList(SummaryList(rows))
+@govukSummaryList(SummaryList(rows, classes = "govuk-summary-list " + additionalClasses))
