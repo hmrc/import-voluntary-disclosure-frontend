@@ -20,14 +20,15 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UnderpaymentTypeFormProvider
 import mocks.repositories.MockSessionRepository
-import models.{UnderpaymentType, UserAnswers}
-import pages.UnderpaymentTypePage
+import models.{EntryDetails, UnderpaymentType, UserAnswers}
+import pages.{EntryDetailsPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UnderpaymentTypeView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
@@ -73,6 +74,24 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
           UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
         ).success.value
       )
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
+
+    "should redirect the back button to Acceptance page" in new Test {
+      val dateBeforeExit: LocalDate = LocalDate of (2020, 1, 1)
+      val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateBeforeExit)
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(EntryDetailsPage, entryDetails).success.value)
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
+
+    "should redirect the back button to EntryDetails page" in new Test {
+      val dateBeforeExit: LocalDate = LocalDate of (2021, 1, 2)
+      val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateBeforeExit)
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(EntryDetailsPage, entryDetails).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
