@@ -25,7 +25,7 @@
 @(form: Form[UnderpaymentType], data: UnderpaymentType)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = Some(messages("underpaymentType.pageTitle")),
+    pageTitle = messages("underpaymentType.pageTitle"),
     form = Some(form),
     customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)
 ) {
