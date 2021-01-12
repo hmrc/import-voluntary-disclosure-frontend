@@ -22,7 +22,7 @@ import forms.UnderpaymentTypeFormProvider
 import models.{EntryDetails, UnderpaymentType}
 import pages.{EntryDetailsPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UnderpaymentTypeView
@@ -84,13 +84,15 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
     )
   }
 
-  private def redirect(entryDetails: Option[EntryDetails]): Boolean =
-    entryDetails.fold(false){ value =>
+  private def redirect(entryDetails: Option[EntryDetails]): Option[Call] = {
+    val entryDetailsCall = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+    entryDetails.fold(entryDetailsCall){ value =>
       if (value.entryDate.isBefore(appConfig.euExitDate)) {
-        false
+        Some(Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString))
       } else {
-        true
+        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
       }
     }
+  }
 
 }

@@ -23,6 +23,7 @@ import models.UnderpaymentType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UnderpaymentTypeView
 
@@ -39,7 +40,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        false
+        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -76,7 +77,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = false
+        redirectToEntryDetails = Some(Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -90,7 +91,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = true
+        redirectToEntryDetails = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -104,7 +105,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = false
+        redirectToEntryDetails = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 

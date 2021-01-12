@@ -79,7 +79,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" should {
+  "POST /" when {
 
     "payload contains valid data" should {
       "return a SEE OTHER response to to Customs Duty page when all boxes are ticked" in new Test {
