@@ -1,0 +1,97 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.UnderpaymentSummary
+
+@this(layout: templates.Layout,
+        h1: components.h1,
+        h2: components.h2,
+        summaryList: components.summaryList,
+        button: components.button)
+
+@(underpayments: UnderpaymentSummary)(implicit request: Request[_], messages: Messages)
+
+@layout(
+    pageTitle = messages("underpaymentSummary.pageTitle"),
+    customBackLinkUrl = Some(controllers.routes.UnderpaymentSummaryController.onLoad)
+) {
+    @h1(messages("underpaymentSummary.heading"))
+
+    @if(underpayments.customsDuty.isDefined) {
+        @section(messages("underpaymentSummary.customsDuty.title"),
+            underpayments.customsDuty.get,
+            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    }
+
+    @if(underpayments.importVat.isDefined) {
+        @section(messages("underpaymentSummary.importVat.title"),
+            underpayments.importVat.get,
+            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    }
+
+    @if(underpayments.exciseDuty.isDefined) {
+        @section(messages("underpaymentSummary.exciseDuty.title"),
+            underpayments.exciseDuty.get,
+            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    }
+
+    <a href="@{
+        controllers.routes.UnderpaymentSummaryController.onLoad()
+    }" role="button" class="govuk-button">@messages("common.continue")</a>
+}
+
+@section(underpaymentTitle: String, underpayment: UnderpaymentAmount, url: String) = {
+    @h2(underpaymentTitle)
+    @summaryList(Seq(
+        SummaryListRow(
+            key = Key(
+                classes = "govuk-!-width-two-thirds",
+                content = HtmlContent(
+                    messages("underpaymentSummary.originalAmount") + "<br>" + messages("underpaymentSummary.amendedAmount")
+                )
+            ),
+            value = Value(
+                content = HtmlContent(
+                    underpayment.original.toString + "<br>" + underpayment.amended
+                )
+            ),
+            actions = Some(Actions(
+                items = Seq(
+                    ActionItem(
+                        href = url,
+                        content = Text("Change"),
+                        visuallyHiddenText = Some("name")
+                    )
+                )
+            ))),
+        SummaryListRow(
+            key = Key(
+                classes = "govuk-!-width-two-thirds",
+                content = Text(
+                    messages("underpaymentSummary.dueToHmrc", underpaymentTitle)
+                )
+            ),
+            value = Value(
+                content = HtmlContent(
+                    "<b>" + (underpayment.amended - underpayment.original).toString + "</b>"
+                )
+            ))
+    ))
+}
+
+@{
+    //$COVERAGE-OFF$
+}

@@ -26,3 +26,6 @@ POST        /disclosure/entry-details                  controllers.EntryDetailsC
 
 GET         /disclosure/when-entry-acceptance-date     controllers.AcceptanceDateController.onLoad
 POST        /disclosure/when-entry-acceptance-date     controllers.AcceptanceDateController.onSubmit
+
+
+GET         /disclosure/underpayment-amount-summary     controllers.UnderpaymentSummaryController.onLoad
