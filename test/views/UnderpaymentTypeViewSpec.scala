@@ -34,8 +34,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
 
-  "Should render static content" when {
-
+  "Rendering the UnderpaymentType page" when {
+    "there are no form errors" should {
       val form: Form[UnderpaymentType] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
@@ -69,7 +69,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
           "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
         ) mustBe UnderpaymentTypeMessages.exciseDuty
       }
-
+    }
   }
 
   "Rendering the UnderpaymentType page" when {
