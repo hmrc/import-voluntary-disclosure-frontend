@@ -43,7 +43,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page heading of '${UnderpaymentTypeMessages.pageTitle}'" in {
-        document.title mustBe Some(UnderpaymentTypeMessages.pageTitle).toString
+        document.title mustBe UnderpaymentTypeMessages.pageTitle
       }
 
       s"have the correct page h1 of '${UnderpaymentTypeMessages.pageHeader}'" in {
