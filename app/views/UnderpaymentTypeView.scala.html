@@ -22,12 +22,12 @@
         govukCheckboxes: GovukCheckboxes
 )
 
-@(form: Form[UnderpaymentType], data: UnderpaymentType, redirectToEntryDetails: Option[Call])(implicit request: Request[_], messages: Messages)
+@(form: Form[UnderpaymentType], data: UnderpaymentType, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("underpaymentType.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = redirectToEntryDetails
+    customBackLinkUrl = Some(backLink)
 ) {
 
     @errorSummary(form.errors)

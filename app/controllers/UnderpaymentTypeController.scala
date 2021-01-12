@@ -84,11 +84,11 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
     )
   }
 
-  private def backLink(entryDetails: Option[EntryDetails]): Option[Call] = {
-    val entryDetailsCall = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+  private def backLink(entryDetails: Option[EntryDetails]): Call = {
+    val entryDetailsCall = Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
     entryDetails.fold(entryDetailsCall){ value =>
       if (value.entryDate.isBefore(appConfig.euExitDate)) {
-        Some(Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString))
+        Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString)
       } else {
         entryDetailsCall
       }

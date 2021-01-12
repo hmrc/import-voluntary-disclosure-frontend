@@ -35,50 +35,12 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
 
   "Rendering the UnderpaymentType page" when {
-    "there are no form errors" should {
-      val form: Form[UnderpaymentType] = formProvider.apply()
-      lazy val view: Html = injectedView(
-        form,
-        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct page heading of '${UnderpaymentTypeMessages.pageTitle}'" in {
-        document.title mustBe UnderpaymentTypeMessages.pageTitle
-      }
-
-      s"have the correct page h1 of '${UnderpaymentTypeMessages.pageHeader}'" in {
-        elementText("h1") mustBe UnderpaymentTypeMessages.pageHeader
-      }
-
-      s"have the correct tick box value of '${UnderpaymentTypeMessages.customsDuty}'" in {
-        elementText(
-          "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(1) > label"
-        ) mustBe UnderpaymentTypeMessages.customsDuty
-      }
-
-      s"have the correct page h1 of '${UnderpaymentTypeMessages.importVAT}'" in {
-        elementText(
-          "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(2) > label"
-        ) mustBe UnderpaymentTypeMessages.importVAT
-      }
-
-      s"have the correct page h1 of '${UnderpaymentTypeMessages.exciseDuty}'" in {
-        elementText(
-          "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
-        ) mustBe UnderpaymentTypeMessages.exciseDuty
-      }
-    }
-  }
-
-  "Rendering the UnderpaymentType page" when {
     "no errors exist" should {
       val form: Form[UnderpaymentType] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -93,7 +55,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = Some(Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString))
+        Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString)
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -107,7 +69,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -121,7 +83,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         form,
         UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        redirectToEntryDetails = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -129,6 +91,44 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe UnderpaymentTypeMessages.errorRequired
       }
 
+    }
+
+  }
+
+  it should{
+
+    val form: Form[UnderpaymentType] = formProvider.apply()
+    lazy val view: Html = injectedView(
+      form,
+      UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+      Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct page heading of '${UnderpaymentTypeMessages.pageTitle}'" in {
+      document.title mustBe UnderpaymentTypeMessages.pageTitle
+    }
+
+    s"have the correct page h1 of '${UnderpaymentTypeMessages.pageHeader}'" in {
+      elementText("h1") mustBe UnderpaymentTypeMessages.pageHeader
+    }
+
+    s"have the correct tick box value of '${UnderpaymentTypeMessages.customsDuty}'" in {
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(1) > label"
+      ) mustBe UnderpaymentTypeMessages.customsDuty
+    }
+
+    s"have the correct page h1 of '${UnderpaymentTypeMessages.importVAT}'" in {
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(2) > label"
+      ) mustBe UnderpaymentTypeMessages.importVAT
+    }
+
+    s"have the correct page h1 of '${UnderpaymentTypeMessages.exciseDuty}'" in {
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
+      ) mustBe UnderpaymentTypeMessages.exciseDuty
     }
 
   }
