@@ -22,12 +22,16 @@
         govukCheckboxes: GovukCheckboxes
 )
 
-@(form: Form[UnderpaymentType], data: UnderpaymentType)(implicit request: Request[_], messages: Messages)
+@(form: Form[UnderpaymentType], data: UnderpaymentType, redirectToEntryDetails: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("underpaymentType.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)
+    customBackLinkUrl = if(redirectToEntryDetails) {
+        Some(controllers.routes.EntryDetailsController.onLoad)
+    } else {
+        Some(controllers.routes.AcceptanceDateController.onLoad)
+    }
 ) {
 
     @errorSummary(form.errors)

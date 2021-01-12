@@ -16,10 +16,11 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentTypeFormProvider
-import models.UnderpaymentType
-import pages.UnderpaymentTypePage
+import models.{EntryDetails, UnderpaymentType}
+import pages.{EntryDetailsPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -36,7 +37,8 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
                                            sessionRepository: SessionRepository,
                                            mcc: MessagesControllerComponents,
                                            underpaymentTypeView: UnderpaymentTypeView,
-                                           formProvider: UnderpaymentTypeFormProvider
+                                           formProvider: UnderpaymentTypeFormProvider,
+                                           appConfig: AppConfig
                                           )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -47,7 +49,8 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
           formProvider.apply(),
           request.userAnswers.get(UnderpaymentTypePage).getOrElse(
             UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
-          )
+          ),
+          redirect(request.userAnswers.get(EntryDetailsPage))
         )
       )
     )
@@ -60,7 +63,8 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
           BadRequest(
             underpaymentTypeView(
               formWithErrors,
-              UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
+              UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+              redirect(request.userAnswers.get(EntryDetailsPage))
             )
           )
         )
@@ -79,5 +83,14 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
       }
     )
   }
+
+  private def redirect(entryDetails: Option[EntryDetails]): Boolean =
+    entryDetails.fold(false){ value =>
+      if (value.entryDate.isBefore(appConfig.euExitDate)) {
+        false
+      } else {
+        true
+      }
+    }
 
 }
