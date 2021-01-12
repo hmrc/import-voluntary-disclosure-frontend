@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package messages
 
-@this(govukBackLink : GovukBackLink)
+object AcceptanceDateMessages extends BaseMessages {
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+  val title: String = "Was the entry acceptance date before 1 January 2021?"
+  val h1: String = "Was the entry acceptance date before 1 January 2021?"
+  val requiredError: String = "Select yes if the entry acceptance date was before 1 January 2021"
 
-@govukBackLink(BackLink(href = url.fold("#")(customUrl => customUrl), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
+}

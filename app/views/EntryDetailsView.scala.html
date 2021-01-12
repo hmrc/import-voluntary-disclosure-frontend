@@ -25,45 +25,49 @@
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = Some(messages("entryDetails.pageTitle"))) {
-        @errorSummary(form.errors)
+@layout(
+    pageTitle = messages("entryDetails.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(controllers.routes.NumberOfEntriesController.onLoad)) {
 
-        @h1(messages("entryDetails.title"))
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.EntryDetailsController.onSubmit()) {
-            @inputNumber(
-                form = form,
-                id = "epu",
-                name = "epu",
-                label = messages("entryDetails.epu.label"),
-                isDecimal = false,
-                hint = Some(messages("entryDetails.epu.hint")),
-                classes = Some("govuk-input--width-3")
-            )
+    @h1(messages("entryDetails.title"))
 
-            @inputText(
-                form = form,
-                id = "entryNumber",
-                name = "entryNumber",
-                label = messages("entryDetails.entryNumber.label"),
-                isPageHeading = false,
-                hint = Some(Html(messages("entryDetails.entryNumber.hint"))),
-                classes = Some("govuk-input--width-10")
-            )
+    @formHelper(action = controllers.routes.EntryDetailsController.onSubmit()) {
+        @inputNumber(
+            form = form,
+            id = "epu",
+            name = "epu",
+            label = messages("entryDetails.epu.label"),
+            isDecimal = false,
+            hint = Some(messages("entryDetails.epu.hint")),
+            classes = Some("govuk-input--width-3")
+        )
 
-            @inputDate(
-                form = form,
-                id = "entryDate",
-                legendContent = messages("entryDetails.entryDate.label"),
-                hintText = Some(messages("entryDetails.entryDate.hint"))
-            )
+        @inputText(
+            form = form,
+            id = "entryNumber",
+            name = "entryNumber",
+            label = messages("entryDetails.entryNumber.label"),
+            isPageHeading = false,
+            hint = Some(Html(messages("entryDetails.entryNumber.hint"))),
+            classes = Some("govuk-input--width-10")
+        )
+
+        @inputDate(
+            form = form,
+            id = "entryDate",
+            legendContent = messages("entryDetails.entryDate.label"),
+            hintText = Some(messages("entryDetails.entryDate.hint"))
+        )
 
 
-            @button("common.button.continue")
-        }
-
+        @button("common.button.continue")
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}
