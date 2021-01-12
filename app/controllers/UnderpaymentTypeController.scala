@@ -50,7 +50,7 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
           request.userAnswers.get(UnderpaymentTypePage).getOrElse(
             UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
           ),
-          redirect(request.userAnswers.get(EntryDetailsPage))
+          backLink(request.userAnswers.get(EntryDetailsPage))
         )
       )
     )
@@ -64,7 +64,7 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
             underpaymentTypeView(
               formWithErrors,
               UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-              redirect(request.userAnswers.get(EntryDetailsPage))
+              backLink(request.userAnswers.get(EntryDetailsPage))
             )
           )
         )
@@ -84,13 +84,13 @@ class UnderpaymentTypeController @Inject()(identity: IdentifierAction,
     )
   }
 
-  private def redirect(entryDetails: Option[EntryDetails]): Option[Call] = {
+  private def backLink(entryDetails: Option[EntryDetails]): Option[Call] = {
     val entryDetailsCall = Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
     entryDetails.fold(entryDetailsCall){ value =>
       if (value.entryDate.isBefore(appConfig.euExitDate)) {
         Some(Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString))
       } else {
-        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+        entryDetailsCall
       }
     }
   }
