@@ -34,8 +34,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
 
-  "Rendering the UnderpaymentType page" when {
-    "no errors exist" should {
+  "Should render static content" when {
+
       val form: Form[UnderpaymentType] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
@@ -68,6 +68,22 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
         elementText(
           "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
         ) mustBe UnderpaymentTypeMessages.exciseDuty
+      }
+
+  }
+
+  "Rendering the UnderpaymentType page" when {
+    "no errors exist" should {
+      val form: Form[UnderpaymentType] = formProvider.apply()
+      lazy val view: Html = injectedView(
+        form,
+        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+        Some(Call("GET", controllers.routes.EntryDetailsController.onLoad().toString))
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "should not render the error" in {
+        document.select("#main-content > div > div > div > div > ul > li > a").size mustBe 0
       }
 
     }
@@ -112,6 +128,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       "render an error summary with the correct message" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe UnderpaymentTypeMessages.errorRequired
       }
+
     }
 
   }
