@@ -49,7 +49,8 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       underpaymentTypeView,
-      form
+      form,
+      appConfig
     )
     private lazy val underpaymentTypeView = app.injector.instanceOf[UnderpaymentTypeView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

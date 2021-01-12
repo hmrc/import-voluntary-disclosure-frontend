@@ -38,7 +38,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[UnderpaymentType] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
+        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+        false
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -68,17 +69,42 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
         ) mustBe UnderpaymentTypeMessages.exciseDuty
       }
 
-      "render a back link with the correct URL " in {
-        elementAttributes("#back-link") must contain("href" -> controllers.routes.UnderpaymentTypeController.onLoad().url)
-      }
+    }
 
+    "back button should be redirecting to AcceptanceDate page" should {
+      lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
+      lazy val view: Html = injectedView(
+        form,
+        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+        redirectToEntryDetails = false
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "render a back link with the correct URL " in {
+        elementAttributes("#back-link") must contain("href" -> controllers.routes.AcceptanceDateController.onLoad().url)
+      }
+    }
+
+    "back button should be redirecting to EntryDetails page" should {
+      lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
+      lazy val view: Html = injectedView(
+        form,
+        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+        redirectToEntryDetails = true
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "render a back link with the correct URL " in {
+        elementAttributes("#back-link") must contain("href" -> controllers.routes.EntryDetailsController.onLoad().url)
+      }
     }
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
       lazy val view: Html = injectedView(
         form,
-        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
+        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
+        redirectToEntryDetails = false
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
