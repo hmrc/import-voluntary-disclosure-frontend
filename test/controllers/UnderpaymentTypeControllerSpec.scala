@@ -89,8 +89,8 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
     }
 
     "should redirect the back button to EntryDetails page" in new Test {
-      val dateBeforeExit: LocalDate = LocalDate of (2021, 1, 2)
-      val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateBeforeExit)
+      val dateAfterExit: LocalDate = LocalDate of (2021, 1, 2)
+      val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateAfterExit)
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(EntryDetailsPage, entryDetails).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
