@@ -15,12 +15,12 @@
  *@
 
 @this(layout: templates.Layout,
-formHelper: FormWithCSRF,
-button: components.button,
-h1: components.h1,
-p: components.p,
-bullets: components.bullets,
-)
+      formHelper: FormWithCSRF,
+      h1: components.h1,
+      p: components.p,
+      bullets: components.bullets,
+      linkButton: components.linkButton
+      )
 
 @()(implicit request: Request[_], messages: Messages)
 
@@ -32,18 +32,10 @@ bullets: components.bullets,
 
 @p{ @messages("SupportDoc.fileSize") }
 
+@bullets(SupportingDocController.bullets)
 
-@bullets(Seq(
-Html(messages("SupportDoc.bullet1")),
-Html(messages("SupportDoc.bullet2")),
-Html(messages("SupportDoc.bullet3")),
-Html(messages("SupportDoc.bullet4")),
-Html(messages("SupportDoc.bullet5"))
-))
+@linkButton(url = controllers.routes.SupportingDocController.onLoad().url,"common.continue")
 
-@formHelper(action = controllers.routes.SupportingDocController.onSubmit()) {
-@button("common.button.continue")
-}
 
 }
 

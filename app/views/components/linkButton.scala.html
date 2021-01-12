@@ -16,14 +16,8 @@
 
 @this()
 
-@(content: Html, classes: String = "govuk-body", id: Option[String] = None)(implicit messages: Messages)
+@(url: String, value: String, classes: String = "govuk-button", id: Option[String] = None)(implicit messages: Messages)
 
-@if(id.isDefined){
-    <p class="@classes", id ="@id">@content</p>
-    } else {
-    <p class="@classes">@content</p>
-    }
-
-@{
-//$COVERAGE-OFF$
-}
+   <a href=@url  role="button" draggable="false" class=@classes data-module="govuk-button">
+    @messages(value)
+   </a>

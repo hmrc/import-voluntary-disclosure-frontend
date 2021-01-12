@@ -81,11 +81,7 @@ SupportDoc.pageTitle = Supporting documentation
 SupportDoc.heading = Supporting documentation
 SupportDoc.disclosure = You will need to upload files as supporting documentation for this disclosure.
 SupportDoc.fileSize = Each file must be 30MB or less, and in one of the following formats:
-SupportDoc.bullet1 = DOC
-SupportDoc.bullet2 = JPG
-SupportDoc.bullet3 = PDF
-SupportDoc.bullet4 = PNG
-SupportDoc.bullet5 = XLS
+
 
 
 

@@ -44,18 +44,11 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
-        "return HTML" in new Test {
+    "return HTML" in new Test {
           val result: Future[Result] = controller.onLoad(fakeRequest)
           contentType(result) mustBe Some("text/html")
           charset(result) mustBe Some("utf-8")
         }
       }
-
-      "POST /" should {
-        "redirect to next page" in new Test {
-          val result: Future[Result] = controller.onSubmit(fakeRequest)
-          redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
-        }
-      }
-  }
+    }
 

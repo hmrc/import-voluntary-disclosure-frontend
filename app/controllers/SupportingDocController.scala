@@ -20,12 +20,13 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.SupportingDocView
 
 import scala.concurrent.Future
 
-@Singleton
+
 class SupportingDocController @Inject()(identity: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      mcc: MessagesControllerComponents,
@@ -37,10 +38,9 @@ class SupportingDocController @Inject()(identity: IdentifierAction,
     Future.successful(Ok(view()))
   }
 
-  def onSubmit: Action[AnyContent] = (identity andThen getData).async { implicit request =>
-
-    //Will redirct to Upscan page once complete
-    Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
-  }
-
 }
+
+object SupportingDocController {
+  val bullets = Seq(Html("DOC"), Html("JPG"), Html("PDF"), Html("PNG"), Html("XLS"))
+}
+
