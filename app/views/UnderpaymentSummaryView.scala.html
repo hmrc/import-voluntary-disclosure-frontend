@@ -18,9 +18,9 @@
 @import views.ViewUtils.asCurrency
 
 @this(layout: templates.Layout,
+        govukSummaryList: GovukSummaryList,
         h1: components.h1,
         h2: components.h2,
-        summaryList: components.summaryList,
         button: components.button)
 
 @(underpayments: UnderpaymentSummary)(implicit request: Request[_], messages: Messages)
@@ -56,42 +56,44 @@
 
 @section(underpaymentTitle: String, underpayment: UnderpaymentAmount, url: String) = {
     @h2(underpaymentTitle)
-    @summaryList(Seq(
-        SummaryListRow(
-            key = Key(
-                classes = "govuk-!-width-two-thirds",
-                content = HtmlContent(
-                    messages("underpaymentSummary.originalAmount") + "<br>" + messages("underpaymentSummary.amendedAmount")
-                )
-            ),
-            value = Value(
-                content = HtmlContent(
-                    asCurrency(underpayment.original) + "<br>" + asCurrency(underpayment.amended)
-                )
-            ),
-            actions = Some(Actions(
-                items = Seq(
-                    ActionItem(
-                        href = url,
-                        content = Text("Change"),
-                        visuallyHiddenText = Some("name")
+    @govukSummaryList(
+        SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = Seq(
+                SummaryListRow(
+                key = Key(
+                    classes = "govuk-!-width-two-thirds",
+                    content = HtmlContent(
+                        messages("underpaymentSummary.originalAmount") + "<br>" + messages("underpaymentSummary.amendedAmount")
                     )
-                )
-            ))),
-        SummaryListRow(
-            key = Key(
-                classes = "govuk-!-width-two-thirds",
-                content = Text(
-                    messages("underpaymentSummary.dueToHmrc", underpaymentTitle)
-                )
-            ),
-            value = Value(
-                content = HtmlContent(
-                    "<b>" + asCurrency(underpayment.amended - underpayment.original) + "</b>"
-                )
-            ))
-    ),
-    additionalClasses = "govuk-!-margin-bottom-9")
+                ),
+                value = Value(
+                    content = HtmlContent(
+                        asCurrency(underpayment.original) + "<br>" + asCurrency(underpayment.amended)
+                    )
+                ),
+                actions = Some(Actions(
+                    items = Seq(
+                        ActionItem(
+                            href = url,
+                            content = Text(messages("underpaymentSummary.change")),
+                            visuallyHiddenText = Some(underpaymentTitle)
+                        )
+                    )
+                ))),
+                SummaryListRow(
+                key = Key(
+                    classes = "govuk-!-width-two-thirds",
+                    content = Text(
+                        messages("underpaymentSummary.dueToHmrc", underpaymentTitle)
+                    )
+                ),
+                value = Value(
+                    content = HtmlContent(
+                        "<b>" + asCurrency(underpayment.amended - underpayment.original) + "</b>"
+                    )
+                ))
+            )))
 }
 
 @{

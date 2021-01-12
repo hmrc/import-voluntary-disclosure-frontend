@@ -91,6 +91,7 @@ underpaymentSummary.heading = Underpayment amount summary
 underpaymentSummary.customsDuty.title = Customs Duty
 underpaymentSummary.importVat.title = Import VAT
 underpaymentSummary.exciseDuty.title = Excise Duty
+underpaymentSummary.change = Change
 underpaymentSummary.originalAmount = Original amount
 underpaymentSummary.amendedAmount = Amended amount
 underpaymentSummary.dueToHmrc = {0} due to HMRC
