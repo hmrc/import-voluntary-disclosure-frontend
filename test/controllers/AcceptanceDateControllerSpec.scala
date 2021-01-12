@@ -18,42 +18,46 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.UserTypeFormProvider
+import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
-import models.{UserAnswers, UserType}
-import pages.UserTypePage
+import models.UserAnswers
+import pages.AcceptanceDatePage
 import play.api.http.Status
-import play.api.mvc.Result
-import play.api.test.Helpers._
-import views.html.UserTypeView
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import views.html.AcceptanceDateView
 
 import scala.concurrent.Future
 
-class UserTypeControllerSpec extends ControllerSpecBase {
+
+class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
-    val userAnswers: Option[UserAnswers] = None
+    private lazy val acceptanceDateView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
+
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
-    val form: UserTypeFormProvider = formProvider
+    val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
+    val form: AcceptanceDateFormProvider = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
-      mockSessionRepository, messagesControllerComponents, form, userTypePage)
+    lazy val controller = new AcceptanceDateController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
+      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView)
   }
+
+  val acceptanceDateYes: Boolean = true
 
   "GET /" should {
     "return OK" in new Test {
-      private val previousAnswers = UserAnswers("some cred ID").set(UserTypePage, UserType.Importer).success.value
-      override val userAnswers: Option[UserAnswers] = Some(previousAnswers)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(AcceptanceDatePage, acceptanceDateYes).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -64,20 +68,19 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
-
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         MockedSessionRepository.verifyCalls()
       }
@@ -90,4 +93,8 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       }
     }
   }
+
 }
+
+
+

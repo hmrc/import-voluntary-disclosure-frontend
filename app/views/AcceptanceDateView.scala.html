@@ -14,34 +14,30 @@
  * limitations under the License.
  *@
 
-@import models.UserType
-
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
-        inputRadio: components.inputRadio,
+        yesNoRadio: components.yesNoRadio,
         button: components.button)
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("userType.pageTitle"), form = Some(form), showBackLink = false) {
+    @layout(pageTitle = messages("acceptanceDate.pageTitle"), form = Some(form), customBackLinkUrl = Some(controllers.routes.EntryDetailsController.onLoad)) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.UserTypeController.onSubmit()) {
-        @inputRadio(
-            form = form,
-            legend = messages("userType.heading"),
-            items = UserType.options(form),
-            inline = true,
-            legendAsHeading = true
-        )
+        @formHelper(action = controllers.routes.AcceptanceDateController.onSubmit()) {
+            @yesNoRadio(
+                form,
+                headingKey = "acceptanceDate.heading",
+                inline = false
+            )
 
-        @button("common.button.continue")
+            @button("common.button.continue")
+        }
+
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
