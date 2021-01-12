@@ -45,7 +45,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "should not render the error" in {
-        document.select("#main-content > div > div > div > div > ul > li > a").size mustBe 0
+        document.select(".govuk-error-summary__list").size mustBe 0
       }
 
     }
