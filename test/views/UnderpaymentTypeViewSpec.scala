@@ -50,34 +50,6 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
     }
 
-    "back button should be redirecting to AcceptanceDate page" should {
-      lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
-      lazy val view: Html = injectedView(
-        form,
-        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "render a back link with the correct URL " in {
-        elementAttributes("#back-link") must contain("href" -> controllers.routes.AcceptanceDateController.onLoad().url)
-      }
-    }
-
-    "back button should be redirecting to EntryDetails page" should {
-      lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
-      lazy val view: Html = injectedView(
-        form,
-        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "render a back link with the correct URL " in {
-        elementAttributes("#back-link") must contain("href" -> controllers.routes.EntryDetailsController.onLoad().url)
-      }
-    }
-
     "an error exists (no option has been selected)" should {
       lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
       lazy val view: Html = injectedView(
@@ -88,9 +60,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "render an error summary with the correct message" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe UnderpaymentTypeMessages.errorRequired
+        elementText(".govuk-error-summary__list") mustBe UnderpaymentTypeMessages.errorRequired
       }
-
     }
 
   }
