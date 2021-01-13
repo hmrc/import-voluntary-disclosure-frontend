@@ -18,6 +18,8 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.CustomsDutyFormProvider
+import pages.CustomsDutyPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,11 +33,15 @@ class CustomsDutyController @Inject()(identify: IdentifierAction,
                                       requireData: DataRequiredAction,
                                       sessionRepository: SessionRepository,
                                       mcc: MessagesControllerComponents,
-                                      view: CustomsDutyView
+                                      view: CustomsDutyView,
+                                      formProvider: CustomsDutyFormProvider
                                      ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(???)))
+    val form = request.userAnswers.get(CustomsDutyPage).fold(formProvider()) {
+      formProvider().fill
+    }
+    Future.successful(Ok(view(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,25 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        h1: components.h1,
-        errorSummary: components.errorSummary,
-        button: components.button)
+package models
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+import play.api.libs.json.Json
 
-@layout(
-    pageTitle = messages("customsDuty.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
+case class UnderpaymentAmount(original: BigDecimal, amended: BigDecimal)
 
-    @h1(messages("customsDuty.pageHeader"))
-
-}
-
-@{
-    //$COVERAGE-OFF$
+object UnderpaymentAmount {
+  implicit val format = Json.format[UnderpaymentAmount]
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,25 +12,27 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        h1: components.h1,
-        errorSummary: components.errorSummary,
-        button: components.button)
+package forms
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+import forms.mappings.Mappings
+import models.UnderpaymentAmount
+import play.api.data.Form
+import play.api.data.Forms.{bigDecimal, mapping}
+import play.api.i18n.Messages
 
-@layout(
-    pageTitle = messages("customsDuty.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
+import javax.inject.Inject
 
-    @h1(messages("customsDuty.pageHeader"))
 
-}
+class CustomsDutyFormProvider @Inject() extends Mappings {
 
-@{
-    //$COVERAGE-OFF$
+  def apply()(implicit messages: Messages): Form[UnderpaymentAmount] =
+    Form(
+      mapping(
+        "original" -> bigDecimal,
+        "amended" -> bigDecimal
+      )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
+    )
+
 }
