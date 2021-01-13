@@ -22,16 +22,20 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.CustomsDutyView
+
+import scala.concurrent.Future
 
 class CustomsDutyController @Inject()(identify: IdentifierAction,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
                                       sessionRepository: SessionRepository,
-                                      mcc: MessagesControllerComponents
+                                      mcc: MessagesControllerComponents,
+                                      view: CustomsDutyView
                                      ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
+    Future.successful(Ok(view(???)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

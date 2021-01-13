@@ -96,3 +96,7 @@ underpaymentType.error.required = Select if you have underpaid Customs Duty, Imp
 underpaymentType.customsDuty = Customs Duty
 underpaymentType.importVAT = Import VAT
 underpaymentType.exciseDuty = Excise Duty
+
+# Customs Duty page
+customsDuty.pageTitle = Customs Duty underpayment details
+customsDuty.pageHeader = Customs Duty underpayment details
