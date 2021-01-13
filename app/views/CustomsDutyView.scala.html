@@ -18,7 +18,9 @@
         formHelper: FormWithCSRF,
         h1: components.h1,
         errorSummary: components.errorSummary,
-        button: components.button)
+        button: components.button,
+        govukInput: components.govukInput
+)
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
@@ -28,6 +30,18 @@
     customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
 
     @h1(messages("customsDuty.pageHeader"))
+
+    @errorSummary(form.errors)
+
+    @formHelper(action = controllers.routes.EntryDetailsController.onSubmit()) {
+
+
+        @govukInput("original", messages("customsDuty.originalAmount"), "10", false, "govuk-fieldset__legend")
+        @govukInput("amended", messages("customsDuty.amendedAmount"), "10", false, "govuk-fieldset__legend")
+
+        @button("common.button.continue")
+
+    }
 
 }
 

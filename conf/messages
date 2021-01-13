@@ -100,3 +100,5 @@ underpaymentType.exciseDuty = Excise Duty
 # Customs Duty page
 customsDuty.pageTitle = Customs Duty underpayment details
 customsDuty.pageHeader = Customs Duty underpayment details
+customsDuty.originalAmount = Original amount, in pounds
+customsDuty.amendedAmount = Amended amount, in pounds
