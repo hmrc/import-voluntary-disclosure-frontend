@@ -33,6 +33,13 @@ import scala.concurrent.Future
 
 class CustomsDutyControllerSpec extends ControllerSpecBase {
 
+  val userAnswersWithUnderpayment = Some(UserAnswers("some-cred-id")
+    .set(
+      UnderpaymentTypePage,
+      UnderpaymentType(true, false, false)
+    ).success.value
+  )
+
   private def fakeRequestGenerator(original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
       "original" -> original,
@@ -94,25 +101,13 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(
-              UnderpaymentTypePage,
-              UnderpaymentType(true, false, false)
-            ).success.value
-          )
+        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
         status(result) mustBe Status.SEE_OTHER
       }
 
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(
-              UnderpaymentTypePage,
-              UnderpaymentType(true, false, false)
-            ).success.value
-          )
+        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
         await(controller.onSubmit(fakeRequestGenerator(original = "40", amended = "50")))
         MockedSessionRepository.verifyCalls()
       }
@@ -120,6 +115,13 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
+
+      "return BAD REQUEST when original amount is exceeded" in new Test {
+        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("10000000000", "60"))
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
       "return BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
