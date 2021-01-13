@@ -34,9 +34,12 @@
 
     @p{ @messages("SupportDoc.fileSize", appConfig.fileSize) }
 
-    @bullets(appConfig.bullets)
+    @bullets(appConfig.allowedUploadFileTypes.map(Html(_)))
 
-    @linkButton(url = controllers.routes.SupportingDocController.onLoad().url,"Continue")
+    @linkButton(url = controllers.routes.SupportingDocController.onLoad().url,messages(("common.button.continue")))
 }
 
 
+@{
+    //$COVERAGE-OFF$
+}

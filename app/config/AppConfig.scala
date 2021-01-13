@@ -52,6 +52,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
     controllers.routes.AddressLookupController.callback("").url
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+  lazy val allowedUploadFileTypes: Seq[String] = config.get[Seq[String]]("uploads.allowedFileTypes")
+  lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
 }
 
@@ -72,8 +74,8 @@ trait AppConfig extends FixedConfig {
   val addressLookupCallbackUrl: String
   val timeoutPeriod: Int
   val cacheTtl: Int
-  val bullets = Seq(Html("DOC"), Html("JPG"), Html("PDF"), Html("PNG"), Html("XLS"))
-  val fileSize = "30MB"
+  val allowedUploadFileTypes: Seq[String]
+  val fileSize: Int
 }
 
 trait FixedConfig {
