@@ -64,7 +64,7 @@ class CustomsDutyController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private def redirect(underpaymentType: Option[UnderpaymentType]): Result =
+  private[controllers] def redirect(underpaymentType: Option[UnderpaymentType]): Result =
     underpaymentType.map {
       case UnderpaymentType(true, true, _) => Redirect(controllers.routes.CustomsDutyController.onLoad()) // Import VAT
       case UnderpaymentType(true, false, true) => Redirect(controllers.routes.CustomsDutyController.onLoad()) // Excise Duty
