@@ -18,18 +18,15 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.NumberOfEntriesFormProvider
 import javax.inject.{Inject, Singleton}
-import models.{NumberOfEntries, UnderpaymentAmount, UnderpaymentSummary}
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
-import pages.NumberOfEntriesPage
+import models.UnderpaymentSummary
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UnderpaymentSummaryView
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
@@ -39,7 +36,6 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
                                               sessionRepository: SessionRepository,
                                               appConfig: AppConfig,
                                               mcc: MessagesControllerComponents,
-                                              formProvider: NumberOfEntriesFormProvider,
                                               view: UnderpaymentSummaryView)
   extends FrontendController(mcc) with I18nSupport {
 
@@ -47,19 +43,12 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
 
-    //    val form = request.userAnswers.get(NumberOfEntriesPage).fold(formProvider()) {
-    //      formProvider().fill
-    //    }
-
     val underpayments = UnderpaymentSummary(
-      customsDuty = Some(UnderpaymentAmount(123, 5432)),
-      importVat = Some(UnderpaymentAmount(123, 5432)),
-      exciseDuty = Some(UnderpaymentAmount(123, 5432))
-    )
+        customsDuty = request.userAnswers.get(CustomsDutyPage),
+        importVat = request.userAnswers.get(ImportVatPage),
+        exciseDuty = request.userAnswers.get(ExciseDutyPage)
+      )
 
-    Future.successful(Ok(view(underpayments)))
+    Future.successful(Ok(view(underpayments, controllers.routes.UnderpaymentSummaryController.onLoad)))
   }
-
-
-
 }

@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package models
+package messages
 
-import play.api.libs.json.{Format, Json}
+object UnderpaymentSummaryMessages extends BaseMessages {
 
-case class UnderpaymentSummary(customsDuty: Option[UnderpaymentAmount],
-                               importVat: Option[UnderpaymentAmount],
-                               exciseDuty: Option[UnderpaymentAmount])
-
-object UnderpaymentSummary {
-  implicit val format: Format[UnderpaymentSummary] = Json.format[UnderpaymentSummary]
+  val title: String = "Underpayment amount summary"
+  val h1: String = "Underpayment amount summary"
+  val customsDutyTitle = "Customs Duty"
+  val importVatTitle = "Import VAT"
+  val exciseDutyTitle = "Excise Duty"
+  val change = "Change"
+  val originalAmount = "Original amount"
+  val amendedAmount = "Amended amount"
+  val dueToHmrc = " due to HMRC"
 }
-
-case class UnderpaymentAmount(original: BigDecimal,
-                              amended: BigDecimal)
-
-object UnderpaymentAmount {
-  implicit val format: Format[UnderpaymentAmount] = Json.format[UnderpaymentAmount]
-}
-

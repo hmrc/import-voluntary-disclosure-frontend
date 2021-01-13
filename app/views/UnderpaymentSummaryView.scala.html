@@ -15,7 +15,7 @@
  *@
 
 @import models.UnderpaymentSummary
-@import views.ViewUtils.asCurrency
+@import views.ViewUtils._
 
 @this(layout: templates.Layout,
         govukSummaryList: GovukSummaryList,
@@ -23,11 +23,11 @@
         h2: components.h2,
         button: components.button)
 
-@(underpayments: UnderpaymentSummary)(implicit request: Request[_], messages: Messages)
+@(underpayments: UnderpaymentSummary, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("underpaymentSummary.pageTitle"),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentSummaryController.onLoad)
+    customBackLinkUrl = Some(backLink)
 ) {
     @h1(messages("underpaymentSummary.heading"))
 
@@ -61,15 +61,16 @@
             classes = "govuk-!-margin-bottom-9",
             rows = Seq(
                 SummaryListRow(
+                classes = "govuk-summary-list__row--no-border",
                 key = Key(
                     classes = "govuk-!-width-two-thirds",
                     content = HtmlContent(
-                        messages("underpaymentSummary.originalAmount") + "<br>" + messages("underpaymentSummary.amendedAmount")
+                        messages("underpaymentSummary.originalAmount")
                     )
                 ),
                 value = Value(
                     content = HtmlContent(
-                        asCurrency(underpayment.original) + "<br>" + asCurrency(underpayment.amended)
+                        displayMoney(underpayment.original)
                     )
                 ),
                 actions = Some(Actions(
@@ -84,13 +85,25 @@
                 SummaryListRow(
                 key = Key(
                     classes = "govuk-!-width-two-thirds",
+                    content = HtmlContent(
+                        messages("underpaymentSummary.amendedAmount")
+                    )
+                ),
+                value = Value(
+                    content = HtmlContent(
+                        displayMoney(underpayment.amended)
+                    )
+                )),
+                SummaryListRow(
+                key = Key(
+                    classes = "govuk-!-width-two-thirds",
                     content = Text(
                         messages("underpaymentSummary.dueToHmrc", underpaymentTitle)
                     )
                 ),
                 value = Value(
                     content = HtmlContent(
-                        "<b>" + asCurrency(underpayment.amended - underpayment.original) + "</b>"
+                        "<b>" + displayMoney(underpayment.amended - underpayment.original) + "</b>"
                     )
                 ))
             )))
