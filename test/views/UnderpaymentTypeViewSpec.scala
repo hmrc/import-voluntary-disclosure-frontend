@@ -44,10 +44,17 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "should not render the error" in {
-        document.select(".govuk-error-summary__list").size mustBe 0
+      s"have the correct page title" in {
+        document.title mustBe UnderpaymentTypeMessages.pageTitle
       }
 
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
     }
 
     "an error exists (no option has been selected)" should {
@@ -59,8 +66,16 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "render an error summary with the correct message" in {
+      s"have the correct page title" in {
+        document.title mustBe  UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe UnderpaymentTypeMessages.errorRequired
+      }
+
+      "render an error message against the field" in {
+        elementText("#value-error") mustBe UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.errorRequired
       }
     }
 
@@ -90,13 +105,13 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages {
       ) mustBe UnderpaymentTypeMessages.customsDuty
     }
 
-    s"have the correct page h1 of '${UnderpaymentTypeMessages.importVAT}'" in {
+    s"have the correct tick box value of '${UnderpaymentTypeMessages.importVAT}'" in {
       elementText(
         "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(2) > label"
       ) mustBe UnderpaymentTypeMessages.importVAT
     }
 
-    s"have the correct page h1 of '${UnderpaymentTypeMessages.exciseDuty}'" in {
+    s"have the correct tick box value of '${UnderpaymentTypeMessages.exciseDuty}'" in {
       elementText(
         "#main-content > div > div > form > div > fieldset > div.govuk-checkboxes > div:nth-child(3) > label"
       ) mustBe UnderpaymentTypeMessages.exciseDuty

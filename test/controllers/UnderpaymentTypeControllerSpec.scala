@@ -24,7 +24,7 @@ import models.{EntryDetails, UnderpaymentType, UserAnswers}
 import pages.{EntryDetailsPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
-import play.api.mvc.Result
+import play.api.mvc.{Call, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UnderpaymentTypeView
 
@@ -82,19 +82,13 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
     "should redirect the back button to Acceptance page" in new Test {
       val dateBeforeExit: LocalDate = LocalDate of (2020, 1, 1)
       val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateBeforeExit)
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(EntryDetailsPage, entryDetails).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
-      contentType(result) mustBe Some("text/html")
-      charset(result) mustBe Some("utf-8")
+      controller.backLink(Some(entryDetails)) mustBe Call("GET", controllers.routes.AcceptanceDateController.onLoad().toString)
     }
 
     "should redirect the back button to EntryDetails page" in new Test {
       val dateAfterExit: LocalDate = LocalDate of (2021, 1, 2)
       val entryDetails: EntryDetails = EntryDetails("123", "123456A", dateAfterExit)
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(EntryDetailsPage, entryDetails).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
-      contentType(result) mustBe Some("text/html")
-      charset(result) mustBe Some("utf-8")
+      controller.backLink(Some(entryDetails)) mustBe Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
     }
   }
 
