@@ -29,3 +29,6 @@ POST        /disclosure/when-entry-acceptance-date        controllers.Acceptance
 
 GET         /disclosure/what-duty-type-underpaid          controllers.UnderpaymentTypeController.onLoad
 POST        /disclosure/what-duty-type-underpaid          controllers.UnderpaymentTypeController.onSubmit
+
+GET         /disclosure/customs-duty-details              controllers.CustomsDutyController.onload
+POST        /disclosure/customs-duty-details              controllers.CustomsDutyController.onSubmit
