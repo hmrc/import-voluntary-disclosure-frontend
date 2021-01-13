@@ -16,23 +16,38 @@
 
 package forms
 
+import config.AppConfig
 import forms.mappings.Mappings
 import models.UnderpaymentAmount
 import play.api.data.Form
-import play.api.data.Forms.{bigDecimal, mapping}
+import play.api.data.Forms.mapping
 import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 
-class CustomsDutyFormProvider @Inject() extends Mappings {
+class CustomsDutyFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
   def apply()(implicit messages: Messages): Form[UnderpaymentAmount] =
     Form(
       mapping(
-        "original" -> bigDecimal,
-        "amended" -> bigDecimal
-      )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
+        "original" -> numeric(
+          isCurrency = true,
+          requiredKey = "customsDuty.error.originalNonEmpty",
+          nonNumericKey = "customsDuty.error.originalNonNumber"
+        ).verifying(
+          messages("customsDuty.error.originalUpperLimit"),
+          fields => fields < BigDecimal(10000000000.00)
+        ),
+        "amended" -> numeric(
+          isCurrency = true,
+          requiredKey = "customsDuty.error.amendedNonEmpty",
+          nonNumericKey = "customsDuty.error.amendedNonNumber"
+        )
+      )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply).verifying(
+        messages("customsDuty.error.amendedMustBeHigher"),
+        fields => fields.original < fields.amended
+      )
     )
 
 }
