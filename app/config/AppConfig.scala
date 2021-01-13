@@ -21,6 +21,7 @@ import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.mvc.RequestHeader
+import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -51,6 +52,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
     controllers.routes.AddressLookupController.callback("").url
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -70,6 +72,8 @@ trait AppConfig extends FixedConfig {
   val addressLookupCallbackUrl: String
   val timeoutPeriod: Int
   val cacheTtl: Int
+  val bullets = Seq(Html("DOC"), Html("JPG"), Html("PDF"), Html("PNG"), Html("XLS"))
+  val fileSize = "30MB"
 }
 
 trait FixedConfig {

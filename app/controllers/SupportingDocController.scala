@@ -16,31 +16,30 @@
 
 package controllers
 
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import config.AppConfig
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.SupportingDocView
 
 import scala.concurrent.Future
 
-
+@Singleton
 class SupportingDocController @Inject()(identity: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      mcc: MessagesControllerComponents,
-                                     view: SupportingDocView)
+                                     requireData: DataRequiredAction,
+                                     view: SupportingDocView,
+                                     implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-
-  val onLoad: Action[AnyContent] = (identity andThen getData).async { implicit request =>
+  val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
     Future.successful(Ok(view()))
+
   }
-
 }
 
-object SupportingDocController {
-  val bullets = Seq(Html("DOC"), Html("JPG"), Html("PDF"), Html("PNG"), Html("XLS"))
-}
+
 

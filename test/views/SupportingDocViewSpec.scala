@@ -30,7 +30,7 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
 
    "Rendering the Supportdoc page" when {
       "no errors exist" should {
-       lazy val view: Html = injectedView()(fakeRequest, messages)
+       lazy val view: Html = injectedView()(fakeRequest, appConfig, messages)
        lazy implicit val document: Document = Jsoup.parse(view.body)
 
        s"have the correct page title of '${SupportingDocMessages.pageTitle}'" in {
@@ -38,7 +38,7 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
        }
 
       "it" should {
-          lazy val view: Html = injectedView()(fakeRequest, messages)
+          lazy val view: Html = injectedView()(fakeRequest, appConfig, messages)
           lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page heading of '${SupportingDocMessages.heading}'" in {
           elementText("h1") mustBe SupportingDocMessages.heading

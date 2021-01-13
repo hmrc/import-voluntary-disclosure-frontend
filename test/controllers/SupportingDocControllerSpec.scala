@@ -19,6 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
+import models.UserAnswers
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
@@ -32,10 +33,12 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
     val view = injector.instanceOf[SupportingDocView]
 
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(None)
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new SupportingDocController(authenticatedAction, dataRetrievalAction,
-        messagesControllerComponents, view)
+        messagesControllerComponents,dataRequiredAction, view, appConfig)
   }
 
   "GET /" should {

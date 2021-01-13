@@ -16,8 +16,8 @@
 
 @this()
 
-@(url: String, value: String, classes: String = "govuk-button", id: Option[String] = None)(implicit messages: Messages)
+@(url: String, value: String, classes: String = "govuk-button", id: Option[String] = None)
 
    <a href=@url  role="button" draggable="false" class=@classes data-module="govuk-button">
-    @messages(value)
+    @value
    </a>

@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import config.AppConfig
+
 @this(layout: templates.Layout,
       formHelper: FormWithCSRF,
       h1: components.h1,
@@ -22,21 +24,19 @@
       linkButton: components.linkButton
       )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("SupportDoc.pageTitle")) {
 
-@h1(messages("SupportDoc.heading"))
+    @h1(messages("SupportDoc.heading"))
 
-@p{ @messages("SupportDoc.disclosure") }
+    @p{ @messages("SupportDoc.disclosure") }
 
-@p{ @messages("SupportDoc.fileSize") }
+    @p{ @messages("SupportDoc.fileSize", appConfig.fileSize) }
 
-@bullets(SupportingDocController.bullets)
+    @bullets(appConfig.bullets)
 
-@linkButton(url = controllers.routes.SupportingDocController.onLoad().url,"common.continue")
-
-
+    @linkButton(url = controllers.routes.SupportingDocController.onLoad().url,"Continue")
 }
 
 
