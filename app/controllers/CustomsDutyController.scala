@@ -40,13 +40,14 @@ class CustomsDutyController @Inject()(identify: IdentifierAction,
                                      ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    // TODO - fill form
     // TODO - add conditions for the form
     // TODO - test errors
     // TODO - add tests
     val form = request.userAnswers.get(CustomsDutyPage).fold(formProvider()) {
       formProvider().fill
     }
+
+    form.value.get.amended
     Future.successful(Ok(view(form)))
   }
 
