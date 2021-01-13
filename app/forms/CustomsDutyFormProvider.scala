@@ -44,10 +44,7 @@ class CustomsDutyFormProvider @Inject()(implicit appConfig: AppConfig) extends M
           requiredKey = "customsDuty.error.amendedNonEmpty",
           nonNumericKey = "customsDuty.error.amendedNonNumber"
         )
-      )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply).verifying(
-        messages("customsDuty.error.amendedMustBeHigher"),
-        fields => fields.original < fields.amended
-      )
+      )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
     )
 
 }

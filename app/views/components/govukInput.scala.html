@@ -18,7 +18,7 @@
 
 @this(govukInput : GovukInput)
 
-@(form: Form[_], id: String, label: String, width: String, isPageHeading: Boolean, classes: String)
+@(form: Form[_], id: String, label: String, width: String, isPageHeading: Boolean, classes: String)(implicit messages: Messages)
 
 @govukInput(Input(
     id = id,
@@ -33,5 +33,6 @@
     prefix = Some(PrefixOrSuffix(
         content = Text("£")
     )),
-    value = form(id).value
+    value = form(id).value,
+    errorMessage = form(id).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
 ))
