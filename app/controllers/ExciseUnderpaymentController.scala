@@ -18,54 +18,62 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.CustomsDutyFormProvider
+import forms.{CustomsDutyFormProvider, ExciseUnderpaymentFormProvider}
 import models.UnderpaymentType
-import pages.{CustomsDutyPage, UnderpaymentTypePage}
+import pages.{CustomsDutyPage, EntryDetailsPage, ExciseUnderpaymentPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.CustomsDutyView
+import views.html.ExciseUnderpaymentView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class CustomsDutyController @Inject()(identify: IdentifierAction,
+class ExciseUnderpaymentController @Inject()(identify: IdentifierAction,
                                       getData: DataRetrievalAction,
                                       requireData: DataRequiredAction,
                                       sessionRepository: SessionRepository,
                                       mcc: MessagesControllerComponents,
-                                      view: CustomsDutyView,
-                                      formProvider: CustomsDutyFormProvider
+                                      view: ExciseUnderpaymentView,
+                                      formProvider: ExciseUnderpaymentFormProvider
                                      ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    // TODO - add tests
-    val form = request.userAnswers.get(CustomsDutyPage).fold(formProvider()) {
+    val form = request.userAnswers.get(ExciseUnderpaymentPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(
+      view(
+        form,
+        backLink(request.userAnswers.get(UnderpaymentTypePage))
+      )
+     )
+    )
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors,
+        backLink(request.userAnswers.get(UnderpaymentTypePage))
+      ))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ExciseUnderpaymentPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          redirect(request.userAnswers.get(UnderpaymentTypePage))
+          Redirect(controllers.routes.ExciseUnderpaymentController.onLoad())  // Ians Page
         }
       }
     )
   }
 
-  private[controllers] def redirect(underpaymentType: Option[UnderpaymentType]): Result =
-    underpaymentType.map {
-      case UnderpaymentType(true, true, _) => Redirect(controllers.routes.CustomsDutyController.onLoad()) // Import VAT
-      case UnderpaymentType(true, false, true) => Redirect(controllers.routes.ExciseUnderpaymentController.onLoad()) // Excise Duty
-      case _ => Redirect(controllers.routes.CustomsDutyController.onLoad()) // Ians page
-    }.head
 
+
+  private[controllers] def backLink(underpaymentType: Option[UnderpaymentType]): Call =
+    underpaymentType.map {
+      case UnderpaymentType(_, true, _) => Call("GET",controllers.routes.ExciseUnderpaymentController.onLoad().toString) // Import VAT
+      case UnderpaymentType(true, false, _) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString) // Customs Duty
+      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString) // Underpayment page
+    }.head
 }

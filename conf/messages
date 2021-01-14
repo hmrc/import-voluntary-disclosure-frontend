@@ -114,3 +114,16 @@ customsDuty.error.originalUpperLimit = Original amount cannot be more than £9,9
 customsDuty.error.amendedNonEmpty = Enter the amended amount, in pounds
 customsDuty.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
 customsDuty.error.amendedMustBeHigher = Amended amount must be more than the original amount
+
+# Excise Duty page
+ExciseUnderpayment.pageTitle = Excise Duty underpayment details
+ExciseUnderpayment.pageHeader = Excise Duty underpayment details
+ExciseUnderpayment.originalAmount = Original amount, in pounds
+ExciseUnderpayment.amendedAmount = Amended amount, in pounds
+ExciseUnderpayment.error.originalNonEmpty = Enter the original amount, in pounds
+ExciseUnderpayment.error.originalNonNumber = Original amount must be a number like 7235 or 67.39
+ExciseUnderpayment.error.originalUpperLimit = Original amount cannot be more than £9,999,999,999.99
+ExciseUnderpayment.error.amendedNonEmpty = Enter the amended amount, in pounds
+ExciseUnderpayment.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
+
+

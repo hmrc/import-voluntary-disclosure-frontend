@@ -77,7 +77,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
           value match {
             case UnderpaymentType(true, _, _) => Redirect(controllers.routes.CustomsDutyController.onLoad()) // Customs Duty
             case UnderpaymentType(false, true, _) => Redirect(controllers.routes.UnderpaymentTypeController.onLoad()) // Import VAT
-            case UnderpaymentType(false, false, true) => Redirect(controllers.routes.UnderpaymentTypeController.onLoad()) // Excise Duty
+            case UnderpaymentType(false, false, true) => Redirect(controllers.routes.ExciseUnderpaymentController.onLoad())
           }
         }
       }

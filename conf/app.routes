@@ -34,3 +34,6 @@ GET         /disclosure/supporting-documentation-format        controllers.Suppo
 
 GET         /disclosure/customs-duty-details                   controllers.CustomsDutyController.onLoad
 POST        /disclosure/customs-duty-details                   controllers.CustomsDutyController.onSubmit
+
+GET         /disclosure/excise-duty-details                    controllers.ExciseUnderpaymentController.onLoad
+POST        /disclosure/excise-duty-details                    controllers.ExciseUnderpaymentController.onSubmit
