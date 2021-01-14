@@ -56,26 +56,109 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
-    "an error exists (no option has been selected)" should {
-//      lazy val form: Form[UnderpaymentType] = formProvider().bind(Map("" -> ""))
-//      lazy val view: Html = injectedView(
-//        form,
-//        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-//        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
-//      )(fakeRequest, messages)
-//      lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//      s"have the correct page title" in {
-//        document.title mustBe  UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.pageTitle
-//      }
-//
-//      "render an error summary with the correct message " in {
-//        elementText(".govuk-error-summary__list") mustBe UnderpaymentTypeMessages.errorRequired
-//      }
-//
+    "an error exists (no value has been specified for original amount)" should {
+      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "", "amended" -> "50"))
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonEmpty
+      }
+
+      // probs need to add ID for the error next to field rendering
 //      "render an error message against the field" in {
-//        elementText("#value-error") mustBe UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.errorRequired
+//        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonEmpty
 //      }
+    }
+
+    "an error exists (no value has been specified for amended amount)" should {
+      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "50", "amended" -> ""))
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonEmpty
+      }
+
+      // probs need to add ID for the error next to field rendering
+//      "render an error message against the field" in {
+//        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonEmpty
+//      }
+    }
+
+    "an error exists (not a numeric value has been specified for original amount)" should {
+      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "a!@$", "amended" -> "50"))
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonNumber
+      }
+
+      // probs need to add ID for the error next to field rendering
+      //      "render an error message against the field" in {
+      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonNumber
+      //      }
+    }
+
+    "an error exists (not a numeric value has been specified for amended amount)" should {
+      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "50", "amended" -> "a!@$"))
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonNumber
+      }
+
+      // probs need to add ID for the error next to field rendering
+      //      "render an error message against the field" in {
+      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonNumber
+      //      }
+    }
+
+    "an error exists (the value for original amount exceeds the limit)" should {
+      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "10000000000", "amended" -> "50"))
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalUpperLimit
+      }
+
+      // probs need to add ID for the error next to field rendering
+      //      "render an error message against the field" in {
+      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalUpperLimit
+      //      }
     }
 
   }
