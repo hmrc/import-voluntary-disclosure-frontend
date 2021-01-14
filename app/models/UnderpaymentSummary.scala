@@ -18,14 +18,6 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-case class UnderpaymentSummary(customsDuty: Option[UnderpaymentAmount],
-                               importVat: Option[UnderpaymentAmount],
-                               exciseDuty: Option[UnderpaymentAmount])
-
-object UnderpaymentSummary {
-  implicit val format: Format[UnderpaymentSummary] = Json.format[UnderpaymentSummary]
-}
-
 case class UnderpaymentAmount(original: BigDecimal,
                               amended: BigDecimal)
 

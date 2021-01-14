@@ -14,16 +14,13 @@
  * limitations under the License.
  *@
 
-@import models.UnderpaymentSummary
-@import views.ViewUtils._
-
 @this(layout: templates.Layout,
         govukSummaryList: GovukSummaryList,
         h1: components.h1,
         h2: components.h2,
         button: components.button)
 
-@(underpayments: UnderpaymentSummary, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(customsDuty: Option[SummaryList], importVat: Option[SummaryList], exciseDuty: Option[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("underpaymentSummary.pageTitle"),
@@ -31,82 +28,24 @@
 ) {
     @h1(messages("underpaymentSummary.heading"))
 
-    @if(underpayments.customsDuty.isDefined) {
-        @section(messages("underpaymentSummary.customsDuty.title"),
-            underpayments.customsDuty.get,
-            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    @if(customsDuty.isDefined) {
+        @h2(messages("underpaymentSummary.customsDuty.title"))
+        @govukSummaryList(customsDuty.get)
     }
 
-    @if(underpayments.importVat.isDefined) {
-        @section(messages("underpaymentSummary.importVat.title"),
-            underpayments.importVat.get,
-            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    @if(importVat.isDefined) {
+        @h2(messages("underpaymentSummary.importVat.title"))
+        @govukSummaryList(importVat.get)
     }
 
-    @if(underpayments.exciseDuty.isDefined) {
-        @section(messages("underpaymentSummary.exciseDuty.title"),
-            underpayments.exciseDuty.get,
-            controllers.routes.UnderpaymentSummaryController.onLoad().url)
+    @if(exciseDuty.isDefined) {
+        @h2(messages("underpaymentSummary.exciseDuty.title"))
+        @govukSummaryList(exciseDuty.get)
     }
 
     <a href="@{
         controllers.routes.UnderpaymentSummaryController.onLoad()
     }" role="button" class="govuk-button">@messages("common.continue")</a>
-}
-
-@section(underpaymentTitle: String, underpayment: UnderpaymentAmount, url: String) = {
-    @h2(underpaymentTitle)
-    @govukSummaryList(
-        SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = Seq(
-                SummaryListRow(
-                classes = "govuk-summary-list__row--no-border",
-                key = Key(
-                    classes = "govuk-!-width-two-thirds",
-                    content = HtmlContent(
-                        messages("underpaymentSummary.originalAmount")
-                    )
-                ),
-                value = Value(
-                    content = HtmlContent(
-                        displayMoney(underpayment.original)
-                    )
-                ),
-                actions = Some(Actions(
-                    items = Seq(
-                        ActionItem(
-                            href = url,
-                            content = Text(messages("underpaymentSummary.change")),
-                            visuallyHiddenText = Some(underpaymentTitle)
-                        )
-                    )
-                ))),
-                SummaryListRow(
-                key = Key(
-                    classes = "govuk-!-width-two-thirds",
-                    content = HtmlContent(
-                        messages("underpaymentSummary.amendedAmount")
-                    )
-                ),
-                value = Value(
-                    content = HtmlContent(
-                        displayMoney(underpayment.amended)
-                    )
-                )),
-                SummaryListRow(
-                key = Key(
-                    classes = "govuk-!-width-two-thirds",
-                    content = Text(
-                        messages("underpaymentSummary.dueToHmrc", underpaymentTitle)
-                    )
-                ),
-                value = Value(
-                    content = HtmlContent(
-                        "<b>" + displayMoney(underpayment.amended - underpayment.original) + "</b>"
-                    )
-                ))
-            )))
 }
 
 @{

@@ -18,34 +18,23 @@ package views
 
 import base.ViewBaseSpec
 import messages.UnderpaymentSummaryMessages
-import models.{UnderpaymentAmount, UnderpaymentSummary}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
+import views.data.UnderpaymentSummaryData._
 import views.html.UnderpaymentSummaryView
 
 class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: UnderpaymentSummaryView = app.injector.instanceOf[UnderpaymentSummaryView]
 
-  private val fullUnderpaymentSummary: UnderpaymentSummary = UnderpaymentSummary(
-    customsDuty = Some(UnderpaymentAmount(123, 5123)),
-    importVat = Some(UnderpaymentAmount(100, 1000)),
-    exciseDuty = Some(UnderpaymentAmount(550, 690))
-  )
-  private val singleUnderpaymentSummary: UnderpaymentSummary = UnderpaymentSummary(
-    customsDuty = None,
-    importVat = Some(UnderpaymentAmount(100, 1000)),
-    exciseDuty = None
-  )
-
   private val backLink: Call = Call("GET", "url")
 
   "Rendering the UnderpaymentSummary page" when {
     "only 1 underpayment made" should {
 
-      lazy val view: Html = injectedView(singleUnderpaymentSummary, backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(None, importVat, None, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 sub-heading" in {
@@ -69,7 +58,7 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct original amount value" in {
-        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£1.00"
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£100.00"
       }
 
       "have correct amended amount title" in {
@@ -77,7 +66,7 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct amended amount value" in {
-        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£10.00"
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£1,000.00"
       }
 
       "have correct due amount title" in {
@@ -86,12 +75,11 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct due amount value" in {
-        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£9.00"
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£900.00"
       }
 
       "have correct Change link " in {
-        document.select(".govuk-summary-list__actions").text.trim mustBe
-          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.importVatTitle).trim
+        document.select(".govuk-summary-list__actions").text.trim mustBe UnderpaymentSummaryMessages.change
 
         document.select(".govuk-summary-list__actions > a").attr("href") mustBe
           controllers.routes.UnderpaymentSummaryController.onLoad().url
@@ -100,7 +88,7 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
 
     "all 3 underpayment made" should {
 
-      lazy val view: Html = injectedView(fullUnderpaymentSummary, backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(customsDuty, importVat, exciseDuty, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have 3 sub-headings" in {
@@ -122,14 +110,11 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe
-          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.customsDutyTitle).trim
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe UnderpaymentSummaryMessages.change
 
-        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe
-          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.importVatTitle).trim
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe UnderpaymentSummaryMessages.change
 
-        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe
-          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.exciseDutyTitle).trim
+        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe UnderpaymentSummaryMessages.change
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
           controllers.routes.UnderpaymentSummaryController.onLoad().url
@@ -145,7 +130,7 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(fullUnderpaymentSummary, backLink)(fakeRequest, messages)
+    lazy val view: Html = injectedView(customsDuty, importVat, exciseDuty, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title" in {

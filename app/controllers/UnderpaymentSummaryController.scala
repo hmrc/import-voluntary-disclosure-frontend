@@ -19,12 +19,15 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
-import models.UnderpaymentSummary
+import models.UnderpaymentAmount
 import pages._
-import play.api.i18n.I18nSupport
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.ViewUtils.displayMoney
 import views.html.UnderpaymentSummaryView
 
 import scala.concurrent.Future
@@ -43,12 +46,38 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
 
-    val underpayments = UnderpaymentSummary(
-        customsDuty = request.userAnswers.get(CustomsDutyPage),
-        importVat = request.userAnswers.get(ImportVatPage),
-        exciseDuty = request.userAnswers.get(ExciseDutyPage)
-      )
+    val customsDuty = request.userAnswers.get(CustomsDutyPage).map(
+      summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
 
-    Future.successful(Ok(view(underpayments, controllers.routes.UnderpaymentSummaryController.onLoad)))
+    val importVat = request.userAnswers.get(ImportVatPage).map(
+      summaryList(_, Messages("underpaymentSummary.importVat.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
+
+    val exciseDuty = request.userAnswers.get(ExciseDutyPage).map(
+      summaryList(_, Messages("underpaymentSummary.exciseDuty.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
+
+    Future.successful(Ok(view(customsDuty, importVat, exciseDuty, controllers.routes.UnderpaymentSummaryController.onLoad)))
   }
+
+  private def summaryList(underpayment: UnderpaymentAmount, key: String, changeAction: Call)(implicit messages: Messages): SummaryList = {
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(content = Text(messages("underpaymentSummary.originalAmount")), classes = "govuk-!-width-two-thirds"),
+          value = Value(content = HtmlContent(displayMoney(underpayment.original))),
+          actions = Some(Actions(items = Seq(ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))))),
+          classes = "govuk-summary-list__row--no-border"
+        ),
+        SummaryListRow(
+          key = Key(content = Text(messages("underpaymentSummary.amendedAmount"))),
+          value = Value(content = HtmlContent(displayMoney(underpayment.amended)))
+        ),
+        SummaryListRow(
+          key = Key(content = Text(messages("underpaymentSummary.dueToHmrc", key))),
+          value = Value(content = HtmlContent(displayMoney(underpayment.amended - underpayment.original))),
+        )
+      )
+    )
+  }
+
 }
