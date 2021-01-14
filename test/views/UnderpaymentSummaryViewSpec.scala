@@ -79,7 +79,8 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct Change link " in {
-        document.select(".govuk-summary-list__actions").text.trim mustBe UnderpaymentSummaryMessages.change
+        document.select(".govuk-summary-list__actions").text.trim mustBe
+          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.importVatTitle).trim
 
         document.select(".govuk-summary-list__actions > a").attr("href") mustBe
           controllers.routes.UnderpaymentSummaryController.onLoad().url
@@ -110,11 +111,14 @@ class UnderpaymentSummaryViewSpec extends ViewBaseSpec {
       }
 
       "have correct Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe UnderpaymentSummaryMessages.change
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe
+          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.customsDutyTitle).trim
 
-        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe UnderpaymentSummaryMessages.change
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe
+          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.importVatTitle).trim
 
-        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe UnderpaymentSummaryMessages.change
+        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe
+          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.exciseDutyTitle).trim
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
           controllers.routes.UnderpaymentSummaryController.onLoad().url

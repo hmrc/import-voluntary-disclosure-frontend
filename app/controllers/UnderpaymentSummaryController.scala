@@ -58,7 +58,7 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
     Future.successful(Ok(view(customsDuty, importVat, exciseDuty, controllers.routes.UnderpaymentSummaryController.onLoad)))
   }
 
-  private def summaryList(underpayment: UnderpaymentAmount, key: String, changeAction: Call)(implicit messages: Messages): SummaryList = {
+  private[controllers] def summaryList(underpayment: UnderpaymentAmount, key: String, changeAction: Call)(implicit messages: Messages): SummaryList = {
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -69,11 +69,11 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.amendedAmount"))),
+          key = Key(content = Text(messages("underpaymentSummary.amendedAmount")), classes = "govuk-!-width-two-thirds"),
           value = Value(content = HtmlContent(displayMoney(underpayment.amended)))
         ),
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.dueToHmrc", key))),
+          key = Key(content = Text(messages("underpaymentSummary.dueToHmrc", key)), classes = "govuk-!-width-two-thirds"),
           value = Value(content = HtmlContent(displayMoney(underpayment.amended - underpayment.original))),
         )
       )

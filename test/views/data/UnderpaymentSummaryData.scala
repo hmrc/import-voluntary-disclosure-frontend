@@ -19,6 +19,7 @@ package views.data
 import messages.UnderpaymentSummaryMessages
 import models.UnderpaymentAmount
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryList, SummaryListRow, Value}
 import views.ViewUtils.displayMoney
 
@@ -29,52 +30,67 @@ object UnderpaymentSummaryData {
 
 
   val customsDuty = Some(SummaryList(
+    classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.originalAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(cdUnderpayment.original))),
         actions = Some(Actions(items = Seq(
-          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url, HtmlContent(UnderpaymentSummaryMessages.change))
-        )))),
+          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
+            Text(UnderpaymentSummaryMessages.change),
+            Some(UnderpaymentSummaryMessages.customsDutyTitle))
+        ))),
+        classes = "govuk-summary-list__row--no-border"
+      ),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.amendedAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(cdUnderpayment.amended)))),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.customsDutyTitle + UnderpaymentSummaryMessages.dueToHmrc)),
+        key = Key(Text(UnderpaymentSummaryMessages.customsDutyTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(cdUnderpayment.amended - cdUnderpayment.original))))
     )
   ))
 
   val importVat = Some(SummaryList(
+    classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.originalAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(ivUnderpayment.original))),
         actions = Some(Actions(items = Seq(
-          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url, HtmlContent(UnderpaymentSummaryMessages.change))
-        )))),
+          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
+            Text(UnderpaymentSummaryMessages.change),
+            Some(UnderpaymentSummaryMessages.importVatTitle))
+        ))),
+        classes = "govuk-summary-list__row--no-border"
+      ),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.amendedAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(ivUnderpayment.amended)))),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.importVatTitle + UnderpaymentSummaryMessages.dueToHmrc)),
+        key = Key(Text(UnderpaymentSummaryMessages.importVatTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(ivUnderpayment.amended - ivUnderpayment.original))))
     )
   ))
 
   val exciseDuty = Some(SummaryList(
+    classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.originalAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(edUnderpayment.original))),
         actions = Some(Actions(items = Seq(
-          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url, HtmlContent(UnderpaymentSummaryMessages.change))
-        )))),
+          ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
+            Text(UnderpaymentSummaryMessages.change),
+            Some(UnderpaymentSummaryMessages.exciseDutyTitle))
+        ))),
+        classes = "govuk-summary-list__row--no-border"
+      ),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.amendedAmount)),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(edUnderpayment.amended)))),
       SummaryListRow(
-        key = Key(HtmlContent(UnderpaymentSummaryMessages.exciseDutyTitle + UnderpaymentSummaryMessages.dueToHmrc)),
+        key = Key(Text(UnderpaymentSummaryMessages.exciseDutyTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(edUnderpayment.amended - edUnderpayment.original))))
     )
   ))
