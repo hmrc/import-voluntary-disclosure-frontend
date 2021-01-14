@@ -29,9 +29,9 @@
     form = Some(form),
     customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
 
-    @h1(messages("customsDuty.pageHeader"))
-
     @errorSummary(form.errors)
+
+    @h1(messages("customsDuty.pageHeader"))
 
     @formHelper(action = controllers.routes.CustomsDutyController.onSubmit()) {
 
