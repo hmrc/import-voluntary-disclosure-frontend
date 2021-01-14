@@ -22,16 +22,16 @@
         govukInput: components.govukInput
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("importVAT.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
-
-    @h1(messages("importVAT.pageHeader"))
+    customBackLinkUrl = Some(backLink)) {
 
     @errorSummary(form.errors)
+
+    @h1(messages("importVAT.pageHeader"))
 
     @formHelper(action = controllers.routes.ImportVATController.onSubmit()) {
 

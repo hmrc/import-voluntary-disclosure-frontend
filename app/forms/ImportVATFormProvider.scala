@@ -33,7 +33,8 @@ class ImportVATFormProvider @Inject()(implicit appConfig: AppConfig) extends Map
         "original" -> numeric(
           isCurrency = true,
           requiredKey = "importVAT.error.originalNonEmpty",
-          nonNumericKey = "importVAT.error.originalNonNumber"
+          nonNumericKey = "importVAT.error.originalNonNumber",
+          invalidNumeric = "importVAT.error.originalNonNumber"
         ).verifying(
           messages("importVAT.error.originalUpperLimit"),
           fields => fields < BigDecimal(10000000000.00)
@@ -41,7 +42,8 @@ class ImportVATFormProvider @Inject()(implicit appConfig: AppConfig) extends Map
         "amended" -> numeric(
           isCurrency = true,
           requiredKey = "importVAT.error.amendedNonEmpty",
-          nonNumericKey = "importVAT.error.amendedNonNumber"
+          nonNumericKey = "importVAT.error.amendedNonNumber",
+          invalidNumeric = "importVAT.error.originalNonNumber"
         )
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
     )
