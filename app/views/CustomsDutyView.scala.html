@@ -19,31 +19,27 @@
         h1: components.h1,
         errorSummary: components.errorSummary,
         button: components.button,
-        govukInput: components.govukInput
+        currencyInput: components.currencyInput
 )
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("customsDuty.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
+    @layout(
+        pageTitle = messages("customsDuty.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(controllers.routes.UnderpaymentTypeController.onLoad)) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @h1(messages("customsDuty.pageHeader"))
+        @h1(messages("customsDuty.pageHeader"))
 
-    @formHelper(action = controllers.routes.CustomsDutyController.onSubmit()) {
-
-        @govukInput(form, "original", messages("customsDuty.originalAmount"), "10", false, "govuk-fieldset__legend")
-        @govukInput(form, "amended", messages("customsDuty.amendedAmount"), "10", false, "govuk-fieldset__legend")
-
-        @button("common.button.continue")
-
+        @formHelper(action = controllers.routes.CustomsDutyController.onSubmit()) {
+            @currencyInput(form, "original", messages("customsDuty.originalAmount"), "10", false, "govuk-fieldset__legend")
+            @currencyInput(form, "amended", messages("customsDuty.amendedAmount"), "10", false, "govuk-fieldset__legend")
+            @button("common.button.continue")
+        }
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
