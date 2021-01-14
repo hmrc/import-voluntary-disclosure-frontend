@@ -19,19 +19,19 @@ package controllers
 import base.ControllerSpecBase
 import controllers.Assets.Redirect
 import controllers.actions.FakeDataRetrievalAction
-import forms.CustomsDutyFormProvider
+import forms.ImportVATFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentAmount, UnderpaymentType, UserAnswers}
-import pages.{CustomsDutyPage, UnderpaymentTypePage}
+import pages.{ImportVATPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import views.html.CustomsDutyView
+import views.html.ImportVATView
 
 import scala.concurrent.Future
 
-class CustomsDutyControllerSpec extends ControllerSpecBase {
+class ImportVATControllerSpec extends ControllerSpecBase {
 
   val userAnswersWithUnderpayment = Some(UserAnswers("some-cred-id")
     .set(
@@ -47,21 +47,21 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new CustomsDutyController(
+    lazy val controller = new ImportVATController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
-      customsDutyView,
+      importVATView,
       form
     )
-    private lazy val customsDutyView = app.injector.instanceOf[CustomsDutyView]
+    private lazy val importVATView = app.injector.instanceOf[ImportVATView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    val formProvider: CustomsDutyFormProvider = injector.instanceOf[CustomsDutyFormProvider]
+    val formProvider: ImportVATFormProvider = injector.instanceOf[ImportVATFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: CustomsDutyFormProvider = formProvider
+    val form: ImportVATFormProvider = formProvider
   }
 
   "GET /" should {
@@ -73,7 +73,7 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Option(
         UserAnswers("some-cred-id").set(
-          CustomsDutyPage,
+          ImportVATPage,
           UnderpaymentAmount(BigDecimal("40"), BigDecimal(40))
         ).success.value
       )
@@ -86,16 +86,12 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
 
   "POST /" when {
 
-    "should redirect to Import VAT page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Import VAT
-    }
-
     "should redirect to Excise Duty page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, false, true))) mustBe Redirect(controllers.routes.CustomsDutyController.onLoad()) // Excise Duty
+      controller.redirect(Some(UnderpaymentType(true, false, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
     }
 
     "should redirect to Summary page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, false, false))) mustBe Redirect(controllers.routes.CustomsDutyController.onLoad()) // Summary
+      controller.redirect(Some(UnderpaymentType(true, false, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
     }
 
     "payload contains valid data" should {
