@@ -28,10 +28,17 @@ import views.html.CustomsDutyView
 
 class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
 
-
   private lazy val injectedView: CustomsDutyView = app.injector.instanceOf[CustomsDutyView]
 
   val formProvider: CustomsDutyFormProvider = injector.instanceOf[CustomsDutyFormProvider]
+
+  private final val fifty = "50"
+  private final val nonNumericInput = "!@JdsJgbnmL"
+  private final val originalErrorId = "#original-error"
+  private final val amendedErrorId = "#amended-error"
+
+  def underpaymentFormWithValues(originalValue: String, amendedValue: String): Form[UnderpaymentAmount] =
+    formProvider().bind(Map("original" -> originalValue, "amended" -> amendedValue))
 
   "Rendering the UnderpaymentType page" when {
 
@@ -56,7 +63,7 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no value has been specified for original amount)" should {
-      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "", "amended" -> "50"))
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(emptyString, fifty)
       lazy val view: Html = injectedView(
         form
       )(fakeRequest, messages)
@@ -67,16 +74,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message " in {
-        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonEmpty
+        elementText(govErrorSummaryListClass) mustBe CustomsDutyMessages.originalNonEmpty
       }
 
       "render an error message against the field" in {
-        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonEmpty
+        elementText(originalErrorId) mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonEmpty
       }
     }
 
     "an error exists (no value has been specified for amended amount)" should {
-      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "50", "amended" -> ""))
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(fifty, emptyString)
       lazy val view: Html = injectedView(
         form
       )(fakeRequest, messages)
@@ -87,16 +94,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message " in {
-        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonEmpty
+        elementText(govErrorSummaryListClass) mustBe CustomsDutyMessages.amendedNonEmpty
       }
 
       "render an error message against the field" in {
-        elementText("#amended-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonEmpty
+        elementText(amendedErrorId) mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonEmpty
       }
     }
 
     "an error exists (not a numeric value has been specified for original amount)" should {
-      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "a!@$", "amended" -> "50"))
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(nonNumericInput, fifty)
       lazy val view: Html = injectedView(
         form
       )(fakeRequest, messages)
@@ -107,16 +114,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message " in {
-        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonNumber
+        elementText(govErrorSummaryListClass) mustBe CustomsDutyMessages.originalNonNumber
       }
 
       "render an error message against the field" in {
-        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonNumber
+        elementText(originalErrorId) mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonNumber
       }
     }
 
     "an error exists (not a numeric value has been specified for amended amount)" should {
-      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "50", "amended" -> "a!@$"))
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(fifty, nonNumericInput)
       lazy val view: Html = injectedView(
         form
       )(fakeRequest, messages)
@@ -127,16 +134,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message " in {
-        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonNumber
+        elementText(govErrorSummaryListClass) mustBe CustomsDutyMessages.amendedNonNumber
       }
 
       "render an error message against the field" in {
-        elementText("#amended-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonNumber
+        elementText(amendedErrorId) mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonNumber
       }
     }
 
     "an error exists (the value for original amount exceeds the limit)" should {
-      lazy val form: Form[UnderpaymentAmount] = formProvider().bind(Map("original" -> "10000000000", "amended" -> "50"))
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues("10000000000", fifty)
       lazy val view: Html = injectedView(
         form
       )(fakeRequest, messages)
@@ -147,11 +154,11 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message " in {
-        elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalUpperLimit
+        elementText(govErrorSummaryListClass) mustBe CustomsDutyMessages.originalUpperLimit
       }
 
       "render an error message against the field" in {
-        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalUpperLimit
+        elementText(originalErrorId) mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalUpperLimit
       }
     }
 
