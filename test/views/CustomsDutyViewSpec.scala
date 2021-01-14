@@ -37,25 +37,23 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the UnderpaymentType page" when {
 
     "no errors exist" should {
-//      val form: Form[UnderpaymentType] = formProvider.apply()
-//      lazy val view: Html = injectedView(
-//        form,
-//        UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-//        Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
-//      )(fakeRequest, messages)
-//      lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//      s"have the correct page title" in {
-//        document.title mustBe UnderpaymentTypeMessages.pageTitle
-//      }
-//
-//      "not render an error summary" in {
-//        document.select("div.govuk-error-summary").size mustBe 0
-//      }
-//
-//      "not render an error message against the field" in {
-//        document.select("#value-error").size mustBe 0
-//      }
+      val form: Form[UnderpaymentAmount] = formProvider.apply()
+      lazy val view: Html = injectedView(
+        form
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe CustomsDutyMessages.pageTitle
+      }
+
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
     }
 
     "an error exists (no option has been selected)" should {
