@@ -26,7 +26,8 @@
     label = Label(
         isPageHeading = isPageHeading,
         classes = classes,
-        content = Text(label)
+        content = Text(label),
+        attributes = Map("id"-> id.concat("-fieldset-legend"))
     ),
     classes = "govuk-input--width-" + width,
     spellcheck = Some(false),
@@ -34,5 +35,9 @@
         content = Text("£")
     )),
     value = form(id).value,
-    errorMessage = form(id).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    errorMessage = form(id).error.map(
+        err => ErrorMessage(
+            content = Text(messages(err.message, err.args:_*))
+        )
+    )
 ))
