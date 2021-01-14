@@ -18,12 +18,11 @@ package views
 
 import base.ViewBaseSpec
 import forms.CustomsDutyFormProvider
-import messages.{BaseMessages, CustomsDutyMessages, EntryDetailsMessages}
+import messages.{BaseMessages, CustomsDutyMessages}
 import models.UnderpaymentAmount
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.CustomsDutyView
 
@@ -64,17 +63,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonEmpty
       }
 
-      // probs need to add ID for the error next to field rendering
-//      "render an error message against the field" in {
-//        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonEmpty
-//      }
+      "render an error message against the field" in {
+        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonEmpty
+      }
     }
 
     "an error exists (no value has been specified for amended amount)" should {
@@ -85,17 +83,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonEmpty
       }
 
-      // probs need to add ID for the error next to field rendering
-//      "render an error message against the field" in {
-//        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonEmpty
-//      }
+      "render an error message against the field" in {
+        elementText("#amended-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonEmpty
+      }
     }
 
     "an error exists (not a numeric value has been specified for original amount)" should {
@@ -106,17 +103,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalNonNumber
       }
 
-      // probs need to add ID for the error next to field rendering
-      //      "render an error message against the field" in {
-      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonNumber
-      //      }
+      "render an error message against the field" in {
+        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalNonNumber
+      }
     }
 
     "an error exists (not a numeric value has been specified for amended amount)" should {
@@ -127,17 +123,16 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.amendedNonNumber
       }
 
-      // probs need to add ID for the error next to field rendering
-      //      "render an error message against the field" in {
-      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonNumber
-      //      }
+      "render an error message against the field" in {
+        elementText("#amended-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.amendedNonNumber
+      }
     }
 
     "an error exists (the value for original amount exceeds the limit)" should {
@@ -148,22 +143,21 @@ class CustomsDutyViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe  CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
         elementText(".govuk-error-summary__list") mustBe CustomsDutyMessages.originalUpperLimit
       }
 
-      // probs need to add ID for the error next to field rendering
-      //      "render an error message against the field" in {
-      //        elementText("#value-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalUpperLimit
-      //      }
+      "render an error message against the field" in {
+        elementText("#original-error") mustBe CustomsDutyMessages.errorPrefix + CustomsDutyMessages.originalUpperLimit
+      }
     }
 
   }
 
-    it should {
+  it should {
 
     lazy val form: Form[UnderpaymentAmount] = formProvider()
     lazy val view: Html = injectedView(form)(fakeRequest, messages)

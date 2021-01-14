@@ -35,5 +35,9 @@
         content = Text("£")
     )),
     value = form(id).value,
-    errorMessage = form(id).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    errorMessage = form(id).error.map(
+        err => ErrorMessage(
+            content = Text(messages(err.message, err.args:_*))
+        )
+    )
 ))
