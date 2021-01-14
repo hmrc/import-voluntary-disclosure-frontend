@@ -55,7 +55,7 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
     val exciseDuty = request.userAnswers.get(ExciseDutyPage).map(
       summaryList(_, Messages("underpaymentSummary.exciseDuty.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
 
-    Future.successful(Ok(view(customsDuty, importVat, exciseDuty, controllers.routes.UnderpaymentSummaryController.onLoad)))
+    Future.successful(Ok(view(customsDuty, importVat, exciseDuty, controllers.routes.UnderpaymentTypeController.onLoad)))
   }
 
   private[controllers] def summaryList(underpayment: UnderpaymentAmount, key: String, changeAction: Call)(implicit messages: Messages): SummaryList = {

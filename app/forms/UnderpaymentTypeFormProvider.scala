@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,28 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package forms
 
-@this(govukBackLink : GovukBackLink)
+import models.UnderpaymentType
+import play.api.data.Form
+import play.api.data.Forms.{boolean, mapping}
+import play.api.i18n.Messages
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+class UnderpaymentTypeFormProvider {
 
-@govukBackLink(BackLink(href = url.fold("#")(customUrl => customUrl), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
+  def apply()(implicit messages: Messages): Form[UnderpaymentType] = {
+    Form(
+      mapping(
+        "customsDuty" -> boolean,
+        "importVAT" -> boolean,
+        "exciseDuty" -> boolean
+      )(UnderpaymentType.apply)(UnderpaymentType.unapply).verifying(
+        messages("underpaymentType.error.required"),
+        fields => fields.customsDuty || fields.exciseDuty || fields.importVAT
+      )
+    )
+  }
 
-@{
- //$COVERAGE-OFF$
 }

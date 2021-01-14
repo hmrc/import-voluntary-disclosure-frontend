@@ -96,5 +96,20 @@ underpaymentSummary.originalAmount = Original amount
 underpaymentSummary.amendedAmount = Amended amount
 underpaymentSummary.dueToHmrc = {0} due to HMRC
 
+# Supporting Documentation
+SupportDoc.pageTitle = Supporting documentation
+SupportDoc.heading = Supporting documentation
+SupportDoc.disclosure = You will need to upload files as supporting documentation for this disclosure.
+SupportDoc.fileSize = Each file must be {0}MB or less, and in one of the following formats:
+
 # Error Summary
 error.summary.title = There is a problem
+
+# Underpayment Type
+underpaymentType.pageTitle = What have you underpaid?
+underpaymentType.pageHeader = What have you underpaid?
+underpaymentType.pageWarning = Select all that apply.
+underpaymentType.error.required = Select if you have underpaid Customs Duty, Import VAT or Excise Duty
+underpaymentType.customsDuty = Customs Duty
+underpaymentType.importVAT = Import VAT
+underpaymentType.exciseDuty = Excise Duty
