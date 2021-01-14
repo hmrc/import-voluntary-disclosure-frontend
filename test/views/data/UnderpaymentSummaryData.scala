@@ -33,18 +33,18 @@ object UnderpaymentSummaryData {
     classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(cdUnderpayment.original))),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+        value = Value(HtmlContent(displayMoney(cdUnderpayment.original)), classes = "govuk-!-padding-bottom-0"),
         actions = Some(Actions(items = Seq(
           ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
             Text(UnderpaymentSummaryMessages.change),
             Some(UnderpaymentSummaryMessages.customsDutyTitle))
-        ))),
+        ), classes = "govuk-!-padding-bottom-0")),
         classes = "govuk-summary-list__row--no-border"
       ),
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(cdUnderpayment.amended)))),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
+        value = Value(HtmlContent(displayMoney(cdUnderpayment.amended)), classes = "govuk-!-padding-top-0")),
       SummaryListRow(
         key = Key(Text(UnderpaymentSummaryMessages.customsDutyTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(cdUnderpayment.amended - cdUnderpayment.original))))
@@ -55,18 +55,18 @@ object UnderpaymentSummaryData {
     classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(ivUnderpayment.original))),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+        value = Value(HtmlContent(displayMoney(ivUnderpayment.original)), classes = "govuk-!-padding-bottom-0"),
         actions = Some(Actions(items = Seq(
           ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
             Text(UnderpaymentSummaryMessages.change),
             Some(UnderpaymentSummaryMessages.importVatTitle))
-        ))),
+        ), classes = "govuk-!-padding-bottom-0")),
         classes = "govuk-summary-list__row--no-border"
       ),
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(ivUnderpayment.amended)))),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
+        value = Value(HtmlContent(displayMoney(ivUnderpayment.amended)), classes = "govuk-!-padding-top-0")),
       SummaryListRow(
         key = Key(Text(UnderpaymentSummaryMessages.importVatTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(ivUnderpayment.amended - ivUnderpayment.original))))
@@ -77,18 +77,18 @@ object UnderpaymentSummaryData {
     classes = "govuk-!-margin-bottom-9",
     rows = Seq(
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(edUnderpayment.original))),
+        key = Key(Text(UnderpaymentSummaryMessages.originalAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+        value = Value(HtmlContent(displayMoney(edUnderpayment.original)), classes = "govuk-!-padding-bottom-0"),
         actions = Some(Actions(items = Seq(
           ActionItem(controllers.routes.UnderpaymentSummaryController.onLoad().url,
             Text(UnderpaymentSummaryMessages.change),
             Some(UnderpaymentSummaryMessages.exciseDutyTitle))
-        ))),
+        ), classes = "govuk-!-padding-bottom-0")),
         classes = "govuk-summary-list__row--no-border"
       ),
       SummaryListRow(
-        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds"),
-        value = Value(HtmlContent(displayMoney(edUnderpayment.amended)))),
+        key = Key(Text(UnderpaymentSummaryMessages.amendedAmount), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
+        value = Value(HtmlContent(displayMoney(edUnderpayment.amended)), classes = "govuk-!-padding-top-0")),
       SummaryListRow(
         key = Key(Text(UnderpaymentSummaryMessages.exciseDutyTitle + UnderpaymentSummaryMessages.dueToHmrc), classes = "govuk-!-width-two-thirds"),
         value = Value(HtmlContent(displayMoney(edUnderpayment.amended - edUnderpayment.original))))

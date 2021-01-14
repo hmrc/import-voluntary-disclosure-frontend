@@ -63,14 +63,14 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.originalAmount")), classes = "govuk-!-width-two-thirds"),
-          value = Value(content = HtmlContent(displayMoney(underpayment.original))),
-          actions = Some(Actions(items = Seq(ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))))),
+          key = Key(content = Text(messages("underpaymentSummary.originalAmount")), classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
+          value = Value(content = HtmlContent(displayMoney(underpayment.original)), classes = "govuk-!-padding-bottom-0"),
+          actions = Some(Actions(items = Seq(ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))), classes = "govuk-!-padding-bottom-0")),
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.amendedAmount")), classes = "govuk-!-width-two-thirds"),
-          value = Value(content = HtmlContent(displayMoney(underpayment.amended)))
+          key = Key(content = Text(messages("underpaymentSummary.amendedAmount")), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
+          value = Value(content = HtmlContent(displayMoney(underpayment.amended)), classes = "govuk-!-padding-top-0")
         ),
         SummaryListRow(
           key = Key(content = Text(messages("underpaymentSummary.dueToHmrc", key)), classes = "govuk-!-width-two-thirds"),
