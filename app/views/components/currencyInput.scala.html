@@ -16,23 +16,27 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this(govukInput : GovukInput)
+@this(hmrcCurrencyInput: HmrcCurrencyInput)
 
 @(form: Form[_], id: String, label: String, width: String, isPageHeading: Boolean, classes: String)(implicit messages: Messages)
 
-@govukInput(Input(
-    id = id,
-    name = id,
-    label = Label(
-        isPageHeading = isPageHeading,
-        classes = classes,
-        content = Text(label)
-    ),
-    classes = "govuk-input--width-" + width,
-    spellcheck = Some(false),
-    prefix = Some(PrefixOrSuffix(
-        content = Text("£")
-    )),
-    value = form(id).value,
-    errorMessage = form(id).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
-))
+@hmrcCurrencyInput(
+    CurrencyInput(
+        id = id,
+        name = id,
+        label = Label(
+            isPageHeading = isPageHeading,
+            classes = classes,
+            content = Text(label),
+            attributes = Map("id" -> id.concat("-fieldset-legend"))
+        ),
+        classes = "govuk-input--width-" + width,
+        value = form(id).value,
+        errorMessage = form(id).error.map(
+            err => ErrorMessage(
+                content = Text(messages(err.message, err.args: _*))
+            )
+        )
+    )
+)
+

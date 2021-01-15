@@ -19,7 +19,7 @@
         h1: components.h1,
         errorSummary: components.errorSummary,
         button: components.button,
-        govukInput: components.govukInput
+        currencyInput: components.currencyInput
 )
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -35,14 +35,14 @@
 
     @formHelper(action = controllers.routes.ImportVATController.onSubmit()) {
 
-        @govukInput(form,
+        @currencyInput(form,
             id = "original",
             label = messages("importVAT.originalAmount"),
             width = "10",
             isPageHeading = false,
             classes = "govuk-fieldset__legend")
 
-        @govukInput(form,
+        @currencyInput(form,
             id = "amended",
             label = messages("importVAT.amendedAmount"),
             width = "10",

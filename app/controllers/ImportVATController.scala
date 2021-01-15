@@ -77,8 +77,8 @@ class ImportVATController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink(underpaymentType: Option[UnderpaymentType]): Call =
     underpaymentType match {
-      case Some(UnderpaymentType(true, _, _)) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString) // Customs Duty
-      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString) // Underpayment page
+      case Some(UnderpaymentType(true, _, _)) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString)
+      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString)
     }
 
 }
