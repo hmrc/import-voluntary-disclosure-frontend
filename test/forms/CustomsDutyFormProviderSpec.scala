@@ -23,90 +23,107 @@ import play.api.data.FormError
 
 class CustomsDutyFormProviderSpec extends SpecBase {
 
+  private final val originalKey = "original"
+  private final val amendedKey = "amended"
+  private final val originalNonNumberMessageKey = "customsDuty.error.originalNonNumber"
+  private final val amendedNonNumberMessageKey = "customsDuty.error.amendedNonNumber"
+  private final val originalNonEmptyMessageKey = "customsDuty.error.originalNonEmpty"
+  private final val amendedNonEmptyMessageKey = "customsDuty.error.amendedNonEmpty"
+  private final val fifty = "50"
+  private final val forty = "40"
+  private final val nonNumeric = "@£$%FGB"
+
+  def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
+    originalKey -> original,
+    amendedKey -> amended
+  )
+
   "Binding a form with invalid data" when {
 
     "no values provided" should {
-      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "", "amended" -> ""))
+      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder())
 
       "result in a form with errors" in {
         form.errors mustBe Seq(
-          FormError("original", "customsDuty.error.originalNonEmpty"),
-          FormError("amended", "customsDuty.error.amendedNonEmpty")
+          FormError(originalKey, originalNonEmptyMessageKey),
+          FormError(amendedKey, amendedNonEmptyMessageKey)
         )
       }
 
       "no original value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "", "amended" -> "50"))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(amended = fifty))
 
         "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", "customsDuty.error.originalNonEmpty")
+          form.errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
         }
       }
 
       "no amended value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "50", "amended" -> ""))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = fifty))
 
         "result in a form with errors" in {
-          form.errors.head mustBe FormError("amended", "customsDuty.error.amendedNonEmpty")
+          form.errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
         }
       }
 
       "non numeric values provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "@£$%FGB", "amended" -> "@£$%FGB"))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = nonNumeric, amended = nonNumeric))
 
         "result in a form with errors" in {
           form.errors mustBe Seq(
-            FormError("original", "customsDuty.error.originalNonNumber"),
-            FormError("amended", "customsDuty.error.amendedNonNumber")
+            FormError(originalKey, originalNonNumberMessageKey),
+            FormError(amendedKey, amendedNonNumberMessageKey)
           )
         }
       }
 
       "non numeric original value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "@£$%FGB", "amended" -> "50"))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = nonNumeric, amended = fifty))
 
         "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", "customsDuty.error.originalNonNumber")
+          form.errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
 
         }
       }
 
       "non numeric amended value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "50", "amended" -> "@£$%FGB"))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = fifty, amended = nonNumeric))
 
         "result in a form with errors" in {
-          form.errors.head mustBe FormError("amended", "customsDuty.error.amendedNonNumber")
+          form.errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
 
         }
       }
 
       "original amount exceeding the limit" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "10000000000", "amended" -> "50"))
+        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = "10000000000", amended = fifty))
 
         "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", messages("customsDuty.error.originalUpperLimit"))
+          form.errors.head mustBe FormError(originalKey, messages("customsDuty.error.originalUpperLimit"))
         }
       }
 
     }
 
     "Binding a form with valid data" should {
-      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(Map("original" -> "40", "amended" -> "50"))
+      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = forty, amended = fifty))
 
       "result in a form with no errors" in {
         form.hasErrors mustBe false
       }
 
       "generate the correct model" in {
-        form.value mustBe Some(UnderpaymentAmount(BigDecimal("40"), BigDecimal("50")))
+        form.value mustBe Some(UnderpaymentAmount(BigDecimal(forty), BigDecimal(fifty)))
       }
     }
 
     "A form built from a valid model" should {
       "generate the correct mapping" in {
-        val model = UnderpaymentAmount(BigDecimal("0.0"), BigDecimal("60.0"))
+        val sixty = "60.0"
+        val zero = "0.0"
+        val model = UnderpaymentAmount(BigDecimal(zero), BigDecimal(sixty))
         val form = new CustomsDutyFormProvider()(MockAppConfig).apply().fill(model)
-        form.data mustBe Map("original" -> "0.0", "amended" -> "60.0")
+        form.data mustBe formBuilder(original = zero, amended = sixty)
       }
     }
 
