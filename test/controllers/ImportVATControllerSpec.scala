@@ -24,7 +24,7 @@ import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentAmount, UnderpaymentType, UserAnswers}
 import pages.{ImportVATPage, UnderpaymentTypePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.ImportVATView
@@ -36,7 +36,7 @@ class ImportVATControllerSpec extends ControllerSpecBase {
   val userAnswersWithUnderpayment = Some(UserAnswers("some-cred-id")
     .set(
       UnderpaymentTypePage,
-      UnderpaymentType(true, false, false)
+      UnderpaymentType(false, true, true)
     ).success.value
   )
 
@@ -82,16 +82,24 @@ class ImportVATControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
+    "should redirect the back button to Customs Duty page" in new Test {
+      controller.backLink(Some(UnderpaymentType(true, true, true))) mustBe Call("GET", controllers.routes.CustomsDutyController.onLoad().toString)
+    }
+
+    "should redirect the back button to Underpayment Type page" in new Test {
+      controller.backLink(Some(UnderpaymentType(false, true, true))) mustBe Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().toString)
+    }
+
   }
 
   "POST /" when {
 
     "should redirect to Excise Duty page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, false, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
+      controller.redirect(Some(UnderpaymentType(true, true, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
     }
 
     "should redirect to Summary page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, false, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
+      controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
     }
 
     "payload contains valid data" should {
