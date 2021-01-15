@@ -26,9 +26,9 @@ govukInput: components.govukInput
 
 @layout(pageTitle = messages("ExciseUnderpayment.pageTitle"),form = Some(form),customBackLinkUrl = Some(backLink)){
 
-@h1(messages("ExciseUnderpayment.pageHeader"))
-
 @errorSummary(form.errors)
+
+@h1(messages("ExciseUnderpayment.pageHeader"))
 
 @formHelper(action = controllers.routes.ExciseUnderpaymentController.onSubmit()) {
 
