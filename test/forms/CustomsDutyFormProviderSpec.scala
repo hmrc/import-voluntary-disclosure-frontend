@@ -19,7 +19,7 @@ package forms
 import base.SpecBase
 import mocks.config.MockAppConfig
 import models.UnderpaymentAmount
-import play.api.data.FormError
+import play.api.data.{Form, FormError}
 
 class CustomsDutyFormProviderSpec extends SpecBase {
 
@@ -38,39 +38,34 @@ class CustomsDutyFormProviderSpec extends SpecBase {
     amendedKey -> amended
   )
 
+  def formBinder(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> "")): Form[UnderpaymentAmount] =
+    new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formValues)
+
   "Binding a form with invalid data" when {
 
     "no values provided" should {
-      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder())
-
       "result in a form with errors" in {
-        form.errors mustBe Seq(
+        formBinder().errors mustBe Seq(
           FormError(originalKey, originalNonEmptyMessageKey),
           FormError(amendedKey, amendedNonEmptyMessageKey)
         )
       }
 
       "no original value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(amended = fifty))
-
         "result in a form with errors" in {
-          form.errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
+          formBinder(formBuilder(amended = fifty)).errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
         }
       }
 
       "no amended value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = fifty))
-
         "result in a form with errors" in {
-          form.errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
+          formBinder(formBuilder(original = fifty)).errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
         }
       }
 
       "non numeric values provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = nonNumeric, amended = nonNumeric))
-
         "result in a form with errors" in {
-          form.errors mustBe Seq(
+          formBinder(formBuilder(original = nonNumeric, amended = nonNumeric)).errors mustBe Seq(
             FormError(originalKey, originalNonNumberMessageKey),
             FormError(amendedKey, amendedNonNumberMessageKey)
           )
@@ -78,35 +73,33 @@ class CustomsDutyFormProviderSpec extends SpecBase {
       }
 
       "non numeric original value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = nonNumeric, amended = fifty))
-
         "result in a form with errors" in {
-          form.errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
-
+          formBinder(
+            formBuilder(original = nonNumeric, amended = fifty)
+          ).errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
         }
       }
 
       "non numeric amended value provided" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = fifty, amended = nonNumeric))
-
         "result in a form with errors" in {
-          form.errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
-
+          formBinder(
+            formBuilder(original = fifty, amended = nonNumeric)
+          ).errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
         }
       }
 
       "original amount exceeding the limit" should {
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = "10000000000", amended = fifty))
-
         "result in a form with errors" in {
-          form.errors.head mustBe FormError(originalKey, messages("customsDuty.error.originalUpperLimit"))
+          formBinder(
+            formBuilder(original = "10000000000", amended = fifty)
+          ).errors.head mustBe FormError(originalKey, messages("customsDuty.error.originalUpperLimit"))
         }
       }
 
     }
 
     "Binding a form with valid data" should {
-      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().bind(formBuilder(original = forty, amended = fifty))
+      val form = formBinder(formBuilder(original = forty, amended = fifty))
 
       "result in a form with no errors" in {
         form.hasErrors mustBe false
@@ -115,6 +108,7 @@ class CustomsDutyFormProviderSpec extends SpecBase {
       "generate the correct model" in {
         form.value mustBe Some(UnderpaymentAmount(BigDecimal(forty), BigDecimal(fifty)))
       }
+
     }
 
     "A form built from a valid model" should {
