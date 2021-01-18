@@ -24,37 +24,23 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("importVAT.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(backLink)) {
+    @layout(
+        pageTitle = messages("importVAT.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(backLink)) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @h1(messages("importVAT.pageHeader"))
+        @h1(messages("importVAT.pageHeader"))
 
-    @formHelper(action = controllers.routes.ImportVATController.onSubmit()) {
+        @formHelper(action = controllers.routes.ImportVATController.onSubmit()) {
+            @currencyInput(form, "original", messages("importVAT.originalAmount"), "10", false, "govuk-fieldset__legend")
+            @currencyInput(form, "amended", messages("importVAT.amendedAmount"), "10", false, "govuk-fieldset__legend")
+            @button("common.button.continue")
 
-        @currencyInput(form,
-            id = "original",
-            label = messages("importVAT.originalAmount"),
-            width = "10",
-            isPageHeading = false,
-            classes = "govuk-fieldset__legend")
-
-        @currencyInput(form,
-            id = "amended",
-            label = messages("importVAT.amendedAmount"),
-            width = "10",
-            isPageHeading = false,
-            classes = "govuk-fieldset__legend")
-
-        @button("common.button.continue")
-
+        }
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
