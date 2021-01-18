@@ -125,3 +125,4 @@ importVAT.error.originalNonNumber = Original amount must be a number like 7235 o
 importVAT.error.originalUpperLimit = Original amount cannot be more than £9,999,999,999.99
 importVAT.error.amendedNonEmpty = Enter the amended amount, in pounds
 importVAT.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
+
