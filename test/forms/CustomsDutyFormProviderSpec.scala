@@ -98,30 +98,29 @@ class CustomsDutyFormProviderSpec extends SpecBase {
 
     }
 
-    "Binding a form with valid data" should {
-      val form = formBinder(formBuilder(original = forty, amended = fifty))
+  }
 
-      "result in a form with no errors" in {
-        form.hasErrors mustBe false
-      }
+  "Binding a form with valid data" should {
+    val form = formBinder(formBuilder(original = forty, amended = fifty))
 
-      "generate the correct model" in {
-        form.value mustBe Some(UnderpaymentAmount(BigDecimal(forty), BigDecimal(fifty)))
-      }
-
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
     }
 
-    "A form built from a valid model" should {
-      "generate the correct mapping" in {
-        val sixty = "60.0"
-        val zero = "0.0"
-        val model = UnderpaymentAmount(BigDecimal(zero), BigDecimal(sixty))
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().fill(model)
-        form.data mustBe formBuilder(original = zero, amended = sixty)
-      }
+    "generate the correct model" in {
+      form.value mustBe Some(UnderpaymentAmount(BigDecimal(forty), BigDecimal(fifty)))
     }
 
+  }
 
+  "A form built from a valid model" should {
+    "generate the correct mapping" in {
+      val sixty = "60.0"
+      val zero = "0.0"
+      val model = UnderpaymentAmount(BigDecimal(zero), BigDecimal(sixty))
+      val form = new CustomsDutyFormProvider()(MockAppConfig).apply().fill(model)
+      form.data mustBe formBuilder(original = zero, amended = sixty)
+    }
   }
 
 }
