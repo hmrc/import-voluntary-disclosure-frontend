@@ -19,98 +19,107 @@ package forms
 import base.SpecBase
 import mocks.config.MockAppConfig
 import models.UnderpaymentAmount
-import play.api.data.FormError
+import play.api.data.{Form, FormError}
 
 class ImportVATFormProviderSpec extends SpecBase {
+
+  private final val originalKey = "original"
+  private final val amendedKey = "amended"
+  private final val originalNonNumberMessageKey = "importVAT.error.originalNonNumber"
+  private final val amendedNonNumberMessageKey = "importVAT.error.amendedNonNumber"
+  private final val originalNonEmptyMessageKey = "importVAT.error.originalNonEmpty"
+  private final val amendedNonEmptyMessageKey = "importVAT.error.amendedNonEmpty"
+  private final val fifty = "50"
+  private final val forty = "40"
+  private final val nonNumeric = "@£$%FGB"
+
+  def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
+    originalKey -> original,
+    amendedKey -> amended
+  )
+
+  def formBinder(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> "")): Form[UnderpaymentAmount] =
+    new ImportVATFormProvider()(MockAppConfig).apply().bind(formValues)
 
   "Binding a form with invalid data" when {
 
     "no values provided" should {
-      val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "", "amended" -> ""))
-
       "result in a form with errors" in {
-        form.errors mustBe Seq(
-          FormError("original", "importVAT.error.originalNonEmpty"),
-          FormError("amended", "importVAT.error.amendedNonEmpty")
+        formBinder().errors mustBe Seq(
+          FormError(originalKey, originalNonEmptyMessageKey),
+          FormError(amendedKey, amendedNonEmptyMessageKey)
         )
       }
-
-      "no original value provided" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "", "amended" -> "50"))
-
-        "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", "importVAT.error.originalNonEmpty")
-        }
-      }
-
-      "no amended value provided" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "50", "amended" -> ""))
-
-        "result in a form with errors" in {
-          form.errors.head mustBe FormError("amended", "importVAT.error.amendedNonEmpty")
-        }
-      }
-
-      "non numeric values provided" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "@£$%FGB", "amended" -> "@£$%FGB"))
-
-        "result in a form with errors" in {
-          form.errors mustBe Seq(
-            FormError("original", "importVAT.error.originalNonNumber"),
-            FormError("amended", "importVAT.error.amendedNonNumber")
-          )
-        }
-      }
-
-      "non numeric original value provided" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "@£$%FGB", "amended" -> "50"))
-
-        "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", "importVAT.error.originalNonNumber")
-
-        }
-      }
-
-      "non numeric amended value provided" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "50", "amended" -> "@£$%FGB"))
-
-        "result in a form with errors" in {
-          form.errors.head mustBe FormError("amended", "importVAT.error.amendedNonNumber")
-
-        }
-      }
-
-      "original amount exceeding the limit" should {
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "10000000000", "amended" -> "50"))
-
-        "result in a form with errors" in {
-          form.errors.head mustBe FormError("original", messages("importVAT.error.originalUpperLimit"))
-        }
-      }
-
     }
 
-    "Binding a form with valid data" should {
-      val form = new ImportVATFormProvider()(MockAppConfig).apply().bind(Map("original" -> "40", "amended" -> "50"))
-
-      "result in a form with no errors" in {
-        form.hasErrors mustBe false
-      }
-
-      "generate the correct model" in {
-        form.value mustBe Some(UnderpaymentAmount(BigDecimal("40"), BigDecimal("50")))
+    "no original value provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(amended = fifty)).errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
       }
     }
 
-    "A form built from a valid model" should {
-      "generate the correct mapping" in {
-        val model = UnderpaymentAmount(BigDecimal("0.0"), BigDecimal("60.0"))
-        val form = new ImportVATFormProvider()(MockAppConfig).apply().fill(model)
-        form.data mustBe Map("original" -> "0.0", "amended" -> "60.0")
+    "no amended value provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(original = fifty)).errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
       }
     }
 
+    "non numeric values provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(original = nonNumeric, amended = nonNumeric)).errors mustBe Seq(
+          FormError(originalKey, originalNonNumberMessageKey),
+          FormError(amendedKey, amendedNonNumberMessageKey)
+        )
+      }
+    }
 
+    "non numeric original value provided" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = nonNumeric, amended = fifty)
+        ).errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
+      }
+    }
+
+    "non numeric amended value provided" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = fifty, amended = nonNumeric)
+        ).errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
+      }
+    }
+
+    "original amount exceeding the limit" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = "10000000000", amended = fifty)
+        ).errors.head mustBe FormError(originalKey, messages("importVAT.error.originalUpperLimit"))
+      }
+    }
+
+  }
+
+  "Binding a form with valid data" should {
+    val form = formBinder(formBuilder(original = forty, amended = fifty))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
+      form.value mustBe Some(UnderpaymentAmount(BigDecimal(forty), BigDecimal(fifty)))
+    }
+
+  }
+
+  "A form built from a valid model" should {
+    "generate the correct mapping" in {
+      val sixty = "60.0"
+      val zero = "0.0"
+      val model = UnderpaymentAmount(BigDecimal(zero), BigDecimal(sixty))
+      val form = new ImportVATFormProvider()(MockAppConfig).apply().fill(model)
+      form.data mustBe formBuilder(original = zero, amended = sixty)
+    }
   }
 
 }
