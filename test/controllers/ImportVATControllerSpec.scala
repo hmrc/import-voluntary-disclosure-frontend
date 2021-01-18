@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class ImportVATControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithUnderpayment = Some(UserAnswers("some-cred-id")
+  val userAnswersWithUnderpayment: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
       UnderpaymentTypePage,
       UnderpaymentType(false, true, true)
@@ -64,7 +64,7 @@ class ImportVATControllerSpec extends ControllerSpecBase {
     val form: ImportVATFormProvider = formProvider
   }
 
-  "GET /" should {
+  "GET /" when {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -94,12 +94,16 @@ class ImportVATControllerSpec extends ControllerSpecBase {
 
   "POST /" when {
 
-    "should redirect to Excise Duty page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, true, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
+    "Underpayment type has Excise Duty selected" should {
+      "redirect to Exercise Duty page" in new Test {
+        controller.redirect(Some(UnderpaymentType(true, true, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
+      }
     }
 
-    "should redirect to Summary page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
+    "Underpayment type doesn't have Excise Duty selected" should {
+      "redirect to Summary page" in new Test {
+        controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
+      }
     }
 
     "payload contains valid data" should {
@@ -130,6 +134,7 @@ class ImportVATControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
+
     }
 
   }
