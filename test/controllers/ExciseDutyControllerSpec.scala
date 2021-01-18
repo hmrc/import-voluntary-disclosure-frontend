@@ -80,6 +80,7 @@ class ExciseDutyControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+
     "the backLink functionality is called" should {
       "redirect to the Underpayment Type Duty page" in new Test {
         controller.backLink(Some(UnderpaymentType(false, false, true))) mustBe Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().url)
@@ -93,6 +94,7 @@ class ExciseDutyControllerSpec extends ControllerSpecBase {
         controller.backLink(Some(UnderpaymentType(true, false, true))) mustBe Call("GET", controllers.routes.CustomsDutyController.onLoad().url)
       }
     }
+  }
 
     "POST /" when {
 
@@ -126,4 +128,3 @@ class ExciseDutyControllerSpec extends ControllerSpecBase {
       }
     }
   }
-}

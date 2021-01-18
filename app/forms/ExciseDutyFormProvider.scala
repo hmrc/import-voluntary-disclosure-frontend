@@ -43,7 +43,7 @@ class ExciseDutyFormProvider @Inject()(implicit appConfig: AppConfig) extends Ma
         "amended" -> numeric(
           isCurrency = true,
           requiredKey = "exciseDuty.error.amendedNonEmpty",
-          invalidNumeric = "customsDuty.error.originalNonNumber",
+          invalidNumeric = "exciseDuty.error.originalNonNumber",
           nonNumericKey = "exciseDuty.error.amendedNonNumber"
         )
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
