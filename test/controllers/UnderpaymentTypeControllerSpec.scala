@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.UnderpaymentTypeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{EntryDetails, UnderpaymentType, UserAnswers}
-import pages.{EntryDetailsPage, UnderpaymentTypePage}
+import pages.UnderpaymentTypePage
 import play.api.http.Status
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.mvc.{Call, Result}
