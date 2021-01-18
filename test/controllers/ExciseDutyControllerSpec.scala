@@ -17,21 +17,20 @@
 package controllers
 
 import base.ControllerSpecBase
-import controllers.Assets.Redirect
 import controllers.actions.FakeDataRetrievalAction
-import forms.{CustomsDutyFormProvider, ExciseUnderpaymentFormProvider}
+import forms.ExciseDutyFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentAmount, UnderpaymentType, UserAnswers}
-import pages.{CustomsDutyPage, ExciseUnderpaymentPage, UnderpaymentTypePage}
+import pages.{ExciseDutyPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.{CustomsDutyView, ExciseUnderpaymentView}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import views.html.ExciseDutyView
 
 import scala.concurrent.Future
 
-class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
+class ExciseDutyControllerSpec extends ControllerSpecBase {
 
   val userAnswersWithUnderpayment: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
@@ -47,21 +46,21 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new ExciseUnderpaymentController(
+    lazy val controller = new ExciseDutyController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
-      ExciseUnderpaymentView,
+      exciseDutyView,
       form
     )
-    private lazy val ExciseUnderpaymentView = app.injector.instanceOf[ExciseUnderpaymentView]
+    private lazy val exciseDutyView = app.injector.instanceOf[ExciseDutyView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-    val formProvider: ExciseUnderpaymentFormProvider = injector.instanceOf[ExciseUnderpaymentFormProvider]
+    val formProvider: ExciseDutyFormProvider = injector.instanceOf[ExciseDutyFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: ExciseUnderpaymentFormProvider = formProvider
+    val form: ExciseDutyFormProvider = formProvider
   }
 
   "GET /" when {
@@ -73,11 +72,8 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Option(
         UserAnswers("some-cred-id").set(
-          ExciseUnderpaymentPage,
+          ExciseDutyPage,
           UnderpaymentAmount(BigDecimal("40"), BigDecimal(40))
-        ).success.value.set(
-          UnderpaymentTypePage,
-          UnderpaymentType(true, false, false)
         ).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
@@ -101,34 +97,32 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
     "POST /" when {
 
       "payload contains valid data" should {
+        "return a SEE OTHER response when correct data is sent" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
+          status(result) mustBe Status.SEE_OTHER
+        }
 
+        "update the UserAnswers in session" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          await(controller.onSubmit(fakeRequestGenerator(original = "40", amended = "50")))
+          MockedSessionRepository.verifyCalls()
+        }
 
       }
-      "return a SEE OTHER response when correct data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
-        status(result) mustBe Status.SEE_OTHER
-      }
 
-      "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        await(controller.onSubmit(fakeRequestGenerator(original = "40", amended = "50")))
-        MockedSessionRepository.verifyCalls()
-      }
+      "payload contains invalid data" should {
 
-    }
+        "return BAD REQUEST when original amount is exceeded" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("10000000000", "60"))
+          status(result) mustBe Status.BAD_REQUEST
+        }
 
-    "payload contains invalid data" should {
-
-      "return BAD REQUEST when original amount is exceeded" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("10000000000", "60"))
-        status(result) mustBe Status.BAD_REQUEST
-      }
-
-      "return BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
-        status(result) mustBe Status.BAD_REQUEST
+        "return BAD REQUEST" in new Test {
+          val result: Future[Result] = controller.onSubmit(fakeRequest)
+          status(result) mustBe Status.BAD_REQUEST
+        }
       }
     }
   }

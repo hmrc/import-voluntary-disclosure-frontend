@@ -18,36 +18,32 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{CustomsDutyFormProvider, ExciseUnderpaymentFormProvider}
+import forms.ExciseDutyFormProvider
 import models.UnderpaymentType
-import pages.{CustomsDutyPage, EntryDetailsPage, ExciseUnderpaymentPage, UnderpaymentTypePage}
+import pages.{ ExciseDutyPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.ExciseUnderpaymentView
+import views.html.ExciseDutyView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class ExciseUnderpaymentController @Inject()(identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction,
-                                      sessionRepository: SessionRepository,
-                                      mcc: MessagesControllerComponents,
-                                      view: ExciseUnderpaymentView,
-                                      formProvider: ExciseUnderpaymentFormProvider
+class ExciseDutyController @Inject()(identify: IdentifierAction,
+                                     getData: DataRetrievalAction,
+                                     requireData: DataRequiredAction,
+                                     sessionRepository: SessionRepository,
+                                     mcc: MessagesControllerComponents,
+                                     view: ExciseDutyView,
+                                     formProvider: ExciseDutyFormProvider
                                      ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(ExciseUnderpaymentPage).fold(formProvider()) {
+    val form = request.userAnswers.get(ExciseDutyPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(
-      view(form,backLink(request.userAnswers.get(UnderpaymentTypePage))
-      )
-     )
-    )
+    Future.successful(Ok(view(form,backLink(request.userAnswers.get(UnderpaymentTypePage)))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -57,21 +53,19 @@ class ExciseUnderpaymentController @Inject()(identify: IdentifierAction,
       ))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ExciseUnderpaymentPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ExciseDutyPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ExciseUnderpaymentController.onLoad())  // Ians Page
+          Redirect(controllers.routes.ExciseDutyController.onLoad())
         }
       }
     )
   }
 
-
-
   private[controllers] def backLink(underpaymentType: Option[UnderpaymentType]): Call =
-    underpaymentType.map {
-      case UnderpaymentType(_, true, _) => Call("GET",controllers.routes.ImportVATController.onLoad().toString) // Import VAT
-      case UnderpaymentType(true, false, _) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString) // Customs Duty
-      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString) // Underpayment page
-    }.head
+    underpaymentType match {
+      case Some(UnderpaymentType(_, true, _)) => Call("GET",controllers.routes.ImportVATController.onLoad().url)
+      case Some(UnderpaymentType(true, false, _)) => Call("GET",controllers.routes.CustomsDutyController.onLoad().url)
+      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().url)
+    }
 }

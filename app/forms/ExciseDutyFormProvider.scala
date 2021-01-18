@@ -26,25 +26,25 @@ import play.api.i18n.Messages
 import javax.inject.Inject
 
 
-class ExciseUnderpaymentFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+class ExciseDutyFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
   def apply()(implicit messages: Messages): Form[UnderpaymentAmount] =
     Form(
       mapping(
         "original" -> numeric(
           isCurrency = true,
-          requiredKey = "ExciseUnderpayment.error.originalNonEmpty",
-          invalidNumeric = "ExciseUnderpayment.error.originalNonNumber",
-          nonNumericKey = "ExciseUnderpayment.error.originalNonNumber"
+          requiredKey = "exciseDuty.error.originalNonEmpty",
+          invalidNumeric = "exciseDuty.error.originalNonNumber",
+          nonNumericKey = "exciseDuty.error.originalNonNumber"
         ).verifying(
-          messages("ExciseUnderpayment.error.originalUpperLimit"),
+          messages("exciseDuty.error.originalUpperLimit"),
           fields => fields < BigDecimal(10000000000.00)
         ),
         "amended" -> numeric(
           isCurrency = true,
-          requiredKey = "ExciseUnderpayment.error.amendedNonEmpty",
+          requiredKey = "exciseDuty.error.amendedNonEmpty",
           invalidNumeric = "customsDuty.error.originalNonNumber",
-          nonNumericKey = "ExciseUnderpayment.error.amendedNonNumber"
+          nonNumericKey = "exciseDuty.error.amendedNonNumber"
         )
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
     )

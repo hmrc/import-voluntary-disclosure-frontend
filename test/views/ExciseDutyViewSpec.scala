@@ -17,21 +17,21 @@
 package views
 
 import base.ViewBaseSpec
-import forms.{CustomsDutyFormProvider, ExciseUnderpaymentFormProvider}
-import messages.{BaseMessages, CustomsDutyMessages, ExciseUnderpaymentMessages}
+import forms.ExciseDutyFormProvider
+import messages.{BaseMessages, CustomsDutyMessages, ExciseDutyMessages}
 import models.UnderpaymentAmount
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.{CustomsDutyView, ExciseUnderpaymentView}
+import views.html.ExciseDutyView
 
-class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
+class ExciseDutyViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: ExciseUnderpaymentView = app.injector.instanceOf[ExciseUnderpaymentView]
+  private lazy val injectedView: ExciseDutyView = app.injector.instanceOf[ExciseDutyView]
 
-  val formProvider: ExciseUnderpaymentFormProvider = injector.instanceOf[ExciseUnderpaymentFormProvider]
+  val formProvider: ExciseDutyFormProvider = injector.instanceOf[ExciseDutyFormProvider]
 
   private final val fifty = "50"
   private final val nonNumericInput = "!@JdsJgbnmL"
@@ -41,7 +41,7 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
   def underpaymentFormWithValues(originalValue: String, amendedValue: String): Form[UnderpaymentAmount] =
     formProvider().bind(Map("original" -> originalValue, "amended" -> amendedValue))
 
-  "Rendering the ExciseUnderpayment page" when {
+  "Rendering the ExciseDuty page" when {
 
     "no errors exist" should {
       val form: Form[UnderpaymentAmount] = formProvider.apply()
@@ -52,7 +52,7 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe ExciseDutyMessages.pageTitle
       }
 
       "not render an error summary" in {
@@ -73,15 +73,15 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe ExciseUnderpaymentMessages.originalNonEmpty
+        elementText(govErrorSummaryListClass) mustBe ExciseDutyMessages.originalNonEmpty
       }
 
       "render an error message against the field" in {
-        elementText(originalErrorId) mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.originalNonEmpty
+        elementText(originalErrorId) mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.originalNonEmpty
       }
     }
 
@@ -94,15 +94,15 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe CustomsDutyMessages.errorPrefix + ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe CustomsDutyMessages.errorPrefix + ExciseDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe ExciseUnderpaymentMessages.amendedNonEmpty
+        elementText(govErrorSummaryListClass) mustBe ExciseDutyMessages.amendedNonEmpty
       }
 
       "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.amendedNonEmpty
+        elementText(amendedErrorId) mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.amendedNonEmpty
       }
     }
 
@@ -115,15 +115,15 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe ExciseUnderpaymentMessages.originalNonNumber
+        elementText(govErrorSummaryListClass) mustBe ExciseDutyMessages.originalNonNumber
       }
 
       "render an error message against the field" in {
-        elementText(originalErrorId) mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.originalNonNumber
+        elementText(originalErrorId) mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.originalNonNumber
       }
     }
 
@@ -136,15 +136,15 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe ExciseUnderpaymentMessages.amendedNonNumber
+        elementText(govErrorSummaryListClass) mustBe ExciseDutyMessages.amendedNonNumber
       }
 
       "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.amendedNonNumber
+        elementText(amendedErrorId) mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.amendedNonNumber
       }
     }
 
@@ -157,15 +157,15 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.pageTitle
+        document.title mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.pageTitle
       }
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe ExciseUnderpaymentMessages.originalUpperLimit
+        elementText(govErrorSummaryListClass) mustBe ExciseDutyMessages.originalUpperLimit
       }
 
       "render an error message against the field" in {
-        elementText(originalErrorId) mustBe ExciseUnderpaymentMessages.errorPrefix + ExciseUnderpaymentMessages.originalUpperLimit
+        elementText(originalErrorId) mustBe ExciseDutyMessages.errorPrefix + ExciseDutyMessages.originalUpperLimit
       }
     }
 
@@ -178,20 +178,20 @@ class ExciseUnderpaymentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title of '${ExciseUnderpaymentMessages.pageTitle}'" in {
-      document.title mustBe ExciseUnderpaymentMessages.pageTitle
+    s"have the correct page title of '${ExciseDutyMessages.pageTitle}'" in {
+      document.title mustBe ExciseDutyMessages.pageTitle
     }
 
-    s"have the correct h1 of '${ExciseUnderpaymentMessages.pageHeader}'" in {
-      elementText("h1") mustBe ExciseUnderpaymentMessages.pageHeader
+    s"have the correct h1 of '${ExciseDutyMessages.pageHeader}'" in {
+      elementText("h1") mustBe ExciseDutyMessages.pageHeader
     }
 
     s"have correct legend for the original amount" in {
-      elementText("#original-fieldset-legend") mustBe ExciseUnderpaymentMessages.originalAmount
+      elementText("#original-fieldset-legend") mustBe ExciseDutyMessages.originalAmount
     }
 
     s"have correct legend for the amended amount" in {
-      elementText("#amended-fieldset-legend") mustBe ExciseUnderpaymentMessages.amendedAmount
+      elementText("#amended-fieldset-legend") mustBe ExciseDutyMessages.amendedAmount
     }
 
     "have the correct Continue button" in {

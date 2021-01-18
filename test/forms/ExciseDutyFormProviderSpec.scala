@@ -21,14 +21,14 @@ import mocks.config.MockAppConfig
 import models.UnderpaymentAmount
 import play.api.data.{Form, FormError}
 
-class ExciseUnderpaymentFormProviderSpec extends SpecBase {
+class ExciseDutyFormProviderSpec extends SpecBase {
 
   private final val originalKey = "original"
   private final val amendedKey = "amended"
-  private final val originalNonNumberMessageKey = "ExciseUnderpayment.error.originalNonNumber"
-  private final val amendedNonNumberMessageKey = "ExciseUnderpayment.error.amendedNonNumber"
-  private final val originalNonEmptyMessageKey = "ExciseUnderpayment.error.originalNonEmpty"
-  private final val amendedNonEmptyMessageKey = "ExciseUnderpayment.error.amendedNonEmpty"
+  private final val originalNonNumberMessageKey = "exciseDuty.error.originalNonNumber"
+  private final val amendedNonNumberMessageKey = "exciseDuty.error.amendedNonNumber"
+  private final val originalNonEmptyMessageKey = "exciseDuty.error.originalNonEmpty"
+  private final val amendedNonEmptyMessageKey = "exciseDuty.error.amendedNonEmpty"
   private final val fifty = "50"
   private final val forty = "40"
   private final val nonNumeric = "@£$%FGB"
@@ -39,7 +39,7 @@ class ExciseUnderpaymentFormProviderSpec extends SpecBase {
   )
 
   def formBinder(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> "")): Form[UnderpaymentAmount] =
-    new ExciseUnderpaymentFormProvider()(MockAppConfig).apply().bind(formValues)
+    new ExciseDutyFormProvider()(MockAppConfig).apply().bind(formValues)
 
   "Binding a form with invalid data" when {
 
@@ -116,7 +116,7 @@ class ExciseUnderpaymentFormProviderSpec extends SpecBase {
         val sixty = "60.0"
         val zero = "0.0"
         val model = UnderpaymentAmount(BigDecimal(zero), BigDecimal(sixty))
-        val form = new CustomsDutyFormProvider()(MockAppConfig).apply().fill(model)
+        val form = new ExciseDutyFormProvider()(MockAppConfig).apply().fill(model)
         form.data mustBe formBuilder(original = zero, amended = sixty)
       }
     }

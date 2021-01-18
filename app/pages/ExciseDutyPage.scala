@@ -19,7 +19,7 @@ package pages
 import models.UnderpaymentAmount
 import play.api.libs.json.JsPath
 
-case object ExciseUnderpaymentPage extends QuestionPage[UnderpaymentAmount] {
+case object ExciseDutyPage extends QuestionPage[UnderpaymentAmount] {
 
   def path: JsPath = JsPath \ toString
 

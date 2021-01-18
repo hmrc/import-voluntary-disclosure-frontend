@@ -16,7 +16,7 @@
 
 package messages
 
-object ExciseUnderpaymentMessages extends BaseMessages {
+object ExciseDutyMessages extends BaseMessages {
 
   val pageTitle = "Excise Duty underpayment details"
   val pageHeader = "Excise Duty underpayment details"
