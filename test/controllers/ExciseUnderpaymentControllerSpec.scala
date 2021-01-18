@@ -24,7 +24,7 @@ import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentAmount, UnderpaymentType, UserAnswers}
 import pages.{CustomsDutyPage, ExciseUnderpaymentPage, UnderpaymentTypePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.{CustomsDutyView, ExciseUnderpaymentView}
@@ -84,12 +84,23 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+    "the backLink functionality is called" should {
+      "redirect to the Underpayment Type Duty page" in new Test {
+        controller.backLink(Some(UnderpaymentType(false, false, true))) mustBe Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().url)
+      }
 
-  }
+      "redirect to the Import VAT page" in new Test {
+        controller.backLink(Some(UnderpaymentType(false, true, false))) mustBe Call("GET", controllers.routes.ImportVATController.onLoad().url)
+      }
 
-  "POST /" when {
+      "redirect to the customs page" in new Test {
+        controller.backLink(Some(UnderpaymentType(true, false, true))) mustBe Call("GET", controllers.routes.CustomsDutyController.onLoad().url)
+      }
+    }
 
-    "payload contains valid data" should {
+    "POST /" when {
+
+      "payload contains valid data" should {
 
 
       }
@@ -120,4 +131,5 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
     }
+  }
 }

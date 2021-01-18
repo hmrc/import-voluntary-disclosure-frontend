@@ -44,9 +44,7 @@ class ExciseUnderpaymentController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
     Future.successful(Ok(
-      view(
-        form,
-        backLink(request.userAnswers.get(UnderpaymentTypePage))
+      view(form,backLink(request.userAnswers.get(UnderpaymentTypePage))
       )
      )
     )
@@ -72,7 +70,7 @@ class ExciseUnderpaymentController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink(underpaymentType: Option[UnderpaymentType]): Call =
     underpaymentType.map {
-      case UnderpaymentType(_, true, _) => Call("GET",controllers.routes.ExciseUnderpaymentController.onLoad().toString) // Import VAT
+      case UnderpaymentType(_, true, _) => Call("GET",controllers.routes.ImportVATController.onLoad().toString) // Import VAT
       case UnderpaymentType(true, false, _) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString) // Customs Duty
       case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString) // Underpayment page
     }.head
