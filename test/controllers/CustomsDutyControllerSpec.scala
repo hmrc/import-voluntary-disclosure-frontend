@@ -91,7 +91,7 @@ class CustomsDutyControllerSpec extends ControllerSpecBase {
     }
 
     "should redirect to Excise Duty page" in new Test {
-      controller.redirect(Some(UnderpaymentType(true, false, true))) mustBe Redirect(controllers.routes.CustomsDutyController.onLoad()) // Excise Duty
+      controller.redirect(Some(UnderpaymentType(true, false, true))) mustBe Redirect(controllers.routes.ExciseUnderpaymentController.onLoad()) // Excise Duty
     }
 
     "should redirect to Summary page" in new Test {

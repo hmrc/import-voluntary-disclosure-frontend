@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithUnderpayment = Some(UserAnswers("some-cred-id")
+  val userAnswersWithUnderpayment: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
       UnderpaymentTypePage,
       UnderpaymentType(true, false, false)
@@ -58,13 +58,13 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
     )
     private lazy val ExciseUnderpaymentView = app.injector.instanceOf[ExciseUnderpaymentView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+    val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
     val formProvider: ExciseUnderpaymentFormProvider = injector.instanceOf[ExciseUnderpaymentFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ExciseUnderpaymentFormProvider = formProvider
   }
 
-  "GET /" should {
+  "GET /" when {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -75,6 +75,9 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
         UserAnswers("some-cred-id").set(
           ExciseUnderpaymentPage,
           UnderpaymentAmount(BigDecimal("40"), BigDecimal(40))
+        ).success.value.set(
+          UnderpaymentTypePage,
+          UnderpaymentType(true, false, false)
         ).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
@@ -86,14 +89,10 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
 
   "POST /" when {
 
-    "should redirect to summary page" in new Test {
-      val result: Future[Result] = controller.onSubmit(fakeRequest)
-      redirectLocation(result) mustBe Redirect(controllers.routes.ExciseUnderpaymentController.onLoad()) // summary page
-    }
-
-
     "payload contains valid data" should {
 
+
+      }
       "return a SEE OTHER response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
@@ -121,8 +120,4 @@ class ExciseUnderpaymentControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
     }
-
-  }
-
-
 }

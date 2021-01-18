@@ -34,6 +34,7 @@ class ExciseUnderpaymentFormProvider @Inject()(implicit appConfig: AppConfig) ex
         "original" -> numeric(
           isCurrency = true,
           requiredKey = "ExciseUnderpayment.error.originalNonEmpty",
+          invalidNumeric = "ExciseUnderpayment.error.originalNonNumber",
           nonNumericKey = "ExciseUnderpayment.error.originalNonNumber"
         ).verifying(
           messages("ExciseUnderpayment.error.originalUpperLimit"),
@@ -42,6 +43,7 @@ class ExciseUnderpaymentFormProvider @Inject()(implicit appConfig: AppConfig) ex
         "amended" -> numeric(
           isCurrency = true,
           requiredKey = "ExciseUnderpayment.error.amendedNonEmpty",
+          invalidNumeric = "customsDuty.error.originalNonNumber",
           nonNumericKey = "ExciseUnderpayment.error.amendedNonNumber"
         )
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)

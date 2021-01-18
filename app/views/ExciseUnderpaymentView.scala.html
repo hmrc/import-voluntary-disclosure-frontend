@@ -15,32 +15,35 @@
  *@
 
 @this(layout: templates.Layout,
-formHelper: FormWithCSRF,
-h1: components.h1,
-errorSummary: components.errorSummary,
-button: components.button,
-govukInput: components.govukInput
-)
+      formHelper: FormWithCSRF,
+      h1: components.h1,
+      errorSummary: components.errorSummary,
+      button: components.button,
+      govukInput: components.govukInput,
+      currencyInput: components.currencyInput
+      )
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("ExciseUnderpayment.pageTitle"),form = Some(form),customBackLinkUrl = Some(backLink)){
+@layout(
+  pageTitle = messages("ExciseUnderpayment.pageTitle"),
+  form = Some(form),
+  customBackLinkUrl = Some(backLink)){
 
-@errorSummary(form.errors)
+  @errorSummary(form.errors)
 
-@h1(messages("ExciseUnderpayment.pageHeader"))
+  @h1(messages("ExciseUnderpayment.pageHeader"))
 
-@formHelper(action = controllers.routes.ExciseUnderpaymentController.onSubmit()) {
+  @formHelper(action = controllers.routes.ExciseUnderpaymentController.onSubmit()) {
 
-@govukInput(form, "original", messages("customsDuty.originalAmount"), "10", false, "govuk-fieldset__legend")
-@govukInput(form, "amended", messages("customsDuty.amendedAmount"), "10", false, "govuk-fieldset__legend")
-
-@button("common.button.continue")
+  @currencyInput(form, "original", messages("customsDuty.originalAmount"), "10", false, "govuk-fieldset__legend")
+  @currencyInput(form, "amended", messages("customsDuty.amendedAmount"), "10", false, "govuk-fieldset__legend")
+  @button("common.button.continue")
 
 }
 
 }
 
-@{
-//$COVERAGE-OFF$
-}
+  @{
+  //$COVERAGE-OFF$
+  }
