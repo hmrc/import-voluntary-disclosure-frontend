@@ -82,62 +82,64 @@ class ImportVATControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "should redirect the back button to Customs Duty page" in new Test {
-      controller.backLink(Some(UnderpaymentType(true, true, true))) mustBe Call("GET", controllers.routes.CustomsDutyController.onLoad().toString)
-    }
-
-    "should redirect the back button to Underpayment Type page" in new Test {
-      controller.backLink(Some(UnderpaymentType(false, true, true))) mustBe Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().toString)
-    }
-
-  }
-
-  "POST /" when {
-
-    "Underpayment type has Excise Duty selected" should {
-      "redirect to Exercise Duty page" in new Test {
-        controller.redirect(Some(UnderpaymentType(true, true, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
-      }
-    }
-
-    "Underpayment type doesn't have Excise Duty selected" should {
-      "redirect to Summary page" in new Test {
-        controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
-      }
-    }
-
-    "payload contains valid data" should {
-
-      "return a SEE OTHER response when correct data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
-        status(result) mustBe Status.SEE_OTHER
+    "the backLink functionality is called" should {
+      "redirect to the Customs Duty page" in new Test {
+        controller.backLink(Some(UnderpaymentType(true, true, true))) mustBe Call("GET", controllers.routes.CustomsDutyController.onLoad().url)
       }
 
-      "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        await(controller.onSubmit(fakeRequestGenerator(original = "40", amended = "50")))
-        MockedSessionRepository.verifyCalls()
-      }
-
-    }
-
-    "payload contains invalid data" should {
-
-      "return BAD REQUEST when original amount is exceeded" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("10000000000", "60"))
-        status(result) mustBe Status.BAD_REQUEST
-      }
-
-      "return BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
-        status(result) mustBe Status.BAD_REQUEST
+      "redirect to the Underpayment Type Duty page" in new Test {
+        controller.backLink(Some(UnderpaymentType(false, true, true))) mustBe Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().url)
       }
 
     }
 
   }
 
+    "POST /" when {
+
+      "Underpayment type has Excise Duty selected" should {
+        "redirect to Exercise Duty page" in new Test {
+          controller.redirect(Some(UnderpaymentType(true, true, true))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Excise Duty
+        }
+      }
+
+      "Underpayment type doesn't have Excise Duty selected" should {
+        "redirect to Summary page" in new Test {
+          controller.redirect(Some(UnderpaymentType(true, true, false))) mustBe Redirect(controllers.routes.ImportVATController.onLoad()) // Summary
+        }
+      }
+
+      "payload contains valid data" should {
+
+        "return a SEE OTHER response when correct data is sent" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("50", "60"))
+          status(result) mustBe Status.SEE_OTHER
+        }
+
+        "update the UserAnswers in session" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          await(controller.onSubmit(fakeRequestGenerator(original = "40", amended = "50")))
+          MockedSessionRepository.verifyCalls()
+        }
+
+      }
+
+      "payload contains invalid data" should {
+
+        "return BAD REQUEST when original amount is exceeded" in new Test {
+          override val userAnswers: Option[UserAnswers] = userAnswersWithUnderpayment
+          val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("10000000000", "60"))
+          status(result) mustBe Status.BAD_REQUEST
+        }
+
+        "return BAD REQUEST" in new Test {
+          val result: Future[Result] = controller.onSubmit(fakeRequest)
+          status(result) mustBe Status.BAD_REQUEST
+        }
+
+      }
+
+    }
 
 }

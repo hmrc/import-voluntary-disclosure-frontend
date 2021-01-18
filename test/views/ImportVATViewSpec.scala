@@ -106,6 +106,27 @@ class ImportVATViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
+    "an error exists (not a numeric value has been specified for original amount)" should {
+      lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(nonNumericInput, fifty)
+      lazy val view: Html = injectedView(
+        form,
+        Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().toString)
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe ImportVATMessages.errorPrefix + ImportVATMessages.pageTitle
+      }
+
+      "render an error summary with the correct message " in {
+        elementText(govErrorSummaryListClass) mustBe ImportVATMessages.originalNonNumber
+      }
+
+      "render an error message against the field" in {
+        elementText(originalErrorId) mustBe ImportVATMessages.errorPrefix + ImportVATMessages.originalNonNumber
+      }
+    }
+
     "an error exists (not a numeric value has been specified for amended amount)" should {
       lazy val form: Form[UnderpaymentAmount] = underpaymentFormWithValues(fifty, nonNumericInput)
       lazy val view: Html = injectedView(
@@ -148,13 +169,13 @@ class ImportVATViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
-    }
+  }
 
   it should {
 
     lazy val form: Form[UnderpaymentAmount] = formProvider()
     lazy val view: Html = injectedView(form,
-      Call("GET", controllers.routes.EntryDetailsController.onLoad().toString)
+      Call("GET", controllers.routes.UnderpaymentTypeController.onLoad().toString)
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

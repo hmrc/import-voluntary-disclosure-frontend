@@ -44,13 +44,7 @@ class ImportVATController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImportVATPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(
-      view(
-        form,
-        backLink(request.userAnswers.get(UnderpaymentTypePage))
-      )
-    )
-    )
+    Future.successful(Ok(view(form, backLink(request.userAnswers.get(UnderpaymentTypePage)))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -77,8 +71,8 @@ class ImportVATController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink(underpaymentType: Option[UnderpaymentType]): Call =
     underpaymentType match {
-      case Some(UnderpaymentType(true, _, _)) => Call("GET",controllers.routes.CustomsDutyController.onLoad().toString)
-      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().toString)
+      case Some(UnderpaymentType(true, _, _)) => Call("GET",controllers.routes.CustomsDutyController.onLoad().url)
+      case _ => Call("GET",controllers.routes.UnderpaymentTypeController.onLoad().url)
     }
 
 }
