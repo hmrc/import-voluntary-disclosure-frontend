@@ -50,52 +50,51 @@ class CustomsDutyFormProviderSpec extends SpecBase {
           FormError(amendedKey, amendedNonEmptyMessageKey)
         )
       }
+    }
 
-      "no original value provided" should {
-        "result in a form with errors" in {
-          formBinder(formBuilder(amended = fifty)).errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
-        }
+    "no original value provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(amended = fifty)).errors.head mustBe FormError(originalKey, originalNonEmptyMessageKey)
       }
+    }
 
-      "no amended value provided" should {
-        "result in a form with errors" in {
-          formBinder(formBuilder(original = fifty)).errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
-        }
+    "no amended value provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(original = fifty)).errors.head mustBe FormError(amendedKey, amendedNonEmptyMessageKey)
       }
+    }
 
-      "non numeric values provided" should {
-        "result in a form with errors" in {
-          formBinder(formBuilder(original = nonNumeric, amended = nonNumeric)).errors mustBe Seq(
-            FormError(originalKey, originalNonNumberMessageKey),
-            FormError(amendedKey, amendedNonNumberMessageKey)
-          )
-        }
+    "non numeric values provided" should {
+      "result in a form with errors" in {
+        formBinder(formBuilder(original = nonNumeric, amended = nonNumeric)).errors mustBe Seq(
+          FormError(originalKey, originalNonNumberMessageKey),
+          FormError(amendedKey, amendedNonNumberMessageKey)
+        )
       }
+    }
 
-      "non numeric original value provided" should {
-        "result in a form with errors" in {
-          formBinder(
-            formBuilder(original = nonNumeric, amended = fifty)
-          ).errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
-        }
+    "non numeric original value provided" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = nonNumeric, amended = fifty)
+        ).errors.head mustBe FormError(originalKey, originalNonNumberMessageKey)
       }
+    }
 
-      "non numeric amended value provided" should {
-        "result in a form with errors" in {
-          formBinder(
-            formBuilder(original = fifty, amended = nonNumeric)
-          ).errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
-        }
+    "non numeric amended value provided" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = fifty, amended = nonNumeric)
+        ).errors.head mustBe FormError(amendedKey, amendedNonNumberMessageKey)
       }
+    }
 
-      "original amount exceeding the limit" should {
-        "result in a form with errors" in {
-          formBinder(
-            formBuilder(original = "10000000000", amended = fifty)
-          ).errors.head mustBe FormError(originalKey, messages("customsDuty.error.originalUpperLimit"))
-        }
+    "original amount exceeding the limit" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(original = "10000000000", amended = fifty)
+        ).errors.head mustBe FormError(originalKey, messages("customsDuty.error.originalUpperLimit"))
       }
-
     }
 
   }
