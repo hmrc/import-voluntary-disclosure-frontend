@@ -24,6 +24,7 @@ import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import views.data.UnderpaymentSummaryData._
 import views.html.UnderpaymentSummaryView
 
@@ -60,10 +61,11 @@ class UnderpaymentSummaryControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list for customs duty" in new Test {
-      val result = controller.summaryList(
+      val result: SummaryList = controller.summaryList(
         cdUnderpayment,
         UnderpaymentSummaryMessages.customsDutyTitle,
-        controllers.routes.UnderpaymentSummaryController.onLoad)
+        controllers.routes.UnderpaymentSummaryController.onLoad()
+      )
 
       result mustBe customsDuty.get
     }
