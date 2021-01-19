@@ -16,14 +16,12 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import models.UnderpaymentAmount
 import pages._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
-import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -33,18 +31,14 @@ import views.html.UnderpaymentSummaryView
 import scala.concurrent.Future
 
 @Singleton
-class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
+class UnderpaymentSummaryController @Inject()(identify: IdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
-                                              sessionRepository: SessionRepository,
-                                              appConfig: AppConfig,
                                               mcc: MessagesControllerComponents,
                                               view: UnderpaymentSummaryView)
   extends FrontendController(mcc) with I18nSupport {
 
-  implicit val config: AppConfig = appConfig
-
-  val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val customsDuty = request.userAnswers.get(CustomsDutyPage).map(
       summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.CustomsDutyController.onLoad))
@@ -63,17 +57,37 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.originalAmount")), classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"),
-          value = Value(content = HtmlContent(displayMoney(underpayment.original)), classes = "govuk-!-padding-bottom-0"),
-          actions = Some(Actions(items = Seq(ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))), classes = "govuk-!-padding-bottom-0")),
+          key = Key(
+            content = Text(messages("underpaymentSummary.originalAmount")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            content = HtmlContent(displayMoney(underpayment.original)),
+            classes = "govuk-!-padding-bottom-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          ),
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.amendedAmount")), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
-          value = Value(content = HtmlContent(displayMoney(underpayment.amended)), classes = "govuk-!-padding-top-0")
+          key = Key(
+            content = Text(messages("underpaymentSummary.amendedAmount")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(displayMoney(underpayment.amended)),
+            classes = "govuk-!-padding-top-0"
+          )
         ),
         SummaryListRow(
-          key = Key(content = Text(messages("underpaymentSummary.dueToHmrc", key)), classes = "govuk-!-width-two-thirds"),
+          key = Key(
+            content = Text(messages("underpaymentSummary.dueToHmrc", key)),
+            classes = "govuk-!-width-two-thirds"
+          ),
           value = Value(content = HtmlContent(displayMoney(underpayment.amended - underpayment.original))),
         )
       )

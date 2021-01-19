@@ -18,7 +18,7 @@
         govukSummaryList: GovukSummaryList,
         h1: components.h1,
         h2: components.h2,
-        button: components.button)
+        linkButton: components.linkButton)
 
 @(customsDuty: Option[SummaryList], importVat: Option[SummaryList], exciseDuty: Option[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
 
@@ -43,9 +43,10 @@
         @govukSummaryList(exciseDuty.get)
     }
 
-    <a href="@{
-        controllers.routes.UnderpaymentSummaryController.onLoad()
-    }" role="button" class="govuk-button">@messages("common.continue")</a>
+    @linkButton(
+        url = controllers.routes.UnderpaymentSummaryController.onLoad().url,
+        value = messages("common.continue")
+    )
 }
 
 @{

@@ -19,8 +19,6 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import messages.UnderpaymentSummaryMessages
-import mocks.config.MockAppConfig
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import pages._
 import play.api.http.Status
@@ -34,16 +32,14 @@ import scala.concurrent.Future
 
 class UnderpaymentSummaryControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: UnderpaymentSummaryView = app.injector.instanceOf[UnderpaymentSummaryView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    MockedSessionRepository.set(Future.successful(true))
-
     lazy val controller = new UnderpaymentSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, MockAppConfig, messagesControllerComponents, view)
+      messagesControllerComponents, view)
   }
 
   "GET /" should {
