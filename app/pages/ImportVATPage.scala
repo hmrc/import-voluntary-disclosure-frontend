@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.{Format, Json}
+import models.UnderpaymentAmount
+import play.api.libs.json.JsPath
 
-case class UnderpaymentAmount(original: BigDecimal,
-                              amended: BigDecimal)
+case object ImportVATPage extends QuestionPage[UnderpaymentAmount] {
 
-object UnderpaymentAmount {
-  implicit val format: Format[UnderpaymentAmount] = Json.format[UnderpaymentAmount]
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "import-vat"
+
 }
-

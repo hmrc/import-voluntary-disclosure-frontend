@@ -113,3 +113,39 @@ underpaymentType.error.required = Select if you have underpaid Customs Duty, Imp
 underpaymentType.customsDuty = Customs Duty
 underpaymentType.importVAT = Import VAT
 underpaymentType.exciseDuty = Excise Duty
+
+# Customs Duty page
+customsDuty.pageTitle = Customs Duty underpayment details
+customsDuty.pageHeader = Customs Duty underpayment details
+customsDuty.originalAmount = Original amount, in pounds
+customsDuty.amendedAmount = Amended amount, in pounds
+customsDuty.error.originalNonEmpty = Enter the original amount, in pounds
+customsDuty.error.originalNonNumber = Original amount must be a number like 7235 or 67.39
+customsDuty.error.originalUpperLimit = Original amount cannot be more than £9,999,999,999.99
+customsDuty.error.amendedNonEmpty = Enter the amended amount, in pounds
+customsDuty.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
+
+# Import VAT page
+importVAT.pageTitle = Import VAT underpayment details
+importVAT.pageHeader = Import VAT underpayment details
+importVAT.originalAmount = Original amount, in pounds
+importVAT.amendedAmount = Amended amount, in pounds
+importVAT.error.originalNonEmpty = Enter the original amount, in pounds
+importVAT.error.originalNonNumber = Original amount must be a number like 7235 or 67.39
+importVAT.error.originalUpperLimit = Original amount cannot be more than £9,999,999,999.99
+importVAT.error.amendedNonEmpty = Enter the amended amount, in pounds
+importVAT.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
+
+
+# Excise Duty page
+exciseDuty.pageTitle = Excise Duty underpayment details
+exciseDuty.pageHeader = Excise Duty underpayment details
+exciseDuty.originalAmount = Original amount, in pounds
+exciseDuty.amendedAmount = Amended amount, in pounds
+exciseDuty.error.originalNonEmpty = Enter the original amount, in pounds
+exciseDuty.error.originalNonNumber = Original amount must be a number like 7235 or 67.39
+exciseDuty.error.originalUpperLimit = Original amount cannot be more than £9,999,999,999.99
+exciseDuty.error.amendedNonEmpty = Enter the amended amount, in pounds
+exciseDuty.error.amendedNonNumber = Amended amount must be a number like 7235 or 67.39
+
+

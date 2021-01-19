@@ -16,38 +16,33 @@
 
 package controllers
 
-import config.AppConfig
+import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.EntryDetailsFormProvider
-import javax.inject.{Inject, Singleton}
-import models.EntryDetails
-import pages.EntryDetailsPage
+import forms.CustomsDutyFormProvider
+import models.UnderpaymentType
+import pages.{CustomsDutyPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.EntryDetailsView
+import views.html.CustomsDutyView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-@Singleton
-class EntryDetailsController @Inject()(identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       sessionRepository: SessionRepository,
-                                       appConfig: AppConfig,
-                                       mcc: MessagesControllerComponents,
-                                       formProvider: EntryDetailsFormProvider,
-                                       view: EntryDetailsView)
-  extends FrontendController(mcc) with I18nSupport {
+class CustomsDutyController @Inject()(identify: IdentifierAction,
+                                      getData: DataRetrievalAction,
+                                      requireData: DataRequiredAction,
+                                      sessionRepository: SessionRepository,
+                                      mcc: MessagesControllerComponents,
+                                      view: CustomsDutyView,
+                                      formProvider: CustomsDutyFormProvider
+                                     ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val form = request.userAnswers.get(EntryDetailsPage).fold(formProvider()) {
+    val form = request.userAnswers.get(CustomsDutyPage).fold(formProvider()) {
       formProvider().fill
     }
-
     Future.successful(Ok(view(form)))
   }
 
@@ -56,21 +51,20 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsDutyPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          redirect(value)
+          redirect(request.userAnswers.get(UnderpaymentTypePage))
         }
       }
     )
   }
 
-  private def redirect(entryDetails: EntryDetails): Result =
-    if (entryDetails.entryDate.isBefore(appConfig.euExitDate)) {
-      Redirect(controllers.routes.AcceptanceDateController.onLoad())
-    } else {
-      Redirect(controllers.routes.UnderpaymentTypeController.onLoad())
+  private[controllers] def redirect(underpaymentType: Option[UnderpaymentType]): Result =
+    underpaymentType match {
+      case Some(UnderpaymentType(_, true, _)) => Redirect(controllers.routes.ImportVATController.onLoad())
+      case Some(UnderpaymentType(_, _, true)) => Redirect(controllers.routes.ExciseDutyController.onLoad())
+      case _ => Redirect(controllers.routes.UnderpaymentSummaryController.onLoad())
     }
-
 
 }

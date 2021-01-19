@@ -47,13 +47,13 @@ class UnderpaymentSummaryController @Inject()(identity: IdentifierAction,
   val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
 
     val customsDuty = request.userAnswers.get(CustomsDutyPage).map(
-      summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
+      summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.CustomsDutyController.onLoad))
 
-    val importVat = request.userAnswers.get(ImportVatPage).map(
-      summaryList(_, Messages("underpaymentSummary.importVat.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
+    val importVat = request.userAnswers.get(ImportVATPage).map(
+      summaryList(_, Messages("underpaymentSummary.importVat.title"), controllers.routes.ImportVATController.onLoad))
 
     val exciseDuty = request.userAnswers.get(ExciseDutyPage).map(
-      summaryList(_, Messages("underpaymentSummary.exciseDuty.title"), controllers.routes.UnderpaymentSummaryController.onLoad))
+      summaryList(_, Messages("underpaymentSummary.exciseDuty.title"), controllers.routes.ExciseDutyController.onLoad))
 
     Future.successful(Ok(view(customsDuty, importVat, exciseDuty, controllers.routes.UnderpaymentTypeController.onLoad)))
   }

@@ -28,6 +28,15 @@ POST        /disclosure/when-entry-acceptance-date             controllers.Accep
 GET         /disclosure/what-duty-type-underpaid               controllers.UnderpaymentTypeController.onLoad
 POST        /disclosure/what-duty-type-underpaid               controllers.UnderpaymentTypeController.onSubmit
 
-GET         /disclosure/underpayment-amount-summary            controllers.UnderpaymentSummaryController.onLoad
-
 GET         /disclosure/supporting-documentation-format        controllers.SupportingDocController.onLoad
+
+GET         /disclosure/customs-duty-details                   controllers.CustomsDutyController.onLoad
+POST        /disclosure/customs-duty-details                   controllers.CustomsDutyController.onSubmit
+
+GET         /disclosure/import-vat-details                     controllers.ImportVATController.onLoad
+POST        /disclosure/import-vat-details                     controllers.ImportVATController.onSubmit
+
+GET         /disclosure/excise-duty-details                    controllers.ExciseDutyController.onLoad
+POST        /disclosure/excise-duty-details                    controllers.ExciseDutyController.onSubmit
+
+GET         /disclosure/underpayment-amount-summary            controllers.UnderpaymentSummaryController.onLoad

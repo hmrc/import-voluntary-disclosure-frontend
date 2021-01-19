@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import messages.UnderpaymentSummaryMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
-import models.{UnderpaymentAmount, UserAnswers}
+import models.UserAnswers
 import pages._
 import play.api.http.Status
 import play.api.mvc.Result
@@ -55,7 +55,7 @@ class UnderpaymentSummaryControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
         .set(CustomsDutyPage, cdUnderpayment).success.value
-        .set(ImportVatPage, ivUnderpayment).success.value
+        .set(ImportVATPage, ivUnderpayment).success.value
         .set(ExciseDutyPage, edUnderpayment).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
