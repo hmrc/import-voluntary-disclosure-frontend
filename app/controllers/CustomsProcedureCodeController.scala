@@ -17,7 +17,9 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.CustomsProcedureCodeFormProvider
 import javax.inject.Inject
+import pages.CustomsProcedureCodePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -27,15 +29,16 @@ class CustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                sessionRepository: SessionRepository,
-                                               mcc: MessagesControllerComponents)
+                                               mcc: MessagesControllerComponents,
+                                               formProvider: CustomsProcedureCodeFormProvider)
 
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    //    val form = request.userAnswers.get(AcceptanceDatePage).fold(formProvider()) {
-    //      formProvider().fill
-    //    }
+        val form = request.userAnswers.get(CustomsProcedureCodePage).fold(formProvider()) {
+          formProvider().fill
+        }
     //
     //    Future.successful(Ok(view(form)))
     ???
