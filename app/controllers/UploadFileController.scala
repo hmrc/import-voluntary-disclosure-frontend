@@ -49,6 +49,8 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
 
+    //Start the initiate journey
+
     Future.successful(Ok(view(form)))
   }
 

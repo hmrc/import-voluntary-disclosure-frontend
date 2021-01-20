@@ -57,6 +57,14 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val mayIncludeFiles: Seq[String] = config.get[Seq[String]]("uploads.mayIncludeFiles")
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
+  lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
+  lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
+  lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
+  lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
+  lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
+  lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
+  lazy val upScanAcceptedMimeTypes: String = allowedUploadFileTypes.mkString(",").toLowerCase
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -80,6 +88,13 @@ trait AppConfig extends FixedConfig {
   val mustIncludeFiles: Seq[String]
   val mayIncludeFiles: Seq[String]
   val fileSize: Int
+  val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String
+  val upScanSuccessRedirectForUser: String
+  val upScanErrorRedirectForUser: String
+  val upScanMinFileSize: Int
+  val upScanMaxFileSize: Int
+  val upScanInitiateBaseUrl: String
+  val upScanAcceptedMimeTypes: String
 }
 
 trait FixedConfig {
