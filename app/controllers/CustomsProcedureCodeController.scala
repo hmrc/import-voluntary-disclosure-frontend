@@ -26,6 +26,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.CustomsProcedureCodeView
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class CustomsProcedureCodeController @Inject()(identify: IdentifierAction,
@@ -49,18 +50,18 @@ class CustomsProcedureCodeController @Inject()(identify: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    //    formProvider().bindFromRequest().fold(
-    //      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-    //      value => {
-    //        for {
-    //          updatedAnswers <- Future.fromTry(request.userAnswers.set(AcceptanceDatePage, value))
-    //          _ <- sessionRepository.set(updatedAnswers)
-    //        } yield {
-    //          Redirect(controllers.routes.UnderpaymentTypeController.onLoad())
-    //        }
-    //      }
-    //    )
-    ???
+        formProvider().bindFromRequest().fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+          value => {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsProcedureCodePage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield {
+              Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
+            }
+          }
+        )
+
   }
 
 }
