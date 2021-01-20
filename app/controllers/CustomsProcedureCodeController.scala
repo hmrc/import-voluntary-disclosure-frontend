@@ -50,17 +50,17 @@ class CustomsProcedureCodeController @Inject()(identify: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-        formProvider().bindFromRequest().fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-          value => {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsProcedureCodePage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield {
-              Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
-            }
-          }
-        )
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsProcedureCodePage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
+        }
+      }
+    )
 
   }
 
