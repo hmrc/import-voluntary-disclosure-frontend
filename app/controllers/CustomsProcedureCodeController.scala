@@ -57,7 +57,11 @@ class CustomsProcedureCodeController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(CustomsProcedureCodePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
+          if (value) {
+            Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
+          } else {
+            Redirect(controllers.routes.UnderpaymentTypeController.onLoad())
+          }
         }
       }
     )
