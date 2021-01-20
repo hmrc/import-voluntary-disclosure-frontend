@@ -159,3 +159,12 @@ customsProcedureCode.pageTitle = Has the customs procedure code changed?
 customsProcedureCode.heading = Has the customs procedure code changed?
 customsProcedureCode.error.required = Select yes if the customs procedure code has changed
 
+# Upload File page
+uploadFile.pageTitle = Upload supporting documentation
+uploadFile.pageHeader = Upload supporting documentation
+uploadFile.oneFileAtATime = You need to upload each file one at a time.
+uploadFile.mustInclude = You must include:
+uploadFile.mayInclude = Include the following, if you have them:
+uploadFile.uploadFile = Upload a file
+uploadFile.error.noFileSelected = Select a file to upload
+

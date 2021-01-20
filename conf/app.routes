@@ -46,3 +46,6 @@ GET         /disclosure/enter-cpc                              controllers.Enter
 POST        /disclosure/enter-cpc                              controllers.EnterCustomsProcedureCodeController.onSubmit
 
 GET         /disclosure/underpayment-amount-summary            controllers.UnderpaymentSummaryController.onLoad
+
+GET         /disclosure/upload-file                            controllers.UploadFileController.onLoad
+POST        /disclosure/upload-file                            controllers.UploadFileController.onSubmit

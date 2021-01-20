@@ -53,6 +53,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
   lazy val allowedUploadFileTypes: Seq[String] = config.get[Seq[String]]("uploads.allowedFileTypes")
+  lazy val mustIncludeFiles: Seq[String] = config.get[Seq[String]]("uploads.mustIncludeFiles")
+  lazy val mayIncludeFiles: Seq[String] = config.get[Seq[String]]("uploads.mayIncludeFiles")
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
 }
@@ -75,6 +77,8 @@ trait AppConfig extends FixedConfig {
   val timeoutPeriod: Int
   val cacheTtl: Int
   val allowedUploadFileTypes: Seq[String]
+  val mustIncludeFiles: Seq[String]
+  val mayIncludeFiles: Seq[String]
   val fileSize: Int
 }
 

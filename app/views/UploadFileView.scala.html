@@ -1,0 +1,58 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import config.AppConfig
+
+@this(layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        errorSummary: components.errorSummary,
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets,
+        fileUpload: components.fileUpload,
+        button: components.button
+)
+
+@(form: Form[_])(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+
+@layout(pageTitle = messages("uploadFile.pageTitle")) {
+
+    @errorSummary(form.errors)
+
+    @h1(messages("uploadFile.pageHeader"))
+
+    @p {
+        @messages("uploadFile.mustInclude")
+    }
+
+    @bullets(appConfig.mustIncludeFiles.map(Html(_)))
+
+    @p {
+        @messages("uploadFile.mayInclude")
+    }
+
+    @bullets(appConfig.mayIncludeFiles.map(Html(_)))
+
+    @formHelper(action = controllers.routes.UploadFileController.onSubmit()) {
+        @fileUpload(form, "uploadFile.uploadFile", "filename")
+        @button("common.button.continue")
+    }
+}
+
+
+@{
+    //$COVERAGE-OFF$
+}
