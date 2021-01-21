@@ -17,7 +17,6 @@
 package connectors.httpParsers
 
 import base.SpecBase
-import connectors.httpParsers.upscan.UpScanInitiateHttpParser
 import models.{BadRequest, InvalidJson, UnexpectedFailure}
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import play.api.http.Status

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers.upscan
+package connectors.httpParsers
 
 import models.upscan.UpScanInitiateResponse
 import models.{BadRequest, ErrorResponse, InvalidJson, UnexpectedFailure}

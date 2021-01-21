@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import connectors.httpParsers.upscan.UpScanInitiateHttpParser.{UpScanInitiateResponseReads, UpscanInitiateResponse}
+import connectors.httpParsers.UpScanInitiateHttpParser.{UpScanInitiateResponseReads, UpscanInitiateResponse}
 import javax.inject.Inject
 import models.upscan.UpScanInitiateRequest
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
