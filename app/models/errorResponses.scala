@@ -16,10 +16,23 @@
 
 package models
 
-import play.api.libs.json.{Format, Json}
+import play.api.http.Status.BAD_REQUEST
 
-case class ErrorModel(status: Int, message: String)
-
-object ErrorModel {
-  implicit val format: Format[ErrorModel] = Json.format[ErrorModel]
+trait ErrorResponse {
+  val status: Int
+  val message: String
 }
+
+case class ErrorModel(status: Int, message: String) extends ErrorResponse
+
+case object InvalidJson extends ErrorResponse {
+  override val status = BAD_REQUEST
+  override val message = "Invalid JSON received"
+}
+
+case object BadRequest extends ErrorResponse {
+  override val status: Int = BAD_REQUEST
+  override val message: String = "Json body sent incorrect"
+}
+
+case class UnexpectedFailure(override val status: Int, override val message: String) extends ErrorResponse

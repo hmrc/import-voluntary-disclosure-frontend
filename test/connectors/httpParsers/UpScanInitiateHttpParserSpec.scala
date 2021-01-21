@@ -18,7 +18,7 @@ package connectors.httpParsers
 
 import base.SpecBase
 import connectors.httpParsers.upscan.UpScanInitiateHttpParser
-import connectors.httpParsers.upscan.UpScanInitiateHttpParser.{BadRequest, InvalidJson, UnexpectedFailure}
+import models.{BadRequest, InvalidJson, UnexpectedFailure}
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
@@ -26,16 +26,16 @@ import uk.gov.hmrc.http.HttpResponse
 
 class UpScanInitiateHttpParserSpec extends SpecBase {
 
-  class Test(status: Int, optJson: Option[JsValue] = None, responseHeaders: Map[String, Seq[String]] = Map.empty) {
+  class Test(status: Int, json: JsValue = Json.obj(), responseHeaders: Map[String, Seq[String]] = Map.empty) {
     private val httpMethod = "POST"
     private val url = "/"
-    val httpResponse = HttpResponse(status, optJson, responseHeaders)
+    val httpResponse: HttpResponse = HttpResponse(status, json.toString, responseHeaders)
 
     def readResponse: UpScanInitiateHttpParser.UpscanInitiateResponse =
       UpScanInitiateHttpParser.UpScanInitiateResponseReads.read(httpMethod, url, httpResponse)
   }
 
-  val validModel =  UpScanInitiateResponse(
+  val validModel: UpScanInitiateResponse =  UpScanInitiateResponse(
     Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
     UploadFormTemplate(
       "https://bucketName.s3.eu-west-2.amazonaws.com",
@@ -43,7 +43,7 @@ class UpScanInitiateHttpParserSpec extends SpecBase {
     )
   )
 
-  val exampleResponse = Json.parse(
+  val exampleResponse: JsValue = Json.parse(
     s""" {
        |    "reference": "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |    "uploadRequest": {
@@ -55,18 +55,19 @@ class UpScanInitiateHttpParserSpec extends SpecBase {
        |}
     """.stripMargin
   )
+
   "reads" should {
-    s"return model if ${Status.OK} + Json valid" in new Test(Status.OK, optJson = Some(exampleResponse)) {
+    s"return model if ${Status.OK} + Json valid" in new Test(Status.OK, exampleResponse) {
       readResponse mustBe Right(validModel)
     }
-    s"return Invalid Json if ${Status.OK} + json invalid" in new Test(Status.OK, optJson = Some(Json.obj())) {
+    s"return Invalid Json if ${Status.OK} + json invalid" in new Test(Status.OK) {
       readResponse mustBe Left(InvalidJson)
     }
     s"return $BadRequest if ${Status.BAD_REQUEST} returned" in new Test(Status.BAD_REQUEST) {
       readResponse mustBe Left(BadRequest)
     }
     s"return $UnexpectedFailure if random non Success status code returned" in new Test(Status.INTERNAL_SERVER_ERROR) {
-      readResponse mustBe Left(UnexpectedFailure(500, "Unexpected response, status 500 returned"))
+      readResponse mustBe Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "Unexpected response, status 500 returned"))
     }
   }
 }
