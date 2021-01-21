@@ -18,8 +18,8 @@ package forms
 
 import base.SpecBase
 import mocks.config.MockAppConfig
-import models.{TraderContactDetails, UnderpaymentAmount}
-import play.api.data.Form
+import models.TraderContactDetails
+import play.api.data.{Form, FormError}
 
 class TraderContactDetailsFormProviderSpec extends SpecBase {
 
@@ -29,8 +29,14 @@ class TraderContactDetailsFormProviderSpec extends SpecBase {
   private final val exampleName = "First Second"
   private final val exampleEmail = "email@email.com"
   private final val examplePhoneNumber = "0123456789"
+  private final val fullNameNonEmptyKey = "traderContactDetails.error.nameNonEmpty"
+  private final val emailNonEmptyKey = "traderContactDetails.error.emailNonEmpty"
+  private final val phoneNumberNonEmptyKey = "traderContactDetails.error.phoneNumberNonEmpty"
+  private final val fullNameTooShortKey = "traderContactDetails.error.nameMinLength"
+  private final val fullNameTooLongKey = "traderContactDetails.error.nameMaxLength"
+  private final val fullNameInvalidCharactersKey = "traderContactDetails.error.nameAllowableCharacters"
 
-  def formBuilder(fullName: String, email: String, phoneNumber: String): Map[String, String] = Map(
+  def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
     "fullName" -> fullName,
     "email" -> email,
     "phoneNumber" -> phoneNumber
@@ -39,9 +45,59 @@ class TraderContactDetailsFormProviderSpec extends SpecBase {
   def formBinder(formValues: Map[String, String] = Map(fullName -> "", email -> "", phoneNumber -> "")): Form[TraderContactDetails] =
     new TraderContactDetailsFormProvider()(MockAppConfig).apply().bind(formValues)
 
+  "Binding a form with invalid data" when {
+    "no values provided" should {
+      "result in a form with errors" in {
+        formBinder().errors mustBe Seq(
+          FormError(fullName, fullNameNonEmptyKey),
+          FormError(email, emailNonEmptyKey),
+          FormError(phoneNumber, phoneNumberNonEmptyKey)
+        )
+      }
+    }
+
+    "full name too short value" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(
+            fullName = "a",
+            email = exampleEmail,
+            phoneNumber = examplePhoneNumber
+          )
+        ).errors mustBe Seq(FormError(fullName, fullNameTooShortKey))
+      }
+    }
+
+    "full name too long value" should {
+      "result in a form with errors" in {
+        val longString = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        formBinder(
+          formBuilder(
+            fullName = longString,
+            email = exampleEmail,
+            phoneNumber = examplePhoneNumber
+          )
+        ).errors mustBe Seq(FormError(fullName, fullNameTooLongKey))
+      }
+    }
+
+    "full name contains invalid characters value" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(
+            fullName = "First Last/",
+            email = exampleEmail,
+            phoneNumber = examplePhoneNumber
+          )
+        ).errors mustBe Seq(FormError(fullName, fullNameInvalidCharactersKey, Seq("^[a-zA-Z '-]+$")))
+      }
+    }
+
+  }
+
 
   "Binding a form with valid data" should {
-    val form = formBinder(formBuilder(fullName = exampleName, email = exampleEmail, phoneNumber = examplePhoneNumber ))
+    val form = formBinder(formBuilder(fullName = exampleName, email = exampleEmail, phoneNumber = examplePhoneNumber))
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
