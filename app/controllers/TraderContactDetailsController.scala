@@ -18,12 +18,14 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.TraderContactDetailsFormProvider
+import pages.TraderContactDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TraderContactDetailsView
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class TraderContactDetailsController @Inject()(identify: IdentifierAction,
                                                getData: DataRetrievalAction,
@@ -34,7 +36,10 @@ class TraderContactDetailsController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
+    val form = request.userAnswers.get(TraderContactDetailsPage).fold(formProvider()) {
+      formProvider().fill
+    }
+    Future.successful(Ok(view(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
