@@ -20,16 +20,24 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.TraderContactDetailsFormProvider
 import mocks.repositories.MockSessionRepository
-import models.{TraderContactDetails, UnderpaymentAmount, UserAnswers}
+import models.{TraderContactDetails, UserAnswers}
 import pages.TraderContactDetailsPage
-import play.api.mvc.Result
+import play.api.http.Status
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.TraderContactDetailsView
-import play.api.http.Status
 
 import scala.concurrent.Future
 
 class TraderContactDetailsControllerSpec extends ControllerSpecBase {
+
+  private def fakeRequestGenerator(fullName: String, email: String, phoneNumber: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+    fakeRequest.withFormUrlEncodedBody(
+      "fullName" -> fullName,
+      "email" -> email,
+      "phoneNumber" -> phoneNumber
+    )
 
   trait Test extends MockSessionRepository {
     lazy val controller = new TraderContactDetailsController(
@@ -66,6 +74,56 @@ class TraderContactDetailsControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+  }
+
+  "POST /" when {
+
+    "payload contains valid data" should {
+
+      "return a SEE OTHER response when correct data is sent" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator(
+            fullName = "First",
+            email = "email@email.com",
+            phoneNumber = "0123456789"
+          )
+        )
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "update the UserAnswers in session" in new Test {
+        await(controller.onSubmit(
+          fakeRequestGenerator(
+            fullName = "First",
+            email = "email@email.com",
+            phoneNumber = "0123456789"
+          ))
+        )
+        MockedSessionRepository.verifyCalls()
+      }
+
+    }
+
+    "payload contains invalid data" should {
+
+      "return BAD REQUEST when original amount is exceeded" in new Test {
+        val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator(
+            fullName = "",
+            email = "",
+            phoneNumber = ""
+          )
+        )
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
+      "return BAD REQUEST" in new Test {
+        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
+    }
+
   }
 
 }
