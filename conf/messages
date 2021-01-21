@@ -161,6 +161,8 @@ customsProcedureCode.error.required = Select yes if the customs procedure code h
 
 # Trader Contact Details
 traderContactDetails.pageTitle = Enter contact details
+traderContactDetails.h1 = What are your contact details?
+traderContactDetails.p = We will only use these details if we have questions about this underpayment disclosure.
 traderContactDetails.error.nameNonEmpty = Enter a name
 traderContactDetails.error.emailNonEmpty = Enter an email address
 traderContactDetails.error.phoneNumberNonEmpty = Enter a UK telephone number
