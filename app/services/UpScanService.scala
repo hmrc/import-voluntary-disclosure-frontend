@@ -48,7 +48,10 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   def initiateNewJourney(upScanInitiateBody: UpScanInitiateRequest = buildInitiateRequest)
                         (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
     upScanConnector.postToInitiate(upScanInitiateBody).map {
-      case Right(upScanInitiateResponseModel: UpScanInitiateResponse) => upScanInitiateResponseModel
+      case Right(upScanInitiateResponse: UpScanInitiateResponse) => {
+        println(Console.RED + upScanInitiateResponse + Console.RESET)
+        upScanInitiateResponse
+      }
       case Left(e: ErrorResponse) => throw new InternalServerException(e.message)
     }
   }

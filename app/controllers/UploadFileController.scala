@@ -19,54 +19,52 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
-import javax.inject.{Inject, Singleton}
 import pages.UploadFilePage
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
-import repositories.SessionRepository
+import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UploadFileView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 
 
 @Singleton
 class UploadFileController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      requireData: DataRequiredAction,
-                                     sessionRepository: SessionRepository,
                                      mcc: MessagesControllerComponents,
                                      formProvider: UploadFileFormProvider,
+                                     upScanService: UpScanService,
                                      view: UploadFileView,
                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(key: Option[String] = None,
+             errorCode: Option[String] = None,
+             errorMessage: Option[String] = None,
+             errorResource: Option[String] = None,
+             errorRequestId: Option[String] = None
+            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val form = request.userAnswers.get(UploadFilePage).fold(formProvider()) {
       formProvider().fill
     }
 
-    //Start the initiate journey
+    val updatedForm =
+      if (errorMessage.isDefined)
+        form.withError("file", errorMessage.get)
+      else
+        form
 
-    Future.successful(Ok(view(form)))
+    upScanService.initiateNewJourney().map { response =>
+      Ok(view(updatedForm, response))
+        .addingToSession("UpscanReference" -> response.reference.value)
+//        .removingFromSession(SessionKeys.successRedirectForUser) // Why is this necessary
+//        .removingFromSession(SessionKeys.errorRedirectForUser) // Why is this necessary
+    }
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadFilePage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.routes.UploadFileController.onLoad())
-        }
-      }
-    )
-  }
 
 }

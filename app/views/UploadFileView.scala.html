@@ -15,6 +15,7 @@
  *@
 
 @import config.AppConfig
+@import models.upscan.UpScanInitiateResponse
 
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -22,11 +23,10 @@
         h1: components.h1,
         p: components.p,
         bullets: components.bullets,
-        fileUpload: components.fileUpload,
         button: components.button
 )
 
-@(form: Form[_])(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(form: Form[_], upScanResponse: UpScanInitiateResponse)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("uploadFile.pageTitle")) {
 
@@ -46,10 +46,32 @@
 
     @bullets(appConfig.mayIncludeFiles.map(Html(_)))
 
-    @formHelper(action = controllers.routes.UploadFileController.onSubmit()) {
-        @fileUpload(form, "uploadFile.uploadFile", "filename")
+    <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
+
+        <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
+           @upScanResponse.uploadFormTemplate.fields.map { row =>
+               <input type="hidden" name="@row._1" value="@row._2">
+           }
+
+           <label class="govuk-label" for="file">
+                @messages("uploadFile.uploadAFile")
+           </label>
+
+            @if(form.hasErrors) {
+                <span id="value-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span>
+                    @{form.errors.map(err => messages(err.message, err.args:_*))}
+                </span>
+            }
+
+           <input class="govuk-file-upload" id="file" name="file" type="file"
+                accept="@appConfig.upScanAcceptedMimeTypes"
+                data-max-file-size="@appConfig.upScanMaxFileSize"
+                data-min-file-size="@appConfig.upScanMinFileSize">
+       </div>
+
         @button("common.button.continue")
-    }
+    </form>
 }
 
 
