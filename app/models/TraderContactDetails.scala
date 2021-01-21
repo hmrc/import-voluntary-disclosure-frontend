@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class TraderContactDetails(fullName: String, phoneNumber: String, email: String)
+case class TraderContactDetails(fullName: String, email: String, phoneNumber: String)
 
 object TraderContactDetails {
   implicit val format = Json.format[UnderpaymentAmount]
