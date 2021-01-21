@@ -20,8 +20,7 @@ import config.AppConfig
 import forms.mappings.Mappings
 import models.TraderContactDetails
 import play.api.data.Form
-import play.api.data.Forms.{email, mapping}
-import play.api.data.validation.Constraints
+import play.api.data.Forms.mapping
 import play.api.i18n.Messages
 
 import javax.inject.Inject
@@ -29,19 +28,29 @@ import javax.inject.Inject
 
 class TraderContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
+  val phoneNumberRegex = "^(\\+)?[0-9 ]{1,15}$"
+
   def apply()(implicit messages: Messages): Form[TraderContactDetails] =
     Form(
       mapping(
-        "fullName" -> text("traderContactDetails.error.nameNonEmpty") // need a regex for the name
+        "fullName" -> text("traderContactDetails.error.nameNonEmpty")
           .verifying("traderContactDetails.error.nameMinLength", value => value.length >= 2)
-          .verifying("traderContactDetails.error.nameMaxLength", value => value.length <= 50),
+          .verifying("traderContactDetails.error.nameMaxLength", value => value.length <= 50)
+          .verifying(regexp("^[a-zA-Z '-]+$", "traderContactDetails.error.nameAllowableCharacters")),
         "email" -> text("traderContactDetails.error.emailNonEmpty")
           .verifying(
             regexp(
               "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
-              "traderContactDetails.error.emailInvalidFormat")
+              "traderContactDetails.error.emailInvalidFormat"
+            )
           ),
         "phoneNumber" -> text("traderContactDetails.error.phoneNumberNonEmpty")
+          .verifying(
+            regexp(
+              phoneNumberRegex,
+              "traderContactDetails.error.phoneNumberInvalidFormat"
+            )
+          )
       )(TraderContactDetails.apply)(TraderContactDetails.unapply)
     )
 

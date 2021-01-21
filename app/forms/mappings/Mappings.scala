@@ -63,7 +63,4 @@ trait Mappings extends Formatters with Constraints {
                               invalidKey: String = "error.invalid")(implicit ev: Enumerable[A]): FieldMapping[A] =
     of(enumerableFormatter[A](requiredKey, invalidKey))
 
-  protected def email(errorKey: String = "error.required"): FieldMapping[String] =
-    of(stringFormatter(Constraints.emailAddress(errorKey)))
-
 }
