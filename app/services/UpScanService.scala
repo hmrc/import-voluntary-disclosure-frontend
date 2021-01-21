@@ -29,29 +29,18 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
                               appConfig: AppConfig)
                              (implicit ec: ExecutionContext) {
 
-  lazy val callbackUrlForSuccessOrFailureOfFileUpload: String = appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
-  lazy val successRedirectForUser: String = appConfig.upScanSuccessRedirectForUser
-  lazy val errorRedirectForUser: String = appConfig.upScanErrorRedirectForUser
-  lazy val minFileSize: Int = appConfig.upScanMinFileSize
-  lazy val maxFileSize: Int = appConfig.upScanMaxFileSize
-
-  lazy val buildInitiateRequest: UpScanInitiateRequest = {
-    UpScanInitiateRequest(
-      callbackUrlForSuccessOrFailureOfFileUpload,
-      successRedirectForUser,
-      errorRedirectForUser,
-      minFileSize,
-      maxFileSize
-    )
-  }
+  lazy val buildInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
+    appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
+    appConfig.upScanSuccessRedirectForUser,
+    appConfig.upScanErrorRedirectForUser,
+    appConfig.upScanMinFileSize,
+    appConfig.upScanMaxFileSize
+  )
 
   def initiateNewJourney(upScanInitiateBody: UpScanInitiateRequest = buildInitiateRequest)
                         (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
     upScanConnector.postToInitiate(upScanInitiateBody).map {
-      case Right(upScanInitiateResponse: UpScanInitiateResponse) => {
-        println(Console.RED + upScanInitiateResponse + Console.RESET)
-        upScanInitiateResponse
-      }
+      case Right(upScanInitiateResponse: UpScanInitiateResponse) => upScanInitiateResponse
       case Left(e: ErrorResponse) => throw new InternalServerException(e.message)
     }
   }
