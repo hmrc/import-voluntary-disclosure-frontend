@@ -17,16 +17,20 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.TraderContactDetailsFormProvider
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.TraderContactDetailsView
 
 import javax.inject.Inject
 
 class TraderContactDetailsController @Inject()(identify: IdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
-                                               mcc: MessagesControllerComponents)
+                                               mcc: MessagesControllerComponents,
+                                               formProvider: TraderContactDetailsFormProvider,
+                                               view: TraderContactDetailsView)
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
