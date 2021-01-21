@@ -21,6 +21,7 @@ import forms.mappings.Mappings
 import models.TraderContactDetails
 import play.api.data.Form
 import play.api.data.Forms.{email, mapping}
+import play.api.data.validation.Constraints
 import play.api.i18n.Messages
 
 import javax.inject.Inject
@@ -31,8 +32,15 @@ class TraderContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) 
   def apply()(implicit messages: Messages): Form[TraderContactDetails] =
     Form(
       mapping(
-        "fullName" -> text("traderContactDetails.error.nameNonEmpty"),
-        "email" -> email,
+        "fullName" -> text("traderContactDetails.error.nameNonEmpty") // need a regex for the name
+          .verifying("traderContactDetails.error.nameMinLength", value => value.length >= 2)
+          .verifying("traderContactDetails.error.nameMaxLength", value => value.length <= 50),
+        "email" -> text("traderContactDetails.error.emailNonEmpty")
+          .verifying(
+            regexp(
+              "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+              "traderContactDetails.error.emailInvalidFormat")
+          ),
         "phoneNumber" -> text("traderContactDetails.error.phoneNumberNonEmpty")
       )(TraderContactDetails.apply)(TraderContactDetails.unapply)
     )
