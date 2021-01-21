@@ -21,15 +21,18 @@ import forms.TraderContactDetailsFormProvider
 import pages.TraderContactDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TraderContactDetailsView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class TraderContactDetailsController @Inject()(identify: IdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
+                                               sessionRepository: SessionRepository,
                                                mcc: MessagesControllerComponents,
                                                formProvider: TraderContactDetailsFormProvider,
                                                view: TraderContactDetailsView)
@@ -43,7 +46,17 @@ class TraderContactDetailsController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderContactDetailsPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.TraderContactDetailsController.onLoad())
+        }
+      }
+    )
   }
 
 }
