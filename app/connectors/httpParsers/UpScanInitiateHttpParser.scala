@@ -36,7 +36,7 @@ object UpScanInitiateHttpParser extends Logging {
             case _ => Left(InvalidJson)
           }
         case BAD_REQUEST =>
-          logger.debug(s"Bad request returned with reason: ${response.body}")
+          logger.warn(s"Bad request returned with reason: ${response.body}")
           Left(BadRequest)
         case status =>
           logger.warn(s"Unexpected response, status $status returned")

@@ -19,15 +19,13 @@ package services
 import com.google.inject.Inject
 import config.AppConfig
 import connectors.UpScanConnector
-import models.ErrorResponse
 import models.upscan.{UpScanInitiateRequest, UpScanInitiateResponse}
 import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class UpScanService @Inject()(upScanConnector: UpScanConnector,
-                              appConfig: AppConfig)
-                             (implicit ec: ExecutionContext) {
+                              appConfig: AppConfig) {
 
   lazy val buildInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
     appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
@@ -40,8 +38,8 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   def initiateNewJourney(upScanInitiateBody: UpScanInitiateRequest = buildInitiateRequest)
                         (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
     upScanConnector.postToInitiate(upScanInitiateBody).map {
-      case Right(upScanInitiateResponse: UpScanInitiateResponse) => upScanInitiateResponse
-      case Left(e: ErrorResponse) => throw new InternalServerException(e.message)
+      case Right(upScanInitiateResponse) => upScanInitiateResponse
+      case Left(error) => throw new InternalServerException(error.message)
     }
   }
 
