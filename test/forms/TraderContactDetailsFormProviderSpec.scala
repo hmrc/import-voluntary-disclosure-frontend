@@ -35,6 +35,11 @@ class TraderContactDetailsFormProviderSpec extends SpecBase {
   private final val fullNameTooShortKey = "traderContactDetails.error.nameMinLength"
   private final val fullNameTooLongKey = "traderContactDetails.error.nameMaxLength"
   private final val fullNameInvalidCharactersKey = "traderContactDetails.error.nameAllowableCharacters"
+  private final val emailInvalidFormatKey = "traderContactDetails.error.emailInvalidFormat"
+  private final val phoneNumberInvalidFormatKey = "traderContactDetails.error.phoneNumberInvalidFormat"
+  private final val emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+  private final val phoneRegex = "^(\\+)?[0-9 ]{1,15}$"
+  private final val nameRegex = "^[a-zA-Z '-]+$"
 
   def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
     "fullName" -> fullName,
@@ -89,7 +94,31 @@ class TraderContactDetailsFormProviderSpec extends SpecBase {
             email = exampleEmail,
             phoneNumber = examplePhoneNumber
           )
-        ).errors mustBe Seq(FormError(fullName, fullNameInvalidCharactersKey, Seq("^[a-zA-Z '-]+$")))
+        ).errors mustBe Seq(FormError(fullName, fullNameInvalidCharactersKey, Seq(nameRegex)))
+      }
+    }
+
+    "email address doesn't adhere to the standard format" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(
+            fullName = exampleName,
+            email = "email.com",
+            phoneNumber = examplePhoneNumber
+          )
+        ).errors mustBe Seq(FormError(email, emailInvalidFormatKey, Seq(emailRegex)))
+      }
+    }
+
+    "phone number doesn't adhere to the standard format" should {
+      "result in a form with errors" in {
+        formBinder(
+          formBuilder(
+            fullName = exampleName,
+            email = exampleEmail,
+            phoneNumber = "++0123456789"
+          )
+        ).errors mustBe Seq(FormError(phoneNumber, phoneNumberInvalidFormatKey, Seq(phoneRegex)))
       }
     }
 
