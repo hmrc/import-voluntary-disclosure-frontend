@@ -20,8 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.TraderContactDetailsFormProvider
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
+import models.{TraderContactDetails, UnderpaymentAmount, UserAnswers}
+import pages.TraderContactDetailsPage
+import play.api.mvc.Result
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.TraderContactDetailsView
+import play.api.http.Status
 
 import scala.concurrent.Future
 
@@ -43,6 +47,25 @@ class TraderContactDetailsControllerSpec extends ControllerSpecBase {
     val formProvider: TraderContactDetailsFormProvider = injector.instanceOf[TraderContactDetailsFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: TraderContactDetailsFormProvider = formProvider
+  }
+
+  "GET /" when {
+    "return OK" in new Test {
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] = Option(
+        UserAnswers("some-cred-id").set(
+          TraderContactDetailsPage,
+          TraderContactDetails("First Second", "email@email.com", "+1234567890")
+        ).success.value
+      )
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
   }
 
 }
