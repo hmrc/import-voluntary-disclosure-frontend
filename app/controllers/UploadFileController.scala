@@ -18,8 +18,10 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.upscan._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
+import repositories.FileUploadRepository
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UploadFileView
@@ -34,6 +36,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      requireData: DataRequiredAction,
                                      mcc: MessagesControllerComponents,
+                                     fileUploadRepository: FileUploadRepository,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
                                      implicit val appConfig: AppConfig)
@@ -67,18 +70,17 @@ class UploadFileController @Inject()(identify: IdentifierAction,
           )
       )
     } else {
-      // get the upscan reference from session
-      // create entry in mongo file repository using upscan ref and cred id
-      // check session ref is the same as the key returned by upscan
-
-      // Redirect to polling/inProgress page
-      // Add delay to give upscan time to process file
-      Future.successful(
-        Redirect(controllers.routes.UploadFileController.onLoad)
-          .flashing(
-            "key" -> key.getOrElse("")
-          )
-      )
+      key match {
+        case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, request.credId)).map { _ =>
+          // Redirect to polling/inProgress page
+          // Add delay to give upscan time to process file
+          Redirect(controllers.routes.UploadFileController.onLoad)
+            .flashing(
+              "key" -> key
+            )
+        }
+        case _ => throw new RuntimeException("No key returned for successful upload")
+      }
     }
   }
 

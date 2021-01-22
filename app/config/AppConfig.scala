@@ -65,6 +65,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
   lazy val upScanAcceptedMimeTypes: String = allowedUploadFileTypes.mkString(",").toLowerCase
 
+  lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 }
 
 trait AppConfig extends FixedConfig {
@@ -95,6 +96,8 @@ trait AppConfig extends FixedConfig {
   val upScanMaxFileSize: Int
   val upScanInitiateBaseUrl: String
   val upScanAcceptedMimeTypes: String
+
+  val fileRepositoryTtl: Int
 }
 
 trait FixedConfig {
