@@ -28,7 +28,9 @@ import javax.inject.Inject
 
 class TraderContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
+  val fullNameRegex = "^[a-zA-Z '-]+$"
   val phoneNumberRegex = "^(\\+)?[0-9 ]{1,15}$"
+  val emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
 
   def apply()(implicit messages: Messages): Form[TraderContactDetails] =
     Form(
@@ -36,11 +38,11 @@ class TraderContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) 
         "fullName" -> text("traderContactDetails.error.nameNonEmpty")
           .verifying("traderContactDetails.error.nameMinLength", value => value.length >= 2)
           .verifying("traderContactDetails.error.nameMaxLength", value => value.length <= 50)
-          .verifying(regexp("^[a-zA-Z '-]+$", "traderContactDetails.error.nameAllowableCharacters")),
+          .verifying(regexp(fullNameRegex, "traderContactDetails.error.nameAllowableCharacters")),
         "email" -> text("traderContactDetails.error.emailNonEmpty")
           .verifying(
             regexp(
-              "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
+              emailRegex,
               "traderContactDetails.error.emailInvalidFormat"
             )
           ),
