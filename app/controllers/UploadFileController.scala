@@ -45,7 +45,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     upScanService.initiateNewJourney().map { response =>
-      Ok(view(response))
+      Ok(view(response, controllers.routes.SupportingDocController.onLoad))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }

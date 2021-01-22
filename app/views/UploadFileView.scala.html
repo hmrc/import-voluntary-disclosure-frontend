@@ -24,9 +24,12 @@
         button: components.button
 )
 
-@(upScanResponse: UpScanInitiateResponse)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(upScanResponse: UpScanInitiateResponse, backLink: Call)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
-@layout(pageTitle = messages("uploadFile.pageTitle")) {
+@layout(
+    pageTitle = messages("uploadFile.pageTitle"),
+    customBackLinkUrl = Some(backLink)
+) {
 
     @h1(messages("uploadFile.pageHeader"))
 
