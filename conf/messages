@@ -167,4 +167,8 @@ uploadFile.mustInclude = You must include:
 uploadFile.mayInclude = Include the following, if you have them:
 uploadFile.uploadAFile = Upload a file
 uploadFile.error.noFileSelected = Select a file to upload
-
+uploadFile.error.pageTitle = Errors on file upload
+uploadFile.error.pageHeader = Errors on file upload
+uploadFile.error.instructions = The above errors were experienced when uploading the file. Return to the Upload supporting documentation page and retry.
+uploadFile.error.retry = Retry
+uploadFile.error.unknown = Unknown error with upload file

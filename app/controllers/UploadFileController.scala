@@ -18,8 +18,6 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.UploadFileFormProvider
-import pages.UploadFilePage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.UpScanService
@@ -28,6 +26,7 @@ import views.html.UploadFileView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 @Singleton
@@ -35,36 +34,52 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      requireData: DataRequiredAction,
                                      mcc: MessagesControllerComponents,
-                                     formProvider: UploadFileFormProvider,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  def onLoad(key: Option[String] = None,
-             errorCode: Option[String] = None,
-             errorMessage: Option[String] = None,
-             errorResource: Option[String] = None,
-             errorRequestId: Option[String] = None
-            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val form = request.userAnswers.get(UploadFilePage).fold(formProvider()) {
-      formProvider().fill
-    }
-
-    val updatedForm =
-      if (errorMessage.isDefined)
-        form.withError("file", errorMessage.get)
-      else
-        form
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     upScanService.initiateNewJourney().map { response =>
-      Ok(view(updatedForm, response))
+      Ok(view(response))
+        .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
-//        .removingFromSession(SessionKeys.successRedirectForUser) // Why is this necessary
-//        .removingFromSession(SessionKeys.errorRedirectForUser) // Why is this necessary
     }
   }
 
+  def upscanResponseHandler(key: Option[String] = None,
+                            errorCode: Option[String] = None,
+                            errorMessage: Option[String] = None,
+                            errorResource: Option[String] = None,
+                            errorRequestId: Option[String] = None
+                           ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+
+    if (errorCode.isDefined) {
+      Future.successful(
+        Redirect(controllers.routes.UploadFileController.onLoad)
+          .flashing(
+            "key" -> key.getOrElse(""),
+            "errorCode" -> errorCode.getOrElse(""),
+            "errorMessage" -> errorMessage.getOrElse(""),
+            "errorResource" -> errorResource.getOrElse(""),
+            "errorRequestId" -> errorRequestId.getOrElse("")
+          )
+      )
+    } else {
+      // get the upscan reference from session
+      // create entry in mongo file repository using upscan ref and cred id
+      // check session ref is the same as the key returned by upscan
+
+      // Redirect to polling/inProgress page
+      // Add delay to give upscan time to process file
+      Future.successful(
+        Redirect(controllers.routes.UploadFileController.onLoad)
+          .flashing(
+            "key" -> key.getOrElse("")
+          )
+      )
+    }
+  }
 
 }
