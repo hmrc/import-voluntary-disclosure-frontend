@@ -49,3 +49,7 @@ GET         /disclosure/underpayment-amount-summary            controllers.Under
 
 GET         /disclosure/importer-contact-details               controllers.TraderContactDetailsController.onLoad
 POST        /disclosure/importer-contact-details               controllers.TraderContactDetailsController.onSubmit
+
+GET         /disclosure/paying-by-deferment                    controllers.DefermentController.onLoad
+POST        /disclosure/paying-by-deferment                    controllers.DefermentController.onSubmit
+
