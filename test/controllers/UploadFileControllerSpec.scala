@@ -38,19 +38,25 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    MockedFileUploadRepository.updateRecord(Future.successful(true))
-    MockedUpScanService.initiateNewJourney(
-      Future.successful(UpScanInitiateResponse(
-        Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
-        UploadFormTemplate(
-          "https://bucketName.s3.eu-west-2.amazonaws.com",
-          Map("Content-Type" -> "application/xml")
-        )
-      ))
-    )
+    def setupMocks():Unit = {
+      MockedFileUploadRepository.updateRecord(Future.successful(true))
 
-    lazy val controller = new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, mockFileUploadRepository, mockUpScanService, uploadFileView, MockAppConfig)
+      MockedUpScanService.initiateNewJourney(
+        Future.successful(UpScanInitiateResponse(
+          Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
+          UploadFormTemplate(
+            "https://bucketName.s3.eu-west-2.amazonaws.com",
+            Map("Content-Type" -> "application/xml")
+          )
+        ))
+      )
+    }
+
+    lazy val controller = {
+      setupMocks()
+      new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
+        messagesControllerComponents, mockFileUploadRepository, mockUpScanService, uploadFileView, MockAppConfig)
+    }
   }
 
   "GET onLoad" should {
@@ -89,6 +95,9 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
       }
       "for a valid key, create record in file Repository" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.updateRecord(Future.successful(true))
+        }
         val result = await(controller.upscanResponseHandler(
           Some("key"), None, None, None, None
         )(fakeRequest))

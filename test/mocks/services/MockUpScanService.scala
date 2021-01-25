@@ -33,7 +33,6 @@ trait MockUpScanService extends MockFactory {
       (mockUpScanService.initiateNewJourney()(_: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
         .returns(response)
-        .noMoreThanOnce
     }
   }
 
