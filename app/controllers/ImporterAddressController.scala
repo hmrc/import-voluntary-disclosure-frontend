@@ -21,17 +21,21 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.ImporterAddressView
+
+import scala.concurrent.Future
 
 class ImporterAddressController @Inject()(identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
-                                          mcc: MessagesControllerComponents
+                                          mcc: MessagesControllerComponents,
+                                          view: ImporterAddressView
                                          )
   extends FrontendController(mcc) with I18nSupport {
 
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
+    Future.successful(Ok(view(???)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
