@@ -19,6 +19,7 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterAddressFormProvider
+import models.TraderAddress
 import pages.ImporterAddressPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -39,17 +40,23 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
                                          )
   extends FrontendController(mcc) with I18nSupport {
 
+  val traderAddress: TraderAddress = TraderAddress(
+    streetAndNumber = "99 Avenue Road",
+    city = "Anyold Town",
+    postalCode = "99JZ 1AA",
+    countryCode = "United Kingdom"
+  )
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, traderAddress)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))

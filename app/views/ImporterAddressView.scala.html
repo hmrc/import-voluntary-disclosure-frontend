@@ -23,12 +23,12 @@
         yesNoRadio: components.yesNoRadio
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], traderAddress: TraderAddress)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("importerAddress.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = None) {
+    customBackLinkUrl = Some(controllers.routes.TraderContactDetailsController.onLoad)) {
 
     @errorSummary(form.errors)
 
@@ -36,12 +36,11 @@
 
     @p(content = Html(messages("importerAddress.p")))
 
-    @p(content =
-        Html(
-            "99 Avenue Road" + "<br/>" +
-            "99 Avenue Road" + "<br/>" +
-            "99 Avenue Road" + "<br/>" +
-            "99 Avenue Road" + "<br/>"
+    @p(content = Html(
+        traderAddress.streetAndNumber + "<br/>" +
+        traderAddress.city + "<br/>" +
+        traderAddress.postalCode + "<br/>" +
+        traderAddress.countryCode
         )
     )
 
