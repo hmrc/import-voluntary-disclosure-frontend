@@ -22,14 +22,17 @@ import forms.ImporterAddressFormProvider
 import pages.ImporterAddressPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterAddressView
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class ImporterAddressController @Inject()(identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
+                                          sessionRepository: SessionRepository,
                                           mcc: MessagesControllerComponents,
                                           formProvider: ImporterAddressFormProvider,
                                           view: ImporterAddressView
@@ -45,7 +48,21 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if (value) {
+            Redirect(controllers.routes.DefermentController.onLoad())
+          } else {
+            Redirect(controllers.routes.ImporterAddressController.onLoad()) // address lookup
+          }
+        }
+      }
+    )
   }
 
 }
