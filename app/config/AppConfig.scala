@@ -55,6 +55,9 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val allowedUploadFileTypes: Seq[String] = config.get[Seq[String]]("uploads.allowedFileTypes")
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
+  lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
+  lazy val importVoluntaryDisclosureSubmissionApi: String = servicesConfig.baseUrl("urls.importVoluntaryDisclosureSubmissionUri")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -76,6 +79,8 @@ trait AppConfig extends FixedConfig {
   val cacheTtl: Int
   val allowedUploadFileTypes: Seq[String]
   val fileSize: Int
+  val importVoluntaryDisclosureSubmission: String
+  val importVoluntaryDisclosureSubmissionApi: String
 }
 
 trait FixedConfig {
