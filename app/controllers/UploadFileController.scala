@@ -20,6 +20,7 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.upscan._
 import play.api.i18n.I18nSupport
+import play.api.libs.json.JsValue
 import play.api.mvc._
 import repositories.FileUploadRepository
 import services.UpScanService
@@ -71,7 +72,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       )
     } else {
       key match {
-        case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, request.credId)).map { _ =>
+        case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
           // Redirect to polling/inProgress page
           // Add delay to give upscan time to process file
           Redirect(controllers.routes.UploadFileController.onLoad)
@@ -81,6 +82,31 @@ class UploadFileController @Inject()(identify: IdentifierAction,
         }
         case _ => throw new RuntimeException("No key returned for successful upload")
       }
+    }
+  }
+
+  def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+    withJsonBody[FileUpload] { fileUploadResponse =>
+      fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
+        if (isOk)
+          NoContent
+        else {
+          // Failed to write to mongo
+          InternalServerError
+        }
+      }
+    }
+  }
+
+  private[controllers] def deriveFileStatus(fileUpload: FileUpload): FileUpload = {
+    fileUpload.failureDetails match {
+      case Some(details) if(details.failureReason=="QUARANTINE") =>
+        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_QUARANTINE))
+      case Some(details) if(details.failureReason=="REJECTED") =>
+        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_REJECTED))
+      case Some(details) =>
+        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_UNKNOWN))
+      case None => fileUpload
     }
   }
 
