@@ -53,3 +53,5 @@ POST        /disclosure/importer-contact-details               controllers.Trade
 GET         /disclosure/paying-by-deferment                    controllers.DefermentController.onLoad
 POST        /disclosure/paying-by-deferment                    controllers.DefermentController.onSubmit
 
+GET         /disclosure/importer-address                       controllers.ImporterAddressController.onLoad
+POST        /disclosure/importer-address                       controllers.ImporterAddressController.onSubmit
