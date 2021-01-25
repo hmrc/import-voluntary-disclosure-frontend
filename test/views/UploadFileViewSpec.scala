@@ -40,6 +40,14 @@ class UploadFileViewSpec extends ViewBaseSpec {
     s"have the correct form action" in {
       elementAttributes("form").get("action").get mustBe initiateResponse.uploadFormTemplate.href
     }
+
+    s"have the correct file upload control" in {
+      element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
+    }
+
+    s"have the correct file upload control mime types" in {
+      element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedMimeTypes
+    }
   }
 
   it should {
@@ -81,15 +89,6 @@ class UploadFileViewSpec extends ViewBaseSpec {
     s"have the correct text for optional file bullet 2" in {
       elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadFileMessages.mayIncludeFile2
     }
-
-    s"have the correct file upload control" in {
-      element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
-    }
-
-    s"have the correct file upload control mime types" in {
-      element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedMimeTypes
-    }
-
 
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe UploadFileMessages.continue

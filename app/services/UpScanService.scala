@@ -35,9 +35,8 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
     appConfig.upScanMaxFileSize
   )
 
-  def initiateNewJourney(upScanInitiateBody: UpScanInitiateRequest = buildInitiateRequest)
-                        (implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
-    upScanConnector.postToInitiate(upScanInitiateBody).map {
+  def initiateNewJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
+    upScanConnector.postToInitiate(buildInitiateRequest).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
       case Left(error) => throw new InternalServerException(error.message)
     }
