@@ -18,6 +18,8 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.ImporterAddressFormProvider
+import pages.ImporterAddressPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -29,13 +31,17 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           mcc: MessagesControllerComponents,
+                                          formProvider: ImporterAddressFormProvider,
                                           view: ImporterAddressView
                                          )
   extends FrontendController(mcc) with I18nSupport {
 
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(???)))
+    val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
+      formProvider().fill
+    }
+    Future.successful(Ok(view(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
