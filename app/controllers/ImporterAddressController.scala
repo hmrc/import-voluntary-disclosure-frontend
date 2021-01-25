@@ -17,46 +17,50 @@
 package controllers
 
 import com.google.inject.Inject
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterAddressFormProvider
-import models.TraderAddress
+import models.{ErrorModel, TraderAddress}
 import pages.ImporterAddressPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.ImporterAddressService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterAddressView
 
+import javax.inject.Singleton
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+@Singleton
 class ImporterAddressController @Inject()(identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           sessionRepository: SessionRepository,
+                                          importerAddressService: ImporterAddressService,
+                                          val errorHandler: ErrorHandler,
                                           mcc: MessagesControllerComponents,
                                           formProvider: ImporterAddressFormProvider,
                                           view: ImporterAddressView
                                          )
   extends FrontendController(mcc) with I18nSupport {
 
-  val traderAddress: TraderAddress = TraderAddress(
-    streetAndNumber = "99 Avenue Road",
-    city = "Anyold Town",
-    postalCode = "99JZ 1AA",
-    countryCode = "United Kingdom"
-  )
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, traderAddress)))
+    for ( fullAddress <- importerAddressService.retrieveAddress("")) yield {
+      fullAddress match {
+        case Right(TraderAddress(_, _, _, _)) => Ok(view(form, fullAddress.right.get))
+        case Left(ErrorModel(_,_)) => Ok("")
+      }
+    }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, TraderAddress(Some(""),Some(""),Some(""),Some(""))))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))

@@ -16,11 +16,23 @@
 
 package models
 
-import play.api.libs.json.{Format, Json}
+import play.api.libs.json.{Format, Json, Reads, _}
 
-case class TraderAddress(streetAndNumber: String, city: String, postalCode: String, countryCode: String)
+case class TraderAddress(streetAndNumber: Option[String], city: Option[String], postalCode: Option[String], countryCode: Option[String])
 
 object TraderAddress {
+
+  val reads: Reads[TraderAddress] = for {
+    streetAndNumber <- (__ \\ "streetAndNumber").readNullable[String]
+    city <- (__ \\ "city").readNullable[String]
+    postalCode <- (__ \\ "postalCode").readNullable[String]
+    countryCode <- (__ \\ "countryCode").readNullable[String]
+  } yield {
+    (streetAndNumber, city, postalCode, countryCode) match {
+      case (None, None, None, None) => TraderAddress(Some(""), Some(""), None, Some(""))
+      case (_, _, _, _) => TraderAddress(streetAndNumber, city, postalCode, countryCode)
+    }
+  }
 
   implicit val format: Format[TraderAddress] = Json.format[TraderAddress]
 

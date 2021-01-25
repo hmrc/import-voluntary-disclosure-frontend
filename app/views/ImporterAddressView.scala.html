@@ -25,35 +25,45 @@
 
 @(form: Form[_], traderAddress: TraderAddress)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("importerAddress.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.TraderContactDetailsController.onLoad)) {
+    @layout(
+        pageTitle = messages("importerAddress.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(controllers.routes.TraderContactDetailsController.onLoad)) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @h1(messages("importerAddress.h1"))
+        @h1(messages("importerAddress.h1"))
 
-    @p(content = Html(messages("importerAddress.p")))
+        @p(content = Html(messages("importerAddress.p")))
 
-    @p(content = Html(
-        traderAddress.streetAndNumber + "<br/>" +
-        traderAddress.city + "<br/>" +
-        traderAddress.postalCode + "<br/>" +
-        traderAddress.countryCode
-        )
-    )
+        @if(traderAddress.postalCode.isDefined) {
+            @p(content = Html(
+                traderAddress.streetAndNumber.getOrElse("") + "<br/>" +
+                traderAddress.city.getOrElse("") + "<br/>" +
+                traderAddress.postalCode.getOrElse("") + "<br/>" +
+                traderAddress.countryCode.getOrElse("")
+            )
+            )
+        } else {
+            @p(
+                Html(
+                    traderAddress.streetAndNumber.getOrElse("") + "<br/>" +
+                    traderAddress.city.getOrElse("") + "<br/>" +
+                    traderAddress.countryCode.getOrElse("")
+                )
+            )
+        }
 
-    @formHelper(action = controllers.routes.ImporterAddressController.onSubmit()) {
-        @yesNoRadio(
-            form = form,
-            headingKey = "",
-            isPageHeading = false
-        )
-        @button("common.button.continue")
+        @formHelper(action = controllers.routes.ImporterAddressController.onSubmit()) {
+            @yesNoRadio(
+                form = form,
+                headingKey = "",
+                isPageHeading = false
+            )
+            @button("common.button.continue")
+        }
     }
-}
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
