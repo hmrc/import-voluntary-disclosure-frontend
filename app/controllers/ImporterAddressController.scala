@@ -60,7 +60,7 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, TraderAddress(Some(""),Some(""),Some(""),Some(""))))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, TraderAddress("", "", Some(""), "")))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))

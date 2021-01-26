@@ -38,18 +38,18 @@
 
         @if(traderAddress.postalCode.isDefined) {
             @p(content = Html(
-                traderAddress.streetAndNumber.getOrElse("") + "<br/>" +
-                traderAddress.city.getOrElse("") + "<br/>" +
+                traderAddress.streetAndNumber + "<br/>" +
+                traderAddress.city + "<br/>" +
                 traderAddress.postalCode.getOrElse("") + "<br/>" +
-                traderAddress.countryCode.getOrElse("")
+                traderAddress.countryCode
             )
             )
         } else {
             @p(
                 Html(
-                    traderAddress.streetAndNumber.getOrElse("") + "<br/>" +
-                    traderAddress.city.getOrElse("") + "<br/>" +
-                    traderAddress.countryCode.getOrElse("")
+                    traderAddress.streetAndNumber + "<br/>" +
+                    traderAddress.city + "<br/>" +
+                    traderAddress.countryCode
                 )
             )
         }
