@@ -88,12 +88,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
-        if (isOk)
-          NoContent
-        else {
-          // Failed to write to mongo
-          InternalServerError
-        }
+        if (isOk) NoContent else InternalServerError
       }
     }
   }

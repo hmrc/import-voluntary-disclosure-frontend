@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.config.MockAppConfig
 import mocks.repositories.MockFileUploadRepository
 import mocks.services.MockUpScanService
-import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
+import models.upscan.{FileStatusEnum, FileUpload, Reference, UpScanInitiateResponse, UploadDetails, UploadFormTemplate}
 import models.UserAnswers
 import play.api.http.Status
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.UploadFileView
@@ -31,6 +32,49 @@ import views.html.UploadFileView
 import scala.concurrent.Future
 
 class UploadFileControllerSpec extends ControllerSpecBase {
+
+  private val callbackReadyJson: JsValue = Json.parse(s"""
+    | {
+    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+    |   "fileStatus" : "READY",
+    |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+    |   "uploadDetails": {
+    |     "uploadTimestamp": "2018-04-24T09:30:00Z",
+    |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+    |     "fileName": "test.pdf",
+    |     "fileMimeType": "application/pdf"
+    |   }
+    | }""".stripMargin)
+
+  private val callbackFailedQuarentineJson: JsValue = Json.parse(s"""
+    | {
+    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+    |   "fileStatus" : "READY",
+    |    "failureDetails": {
+    |        "failureReason": "QUARANTINE",
+    |        "message": "e.g. This file has a virus"
+    |    }
+    | }""".stripMargin)
+
+  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
+    | {
+    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+    |   "fileStatus" : "FAILED",
+    |    "failureDetails": {
+    |        "failureReason": "REJECTED",
+    |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
+    |    }
+    | }""".stripMargin)
+
+  private val callbackFailedUnknownJson: JsValue = Json.parse(s"""
+    | {
+    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+    |   "fileStatus" : "FAILED",
+    |    "failureDetails": {
+    |        "failureReason": "UNKNOWN",
+    |        "message": "Something unknown happened"
+    |    }
+    | }""".stripMargin)
 
   trait Test extends MockFileUploadRepository with MockUpScanService {
     private lazy val uploadFileView: UploadFileView = app.injector.instanceOf[UploadFileView]
@@ -114,4 +158,46 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       }
     }
   }
+
+  "POST callbackHandler" when {
+    "valid file upload callback" should {
+      "return 204 (NoContent)" in new Test {
+        val result = controller.callbackHandler()(fakeRequest.withBody(callbackReadyJson))
+
+        status(result) mustBe Status.NO_CONTENT
+      }
+      "return 500 (InternalServerError)" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.updateRecord(Future.successful(false))
+        }
+        val result = controller.callbackHandler()(fakeRequest.withBody(callbackReadyJson))
+
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "deriveFileStatus" when {
+    "processing successful response" should {
+      "return original model" in new Test {
+        val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackReadyJson).get)
+        result.fileStatus mustBe Some(FileStatusEnum.READY)
+      }
+    }
+    "processing failure response" should {
+      "return FAILED_QUARENTINE" in new Test {
+        val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackFailedQuarentineJson).get)
+        result.fileStatus mustBe Some(FileStatusEnum.FAILED_QUARANTINE)
+      }
+      "return FAILED_REJECTED" in new Test {
+        val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackFailedRejectedJson).get)
+        result.fileStatus mustBe Some(FileStatusEnum.FAILED_REJECTED)
+      }
+      "return FAILED_UNKNOWN" in new Test {
+        val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackFailedUnknownJson).get)
+        result.fileStatus mustBe Some(FileStatusEnum.FAILED_UNKNOWN)
+      }
+    }
+  }
+
 }
