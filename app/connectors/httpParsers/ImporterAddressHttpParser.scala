@@ -18,6 +18,7 @@ package connectors.httpParsers
 
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.{ErrorModel, TraderAddress}
+import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
@@ -25,19 +26,21 @@ object ImporterAddressHttpParser {
 
   implicit object TraderAddressReads extends HttpReads[HttpGetResult[TraderAddress]] {
 
+    private val logger = Logger("application." + getClass.getCanonicalName)
+
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[TraderAddress] = {
 
       response.status match {
         case Status.OK =>
           response.json.validate[TraderAddress](TraderAddress.reads).fold(
             invalid => {
-              // TODO - add some logging about JSON being invalid and the value of 'invalid' add it for address lookup parser too
+              logger.error("Failed to validate JSON with errors: " + invalid)
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for TraderAddressHttpParser"))
             },
             valid => Right(valid)
           )
         case status =>
-          // TODO - add some logging what status code and body was returned etc. it for address lookup parser too
+          logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
           Left(ErrorModel(status, "Downstream error returned when retrieving TraderAddress model from back end"))
       }
     }

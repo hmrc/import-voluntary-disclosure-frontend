@@ -19,8 +19,8 @@ package connectors.httpParsers
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.ErrorModel
 import models.addressLookup.AddressModel
+import play.api.Logger
 import play.api.http.Status
-import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 
@@ -28,20 +28,25 @@ object AddressLookupHttpParser {
 
   implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
 
+    private val logger = Logger("application." + getClass.getCanonicalName)
+
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[AddressModel] = {
 
       response.status match {
         case Status.OK => {
           response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
+              logger.error("Failed to validate JSON with errors: " + invalid)
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
+          logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
+          Left(ErrorModel(status, "Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }
   }
+
 }
