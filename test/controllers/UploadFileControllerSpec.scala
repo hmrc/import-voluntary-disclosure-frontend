@@ -21,13 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.config.MockAppConfig
 import mocks.repositories.MockFileUploadRepository
 import mocks.services.MockUpScanService
-import models.upscan.{FileStatusEnum, FileUpload, Reference, UpScanInitiateResponse, UploadDetails, UploadFormTemplate}
+import models.upscan.{FileStatusEnum, FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
 import models.UserAnswers
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.UploadFileView
+import views.html.{UploadFileView, UploadProgressView}
 
 import scala.concurrent.Future
 
@@ -78,6 +78,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockFileUploadRepository with MockUpScanService {
     private lazy val uploadFileView: UploadFileView = app.injector.instanceOf[UploadFileView]
+    private lazy val uploadProgressView: UploadProgressView = app.injector.instanceOf[UploadProgressView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -98,8 +99,8 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
     lazy val controller = {
       setupMocks()
-      new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-        messagesControllerComponents, mockFileUploadRepository, mockUpScanService, uploadFileView, MockAppConfig)
+      new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
+        mockFileUploadRepository, mockUpScanService, uploadFileView, uploadProgressView, MockAppConfig)
     }
   }
 
@@ -136,7 +137,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.uploadProgress("key").url)
       }
       "for a valid key, create record in file Repository" in new Test {
         override def setupMocks(): Unit = {

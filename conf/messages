@@ -172,6 +172,13 @@ uploadFile.error.instructions = The above errors were experienced when uploading
 uploadFile.error.retry = Retry
 uploadFile.error.unknown = Unknown error with upload file
 
+# Upload Progress page
+uploadProgress.pageTitle = Upload progress
+uploadProgress.pageHeader = Upload progress
+uploadProgress.message = Waiting for uploaded file to be scanned
+uploadProgress.request = Please refresh to view latest progress
+uploadProgress.refresh = Refresh
+
 deferment.pageTitle = Are you paying by deferment?
 deferment.heading = Are you paying by deferment?
 deferment.error.required = Select yes if you are paying by deferment

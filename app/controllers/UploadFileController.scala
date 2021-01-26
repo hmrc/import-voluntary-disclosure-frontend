@@ -25,7 +25,7 @@ import play.api.mvc._
 import repositories.FileUploadRepository
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.UploadFileView
+import views.html.{UploadFileView, UploadProgressView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,6 +40,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      fileUploadRepository: FileUploadRepository,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
+                                     progressView: UploadProgressView,
                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
@@ -73,20 +74,38 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     } else {
       key match {
         case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
-          // Redirect to polling/inProgress page
           // Add delay to give upscan time to process file
-          Redirect(controllers.routes.UploadFileController.onLoad)
-            .flashing(
-              "key" -> key
-            )
+          Redirect(controllers.routes.UploadFileController.uploadProgress(key))
         }
         case _ => throw new RuntimeException("No key returned for successful upload")
       }
     }
   }
 
+  def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    fileUploadRepository.getRecord(key).flatMap(_ match {
+      case Some(doc) => doc.fileStatus match {
+        case Some(status) if (status == FileStatusEnum.READY) => {
+          // Populate UserAnswers then redirect to Summary screen
+          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+        }
+        case Some(status) => Future.successful(Redirect(controllers.routes.UploadFileController.onLoad())) // Failure
+        case None => Future.successful(Redirect(controllers.routes.UploadFileController.showProgress()).flashing("key" -> key))
+      }
+      case None => Future.successful(InternalServerError)
+    })
+  }
+
+  def showProgress(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    request.flash.get("key") match {
+      case Some(reference) => Future.successful(Ok(progressView(reference, controllers.routes.UploadFileController.onLoad)))
+      case None => Future.successful(InternalServerError)
+    }
+  }
+
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>
+//      Thread.sleep(5000)
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
         if (isOk) NoContent else InternalServerError
       }

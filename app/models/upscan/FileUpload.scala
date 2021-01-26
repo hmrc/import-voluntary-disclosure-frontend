@@ -20,7 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
-import java.time.Instant
+import java.time.{Instant, LocalDateTime}
 
 case class FileUpload(reference: String,
                       credId: Option[String] = None,
@@ -48,7 +48,8 @@ object FileUpload {
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
-case class UploadDetails(checksum: String,
+case class UploadDetails(uploadTimestamp: LocalDateTime,
+                         checksum: String,
                          fileName: String,
                          fileMimeType: String)
 
