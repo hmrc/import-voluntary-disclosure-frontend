@@ -45,7 +45,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
   lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
   lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
-  lazy val addressLookupConfirmed: String = servicesConfig.getString("urls.addressLookupConfirmedUri")
   val addressLookupFeedbackUrl: String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
@@ -56,7 +55,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
-  lazy val importVoluntaryDisclosureSubmissionApi: String = servicesConfig.baseUrl("urls.importVoluntaryDisclosureSubmissionUri")
 
 }
 
@@ -72,7 +70,6 @@ trait AppConfig extends FixedConfig {
   val loginContinueUrl: String
   val addressLookupFrontend: String
   val addressLookupInitialise: String
-  val addressLookupConfirmed: String
   val addressLookupFeedbackUrl: String
   val addressLookupCallbackUrl: String
   val timeoutPeriod: Int
@@ -80,7 +77,6 @@ trait AppConfig extends FixedConfig {
   val allowedUploadFileTypes: Seq[String]
   val fileSize: Int
   val importVoluntaryDisclosureSubmission: String
-  val importVoluntaryDisclosureSubmissionApi: String
 }
 
 trait FixedConfig {

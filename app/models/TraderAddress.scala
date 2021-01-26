@@ -18,11 +18,12 @@ package models
 
 import play.api.libs.json.{Format, Json, Reads, _}
 
+// TODO - change mandatory ones to non optionals
 case class TraderAddress(streetAndNumber: Option[String], city: Option[String], postalCode: Option[String], countryCode: Option[String])
 
 object TraderAddress {
 
-  val reads: Reads[TraderAddress] = for {
+  implicit val reads: Reads[TraderAddress] = for {
     streetAndNumber <- (__ \\ "streetAndNumber").readNullable[String]
     city <- (__ \\ "city").readNullable[String]
     postalCode <- (__ \\ "postalCode").readNullable[String]

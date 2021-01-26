@@ -31,11 +31,13 @@ object ImporterAddressHttpParser {
         case Status.OK =>
           response.json.validate[TraderAddress](TraderAddress.reads).fold(
             invalid => {
+              // TODO - add some logging about JSON being invalid and the value of 'invalid' add it for address lookup parser too
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for TraderAddressHttpParser"))
             },
             valid => Right(valid)
           )
         case status =>
+          // TODO - add some logging what status code and body was returned etc. it for address lookup parser too
           Left(ErrorModel(status, "Downstream error returned when retrieving TraderAddress model from back end"))
       }
     }

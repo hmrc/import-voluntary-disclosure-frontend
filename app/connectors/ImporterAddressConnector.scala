@@ -29,10 +29,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class ImporterAddressConnector @Inject()(val http: HttpClient,
                                          implicit val config: AppConfig){
 
-  private[connectors] def getAddressUrl(id: String) = s"${config.importVoluntaryDisclosureSubmission}${config.importVoluntaryDisclosureSubmissionApi}?id=$id"
+  private[connectors] def getAddressUrl(id: String) = s"${config.importVoluntaryDisclosureSubmission}/api/address?id=$id"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[TraderAddress]] = {
-    http.GET[HttpGetResult[TraderAddress]](getAddressUrl(id))(TraderAddressReads,hc,ec)
+    http.GET[HttpGetResult[TraderAddress]](getAddressUrl(id))
   }
 
 }

@@ -50,11 +50,9 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
-    for ( fullAddress <- importerAddressService.retrieveAddress("")) yield {
-      fullAddress match {
-        case Right(TraderAddress(_, _, _, _)) => Ok(view(form, fullAddress.right.get))
-        case Left(ErrorModel(_,_)) => Ok("")
-      }
+    importerAddressService.retrieveAddress("").map {
+      case Right(traderAddress) => Ok(view(form, traderAddress))
+      case Left(_) => Ok("")
     }
   }
 
