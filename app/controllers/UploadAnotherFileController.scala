@@ -24,7 +24,7 @@ import pages.UploadAnotherFilePage
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
-import queries.FileUploadJsonQuery
+import queries.{FileUploadJsonQuery, FileUploadQuery}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.AddFileNameRowHelper
@@ -56,7 +56,11 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
             val helper = new AddFileNameRowHelper(updatedAnswers)
             val rows = helper.rows
 
-            Ok(view(form, backLink, rows))
+            if(request.userAnswers.get(FileUploadQuery).get.isEmpty) {
+              Redirect(controllers.routes.SupportingDocController.onLoad())
+            } else {
+              Ok(view(form, backLink, rows))
+            }
           }
       }
   }

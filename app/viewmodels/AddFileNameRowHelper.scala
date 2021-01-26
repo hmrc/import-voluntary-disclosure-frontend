@@ -16,8 +16,9 @@
 
 package viewmodels
 
-import models.UserAnswers
+import models.{Index, UserAnswers}
 import play.api.i18n.Messages
+import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import queries.FileUploadQuery
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -35,9 +36,9 @@ class AddFileNameRowHelper(val userAnswers: UserAnswers)
             addToListRow(
               value = HtmlFormat.escape(file.fileName).toString,
               removeAction = Some(ActionItem(
-                href = "",
+                href = controllers.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
                 content = Text(messages("common.remove")),
-                visuallyHiddenText = Some("")
+                visuallyHiddenText = Some(file.fileName)
               )
             )
           )
