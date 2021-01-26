@@ -52,7 +52,7 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
-    importerAddressService.retrieveAddress("").map {
+    importerAddressService.retrieveAddress("1").map {
       case Right(traderAddress) => Ok(view(form, traderAddress))
       case Left(_) => Ok("")
     }
