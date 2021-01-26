@@ -26,7 +26,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 class AddFileNameRowHelper(val userAnswers: UserAnswers)
                           (implicit val messages: Messages) extends AddToListRowHelper {
 
-  def rows: List[AddToListRow] = {
+  def rows: Seq[AddToListRow] = {
 
     userAnswers.get(FileUploadQuery).map {
       files =>
@@ -42,6 +42,6 @@ class AddFileNameRowHelper(val userAnswers: UserAnswers)
             )
           )
         }
-    }.getOrElse(List.empty)
+    }.getOrElse(Seq.empty)
   }
 }

@@ -29,4 +29,5 @@ case class FileUploadInfo(fileName: String,
 
 object FileUploadInfo {
   implicit val reads: Reads[FileUploadInfo] = Json.reads[FileUploadInfo]
+  implicit val writes: Writes[FileUploadInfo] = Json.writes[FileUploadInfo]
 }

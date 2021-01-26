@@ -18,13 +18,14 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadAnotherFileFormProvider
+
 import javax.inject.Inject
 import models.requests.DataRequest
 import pages.UploadAnotherFilePage
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
-import queries.FileUploadJsonQuery
+import queries.FileUploadQuery
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.AddFileNameRowHelper
@@ -48,16 +49,11 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
         val form = request.userAnswers.get(UploadAnotherFilePage).fold(formProvider()) {
           formProvider().fill
         }
-        request.userAnswers.get(FileUploadJsonQuery).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { possibleFiles =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadJsonQuery, possibleFiles))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            val helper = new AddFileNameRowHelper(updatedAnswers)
+        request.userAnswers.get(FileUploadQuery).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { possibleFiles =>
+            val helper = new AddFileNameRowHelper(request.userAnswers)
             val rows = helper.rows
 
-            Ok(view(form, backLink, rows))
-          }
+            Future.successful(Ok(view(form, backLink, rows)))
       }
   }
 
@@ -70,7 +66,8 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         }  yield {
           if (value) {
-            Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+            // Need to remove the user answers for the YesNo otherwise it defaults on the return to the summary.
+            Redirect(controllers.routes.UploadFileController.onLoad())
           } else {
             Redirect(controllers.routes.UploadAnotherFileController.onLoad())
           }

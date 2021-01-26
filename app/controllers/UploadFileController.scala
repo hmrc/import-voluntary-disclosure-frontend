@@ -18,11 +18,13 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.FileUploadInfo
 import models.upscan._
 import play.api.i18n.I18nSupport
 import play.api.libs.json.JsValue
 import play.api.mvc._
-import repositories.FileUploadRepository
+import queries.FileUploadQuery
+import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{UploadFileView, UploadProgressView}
@@ -38,6 +40,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      requireData: DataRequiredAction,
                                      mcc: MessagesControllerComponents,
                                      fileUploadRepository: FileUploadRepository,
+                                     sessionRepository: SessionRepository,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
                                      progressView: UploadProgressView,
@@ -87,9 +90,23 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       case Some(doc) => doc.fileStatus match {
         case Some(status) if (status == FileStatusEnum.READY) => {
           // Populate UserAnswers then redirect to Summary screen
-          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+          val newFile: FileUploadInfo = FileUploadInfo(
+            fileName = doc.fileName.get,
+            downloadUrl = doc.downloadUrl.get,
+            uploadTimestamp = doc.uploadDetails.get.uploadTimestamp,
+            checksum = doc.uploadDetails.get.checksum,
+            fileMimeType = doc.uploadDetails.get.fileMimeType,
+          )
+
+          val updatedListFiles = Seq(newFile) ++ request.userAnswers.get(FileUploadQuery).getOrElse(Seq.empty)
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadQuery, updatedListFiles)(FileUploadQuery.queryWrites))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+          }
         }
-        case Some(status) => Future.successful(Redirect(controllers.routes.UploadFileController.onLoad())) // Failure
+        case Some(status) => Future.successful(Redirect(controllers.routes.UploadFileController.onLoad())) // TODO: Failure
         case None => Future.successful(Redirect(controllers.routes.UploadFileController.showProgress()).flashing("key" -> key))
       }
       case None => Future.successful(InternalServerError)
@@ -105,7 +122,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>
-//      Thread.sleep(5000)
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
         if (isOk) NoContent else InternalServerError
       }

@@ -16,16 +16,18 @@
 
 package queries
 
-import models.{FileUploadInfo, Gettable}
+import models.FileUploadInfo
 import pages.QuestionPage
-import play.api.libs.json.{JsObject, JsPath}
+import play.api.libs.json.{JsArray, JsPath, JsValue, Json, Writes}
 
-object FileUploadQuery extends Gettable[List[FileUploadInfo]] {
-
-  override def path: JsPath = JsPath \ "uploaded-files"
-}
-
-object FileUploadJsonQuery extends QuestionPage[List[JsObject]] {
+object FileUploadQuery extends QuestionPage[Seq[FileUploadInfo]] {
 
   override def path: JsPath = JsPath \ "uploaded-files"
+
+  def queryWrites: Writes[Seq[FileUploadInfo]] =
+    new Writes[Seq[FileUploadInfo]] {
+      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
+        Json.toJson(file)
+      })
+    }
 }
