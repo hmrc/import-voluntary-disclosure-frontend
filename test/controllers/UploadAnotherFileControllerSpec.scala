@@ -52,12 +52,17 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
       mockSessionRepository, messagesControllerComponents, form, uploadAnotherFileView)
   }
 
-  val acceptanceDateYes: Boolean = true
-
   "GET /" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
+    }
+
+    "return SEE OTHER when uploaded-files is empty" in new Test {
+      override val data: JsObject = Json.obj("uploaded-files" -> Json.arr())
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
     }
 
     "return HTML" in new Test {
