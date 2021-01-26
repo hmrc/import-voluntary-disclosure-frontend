@@ -34,6 +34,11 @@ trait MockFileUploadRepository extends MockFactory {
         .expects(*, *)
         .returning(response)
 
+    def getRecord(response: Future[Option[FileUpload]]): CallHandler[Future[Option[FileUpload]]] =
+      (mockFileUploadRepository.getRecord(_: String)(_: ExecutionContext))
+        .expects(*, *)
+        .returning(response)
+
     def verifyCalls(): Unit = withExpectations(() => ())
 
   }

@@ -85,6 +85,8 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
     def setupMocks():Unit = {
       MockedFileUploadRepository.updateRecord(Future.successful(true))
+      MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
+      MockedSessionRepository.set(Future.successful(true))
 
       MockedUpScanService.initiateNewJourney(
         Future.successful(UpScanInitiateResponse(
@@ -197,6 +199,78 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       "return FAILED_UNKNOWN" in new Test {
         val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackFailedUnknownJson).get)
         result.fileStatus mustBe Some(FileStatusEnum.FAILED_UNKNOWN)
+      }
+    }
+  }
+
+  "GET uploadProgress" when {
+    "called following a successful file upload callback" should {
+      "update UserAnswers and redirect to the Summary Page" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
+          MockedSessionRepository.set(Future.successful(true))
+        }
+
+        val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
+
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
+
+        MockedFileUploadRepository.verifyCalls()
+      }
+    }
+    "called following a file upload callback for a failure" should {
+      "NOT update userAnswers and redirect to the Error Page" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get)))
+        }
+
+        val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
+
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+
+        MockedFileUploadRepository.verifyCalls()
+      }
+    }
+    "called before any file upload callback" should {
+      "NOT update userAnswers and redirect to the Progress Page" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.getRecord(Future.successful(Some(FileUpload("reference"))))
+        }
+
+        val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
+
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.showProgress().url)
+
+        MockedFileUploadRepository.verifyCalls()
+      }
+    }
+    "called for a Key no longer in repository" should {
+      "return 500 Internal Server Error" in new Test {
+        override def setupMocks(): Unit = {
+          MockedFileUploadRepository.getRecord(Future.successful(None))
+        }
+
+        val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
+
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "GET showProgress" when {
+    "called with a valid key" should {
+      "return 200 Ok" in new Test {
+        val result: Future[Result] = controller.showProgress()(fakeRequest.withFlash("key" -> "key"))
+
+        status(result) mustBe Status.OK
+      }
+      "return 500 Internal Server Error" in new Test {
+        val result: Future[Result] = controller.showProgress()(fakeRequest)
+
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
   }

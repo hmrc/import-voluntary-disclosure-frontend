@@ -64,6 +64,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     if (errorCode.isDefined) {
+      // TODO: Redirect to synchronous error page
       Future.successful(
         Redirect(controllers.routes.UploadFileController.onLoad)
           .flashing(
@@ -77,7 +78,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     } else {
       key match {
         case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
-          // Add delay to give upscan time to process file
+          // TODO: Add delay to give upscan time to process file
           Redirect(controllers.routes.UploadFileController.uploadProgress(key))
         }
         case _ => throw new RuntimeException("No key returned for successful upload")
@@ -89,7 +90,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     fileUploadRepository.getRecord(key).flatMap(_ match {
       case Some(doc) => doc.fileStatus match {
         case Some(status) if (status == FileStatusEnum.READY) => {
-          // Populate UserAnswers then redirect to Summary screen
           val newFile: FileUploadInfo = FileUploadInfo(
             fileName = doc.fileName.get,
             downloadUrl = doc.downloadUrl.get,
