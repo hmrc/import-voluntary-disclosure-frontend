@@ -47,6 +47,8 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    // TODO -- get the importerAddress and store it under temporary-address within user answers
+    // once we get the yes it's correct address transfer it over to confirmed-address or similar
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
