@@ -17,15 +17,9 @@
 package queries
 
 import models.{FileUploadInfo, Gettable}
-import pages.QuestionPage
-import play.api.libs.json.{JsObject, JsPath}
+import play.api.libs.json.JsPath
 
 object FileUploadQuery extends Gettable[List[FileUploadInfo]] {
-
-  override def path: JsPath = JsPath \ "uploaded-files"
-}
-
-object FileUploadJsonQuery extends QuestionPage[List[JsObject]] {
 
   override def path: JsPath = JsPath \ "uploaded-files"
 }

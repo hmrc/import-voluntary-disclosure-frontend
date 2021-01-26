@@ -73,7 +73,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to supporting Doc page when no data present" in new Test {
-      override val data = Json.obj("" -> "")
+      override val data: JsObject = Json.obj("" -> "")
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data).set(UploadAnotherFilePage, true).success.value)
         val result: Future[Result] = controller.onLoad(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
@@ -116,6 +116,15 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
+
+      "return a SEE OTHER when no user answers are present" in new Test {
+        override val data: JsObject = Json.obj("data" -> "")
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data).set(UploadAnotherFilePage, false).success.value)
+
+        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
