@@ -113,13 +113,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     })
   }
 
-  def showProgress(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    request.flash.get("key") match {
-      case Some(reference) => Future.successful(Ok(progressView(reference, controllers.routes.UploadFileController.onLoad)))
-      case None => Future.successful(InternalServerError)
-    }
-  }
-
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>

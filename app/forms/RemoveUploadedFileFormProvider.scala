@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package queries
+package forms
 
-import models.FileUploadInfo
-import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsValue, Json, Writes}
-import play.api.libs.json.JsPath
+import javax.inject.Inject
 
-object FileUploadQuery extends QuestionPage[Seq[FileUploadInfo]] {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  override def path: JsPath = JsPath \ "uploaded-files"
+class RemoveUploadedFileFormProvider @Inject() extends Mappings {
 
-  def queryWrites: Writes[Seq[FileUploadInfo]] =
-    new Writes[Seq[FileUploadInfo]] {
-      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
-        Json.toJson(file)
-      })
-    }
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("removeUploadedFile.error.required")
+    )
 }

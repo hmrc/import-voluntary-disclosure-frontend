@@ -16,32 +16,27 @@
 
 package viewmodels
 
-import models.UserAnswers
+import models.{FileUploadInfo, Index}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import queries.FileUploadQuery
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 
-class AddFileNameRowHelper(val userAnswers: UserAnswers)
+class AddFileNameRowHelper(val files: Seq[FileUploadInfo])
                           (implicit val messages: Messages) extends AddToListRowHelper {
 
   def rows: Seq[AddToListRow] = {
-
-    userAnswers.get(FileUploadQuery).map {
-      files =>
-        files.zipWithIndex.map {
-          case (file, index) =>
-            addToListRow(
-              value = HtmlFormat.escape(file.fileName).toString,
-              removeAction = Some(ActionItem(
-                href = "",
-                content = Text(messages("common.remove")),
-                visuallyHiddenText = Some("")
-              )
-            )
+    files.zipWithIndex.map {
+      case (file, index) =>
+        addToListRow(
+          value = HtmlFormat.escape(file.fileName).toString,
+          removeAction = Some(ActionItem(
+            href = controllers.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
+            content = Text(messages("common.remove")),
+            visuallyHiddenText = Some(file.fileName)
           )
-        }
-    }.getOrElse(Seq.empty)
+        )
+      )
+    }
   }
 }

@@ -16,19 +16,11 @@
 
 package queries
 
-import models.FileUploadInfo
+import models.Index
 import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsValue, Json, Writes}
-import play.api.libs.json.JsPath
+import play.api.libs.json.{JsObject, JsPath}
 
-object FileUploadQuery extends QuestionPage[Seq[FileUploadInfo]] {
+final case class RemoveUploadedFileQuery(index: Index) extends QuestionPage[JsObject] {
 
-  override def path: JsPath = JsPath \ "uploaded-files"
-
-  def queryWrites: Writes[Seq[FileUploadInfo]] =
-    new Writes[Seq[FileUploadInfo]] {
-      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
-        Json.toJson(file)
-      })
-    }
+  override def path: JsPath = JsPath \ "uploaded-files" \ index.position
 }

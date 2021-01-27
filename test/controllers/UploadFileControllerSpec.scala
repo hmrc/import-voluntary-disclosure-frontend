@@ -241,9 +241,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
-        status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.showProgress().url)
-
+        status(result) mustBe Status.OK
         MockedFileUploadRepository.verifyCalls()
       }
     }
@@ -254,21 +252,6 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         }
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
-
-        status(result) mustBe Status.INTERNAL_SERVER_ERROR
-      }
-    }
-  }
-
-  "GET showProgress" when {
-    "called with a valid key" should {
-      "return 200 Ok" in new Test {
-        val result: Future[Result] = controller.showProgress()(fakeRequest.withFlash("key" -> "key"))
-
-        status(result) mustBe Status.OK
-      }
-      "return 500 Internal Server Error" in new Test {
-        val result: Future[Result] = controller.showProgress()(fakeRequest)
 
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
