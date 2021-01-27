@@ -98,7 +98,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
             fileMimeType = doc.uploadDetails.get.fileMimeType,
           )
 
-          val updatedListFiles = Seq(newFile) ++ request.userAnswers.get(FileUploadQuery).getOrElse(Seq.empty)
+          val updatedListFiles = request.userAnswers.get(FileUploadQuery).getOrElse(Seq.empty) ++ Seq(newFile)
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadQuery, updatedListFiles)(FileUploadQuery.queryWrites))
             _ <- sessionRepository.set(updatedAnswers)
@@ -107,7 +107,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
           }
         }
         case Some(status) => Future.successful(Redirect(controllers.routes.UploadFileController.onLoad())) // TODO: Failure
-        case None => Future.successful(Redirect(controllers.routes.UploadFileController.showProgress()).flashing("key" -> key))
+        case None => Future.successful(Ok(progressView(key, controllers.routes.UploadFileController.onLoad)))
       }
       case None => Future.successful(InternalServerError)
     })
