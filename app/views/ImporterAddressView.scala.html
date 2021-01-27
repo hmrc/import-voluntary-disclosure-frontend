@@ -36,7 +36,7 @@
 
         @p(content = Html(messages("importerAddress.p")))
 
-        @if(traderAddress.postalCode.isDefined) {
+        @if(!traderAddress.postalCode.isEmpty) {
             @p(content = Html(
                 traderAddress.streetAndNumber + "<br/>" +
                 traderAddress.city + "<br/>" +

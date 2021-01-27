@@ -28,10 +28,7 @@ object TraderAddress {
     postalCode <- (__ \\ "postalCode").readNullable[String]
     countryCode <- (__ \\ "countryCode").read[String]
   } yield {
-    (streetAndNumber, city, postalCode, countryCode) match {
-      case (_, _, None, _) => TraderAddress(streetAndNumber, city, Some(""), countryCode)
-      case (_, _, _, _) => TraderAddress(streetAndNumber, city, postalCode, countryCode)
-    }
+    TraderAddress(streetAndNumber, city, postalCode, countryCode)
   }
 
   implicit val format: Format[TraderAddress] = Json.format[TraderAddress]
