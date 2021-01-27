@@ -20,12 +20,10 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.UploadAnotherFileFormProvider
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.UploadAnotherFilePage
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Result}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import queries.FileUploadQuery
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.AddFileNameRowHelper
 import views.html.UploadAnotherFileView
@@ -35,7 +33,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class UploadAnotherFileController @Inject()(identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
                                             mcc: MessagesControllerComponents,
                                             formProvider: UploadAnotherFileFormProvider,
                                             view: UploadAnotherFileView)(implicit ec: ExecutionContext)
@@ -45,16 +42,12 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
       implicit request =>
-        val form = request.userAnswers.get(UploadAnotherFilePage).fold(formProvider()) {
-          formProvider().fill
-        }
         request.userAnswers.get(FileUploadQuery).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
             val helper = new AddFileNameRowHelper(files)
-            val rows = helper.rows
             if(files.isEmpty) {
               Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
             } else {
-              Future.successful(Ok(view(form, backLink, rows)))
+              Future.successful(Ok(view(formProvider(), helper.rows)))
             }
       }
   }
@@ -63,28 +56,20 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => resultWithErrors(formWithErrors),
       value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAnotherFilePage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        }  yield {
           if (value) {
-            Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+            Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
           } else {
-            Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+            Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
           }
-        }
       }
     )
   }
 
-  private[controllers] def backLink: Call = Call("GET",controllers.routes.SupportingDocController.onLoad().url)
-
   private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(FileUploadQuery).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
       val helper = new AddFileNameRowHelper(files)
-      val rows = helper.rows
 
-      Future.successful(BadRequest(view(formWithErrors, backLink, rows)))
+      Future.successful(BadRequest(view(formWithErrors, helper.rows)))
     }
   }
 }

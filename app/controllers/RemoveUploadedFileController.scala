@@ -20,7 +20,6 @@ import controllers.actions._
 import forms.RemoveUploadedFileFormProvider
 import javax.inject.Inject
 import models.Index
-import pages.RemoveUploadedFilePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import queries.{FileUploadQuery, RemoveUploadedFileQuery}
@@ -43,8 +42,6 @@ class RemoveUploadedFileController @Inject()(
 
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers.get(RemoveUploadedFilePage(index))
-
       if(request.userAnswers.get(FileUploadQuery).get.isEmpty) {
         Redirect(controllers.routes.SupportingDocController.onLoad())
       } else {
@@ -63,11 +60,7 @@ class RemoveUploadedFileController @Inject()(
                 updatedAnswers <- Future.fromTry(request.userAnswers.remove(RemoveUploadedFileQuery(index)))
                 _ <- sessionRepository.set(updatedAnswers)
               } yield
-                if(updatedAnswers.get(FileUploadQuery).get.isEmpty) {
-                  Redirect(controllers.routes.SupportingDocController.onLoad())
-                } else {
                   Redirect(controllers.routes.UploadAnotherFileController.onLoad())
-                }
             } else {
               Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
             }
