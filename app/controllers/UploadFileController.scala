@@ -21,7 +21,6 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import models.FileUploadInfo
 import models.upscan._
 import play.api.i18n.I18nSupport
-import play.api.libs.json.JsValue
 import play.api.mvc._
 import queries.FileUploadQuery
 import repositories.{FileUploadRepository, SessionRepository}
@@ -111,26 +110,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       }
       case None => Future.successful(InternalServerError)
     })
-  }
-
-  def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    withJsonBody[FileUpload] { fileUploadResponse =>
-      fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
-        if (isOk) NoContent else InternalServerError
-      }
-    }
-  }
-
-  private[controllers] def deriveFileStatus(fileUpload: FileUpload): FileUpload = {
-    fileUpload.failureDetails match {
-      case Some(details) if(details.failureReason=="QUARANTINE") =>
-        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_QUARANTINE))
-      case Some(details) if(details.failureReason=="REJECTED") =>
-        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_REJECTED))
-      case Some(details) =>
-        fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_UNKNOWN))
-      case None => fileUpload
-    }
   }
 
 }
