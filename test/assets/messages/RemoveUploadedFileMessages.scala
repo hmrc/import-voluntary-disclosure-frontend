@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package queries
+package messages
 
-import models.FileUploadInfo
-import pages.QuestionPage
-import play.api.libs.json.{JsArray, JsValue, Json, Writes}
-import play.api.libs.json.JsPath
+object RemoveUploadedFileMessages extends BaseMessages {
 
-object FileUploadQuery extends QuestionPage[Seq[FileUploadInfo]] {
+  val title: String = "Are you sure you want to remove this file?"
+  val h1: String = "Are you sure you want to remove this file?"
+  val requiredError: String = "Select yes to remove file"
 
-  override def path: JsPath = JsPath \ "uploaded-files"
 
-  def queryWrites: Writes[Seq[FileUploadInfo]] =
-    new Writes[Seq[FileUploadInfo]] {
-      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
-        Json.toJson(file)
-      })
-    }
 }

@@ -20,9 +20,9 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.FileUploadInfo
 import models.upscan._
+import pages.FileUploadPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
-import queries.FileUploadQuery
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -97,9 +97,9 @@ class UploadFileController @Inject()(identify: IdentifierAction,
             fileMimeType = doc.uploadDetails.get.fileMimeType,
           )
 
-          val updatedListFiles = request.userAnswers.get(FileUploadQuery).getOrElse(Seq.empty) ++ Seq(newFile)
+          val updatedListFiles = request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty) ++ Seq(newFile)
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadQuery, updatedListFiles)(FileUploadQuery.queryWrites))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadPage, updatedListFiles)(FileUploadPage.queryWrites))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             Redirect(controllers.routes.UploadAnotherFileController.onLoad())

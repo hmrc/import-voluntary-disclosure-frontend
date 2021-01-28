@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package queries
+package pages
 
-import models.Index
-import pages.QuestionPage
-import play.api.libs.json.{JsObject, JsPath}
+import models.FileUploadInfo
+import play.api.libs.json._
 
-final case class RemoveUploadedFileQuery(index: Index) extends QuestionPage[JsObject] {
+object FileUploadPage extends QuestionPage[Seq[FileUploadInfo]] {
 
-  override def path: JsPath = JsPath \ "uploaded-files" \ index.position
+  override def path: JsPath = JsPath \ "uploaded-files"
+
+  def queryWrites: Writes[Seq[FileUploadInfo]] =
+    new Writes[Seq[FileUploadInfo]] {
+      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
+        Json.toJson(file)
+      })
+    }
 }
