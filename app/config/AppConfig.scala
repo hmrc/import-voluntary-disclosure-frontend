@@ -61,6 +61,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
+  lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
   lazy val upScanAcceptedMimeTypes: String = allowedUploadFileTypes.mkString(",").toLowerCase
 
@@ -93,6 +94,7 @@ trait AppConfig extends FixedConfig {
   val upScanErrorRedirectForUser: String
   val upScanMinFileSize: Int
   val upScanMaxFileSize: Int
+  val upScanPollingDelayMilliSeconds: Int
   val upScanInitiateBaseUrl: String
   val upScanAcceptedMimeTypes: String
 

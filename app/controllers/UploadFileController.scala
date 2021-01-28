@@ -78,7 +78,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     } else {
       key match {
         case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
-          // TODO: Add delay to give upscan time to process file
+          Thread.sleep(appConfig.upScanPollingDelayMilliSeconds)
           Redirect(controllers.routes.UploadFileController.uploadProgress(key))
         }
         case _ => throw new RuntimeException("No key returned for successful upload")
