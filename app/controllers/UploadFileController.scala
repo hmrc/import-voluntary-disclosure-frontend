@@ -114,7 +114,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   }
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    Thread.sleep(10000)
     withJsonBody[FileUpload] { fileUploadResponse =>
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
         if (isOk) NoContent else InternalServerError
