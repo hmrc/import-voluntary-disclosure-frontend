@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package services
+package connectors
 
-import config.AppConfig
-import connectors.ImporterAddressConnector
-import javax.inject.{Inject, Singleton}
 import models.{ErrorModel, TraderAddress}
-import play.api.i18n.MessagesApi
+import org.scalamock.scalatest.MockFactory
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class ImporterAddressService @Inject()(importerAddressConnector: ImporterAddressConnector,
-                                       implicit val messagesApi: MessagesApi,
-                                       implicit val appConfig: AppConfig) {
+trait MockImporterAddressConnector extends MockFactory {
 
-  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, TraderAddress]] = {
-    importerAddressConnector.getAddress(id)
+  val mockAddressLookupConnector: ImporterAddressConnector = mock[ImporterAddressConnector]
+
+  type TraderAddressResponse = Either[ErrorModel, TraderAddress]
+
+  def setupMockGetAddress(response: Either[ErrorModel, TraderAddress]): Unit = {
+    (mockAddressLookupConnector.getAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*,*,*)
+      .returns(Future.successful(response))
   }
 
 }
