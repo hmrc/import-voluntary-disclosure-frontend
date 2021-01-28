@@ -40,6 +40,7 @@ class RemoveUploadedFileController @Inject()(
                                               view: RemoveUploadedFileView
                                  )(implicit ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
+
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(FileUploadQuery) match {
