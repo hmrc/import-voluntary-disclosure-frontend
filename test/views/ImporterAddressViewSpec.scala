@@ -34,10 +34,29 @@ class ImporterAddressViewSpec extends ViewBaseSpec with BaseMessages with Reusab
   val formProvider: ImporterAddressFormProvider = injector.instanceOf[ImporterAddressFormProvider]
 
   "Rendering the AcceptanceDate page" when {
-    "no errors exist" should {
+    "no errors exist with full trader details" should {
 
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(form, traderAddress)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe ImporterAddressMessages.pageTitle
+      }
+
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
+    }
+
+    "no errors exist with trader details without postcode" should {
+
+      val form: Form[Boolean] = formProvider.apply()
+      lazy val view: Html = injectedView(form, traderAddressWithoutPostcode)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {

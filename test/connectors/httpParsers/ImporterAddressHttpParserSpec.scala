@@ -33,8 +33,6 @@ class ImporterAddressHttpParserSpec extends SpecBase with ReusableValues {
     "countryCode" -> "fourth"
   )
 
-  val traderAddressWithoutPostcode: TraderAddress = TraderAddress("first", "second", Some("None"), "fourth")
-
   "Importer Address HttpParser" should {
 
     "the http response status is OK with valid Json" in {

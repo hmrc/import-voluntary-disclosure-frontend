@@ -14,27 +14,15 @@
  * limitations under the License.
  */
 
-package utils
+package pages
 
 import models.TraderAddress
-import play.api.http.Status
-import play.api.libs.json.{JsObject, Json}
-import uk.gov.hmrc.http.HttpResponse
+import play.api.libs.json.JsPath
 
-trait ReusableValues {
+case object ImporterAddressFinalPage extends QuestionPage[TraderAddress] {
 
-  val idOne: String = "1"
+  def path: JsPath = JsPath \ toString
 
-  val traderAddress: TraderAddress = TraderAddress("first", "second", Some("third"), "fourth")
-  val traderAddressWithoutPostcode: TraderAddress = TraderAddress("first", "second", Some("None"), "fourth")
-
-  val errorModel: HttpResponse = HttpResponse(Status.NOT_FOUND, "Error Message")
-
-  val traderAddressJson: JsObject = Json.obj(
-    "streetAndNumber" -> "first",
-    "city" -> "second",
-    "postalCode" -> Some("third"),
-    "countryCode" -> "fourth"
-  )
+  override def toString: String = "final-importer-address"
 
 }

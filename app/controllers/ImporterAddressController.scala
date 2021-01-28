@@ -20,8 +20,9 @@ import com.google.inject.Inject
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterAddressFormProvider
-import models.{ErrorModel, TraderAddress}
-import pages.ImporterAddressPage
+import models.TraderAddress
+import pages.{ImporterAddressFinalPage, ImporterAddressPage, ImporterAddressTemporaryPage}
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -46,30 +47,45 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
                                          )
   extends FrontendController(mcc) with I18nSupport {
 
+  private val logger = Logger("application." + getClass.getCanonicalName)
+
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    // TODO -- get the importerAddress and store it under temporary-address within user answers
-    // once we get the yes it's correct address transfer it over to confirmed-address or similar
     val form = request.userAnswers.get(ImporterAddressPage).fold(formProvider()) {
       formProvider().fill
     }
-    importerAddressService.retrieveAddress("1").map {
-      case Right(traderAddress) => Ok(view(form, traderAddress))
-      case Left(_) => Ok("")
+    // TODO - need the EORI id
+    importerAddressService.retrieveAddress("1").flatMap {
+      case Right(traderAddress) =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressTemporaryPage, traderAddress))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield Ok(view(form, traderAddress))
+      case Left(error) =>
+        logger.error(error.message + " " + error.status)
+        Future.successful(NotFound(error.message + " " + error.status))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val traderAddress: TraderAddress = request.userAnswers.get(ImporterAddressTemporaryPage).get
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, TraderAddress("", "", Some(""), "")))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress))),
       value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (value) {
+        if (value) {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(ImporterAddressFinalPage, traderAddress))
+            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterAddressTemporaryPage))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
             Redirect(controllers.routes.DefermentController.onLoad())
-          } else {
-            Redirect(controllers.routes.ImporterAddressController.onLoad()) // address lookup
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            Redirect(controllers.routes.ImporterAddressController.onLoad())
           }
         }
       }
