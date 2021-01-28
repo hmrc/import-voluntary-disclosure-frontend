@@ -53,5 +53,11 @@ POST        /disclosure/importer-contact-details               controllers.Trade
 GET         /disclosure/paying-by-deferment                    controllers.DefermentController.onLoad
 POST        /disclosure/paying-by-deferment                    controllers.DefermentController.onSubmit
 
+GET         /disclosure/upload-another-file                    controllers.UploadAnotherFileController.onLoad
+POST        /disclosure/upload-another-file                    controllers.UploadAnotherFileController.onSubmit
+
+GET         /disclosure/remove-file/:index                     controllers.RemoveUploadedFileController.onLoad(index: models.Index)
+POST        /disclosure/remove-file/:index                     controllers.RemoveUploadedFileController.onSubmit(index: models.Index)
+
 GET         /disclosure/importer-address                       controllers.ImporterAddressController.onLoad
 POST        /disclosure/importer-address                       controllers.ImporterAddressController.onSubmit
