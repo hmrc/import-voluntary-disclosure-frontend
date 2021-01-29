@@ -18,7 +18,7 @@ package repositories
 
 import config.AppConfig
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import models.upscan.FileUpload
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoComponent
@@ -31,6 +31,7 @@ import uk.gov.hmrc.mongo.ReactiveRepository
 import java.time.{Instant, ZoneId}
 import scala.concurrent.{ExecutionContext, Future}
 
+@Singleton
 class FileUploadRepositoryImpl @Inject()(mongo: ReactiveMongoComponent,
                                          appConfig: AppConfig) extends
   ReactiveRepository[FileUpload, BSONObjectID](
