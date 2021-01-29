@@ -49,7 +49,7 @@ object MockAppConfig extends AppConfig {
   override val upScanMaxFileSize: Int = 10485760
   override val upScanPollingDelayMilliSeconds: Int = 10
   override val upScanInitiateBaseUrl: String = "TBC"
-  override val upScanAcceptedMimeTypes: String = "TBC"
+  override val upScanAcceptedFileTypes: String = "TBC"
 
   override val fileRepositoryTtl: Int = 86400
 }
