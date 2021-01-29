@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-package models
+package base
 
-import play.api.libs.json.Json
+import org.scalamock.scalatest.MockFactory
 
-case class FileData(filename: String)
+trait RepositorySpecBase extends SpecBase with MockFactory {
 
-object FileData {
-  implicit val format = Json.format[FileData]
+  def verifyCalls(): Unit = withExpectations(() => ())
+
 }
-
-
-

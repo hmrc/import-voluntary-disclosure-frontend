@@ -59,7 +59,7 @@ class RemoveUploadedFileController @Inject()(
           value => {
             if (value) {
               for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.remove(pages.RemoveUploadedFilePage(index)))
+                updatedAnswers <- Future.fromTry(request.userAnswers.remove(RemoveUploadedFilePage(index)))
                 _ <- sessionRepository.set(updatedAnswers)
               } yield
                   Redirect(controllers.routes.UploadAnotherFileController.onLoad())

@@ -45,7 +45,7 @@ class AddFileRowHelperSpec extends SpecBase with MustMatchers with TryValues wit
       val data: JsObject = Json.obj("uploaded-files" -> Json.arr(
         fileUploadInfo("text.txt"),
         fileUploadInfo("text2.txt"),
-        fileUploadInfo("text3.txt"),
+        fileUploadInfo("text3.txt")
       ))
 
       val answers =

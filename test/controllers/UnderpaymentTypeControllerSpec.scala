@@ -112,7 +112,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
 
       "update the UserAnswers in session" in new Test {
         await(controller.onSubmit(fakeRequestGenerator(customsDuty = "true")))
-        MockedSessionRepository.verifyCalls()
+        verifyCalls()
       }
 
 

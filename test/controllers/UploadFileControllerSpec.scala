@@ -130,7 +130,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
           Some("key"), None, None, None, None
         )(fakeRequest))
 
-        MockedFileUploadRepository.verifyCalls()
+        verifyCalls()
       }
 
       "for an invalid key" in new Test {
@@ -156,7 +156,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
 
-        MockedFileUploadRepository.verifyCalls()
+        verifyCalls()
       }
     }
     "called following a file upload callback for a failure" should {
@@ -170,7 +170,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
 
-        MockedFileUploadRepository.verifyCalls()
+        verifyCalls()
       }
     }
     "called before any file upload callback" should {
@@ -182,7 +182,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.OK
-        MockedFileUploadRepository.verifyCalls()
+        verifyCalls()
       }
     }
     "called for a Key no longer in repository" should {

@@ -45,7 +45,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
       element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
     }
 
-    s"have the correct file upload control mime types" in {
+    s"have the correct file upload control file types" in {
       element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
     }
   }

@@ -28,11 +28,11 @@ import scala.concurrent.Future
 
 class UpScanServiceSpec extends SpecBase {
 
-  val callBackUrl = "TBC"
-  val success = "TBC"
-  val error = "TBC"
-  val minFileSize = 1
-  val maxFileSize = 10485760
+  private val callBackUrl = MockAppConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
+  private val success = MockAppConfig.upScanSuccessRedirectForUser
+  private val error = MockAppConfig.upScanErrorRedirectForUser
+  private val minFileSize = MockAppConfig.upScanMinFileSize
+  private val maxFileSize = MockAppConfig.upScanMaxFileSize
 
   trait Test extends MockUpScanConnector {
     lazy val service = new UpScanService(mockUpScanConnector, MockAppConfig)

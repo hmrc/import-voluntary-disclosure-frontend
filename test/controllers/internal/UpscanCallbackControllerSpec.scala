@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(s"""
+  private val callbackReadyJson: JsValue = Json.parse("""
     | {
     |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
     |   "fileStatus" : "READY",
@@ -46,35 +46,30 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
     |   }
     | }""".stripMargin)
 
-  private val callbackFailedQuarentineJson: JsValue = Json.parse(s"""
+  private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(s"""
     | {
     |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
     |   "fileStatus" : "READY",
     |    "failureDetails": {
-    |        "failureReason": "QUARANTINE",
-    |        "message": "e.g. This file has a virus"
+    |        "failureReason": "$reason",
+    |        "message": "$message"
     |    }
     | }""".stripMargin)
 
-  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "FAILED",
-    |    "failureDetails": {
-    |        "failureReason": "REJECTED",
-    |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
-    |    }
-    | }""".stripMargin)
+  private val callbackFailedQuarentineJson: JsValue = callbackFailedBuilder(
+    reason = "QUARANTINE",
+    message = "e.g. This file has a virus"
+  )
 
-  private val callbackFailedUnknownJson: JsValue = Json.parse(s"""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "FAILED",
-    |    "failureDetails": {
-    |        "failureReason": "UNKNOWN",
-    |        "message": "Something unknown happened"
-    |    }
-    | }""".stripMargin)
+  private val callbackFailedRejectedJson: JsValue = callbackFailedBuilder(
+    reason = "REJECTED",
+    message = "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
+  )
+
+  private val callbackFailedUnknownJson: JsValue = callbackFailedBuilder(
+    reason = "UNKNOWN",
+    message = "Something unknown happened"
+  )
 
   trait Test extends MockFileUploadRepository {
 

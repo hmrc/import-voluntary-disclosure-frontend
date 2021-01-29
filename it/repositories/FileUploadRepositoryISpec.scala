@@ -58,6 +58,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     ),
     lastUpdatedDate = None
   )
+  val fileUploadModelAlternative: FileUpload = fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))
   val jsonInRepo: JsValue = Json.obj(
     "reference" -> "11370e18-6e24-453e-b45a-76d3e32ea33d",
     "credId" -> "cred Id",
@@ -129,7 +130,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     "retrieve a single document" in new Test {
       count mustBe 0
       await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))))
+      await(repo.insertRecord(fileUploadModelAlternative))
 
       count mustBe 2
       val getResult = await(repo.getRecord(fileUploadModel.reference))
@@ -139,7 +140,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
 
     "return None for no match found" in new Test {
       count mustBe 0
-      await(repo.insertRecord(fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))))
+      await(repo.insertRecord(fileUploadModelAlternative))
       count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)) mustBe None
     }
@@ -150,7 +151,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     "remove a single document" in new Test {
       count mustBe 0
       await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))))
+      await(repo.insertRecord(fileUploadModelAlternative))
       count mustBe 2
 
       await(repo.deleteRecord("123")) mustBe true
@@ -164,7 +165,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     "retrieve the correct document" in new Test {
       count mustBe 0
       await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))))
+      await(repo.insertRecord(fileUploadModelAlternative))
       count mustBe 2
 
       await(repo.getFileName("123")) mustBe fileUploadModel.fileName
@@ -177,7 +178,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
       count mustBe 0
       await(repo.insertRecord(fileUploadModel))
       await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))))
+      await(repo.insertRecord(fileUploadModelAlternative))
       count mustBe 3
 
       await(repo.testOnlyRemoveAllRecords())

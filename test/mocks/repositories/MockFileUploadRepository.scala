@@ -16,14 +16,14 @@
 
 package mocks.repositories
 
+import base.RepositorySpecBase
 import models.upscan.FileUpload
 import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
 import repositories.FileUploadRepository
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockFileUploadRepository extends MockFactory {
+trait MockFileUploadRepository extends RepositorySpecBase {
 
   val mockFileUploadRepository: FileUploadRepository = mock[FileUploadRepository]
 
@@ -38,8 +38,6 @@ trait MockFileUploadRepository extends MockFactory {
       (mockFileUploadRepository.getRecord(_: String)(_: ExecutionContext))
         .expects(*, *)
         .returning(response)
-
-    def verifyCalls(): Unit = withExpectations(() => ())
 
   }
 

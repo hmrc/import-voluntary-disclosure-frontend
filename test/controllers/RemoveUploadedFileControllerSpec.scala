@@ -115,7 +115,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(index)(request))
-        MockedSessionRepository.verifyCalls()
+        verifyCalls()
       }
     }
 

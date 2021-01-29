@@ -86,7 +86,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   }
 
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    fileUploadRepository.getRecord(key).flatMap(_ match {
+    fileUploadRepository.getRecord(key).flatMap {
       case Some(doc) => doc.fileStatus match {
         case Some(status) if (status == FileStatusEnum.READY) => {
           val newFile: FileUploadInfo = FileUploadInfo(
@@ -94,7 +94,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
             downloadUrl = doc.downloadUrl.get,
             uploadTimestamp = doc.uploadDetails.get.uploadTimestamp,
             checksum = doc.uploadDetails.get.checksum,
-            fileMimeType = doc.uploadDetails.get.fileMimeType,
+            fileMimeType = doc.uploadDetails.get.fileMimeType
           )
 
           val updatedListFiles = request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty) ++ Seq(newFile)
@@ -109,7 +109,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
         case None => Future.successful(Ok(progressView(key, controllers.routes.UploadFileController.onLoad)))
       }
       case None => Future.successful(InternalServerError)
-    })
+    }
   }
 
 }
