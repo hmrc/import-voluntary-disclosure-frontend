@@ -74,7 +74,9 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockImporter
 
     "return HTML" in new Test {
       setupMockRetrieveAddress(Right(traderAddress))
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(ImporterAddressPage, importerAddressYes).success.value)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id").set(ImporterAddressPage, importerAddressYes).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -85,29 +87,37 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockImporter
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "update the UserAnswers in session when Trader Address is correct" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value
+        )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        MockedSessionRepository.verifyCalls()
+        verifyCalls()
       }
 
       "update the UserAnswers in session Trader Address is incorrect" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value
+        )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         await(controller.onSubmit(request))
-        MockedSessionRepository.verifyCalls()
+        verifyCalls()
       }
 
       "payload contains invalid data" should {
         "return a BAD REQUEST" in new Test {
-          override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value)
+          override val userAnswers: Option[UserAnswers] = Some(
+            UserAnswers("some-cred-id").set(ImporterAddressTemporaryPage, traderAddress).success.value
+          )
           val result: Future[Result] = controller.onSubmit(fakeRequest)
           status(result) mustBe Status.BAD_REQUEST
         }
