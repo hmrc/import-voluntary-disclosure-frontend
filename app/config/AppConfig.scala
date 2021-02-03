@@ -56,8 +56,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
 
   lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
-  lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
-  lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
+  lazy val upScanSuccessRedirectForUser: String = servicesConfig.getString("upscan.successRedirectForUser")
+  lazy val upScanErrorRedirectForUser: String = servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
