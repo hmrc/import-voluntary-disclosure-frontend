@@ -20,6 +20,7 @@
         govukSummaryList: GovukSummaryList,
         h1: components.h1,
         h2: components.h2,
+        p: components.p,
         linkButton: components.linkButton)
 
 @(answers: Seq[CYASummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -34,6 +35,9 @@
         @h2(messages(answer.heading))
         @govukSummaryList(answer.summaryList)
     }
+
+    @h2(messages("cya.sendDisclosure"))
+    @p(Html(messages("cya.disclosureConfirmation")))
 
     @linkButton(
         url = controllers.routes.CheckYourAnswersController.onLoad().url,
