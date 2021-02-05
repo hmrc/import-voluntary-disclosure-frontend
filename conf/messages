@@ -224,3 +224,5 @@ cya.disclosureConfirmation = By sending this disclosure you are confirming that,
 cya.underpaymentDetails = Underpayment details
 cya.customsDuty = Customs Duty
 cya.importVat = Import VAT
+cya.exciseDuty = Excise Duty
+cya.change = Change
