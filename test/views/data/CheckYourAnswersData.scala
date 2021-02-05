@@ -30,8 +30,6 @@ object CheckYourAnswersData {
   val edUnderpayment: BigDecimal = BigDecimal(999.00)
   val cpc = "4000C09"
 
-  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers)
-
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
       CYAMessages.underpaymentDetails,
       SummaryList(
@@ -128,4 +126,5 @@ object CheckYourAnswersData {
       )
     )
 
+  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers)
 }

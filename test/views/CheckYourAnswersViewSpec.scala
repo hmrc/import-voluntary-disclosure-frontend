@@ -17,7 +17,7 @@
 package views
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, CYAMessages}
+import messages.CYAMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
@@ -25,7 +25,7 @@ import play.twirl.api.Html
 import views.data.CheckYourAnswersData._
 import views.html.CheckYourAnswersView
 
-class CheckYourAnswersViewSpec extends ViewBaseSpec with BaseMessages {
+class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
 
@@ -33,21 +33,19 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Check Your Answers page" when {
     "answers provided" should {
-      val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
-      println(Console.BLUE + view.body + Console.RESET)
-      val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "have 2 sub-heading(s)" in {
-//        document.select("main h2").size mustBe answers.size
-        document.title mustBe "fred"
+      s"have ${answers.size + 1} sub-heading(s)" in {
+        document.select("main h2").size mustBe answers.size + 1
       }
 
-//      "have correct sub-headings" in {
-//        val subHeadings = document.select("main h2")
-//        answers.zipWithIndex.map {
-//          case (answer, index) => subHeadings.get(index).text mustBe answer.heading
-//        }
-//      }
+      "have correct sub-headings" in {
+        val subHeadings = document.select("main h2")
+        answers.zipWithIndex.map {
+          case (answer, index) => subHeadings.get(index).text mustBe answer.heading
+        }
+      }
 
 //      "have only 1 Summary List" in {
 //        document.select(".govuk-summary-list").size mustBe 1

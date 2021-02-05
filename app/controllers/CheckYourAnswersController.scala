@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UnderpaymentAmount
+import models.{UnderpaymentAmount, UserAnswers}
 import pages._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
@@ -42,31 +42,29 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val customsDuty = request.userAnswers.get(CustomsDutyPage).map(
-      buildSummaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.CustomsDutyController.onLoad)).get
+    val underpaymentDetails = buildUnderpaymentDetailsSummaryList(request.userAnswers).get
 
-
-    Future.successful(Ok(view(Seq(customsDuty), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(underpaymentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
-  private[controllers] def buildSummaryList(underpayment: UnderpaymentAmount, key: String, changeAction: Call)(implicit messages: Messages): CYASummaryList = {
+  private[controllers] def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
     CYASummaryList(
-      "Underpayment Summary",
+      messages("cya.underpaymentDetails"),
       SummaryList(
         classes = "govuk-!-margin-bottom-9",
         rows = Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("underpaymentSummary.originalAmount")),
+              content = Text(messages("cya.customsDuty")),
               classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
             ),
             value = Value(
-              content = HtmlContent(displayMoney(underpayment.original)),
+              content = HtmlContent(displayMoney(BigDecimal(123.22))),
               classes = "govuk-!-padding-bottom-0"
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(changeAction.url, Text(messages("underpaymentSummary.change")), Some(key))
+                ActionItem("Url", Text(messages("underpaymentSummary.change")))
               ),
               classes = "govuk-!-padding-bottom-0")
             ),
@@ -74,20 +72,13 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
           ),
           SummaryListRow(
             key = Key(
-              content = Text(messages("underpaymentSummary.amendedAmount")),
+              content = Text(messages("cya.importVat")),
               classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
             ),
             value = Value(
-              content = HtmlContent(displayMoney(underpayment.amended)),
+              content = HtmlContent(displayMoney(BigDecimal(123.22))),
               classes = "govuk-!-padding-top-0"
             )
-          ),
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("underpaymentSummary.dueToHmrc", key)),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)))
           )
         )
       )
