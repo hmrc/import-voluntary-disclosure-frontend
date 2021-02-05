@@ -25,7 +25,7 @@
       linkButton: components.linkButton
       )
 
-@(reference: String)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(reference: String = "")(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
 

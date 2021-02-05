@@ -36,7 +36,7 @@ class ConfirmationController @Inject()(identity: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view("Test Reference")))
+    Future.successful(Ok(view()))
 
   }
 }
