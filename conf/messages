@@ -16,6 +16,7 @@ site.yes = Yes
 site.no = No
 common.button.confirmAndContinue = Confirm and continue
 common.button.continue = Continue
+common.button.acceptAndSend = Accept and send
 
 footer.cookies.text = Cookies
 footer.cookies.url = /help/cookies
@@ -213,3 +214,7 @@ uploadAnotherFile.error.required = Select yes to upload another file
 removeUploadedFile.pageTitle = Are you sure you want to remove this file?
 removeUploadedFile.heading = Are you sure you want to remove this file?
 removeUploadedFile.error.required = Select yes to remove file
+
+# Check Your Answers
+cya.pageTitle = Check your answers before sending your disclosure
+cya.heading = Check your answers before sending your disclosure
