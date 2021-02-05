@@ -48,7 +48,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
-    CYASummaryList(
+    Some(CYASummaryList(
       messages("cya.underpaymentDetails"),
       SummaryList(
         classes = "govuk-!-margin-bottom-9",
@@ -82,7 +82,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
           )
         )
       )
-    )
+    ))
   }
 
 }
