@@ -213,3 +213,15 @@ uploadAnotherFile.error.required = Select yes to upload another file
 removeUploadedFile.pageTitle = Are you sure you want to remove this file?
 removeUploadedFile.heading = Are you sure you want to remove this file?
 removeUploadedFile.error.required = Select yes to remove file
+
+# Confirmation page
+confirmation.pageTitle = Confirmation screen
+confirmation.heading = Disclosure complete
+confirmation.entryNumber = Entry number:
+confirmation.p1 = We have received your underpayment disclosure.
+confirmation.printSave = Print or save this page
+confirmation.printSaveRestOfMessage = as we will not send you an email confirmation.
+confirmation.whatHappensNext = What happens next
+confirmation.p2 = We will check the information you have provided. We will send a C18 Post Clearance Demand Note in the post within 10 days. This demand note will confirm what is owed to HMRC and will tell you how to pay. Payment must be made within 10 days of receiving the demand note, otherwise interest will become due.
+confirmation.p3 = If you have any questions or have not received the demand note within 10 days contact the C18 team by email npcc@hmrc.gov.uk.
+
