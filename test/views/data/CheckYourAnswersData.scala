@@ -29,6 +29,7 @@ object CheckYourAnswersData {
   val ivUnderpayment: BigDecimal = BigDecimal(54321.99)
   val edUnderpayment: BigDecimal = BigDecimal(999.00)
   val cpc = "4000C09"
+  val file = "Example.pdf"
 
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
       CYAMessages.underpaymentDetails,
@@ -125,6 +126,30 @@ object CheckYourAnswersData {
         )
       )
     )
+
+  val uploadFilesAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.supportingDocuments,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.filesUploaded(1)),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(file)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        )
+      )
+    )
+  )
 
   val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers)
 }

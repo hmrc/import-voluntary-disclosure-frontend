@@ -33,6 +33,9 @@ object CYAMessages extends BaseMessages {
   val cpc = "Customs procedure code"
   val cpcChanged = "Customs procedure code changed?"
   val numAmendments = "Number of amendments"
+  val supportingDocuments = "Supporting documents"
+  def filesUploaded(numberOfFiles: Int) = s"$numberOfFiles files uploaded"
+
 
   val change = "Change"
 }
