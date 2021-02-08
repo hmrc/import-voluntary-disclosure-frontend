@@ -29,12 +29,8 @@ class CYASummaryListHelper {
 
   def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
-    val customsDuty = answer.get(CustomsDutyPage)
-    val importVat = answer.get(ImportVATPage)
-    val exciseDuty = answer.get(ExciseDutyPage)
-
-    val customsDutySummaryListRow: Option[SummaryListRow] = if (customsDuty.isDefined) {
-      customsDuty map { underpaymentAmount =>
+    val customsDutySummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CustomsDutyPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.customsDuty")),
@@ -51,11 +47,11 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
+      )
+    }
 
-    val importVatSummaryListRow: Option[SummaryListRow] = if (importVat.isDefined) {
-      importVat map { underpaymentAmount =>
+    val importVatSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImportVATPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.importVat")),
@@ -72,11 +68,11 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
+      )
+    }
 
-    val exciseDutySummaryListRow: Option[SummaryListRow] = if (exciseDuty.isDefined) {
-      exciseDuty map { underpaymentAmount =>
+    val exciseDutySummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ExciseDutyPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.exciseDuty")),
@@ -93,18 +89,24 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
-
-    Some(CYASummaryList(
-      messages("cya.underpaymentDetails"),
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = if (exciseDutySummaryListRow.isDefined) Seq(customsDutySummaryListRow.get, importVatSummaryListRow.get, exciseDutySummaryListRow.get) else Seq(SummaryListRow())
       )
-    )
-    )
+    }
 
+    val rows = customsDutySummaryListRow.getOrElse(Seq.empty) ++
+      importVatSummaryListRow.getOrElse(Seq.empty) ++
+      exciseDutySummaryListRow.getOrElse(Seq.empty)
+
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages("cya.underpaymentDetails"),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
   }
 
   def buildUnderpaymentDetailsSummaryList2(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {

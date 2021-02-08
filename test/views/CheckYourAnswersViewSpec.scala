@@ -141,7 +141,32 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
     "correct user details" should {
 
+      lazy val view: Html = injectedView(Seq(yourDetailsAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
+      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.yourDetails
+      }
+
+      s"have 1 User Details List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 4 User Details Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 4
+      }
+
+      // keys and values to be added
+
+      "have correct name Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
+
+      "have correct address Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe changeUrl
+      }
 
     }
 

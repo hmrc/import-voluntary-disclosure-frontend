@@ -203,7 +203,12 @@ object CheckYourAnswersData {
           value = Value(
             HtmlContent(buildAddress(TraderAddress("21 Street", "London", Some("SN6PY"), "UK")))
           ),
-          actions = None
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
         )
       )
     )
