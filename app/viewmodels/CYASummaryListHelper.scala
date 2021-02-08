@@ -251,12 +251,7 @@ class CYASummaryListHelper {
             content = HtmlContent(details.email),
             classes = "govuk-!-padding-top-0"
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
+          actions = None
         ),
         SummaryListRow(
           key = Key(
@@ -267,12 +262,7 @@ class CYASummaryListHelper {
             content = HtmlContent(details.phoneNumber),
             classes = "govuk-!-padding-top-0"
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
+          actions = None
         )
       )
     }
