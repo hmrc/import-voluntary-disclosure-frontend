@@ -179,14 +179,14 @@ class CYASummaryListHelper {
       )
     }
 
-    val rows = customsDutySummaryListRow.getOrElse(Seq.empty) ++
-      importVatSummaryListRow.getOrElse(Seq.empty) ++
+    val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
+      CustomProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty) ++
       exciseDutySummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
       Some(
         CYASummaryList(
-          messages("cya.underpaymentDetails"),
+          messages("cya.amendmentDetails"),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

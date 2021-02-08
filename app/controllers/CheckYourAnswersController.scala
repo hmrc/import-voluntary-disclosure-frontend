@@ -44,7 +44,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val underpaymentDetails: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList(request.userAnswers).get
-    val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
+    val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildCustomProcedureCodeSummaryList(request.userAnswers).get // add new section here
 
     Future.successful(Ok(view(Seq(underpaymentDetails,underpaymentDetails2), controllers.routes.CheckYourAnswersController.onLoad)))
   }
