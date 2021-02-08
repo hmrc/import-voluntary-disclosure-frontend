@@ -25,11 +25,11 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.CYASummaryList
+import viewmodels.{CYASummaryList, CYASummaryListHelper}
 import views.ViewUtils.displayMoney
 import views.html.CheckYourAnswersView
-
 import javax.inject.{Inject, Singleton}
+
 import scala.concurrent.Future
 
 @Singleton
@@ -37,144 +37,16 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
                                            mcc: MessagesControllerComponents,
+                                           cyaSummaryListHelper: CYASummaryListHelper,
                                            view: CheckYourAnswersView)
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val underpaymentDetails: CYASummaryList = buildUnderpaymentDetailsSummaryList(request.userAnswers).get
+    val underpaymentDetails: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList(request.userAnswers).get
+    val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
 
-    Future.successful(Ok(view(Seq(underpaymentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(underpaymentDetails,underpaymentDetails2), controllers.routes.CheckYourAnswersController.onLoad)))
   }
-
-  private[controllers] def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
-
-    val customsDuty = answer.get(CustomsDutyPage)
-    val importVat = answer.get(ImportVATPage)
-    val exciseDuty = answer.get(ExciseDutyPage)
-
-    val customsDutySummaryListRow: Option[SummaryListRow] = if (customsDuty.isDefined) {
-      customsDuty map { underpaymentAmount =>
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.customsDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      }
-    } else Some(SummaryListRow())
-
-    val importVatSummaryListRow: Option[SummaryListRow] = if (importVat.isDefined) {
-      importVat map { underpaymentAmount =>
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.importVat")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      }
-    } else Some(SummaryListRow())
-
-    val exciseDutySummaryListRow: Option[SummaryListRow] = if (exciseDuty.isDefined) {
-      exciseDuty map { underpaymentAmount =>
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.exciseDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      }
-    } else Some(SummaryListRow())
-
-    Some(CYASummaryList(
-      messages("cya.underpaymentDetails"),
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = if (exciseDutySummaryListRow.isDefined) Seq(customsDutySummaryListRow.get, importVatSummaryListRow.get, exciseDutySummaryListRow.get) else Seq(SummaryListRow())
-      )
-    )
-    )
-
-  }
-
-  //  private[controllers] def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
-  //    Some(
-  //      CYASummaryList(
-  //        messages("cya.underpaymentDetails"),
-  //        SummaryList(
-  //          classes = "govuk-!-margin-bottom-9",
-  //          rows = Seq(
-  //            SummaryListRow(
-  //              key = Key(
-  //                content = Text(messages("cya.customsDuty")),
-  //                classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
-  //              ),
-  //              value = Value(
-  //                content = HtmlContent(displayMoney(BigDecimal(123.22))),
-  //                classes = "govuk-!-padding-bottom-0"
-  //              ),
-  //              actions = Some(Actions(
-  //                items = Seq(
-  //                  ActionItem("Url", Text(messages("underpaymentSummary.change")))
-  //                ),
-  //                classes = "govuk-!-padding-bottom-0")
-  //              ),
-  //              classes = "govuk-summary-list__row--no-border"
-  //            ),
-  //            SummaryListRow(
-  //              key = Key(
-  //                content = Text(messages("cya.importVat")),
-  //                classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-  //              ),
-  //              value = Value(
-  //                content = HtmlContent(displayMoney(BigDecimal(123.22))),
-  //                classes = "govuk-!-padding-top-0"
-  //              )
-  //            ),
-  //            SummaryListRow(
-  //              key = Key(
-  //                content = Text(messages("cya.exciseDuty")),
-  //                classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-  //              ),
-  //              value = Value(
-  //                content = HtmlContent(displayMoney(BigDecimal(123.22))),
-  //                classes = "govuk-!-padding-top-0"
-  //              )
-  //            )
-  //          )
-  //        )
-  //      )
-  //    )
-  //  }
 
 }
