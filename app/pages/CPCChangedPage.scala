@@ -18,10 +18,10 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object CustomsProcedureCodePage extends QuestionPage[Boolean] {
+case object CPCChangedPage extends QuestionPage[Boolean] {
 
-  def path: JsPath = JsPath \ toString
+  def path: JsPath = JsPath \ "cpc" \ toString
 
-  override def toString: String = "customs-procedure"
+  override def toString: String = "cpc-changed"
 
 }
