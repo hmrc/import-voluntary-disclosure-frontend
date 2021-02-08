@@ -17,15 +17,14 @@
 package viewmodels
 
 import models.UserAnswers
-import pages.{CustomsDutyPage, CPCChangedPage, EnterCustomsProcedureCodePage, ExciseDutyPage, ImportVATPage}
+import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryListRow, Value}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
 class CYASummaryListHelper {
-
 
 
   def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
@@ -195,4 +194,133 @@ class CYASummaryListHelper {
       )
     } else None
   }
+
+  def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
+      val fileNames = files map (file => file.fileName)
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.filesUploaded", fileNames.length)),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(fileNames.mkString("\n")),
+            classes = "govuk-!-padding-top-0 govuk-summary-list__value",
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          )
+        )
+      )
+    }
+    val rows = uploadedFilesSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.supportingDocuments")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+  }
+
+  def buildYourDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val detailsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(TraderContactDetailsPage) map { details =>
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.name")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.fullName),
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0 govuk-!-padding-bottom-0")
+          ),
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0"
+        ),
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.email")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.email),
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          actions = None,
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0 govuk-!-padding-top-0"
+        ),
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.phone")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.phoneNumber),
+            classes = "govuk-!-padding-top-0"
+          ),
+          actions = None,
+          classes = "govuk-!-padding-top-0"
+        )
+      )
+    }
+
+    val addressSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterAddressFinalPage) map { address =>
+      val addressString = address.postalCode match {
+        case Some(value) => address.streetAndNumber + "<br/>" +
+          address.city + "<br/>" +
+          address.postalCode.get + "<br/>" +
+          address.countryCode
+        case None => address.streetAndNumber + "<br/>" +
+          address.city + "<br/>" +
+          address.countryCode
+      }
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.address")), // TODO
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(addressString),
+            classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          )
+        )
+      )
+    }
+
+    val rows = detailsSummaryListRow.getOrElse(Seq.empty) ++ addressSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.yourDetails")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+  }
+
+
 }
