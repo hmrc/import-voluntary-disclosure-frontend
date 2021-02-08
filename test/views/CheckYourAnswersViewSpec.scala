@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
+import views.data.CheckYourAnswersData
 import views.data.CheckYourAnswersData._
 import views.html.CheckYourAnswersView
 
@@ -30,7 +31,6 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
   private lazy val injectedView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
 
   private val backLink: Call = Call("GET", "url")
-  val file = "Example.pdf"
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
@@ -156,7 +156,37 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         document.select(".govuk-summary-list__row").size mustBe 4
       }
 
-      // keys and values to be added
+      "have correct name key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.name
+      }
+
+      "have correct name value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe CheckYourAnswersData.fullName
+      }
+
+      "have correct email key" in {
+        document.select(".govuk-summary-list__key").eachText.get(1) mustBe CYAMessages.email
+      }
+
+      "have correct email value" in {
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe CheckYourAnswersData.email
+      }
+
+      "have correct phone number key" in {
+        document.select(".govuk-summary-list__key").eachText.get(2) mustBe CYAMessages.phone
+      }
+
+      "have correct phone number value" in {
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe CheckYourAnswersData.phone
+      }
+
+      "have correct address key" in {
+        document.select(".govuk-summary-list__key").eachText.get(3) mustBe CYAMessages.address
+      }
+
+      "have correct address value" in {
+        document.select(".govuk-summary-list__value").eachText.get(3).replace("[", " ") mustBe "21 Street London SN6PY UK"
+      }
 
       "have correct name Change link " in {
         document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim

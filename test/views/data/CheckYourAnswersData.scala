@@ -34,6 +34,7 @@ object CheckYourAnswersData {
   val fullName = "First Second"
   val email = "email@email.com"
   val phone = "1234567890"
+  val traderAddress = TraderAddress("21 Street", "London", Some("SN6PY"), "UK")
 
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
     CYAMessages.underpaymentDetails,
@@ -201,7 +202,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
           ),
           value = Value(
-            HtmlContent(buildAddress(TraderAddress("21 Street", "London", Some("SN6PY"), "UK")))
+            HtmlContent(buildAddress(traderAddress))
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
