@@ -17,25 +17,20 @@
 package viewmodels
 
 import models.UserAnswers
-import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
+import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryListRow, Value}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
 class CYASummaryListHelper {
 
 
+  def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
- def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
-
-    val customsDuty = answer.get(CustomsDutyPage)
-    val importVat = answer.get(ImportVATPage)
-    val exciseDuty = answer.get(ExciseDutyPage)
-
-    val customsDutySummaryListRow: Option[SummaryListRow] = if (customsDuty.isDefined) {
-      customsDuty map { underpaymentAmount =>
+    val customsDutySummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CustomsDutyPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.customsDuty")),
@@ -52,11 +47,11 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
+      )
+    }
 
-    val importVatSummaryListRow: Option[SummaryListRow] = if (importVat.isDefined) {
-      importVat map { underpaymentAmount =>
+    val importVatSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImportVATPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.importVat")),
@@ -73,11 +68,11 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
+      )
+    }
 
-    val exciseDutySummaryListRow: Option[SummaryListRow] = if (exciseDuty.isDefined) {
-      exciseDuty map { underpaymentAmount =>
+    val exciseDutySummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ExciseDutyPage) map { underpaymentAmount =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.exciseDuty")),
@@ -94,18 +89,24 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
-      }
-    } else Some(SummaryListRow())
-
-    Some(CYASummaryList(
-      messages("cya.underpaymentDetails"),
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = if (exciseDutySummaryListRow.isDefined) Seq(customsDutySummaryListRow.get, importVatSummaryListRow.get, exciseDutySummaryListRow.get) else Seq(SummaryListRow())
       )
-    )
-    )
+    }
 
+    val rows = customsDutySummaryListRow.getOrElse(Seq.empty) ++
+      importVatSummaryListRow.getOrElse(Seq.empty) ++
+      exciseDutySummaryListRow.getOrElse(Seq.empty)
+
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages("cya.underpaymentDetails"),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
   }
 
   def buildUnderpaymentDetailsSummaryList2(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
@@ -187,6 +188,135 @@ class CYASummaryListHelper {
     )
 
   }
+
+  def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
+      val fileNames = files map (file => file.fileName)
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.filesUploaded", fileNames.length)),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(fileNames.mkString("\n")),
+            classes = "govuk-!-padding-top-0 govuk-summary-list__value",
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          )
+        )
+      )
+    }
+    val rows = uploadedFilesSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.supportingDocuments")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+  }
+
+  def buildYourDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val detailsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(TraderContactDetailsPage) map { details =>
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.name")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.fullName),
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0 govuk-!-padding-bottom-0")
+          ),
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0"
+        ),
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.email")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.email),
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          actions = None,
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0 govuk-!-padding-top-0"
+        ),
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.phone")),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(details.phoneNumber),
+            classes = "govuk-!-padding-top-0"
+          ),
+          actions = None,
+          classes = "govuk-!-padding-top-0"
+        )
+      )
+    }
+
+    val addressSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterAddressFinalPage) map { address =>
+      val addressString = address.postalCode match {
+        case Some(value) => address.streetAndNumber + "<br/>" +
+          address.city + "<br/>" +
+          address.postalCode.get + "<br/>" +
+          address.countryCode
+        case None => address.streetAndNumber + "<br/>" +
+          address.city + "<br/>" +
+          address.countryCode
+      }
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.address")), // TODO
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(addressString),
+            classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          )
+        )
+      )
+    }
+
+    val rows = detailsSummaryListRow.getOrElse(Seq.empty) ++ addressSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.yourDetails")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+  }
+
+
 }
 
 

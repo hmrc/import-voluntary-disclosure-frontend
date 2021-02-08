@@ -27,12 +27,11 @@ import play.api.i18n.Messages
 
 class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[CustomsProcedureCode] =
+  def apply()(implicit messages: Messages): Form[String] =
     Form(
-      mapping(
         "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
           .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )(CustomsProcedureCode.apply)(CustomsProcedureCode.unapply)
-    )
+      )
+
 
 }
