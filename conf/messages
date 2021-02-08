@@ -230,6 +230,6 @@ cya.change = Change
 cya.disclosureDetails = Disclosure details
 cya.numberOfEntries = Number of entries
 cya.epu = EPU
-cya.entryNumber = Entry Number
+cya.entryNumber = Entry number
 cya.entryDate = Entry date
 cya.acceptanceDate = Entry acceptance date before 1 January 2021?
