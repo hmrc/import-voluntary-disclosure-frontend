@@ -32,11 +32,11 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
   private val backLink: Call = Call("GET", "url")
 
   "Rendering the Check Your Answers page" when {
-    "answers provided" should {
+    "multiple answers provided" should {
       lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have ${answers.size + 1} sub-heading(s)" in {
+      s"have ${answers.size + 1} sub-headings" in {
         document.select("main h2").size mustBe answers.size + 1
       }
 
@@ -47,69 +47,97 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         }
       }
 
-//      "have only 1 Summary List" in {
-//        document.select(".govuk-summary-list").size mustBe 1
-//      }
-//
-//      "have 3 Summary List Rows" in {
-//        document.select(".govuk-summary-list__row").size mustBe 3
-//      }
-//
-//      "have correct original amount title" in {
-//        document.select(".govuk-summary-list__key").eachText.get(0) mustBe UnderpaymentSummaryMessages.originalAmount
-//      }
-//
-//      "have correct original amount value" in {
-//        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£100.00"
-//      }
-//
-//      "have correct amended amount title" in {
-//        document.select(".govuk-summary-list__key").eachText.get(1) mustBe UnderpaymentSummaryMessages.amendedAmount
-//      }
-//
-//      "have correct amended amount value" in {
-//        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£1,000.00"
-//      }
-//
-//      "have correct due amount title" in {
-//        document.select(".govuk-summary-list__key").eachText.get(2) mustBe
-//          UnderpaymentSummaryMessages.importVatTitle + UnderpaymentSummaryMessages.dueToHmrc
-//      }
-//
-//      "have correct due amount value" in {
-//        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£900.00"
-//      }
-//
-//      "have correct Change link " in {
-//        document.select(".govuk-summary-list__actions").text.trim mustBe
-//          (UnderpaymentSummaryMessages.change + " " + UnderpaymentSummaryMessages.importVatTitle).trim
-//
-//        document.select(".govuk-summary-list__actions > a").attr("href") mustBe
-//          controllers.routes.UnderpaymentSummaryController.onLoad().url
-//      }
+      s"have ${answers.size} Summary Lists" in {
+        document.select(".govuk-summary-list").size mustBe answers.size
+      }
+    }
+
+    "single answer provided" should {
+      lazy val view: Html = injectedView(Seq(underpaymentAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.underpaymentDetails
+      }
+
+      s"have 1 Summary List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 3 Summary List Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 3
+      }
+
+      "have correct customs duty key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.customsDuty
+      }
+
+      "have correct customs duty value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£123.33"
+      }
+
+      "have correct customs duty Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
+
+      "have correct Import VAT key" in {
+        document.select(".govuk-summary-list__key").eachText.get(1) mustBe CYAMessages.importVAT
+      }
+
+      "have correct Import VAT value" in {
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£54,321.99"
+      }
+
+      "have correct Import VAT Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe changeUrl
+      }
+
+      "have correct excise duty key" in {
+        document.select(".govuk-summary-list__key").eachText.get(2) mustBe CYAMessages.exciseDuty
+      }
+
+      "have correct excise duty value" in {
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£999.00"
+      }
+
+      "have correct excise duty Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe changeUrl
+      }
+
     }
   }
 
-//  it should {
-//
-//    lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
-//    lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//    s"have the correct page title" in {
-//      document.title mustBe CYAMessages.title
-//    }
-//
-//    s"have the correct h1 of '${CYAMessages.heading}'" in {
-//      elementText("h1") mustBe CYAMessages.heading
-//    }
-//
-//    "render a back link with the correct URL" in {
-//      elementAttributes("#back-link") must contain("href" -> "url")
-//    }
-//
-//    s"have the correct Accept button" in {
-//      elementText(".govuk-button") mustBe CYAMessages.acceptAndSend
-//    }
-//
-//  }
+  it should {
+
+    lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct page title" in {
+      document.title mustBe CYAMessages.title
+    }
+
+    s"have the correct h1 of '${CYAMessages.heading}'" in {
+      elementText("h1") mustBe CYAMessages.heading
+    }
+
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> "url")
+    }
+
+    "have Now Send Disclosure sub-heading " in {
+      document.select("main h2").last.text mustBe CYAMessages.sendDisclosure
+    }
+
+    "have Now Send Disclosure message " in {
+      document.select("main p").text mustBe CYAMessages.disclosureConfirmation
+    }
+
+    s"have the correct Accept button" in {
+      elementText(".govuk-button") mustBe CYAMessages.acceptAndSend
+    }
+
+  }
 }
