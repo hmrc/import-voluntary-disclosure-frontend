@@ -16,7 +16,7 @@
 
 package viewmodels
 
-import models.{TraderAddress, UserAnswers}
+import models.UserAnswers
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -228,7 +228,7 @@ class CYASummaryListHelper {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text("Name"),
+            content = Text(messages("cya.name")),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
@@ -245,7 +245,7 @@ class CYASummaryListHelper {
         ),
         SummaryListRow(
           key = Key(
-            content = Text("Email address"),
+            content = Text(messages("cya.email")),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
@@ -257,7 +257,7 @@ class CYASummaryListHelper {
         ),
         SummaryListRow(
           key = Key(
-            content = Text("Telephone number"),
+            content = Text(messages("cya.phone")),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
           ),
           value = Value(
@@ -283,7 +283,7 @@ class CYASummaryListHelper {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text("Address"),
+            content = Text(messages("cya.address")), // TODO
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
           ),
           value = Value(
