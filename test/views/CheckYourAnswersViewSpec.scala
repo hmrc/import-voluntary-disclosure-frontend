@@ -137,6 +137,11 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
       }
+    }
+
+    "correct user details" should {
+
+
 
     }
 
