@@ -16,6 +16,8 @@
 
 package viewmodels
 
+import java.time.format.DateTimeFormatter
+
 import models.UserAnswers
 import pages._
 import play.api.i18n.Messages
@@ -93,13 +95,15 @@ class CYASummaryListHelper {
 
    val entryDateListRow: Option[SummaryListRow] = if (entryDetails.isDefined) {
      entryDetails map { entryDetails =>
-       SummaryListRow(
+       val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM uuuu"))
+
+         SummaryListRow(
          key = Key(
            content = Text(messages("cya.entryDate")),
            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0",
          ),
          value = Value(
-           content = HtmlContent(entryDetails.entryDate.toString),
+           content = HtmlContent(entryDateFormat),
            classes = "govuk-!-padding-top-0"
          )
        )
@@ -108,7 +112,7 @@ class CYASummaryListHelper {
 
    val acceptanceDateSummaryListRow: Option[SummaryListRow] = if (acceptanceDate.isDefined) {
      acceptanceDate map { acceptanceDate =>
-       val dateValue = if (acceptanceDate) {
+       val acceptanceDateValue = if (acceptanceDate) {
          messages("site.yes")
        } else {
          messages("site.no")
@@ -119,7 +123,7 @@ class CYASummaryListHelper {
            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
          ),
          value = Value(
-           content = HtmlContent(dateValue),
+           content = HtmlContent(acceptanceDateValue),
            classes = "govuk-!-padding-top-0"
          ),
          actions = Some(Actions(
