@@ -226,3 +226,5 @@ cya.customsDuty = Customs Duty
 cya.importVat = Import VAT
 cya.exciseDuty = Excise Duty
 cya.change = Change
+cya.supportingDocuments = Supporting documents
+cya.filesUploaded = {0} files uploaded

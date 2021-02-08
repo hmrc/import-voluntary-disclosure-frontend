@@ -17,18 +17,17 @@
 package viewmodels
 
 import models.UserAnswers
-import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
+import pages.{CustomsDutyPage, ExciseDutyPage, FileUploadPage, ImportVATPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryListRow, Value}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
 class CYASummaryListHelper {
 
 
-
- def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
     val customsDuty = answer.get(CustomsDutyPage)
     val importVat = answer.get(ImportVATPage)
@@ -187,6 +186,43 @@ class CYASummaryListHelper {
     )
 
   }
+
+  def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
+      val fileNames = files map (file => file.fileName)
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.filesUploaded", fileNames.length)),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            content = HtmlContent(fileNames.mkString("\n")),
+            classes = "govuk-!-padding-top-0 govuk-summary-list__value"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+            classes = "govuk-!-padding-bottom-0")
+          )
+        )
+      )
+    }
+    val rows = uploadedFilesSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.supportingDocuments")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+  }
+
 }
 
 
