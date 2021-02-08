@@ -226,3 +226,5 @@ cya.customsDuty = Customs Duty
 cya.importVat = Import VAT
 cya.exciseDuty = Excise Duty
 cya.change = Change
+cya.CustomsProcedureCode = Customs procedure code
+cya.CPCChange = Customs procedure code changed?
