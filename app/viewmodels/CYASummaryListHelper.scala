@@ -229,31 +229,31 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text("Name"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
             content = HtmlContent(details.fullName),
-            classes = "govuk-!-padding-top-0"
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
             ),
-            classes = "govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-0 govuk-!-padding-bottom-0")
           ),
-          classes = "govuk-summary-list__row--no-border"
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0"
         ),
         SummaryListRow(
           key = Key(
             content = Text("Email address"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
             content = HtmlContent(details.email),
-            classes = "govuk-!-padding-top-0"
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           actions = None,
-          classes = "govuk-summary-list__row--no-border"
+          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0 govuk-!-padding-top-0"
         ),
         SummaryListRow(
           key = Key(
@@ -264,7 +264,8 @@ class CYASummaryListHelper {
             content = HtmlContent(details.phoneNumber),
             classes = "govuk-!-padding-top-0"
           ),
-          actions = None
+          actions = None,
+          classes = "govuk-!-padding-top-0"
         )
       )
     }
