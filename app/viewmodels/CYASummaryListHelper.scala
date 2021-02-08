@@ -30,12 +30,8 @@ class CYASummaryListHelper {
 
  def buildDisclosureDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
-    val numberOfEntries = answer.get(NumberOfEntriesPage)
-    val entryDetails = answer.get(EntryDetailsPage)
-    val acceptanceDate = answer.get(AcceptanceDatePage)
-
-    val numberOfEntriesSummaryListRow: Option[SummaryListRow] = if (numberOfEntries.isDefined) {
-      numberOfEntries map { numberOfEntries =>
+    val numberOfEntriesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(NumberOfEntriesPage) map { numberOfEntries =>
+      Seq(
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.numberOfEntries")),
@@ -52,12 +48,12 @@ class CYASummaryListHelper {
             classes = "govuk-!-padding-bottom-0")
           )
         )
+        )
       }
-    } else Some(SummaryListRow())
 
-    val epuSummaryListRow: Option[SummaryListRow] = if (entryDetails.isDefined) {
-      entryDetails map { entryDetails =>
-        SummaryListRow(
+        val epuSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(EntryDetailsPage) map { entryDetails =>
+          Seq(
+            SummaryListRow(
           key = Key(
             content = Text(messages("cya.epu")),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0",
@@ -74,11 +70,12 @@ class CYASummaryListHelper {
           ),
             classes = "govuk-summary-list__row--no-border"
         )
-      }
-    } else Some(SummaryListRow())
 
-   val entryNumberListRow: Option[SummaryListRow] = if (entryDetails.isDefined) {
-     entryDetails map { entryDetails =>
+          )
+      }
+
+   val entryNumberListRow: Option[Seq[SummaryListRow]] = answer.get(EntryDetailsPage) map { entryDetails =>
+     Seq(
        SummaryListRow(
          key = Key(
            content = Text(messages("cya.entryNumber")),
@@ -90,13 +87,12 @@ class CYASummaryListHelper {
          ),
          classes = "govuk-summary-list__row--no-border"
        )
+     )
      }
-   } else Some(SummaryListRow())
 
-   val entryDateListRow: Option[SummaryListRow] = if (entryDetails.isDefined) {
-     entryDetails map { entryDetails =>
+   val entryDateListRow: Option[Seq[SummaryListRow]] = answer.get(EntryDetailsPage) map { entryDetails =>
        val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM uuuu"))
-
+      Seq(
          SummaryListRow(
          key = Key(
            content = Text(messages("cya.entryDate")),
@@ -106,17 +102,17 @@ class CYASummaryListHelper {
            content = HtmlContent(entryDateFormat),
            classes = "govuk-!-padding-top-0"
          )
-       )
+         )
+        )
      }
-   } else Some(SummaryListRow())
 
-   val acceptanceDateSummaryListRow: Option[SummaryListRow] = if (acceptanceDate.isDefined) {
-     acceptanceDate map { acceptanceDate =>
+   val acceptanceDateListRow: Option[Seq[SummaryListRow]] = answer.get(AcceptanceDatePage) map { acceptanceDate =>
        val acceptanceDateValue = if (acceptanceDate) {
          messages("site.yes")
        } else {
          messages("site.no")
        }
+     Seq(
        SummaryListRow(
          key = Key(
            content = Text(messages("cya.acceptanceDate")),
@@ -133,25 +129,27 @@ class CYASummaryListHelper {
            classes = "govuk-!-padding-bottom-0")
          )
        )
+     )
      }
-   } else Some(SummaryListRow())
 
-    Some(CYASummaryList(
-      messages("cya.disclosureDetails"),
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = if (numberOfEntriesSummaryListRow.isDefined)
-          Seq(
-            numberOfEntriesSummaryListRow.get,
-            epuSummaryListRow.get,
-            entryNumberListRow.get,
-            entryDateListRow.get,
-            acceptanceDateSummaryListRow.get
-          )
-        else Seq(SummaryListRow())
-      )
-    )
-    )
+   val rows = numberOfEntriesSummaryListRow.getOrElse(Seq.empty) ++
+     epuSummaryListRow.getOrElse(Seq.empty) ++
+     entryNumberListRow.getOrElse(Seq.empty) ++
+     entryDateListRow.getOrElse(Seq.empty) ++
+     acceptanceDateListRow.getOrElse(Seq.empty)
+
+   if (rows.nonEmpty) {
+     Some(
+       CYASummaryList(
+         messages("cya.disclosureDetails"),
+         SummaryList(
+           classes = "govuk-!-margin-bottom-9",
+           rows = rows
+         )
+       )
+     )
+   } else None
+
   }
 
   def buildUnderpaymentDetailsSummaryList2(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
