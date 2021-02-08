@@ -30,6 +30,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
   private lazy val injectedView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
 
   private val backLink: Call = Call("GET", "url")
+  val file = "Example.pdf"
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
@@ -106,8 +107,39 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe CYAMessages.change.trim
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe changeUrl
       }
+    }
+
+    "single file uploaded" should {
+      lazy val view: Html = injectedView(Seq(uploadFilesAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.supportingDocuments
+      }
+
+      s"have 1 Summary List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 1 Summary List Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 1
+      }
+
+      "have correct files uploaded key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.filesUploaded(1)
+      }
+
+      "have correct files uploaded value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe file
+      }
+
+      "have correct customs duty Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
 
     }
+
   }
 
   it should {

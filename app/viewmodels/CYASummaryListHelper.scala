@@ -198,7 +198,7 @@ class CYASummaryListHelper {
           ),
           value = Value(
             content = HtmlContent(fileNames.mkString("\n")),
-            classes = "govuk-!-padding-top-0 govuk-summary-list__value"
+            classes = "govuk-!-padding-top-0 govuk-summary-list__value",
           ),
           actions = Some(Actions(
             items = Seq(
@@ -304,7 +304,7 @@ class CYASummaryListHelper {
     if (rows.nonEmpty) {
       Some(
         CYASummaryList(
-          messages(messages("cya.supportingDocuments")),
+          messages(messages("cya.yourDetails")),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

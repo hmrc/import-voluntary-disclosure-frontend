@@ -17,6 +17,7 @@
 package views.data
 
 import messages.CYAMessages
+import models.TraderAddress
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -30,102 +31,105 @@ object CheckYourAnswersData {
   val edUnderpayment: BigDecimal = BigDecimal(999.00)
   val cpc = "4000C09"
   val file = "Example.pdf"
+  val fullName = "First Second"
+  val email = "email@email.com"
+  val phone = "1234567890"
 
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
-      CYAMessages.underpaymentDetails,
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = Seq(
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.customsDuty),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent(displayMoney(cdUnderpayment))
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
+    CYAMessages.underpaymentDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.customsDuty),
+            classes = "govuk-!-width-two-thirds"
           ),
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.importVAT),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent(displayMoney(ivUnderpayment))
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
+          value = Value(
+            HtmlContent(displayMoney(cdUnderpayment))
           ),
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.exciseDuty),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent(displayMoney(edUnderpayment))
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
-          )
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.importVAT),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(displayMoney(ivUnderpayment))
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.exciseDuty),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(displayMoney(edUnderpayment))
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
         )
       )
     )
+  )
 
   val amendmentDetailsAnswers: CYASummaryList = CYASummaryList(
-      CYAMessages.amendmentDetails,
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = Seq(
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.cpc),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent(cpc)
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
+    CYAMessages.amendmentDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.cpc),
+            classes = "govuk-!-width-two-thirds"
           ),
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.cpcChanged),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent("No")
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
+          value = Value(
+            HtmlContent(cpc)
           ),
-          SummaryListRow(
-            key = Key(
-              Text(CYAMessages.numAmendments),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              HtmlContent("5")
-            ),
-            actions = Some(Actions(items = Seq(
-              ActionItem(changeUrl,
-                Text(CYAMessages.change))
-            )))
-          )
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.cpcChanged),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent("No")
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.numAmendments),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent("5")
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
         )
       )
     )
+  )
 
   val uploadFilesAnswers: CYASummaryList = CYASummaryList(
     CYAMessages.supportingDocuments,
@@ -151,5 +155,70 @@ object CheckYourAnswersData {
     )
   )
 
-  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers)
+  val yourDetailsAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.yourDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.name),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(fullName)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.email),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(email)
+          ),
+          actions = None
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.phone),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(phone)
+          ),
+          actions = None
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.address),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(buildAddress(TraderAddress("21 Street", "London", Some("SN6PY"), "UK")))
+          ),
+          actions = None
+        )
+      )
+    )
+  )
+
+  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers, uploadFilesAnswers, yourDetailsAnswers)
+
+  def buildAddress(address: TraderAddress) =
+    address.postalCode match {
+      case Some(value) => address.streetAndNumber + "<br/>" +
+        address.city + "<br/>" +
+        address.postalCode.get + "<br/>" +
+        address.countryCode
+      case None => address.streetAndNumber + "<br/>" +
+        address.city + "<br/>" +
+        address.countryCode
+    }
 }

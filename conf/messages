@@ -228,6 +228,7 @@ cya.exciseDuty = Excise Duty
 cya.change = Change
 cya.supportingDocuments = Supporting documents
 cya.filesUploaded = {0} files uploaded
+cya.yourDetails = Your details
 cya.name = Name
 cya.email = Email address
 cya.phone = Telephone number
