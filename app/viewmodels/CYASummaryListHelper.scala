@@ -245,24 +245,23 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.CustomsProcedureCode")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
             content = HtmlContent(customsProcedure),
-            classes = "govuk-!-padding-top-0"
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
       )
     }
 
-    val CustomProcedureCodeChangedSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CPCChangedPage) map { customsProcedure =>
-      val answer = customsProcedure match {
+    val customProcedureCodeChangedSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CPCChangedPage) map { customsProcedure =>
+      val cpcChanged = customsProcedure match {
         case true => messages("site.yes")
         case false => messages("site.no")
       }
@@ -270,24 +269,86 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.CPCChange")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(answer),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(cpcChanged),
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
             ),
-            classes = "govuk-!-padding-bottom-0")
+          )
           )
         )
       )
     }
 
+//    val AmmendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmmendCustomsProcedureCodePage) map { newCustomsProcedure =>
+//      Seq(
+//        SummaryListRow(
+//          key = Key(
+//            content = Text(messages("cya.CPCChange")),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            content = HtmlContent(newCustomsProcedure),
+//          ),
+//          actions = Some(Actions(
+//            items = Seq(
+//              ActionItem("Url", Text(messages("cya.change")))
+//            ),
+//          )
+//          )
+//        )
+//      )
+//    }
+
+//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOFAmmendmentsPage) map { numberOFAmmendments =>
+//      Seq(
+//        SummaryListRow(
+//          key = Key(
+//            content = Text(messages("cya.CPCChange")),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            content = HtmlContent(numberOFAmmendments),
+//          ),
+//          actions = Some(Actions(
+//            items = Seq(
+//              ActionItem("Url", Text(messages("cya.change")))
+//            ),
+//          )
+//          )
+//        )
+//      )
+//    }
+//
+//val supportingInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(SupportingInformationPage) map { supportingInformation =>
+//  Seq(
+//    SummaryListRow(
+//      key = Key(
+//        content = Text(messages("cya.CustomsProcedureCode")),
+//        classes = "govuk-!-width-two-thirds"
+//      ),
+//      value = Value(
+//        content = HtmlContent(customsProcedure),
+//      ),
+//      actions = Some(Actions(
+//        items = Seq(
+//          ActionItem("Url", Text(messages("cya.change")))
+//        )
+//      )
+//      )
+//    )
+//  )
+//}
+
     val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
-      CustomProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty)
+      customProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty)
+//      AmmendedCustomsProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
+//      numberOfAmendmentsSummaryListRow.getOrElse(Seq.empty) ++
+//      supportingInformationSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
       Some(
