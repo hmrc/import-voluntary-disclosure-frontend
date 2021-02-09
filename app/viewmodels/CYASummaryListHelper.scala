@@ -445,4 +445,38 @@ class CYASummaryListHelper {
     } else None
   }
 
+  def buildDefermentSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val paymentInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(DefermentPage) map { deferment =>
+      val payingByDeferment = if (deferment) messages("site.yes") else messages("site.no")
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.payingByDeferment")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(payingByDeferment)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ))
+          )
+        )
+      )
+    }
+    if (paymentInformationSummaryListRow.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.paymentInformation")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = paymentInformationSummaryListRow.get
+          )
+        )
+      )
+    } else None
+  }
+
+
 }

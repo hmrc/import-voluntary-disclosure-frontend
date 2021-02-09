@@ -48,8 +48,9 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
     val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
     val supportingDocuments: CYASummaryList = cyaSummaryListHelper.buildSupportingDocumentsSummaryList(request.userAnswers).get // add new section here
     val yourDetailsDocuments: CYASummaryList = cyaSummaryListHelper.buildYourDetailsSummaryList(request.userAnswers).get // add new section here
+    val defermentDetails: CYASummaryList = cyaSummaryListHelper.buildDefermentSummaryList(request.userAnswers).get // add new section here
 
-    Future.successful(Ok(view(Seq(disclosureDetails,underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(disclosureDetails,underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments, defermentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
 }
