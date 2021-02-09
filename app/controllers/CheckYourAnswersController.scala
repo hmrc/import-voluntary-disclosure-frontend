@@ -17,16 +17,11 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UserAnswers
-import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
-import play.api.i18n.{I18nSupport, Messages}
+
+import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
-import views.ViewUtils.displayMoney
 import views.html.CheckYourAnswersView
 import javax.inject.{Inject, Singleton}
 
@@ -45,12 +40,13 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
     val disclosureDetails: CYASummaryList = cyaSummaryListHelper.buildDisclosureDetailsSummaryList(request.userAnswers).get
     val underpaymentDetails: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList(request.userAnswers).get
-    val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
+    val customsProcedureCode: CYASummaryList = cyaSummaryListHelper.buildCustomProcedureCodeSummaryList(request.userAnswers).get // add new section here
     val supportingDocuments: CYASummaryList = cyaSummaryListHelper.buildSupportingDocumentsSummaryList(request.userAnswers).get // add new section here
     val yourDetailsDocuments: CYASummaryList = cyaSummaryListHelper.buildYourDetailsSummaryList(request.userAnswers).get // add new section here
     val defermentDetails: CYASummaryList = cyaSummaryListHelper.buildDefermentSummaryList(request.userAnswers).get // add new section here
 
-    Future.successful(Ok(view(Seq(disclosureDetails,underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments, defermentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
+
+    Future.successful(Ok(view(Seq(disclosureDetails, underpaymentDetails, customsProcedureCode, supportingDocuments, yourDetailsDocuments, defermentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
 }

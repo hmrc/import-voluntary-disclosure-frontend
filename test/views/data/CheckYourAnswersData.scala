@@ -119,20 +119,46 @@ object CheckYourAnswersData {
             ActionItem(changeUrl,
               Text(CYAMessages.change))
           )))
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.numAmendments),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            HtmlContent("5")
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
         )
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.cpcAmended),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("No")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        ),
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.numAmendments),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("5")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        )
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.supportingInformation),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("No")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        )
       )
     )
   )

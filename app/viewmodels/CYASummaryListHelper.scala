@@ -238,84 +238,129 @@ class CYASummaryListHelper {
     } else None
   }
 
-  def buildUnderpaymentDetailsSummaryList2(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildCustomProcedureCodeSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
-    val customsDuty = answer.get(CustomsDutyPage)
-    val importVat = answer.get(ImportVATPage)
-    val exciseDuty = answer.get(ExciseDutyPage)
-
-    val customsDutySummaryListRow: Option[SummaryListRow] = if (customsDuty.isDefined) {
-      customsDuty map { underpaymentAmount =>
+    val customProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(EnterCustomsProcedureCodePage) map { customsProcedure =>
+      Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("cya.customsDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            content = Text(messages("cya.customsProcedureCode")),
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(customsProcedure),
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
-      }
-    } else Some(SummaryListRow())
-
-    val importVatSummaryListRow: Option[SummaryListRow] = if (importVat.isDefined) {
-      importVat map { underpaymentAmount =>
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.importVat")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      }
-    } else Some(SummaryListRow())
-
-    val exciseDutySummaryListRow: Option[SummaryListRow] = if (exciseDuty.isDefined) {
-      exciseDuty map { underpaymentAmount =>
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.exciseDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      }
-    } else Some(SummaryListRow())
-
-    Some(CYASummaryList(
-      messages("cya.underpaymentDetails"),
-      SummaryList(
-        classes = "govuk-!-margin-bottom-9",
-        rows = if (exciseDutySummaryListRow.isDefined) Seq(customsDutySummaryListRow.get, importVatSummaryListRow.get, exciseDutySummaryListRow.get) else Seq(SummaryListRow())
       )
-    )
-    )
+    }
 
+    val customProcedureCodeChangedSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CPCChangedPage) map { customsProcedure =>
+      val cpcChanged = customsProcedure match {
+        case true => messages("site.yes")
+        case false => messages("site.no")
+      }
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.cpcChange")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(cpcChanged),
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ),
+          )
+          )
+        )
+      )
+    }
+
+//    val ammendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmmendCustomsProcedureCodePage) map { newCustomsProcedure =>
+//      Seq(
+//        SummaryListRow(
+//          key = Key(
+//            content = Text(messages("cya.newCustomsProcedure")),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            content = HtmlContent(newCustomsProcedure),
+//          ),
+//          actions = Some(Actions(
+//            items = Seq(
+//              ActionItem("Url", Text(messages("cya.change")))
+//            ),
+//          )
+//          )
+//        )
+//      )
+//    }
+
+//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmmendmentsPage) map { numberOfAmendments =>
+//      Seq(
+//        SummaryListRow(
+//          key = Key(
+//            content = Text(messages("cya.numberOfAmendments")),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            content = HtmlContent(numberOfAmmendments),
+//          ),
+//          actions = Some(Actions(
+//            items = Seq(
+//              ActionItem("Url", Text(messages("cya.change")))
+//            ),
+//          )
+//          )
+//        )
+//      )
+//    }
+//
+//val supportingInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(SupportingInformationPage) map { supportingInformation =>
+//  Seq(
+//    SummaryListRow(
+//      key = Key(
+//        content = Text(messages("cya.supportingInformation")),
+//        classes = "govuk-!-width-two-thirds"
+//      ),
+//      value = Value(
+//        content = HtmlContent(supportingInformation),
+//      ),
+//      actions = Some(Actions(
+//        items = Seq(
+//          ActionItem("Url", Text(messages("cya.change")))
+//        )
+//      )
+//      )
+//    )
+//  )
+//}
+
+    val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
+      customProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty)
+//      AmmendedCustomsProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
+//      numberOfAmendmentsSummaryListRow.getOrElse(Seq.empty) ++
+//      supportingInformationSummaryListRow.getOrElse(Seq.empty)
+
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages("cya.amendmentDetails"),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
   }
 
   def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
@@ -477,6 +522,5 @@ class CYASummaryListHelper {
       )
     } else None
   }
-
 
 }
