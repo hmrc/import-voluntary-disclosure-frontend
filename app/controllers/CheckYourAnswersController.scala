@@ -43,12 +43,13 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
+    val disclosureDetails: CYASummaryList = cyaSummaryListHelper.buildDisclosureDetailsSummaryList(request.userAnswers).get
     val underpaymentDetails: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList(request.userAnswers).get
     val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
     val supportingDocuments: CYASummaryList = cyaSummaryListHelper.buildSupportingDocumentsSummaryList(request.userAnswers).get // add new section here
     val yourDetailsDocuments: CYASummaryList = cyaSummaryListHelper.buildYourDetailsSummaryList(request.userAnswers).get // add new section here
 
-    Future.successful(Ok(view(Seq(underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(disclosureDetails,underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
 }
