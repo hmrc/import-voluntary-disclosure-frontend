@@ -46,7 +46,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
     val defermentDetails: CYASummaryList = cyaSummaryListHelper.buildDefermentSummaryList(request.userAnswers).get // add new section here
 
 
-    Future.successful(Ok(view(Seq(disclosureDetails,underpaymentDetails,customsProcedureCode, supportingDocuments, yourDetailsDocuments, defermentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(disclosureDetails, underpaymentDetails, customsProcedureCode, supportingDocuments, yourDetailsDocuments, defermentDetails), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
 }
