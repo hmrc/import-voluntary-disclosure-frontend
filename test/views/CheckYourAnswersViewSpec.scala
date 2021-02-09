@@ -53,6 +53,80 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       }
     }
 
+    "correct Disclosure Details" should {
+
+      lazy val view: Html = injectedView(Seq(disclosureDetailsAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have ${CYAMessages.disclosureDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.disclosureDetails
+      }
+
+      s"have 1 Disclosure Details List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 5 Disclosure Details Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 5
+      }
+
+      "have correct Number of Entries key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.numberOfEntries
+      }
+
+      "have correct Number of Entries value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe CheckYourAnswersData.numberOfEntries
+      }
+
+      "have correct EPU key" in {
+        document.select(".govuk-summary-list__key").eachText.get(1) mustBe CYAMessages.epu
+      }
+
+      "have correct EPU value" in {
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe CheckYourAnswersData.epu
+      }
+
+      "have correct Entry Number key" in {
+        document.select(".govuk-summary-list__key").eachText.get(2) mustBe CYAMessages.entryNumber
+      }
+
+      "have correct Entry Number value" in {
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe CheckYourAnswersData.entryNumber
+      }
+
+      "have correct Entry Date key" in {
+        document.select(".govuk-summary-list__key").eachText.get(3) mustBe CYAMessages.entryDate
+      }
+
+      "have correct Entry Date value" in {
+        document.select(".govuk-summary-list__value").eachText.get(3) mustBe CheckYourAnswersData.entryDate
+      }
+
+      "have correct Acceptance Date key" in {
+        document.select(".govuk-summary-list__key").eachText.get(4) mustBe CYAMessages.acceptanceDate
+      }
+
+      "have correct Acceptance Date value" in {
+        document.select(".govuk-summary-list__value").eachText.get(4) mustBe CheckYourAnswersData.acceptanceDate
+      }
+
+      "have correct Number of Entries Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
+
+      "have correct Entry Details Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe changeUrl
+      }
+
+      "have correct Acceptance Date Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe changeUrl
+      }
+
+    }
+
     "single answer provided" should {
       lazy val view: Html = injectedView(Seq(underpaymentAnswers), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
