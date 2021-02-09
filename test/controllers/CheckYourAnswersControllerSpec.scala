@@ -38,7 +38,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, NumberOfEntries, TraderContactDetails, UserAnswers}
-import pages.{CustomsDutyPage, DefermentPage, EnterCustomsProcedureCodePage, ExciseDutyPage, FileUploadPage, ImportVATPage, NumberOfEntriesPage, TraderContactDetailsPage}
+import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
@@ -76,12 +76,11 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    private lazy val cyaSummaryListHelper = injector.instanceOf[CYASummaryListHelper]
 
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-       messagesControllerComponents, cyaSummaryListHelper, checkYourAnswersView)
+       messagesControllerComponents, checkYourAnswersView)
 
   }
 
