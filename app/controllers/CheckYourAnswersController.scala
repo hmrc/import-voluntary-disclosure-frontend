@@ -46,5 +46,4 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
     Future.successful(Ok(view(Seq(disclosureDetails, underpaymentDetails, amendmentDetails, supportingDocuments, yourDetailsDocuments, paymentInformation), controllers.routes.CheckYourAnswersController.onLoad)))
   }
-
 }

@@ -76,12 +76,10 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
        messagesControllerComponents, checkYourAnswersView)
-
   }
 
 
