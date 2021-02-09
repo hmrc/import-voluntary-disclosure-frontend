@@ -18,7 +18,7 @@ package connectors
 
 import config.AppConfig
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
-import connectors.httpParsers.ImporterAddressHttpParser.TraderAddressReads
+import connectors.httpParsers.IVDSubmissionHttpParser.TraderAddressReads
 import models.TraderAddress
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
@@ -35,4 +35,4 @@ class IVDSubmissionConnector @Inject()(val http: HttpClient,
     http.GET[HttpGetResult[TraderAddress]](getAddressUrl(id))
   }
 
-}
+ }

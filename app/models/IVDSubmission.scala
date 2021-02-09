@@ -16,12 +16,14 @@
 
 package models
 
+import play.api.libs.json.{JsObject, Json, Reads, __}
+
 import java.time.LocalDate
 
 case class IVDSubmission(
                         userType: UserType,
                         numEntries: NumberOfEntries,
-                        acceptanceDate: Boolean,
+                        acceptanceDate: Option[Boolean],
 //                        additionalInfo: String = "Not captured", // TODO: Not implemented yet. Maps to amendmentReason
                         entryDetails: EntryDetails,
                         originalCpc: String,
@@ -37,3 +39,36 @@ case class IVDSubmission(
 //                        documentList: Option[Seq[String]] = None, // TODO: List of documents the user claims to have uploaded (not the actual docs)
 //                        traderList: Seq[TraderDetails] // TODO: I assume this is only relevant to bulk upload? Need model to bring all data together
                         )
+
+object IVDSubmission {
+  implicit val writes = Json.writes[IVDSubmission]
+
+  implicit val ivdSubmissionReads: Reads[IVDSubmission] =
+    for {
+      userType <- (__ \ "user-type").read[UserType]
+      numEntries <- (__ \ "number-of-entries").read[NumberOfEntries]
+      acceptanceDate <- (__ \ "acceptance-date").readNullable[Boolean]
+      entryDetails <- (__ \ "entry-details").read[EntryDetails]
+      originalCpc <- (__ \ "cpc" \ "original-cpc").read[String]
+      traderContactDetails <- (__ \ "trader-contact-details").read[TraderContactDetails]
+      traderAddress <- (__ \ "final-importer-address").read[TraderAddress]
+      customsDuty <- (__ \ "customs-duty").readNullable[UnderpaymentAmount]
+      importVat <- (__ \ "import-vat").readNullable[UnderpaymentAmount]
+      exciseDuty <- (__ \ "excise-duty").readNullable[UnderpaymentAmount]
+    } yield {
+      val customsDutyUnderpayment = customsDuty.map( x => Seq(UnderpaymentDetail("customsDuty", x.original, x.amended))).getOrElse(Seq.empty)
+      val importVatUnderpayment = importVat.map( x => Seq(UnderpaymentDetail("importVat", x.original, x.amended))).getOrElse(Seq.empty)
+      val exciseDutyUnderpayment = exciseDuty.map( x => Seq(UnderpaymentDetail("exciseDuty", x.original, x.amended))).getOrElse(Seq.empty)
+
+      IVDSubmission(
+        userType,
+        numEntries,
+        acceptanceDate,
+        entryDetails,
+        originalCpc,
+        traderContactDetails,
+        traderAddress,
+        underpaymentDetails = Some(customsDutyUnderpayment ++ importVatUnderpayment ++ exciseDutyUnderpayment)
+      )
+    }
+}

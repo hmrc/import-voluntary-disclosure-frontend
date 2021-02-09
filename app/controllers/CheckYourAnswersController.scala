@@ -17,9 +17,10 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UserAnswers
+import models.{IVDSubmission, UserAnswers}
 import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
 import play.api.i18n.{I18nSupport, Messages}
+import play.api.libs.json.Json
 import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -28,8 +29,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
 import views.ViewUtils.displayMoney
 import views.html.CheckYourAnswersView
-import javax.inject.{Inject, Singleton}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
@@ -51,4 +52,11 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
     Future.successful(Ok(view(Seq(underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+
+    val submission: IVDSubmission = Json.fromJson[IVDSubmission](request.userAnswers.data).get
+
+
+    Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad))
+  }
 }
