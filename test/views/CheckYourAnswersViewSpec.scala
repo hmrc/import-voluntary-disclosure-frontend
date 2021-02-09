@@ -208,11 +208,11 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         document.select("main h2").first.text mustBe CYAMessages.paymentInformation
       }
 
-      s"have 1 User Details List" in {
+      s"have 1 User deferment List" in {
         document.select(".govuk-summary-list").size mustBe 1
       }
 
-      "have 1 User Details Rows" in {
+      "have 1 User deferment Rows" in {
         document.select(".govuk-summary-list__row").size mustBe 1
       }
 
