@@ -35,6 +35,11 @@ object CheckYourAnswersData {
   val email = "email@email.com"
   val phone = "1234567890"
   val traderAddress = TraderAddress("21 Street", "London", Some("SN6PY"), "UK")
+  val numberOfEntries = "One"
+  val epu = "123"
+  val entryNumber = "123456Q"
+  val entryDate = "01 December 2020"
+  val acceptanceDate = "Yes"
 
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
     CYAMessages.underpaymentDetails,
@@ -114,20 +119,46 @@ object CheckYourAnswersData {
             ActionItem(changeUrl,
               Text(CYAMessages.change))
           )))
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.numAmendments),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            HtmlContent("5")
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
         )
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.cpcAmended),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("No")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        ),
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.numAmendments),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("5")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        )
+//        SummaryListRow(
+//          key = Key(
+//            Text(CYAMessages.supportingInformation),
+//            classes = "govuk-!-width-two-thirds"
+//          ),
+//          value = Value(
+//            HtmlContent("No")
+//          ),
+//          actions = Some(Actions(items = Seq(
+//            ActionItem(changeUrl,
+//              Text(CYAMessages.change))
+//          )))
+//        )
       )
     )
   )
@@ -215,7 +246,110 @@ object CheckYourAnswersData {
     )
   )
 
-  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers, uploadFilesAnswers, yourDetailsAnswers)
+  val disclosureDetailsAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.disclosureDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.numberOfEntries),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(numberOfEntries)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.epu),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(epu)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.entryNumber),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(entryNumber)
+          ),
+          actions = None
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.entryDate),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(entryDate)
+          ),
+          actions = None
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.acceptanceDate),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(acceptanceDate)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        )
+      )
+    )
+  )
+
+  val defermentAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.paymentInformation,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.payingByDeferment),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent("No")
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        )
+      )
+    )
+  )
+
+  val answers: Seq[CYASummaryList] = Seq(
+    disclosureDetailsAnswers,
+    underpaymentAnswers,
+    amendmentDetailsAnswers,
+    uploadFilesAnswers,
+    yourDetailsAnswers,
+    defermentAnswers
+  )
 
   def buildAddress(address: TraderAddress) =
     address.postalCode match {

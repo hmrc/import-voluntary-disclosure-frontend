@@ -24,6 +24,13 @@ object CYAMessages extends BaseMessages {
   val disclosureConfirmation = "By sending this disclosure you are confirming that, to the best of your knowledge, the details you are providing are correct."
   val acceptAndSend = "Accept and send"
 
+  val disclosureDetails = "Disclosure details"
+  val numberOfEntries = "Number of entries"
+  val epu = "EPU"
+  val entryNumber = "Entry number"
+  val entryDate = "Entry date"
+  val acceptanceDate = "Entry acceptance date before 1 January 2021?"
+
   val underpaymentDetails = "Underpayment details"
   val customsDuty = "Customs Duty"
   val importVAT = "Import VAT"
@@ -31,8 +38,10 @@ object CYAMessages extends BaseMessages {
 
   val amendmentDetails = "Amendment details"
   val cpc = "Customs procedure code"
+  val cpcAmended = "Amended customs procedure code"
   val cpcChanged = "Customs procedure code changed?"
   val numAmendments = "Number of amendments"
+  val supportingInformation = "Supporting information"
   val supportingDocuments = "Supporting documents"
   def filesUploaded(numberOfFiles: Int) = s"$numberOfFiles files uploaded"
   val yourDetails = "Your details"
@@ -41,7 +50,8 @@ object CYAMessages extends BaseMessages {
   val phone = "Telephone number"
   val address = "Address"
 
-
+  val paymentInformation = "Payment information"
+  val payingByDeferment = "By deferment?"
 
   val change = "Change"
 }

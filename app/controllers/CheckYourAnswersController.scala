@@ -23,12 +23,8 @@ import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.libs.json.Json
 import play.api.mvc._
-import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
-import views.ViewUtils.displayMoney
 import views.html.CheckYourAnswersView
 
 import javax.inject.{Inject, Singleton}
@@ -40,19 +36,20 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            requireData: DataRequiredAction,
                                            mcc: MessagesControllerComponents,
                                            ivdSubmissionConnector: IVDSubmissionConnector,
-                                           cyaSummaryListHelper: CYASummaryListHelper,
                                            view: CheckYourAnswersView,
                                            implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+  extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val underpaymentDetails: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList(request.userAnswers).get
-    val underpaymentDetails2: CYASummaryList = cyaSummaryListHelper.buildUnderpaymentDetailsSummaryList2(request.userAnswers).get // add new section here
-    val supportingDocuments: CYASummaryList = cyaSummaryListHelper.buildSupportingDocumentsSummaryList(request.userAnswers).get // add new section here
-    val yourDetailsDocuments: CYASummaryList = cyaSummaryListHelper.buildYourDetailsSummaryList(request.userAnswers).get // add new section here
+    val disclosureDetails: CYASummaryList = buildDisclosureDetailsSummaryList(request.userAnswers).get
+    val underpaymentDetails: CYASummaryList = buildUnderpaymentDetailsSummaryList(request.userAnswers).get
+    val amendmentDetails: CYASummaryList = buildAmendmentDetailsSummaryList(request.userAnswers).get
+    val supportingDocuments: CYASummaryList = buildSupportingDocumentsSummaryList(request.userAnswers).get
+    val yourDetailsDocuments: CYASummaryList = buildYourDetailsSummaryList(request.userAnswers).get
+    val paymentInformation: CYASummaryList = buildPaymentInformationSummaryList(request.userAnswers).get
 
-    Future.successful(Ok(view(Seq(underpaymentDetails,underpaymentDetails2, supportingDocuments, yourDetailsDocuments), controllers.routes.CheckYourAnswersController.onLoad)))
+    Future.successful(Ok(view(Seq(disclosureDetails, underpaymentDetails, amendmentDetails, supportingDocuments, yourDetailsDocuments, paymentInformation), controllers.routes.CheckYourAnswersController.onLoad)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
