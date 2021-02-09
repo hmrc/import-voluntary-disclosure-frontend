@@ -18,7 +18,7 @@ package viewmodels
 
 import java.time.format.DateTimeFormatter
 
-import models.UserAnswers
+import models.{NumberOfEntries, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -31,6 +31,11 @@ class CYASummaryListHelper {
   def buildDisclosureDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
     val numberOfEntriesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(NumberOfEntriesPage) map { numberOfEntries =>
+      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) {
+        messages("cya.oneEntry")
+      } else {
+        messages("cya.bulkEntry")
+      }
       Seq(
         SummaryListRow(
           key = Key(
@@ -38,7 +43,7 @@ class CYASummaryListHelper {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent("One"), //TODO - Hardcoded value - refactor once bulk entry added to flow
+            content = HtmlContent(numberOfEntriesValue),
           ),
           actions = Some(Actions(
             items = Seq(

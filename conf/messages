@@ -229,6 +229,8 @@ cya.change = Change
 
 cya.disclosureDetails = Disclosure details
 cya.numberOfEntries = Number of entries
+cya.oneEntry = One
+cya.bulkEntry = Bulk Entry
 cya.epu = EPU
 cya.entryNumber = Entry number
 cya.entryDate = Entry date
