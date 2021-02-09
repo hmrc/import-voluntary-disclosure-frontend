@@ -200,36 +200,6 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
     }
 
-    "deferment details" should {
-      lazy val view: Html = injectedView(Seq(defermentAnswers), backLink)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have ${CYAMessages.paymentInformation} sub-heading" in {
-        document.select("main h2").first.text mustBe CYAMessages.paymentInformation
-      }
-
-      s"have 1 User deferment List" in {
-        document.select(".govuk-summary-list").size mustBe 1
-      }
-
-      "have 1 User deferment Rows" in {
-        document.select(".govuk-summary-list__row").size mustBe 1
-      }
-
-      "have correct name key" in {
-        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.payingByDeferment
-      }
-
-      "have correct name value" in {
-        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "No"
-      }
-
-      "have correct deferment Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
-        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
-      }
-    }
-
   }
 
   it should {
