@@ -286,30 +286,8 @@ class CYASummaryListHelper {
       )
     }
 
-    val exciseDutySummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ExciseDutyPage) map { underpaymentAmount =>
-      Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("cya.exciseDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          )
-        )
-      )
-    }
-
     val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
-      CustomProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty) ++
-      exciseDutySummaryListRow.getOrElse(Seq.empty)
+      CustomProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
       Some(
