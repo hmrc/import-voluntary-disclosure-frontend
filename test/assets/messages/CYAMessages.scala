@@ -41,7 +41,8 @@ object CYAMessages extends BaseMessages {
   val phone = "Telephone number"
   val address = "Address"
 
-
+  val paymentInformation = "Payment information"
+  val payingByDeferment = "By deferment?"
 
   val change = "Change"
 }

@@ -215,7 +215,35 @@ object CheckYourAnswersData {
     )
   )
 
-  val answers: Seq[CYASummaryList] = Seq(underpaymentAnswers, amendmentDetailsAnswers, uploadFilesAnswers, yourDetailsAnswers)
+  val defermentAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.paymentInformation,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.payingByDeferment),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent("No")
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        )
+      )
+    )
+  )
+
+  val answers: Seq[CYASummaryList] = Seq(
+    underpaymentAnswers,
+    amendmentDetailsAnswers,
+    uploadFilesAnswers,
+    yourDetailsAnswers,
+    defermentAnswers
+  )
 
   def buildAddress(address: TraderAddress) =
     address.postalCode match {
