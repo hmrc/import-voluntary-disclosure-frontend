@@ -17,16 +17,11 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UserAnswers
-import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
-import play.api.i18n.{I18nSupport, Messages}
+
+import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
-import views.ViewUtils.displayMoney
 import views.html.CheckYourAnswersView
 import javax.inject.{Inject, Singleton}
 

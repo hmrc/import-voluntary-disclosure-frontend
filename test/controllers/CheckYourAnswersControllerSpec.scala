@@ -36,19 +36,15 @@ import java.time.LocalDateTime
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, TraderContactDetails, UserAnswers}
-import pages.{AcceptanceDatePage, CustomsDutyPage, ExciseDutyPage, FileUploadPage, ImportVATPage, TraderContactDetailsPage}
+import pages.{ CustomsDutyPage, ExciseDutyPage, FileUploadPage, ImportVATPage, TraderContactDetailsPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
-import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.mvc.Result
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import viewmodels.CYASummaryListHelper
-import views.data.CheckYourAnswersData
 import views.data.UnderpaymentSummaryData.{cdUnderpayment, edUnderpayment, ivUnderpayment}
-import views.html.{AcceptanceDateView, CheckYourAnswersView}
-import views.data.CheckYourAnswersData._
+import views.html.CheckYourAnswersView
 
 import scala.concurrent.Future
 
