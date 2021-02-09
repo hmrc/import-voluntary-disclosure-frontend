@@ -35,17 +35,16 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.numberOfEntries")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
             content = HtmlContent("One"), //TODO - Hardcoded value - refactor once bulk entry added to flow
-            classes = "govuk-!-padding-top-0"
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
             ),
-            classes = "govuk-!-padding-bottom-0")
+          )
           )
         )
       )
@@ -56,11 +55,11 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.epu")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0",
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0",
           ),
           value = Value(
             content = HtmlContent(entryDetails.epu),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(
             items = Seq(
@@ -116,17 +115,16 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.acceptanceDate")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
             content = HtmlContent(acceptanceDateValue),
-            classes = "govuk-!-padding-top-0"
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
             ),
-            classes = "govuk-!-padding-bottom-0")
+          )
           )
         )
       )
