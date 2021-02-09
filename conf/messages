@@ -233,3 +233,11 @@ cya.epu = EPU
 cya.entryNumber = Entry number
 cya.entryDate = Entry date
 cya.acceptanceDate = Entry acceptance date before 1 January 2021?
+
+cya.supportingDocuments = Supporting documents
+cya.filesUploaded = {0} files uploaded
+cya.yourDetails = Your details
+cya.name = Name
+cya.email = Email address
+cya.phone = Telephone number
+cya.address = Address

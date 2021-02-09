@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
+import views.data.CheckYourAnswersData
 import views.data.CheckYourAnswersData._
 import views.html.CheckYourAnswersView
 
@@ -106,8 +107,99 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
         document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe CYAMessages.change.trim
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe changeUrl
       }
+    }
+
+    "single file uploaded" should {
+      lazy val view: Html = injectedView(Seq(uploadFilesAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.supportingDocuments
+      }
+
+      s"have 1 Summary List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 1 Summary List Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 1
+      }
+
+      "have correct files uploaded key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.filesUploaded(1)
+      }
+
+      "have correct files uploaded value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe file
+      }
+
+      "have correct customs duty Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
+    }
+
+    "correct user details" should {
+
+      lazy val view: Html = injectedView(Seq(yourDetailsAnswers), backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
+        document.select("main h2").first.text mustBe CYAMessages.yourDetails
+      }
+
+      s"have 1 User Details List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 4 User Details Rows" in {
+        document.select(".govuk-summary-list__row").size mustBe 4
+      }
+
+      "have correct name key" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.name
+      }
+
+      "have correct name value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe CheckYourAnswersData.fullName
+      }
+
+      "have correct email key" in {
+        document.select(".govuk-summary-list__key").eachText.get(1) mustBe CYAMessages.email
+      }
+
+      "have correct email value" in {
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe CheckYourAnswersData.email
+      }
+
+      "have correct phone number key" in {
+        document.select(".govuk-summary-list__key").eachText.get(2) mustBe CYAMessages.phone
+      }
+
+      "have correct phone number value" in {
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe CheckYourAnswersData.phone
+      }
+
+      "have correct address key" in {
+        document.select(".govuk-summary-list__key").eachText.get(3) mustBe CYAMessages.address
+      }
+
+      "have correct address value" in {
+        document.select(".govuk-summary-list__value").eachText.get(3).replace("[", " ") mustBe "21 Street London SN6PY UK"
+      }
+
+      "have correct name Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
+      }
+
+      "have correct address Change link " in {
+        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe changeUrl
+      }
 
     }
+
   }
 
   it should {
