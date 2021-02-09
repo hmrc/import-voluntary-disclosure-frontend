@@ -233,3 +233,5 @@ cya.name = Name
 cya.email = Email address
 cya.phone = Telephone number
 cya.address = Address
+cya.paymentInformation = Payment information
+cya.payingByDeferment = By deferment?
