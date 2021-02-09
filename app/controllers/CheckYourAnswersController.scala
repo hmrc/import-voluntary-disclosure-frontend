@@ -18,9 +18,8 @@ package controllers
 
 import connectors.IVDSubmissionConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{IVDSubmission, UserAnswers}
-import pages.{CustomsDutyPage, ExciseDutyPage, ImportVATPage}
-import play.api.i18n.{I18nSupport, Messages}
+import models.IVDSubmission
+import play.api.i18n.I18nSupport
 import play.api.libs.json.Json
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
