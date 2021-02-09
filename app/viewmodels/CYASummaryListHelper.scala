@@ -26,16 +26,12 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
-class CYASummaryListHelper {
+trait CYASummaryListHelper {
 
   def buildDisclosureDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
     val numberOfEntriesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(NumberOfEntriesPage) map { numberOfEntries =>
-      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) {
-        messages("cya.oneEntry")
-      } else {
-        messages("cya.bulkEntry")
-      }
+      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
       Seq(
         SummaryListRow(
           key = Key(
@@ -43,12 +39,12 @@ class CYASummaryListHelper {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(numberOfEntriesValue),
+            content = HtmlContent(numberOfEntriesValue)
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
+            )
           )
           )
         )
@@ -74,7 +70,6 @@ class CYASummaryListHelper {
           ),
           classes = "govuk-summary-list__row--no-border"
         )
-
       )
     }
 
@@ -111,11 +106,7 @@ class CYASummaryListHelper {
     }
 
     val acceptanceDateListRow: Option[Seq[SummaryListRow]] = answer.get(AcceptanceDatePage) map { acceptanceDate =>
-      val acceptanceDateValue = if (acceptanceDate) {
-        messages("site.yes")
-      } else {
-        messages("site.no")
-      }
+      val acceptanceDateValue = if (acceptanceDate) messages("site.yes") else messages("site.no")
       Seq(
         SummaryListRow(
           key = Key(
@@ -123,12 +114,12 @@ class CYASummaryListHelper {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(acceptanceDateValue),
+            content = HtmlContent(acceptanceDateValue)
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
+            )
           )
           )
         )
@@ -152,9 +143,7 @@ class CYASummaryListHelper {
         )
       )
     } else None
-
   }
-
 
   def buildUnderpaymentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
@@ -163,18 +152,17 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.customsDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original))
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
           )
+         )
         )
       )
     }
@@ -184,17 +172,16 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.importVat")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original))
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
       )
@@ -205,17 +192,16 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.exciseDuty")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original))
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
       )
@@ -238,7 +224,7 @@ class CYASummaryListHelper {
     } else None
   }
 
-  def buildCustomProcedureCodeSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildAmendmentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
 
     val customProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(EnterCustomsProcedureCodePage) map { customsProcedure =>
       Seq(
@@ -248,7 +234,7 @@ class CYASummaryListHelper {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(customsProcedure),
+            content = HtmlContent(customsProcedure)
           ),
           actions = Some(Actions(
             items = Seq(
@@ -261,10 +247,7 @@ class CYASummaryListHelper {
     }
 
     val customProcedureCodeChangedSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(CPCChangedPage) map { customsProcedure =>
-      val cpcChanged = customsProcedure match {
-        case true => messages("site.yes")
-        case false => messages("site.no")
-      }
+      val cpcChanged = if (customsProcedure) messages("site.yes") else messages("site.no")
       Seq(
         SummaryListRow(
           key = Key(
@@ -272,19 +255,19 @@ class CYASummaryListHelper {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(cpcChanged),
+            content = HtmlContent(cpcChanged)
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
+            )
           )
           )
         )
       )
     }
 
-//    val ammendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmmendCustomsProcedureCodePage) map { newCustomsProcedure =>
+//    val amendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmendCustomsProcedureCodePage) map { newCustomsProcedure =>
 //      Seq(
 //        SummaryListRow(
 //          key = Key(
@@ -292,19 +275,19 @@ class CYASummaryListHelper {
 //            classes = "govuk-!-width-two-thirds"
 //          ),
 //          value = Value(
-//            content = HtmlContent(newCustomsProcedure),
+//            content = HtmlContent(newCustomsProcedure)
 //          ),
 //          actions = Some(Actions(
 //            items = Seq(
 //              ActionItem("Url", Text(messages("cya.change")))
-//            ),
+//            )
 //          )
 //          )
 //        )
 //      )
 //    }
 
-//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmmendmentsPage) map { numberOfAmendments =>
+//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmendmentsPage) map { numberOfAmendments =>
 //      Seq(
 //        SummaryListRow(
 //          key = Key(
@@ -312,12 +295,12 @@ class CYASummaryListHelper {
 //            classes = "govuk-!-width-two-thirds"
 //          ),
 //          value = Value(
-//            content = HtmlContent(numberOfAmmendments),
+//            content = HtmlContent(numberOfAmendments)
 //          ),
 //          actions = Some(Actions(
 //            items = Seq(
 //              ActionItem("Url", Text(messages("cya.change")))
-//            ),
+//            )
 //          )
 //          )
 //        )
@@ -332,7 +315,7 @@ class CYASummaryListHelper {
 //        classes = "govuk-!-width-two-thirds"
 //      ),
 //      value = Value(
-//        content = HtmlContent(supportingInformation),
+//        content = HtmlContent(supportingInformation)
 //      ),
 //      actions = Some(Actions(
 //        items = Seq(
@@ -346,7 +329,7 @@ class CYASummaryListHelper {
 
     val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
       customProcedureCodeChangedSummaryListRow.getOrElse(Seq.empty)
-//      AmmendedCustomsProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
+//      AmendedCustomsProcedureCodeSummaryListRow.getOrElse(Seq.empty) ++
 //      numberOfAmendmentsSummaryListRow.getOrElse(Seq.empty) ++
 //      supportingInformationSummaryListRow.getOrElse(Seq.empty)
 
@@ -370,17 +353,16 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.filesUploaded", fileNames.length)),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(fileNames.mkString("\n")),
-            classes = "govuk-!-padding-top-0 govuk-summary-list__value",
+            content = HtmlContent(fileNames.mkString("\n"))
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
       )
@@ -405,19 +387,19 @@ class CYASummaryListHelper {
         SummaryListRow(
           key = Key(
             content = Text(messages("cya.name")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
           ),
           value = Value(
             content = HtmlContent(details.fullName),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
             ),
-            classes = "govuk-!-padding-bottom-0 govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-0")
           ),
-          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0"
+          classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
           key = Key(
@@ -428,8 +410,7 @@ class CYASummaryListHelper {
             content = HtmlContent(details.email),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
-          actions = None,
-          classes = "govuk-summary-list__row--no-border govuk-!-padding-bottom-0 govuk-!-padding-top-0"
+          classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
           key = Key(
@@ -440,7 +421,6 @@ class CYASummaryListHelper {
             content = HtmlContent(details.phoneNumber),
             classes = "govuk-!-padding-top-0"
           ),
-          actions = None,
           classes = "govuk-!-padding-top-0"
         )
       )
@@ -459,18 +439,17 @@ class CYASummaryListHelper {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("cya.address")), // TODO
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            content = Text(messages("cya.address")),
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(addressString),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(addressString)
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItem("Url", Text(messages("cya.change")))
-            ),
-            classes = "govuk-!-padding-bottom-0")
+            )
+          )
           )
         )
       )
@@ -490,7 +469,7 @@ class CYASummaryListHelper {
     } else None
   }
 
-  def buildDefermentSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildPaymentInformationSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
     val paymentInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(DefermentPage) map { deferment =>
       val payingByDeferment = if (deferment) messages("site.yes") else messages("site.no")
       Seq(
