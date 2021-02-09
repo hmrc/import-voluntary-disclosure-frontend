@@ -244,7 +244,7 @@ class CYASummaryListHelper {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("cya.CustomsProcedureCode")),
+            content = Text(messages("cya.customsProcedureCode")),
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
@@ -268,7 +268,7 @@ class CYASummaryListHelper {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("cya.CPCChange")),
+            content = Text(messages("cya.cpcChange")),
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
@@ -284,11 +284,11 @@ class CYASummaryListHelper {
       )
     }
 
-//    val AmmendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmmendCustomsProcedureCodePage) map { newCustomsProcedure =>
+//    val ammendedCustomsProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(AmmendCustomsProcedureCodePage) map { newCustomsProcedure =>
 //      Seq(
 //        SummaryListRow(
 //          key = Key(
-//            content = Text(messages("cya.CPCChange")),
+//            content = Text(messages("cya.newCustomsProcedure")),
 //            classes = "govuk-!-width-two-thirds"
 //          ),
 //          value = Value(
@@ -304,15 +304,15 @@ class CYASummaryListHelper {
 //      )
 //    }
 
-//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOFAmmendmentsPage) map { numberOFAmmendments =>
+//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmmendmentsPage) map { numberOfAmendments =>
 //      Seq(
 //        SummaryListRow(
 //          key = Key(
-//            content = Text(messages("cya.CPCChange")),
+//            content = Text(messages("cya.numberOfAmendments")),
 //            classes = "govuk-!-width-two-thirds"
 //          ),
 //          value = Value(
-//            content = HtmlContent(numberOFAmmendments),
+//            content = HtmlContent(numberOfAmmendments),
 //          ),
 //          actions = Some(Actions(
 //            items = Seq(
@@ -328,11 +328,11 @@ class CYASummaryListHelper {
 //  Seq(
 //    SummaryListRow(
 //      key = Key(
-//        content = Text(messages("cya.CustomsProcedureCode")),
+//        content = Text(messages("cya.supportingInformation")),
 //        classes = "govuk-!-width-two-thirds"
 //      ),
 //      value = Value(
-//        content = HtmlContent(customsProcedure),
+//        content = HtmlContent(supportingInformation),
 //      ),
 //      actions = Some(Actions(
 //        items = Seq(

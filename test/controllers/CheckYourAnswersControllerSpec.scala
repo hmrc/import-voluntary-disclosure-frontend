@@ -115,37 +115,6 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
   }
-//
-//  "POST /" when {
-//    "payload contains valid data" should {
-//
-//      "return a SEE OTHER response" in new Test {
-//        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-//        lazy val result: Future[Result] = controller.onSubmit(request)
-//        status(result) mustBe Status.SEE_OTHER
-//      }
-//
-//      "return the correct location header" in new Test {
-//        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-//        lazy val result: Future[Result] = controller.onSubmit(request)
-//        redirectLocation(result) mustBe Some(controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
-//      }
-//
-//      "update the UserAnswers in session" in new Test {
-//        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-//        await(controller.onSubmit(request))
-//        verifyCalls()
-//      }
-//    }
-//
-//    "payload contains invalid data" should {
-//      "return a BAD REQUEST" in new Test {
-//        val result: Future[Result] = controller.onSubmit(fakeRequest)
-//        status(result) mustBe Status.BAD_REQUEST
-//      }
-//    }
-//  }
-
 }
 
 
