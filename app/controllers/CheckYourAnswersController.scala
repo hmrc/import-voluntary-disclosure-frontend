@@ -20,7 +20,7 @@ import connectors.IVDSubmissionConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.IVDSubmission
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Json
+import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
@@ -53,9 +53,15 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val submission: IVDSubmission = Json.fromJson[IVDSubmission](request.userAnswers.data).get
-    val submissionResponse = ivdSubmissionConnector.postSubmission(submission)
+    Json.fromJson[IVDSubmission](request.userAnswers.data) match {
+      case JsSuccess(submission, _) => {
+        ivdSubmissionConnector.postSubmission(submission).flatMap {
+          case Right(value) => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad))
+          case Left(error) => Future.successful(InternalServerError)
+        }
+      }
+      case JsError(_) => throw new RuntimeException("Completed journey answers does not parse to IVDSubmission model")
+    }
 
-    Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad))
   }
 }
