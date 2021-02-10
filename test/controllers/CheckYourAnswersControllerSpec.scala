@@ -90,23 +90,6 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] =  Some(UserAnswers("some-cred-id")
-        .set(NumberOfEntriesPage,NumberOfEntries.OneEntry).success.value
-        .set(CustomsDutyPage, cdUnderpayment).success.value
-        .set(ImportVATPage, ivUnderpayment).success.value
-        .set(ExciseDutyPage, edUnderpayment).success.value
-        .set(FileUploadPage,Seq(FileUploadInfo(
-          "test.pdf",
-          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          LocalDateTime.now,
-          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "application/pdf"))).success.value
-        .set(TraderContactDetailsPage,TraderContactDetails(
-          "f",
-          "fefewfew@gmail.com",
-          "07485939292")).success.value
-        .set(EnterCustomsProcedureCodePage,"3333333").success.value
-        .set(DefermentPage,true).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
