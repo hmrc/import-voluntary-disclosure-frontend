@@ -349,10 +349,11 @@ trait CYASummaryListHelper {
   def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
     val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
       val fileNames = files map (file => file.fileName)
+      val whichFile = if(fileNames.length == 1) "file" else "files"
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("cya.filesUploaded", fileNames.length)),
+              content = Text(messages("cya.filesUploaded", fileNames.length, whichFile)),
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
