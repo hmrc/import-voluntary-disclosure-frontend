@@ -43,7 +43,7 @@ object CYAMessages extends BaseMessages {
   val numAmendments = "Number of amendments"
   val supportingInformation = "Supporting information"
   val supportingDocuments = "Supporting documents"
-  def filesUploaded(numberOfFiles: Int) = {
+  def filesUploaded(numberOfFiles: Int): String = {
     if(numberOfFiles ==1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
   }
   val yourDetails = "Your details"
