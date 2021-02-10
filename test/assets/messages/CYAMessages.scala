@@ -46,7 +46,7 @@ object CYAMessages extends BaseMessages {
   def filesUploaded(numberOfFiles: Int) = s"$numberOfFiles files uploaded"
   val yourDetails = "Your details"
   val name = "Name"
-  val email = "Email"
+  val email = "Email address"
   val phone = "Telephone number"
   val address = "Address"
 
