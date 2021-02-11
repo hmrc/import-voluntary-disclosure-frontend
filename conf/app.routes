@@ -70,3 +70,6 @@ GET         /disclosure/reason-introduction                controllers.BoxGuidan
 
 GET         /disclosure/box-number                         controllers.BoxNumberController.onLoad
 POST        /disclosure/box-number                         controllers.BoxNumberController.onSubmit
+
+GET         /disclosure/check-your-answers                     controllers.CheckYourAnswersController.onLoad
+GET         /disclosure/confirmation                           controllers.CheckYourAnswersController.onSubmit
