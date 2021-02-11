@@ -14,24 +14,27 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import config.AppConfig
-import forms.mappings.Mappings
-import javax.inject.Inject
-import models.CustomsProcedureCode
-import play.api.data.Form
-import play.api.data.Forms.mapping
-import play.api.i18n.Messages
+import assets.IVDSubmissionTestData
+import base.SpecBase
+import play.api.libs.json.Json
 
+class IVDSubmissionSpec extends SpecBase with IVDSubmissionTestData {
 
-class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings {
-
-  def apply()(implicit messages: Messages): Form[String] =
-    Form(
-        "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
-          .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )
-
+  "IVD Submission model" when {
+    "converting from a user answers" should {
+      "produce a valid model" in {
+        val result = Json.fromJson[IVDSubmission](userAnswersJson).get
+        result mustBe ivdSubmission
+      }
+    }
+    "serialising a model" should {
+      "produce valid json" in {
+        val result = Json.toJson(ivdSubmission)
+        result mustBe ivdSubmissionJson
+      }
+    }
+  }
 
 }
