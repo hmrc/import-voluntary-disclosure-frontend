@@ -35,7 +35,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
   val underpaymentReasonBoxNumber: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
       UnderpaymentReasonBoxNumberPage,
-      5
+      22
     ).success.value
   )
 
@@ -52,7 +52,8 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      boxNumberView
+      boxNumberView,
+      appConfig
     )
     private lazy val boxNumberView = app.injector.instanceOf[BoxNumberView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -87,7 +88,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit(
-          fakeRequestGenerator("60")
+          fakeRequestGenerator("62")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url) // Entry level
@@ -104,7 +105,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
 
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = underpaymentReasonBoxNumber
-        await(controller.onSubmit(fakeRequestGenerator("5")))
+        await(controller.onSubmit(fakeRequestGenerator("22")))
         verifyCalls()
       }
 

@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.BoxNumberFormProvider
 import pages.UnderpaymentReasonBoxNumberPage
@@ -36,7 +37,9 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
                                     sessionRepository: SessionRepository,
                                     mcc: MessagesControllerComponents,
                                     formProvider: BoxNumberFormProvider,
-                                    view: BoxNumberView)
+                                    view: BoxNumberView,
+                                    appConfig: AppConfig
+                                   )
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
@@ -54,10 +57,10 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (value >= 60) {
-            Redirect(controllers.routes.BoxNumberController.onLoad()) // entry level
-          } else {
-            Redirect(controllers.routes.BoxNumberController.onLoad()) // item level
+          appConfig.boxNumberItems.getOrElse(value, "notValid") match {
+            case "item" => Redirect(controllers.routes.BoxNumberController.onLoad())
+            case "entry" => Redirect(controllers.routes.BoxNumberController.onLoad())
+            case _ => BadRequest(view(formProvider(), backLink()))
           }
         }
       }
