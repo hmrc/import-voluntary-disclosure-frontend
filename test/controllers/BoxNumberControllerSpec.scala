@@ -25,7 +25,7 @@ import pages.UnderpaymentReasonBoxNumberPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.BoxNumberView
 
 import scala.concurrent.Future
@@ -41,7 +41,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
 
   private def fakeRequestGenerator(value: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
-      "value" -> value.toString
+      "value" -> value
     )
 
   trait Test extends MockSessionRepository {
@@ -70,6 +70,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id").set(UnderpaymentReasonBoxNumberPage, 22).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -81,12 +84,22 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
 
     "payload contains valid data" should {
 
-      "return a SEE OTHER response when correct data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] = underpaymentReasonBoxNumber
+      "return a SEE OTHER entry level response when correct data is sent" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit(
-          fakeRequestGenerator("5")
+          fakeRequestGenerator("60")
         )
         status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url) // Entry level
+      }
+
+      "return a SEE OTHER item level response when correct data is sent" in new Test {
+        override val userAnswers: Option[UserAnswers] = underpaymentReasonBoxNumber
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("22")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url) // Item level
       }
 
       "update the UserAnswers in session" in new Test {

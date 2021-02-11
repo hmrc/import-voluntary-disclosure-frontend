@@ -54,7 +54,11 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.BoxNumberController.onLoad())
+          if (value >= 60) {
+            Redirect(controllers.routes.BoxNumberController.onLoad()) // entry level
+          } else {
+            Redirect(controllers.routes.BoxNumberController.onLoad()) // item level
+          }
         }
       }
     )
