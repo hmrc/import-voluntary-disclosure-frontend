@@ -34,7 +34,7 @@ class IVDSubmissionHttpParserSpec extends SpecBase with ReusableValues {
   )
 
   val submissionResponseJson: JsObject = Json.obj(
-    "caseId" -> "1234567890"
+    "id" -> "1234567890"
   )
 
   val submissionResponseModel = SubmissionResponse("1234567890")

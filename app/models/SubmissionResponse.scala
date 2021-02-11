@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.Json
 
-case class SubmissionResponse(caseId: String)
+case class SubmissionResponse(id: String)
 
 object SubmissionResponse {
   implicit val format = Json.format[SubmissionResponse]

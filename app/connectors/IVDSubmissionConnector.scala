@@ -30,15 +30,14 @@ class IVDSubmissionConnector @Inject()(val http: HttpClient,
                                        implicit val config: AppConfig){
 
   private[connectors] def getAddressUrl(id: String) = s"${config.importVoluntaryDisclosureSubmission}/api/address?id=$id"
-  private[connectors] def postSubmissionUrl = s"${config.importVoluntaryDisclosureSubmission}/api/"
+  private[connectors] def postSubmissionUrl = s"${config.importVoluntaryDisclosureSubmission}/api/case"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[TraderAddress]] = {
     http.GET[HttpGetResult[TraderAddress]](getAddressUrl(id))
   }
 
   def postSubmission(submission: IVDSubmission)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
-//    http.POST[IVDSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
-    Future.successful(Right(SubmissionResponse("1234")))
+    http.POST[IVDSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
   }
 
 }

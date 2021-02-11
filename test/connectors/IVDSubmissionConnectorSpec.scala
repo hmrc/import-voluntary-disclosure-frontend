@@ -68,7 +68,7 @@ class IVDSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
     val submissionResponse = SubmissionResponse("1234")
 
     "return the Right response" in {
-//      setupMockHttpPost(Connector.postSubmissionUrl)(Right(submissionResponse))
+      setupMockHttpPost(Connector.postSubmissionUrl)(Right(submissionResponse))
       await(Connector.postSubmission(submission)) mustBe Right(submissionResponse)
     }
   }
