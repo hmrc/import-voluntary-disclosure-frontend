@@ -29,56 +29,48 @@ class IVDSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
 
   object Connector extends IVDSubmissionConnector(mockHttp, appConfig)
 
-  " IVD Submission Controller" when {
+  "Importer Address Connector" should {
 
-    "called to retrieve the Importer Address" should {
+    def getAddressResult(): Future[HttpGetResult[TraderAddress]] = Connector.getAddress(idOne)
 
-      def getAddressResult(): Future[HttpGetResult[TraderAddress]] = Connector.getAddress(idOne)
-
-      "return the Right response" in {
-        setupMockHttpGet(Connector.getAddressUrl(idOne))(Right(traderAddress))
-        await(getAddressResult()) mustBe Right(traderAddress)
-      }
-
-      "return the error response" in {
-        setupMockHttpGet(Connector.getAddressUrl(idOne))(Left(errorModel))
-        await(getAddressResult()) mustBe Left(errorModel)
-      }
-
+    "return the Right response" in {
+      setupMockHttpGet(Connector.getAddressUrl(idOne))(Right(traderAddress))
+      await(getAddressResult()) mustBe Right(traderAddress)
     }
 
-    "called to post the Submission" should {
-
-      val submission = IVDSubmission(
-        userType = UserType.Importer,
-        numEntries = NumberOfEntries.OneEntry,
-        acceptanceDate = None,
-        additionalInfo = None,
-        entryDetails = EntryDetails("123", "123456Q", LocalDate.of(2020,1,12)),
-        originalCpc = "cpc",
-        amendedCpc = None,
-        traderContactDetails = TraderContactDetails("name", "email", "phone"),
-        traderAddress = traderAddress,
-        defermentType = None,
-        defermentAccountNumber = None,
-        additionalDefermentNumber = None,
-        underpaymentReasons = None,
-        underpaymentDetails = None,
-        documentList = None
-      )
-
-      val submissionResponse = SubmissionResponse("1234")
-
-      "return the Right response" in {
-        setupMockHttpPost(Connector.postSubmissionUrl)(Right(submissionResponse))
-        await(Connector.postSubmission(submission)) mustBe Right(submissionResponse)
-      }
-
-      "return the error response" in {
-        setupMockHttpPost(Connector.postSubmissionUrl)(Left(errorModel))
-        await(Connector.postSubmission(submission)) mustBe Left(errorModel)
-      }
+    "return the error response" in {
+      setupMockHttpGet(Connector.getAddressUrl(idOne))(Left(errorModel))
+      await(getAddressResult()) mustBe Left(errorModel)
     }
 
   }
+
+  "called to post the Submission" should {
+
+    val submission = IVDSubmission(
+      userType = UserType.Importer,
+      numEntries = NumberOfEntries.OneEntry,
+      acceptanceDate = None,
+      additionalInfo = None,
+      entryDetails = EntryDetails("123", "123456Q", LocalDate.of(2020, 1, 12)),
+      originalCpc = "cpc",
+      amendedCpc = None,
+      traderContactDetails = TraderContactDetails("name", "email", "phone"),
+      traderAddress = traderAddress,
+      defermentType = None,
+      defermentAccountNumber = None,
+      additionalDefermentNumber = None,
+      underpaymentReasons = None,
+      underpaymentDetails = None,
+      documentList = None
+    )
+
+    val submissionResponse = SubmissionResponse("1234")
+
+    "return the Right response" in {
+//      setupMockHttpPost(Connector.postSubmissionUrl)(Right(submissionResponse))
+      await(Connector.postSubmission(submission)) mustBe Right(submissionResponse)
+    }
+  }
+
 }

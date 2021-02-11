@@ -73,7 +73,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       }
 
       "have correct customs duty value" in {
-        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£123.33"
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£5,000.00"
       }
 
       "have correct customs duty Change link " in {
@@ -86,7 +86,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       }
 
       "have correct Import VAT value" in {
-        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£54,321.99"
+        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£900.00"
       }
 
       "have correct Import VAT Change link " in {
@@ -99,7 +99,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       }
 
       "have correct excise duty value" in {
-        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£999.00"
+        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£140.00"
       }
 
       "have correct excise duty Change link " in {

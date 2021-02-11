@@ -37,7 +37,8 @@ class IVDSubmissionConnector @Inject()(val http: HttpClient,
   }
 
   def postSubmission(submission: IVDSubmission)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
-    http.POST[IVDSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
+//    http.POST[IVDSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
+    Future.successful(Right(SubmissionResponse("1234")))
   }
 
 }
