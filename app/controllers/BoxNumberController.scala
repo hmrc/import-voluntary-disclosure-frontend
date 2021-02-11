@@ -21,18 +21,21 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.BoxNumberFormProvider
 import pages.UnderpaymentReasonBoxNumberPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.BoxNumberView
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
 class BoxNumberController @Inject()(identity: IdentifierAction,
                                     getData: DataRetrievalAction,
-                                    mcc: MessagesControllerComponents,
                                     requireData: DataRequiredAction,
+                                    sessionRepository: SessionRepository,
+                                    mcc: MessagesControllerComponents,
                                     formProvider: BoxNumberFormProvider,
                                     view: BoxNumberView,
                                     implicit val appConfig: AppConfig)
@@ -42,11 +45,23 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
     val form = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, controllers.routes.BoxGuidanceController.onLoad())))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    ???
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.BoxNumberController.onLoad())
+        }
+      }
+    )
   }
+
+  private[controllers] def backLink(): Call = controllers.routes.BoxGuidanceController.onLoad()
 
 }
