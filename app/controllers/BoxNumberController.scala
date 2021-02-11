@@ -16,7 +16,6 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.BoxNumberFormProvider
 import pages.UnderpaymentReasonBoxNumberPage
@@ -37,8 +36,7 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
                                     sessionRepository: SessionRepository,
                                     mcc: MessagesControllerComponents,
                                     formProvider: BoxNumberFormProvider,
-                                    view: BoxNumberView,
-                                    implicit val appConfig: AppConfig)
+                                    view: BoxNumberView)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
