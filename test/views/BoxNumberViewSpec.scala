@@ -91,6 +91,10 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages {
       elementText(".govuk-button") mustBe continue
     }
 
+    s"the input field is rendered" in {
+      document.select("#value").size mustBe 1
+    }
+
   }
 
 }

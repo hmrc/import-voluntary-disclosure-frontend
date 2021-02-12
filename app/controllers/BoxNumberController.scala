@@ -46,12 +46,12 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
     val form = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink())))
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
@@ -60,13 +60,13 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
           appConfig.boxNumberItems.getOrElse(value, "notValid") match {
             case "item" => Redirect(controllers.routes.BoxNumberController.onLoad())
             case "entry" => Redirect(controllers.routes.BoxNumberController.onLoad())
-            case _ => BadRequest(view(formProvider(), backLink()))
+            case _ => BadRequest(view(formProvider(), backLink))
           }
         }
       }
     )
   }
 
-  private[controllers] def backLink(): Call = controllers.routes.BoxGuidanceController.onLoad()
+  private[controllers] val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
 }
