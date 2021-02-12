@@ -42,6 +42,8 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
                                    )
   extends FrontendController(mcc) with I18nSupport {
 
+  private val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
+
   def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).fold(formProvider()) {
       formProvider().fill
@@ -66,7 +68,5 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
       }
     )
   }
-
-  private[controllers] val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
 }
