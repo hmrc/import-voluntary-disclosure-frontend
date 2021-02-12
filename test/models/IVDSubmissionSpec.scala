@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,29 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package models
 
-@(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
+import assets.IVDSubmissionTestData
+import base.SpecBase
+import play.api.libs.json.Json
 
- @if(id.isDefined){
-  <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
- } else {
-  <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
- }
+class IVDSubmissionSpec extends SpecBase with IVDSubmissionTestData {
 
-@{
- //$COVERAGE-OFF$
+  "IVD Submission model" when {
+    "converting from a user answers" should {
+      "produce a valid model" in {
+        val result = Json.fromJson[IVDSubmission](userAnswersJson).get
+        result mustBe ivdSubmission
+      }
+    }
+    "serialising a model" should {
+      "produce valid json" in {
+        val result = Json.toJson(ivdSubmission)
+        result mustBe ivdSubmissionJson
+      }
+    }
+  }
+
 }

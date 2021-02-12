@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package messages
 
-@(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
+object BoxNumberMessages extends BaseMessages {
 
- @if(id.isDefined){
-  <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
- } else {
-  <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
- }
+  val pageTitle = "What is the box number?"
+  val heading = "What is the box number?"
+  val errorRequired = "Enter a box number"
 
-@{
- //$COVERAGE-OFF$
 }

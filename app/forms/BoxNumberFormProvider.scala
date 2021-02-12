@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package forms
 
-@(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.i18n.Messages
 
- @if(id.isDefined){
-  <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
- } else {
-  <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
- }
+import javax.inject.Inject
 
-@{
- //$COVERAGE-OFF$
+
+class BoxNumberFormProvider @Inject() extends Mappings {
+
+  def apply()(implicit messages: Messages): Form[Int] =
+    Form(
+      "value" -> int(
+        requiredKey = "boxNumber.error.required"
+      )
+    )
+
 }

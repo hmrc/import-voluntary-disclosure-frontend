@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package pages
 
-@(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
+import play.api.libs.json.JsPath
 
- @if(id.isDefined){
-  <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
- } else {
-  <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
- }
+case object UnderpaymentReasonBoxNumberPage extends QuestionPage[Int] {
 
-@{
- //$COVERAGE-OFF$
+  def path: JsPath = JsPath \ "underpayment-reason-temp" \ toString
+
+  override def toString: String = "boxNumber"
+
 }
