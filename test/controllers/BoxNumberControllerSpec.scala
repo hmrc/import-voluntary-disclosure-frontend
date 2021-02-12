@@ -97,10 +97,10 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER item level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = underpaymentReasonBoxNumber
         lazy val result: Future[Result] = controller.onSubmit(
-          fakeRequestGenerator("22")
+          fakeRequestGenerator("33")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url) // Item level
+        redirectLocation(result) mustBe Some(controllers.routes.ItemNumberController.onLoad().url) // Item level
       }
 
       "update the UserAnswers in session" in new Test {
