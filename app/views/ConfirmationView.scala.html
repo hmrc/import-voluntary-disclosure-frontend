@@ -15,12 +15,8 @@
  *@
 
 @this(layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        h1: components.h1,
         h2: components.h2,
-        p: components.p,
-        bullets: components.bullets,
-        linkButton: components.linkButton
+        p: components.p
 )
 
 @(reference: String = "")(implicit request: Request[_], messages: Messages)
@@ -29,7 +25,7 @@
 
     <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">
-        @messages("confirmation.heading")
+            @messages("confirmation.heading")
         </h1>
         <div class="govuk-panel__body">
             <div id = "entryNumber">@messages("confirmation.entryNumber")</div>

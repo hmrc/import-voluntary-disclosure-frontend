@@ -63,6 +63,6 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       }
       case JsError(_) => throw new RuntimeException("Completed journey answers does not parse to IVDSubmission model")
     }
-
   }
+
 }
