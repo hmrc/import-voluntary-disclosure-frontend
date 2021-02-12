@@ -22,6 +22,7 @@ import messages.{BaseMessages, ItemNumberMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.ItemNumberView
 
@@ -35,7 +36,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -55,7 +56,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("itemNumber" -> ""))
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -77,7 +78,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("itemNumber" -> "one"))
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -99,16 +100,16 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ItemNumberMessages.h1}'" in {
       elementText("h1") mustBe ItemNumberMessages.h1
     }
 
-//    "render a back link with the correct URL" in {
-//      elementAttributes("#back-link") must contain("href" -> controllers.routes.EntryDetailsController.onLoad().url)
-//    }
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.BoxNumberController.onLoad().url)
+    }
 
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue

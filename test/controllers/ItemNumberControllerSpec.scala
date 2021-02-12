@@ -47,7 +47,6 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
-      appConfig,
       mockSessionRepository,
       messagesControllerComponents,
       ItemNumberView,

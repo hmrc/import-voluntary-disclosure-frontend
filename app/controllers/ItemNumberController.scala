@@ -17,10 +17,8 @@
 package controllers
 
 import com.google.inject.Inject
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ItemNumberFormProvider
-import models.EntryDetails
 import pages.ItemNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -34,7 +32,6 @@ import scala.concurrent.Future
 class ItemNumberController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
-                                                    appConfig: AppConfig,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     view: ItemNumberView,
@@ -46,30 +43,23 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ItemNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form,backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors
-//        backLink(request.userAnswers.get(ItemNumberPage))
-      ))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ItemNumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.CustomsProcedureCodeController.onLoad())
+          Redirect(controllers.routes.ItemNumberController.onLoad()) // values controller
         }
       }
     )
   }
 
-  private[controllers] def backLink(entryDetails: Option[EntryDetails]): Call =
-    if (entryDetails.get.entryDate.isBefore(appConfig.euExitDate)) {
-      Call("GET",controllers.routes.AcceptanceDateController.onLoad().url)
-    } else {
-      Call("GET",controllers.routes.EntryDetailsController.onLoad().url)
-    }
+  private[controllers] def backLink: Call = Call("GET",controllers.routes.BoxNumberController.onLoad().url)
 
 }
