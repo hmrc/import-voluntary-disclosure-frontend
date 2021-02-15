@@ -31,7 +31,7 @@ class ItemNumberFormProvider @Inject() extends Mappings {
         "itemNo.error.wholeNumber",
         "itemNo.error.nonNumeric"
       )
-  .verifying(inRange(0, 99, "itemNo.error.outOfRange"))
+  .verifying(inRange(1, 99, "itemNo.error.outOfRange"))
   )
 
 }
