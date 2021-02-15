@@ -55,7 +55,6 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ItemNumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
-
         } yield {
           val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
           Redirect(controllers.routes.ItemNumberController.onLoad()) // values controller
