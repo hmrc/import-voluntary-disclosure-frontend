@@ -19,7 +19,7 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ItemNumberFormProvider
-import pages.ItemNumberPage
+import pages.{ItemNumberPage, UnderpaymentReasonBoxNumberPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -55,7 +55,9 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ItemNumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
+
         } yield {
+          val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
           Redirect(controllers.routes.ItemNumberController.onLoad()) // values controller
         }
       }

@@ -26,7 +26,12 @@ class ItemNumberFormProvider @Inject() extends Mappings {
 
   def apply()(implicit messages: Messages): Form[Int] =
     Form(
-      "itemNumber" -> int("itemNo.error.required")
-    )
+      "itemNumber" -> int(
+        "itemNo.error.required",
+        "itemNo.error.wholeNumber",
+        "itemNo.error.nonNumeric"
+      )
+  .verifying(inRange(0, 99, "itemNo.error.outOfRange"))
+  )
 
 }

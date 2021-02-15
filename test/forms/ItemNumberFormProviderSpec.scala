@@ -52,7 +52,7 @@ class ItemNumberFormProviderSpec extends SpecBase {
       }
     }
 
-    "wth invalid data present" should {
+    "with a non numeric value present" should {
 
       val data = Map("itemNumber" -> "one")
       val form = new ItemNumberFormProvider()().bind(data)
@@ -63,6 +63,46 @@ class ItemNumberFormProviderSpec extends SpecBase {
 
       "throw one error" in {
         form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "itemNo.error.nonNumeric"
+      }
+    }
+
+    "with a number greater than 99 present" should {
+
+      val data = Map("itemNumber" -> "100")
+      val form = new ItemNumberFormProvider()().bind(data)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "itemNo.error.outOfRange"
+      }
+    }
+
+    "with a decimal present" should {
+
+      val data = Map("itemNumber" -> "1.1")
+      val form = new ItemNumberFormProvider()().bind(data)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "itemNo.error.wholeNumber"
       }
     }
   }
