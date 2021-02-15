@@ -119,6 +119,13 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
 
+      "return a BAD_REQUEST correct data is sent but the box number is not part of the list" in new Test {
+        override val userAnswers: Option[UserAnswers] = underpaymentReasonBoxNumber
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("0")
+        )
+        status(result) mustBe Status.BAD_REQUEST
+      }
     }
 
   }
