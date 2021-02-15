@@ -21,14 +21,14 @@ import play.api.data.Form
 
 class ItemNumberFormProviderSpec extends SpecBase {
 
-  private final val itemNumber = "1"
+
   private final val itemNumberKey = "itemNumber"
 
   def formBuilder(itemNumber: String = ""): Map[String, String] = Map(
     itemNumberKey -> itemNumber
   )
 
-  def formBinder(formValues: Map[String, String] = Map(itemNumber -> "")): Form[String] =
+  def formBinder(formValues: Map[String, String] = Map(itemNumberKey -> "")): Form[Int] =
     new ItemNumberFormProvider()().bind(formValues)
 
 
@@ -48,7 +48,7 @@ class ItemNumberFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "itemNumber.error.required"
+        form.errors.head.message mustBe "itemNo.error.required"
       }
     }
 
@@ -64,10 +64,6 @@ class ItemNumberFormProviderSpec extends SpecBase {
       "throw one error" in {
         form.errors.size mustBe 1
       }
-
-      "have an error with the correct message" in {
-        form.errors.head.message mustBe "itemNumber.error.format"
-      }
     }
   }
 
@@ -82,4 +78,3 @@ class ItemNumberFormProviderSpec extends SpecBase {
   }
 
 }
-

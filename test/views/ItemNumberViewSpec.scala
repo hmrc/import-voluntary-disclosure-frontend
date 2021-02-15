@@ -35,7 +35,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Item Number page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
+      val form: Form[Int] = formProvider.apply()
       lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -55,7 +55,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("itemNumber" -> ""))
+        lazy val form: Form[Int] = formProvider().bind(Map("itemNumber" -> ""))
         lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -73,33 +73,11 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       }
     }
-
-    "invalid data supplied" should {
-
-      "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("itemNumber" -> "one"))
-        lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "update the page title to include the error prefix" in {
-          document.title mustBe ItemNumberMessages.errorPrefix + ItemNumberMessages.title
-        }
-
-        "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ItemNumberMessages.formatError
-        }
-
-        "render an error message against the field" in {
-          elementText("#itemNumber-error") mustBe ItemNumberMessages.errorPrefix + ItemNumberMessages.formatError
-        }
-
-      }
-    }
   }
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
+    val form: Form[Int] = formProvider.apply()
     lazy val view: Html = injectedView(form, Call("GET", controllers.routes.BoxNumberController.onLoad().url) )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

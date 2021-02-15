@@ -16,13 +16,12 @@
 
 @this(layout: templates.Layout,
       formHelper: FormWithCSRF,
-      h1: components.h1,
       errorSummary: components.errorSummary,
       button: components.button,
-      inputText: components.inputText
+      inputNumber: components.inputNumber
 )
 
-@(form: Form[_],backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
    @layout(
     pageTitle = messages("itemNo.pageTitle"),
@@ -32,7 +31,7 @@
     @errorSummary(form.errors)
 
     @formHelper(action = controllers.routes.ItemNumberController.onSubmit()) {
-      @inputText(form, "itemNumber", "itemNumber", messages("itemNo.pageHeader"), true, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
+      @inputNumber(form = form, id = "itemNumber", name = "itemNumber", label = messages("itemNo.pageHeader"), isPageHeading = true, classes = Some("govuk-fieldset__legend govuk-input--width-5"))
       @button("common.button.continue")
 
     }

@@ -34,7 +34,7 @@ import scala.concurrent.Future
 class ItemNumberControllerSpec extends ControllerSpecBase {
 
   val userAnswersWithItemNumber: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-    .set(ItemNumberPage, "1").success.value
+    .set(ItemNumberPage, 1).success.value
   )
 
   private def fakeRequestGenerator(itemNumber: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -53,8 +53,7 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
       form
     )
     private lazy val ItemNumberView = app.injector.instanceOf[ItemNumberView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = userAnswersWithItemNumber
+    lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswersWithItemNumber)
     val formProvider: ItemNumberFormProvider = injector.instanceOf[ItemNumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ItemNumberFormProvider = formProvider
@@ -66,7 +65,9 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
+
     "return HTML" in new Test {
+      override lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -79,13 +80,11 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data with numeric only values" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithItemNumber
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1"))
         status(result) mustBe Status.SEE_OTHER
       }
 
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithItemNumber
         await(controller.onSubmit(fakeRequestGenerator("1")))
         verifyCalls()
       }
@@ -93,13 +92,6 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
-
-      "return BAD REQUEST when invalid data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithItemNumber
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("one"))
-        status(result) mustBe Status.BAD_REQUEST
-      }
-
 
       "return BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)

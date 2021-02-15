@@ -279,8 +279,7 @@ cya.newCustomsProcedure = Amended customs procedure code
 # Item Number
 itemNo.pageTitle = What is the item number?
 itemNo.pageHeader = What is the item number?
-itemNumber.error.required = Enter an item number
-itemNumber.error.format = Must be a number
+itemNo.error.required = Enter an item number
 
 
 

@@ -16,13 +16,12 @@
 
 package pages
 
-import models.CustomsProcedureCode
 import play.api.libs.json.JsPath
 
-case object ItemNumberPage extends QuestionPage[String] {
+case object ItemNumberPage extends QuestionPage[Int] {
 
-  def path: JsPath = JsPath \ "underpayment-reason-temp" \ toString
+  def path: JsPath = JsPath \ toString
 
-  override def toString: String = "itemNumber"
+  override def toString: String = "underpayment-reason-itemNumber-temp"
 
 }

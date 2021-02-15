@@ -24,10 +24,9 @@ import play.api.i18n.Messages
 
 class ItemNumberFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[String] =
+  def apply()(implicit messages: Messages): Form[Int] =
     Form(
-      "itemNumber" -> text("itemNumber.error.required")
-        .verifying(regexp("^[0-9]$","itemNumber.error.format"))
+      "itemNumber" -> int("itemNo.error.required")
     )
 
 }

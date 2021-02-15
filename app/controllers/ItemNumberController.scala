@@ -39,16 +39,18 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink: Call = Call("GET", controllers.routes.BoxNumberController.onLoad().url)
+
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ItemNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form,backLink)))
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ItemNumberPage, value))
@@ -59,7 +61,5 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
       }
     )
   }
-
-  private[controllers] def backLink: Call = Call("GET",controllers.routes.BoxNumberController.onLoad().url)
 
 }
