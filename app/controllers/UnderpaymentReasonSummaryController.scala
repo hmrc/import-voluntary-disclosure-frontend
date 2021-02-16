@@ -36,8 +36,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
-
+  private lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
@@ -45,9 +44,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
 
-    // form
     // page for the sequence of object
-    // what to do with the back button
     // does yes or no need to be saved for this page
     // get number of reasons
     // get current reason from user answers for the previous 3 pages
