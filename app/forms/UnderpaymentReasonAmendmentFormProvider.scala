@@ -33,7 +33,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
         textFormMapping(regex)
       }
       case 62 => foreignCurrencyFormMapping
-      case _ => {
+      case _ => { // TODO: Remove this when all box numbers added to story
         val regex = appConfig.boxNumberTypes.getOrElse(boxNumber, appConfig.invalidBox).regex
         textFormMapping(regex)
       }

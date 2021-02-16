@@ -83,7 +83,7 @@ class UnderpaymentReasonAmendmentController @Inject()(identity: IdentifierAction
   def routeToView(boxNumber: Int, itemNumber: Int, form: Form[_])(implicit request: Request[_], messages: Messages) = {
     appConfig.boxNumberTypes.getOrElse(boxNumber, appConfig.invalidBox) match {
       case box if(box.boxType.equals("text")) => Ok(textAmendmentView(form, box, itemNumber, backLink(boxNumber))(request, messages))
-      case box => Ok(textAmendmentView(form, box, itemNumber, backLink(boxNumber))(request, messages))
+      case _ => throw new RuntimeException("Invalid Box Number")
     }
   }
 
