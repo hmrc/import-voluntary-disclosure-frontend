@@ -16,15 +16,16 @@
 
 package pages
 
-import models.{FileUploadInfo, UnderpaymentReason}
+import models.UnderpaymentReason
 import play.api.libs.json._
 
 object UnderpaymentReasonsPage extends QuestionPage[Seq[UnderpaymentReason]] {
 
   override def path: JsPath = JsPath \ "underpayment-reasons"
 
-  def queryWrites: Writes[Seq[FileUploadInfo]] =
-    (files: Seq[FileUploadInfo]) => JsArray(files.map { file =>
-      Json.toJson(file)
+  def arrayWrites: Writes[Seq[UnderpaymentReason]] =
+    (reasons: Seq[UnderpaymentReason]) => JsArray(reasons.map { reason =>
+      Json.toJson(reason)
     })
+
 }
