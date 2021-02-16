@@ -23,13 +23,20 @@ import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentReasonValue, UserAnswers}
 import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.http.Status
-import play.api.mvc.{Call, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.TextAmendmentView
 
 import scala.concurrent.Future
 
 class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
+
+  private def fakeRequestGenerator(original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+    fakeRequest.withFormUrlEncodedBody(
+      "original" -> original,
+      "amended" -> amended
+    )
 
   trait Test extends MockSessionRepository {
     lazy val controller = new UnderpaymentReasonAmendmentController(
@@ -91,5 +98,39 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
   }
+
+  "POST /" when {
+
+    "payload contains valid data" should {
+
+      // TODO - finish
+      "return a SEE OTHER response when correct data is sent" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(22)(fakeRequestGenerator("50", "65"))
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      // TODO - finish
+      "update the UserAnswers in session" in new Test {
+        await(controller.onSubmit(22)(fakeRequestGenerator("50", "65")))
+        verifyCalls()
+      }
+
+    }
+
+    "payload contains invalid data" should {
+
+      // TODO - finish
+      "return Ok form with errors when invalid data is sent" in new Test {
+        val result: Future[Result] = controller.onSubmit(62)(fakeRequest)
+        status(result) mustBe Status.OK
+      }
+
+      "return RuntimeException for invalid box number" in new Test {
+        val result: RuntimeException = intercept[RuntimeException](await(controller.onSubmit(0)(fakeRequest)))
+        assert(result.getMessage.contains("Invalid Box Number"))
+      }
+    }
+  }
+
 
 }
