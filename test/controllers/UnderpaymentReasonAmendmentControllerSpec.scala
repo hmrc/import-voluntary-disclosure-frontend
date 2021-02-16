@@ -73,10 +73,9 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "return HTML for invalid box number" in new Test {
-      val result: Future[Result] = controller.onLoad(0)(fakeRequest)
-      contentType(result) mustBe Some("text/html")
-      charset(result) mustBe Some("utf-8")
+    "throw an exception for invalid box number" in new Test {
+      val result: RuntimeException = intercept[RuntimeException](await(controller.onLoad(0)(fakeRequest)))
+      assert(result.getMessage.contains("Invalid Box Number"))
     }
 
     "should redirect the back button to Box Number Controller" in new Test {
