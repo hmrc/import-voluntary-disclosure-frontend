@@ -39,8 +39,12 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     // form
+    // page for the sequence of object
+    // what to do with the back button
+    // does yes or no need to be saved for this page
     // get number of reasons
-    // get current reason
+    // get current reason from user answers for the previous 3 pages
+    // write the user answers with the new model
 
     val form: Form[_] = ???
     Future.successful(Ok(view(form, 0, backLink)))
