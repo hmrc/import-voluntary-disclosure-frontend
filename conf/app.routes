@@ -77,5 +77,6 @@ GET         /disclosure/confirmation                           controllers.Check
 GET         /disclosure/item-number                            controllers.ItemNumberController.onLoad
 POST        /disclosure/item-number                            controllers.ItemNumberController.onSubmit
 
-
+GET         /disclosure/confirm-reason-details                 controllers.ConfirmReasonDetailController.onLoad
+#POST        /disclosure/confirm-reason-details                 controllers.ConfirmReasonDetailController.onSubmit
 

@@ -284,6 +284,11 @@ itemNo.error.outOfRange = Item number must be between 1 and 99
 itemNo.error.wholeNumber = Item number must be a whole number
 itemNo.error.nonNumeric = Item number must be a number
 
+# Confirm Reason Details
+confirmReason.pageTitle = Confirm the details of the reason for underpayment
+confirmReason.heading = Confirm the details of the reason for underpayment
+
+
 
 
 
