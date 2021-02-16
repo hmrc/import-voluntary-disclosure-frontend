@@ -27,27 +27,14 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
-  private val contactHost = servicesConfig.getString("contact-frontend.host")
-
-  private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
-
-  val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
-
-  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.service-identifier")
   lazy val contactUrl = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
   lazy val host = servicesConfig.getString("urls.host")
-
-  def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$requestUri"
-
   lazy val appName: String = servicesConfig.getString("appName")
   lazy val loginUrl: String = servicesConfig.getString("urls.login")
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
   lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
   lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
-  val addressLookupFeedbackUrl: String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
     controllers.routes.AddressLookupController.callback("").url
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
@@ -56,7 +43,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val mustIncludeFiles: Seq[String] = config.get[Seq[String]]("uploads.mustIncludeFiles")
   lazy val mayIncludeFiles: Seq[String] = config.get[Seq[String]]("uploads.mayIncludeFiles")
   lazy val fileSize = config.get[Int]("uploads.maxFileSize")
-
   lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
   lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
@@ -64,11 +50,19 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
-  lazy val upScanAcceptedFileTypes: String = allowedUploadFileTypes.map(x=>"."+x).mkString(",").toLowerCase
-
+  lazy val upScanAcceptedFileTypes: String = allowedUploadFileTypes.map(x => "." + x).mkString(",").toLowerCase
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
-
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
+  val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
+  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.service-identifier")
+  val addressLookupFeedbackUrl: String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
+  private val contactHost = servicesConfig.getString("contact-frontend.host")
+
+  def feedbackUrl(implicit request: RequestHeader): String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$requestUri"
+
+  private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
 
 }
 
@@ -77,7 +71,6 @@ trait AppConfig extends FixedConfig {
   val contactFormServiceIdentifier: String
   val contactUrl: String
   val host: String
-  def feedbackUrl(implicit request: RequestHeader): String
   val appName: String
   val loginUrl: String
   val signOutUrl: String
@@ -100,34 +93,35 @@ trait AppConfig extends FixedConfig {
   val upScanPollingDelayMilliSeconds: Int
   val upScanInitiateBaseUrl: String
   val upScanAcceptedFileTypes: String
-
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
+
+  def feedbackUrl(implicit request: RequestHeader): String
 }
 
 trait FixedConfig {
   val euExitDate: LocalDate = LocalDate.of(2021, 1, 1)
 
   val boxNumberTypes: Map[Int, BoxType] = Map(
-    22 -> BoxType(22, "entry","text"),
-    33 -> BoxType(33, "item","text", regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)"""),
-    34 -> BoxType(34, "item","text"),
-    35 -> BoxType(35, "item","text"),
-    36 -> BoxType(36, "item","text"),
-    37 -> BoxType(37, "item","text"),
-    38 -> BoxType(38, "item","text"),
-    39 -> BoxType(39, "item","text"),
-    41 -> BoxType(41, "item","text"),
-    42 -> BoxType(42, "item","text"),
-    43 -> BoxType(43, "item","text"),
-    45 -> BoxType(45, "item","text"),
-    46 -> BoxType(46, "item","text"),
-    62 -> BoxType(62, "entry","text"),
-    63 -> BoxType(63, "entry","text"),
-    66 -> BoxType(66, "entry","text"),
-    67 -> BoxType(67, "entry","text"),
-    68 -> BoxType(68, "entry","text")
+    22 -> BoxType(22, "entry", "text"),
+    33 -> BoxType(33, "item", "text", regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)"""),
+    34 -> BoxType(34, "item", "text"),
+    35 -> BoxType(35, "item", "weight"),
+    36 -> BoxType(36, "item", "text"),
+    37 -> BoxType(37, "item", "text"),
+    38 -> BoxType(38, "item", "weight"),
+    39 -> BoxType(39, "item", "text"),
+    41 -> BoxType(41, "item", "text"),
+    42 -> BoxType(42, "item", "text"),
+    43 -> BoxType(43, "item", "text"),
+    45 -> BoxType(45, "item", "text"),
+    46 -> BoxType(46, "item", "text"),
+    62 -> BoxType(62, "entry", "text"),
+    63 -> BoxType(63, "entry", "text"),
+    66 -> BoxType(66, "entry", "text"),
+    67 -> BoxType(67, "entry", "text"),
+    68 -> BoxType(68, "entry", "text")
   )
-  val invalidBox = BoxType(-1, "invalid", "invalid")
+  val invalidBox = BoxType(-12, "invalid", "invalid")
 
 }

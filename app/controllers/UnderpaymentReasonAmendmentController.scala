@@ -19,10 +19,10 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentReasonAmendmentFormProvider
-import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage}
+import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.data.{Form, FormError}
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TextAmendmentView
@@ -51,7 +51,6 @@ class UnderpaymentReasonAmendmentController @Inject()(identity: IdentifierAction
   }
 
   def onLoad(boxNumber: Int): Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
     val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage).getOrElse(0)
 
     val form = request.userAnswers.get(UnderpaymentReasonAmendmentPage).fold(formProvider(boxNumber)) {
@@ -62,7 +61,6 @@ class UnderpaymentReasonAmendmentController @Inject()(identity: IdentifierAction
   }
 
   def onSubmit(boxNumber: Int): Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
     val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage).getOrElse(0)
     formProvider(boxNumber).bindFromRequest().fold(
       formWithErrors => {

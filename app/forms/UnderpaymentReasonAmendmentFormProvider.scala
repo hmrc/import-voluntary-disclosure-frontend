@@ -17,8 +17,8 @@
 package forms
 
 import config.AppConfig
-import models.UnderpaymentReasonValue
 import forms.mappings.Mappings
+import models.UnderpaymentReasonValue
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.Messages
@@ -33,6 +33,10 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
         textFormMapping(regex)
       }
       case 62 => foreignCurrencyFormMapping
+      case _ => {
+        val regex = appConfig.boxNumberTypes.getOrElse(boxNumber, appConfig.invalidBox).regex
+        textFormMapping(regex)
+      }
     }
   }
 
