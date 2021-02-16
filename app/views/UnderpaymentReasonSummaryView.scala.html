@@ -15,18 +15,35 @@
 *@
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
-        h1: components.h1
+        h1: components.h1,
+        errorSummary: components.errorSummary,
+        yesNoRadio: components.yesNoRadio,
+        button: components.button
 )
 
 @(form: Form[_], numberOfReasons: Int, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("underpaymentReasonSummary.pageTitle"),
- customBackLinkUrl = Some(backLink)) {
+    customBackLinkUrl = Some(backLink)) {
 
- @h1(messages(numberOfReasons, "underpaymentReasonSummary.pageHeader"))
+    @errorSummary(form.errors)
+
+    @h1(messages("underpaymentReasonSummary.pageHeader", numberOfReasons))
+
+    @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "underpaymentReasonSummary.radioMessage",
+            inline = true,
+            isPageHeading = false,
+            classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
+        )
+
+        @button("common.button.continue")
+    }
 
 }
 
 @{
- //$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

@@ -17,7 +17,8 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import play.api.data.Form
+import forms.UnderpaymentReasonSummaryFormProvider
+import pages.UnderpaymentReasonSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -30,7 +31,8 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     mcc: MessagesControllerComponents,
-                                                    view: UnderpaymentReasonSummaryView
+                                                    view: UnderpaymentReasonSummaryView,
+                                                    formProvider: UnderpaymentReasonSummaryFormProvider
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -38,6 +40,11 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+
+    val form = request.userAnswers.get(UnderpaymentReasonSummaryPage).fold(formProvider()) {
+      formProvider().fill
+    }
+
     // form
     // page for the sequence of object
     // what to do with the back button
@@ -46,8 +53,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     // get current reason from user answers for the previous 3 pages
     // write the user answers with the new model
 
-    val form: Form[_] = ???
-    Future.successful(Ok(view(form, 0, backLink)))
+    Future.successful(Ok(view(form, 1, backLink)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
