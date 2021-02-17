@@ -32,6 +32,9 @@ import scala.concurrent.Future
 
 class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
 
+  private final lazy val fifty: String = "GBP50"
+  private final lazy val sixtyFive: String = "GBP65.01"
+
   private def fakeRequestGenerator(original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
       "original" -> original,
@@ -103,15 +106,13 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
 
     "payload contains valid data" should {
 
-      // TODO - finish
       "return a SEE OTHER response when correct data is sent" in new Test {
-        lazy val result: Future[Result] = controller.onSubmit(22)(fakeRequestGenerator("50", "65"))
+        lazy val result: Future[Result] = controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive))
         status(result) mustBe Status.SEE_OTHER
       }
 
-      // TODO - finish
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(22)(fakeRequestGenerator("50", "65")))
+        await(controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive)))
         verifyCalls()
       }
 
@@ -119,18 +120,28 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
 
     "payload contains invalid data" should {
 
-      // TODO - finish
       "return Ok form with errors when invalid data is sent" in new Test {
         val result: Future[Result] = controller.onSubmit(62)(fakeRequest)
-        status(result) mustBe Status.OK
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
+      "return Ok form with errors when only original value is sent" in new Test {
+        val result: Future[Result] = controller.onSubmit(22)(
+          fakeRequest.withFormUrlEncodedBody(
+            "original" -> fifty,
+            "amended" -> fifty
+          )
+        )
+        status(result) mustBe Status.BAD_REQUEST
       }
 
       "return RuntimeException for invalid box number" in new Test {
         val result: RuntimeException = intercept[RuntimeException](await(controller.onSubmit(0)(fakeRequest)))
         assert(result.getMessage.contains("Invalid Box Number"))
       }
-    }
-  }
 
+    }
+
+  }
 
 }
