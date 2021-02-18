@@ -280,7 +280,7 @@ cya.newCustomsProcedure = Amended customs procedure code
 itemNo.pageTitle = What is the item number?
 itemNo.pageHeader = What is the item number?
 itemNo.error.required = Enter an item number
-itemNo.error.outOfRange = Item number must be 99 or fewer
+itemNo.error.outOfRange = Item number must be between 1 and 99
 itemNo.error.wholeNumber = Item number must be a whole number
 itemNo.error.nonNumeric = Item number must be a number
 
@@ -289,4 +289,3 @@ underpaymentReasonSummary.pageTitle = Reason summary
 underpaymentReasonSummary.pageHeader = You have added {0} reasons for the underpayment
 underpaymentReasonSummary.radioMessage = Add another reason for the underpayment?
 underpaymentReasonSummary.error.required = Select yes to add another reason for the underpayment
-
