@@ -33,6 +33,11 @@
  @answers.map { answer =>
   @govukSummaryList(answer.summaryList)
 
+  @linkButton(
+   url = controllers.routes.ConfirmReasonDetailController.onLoad().url,
+   value = messages("common.continue")
+  )
+
  }
 
  @{

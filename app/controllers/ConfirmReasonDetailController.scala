@@ -40,9 +40,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val boxNumber = summaryList(request.userAnswers).get
+    val confirmReasonSummary = summaryList(request.userAnswers).get
 
-    Future.successful(Ok(view(Seq(boxNumber))))
+    Future.successful(Ok(view(Seq(confirmReasonSummary))))
   }
 
 def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[ConfirmReasonSummaryList] = {
@@ -59,7 +59,7 @@ def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[C
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
+              ActionItem(controllers.routes.BoxNumberController.onLoad().url, Text(messages("confirmReason.change")))
             )
           )
           )
@@ -79,7 +79,7 @@ def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[C
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem("Url", Text(messages("cya.change")))
+            ActionItem(controllers.routes.ItemNumberController.onLoad().url, Text(messages("confirmReason.change")))
           )
         )
         )
