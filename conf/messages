@@ -287,5 +287,7 @@ itemNo.error.nonNumeric = Item number must be a number
 # Underpayment Reason Summary
 underpaymentReasonSummary.pageTitle = Reason summary
 underpaymentReasonSummary.pageHeader = You have added {0} reasons for the underpayment
+underpaymentReasonSummary.pageHeaderSingleReason = You have added 1 reason for the underpayment
+underpaymentReasonSummary.remove = Remove
 underpaymentReasonSummary.radioMessage = Add another reason for the underpayment?
 underpaymentReasonSummary.error.required = Select yes to add another reason for the underpayment

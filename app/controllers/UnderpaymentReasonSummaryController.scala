@@ -18,9 +18,12 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UnderpaymentReasonSummaryFormProvider
-import pages.UnderpaymentReasonSummaryPage
-import play.api.i18n.I18nSupport
+import models.UnderpaymentReason
+import pages.UnderpaymentReasonsPage
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UnderpaymentReasonSummaryView
 
@@ -37,24 +40,69 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
+  private lazy val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val form = request.userAnswers.get(UnderpaymentReasonSummaryPage).fold(formProvider()) {
-      formProvider().fill
-    }
-
-    // page for the sequence of object
-    // does yes or no need to be saved for this page
-    // get number of reasons
-    // get current reason from user answers for the previous 3 pages
-    // write the user answers with the new model
-
-    Future.successful(Ok(view(form, 1, backLink)))
+    Future.successful(
+      Ok(
+        view(
+          formProvider.apply(),
+          backLink,
+          summaryList(request.userAnswers.get(UnderpaymentReasonsPage).get, tempChangeAndDeleteLink)
+        )
+      )
+    )
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    // TODO - do I need to make changes to check your answers or what's sent to submission
     ???
+  }
+
+  private[controllers] def summaryList(
+                                        underpaymentReason: Seq[UnderpaymentReason],
+                                        changeAction: Call
+                                      )(implicit messages: Messages): Seq[SummaryList] = {
+    lazy val sortedReasons = underpaymentReason.sortBy(item => item.boxNumber)
+    for (underpayment <- sortedReasons) yield
+      SummaryList(
+        classes = if (underpayment == sortedReasons.last) {
+          "govuk-!-margin-bottom-10"
+        } else {
+          "govuk-!-margin-bottom-0"
+        },
+        rows = Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text("Box " + underpayment.boxNumber)
+            ),
+            value = Value(
+              content = if (underpayment.itemNumber == 0) {
+                HtmlContent("Entry Level")
+              } else {
+                HtmlContent("Item " + underpayment.itemNumber)
+              }
+            ),
+            actions = Some(
+              Actions(
+                items = Seq(
+                  ActionItem(
+                    changeAction.url,
+                    Text(messages("underpaymentSummary.change")),
+                    Some("key")
+                  ),
+                  ActionItem(
+                    changeAction.url,
+                    Text(messages("underpaymentReasonSummary.remove")),
+                    Some("key")
+                  )
+                ),
+                classes = "govuk-!-width-one-third"
+              )
+            )
+          )
+        )
+      )
   }
 
 }

@@ -18,17 +18,26 @@
         h1: components.h1,
         errorSummary: components.errorSummary,
         yesNoRadio: components.yesNoRadio,
-        button: components.button
+        button: components.button,
+        govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], numberOfReasons: Int, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, summaryList: Seq[SummaryList])(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("underpaymentReasonSummary.pageTitle"),
     customBackLinkUrl = Some(backLink)) {
 
     @errorSummary(form.errors)
 
-    @h1(messages("underpaymentReasonSummary.pageHeader", numberOfReasons))
+    @if(summaryList.size == 1) {
+        @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
+    } else {
+        @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.size))
+    }
+
+    @for(summary <- summaryList) {
+        @govukSummaryList(summary)
+    }
 
     @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
         @yesNoRadio(
@@ -38,7 +47,6 @@
             isPageHeading = false,
             classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
         )
-
         @button("common.button.continue")
     }
 
