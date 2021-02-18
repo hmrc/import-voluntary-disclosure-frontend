@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UnderpaymentReason
+import pages.UnderpaymentReasonBoxNumberPage
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -37,6 +38,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
+    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).map(
+      summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.BoxNumberController.onLoad))
+
     Future.successful(Ok(view()))
   }
 
@@ -50,7 +54,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
           ),
           value = Value(
-            content = HtmlContent(underpaymentReason),
+            content = HtmlContent(underpaymentReason.boxNumber.toString),
             classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(
