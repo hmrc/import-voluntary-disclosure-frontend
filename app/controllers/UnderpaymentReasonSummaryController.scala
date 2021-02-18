@@ -44,7 +44,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   // TODO - from original/amended page to summary
   // TODO - from summary to reasons summary
 
-  private lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
+  private[controllers] lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
   // TODO - needs to change when implementing the change and remove buttons
   private lazy val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
 
