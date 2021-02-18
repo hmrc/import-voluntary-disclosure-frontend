@@ -22,8 +22,9 @@ import forms.UnderpaymentReasonSummaryFormProvider
 import models.{UnderpaymentReason, UserAnswers}
 import pages.UnderpaymentReasonsPage
 import play.api.http.Status
-import play.api.mvc.{Call, Result}
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UnderpaymentReasonSummaryView
 
 import scala.concurrent.Future
@@ -51,6 +52,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
   }
 
   "GET /" when {
+
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
@@ -65,6 +67,35 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
     "the backLink functionality is called" should {
       "redirect to the Acceptance date page" in new Test {
         controller.backLink mustBe Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
+      }
+    }
+
+  }
+
+  "POST /" when {
+
+    "payload contains valid data" should {
+
+      "return a SEE OTHER on yes" in new Test {
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url)
+      }
+
+      "return a SEE OTHER on no" in new Test {
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+      }
+
+    }
+
+    "payload contains invalid data" should {
+      "return a BAD REQUEST" in new Test {
+        val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
       }
     }
 
