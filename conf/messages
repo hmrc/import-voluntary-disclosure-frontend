@@ -287,6 +287,8 @@ itemNo.error.nonNumeric = Item number must be a number
 # Confirm Reason Details
 confirmReason.pageTitle = Confirm the details of the reason for underpayment
 confirmReason.heading = Confirm the details of the reason for underpayment
+confirmReason.boxNumber = Box number
+confirmReason.itemNumber = Item number
 
 
 

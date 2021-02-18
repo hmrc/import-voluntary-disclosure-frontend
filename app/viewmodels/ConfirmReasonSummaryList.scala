@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,31 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import viewmodels.ConfirmReasonSummaryList
+package viewmodels
 
-@this(layout: templates.Layout,
-        govukSummaryList: GovukSummaryList,
-        h1: components.h1,
-        h2: components.h2,
-        p: components.p,
-        linkButton: components.linkButton)
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
-@(answers: Seq[ConfirmReasonSummaryList])(implicit request: Request[_], messages: Messages)
-
-@layout(
-    pageTitle = messages("confirmReason.pageTitle"),
-) {
- @h1(messages("confirmReason.heading"))
-
- @answers.map { answer =>
-  @govukSummaryList(answer.summaryList)
-
- }
-
- @{
-  //$COVERAGE-OFF$
- }
-
-}
+case class ConfirmReasonSummaryList(summaryList: SummaryList)

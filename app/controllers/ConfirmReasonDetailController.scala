@@ -17,13 +17,15 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UnderpaymentReason
-import pages.UnderpaymentReasonBoxNumberPage
+import models.{UnderpaymentReason, UserAnswers}
+import pages.{ItemNumberPage, UnderpaymentReasonBoxNumberPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.{CYASummaryList, ConfirmReasonSummaryList}
 import views.html.ConfirmReasonDetailView
 
 import javax.inject.Inject
@@ -38,35 +40,67 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).map(
-      summaryList(_, Messages("underpaymentSummary.customsDuty.title"), controllers.routes.BoxNumberController.onLoad))
+    val boxNumber = summaryList(request.userAnswers).get
 
-    Future.successful(Ok(view()))
+    Future.successful(Ok(view(Seq(boxNumber))))
   }
 
-  private[controllers] def summaryList(underpaymentReason: UnderpaymentReason, key: String, changeAction: Call)(implicit messages: Messages): SummaryList = {
-    SummaryList(
-      classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
+def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[ConfirmReasonSummaryList] = {
+
+    val boxNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonBoxNumberPage) map { boxNumber =>
+      Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            content = Text(messages("confirmReason.boxNumber")),
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(underpaymentReason.boxNumber.toString),
-            classes = "govuk-!-padding-bottom-0"
+            content = HtmlContent(boxNumber.toString)
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(changeAction.url, Text(messages("")), Some(key))
-            ),
-            classes = "govuk-!-padding-bottom-0")
-          ),
-          classes = "govuk-summary-list__row--no-border"
+              ActionItem("Url", Text(messages("cya.change")))
+            )
+          )
+          )
+        )
+      )
+    }
+
+  val itemNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(ItemNumberPage) map { itemNumber =>
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("confirmReason.itemNumber")),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(itemNumber.toString)
+        ),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItem("Url", Text(messages("cya.change")))
+          )
+        )
         )
       )
     )
+  }
+
+    val rows = boxNumberSummaryListRow.getOrElse(Seq.empty) ++
+      itemNumberSummaryListRow.getOrElse(Seq.empty)
+
+    if (rows.nonEmpty) {
+      Some(
+        ConfirmReasonSummaryList(
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else None
+
   }
 
 }
