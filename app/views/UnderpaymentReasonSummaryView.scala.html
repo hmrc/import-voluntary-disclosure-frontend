@@ -22,30 +22,32 @@
         govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], backLink: Call, summaryList: Seq[SummaryList])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, summaryList: Option[Seq[SummaryList]])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("underpaymentReasonSummary.pageTitle"),
-    customBackLinkUrl = Some(backLink)) {
+    @layout(
+        pageTitle = messages("underpaymentReasonSummary.pageTitle"),
+        customBackLinkUrl = Some(backLink)
+    ) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @if(summaryList.size == 1) {
-        @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
-    } else {
-        @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.size))
-    }
+        @if(summaryList.get.size == 1) {
+            @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
+        } else {
+            @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.get.size))
+        }
 
-    @for(summary <- summaryList) {
-        @govukSummaryList(summary)
-    }
+        @for(summary <- summaryList.get) {
+            @govukSummaryList(summary)
+        }
 
-    @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
-        @yesNoRadio(
-            form,
-            headingKey = "underpaymentReasonSummary.radioMessage",
-            inline = true,
-            isPageHeading = false,
-            classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
+        @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
+            @yesNoRadio(
+                form,
+                headingKey = "underpaymentReasonSummary.radioMessage",
+                inline = true,
+                isPageHeading = false,
+                classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
         )
         @button("common.button.continue")
     }

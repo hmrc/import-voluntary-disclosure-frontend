@@ -84,9 +84,9 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   private[controllers] def summaryList(
                                         underpaymentReason: Seq[UnderpaymentReason],
                                         changeAction: Call
-                                      )(implicit messages: Messages): Seq[SummaryList] = {
+                                      )(implicit messages: Messages): Option[Seq[SummaryList]] = {
     lazy val sortedReasons = underpaymentReason.sortBy(item => item.boxNumber)
-    for (underpayment <- sortedReasons) yield
+    Some(for (underpayment <- sortedReasons) yield
       SummaryList(
         classes = if (underpayment == sortedReasons.last) {
           "govuk-!-margin-bottom-10"
@@ -125,6 +125,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
           )
         )
       )
+    )
   }
 
 }
