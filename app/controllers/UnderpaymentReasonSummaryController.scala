@@ -39,7 +39,13 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
+  // TODO - route the page flow for adding boxes correctly after the item number page
+  // TODO - routing from item number page to the original/amended page
+  // TODO - from original/amended page to summary
+  // TODO - from summary to reasons summary
+
   private lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
+  // TODO - needs to change when implementing the change and remove buttons
   private lazy val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -55,8 +61,24 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    // TODO - do I need to make changes to check your answers or what's sent to submission
-    ???
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(
+        BadRequest(
+          view(
+            formWithErrors,
+            backLink,
+            summaryList(request.userAnswers.get(UnderpaymentReasonsPage).get, tempChangeAndDeleteLink)
+          )
+        )
+      ),
+      value => {
+        if (value) {
+          Future.successful(Redirect(controllers.routes.BoxNumberController.onLoad()))
+        } else {
+          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+        }
+      }
+    )
   }
 
   private[controllers] def summaryList(
