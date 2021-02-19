@@ -19,28 +19,31 @@
         h1: components.h1,
         h2: components.h2,
         p: components.p,
-        linkButton: components.linkButton)
+        linkButton: components.linkButton,
+        formHelper: FormWithCSRF,
+        button: components.button
+)
 
-@(answers: Seq[SummaryList],backLink: Call)(implicit request: Request[_], messages: Messages)
+@(answers: Seq[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("confirmReason.pageTitle"),
-    customBackLinkUrl = Some(backLink)
-) {
- @h1(messages("confirmReason.heading"))
-    @answers.map { answer =>
-    @govukSummaryList(answer)
+    @layout(
+        pageTitle = messages("confirmReason.pageTitle"),
+        customBackLinkUrl = Some(backLink)
+    ) {
 
-  @linkButton(
-   url = controllers.routes.ConfirmReasonDetailController.onLoad().url,
-   value = messages("common.continue")
-  )
+        @h1(messages("confirmReason.heading"))
 
- }
+        @answers.map { answer =>
+            @govukSummaryList(answer)
 
- @{
-  //$COVERAGE-OFF$
- }
+            @formHelper(action = controllers.routes.ConfirmReasonDetailController.onSubmit()) {
+                @button("common.button.continue")
+            }
 
-}
+        }
 
+    }
+
+    @{
+        //$COVERAGE-OFF$
+    }
