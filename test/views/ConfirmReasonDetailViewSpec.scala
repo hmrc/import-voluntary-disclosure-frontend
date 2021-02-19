@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.data.ConfirmReasonData.answers
+import views.data.ConfirmReasonData.{answers, itemNumber}
 import views.html.ConfirmReasonDetailView
 
 class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
@@ -35,7 +35,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an item level box is selected" should {
 
-      lazy val view: Html = injectedView(answers("33", "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(answers("33", Some(itemNumber), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -107,7 +107,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(answers("22", "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(answers("22", None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {

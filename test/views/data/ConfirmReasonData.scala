@@ -25,8 +25,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actio
 object ConfirmReasonData {
 
   val itemNumberExample: String = "1"
-  val originalAmountExample: String = "1806321000"
-  val amendedAmountExample: String = "2204109400X411"
 
   def boxNumber(box: String): Seq[SummaryListRow] =
       Seq(SummaryListRow(
@@ -105,7 +103,7 @@ object ConfirmReasonData {
 
   def answers(box: String, item: Option[Seq[SummaryListRow]] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
-      boxNumber(box) ++ item ++ originalAmount(originalValue) ++ amendedAmount(amendedValue)
+      boxNumber(box) ++ item.get ++ originalAmount(originalValue) ++ amendedAmount(amendedValue)
     )
   )
 }
