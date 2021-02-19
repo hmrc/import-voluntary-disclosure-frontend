@@ -44,9 +44,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   // TODO - from original/amended page to summary
   // TODO - from summary to reasons summary
 
-  private[controllers] lazy val backLink: Call = Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
-  // TODO - needs to change when implementing the change and remove buttons
-  private lazy val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+  private val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     Future.successful(
@@ -54,7 +52,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
         view(
           formProvider.apply(),
           backLink,
-          summaryList(request.userAnswers.get(UnderpaymentReasonsPage).get, tempChangeAndDeleteLink)
+          summaryList(request.userAnswers.get(UnderpaymentReasonsPage))
         )
       )
     )
@@ -67,12 +65,12 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
           view(
             formWithErrors,
             backLink,
-            summaryList(request.userAnswers.get(UnderpaymentReasonsPage).get, tempChangeAndDeleteLink)
+            summaryList(request.userAnswers.get(UnderpaymentReasonsPage))
           )
         )
       ),
-      value => {
-        if (value) {
+      anotherReason => {
+        if (anotherReason) {
           Future.successful(Redirect(controllers.routes.BoxNumberController.onLoad()))
         } else {
           Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
@@ -82,18 +80,14 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def summaryList(
-                                        underpaymentReason: Seq[UnderpaymentReason],
-                                        changeAction: Call
-                                      )(implicit messages: Messages): Option[Seq[SummaryList]] = {
-    lazy val sortedReasons = underpaymentReason.sortBy(item => item.boxNumber)
-    Some(for (underpayment <- sortedReasons) yield
+                                        underpaymentReason: Option[Seq[UnderpaymentReason]]
+                                      )(implicit messages: Messages): Option[SummaryList] = {
+    // TODO - needs to change when implementing the change and remove buttons
+    val changeAction: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+    underpaymentReason.map { reasons =>
+      val r = reasons.sortBy(item => item.boxNumber)
       SummaryList(
-        classes = if (underpayment == sortedReasons.last) {
-          "govuk-!-margin-bottom-10"
-        } else {
-          "govuk-!-margin-bottom-0"
-        },
-        rows = Seq(
+        rows = for (underpayment <- r) yield
           SummaryListRow(
             key = Key(
               content = Text("Box " + underpayment.boxNumber)
@@ -123,9 +117,8 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
               )
             )
           )
-        )
       )
-    )
+    }
   }
 
 }

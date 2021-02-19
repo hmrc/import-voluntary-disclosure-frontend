@@ -22,7 +22,7 @@
         govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], backLink: Call, summaryList: Option[Seq[SummaryList]])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, summaryList: Option[SummaryList])(implicit request: Request[_], messages: Messages)
 
     @layout(
         form = Some(form),
@@ -32,14 +32,14 @@
 
         @errorSummary(form.errors)
 
-        @if(summaryList.get.size == 1) {
+        @if(summaryList.head.rows.size == 1) {
             @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
         } else {
-            @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.get.size))
+            @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.head.rows.size))
         }
 
-        @for(summary <- summaryList.get) {
-            @govukSummaryList(summary)
+        @if(summaryList.isDefined) {
+            @govukSummaryList(summaryList.get)
         }
 
         @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
@@ -49,12 +49,12 @@
                 inline = true,
                 isPageHeading = false,
                 classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
-        )
-        @button("common.button.continue")
+            )
+            @button("common.button.continue")
+        }
+
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
