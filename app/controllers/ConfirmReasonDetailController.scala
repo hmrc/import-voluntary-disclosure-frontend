@@ -61,26 +61,25 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
-    val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage)
+    val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage) match {
+      case Some(value) => value
+      case None => 0
+    }
     val originalAndAmended = request.userAnswers.get(UnderpaymentReasonAmendmentPage)
-    val currentReasons = request.userAnswers.get(UnderpaymentReasonsPage)
+    val currentReasons = request.userAnswers.get(UnderpaymentReasonsPage) match {
+      case Some(value) => value
+      case None => Seq.empty
+    }
     val underpaymentReason = Seq(
       UnderpaymentReason(
         boxNumber = boxNumber.get,
-        itemNumber = if (itemNumber.isDefined) itemNumber.get else 0,
+        itemNumber = itemNumber,
         original = originalAndAmended.get.original,
         amended = originalAndAmended.get.amended
       )
     )
     for {
-      updatedAnswers <- Future.fromTry(
-        request.userAnswers.set(
-          UnderpaymentReasonsPage,
-          if (currentReasons.isDefined) {
-            currentReasons.get ++ underpaymentReason
-          } else {
-            underpaymentReason
-          }))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, currentReasons ++ underpaymentReason))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Redirect(controllers.routes.BoxNumberController.onLoad())
