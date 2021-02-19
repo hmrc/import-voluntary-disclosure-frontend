@@ -24,16 +24,16 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actio
 
 object ConfirmReasonData {
 
-  val itemNumberExample: String = "1"
+  val itemNumberExample: Int = 1
 
-  def boxNumber(box: String): Seq[SummaryListRow] =
+  def boxNumber(box: Int): Seq[SummaryListRow] =
       Seq(SummaryListRow(
         key = Key(
           content = Text(ConfirmReasonDetailMessages.boxNumber),
           classes = "govuk-!-width-two-thirds"
         ),
         value = Value(
-          content = HtmlContent(box)
+          content = HtmlContent(box.toString)
         ),
         actions = Some(Actions(
           items = Seq(
@@ -44,14 +44,15 @@ object ConfirmReasonData {
       )
   )
 
-  val itemNumber: Seq[SummaryListRow] =
-     Seq(SummaryListRow(
+  def itemNumber(item: Option[Int]): Option[Seq[SummaryListRow]] =
+    item.map { itemNo =>
+      Seq(SummaryListRow(
         key = Key(
           content = Text(ConfirmReasonDetailMessages.itemNumber),
           classes = "govuk-!-width-two-thirds"
         ),
         value = Value(
-          content = HtmlContent(itemNumberExample)
+          content = HtmlContent(itemNo.toString)
         ),
         actions = Some(Actions(
           items = Seq(
@@ -60,10 +61,10 @@ object ConfirmReasonData {
         )
         )
       )
+      )
+    }
 
-     )
-
-  def originalAmount(originalValue: String): Seq[SummaryListRow] =
+  def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
     Seq(SummaryListRow(
         key = Key(
           content = Text(ConfirmReasonDetailMessages.originalValue),
@@ -75,7 +76,7 @@ object ConfirmReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(33).url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url, Text(ConfirmReasonDetailMessages.change))
           ),
           classes = "govuk-!-padding-bottom-0")
         ),
@@ -101,9 +102,9 @@ object ConfirmReasonData {
       )
     )
 
-  def answers(box: String, item: Option[Seq[SummaryListRow]] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
+  def answers(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
-      boxNumber(box) ++ item.get ++ originalAmount(originalValue) ++ amendedAmount(amendedValue)
+      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue)
     )
   )
 }

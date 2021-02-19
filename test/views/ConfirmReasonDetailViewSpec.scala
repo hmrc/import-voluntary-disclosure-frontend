@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.data.ConfirmReasonData.{answers, itemNumber}
+import views.data.ConfirmReasonData.answers
 import views.html.ConfirmReasonDetailView
 
 class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
@@ -35,7 +35,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an item level box is selected" should {
 
-      lazy val view: Html = injectedView(answers("33", Some(itemNumber), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(answers(33, Some(1), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -107,7 +107,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(answers("22", None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(answers(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -131,15 +131,15 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
       }
 
       "have correct box number value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__value") mustBe "33"
+        elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__value") mustBe "22"
       }
 
       "have correct original value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "1806321000"
+        elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "EUR125.00"
       }
 
       "have correct amended value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "2204109400X411"
+        elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "GBP190.50"
       }
 
       "have correct Change link for Box Number " in {
@@ -157,31 +157,30 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
         document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.routes.UnderpaymentReasonAmendmentController.onLoad(22).url
       }
-
     }
   }
 
-  //        it should {
-  //
-  //          lazy val view: Html = injectedView(customsDuty, importVat, exciseDuty, backLink)(fakeRequest, messages)
-  //          lazy implicit val document: Document = Jsoup.parse(view.body)
-  //
-  //          s"have the correct page title" in {
-  //            document.title mustBe UnderpaymentSummaryMessages.title
-  //          }
-  //
-  //          s"have the correct h1 of '${UnderpaymentSummaryMessages.h1}'" in {
-  //            elementText("h1") mustBe UnderpaymentSummaryMessages.h1
-  //          }
-  //
-  //          "render a back link with the correct URL" in {
-  //            elementAttributes("#back-link") must contain("href" -> "url")
-  //          }
-  //
-  //          s"have the correct Continue button" in {
-  //            elementText(".govuk-button") mustBe UnderpaymentSummaryMessages.continue
-  //          }
-  //
-  //        }
+  it should {
+
+    lazy val view: Html = injectedView(answers(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct page title" in {
+      document.title mustBe ConfirmReasonDetailMessages.title
+    }
+
+    s"have the correct h1 of '${ConfirmReasonDetailMessages.h1}'" in {
+      elementText("h1") mustBe ConfirmReasonDetailMessages.h1
+    }
+
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> "url")
+    }
+
+    s"have the correct Continue button" in {
+      elementText(".govuk-button") mustBe ConfirmReasonDetailMessages.continue
+    }
+
+  }
 
 }
