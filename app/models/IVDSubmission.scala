@@ -16,28 +16,39 @@
 
 package models
 
-import play.api.libs.json.{Json, Reads, __}
+import play.api.libs.json.{Json, Reads, Writes, __}
 
-case class IVDSubmission(
-                          userType: UserType,
-                          numEntries: NumberOfEntries,
-                          acceptanceDate: Option[Boolean],
-                          additionalInfo: Option[String] = Some("Not Applicable"), // TODO: Not implemented yet. Maps to amendmentReason
-                          entryDetails: EntryDetails,
-                          originalCpc: String,
-                          amendedCpc: Option[String] = None, // TODO: Not yet implemented
-                          traderContactDetails: ContactDetails, // TODO: This should be Declarant details
-                          traderAddress: ContactAddress,
-                          defermentType: Option[String] = None, // TODO: Not captured yet
-                          defermentAccountNumber: Option[String] = None, // TODO: Not captured yet
-                          additionalDefermentNumber: Option[String] = None, // TODO: Not captured yet
-                          underpaymentReasons: Option[Seq[UnderpaymentReason]] = None, // TODO: Not captured yet (box changes)
-                          underpaymentDetails: Option[Seq[UnderpaymentDetail]] = None, // TODO: Other duties will need to be refactored into this
-                          documentList: Option[Seq[String]] = None // TODO: List of documents the user claims to have uploaded (not the actual docs)
-                        )
+case class IVDSubmission(userType: UserType,
+                         numEntries: NumberOfEntries,
+                         acceptanceDate: Option[Boolean],
+                         additionalInfo: String = "Not Applicable",
+                         entryDetails: EntryDetails,
+                         originalCpc: String,
+                         declarantContactDetails: ContactDetails,
+                         declarantAddress: ContactAddress,
+                         defermentType: Option[String] = None,
+                         defermentAccountNumber: Option[String] = None,
+                         additionalDefermentNumber: Option[String] = None,
+                         amendedItems: Seq[UnderpaymentReason] = Seq.empty,
+                         underpaymentDetails: Seq[UnderpaymentDetail] = Seq.empty,
+                         documentsSupplied: Seq[String] = Seq.empty,
+                         supportingDocuments: Seq[FileUploadInfo] = Seq.empty)
 
 object IVDSubmission {
-  implicit val writes = Json.writes[IVDSubmission]
+  implicit val writes: Writes[IVDSubmission] = (o: IVDSubmission) => {
+    Json.obj(
+      "userType" -> o.userType,
+      "additionalInfo" -> o.additionalInfo,
+      "entryDetails" -> o.entryDetails,
+      "customsProcessingCode" -> o.originalCpc,
+      "declarantContactDetails" -> o.declarantContactDetails,
+      "declarantAddress" -> o.declarantAddress,
+      "underpaymentDetails" -> o.underpaymentDetails,
+      "supportingDocumentTypes" -> o.documentsSupplied,
+      "amendedItems" -> o.amendedItems,
+      "supportingDocuments" -> o.supportingDocuments
+    )
+  }
 
   implicit val ivdSubmissionReads: Reads[IVDSubmission] =
     for {
@@ -52,9 +63,9 @@ object IVDSubmission {
       importVat <- (__ \ "import-vat").readNullable[UnderpaymentAmount]
       exciseDuty <- (__ \ "excise-duty").readNullable[UnderpaymentAmount]
     } yield {
-      val customsDutyUnderpayment = customsDuty.map( x => Seq(UnderpaymentDetail("customsDuty", x.original, x.amended))).getOrElse(Seq.empty)
-      val importVatUnderpayment = importVat.map( x => Seq(UnderpaymentDetail("importVat", x.original, x.amended))).getOrElse(Seq.empty)
-      val exciseDutyUnderpayment = exciseDuty.map( x => Seq(UnderpaymentDetail("exciseDuty", x.original, x.amended))).getOrElse(Seq.empty)
+      val customsDutyUnderpayment = customsDuty.map(x => Seq(UnderpaymentDetail("customsDuty", x.original, x.amended))).getOrElse(Seq.empty)
+      val importVatUnderpayment = importVat.map(x => Seq(UnderpaymentDetail("importVat", x.original, x.amended))).getOrElse(Seq.empty)
+      val exciseDutyUnderpayment = exciseDuty.map(x => Seq(UnderpaymentDetail("exciseDuty", x.original, x.amended))).getOrElse(Seq.empty)
 
       IVDSubmission(
         userType = userType,
@@ -62,9 +73,9 @@ object IVDSubmission {
         acceptanceDate = acceptanceDate,
         entryDetails = entryDetails,
         originalCpc = originalCpc,
-        traderContactDetails = traderContactDetails,
-        traderAddress = traderAddress,
-        underpaymentDetails = Some(customsDutyUnderpayment ++ importVatUnderpayment ++ exciseDutyUnderpayment)
+        declarantContactDetails = traderContactDetails,
+        declarantAddress = traderAddress,
+        underpaymentDetails = customsDutyUnderpayment ++ importVatUnderpayment ++ exciseDutyUnderpayment
       )
     }
 }
