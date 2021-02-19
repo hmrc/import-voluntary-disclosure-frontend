@@ -38,14 +38,16 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                                               view: ConfirmReasonDetailView)
   extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink : Call = controllers.routes.ConfirmReasonDetailController.onLoad()
+
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val confirmReasonSummary = summaryList(request.userAnswers).get
 
-    Future.successful(Ok(view(Seq(confirmReasonSummary))))
+    Future.successful(Ok(view(Seq(confirmReasonSummary),backLink)))
   }
 
-def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[ConfirmReasonSummaryList] = {
+def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[SummaryList] = {
 
     val boxNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonBoxNumberPage) map { boxNumber =>
       Seq(
@@ -92,12 +94,10 @@ def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[C
 
     if (rows.nonEmpty) {
       Some(
-        ConfirmReasonSummaryList(
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows
           )
-        )
       )
     } else None
 
