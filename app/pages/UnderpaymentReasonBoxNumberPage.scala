@@ -20,8 +20,8 @@ import play.api.libs.json.JsPath
 
 case object UnderpaymentReasonBoxNumberPage extends QuestionPage[Int] {
 
-  def path: JsPath = JsPath \ "underpayment-reason-temp" \ toString
+  def path: JsPath = JsPath \ toString
 
-  override def toString: String = "boxNumber"
+  override def toString: String = "underpayment-reason-boxNumber-temp"
 
 }
