@@ -17,18 +17,17 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{UnderpaymentReason, UserAnswers}
-import pages.{ItemNumberPage, UnderpaymentReasonBoxNumberPage}
+import models.UserAnswers
+import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.{CYASummaryList, ConfirmReasonSummaryList}
 import views.html.ConfirmReasonDetailView
-
 import javax.inject.Inject
+
 import scala.concurrent.Future
 
 class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
@@ -38,13 +37,12 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                                               view: ConfirmReasonDetailView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink : Call = controllers.routes.ConfirmReasonDetailController.onLoad()
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val confirmReasonSummary = summaryList(request.userAnswers).get
 
-    Future.successful(Ok(view(Seq(confirmReasonSummary),backLink)))
+    Future.successful(Ok(view(Seq(confirmReasonSummary),controllers.routes.UnderpaymentReasonAmendmentController.onLoad(request.userAnswers.get(UnderpaymentReasonBoxNumberPage).get))))
   }
 
 def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[SummaryList] = {
@@ -69,7 +67,7 @@ def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[S
       )
     }
 
-  val itemNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(ItemNumberPage) map { itemNumber =>
+    val itemNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonItemNumberPage) map { itemNumber =>
     Seq(
       SummaryListRow(
         key = Key(
@@ -89,10 +87,49 @@ def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[S
     )
   }
 
-    val rows = boxNumberSummaryListRow.getOrElse(Seq.empty) ++
-      itemNumberSummaryListRow.getOrElse(Seq.empty)
+  val originalAmountSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonAmendmentPage) map { underPaymentReasonValue =>
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("confirmReason.original")),
+          classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+        ),
+        value = Value(
+          content = HtmlContent(underPaymentReasonValue.original),
+          classes = "govuk-!-padding-bottom-0"
+      ),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(userAnswers.get(UnderpaymentReasonBoxNumberPage).get).url, Text(messages("confirmReason.change")))
+          ),
+            classes = "govuk-!-padding-bottom-0")
+        ),
+        classes = "govuk-summary-list__row--no-border"
+      )
+    )
+  }
 
-    if (rows.nonEmpty) {
+  val amendedAmountSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonAmendmentPage) map { underPaymentReasonValue =>
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("confirmReason.amended")),
+          classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+        ),
+        value = Value(
+          content = HtmlContent(underPaymentReasonValue.amended),
+          classes = "govuk-!-padding-top-0"
+        )
+      )
+    )
+  }
+
+    val rows = boxNumberSummaryListRow.getOrElse(Seq.empty) ++
+      itemNumberSummaryListRow.getOrElse(Seq.empty) ++
+      originalAmountSummaryListRow.getOrElse(Seq.empty) ++
+      amendedAmountSummaryListRow.getOrElse(Seq.empty)
+
+  if (rows.nonEmpty) {
       Some(
           SummaryList(
             classes = "govuk-!-margin-bottom-9",

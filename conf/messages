@@ -308,6 +308,8 @@ confirmReason.heading = Confirm the details of the reason for underpayment
 confirmReason.boxNumber = Box number
 confirmReason.itemNumber = Item number
 confirmReason.change = Change
+confirmReason.original = Original value
+confirmReason.amended = Amended value
 
 
 
