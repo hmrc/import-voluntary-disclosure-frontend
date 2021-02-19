@@ -22,7 +22,7 @@ import forms.UnderpaymentReasonSummaryFormProvider
 import models.{UnderpaymentReason, UserAnswers}
 import pages.UnderpaymentReasonsPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UnderpaymentReasonSummaryView
@@ -62,12 +62,6 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
-    }
-
-    "the backLink functionality is called" should {
-      "redirect to the Acceptance date page" in new Test {
-        controller.backLink mustBe Call("GET", controllers.routes.BoxGuidanceController.onLoad().url)
-      }
     }
 
   }

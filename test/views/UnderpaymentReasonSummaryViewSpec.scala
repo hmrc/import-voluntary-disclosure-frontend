@@ -24,6 +24,7 @@ import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import views.html.UnderpaymentReasonSummaryView
 
 class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
@@ -33,11 +34,14 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: UnderpaymentReasonSummaryFormProvider = injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
   val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
 
+  val summaryList: Option[SummaryList] = Some(SummaryList())
+
+
   "Rendering the Reason summary page" when {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, Some(Seq.empty))(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -55,7 +59,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, Some(Seq.empty))(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
@@ -76,7 +80,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, Some(Seq.empty))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, tempChangeAndDeleteLink, summaryList)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${ReasonSummary.siteYes}'" in {
