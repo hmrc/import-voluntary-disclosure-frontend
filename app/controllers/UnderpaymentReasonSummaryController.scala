@@ -85,9 +85,9 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     // TODO - needs to change when implementing the change and remove buttons
     val changeAction: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
     underpaymentReason.map { reasons =>
-      val r = reasons.sortBy(item => item.boxNumber)
+      val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
-        rows = for (underpayment <- r) yield
+        rows = for (underpayment <- sortedReasons) yield
           SummaryListRow(
             key = Key(
               content = Text("Box " + underpayment.boxNumber)
