@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, Reads, Writes}
 
 import java.time.LocalDate
 
-case class IVDSubmission(userType: UserType,
+case class IvdSubmission(userType: UserType,
                          numEntries: NumberOfEntries,
                          acceptedBeforeBrexit: Boolean,
                          additionalInfo: String = "Not Applicable",
@@ -37,8 +37,8 @@ case class IVDSubmission(userType: UserType,
                          documentsSupplied: Seq[String] = Seq.empty,
                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty)
 
-object IVDSubmission {
-  implicit val writes: Writes[IVDSubmission] = (data: IVDSubmission) => {
+object IvdSubmission {
+  implicit val writes: Writes[IvdSubmission] = (data: IvdSubmission) => {
 
     val brexit = LocalDate.parse("2021-01-01")
     val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(brexit) && data.acceptedBeforeBrexit
@@ -60,7 +60,7 @@ object IVDSubmission {
     )
   }
 
-  implicit val reads: Reads[IVDSubmission] =
+  implicit val reads: Reads[IvdSubmission] =
     for {
       userType <- UserTypePage.path.read[UserType]
       numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
@@ -83,7 +83,7 @@ object IVDSubmission {
         case (key, Some(details)) => UnderpaymentDetail(key, details.original, details.amended)
       }
 
-      IVDSubmission(
+      IvdSubmission(
         userType = userType,
         numEntries = numEntries,
         acceptedBeforeBrexit = acceptanceDate.getOrElse(false),

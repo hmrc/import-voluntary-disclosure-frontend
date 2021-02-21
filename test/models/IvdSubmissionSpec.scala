@@ -22,11 +22,11 @@ import play.api.libs.json._
 
 import java.time.{LocalDate, LocalDateTime}
 
-class IVDSubmissionSpec extends ModelSpecBase {
+class IvdSubmissionSpec extends ModelSpecBase {
 
   private val currentTimestamp = LocalDateTime.now()
 
-  val submission: IVDSubmission = IVDSubmission(
+  val submission: IvdSubmission = IvdSubmission(
     userType = UserType.Importer,
     numEntries = NumberOfEntries.OneEntry,
     acceptedBeforeBrexit = true,
@@ -81,7 +81,7 @@ class IVDSubmissionSpec extends ModelSpecBase {
   "IVD Submission model" when {
     "converting from a user answers" should {
       "produce a valid model" in {
-        val result = Json.fromJson[IVDSubmission](userAnswersJson).get
+        val result = Json.fromJson[IvdSubmission](userAnswersJson).get
         result shouldBe submission
       }
     }

@@ -23,9 +23,9 @@ import utils.ReusableValues
 
 import java.time.LocalDate
 
-class IVDSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableValues {
+class IvdSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableValues {
 
-  lazy val target = new IVDSubmissionConnector(mockHttp, appConfig)
+  lazy val target = new IvdSubmissionConnector(mockHttp, appConfig)
 
   "Importer Address Connector" should {
 
@@ -43,7 +43,7 @@ class IVDSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
 
   "called to post the Submission" should {
 
-    val submission = IVDSubmission(
+    val submission = IvdSubmission(
       userType = UserType.Importer,
       numEntries = NumberOfEntries.OneEntry,
       acceptedBeforeBrexit = false,
