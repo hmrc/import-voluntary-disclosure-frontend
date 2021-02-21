@@ -16,11 +16,14 @@
 
 package models
 
-import play.api.libs.json.{Json, Reads, Writes, __}
+import pages._
+import play.api.libs.json.{Json, Reads, Writes}
+
+import java.time.LocalDate
 
 case class IVDSubmission(userType: UserType,
                          numEntries: NumberOfEntries,
-                         acceptanceDate: Option[Boolean],
+                         acceptedBeforeBrexit: Boolean,
                          additionalInfo: String = "Not Applicable",
                          entryDetails: EntryDetails,
                          originalCpc: String,
@@ -35,47 +38,61 @@ case class IVDSubmission(userType: UserType,
                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty)
 
 object IVDSubmission {
-  implicit val writes: Writes[IVDSubmission] = (o: IVDSubmission) => {
+  implicit val writes: Writes[IVDSubmission] = (data: IVDSubmission) => {
+
+    val brexit = LocalDate.parse("2021-01-01")
+    val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(brexit) && data.acceptedBeforeBrexit
+    val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
+
     Json.obj(
-      "userType" -> o.userType,
-      "additionalInfo" -> o.additionalInfo,
-      "entryDetails" -> o.entryDetails,
-      "customsProcessingCode" -> o.originalCpc,
-      "declarantContactDetails" -> o.declarantContactDetails,
-      "declarantAddress" -> o.declarantAddress,
-      "underpaymentDetails" -> o.underpaymentDetails,
-      "supportingDocumentTypes" -> o.documentsSupplied,
-      "amendedItems" -> o.amendedItems,
-      "supportingDocuments" -> o.supportingDocuments
+      "userType" -> data.userType,
+      "isBulkEntry" -> isBulkEntry,
+      "isEuropeanUnionDuty" -> isEuropeanUnionDuty,
+      "additionalInfo" -> data.additionalInfo,
+      "entryDetails" -> data.entryDetails,
+      "customsProcessingCode" -> data.originalCpc,
+      "declarantContactDetails" -> data.declarantContactDetails,
+      "declarantAddress" -> data.declarantAddress,
+      "underpaymentDetails" -> data.underpaymentDetails,
+      "supportingDocumentTypes" -> data.documentsSupplied,
+      "amendedItems" -> data.amendedItems,
+      "supportingDocuments" -> data.supportingDocuments
     )
   }
 
-  implicit val ivdSubmissionReads: Reads[IVDSubmission] =
+  implicit val reads: Reads[IVDSubmission] =
     for {
-      userType <- (__ \ "user-type").read[UserType]
-      numEntries <- (__ \ "number-of-entries").read[NumberOfEntries]
-      acceptanceDate <- (__ \ "acceptance-date").readNullable[Boolean]
-      entryDetails <- (__ \ "entry-details").read[EntryDetails]
-      originalCpc <- (__ \ "cpc" \ "original-cpc").read[String]
-      traderContactDetails <- (__ \ "trader-contact-details").read[ContactDetails]
-      traderAddress <- (__ \ "final-importer-address").read[ContactAddress]
-      customsDuty <- (__ \ "customs-duty").readNullable[UnderpaymentAmount]
-      importVat <- (__ \ "import-vat").readNullable[UnderpaymentAmount]
-      exciseDuty <- (__ \ "excise-duty").readNullable[UnderpaymentAmount]
+      userType <- UserTypePage.path.read[UserType]
+      numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
+      acceptanceDate <- AcceptanceDatePage.path.readNullable[Boolean]
+      entryDetails <- EntryDetailsPage.path.read[EntryDetails]
+      originalCpc <- EnterCustomsProcedureCodePage.path.read[String]
+      traderContactDetails <- TraderContactDetailsPage.path.read[ContactDetails]
+      traderAddress <- ImporterAddressFinalPage.path.read[ContactAddress]
+      customsDuty <- CustomsDutyPage.path.readNullable[UnderpaymentAmount]
+      importVat <- ImportVATPage.path.readNullable[UnderpaymentAmount]
+      exciseDuty <- ExciseDutyPage.path.readNullable[UnderpaymentAmount]
+      supportingDocuments <- FileUploadPage.path.read[Seq[FileUploadInfo]]
     } yield {
-      val customsDutyUnderpayment = customsDuty.map(x => Seq(UnderpaymentDetail("customsDuty", x.original, x.amended))).getOrElse(Seq.empty)
-      val importVatUnderpayment = importVat.map(x => Seq(UnderpaymentDetail("importVat", x.original, x.amended))).getOrElse(Seq.empty)
-      val exciseDutyUnderpayment = exciseDuty.map(x => Seq(UnderpaymentDetail("exciseDuty", x.original, x.amended))).getOrElse(Seq.empty)
+
+      val underpaymentDetails = Seq(
+        "customsDuty" -> customsDuty,
+        "importVat" -> importVat,
+        "exciseDuty" -> exciseDuty
+      ).collect {
+        case (key, Some(details)) => UnderpaymentDetail(key, details.original, details.amended)
+      }
 
       IVDSubmission(
         userType = userType,
         numEntries = numEntries,
-        acceptanceDate = acceptanceDate,
+        acceptedBeforeBrexit = acceptanceDate.getOrElse(false),
         entryDetails = entryDetails,
         originalCpc = originalCpc,
         declarantContactDetails = traderContactDetails,
         declarantAddress = traderAddress,
-        underpaymentDetails = customsDutyUnderpayment ++ importVatUnderpayment ++ exciseDutyUnderpayment
+        underpaymentDetails = underpaymentDetails,
+        supportingDocuments = supportingDocuments
       )
     }
 }

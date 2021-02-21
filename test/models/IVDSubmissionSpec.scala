@@ -20,14 +20,16 @@ import base.ModelSpecBase
 import pages._
 import play.api.libs.json._
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 class IVDSubmissionSpec extends ModelSpecBase {
+
+  private val currentTimestamp = LocalDateTime.now()
 
   val submission: IVDSubmission = IVDSubmission(
     userType = UserType.Importer,
     numEntries = NumberOfEntries.OneEntry,
-    acceptanceDate = Some(true),
+    acceptedBeforeBrexit = true,
     entryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12")),
     originalCpc = "4000C09",
     declarantContactDetails = ContactDetails("John Smith", "test@test.com", "0123456789"),
@@ -39,6 +41,15 @@ class IVDSubmissionSpec extends ModelSpecBase {
       UnderpaymentDetail("customsDuty", BigDecimal(123.0), BigDecimal(233.33)),
       UnderpaymentDetail("importVat", BigDecimal(111.11), BigDecimal(1234.0)),
       UnderpaymentDetail("exciseDuty", BigDecimal(123.22), BigDecimal(4409.55))
+    ),
+    supportingDocuments = Seq(
+      FileUploadInfo(
+        fileName = "TestDocument.pdf",
+        downloadUrl = "http://some/location",
+        uploadTimestamp = currentTimestamp,
+        checksum = "the file checksum",
+        fileMimeType = "application/pdf"
+      )
     )
   )
 
@@ -46,7 +57,7 @@ class IVDSubmissionSpec extends ModelSpecBase {
     answers <- new UserAnswers("some-cred-id").set(UserTypePage, submission.userType)
     answers <- answers.set(EntryDetailsPage, submission.entryDetails)
     answers <- answers.set(NumberOfEntriesPage, submission.numEntries)
-    answers <- answers.set(AcceptanceDatePage, true)
+    answers <- answers.set(AcceptanceDatePage, submission.acceptedBeforeBrexit)
     answers <- answers.set(UnderpaymentTypePage, UnderpaymentType(customsDuty = true, importVAT = true, exciseDuty = true))
     answers <- answers.set(CustomsDutyPage, UnderpaymentAmount(BigDecimal("123.0"), BigDecimal("233.33")))
     answers <- answers.set(ImportVATPage, UnderpaymentAmount(BigDecimal("111.11"), BigDecimal("1234")))
@@ -56,8 +67,8 @@ class IVDSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
     answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
     answers <- answers.set(EnterCustomsProcedureCodePage, submission.originalCpc)
+    answers <- answers.set(FileUploadPage, submission.supportingDocuments)
     answers <- answers.set(DefermentPage, false)
-
   } yield answers).getOrElse(new UserAnswers("some-cred-id"))
 
   val userAnswersJson: JsValue = userAnswers.data
@@ -82,8 +93,11 @@ class IVDSubmissionSpec extends ModelSpecBase {
         data("userType") shouldBe JsString("importer")
       }
 
+      "generate the correct json for the isBulkEntry" in {
+        data("isBulkEntry") shouldBe JsBoolean(false)
+      }
+
       "generate the correct json for the isEuropeanUnionDuty" in {
-        pending
         data("isEuropeanUnionDuty") shouldBe JsBoolean(true)
       }
 
@@ -149,7 +163,15 @@ class IVDSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct json for the supportingDocuments" in {
-        data("supportingDocuments") shouldBe Json.arr()
+        data("supportingDocuments") shouldBe Json.arr(
+          Json.obj(
+            "fileName" -> "TestDocument.pdf",
+            "downloadUrl" -> "http://some/location",
+            "uploadTimestamp" -> currentTimestamp,
+            "checksum" -> "the file checksum",
+            "fileMimeType" -> "application/pdf"
+          )
+        )
       }
 
     }

@@ -46,7 +46,7 @@ class IVDSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
     val submission = IVDSubmission(
       userType = UserType.Importer,
       numEntries = NumberOfEntries.OneEntry,
-      acceptanceDate = None,
+      acceptedBeforeBrexit = false,
       additionalInfo = None,
       entryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-01-12")),
       originalCpc = "cpc",
