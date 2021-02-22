@@ -128,3 +128,5 @@ POST        /disclosure/box-67-other-charges-deductions-amendment      controlle
 GET         /disclosure/box-68-adjustment-vat-value-amendment          controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 68)
 POST        /disclosure/box-68-adjustment-vat-value-amendment          controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
 
+GET         /disclosure/provide-information-option                     controllers.HasFurtherInformationController.onLoad
+POST        /disclosure/provide-information-option                     controllers.HasFurtherInformationController.onSubmit

@@ -296,3 +296,9 @@ itemNo.error.required = Enter an item number
 itemNo.error.outOfRange = Item number must be between 1 and 99
 itemNo.error.wholeNumber = Item number must be a whole number
 itemNo.error.nonNumeric = Item number must be a number
+
+# Has Further Information
+hasFurtherInformation.pageTitle = Do you want to tell us anything else about the underpayment?
+hasFurtherInformation.heading = Do you want to tell us anything else about the underpayment?
+hasFurtherInformation.hint = That you have not told us about already.
+hasFurtherInformation.error.required = Select yes if you want to provide more information about the underpayment
