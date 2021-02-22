@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeNameFormProvider
+import models.UserAnswers
 import pages.RepresentativeNamePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -26,6 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.RepresentativeNameView
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
@@ -46,8 +48,19 @@ class RepresentativeNameController @Inject()(identity: IdentifierAction,
     Future.successful(Ok(view(form, controllers.routes.UserTypeController.onLoad)))
   }
 
-  def onSubmit(): Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    ???
+  def onSubmit(): Action[AnyContent] = (identity andThen getData).async { implicit request =>
+    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.UserTypeController.onLoad))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(userAnswers.set(RepresentativeNamePage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.RepresentativeNameController.onLoad())
+        }
+      }
+    )
   }
 
 }
