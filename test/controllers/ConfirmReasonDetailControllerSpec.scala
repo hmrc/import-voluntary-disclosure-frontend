@@ -36,7 +36,9 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val view: ConfirmReasonDetailView = app.injector.instanceOf[ConfirmReasonDetailView]
 
-     def fakeRequestGenerator(boxNumber: String, itemNumber:Option[String],original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+    MockedSessionRepository.set(Future.successful(true))
+
+    def fakeRequestGenerator(boxNumber: String, itemNumber: Option[String], original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
       fakeRequest.withFormUrlEncodedBody(
         "boxNumber" -> boxNumber,
         "itemNumber" -> itemNumber.toString,
@@ -57,6 +59,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
   }
 
   "GET onLoad " should {
+
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
@@ -73,7 +76,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "produce correct summary list for Confirm Reason Detail Summary" in new Test {
+    "produce correct summary list" in new Test {
       val result = controller.summaryList(UserAnswers("some-cred-id")
         .set(UnderpaymentReasonBoxNumberPage, 33).success.value
         .set(UnderpaymentReasonItemNumberPage, 1).success.value
@@ -84,26 +87,65 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       result mustBe expectedResult
 
     }
+
+    "produce empty summary list" in new Test {
+      val result = controller.summaryList(UserAnswers("some-cred-id"))
+      val expectedResult = Seq()
+
+
+      result mustBe expectedResult
+
+    }
+
   }
 
   "GET onSubmit" when {
 
     "payload contains valid data" should {
+
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
-        lazy val result: Future[Result] = controller.onSubmit()(
-          fakeRequest.withFormUrlEncodedBody()
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentReasonBoxNumberPage, 22).success.value
+            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
         )
+        private val request = fakeRequest.withFormUrlEncodedBody()
+        lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
       }
-//      "update the UserAnswers in session" in new Test {
-//        await(controller.onSubmit()(fakeRequestGenerator("22",None,"GBP871.12","EUR2908946")))
-//        verifyCalls()
-//      }
+
+      "return a SEE OTHER item level response when correct data is sent" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
+            .set(UnderpaymentReasonItemNumberPage, 1).success.value
+            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("GBP871.12", "EUR2908946")).success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody()
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        await(controller.onSubmit()(fakeRequestGenerator("22", None, "GBP871.12", "EUR2908946")))
+        verifyCalls()
+      }
+
+      "payload contains no data" should {
+
+        "produce no summary list" in new Test {
+          val result = controller.summaryList(UserAnswers("some-cred-id")
+          )
+          result mustBe None
+
+        }
+      }
+
     }
 
   }
-
 }
 
 
