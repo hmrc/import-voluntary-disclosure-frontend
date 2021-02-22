@@ -22,8 +22,9 @@ import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentReasonValue, UserAnswers}
 import pages._
 import play.api.http.Status
-import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.test.FakeRequest
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.data.ConfirmReasonData
 import views.html.ConfirmReasonDetailView
 
@@ -34,6 +35,14 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val view: ConfirmReasonDetailView = app.injector.instanceOf[ConfirmReasonDetailView]
+
+     def fakeRequestGenerator(boxNumber: String, itemNumber:Option[String],original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+      fakeRequest.withFormUrlEncodedBody(
+        "boxNumber" -> boxNumber,
+        "itemNumber" -> itemNumber.toString,
+        "original" -> original,
+        "amended" -> amended
+      )
 
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
@@ -47,7 +56,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       mockSessionRepository, messagesControllerComponents, view)
   }
 
-  "GET /" should {
+  "GET onLoad " should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
@@ -75,23 +84,25 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       result mustBe expectedResult
 
     }
-
-    "produce correct summary list for Confirm Reason Detail Summary" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, 33).success.value
-        .set(UnderpaymentReasonItemNumberPage, 1).success.value
-        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-      )
-
-      val expectedResult = ConfirmReasonData.answers(33, Some(1), "1806321000", "2204109400X411").headOption
-      result mustBe expectedResult
-
-    }
   }
 
+  "GET onSubmit" when {
 
+    "payload contains valid data" should {
+      "return a SEE OTHER entry level response when correct data is sent" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody()
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+      }
+//      "update the UserAnswers in session" in new Test {
+//        await(controller.onSubmit()(fakeRequestGenerator("22",None,"GBP871.12","EUR2908946")))
+//        verifyCalls()
+//      }
+    }
 
-
+  }
 
 }
 
