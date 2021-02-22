@@ -83,19 +83,11 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
       )
 
-      val expectedResult = ConfirmReasonData.answers(33, Some(1), "1806321000", "2204109400X411").headOption
+      val expectedResult = Some(ConfirmReasonData.answers(33, Some(1), "1806321000", "2204109400X411"))
       result mustBe expectedResult
 
     }
 
-    "produce empty summary list" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id"))
-      val expectedResult = Seq()
-
-
-      result mustBe expectedResult
-
-    }
 
   }
 

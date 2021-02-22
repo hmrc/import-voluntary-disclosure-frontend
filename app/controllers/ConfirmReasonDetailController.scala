@@ -42,44 +42,25 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val summary = summaryList(request.userAnswers) match {
-      case Some(value) => Seq(value)
-      case None => Seq(SummaryList())
-    }
-    val currentBox = request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
-      case Some(value) => value
-      case None => 0
-    }
-    Future.successful(
-      Ok(
-        view(
-          summary,
-          controllers.routes.UnderpaymentReasonAmendmentController.onLoad(currentBox))
-      )
-    )
+    val summary = summaryList(request.userAnswers).getOrElse(Seq.empty)
+    val currentBox = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
+    Future.successful(Ok(view(summary, controllers.routes.UnderpaymentReasonAmendmentController.onLoad(currentBox))))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
-    val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage) match {
-      case Some(value) => value
-      case None => 0
+
+    val underpaymentReason = for {
+      boxNumber <- request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
+      itemNumber <- request.userAnswers.get(UnderpaymentReasonItemNumberPage)
+      values <- request.userAnswers.get(UnderpaymentReasonAmendmentPage)
+    } yield {
+      Seq(UnderpaymentReason(boxNumber, itemNumber, values.original, values.amended))
     }
-    val originalAndAmended = request.userAnswers.get(UnderpaymentReasonAmendmentPage)
-    val currentReasons = request.userAnswers.get(UnderpaymentReasonsPage) match {
-      case Some(value) => value
-      case None => Seq.empty
-    }
-    val underpaymentReason = Seq(
-      UnderpaymentReason(
-        boxNumber = boxNumber.get,
-        itemNumber = itemNumber,
-        original = originalAndAmended.get.original,
-        amended = originalAndAmended.get.amended
-      )
-    )
+
+    val currentReasons = request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
+
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, currentReasons ++ underpaymentReason))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, currentReasons ++ underpaymentReason.getOrElse(Seq.empty)))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Redirect(controllers.routes.ConfirmReasonDetailController.onLoad())
@@ -87,7 +68,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
   }
 
 
-  def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[SummaryList] = {
+  def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[Seq[SummaryList]] = {
 
     val boxNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonBoxNumberPage) map { boxNumber =>
       Seq(
@@ -147,12 +128,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             classes = "govuk-!-padding-bottom-0")
           ),
           classes = "govuk-summary-list__row--no-border"
-        )
-      )
-    }
-
-    val amendedAmountSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonAmendmentPage) map { underPaymentReasonValue =>
-      Seq(
+        ),
         SummaryListRow(
           key = Key(
             content = Text(messages("confirmReason.amended")),
@@ -165,18 +141,15 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
         )
       )
     }
-
+    
     val rows = boxNumberSummaryListRow.getOrElse(Seq.empty) ++
       itemNumberSummaryListRow.getOrElse(Seq.empty) ++
-      originalAmountSummaryListRow.getOrElse(Seq.empty) ++
-      amendedAmountSummaryListRow.getOrElse(Seq.empty)
+      originalAmountSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
-      Some(
-        SummaryList(
-          rows = rows
-        )
-      )
+      Some(Seq(
+        SummaryList(rows = rows)
+      ))
     } else None
 
   }

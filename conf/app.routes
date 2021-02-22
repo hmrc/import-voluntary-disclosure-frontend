@@ -129,4 +129,4 @@ GET         /disclosure/box-68-adjustment-vat-value-amendment          controlle
 POST        /disclosure/box-68-adjustment-vat-value-amendment          controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
 
 GET         /disclosure/confirm-reason-details                         controllers.ConfirmReasonDetailController.onLoad
-POST        /disclosure/confirm-reason-details                         controllers.ConfirmReasonDetailController.onSubmit
+GET         /disclosure/confirm-reason-details                         controllers.ConfirmReasonDetailController.onSubmit
