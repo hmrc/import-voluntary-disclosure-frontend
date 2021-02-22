@@ -88,19 +88,14 @@ object ConfirmReasonData {
     Seq(SummaryListRow(
         key = Key(
           content = Text(ConfirmReasonDetailMessages.amendedValue),
-          classes = "govuk-!-width-two-thirds"
+          classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
         ),
         value = Value(
-          content = HtmlContent(amendedValue)
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(controllers.routes.ItemNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
-          )
+          content = HtmlContent(amendedValue),
+          classes = "govuk-!-padding-top-0"
         )
         )
       )
-    )
 
   def answers(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(

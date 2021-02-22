@@ -82,7 +82,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
       updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, currentReasons ++ underpaymentReason))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Redirect(controllers.routes.BoxNumberController.onLoad())
+      Redirect(controllers.routes.ConfirmReasonDetailController.onLoad())
     }
   }
 
@@ -174,7 +174,6 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
     if (rows.nonEmpty) {
       Some(
         SummaryList(
-          classes = "govuk-!-margin-bottom-9",
           rows = rows
         )
       )
