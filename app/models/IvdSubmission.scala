@@ -16,6 +16,7 @@
 
 package models
 
+import config.FixedConfig
 import pages._
 import play.api.libs.json.{Json, Reads, Writes}
 
@@ -37,11 +38,10 @@ case class IvdSubmission(userType: UserType,
                          documentsSupplied: Seq[String] = Seq.empty,
                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty)
 
-object IvdSubmission {
+object IvdSubmission extends FixedConfig {
   implicit val writes: Writes[IvdSubmission] = (data: IvdSubmission) => {
 
-    val brexit = LocalDate.parse("2021-01-01")
-    val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(brexit) && data.acceptedBeforeBrexit
+    val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(euExitDate) && data.acceptedBeforeBrexit
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
 
     Json.obj(
