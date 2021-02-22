@@ -296,3 +296,7 @@ itemNo.error.required = Enter an item number
 itemNo.error.outOfRange = Item number must be between 1 and 99
 itemNo.error.wholeNumber = Item number must be a whole number
 itemNo.error.nonNumeric = Item number must be a number
+
+# Representative name
+representativeName.error.required = Enter the importer's name
+
