@@ -39,7 +39,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
-  private val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
+  private lazy val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     Future.successful(
