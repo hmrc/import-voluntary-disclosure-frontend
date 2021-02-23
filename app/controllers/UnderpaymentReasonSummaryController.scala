@@ -39,11 +39,6 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
-  // TODO - route the page flow for adding boxes correctly after the item number page
-  // TODO - routing from item number page to the original/amended page
-  // TODO - from original/amended page to summary
-  // TODO - from summary to reasons summary
-
   private val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

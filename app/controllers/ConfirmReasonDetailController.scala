@@ -48,7 +48,6 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val underpaymentReason = for {
       boxNumber <- request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
       itemNumber <- request.userAnswers.get(UnderpaymentReasonItemNumberPage)
@@ -56,14 +55,12 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
     } yield {
       Seq(UnderpaymentReason(boxNumber, itemNumber, values.original, values.amended))
     }
-
     val currentReasons = request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
-
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, currentReasons ++ underpaymentReason.getOrElse(Seq.empty)))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Redirect(controllers.routes.ConfirmReasonDetailController.onLoad())
+      Redirect(controllers.routes.UnderpaymentReasonSummaryController.onLoad())
     }
   }
 

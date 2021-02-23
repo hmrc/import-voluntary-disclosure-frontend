@@ -17,7 +17,8 @@
 @this(layout: templates.Layout,
         govukSummaryList: GovukSummaryList,
         h1: components.h1,
-        linkButton: components.linkButton
+        formHelper: FormWithCSRF,
+        button: components.button
 )
 
 @(reasons: Seq[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -31,11 +32,10 @@
 
         @reasons.map { reason =>
             @govukSummaryList(reason)
+        }
 
-            @linkButton(
-                controllers.routes.ConfirmReasonDetailController.onSubmit().url,
-                messages("common.button.continue")
-            )
+        @formHelper(action = controllers.routes.ConfirmReasonDetailController.onSubmit()) {
+            @button("common.button.continue")
         }
 
     }
