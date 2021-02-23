@@ -34,8 +34,8 @@
     @formHelper(action = controllers.routes.RepresentativeNameController.onSubmit()) {
         @inputText(
             form = form,
-            id = "value",
-            name = "value",
+            id = "fullName",
+            name = "fullName",
             label = "representativeName.pageHeader",
             isPageHeading = true,
             hint = Some(Html(messages("representativeName.hint")))
