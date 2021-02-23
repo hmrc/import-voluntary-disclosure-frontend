@@ -26,7 +26,7 @@ class RepresentativeNameFormProvider @Inject() extends Mappings {
 
   def apply()(implicit messages: Messages): Form[String] =
     Form(
-      "value" -> text("representativeName.error.nameNonEmpty")
+      "fullName" -> text("representativeName.error.nameNonEmpty")
         .verifying("representativeName.error.nameMinLength", value => value.length >= 2)
         .verifying("representativeName.error.nameMaxLength", value => value.length <= 50)
         .verifying(regexp("^[a-zA-Z '-]+$", "representativeName.error.nameAllowableCharacters")),
