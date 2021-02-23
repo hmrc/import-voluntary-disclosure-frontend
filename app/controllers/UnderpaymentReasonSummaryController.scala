@@ -88,7 +88,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
             ),
             value = Value(
               content = if (underpayment.itemNumber == 0) {
-                HtmlContent("Entry Level")
+                HtmlContent("Entry level")
               } else {
                 HtmlContent("Item " + underpayment.itemNumber)
               }
