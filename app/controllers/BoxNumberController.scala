@@ -53,24 +53,23 @@ class BoxNumberController @Inject()(identity: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
-        val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage)
-        if (boxNumber.isDefined && boxNumber.get != value) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentReasonItemNumberPage))
-            updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentReasonAmendmentPage))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            navigateTo(value)
-          }
-        }
-        else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            navigateTo(value)
-          }
+        request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
+          case Some(oldValue) if oldValue != value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonBoxNumberPage, value))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentReasonItemNumberPage))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentReasonAmendmentPage))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield {
+              navigateTo(value)
+            }
+          case _ =>
+            for {
+              updatedAnswers <- Future.fromTry (request.userAnswers.set (UnderpaymentReasonBoxNumberPage, value) )
+              _ <- sessionRepository.set (updatedAnswers)
+            } yield {
+              navigateTo(value)
+            }
         }
       }
     )

@@ -17,7 +17,6 @@
 package views.data
 
 import messages.ConfirmReasonDetailMessages
-import pages.UnderpaymentReasonBoxNumberPage
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryList, SummaryListRow, Value}
@@ -39,8 +38,7 @@ object ConfirmReasonData {
           items = Seq(
             ActionItem(controllers.routes.BoxNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
           )
-        )
-        )
+        ))
       )
   )
 
@@ -58,10 +56,8 @@ object ConfirmReasonData {
           items = Seq(
             ActionItem(controllers.routes.ItemNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
           )
-        )
-        )
-      )
-      )
+        ))
+      ))
     }
 
   def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
@@ -97,7 +93,7 @@ object ConfirmReasonData {
         )
       )
 
-  def answers(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
+  def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
       boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue)
     )

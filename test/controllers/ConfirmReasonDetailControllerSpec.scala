@@ -19,7 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.{UnderpaymentReasonValue, UserAnswers}
+import models.{UnderpaymentReason, UnderpaymentReasonValue, UserAnswers}
 import pages._
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -38,18 +38,8 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
-    def fakeRequestGenerator(boxNumber: String, itemNumber: Option[String], original: String, amended: String): FakeRequest[AnyContentAsFormUrlEncoded] =
-      fakeRequest.withFormUrlEncodedBody(
-        "boxNumber" -> boxNumber,
-        "itemNumber" -> itemNumber.toString,
-        "original" -> original,
-        "amended" -> amended
-      )
-
-
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
       .set(UnderpaymentReasonBoxNumberPage, 22).success.value
-      .set(UnderpaymentReasonItemNumberPage, 1).success.value
       .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -66,11 +56,6 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, 22).success.value
-        .set(UnderpaymentReasonItemNumberPage, 1).success.value
-        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-      )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -80,15 +65,13 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       val result = controller.summaryList(UserAnswers("some-cred-id")
         .set(UnderpaymentReasonBoxNumberPage, 33).success.value
         .set(UnderpaymentReasonItemNumberPage, 1).success.value
-        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
+        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value,
+        boxNumber = 33
       )
 
-      val expectedResult = Some(ConfirmReasonData.answers(33, Some(1), "1806321000", "2204109400X411"))
+      val expectedResult = Some(ConfirmReasonData.reasons(33, Some(1), "1806321000", "2204109400X411"))
       result mustBe expectedResult
-
     }
-
-
   }
 
   "GET onSubmit" when {
@@ -96,13 +79,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("credId")
-            .set(UnderpaymentReasonBoxNumberPage, 22).success.value
-            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-        )
-        private val request = fakeRequest.withFormUrlEncodedBody()
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
       }
@@ -112,26 +89,32 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
           UserAnswers("credId")
             .set(UnderpaymentReasonBoxNumberPage, 33).success.value
             .set(UnderpaymentReasonItemNumberPage, 1).success.value
-            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("GBP871.12", "EUR2908946")).success.value
+            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
         )
-        private val request = fakeRequest.withFormUrlEncodedBody()
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+        verifyCalls()
       }
 
-      "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit()(fakeRequestGenerator("22", None, "GBP871.12", "EUR2908946")))
+      "return a SEE OTHER when existing reason are present" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
+            .set(UnderpaymentReasonItemNumberPage, 1).success.value
+            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
+            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(22, 0, "GBP871.12", "EUR2908946"))).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
         verifyCalls()
       }
 
       "payload contains no data" should {
-
         "produce no summary list" in new Test {
-          val result = controller.summaryList(UserAnswers("some-cred-id")
-          )
+          val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
           result mustBe None
-
         }
       }
 

@@ -42,9 +42,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val summary = summaryList(request.userAnswers).getOrElse(Seq.empty)
-    val currentBox = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
-    Future.successful(Ok(view(summary, controllers.routes.UnderpaymentReasonAmendmentController.onLoad(currentBox))))
+    val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
+    val summary = summaryList(request.userAnswers, boxNumber).getOrElse(Seq.empty)
+    Future.successful(Ok(view(summary, controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber))))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -68,7 +68,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
   }
 
 
-  def summaryList(userAnswers: UserAnswers)(implicit messages: Messages): Option[Seq[SummaryList]] = {
+  def summaryList(userAnswers: UserAnswers, boxNumber: Int)(implicit messages: Messages): Option[Seq[SummaryList]] = {
 
     val boxNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonBoxNumberPage) map { boxNumber =>
       Seq(
@@ -84,8 +84,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(controllers.routes.BoxNumberController.onLoad().url, Text(messages("confirmReason.change")))
             )
-          )
-          )
+          ))
         )
       )
     }
@@ -104,8 +103,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(controllers.routes.ItemNumberController.onLoad().url, Text(messages("confirmReason.change")))
             )
-          )
-          )
+          ))
         )
       )
     }
@@ -123,7 +121,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(userAnswers.get(UnderpaymentReasonBoxNumberPage).get).url, Text(messages("confirmReason.change")))
+              ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url, Text(messages("confirmReason.change")))
             ),
             classes = "govuk-!-padding-bottom-0")
           ),
@@ -147,10 +145,10 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
       originalAmountSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
-      Some(Seq(
-        SummaryList(rows = rows)
-      ))
-    } else None
+      Some(Seq(SummaryList(rows)))
+    } else {
+      None
+    }
 
   }
 
