@@ -19,7 +19,7 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ItemNumberFormProvider
-import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage}
+import pages.{UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -52,28 +52,15 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
-        val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage)
-        if (itemNumber.isDefined && itemNumber.get != value) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentReasonAmendmentPage))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
-            Redirect(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber))
-          }
-        }
-        else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
-            Redirect(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber))
-          }
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(0)
+          Redirect(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber))
         }
       }
     )
   }
-
 }
+
