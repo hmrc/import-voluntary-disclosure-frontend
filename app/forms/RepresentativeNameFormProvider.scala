@@ -24,16 +24,12 @@ import javax.inject.Inject
 
 class RepresentativeNameFormProvider @Inject() extends Mappings {
 
-  // TODO - need to find the regex for this
   def apply()(implicit messages: Messages): Form[String] =
     Form(
-      "value" -> text("representativeName.error.required")
-      //        .verifying(
-      //          regexp(
-      //            "^[0-9]{4}[A-Za-z0-9][0-9]{2}$",
-      //            "enterCustomsProcedureCode.cpc.error.format"
-      //          )
-      //        )
+      "value" -> text("representativeName.error.nameNonEmpty")
+        .verifying("representativeName.error.nameMinLength", value => value.length >= 2)
+        .verifying("representativeName.error.nameMaxLength", value => value.length <= 50)
+        .verifying(regexp("^[a-zA-Z '-]+$", "representativeName.error.nameAllowableCharacters")),
     )
 
 }
