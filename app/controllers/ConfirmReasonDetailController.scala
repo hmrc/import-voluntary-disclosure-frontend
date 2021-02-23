@@ -64,7 +64,6 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
     }
   }
 
-
   def summaryList(userAnswers: UserAnswers, boxNumber: Int)(implicit messages: Messages): Option[Seq[SummaryList]] = {
 
     val boxNumberSummaryListRow: Option[Seq[SummaryListRow]] = userAnswers.get(UnderpaymentReasonBoxNumberPage) map { boxNumber =>
