@@ -16,10 +16,14 @@
 
 package messages
 
-object CustomsProcedureCodeMessages extends BaseMessages {
+object ConfirmReasonDetailMessages extends BaseMessages {
 
-  val title: String = "Has the customs procedure code changed?"
-  val h1: String = "Has the customs procedure code changed?"
-  val requiredError: String = "Select yes if the customs procedure code has changed"
+  val title = "Confirm the details of the reason for underpayment"
+  val h1 = "Confirm the details of the reason for underpayment"
+  val boxNumber = "Box number"
+  val itemNumber = "Item number"
+  val originalValue = "Original value"
+  val amendedValue = "Amended value"
+  val change = "Change"
 
 }

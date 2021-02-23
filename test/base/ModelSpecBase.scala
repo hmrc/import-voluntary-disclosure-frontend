@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-package pages
+package base
 
-import play.api.libs.json.JsPath
+import org.scalatest.{Matchers, WordSpec}
 
-case object CPCChangedPage extends QuestionPage[Boolean] {
-
-  def path: JsPath = JsPath \ "cpc" \ toString
-
-  override def toString: String = "cpc-changed"
-
-}
+trait ModelSpecBase extends WordSpec with Matchers

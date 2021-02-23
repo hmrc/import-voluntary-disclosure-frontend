@@ -25,9 +25,6 @@ POST        /disclosure/entry-details                                    control
 GET         /disclosure/when-entry-acceptance-date                       controllers.AcceptanceDateController.onLoad
 POST        /disclosure/when-entry-acceptance-date                       controllers.AcceptanceDateController.onSubmit
 
-GET         /disclosure/has-cpc-changed                                  controllers.CustomsProcedureCodeController.onLoad
-POST        /disclosure/has-cpc-changed                                  controllers.CustomsProcedureCodeController.onSubmit
-
 GET         /disclosure/what-duty-type-underpaid                         controllers.UnderpaymentTypeController.onLoad
 POST        /disclosure/what-duty-type-underpaid                         controllers.UnderpaymentTypeController.onSubmit
 
@@ -51,8 +48,8 @@ GET         /disclosure/upload-file                                      control
 GET         /disclosure/upload-file/upscan-response                      controllers.UploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 GET         /disclosure/upload-file/polling                              controllers.UploadFileController.uploadProgress(key: String)
 
-GET         /disclosure/importer-contact-details                         controllers.TraderContactDetailsController.onLoad
-POST        /disclosure/importer-contact-details                         controllers.TraderContactDetailsController.onSubmit
+GET         /disclosure/your-contact-details                             controllers.TraderContactDetailsController.onLoad
+POST        /disclosure/your-contact-details                             controllers.TraderContactDetailsController.onSubmit
 
 GET         /disclosure/paying-by-deferment                              controllers.DefermentController.onLoad
 POST        /disclosure/paying-by-deferment                              controllers.DefermentController.onSubmit
@@ -63,8 +60,8 @@ POST        /disclosure/upload-another-file                              control
 GET         /disclosure/remove-file/:index                               controllers.RemoveUploadedFileController.onLoad(index: models.Index)
 POST        /disclosure/remove-file/:index                               controllers.RemoveUploadedFileController.onSubmit(index: models.Index)
 
-GET         /disclosure/importer-address                                 controllers.ImporterAddressController.onLoad
-POST        /disclosure/importer-address                                 controllers.ImporterAddressController.onSubmit
+GET         /disclosure/address-correct                                  controllers.ImporterAddressController.onLoad
+POST        /disclosure/address-correct                                  controllers.ImporterAddressController.onSubmit
 
 GET         /disclosure/reason-introduction                              controllers.BoxGuidanceController.onLoad
 
@@ -127,6 +124,9 @@ POST        /disclosure/box-67-other-charges-deductions-amendment        control
 
 GET         /disclosure/box-68-adjustment-vat-value-amendment            controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 68)
 POST        /disclosure/box-68-adjustment-vat-value-amendment            controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
+
+GET         /disclosure/confirm-reason-details                           controllers.ConfirmReasonDetailController.onLoad
+GET         /disclosure/confirm-reason-details                           controllers.ConfirmReasonDetailController.onSubmit
 
 GET         /disclosure/underpayment-reason-summary                      controllers.UnderpaymentReasonSummaryController.onLoad
 POST        /disclosure/underpayment-reason-summary                      controllers.UnderpaymentReasonSummaryController.onSubmit

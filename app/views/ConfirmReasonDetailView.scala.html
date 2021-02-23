@@ -15,27 +15,27 @@
  *@
 
 @this(layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        errorSummary: components.errorSummary,
-        yesNoRadio: components.yesNoRadio,
-        button: components.button)
+        govukSummaryList: GovukSummaryList,
+        h1: components.h1,
+        linkButton: components.linkButton
+)
 
-@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(reasons: Seq[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("customsProcedureCode.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+        pageTitle = messages("confirmReason.pageTitle"),
+        customBackLinkUrl = Some(backLink)
+    ) {
 
-        @errorSummary(form.errors)
+        @h1(messages("confirmReason.heading"))
 
-        @formHelper(action = controllers.routes.CustomsProcedureCodeController.onSubmit()) {
-            @yesNoRadio(
-                form,
-                headingKey = "customsProcedureCode.heading"
+        @reasons.map { reason =>
+            @govukSummaryList(reason)
+
+            @linkButton(
+                controllers.routes.ConfirmReasonDetailController.onSubmit().url,
+                messages("common.button.continue")
             )
-
-            @button("common.button.continue")
         }
 
     }
