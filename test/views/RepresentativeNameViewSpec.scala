@@ -17,14 +17,14 @@
 package views
 
 import base.ViewBaseSpec
-import forms.{EnterCustomsProcedureCodeFormProvider, RepresentativeNameFormProvider}
-import messages.{BaseMessages, EnterCustomsProcedureCodeMessages, RepresentativeNameMessages}
+import forms.RepresentativeNameFormProvider
+import messages.{BaseMessages, RepresentativeNameMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.{EnterCustomsProcedureCodeView, RepresentativeNameView}
+import views.html.RepresentativeNameView
 
 class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
 
@@ -141,26 +141,26 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
     }
   }
 
-    it should {
+  it should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Call("GET", controllers.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+    val form: Form[String] = formProvider.apply()
+    lazy val view: Html = injectedView(form, Call("GET", controllers.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct h1 of '${RepresentativeNameMessages.h1}'" in {
-        elementText("h1") mustBe RepresentativeNameMessages.h1
-      }
-
-      s"have the correct hint" in {
-        elementText("#fullName-hint") mustBe RepresentativeNameMessages.hint
-      }
-      "render a back link with the correct URL" in {
-        elementAttributes("#back-link") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
-      }
-
-      s"have the correct Continue button" in {
-        elementText(".govuk-button") mustBe continue
-      }
-
+    s"have the correct h1 of '${RepresentativeNameMessages.h1}'" in {
+      elementText("h1") mustBe RepresentativeNameMessages.h1
     }
+
+    s"have the correct hint" in {
+      elementText("#fullName-hint") mustBe RepresentativeNameMessages.hint
+    }
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
+    }
+
+    s"have the correct Continue button" in {
+      elementText(".govuk-button") mustBe continue
+    }
+
+  }
 }
