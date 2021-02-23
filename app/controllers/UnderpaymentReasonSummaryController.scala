@@ -77,8 +77,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   private[controllers] def summaryList(
                                         underpaymentReason: Option[Seq[UnderpaymentReason]]
                                       )(implicit messages: Messages): Option[SummaryList] = {
-    // TODO - needs to change when implementing the change and remove buttons
-    val changeAction: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+    val changeAction: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad()
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
