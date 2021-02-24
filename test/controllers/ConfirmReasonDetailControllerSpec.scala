@@ -80,7 +80,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
@@ -92,7 +92,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
         verifyCalls()
       }
 
@@ -106,7 +106,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.ConfirmReasonDetailController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
         verifyCalls()
       }
 
