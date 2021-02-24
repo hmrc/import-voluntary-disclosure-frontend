@@ -37,7 +37,6 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
   val summaryList: Option[SummaryList] = UnderpaymentReasonSummaryData.singleItemSummaryList
 
-
   "Rendering the Reason summary page" when {
     "no errors exist" should {
 
