@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.HasFurtherInformationFormProvider
-import pages.HasFurtherInformationPage
+import pages.{FurtherInformationPage, HasFurtherInformationPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -57,14 +57,20 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       hasFurtherInfo => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (hasFurtherInfo) {
-            Redirect(controllers.routes.HasFurtherInformationController.onLoad())
-          } else {
-            Redirect(controllers.routes.HasFurtherInformationController.onLoad())
+        if (hasFurtherInfo) {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            Redirect(controllers.routes.HasFurtherInformationController.onLoad()) // Further Info page
+          }
+        } else {
+          for {
+            hasFurtherInfoAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
+            updatedAnswers <- Future.fromTry(hasFurtherInfoAnswers.set(FurtherInformationPage, " "))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            Redirect(controllers.routes.UploadFileController.onLoad())
           }
         }
       }
