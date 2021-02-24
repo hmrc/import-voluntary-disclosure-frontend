@@ -22,8 +22,7 @@ import mocks.repositories.MockSessionRepository
 import models.{UnderpaymentReason, UnderpaymentReasonValue, UserAnswers}
 import pages._
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
-import play.api.test.FakeRequest
+import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.data.ConfirmReasonData
 import views.html.ConfirmReasonDetailView
@@ -117,11 +116,6 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
           result mustBe None
         }
       }
-
     }
-
   }
 }
-
-
-

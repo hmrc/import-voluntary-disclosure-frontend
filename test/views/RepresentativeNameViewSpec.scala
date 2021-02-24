@@ -70,7 +70,6 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         "render an error message against the field" in {
           elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nonEmpty
         }
-
       }
     }
 
@@ -92,7 +91,6 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         "render an error message against the field" in {
           elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameMinLength
         }
-
       }
     }
 
@@ -114,7 +112,6 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         "render an error message against the field" in {
           elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameMaxLength
         }
-
       }
     }
 
@@ -136,7 +133,6 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         "render an error message against the field" in {
           elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameAllowableCharacters
         }
-
       }
     }
   }
@@ -161,6 +157,5 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue
     }
-
   }
 }
