@@ -55,7 +55,7 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
     )
     private lazy val RepresentativeNameView = app.injector.instanceOf[RepresentativeNameView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+    val userAnswers: Option[UserAnswers] = None
     val formProvider: RepresentativeNameFormProvider = injector.instanceOf[RepresentativeNameFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: RepresentativeNameFormProvider = formProvider
@@ -63,6 +63,7 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
