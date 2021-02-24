@@ -44,16 +44,13 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.userAnswers.get(HasFurtherInformationPage).fold(formProvider()) {
       formProvider().fill
     }
-
     Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       hasFurtherInfo => {
