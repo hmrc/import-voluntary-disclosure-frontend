@@ -42,15 +42,10 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(
-      Ok(
-        view(
-          formProvider.apply(),
-          backLink,
-          summaryList(request.userAnswers.get(UnderpaymentReasonsPage))
-        )
-      )
-    )
+    summaryList(request.userAnswers.get(UnderpaymentReasonsPage)) match {
+      case Some(value) => Future.successful(Ok(view(formProvider.apply(), backLink, Some(value))))
+      case None => Future.successful(InternalServerError("Couldn't find Underpayment reasons"))
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

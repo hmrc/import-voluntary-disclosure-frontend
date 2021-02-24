@@ -25,6 +25,7 @@ import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
+import views.data.UnderpaymentReasonSummaryData
 import views.html.UnderpaymentReasonSummaryView
 
 class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
@@ -34,7 +35,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: UnderpaymentReasonSummaryFormProvider = injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
   val tempChangeAndDeleteLink: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad()
 
-  val summaryList: Option[SummaryList] = Some(SummaryList())
+  val summaryList: Option[SummaryList] = UnderpaymentReasonSummaryData.singleItemSummaryList
 
 
   "Rendering the Reason summary page" when {
