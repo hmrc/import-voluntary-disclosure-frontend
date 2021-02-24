@@ -74,8 +74,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def summaryList(
-                                        underpaymentReason: Option[Seq[UnderpaymentReason]]
+  private[controllers] def summaryList(underpaymentReason: Option[Seq[UnderpaymentReason]]
                                       )(implicit messages: Messages): Option[SummaryList] = {
     val changeAction: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad()
     underpaymentReason.map { reasons =>

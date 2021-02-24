@@ -24,21 +24,27 @@
 
 @(form: Form[_], backLink: Call, summaryList: Option[SummaryList])(implicit request: Request[_], messages: Messages)
 
-<!-- TODO work out whether title changes like the header or not, if it does make it a variable and pass it into title as well -->
+@titleAndHeader = {
+@summaryList.map { sl =>
+    @if(sl.rows.size == 1) {
+        @messages("underpaymentReasonSummary.pageHeaderSingleReason")
+    } else {
+        @messages("underpaymentReasonSummary.pageHeader", sl.rows.size)
+    }
+}
+}
+
 @layout(
     form = Some(form),
-    pageTitle = messages("underpaymentReasonSummary.pageTitle"),
+    pageTitle = titleAndHeader,
     customBackLinkUrl = Some(backLink)
 ) {
 
     @errorSummary(form.errors)
 
-    @summaryList.map { sl =>
-        @if(sl.rows.size == 1) {
-            @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
-        } else {
-            @h1(messages("underpaymentReasonSummary.pageHeader", sl.rows.size))
-        }
+    @h1(titleAndHeader)
+
+    @if(summaryList.isDefined) {
         @govukSummaryList(summaryList.get)
     }
 
