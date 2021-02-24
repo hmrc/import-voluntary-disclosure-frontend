@@ -55,32 +55,34 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
     )
     private lazy val RepresentativeNameView = app.injector.instanceOf[RepresentativeNameView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = userAnswersWithRepresentativeName
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     val formProvider: RepresentativeNameFormProvider = injector.instanceOf[RepresentativeNameFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: RepresentativeNameFormProvider = formProvider
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id").set(RepresentativeNamePage, "test").success.value
+      )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
-
-
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
 
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data with character values" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.RepresentativeNameController.onLoad().url)
@@ -91,8 +93,6 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit()(fakeRequestGenerator("test")))
         verifyCalls()
       }
-
-
     }
 
     "payload contains invalid data" should {
@@ -122,9 +122,6 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
-
     }
-
   }
-
 }
