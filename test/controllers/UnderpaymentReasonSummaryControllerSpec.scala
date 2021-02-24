@@ -25,6 +25,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import views.data.UnderpaymentReasonSummaryData
 import views.html.UnderpaymentReasonSummaryView
 
 import scala.concurrent.Future
@@ -90,6 +91,28 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+
+  }
+
+  "summaryList" when {
+
+    "single item is passed" should {
+      "produce summary list with one item" in new Test {
+        controller.summaryList(UnderpaymentReasonSummaryData.singleItemReason) mustBe UnderpaymentReasonSummaryData.singleItemSummaryList
+      }
+    }
+
+    "multiple items are passed" should {
+      "produce summary list with multiple items" in new Test {
+        controller.summaryList(UnderpaymentReasonSummaryData.multipleItemReason) mustBe UnderpaymentReasonSummaryData.multipleItemSummaryList
+      }
+    }
+
+    "no items are passed" should {
+      "produce an empty summary list" in new Test {
+        controller.summaryList(None) mustBe None
       }
     }
 
