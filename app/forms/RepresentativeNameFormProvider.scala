@@ -29,7 +29,7 @@ class RepresentativeNameFormProvider @Inject() extends Mappings {
       "fullName" -> text("representativeName.error.nameNonEmpty")
         .verifying("representativeName.error.nameMinLength", value => value.length >= 2)
         .verifying("representativeName.error.nameMaxLength", value => value.length <= 50)
-        .verifying(regexp("^[a-zA-Z '-]+$", "representativeName.error.nameAllowableCharacters")),
+        .verifying(regexp("^[a-zA-Z '-]+$", "representativeName.error.nameAllowableCharacters"))
     )
 
 }
