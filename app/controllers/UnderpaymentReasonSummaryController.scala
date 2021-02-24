@@ -98,12 +98,12 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                 items = Seq(
                   ActionItem(
                     changeAction.url,
-                    Text(messages("underpaymentSummary.change")),
+                    Text(messages("common.change")),
                     Some("key")
                   ),
                   ActionItem(
                     changeAction.url,
-                    Text(messages("underpaymentReasonSummary.remove")),
+                    Text(messages("common.remove")),
                     Some("key")
                   )
                 ),

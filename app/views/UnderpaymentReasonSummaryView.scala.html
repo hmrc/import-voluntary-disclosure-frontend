@@ -24,37 +24,37 @@
 
 @(form: Form[_], backLink: Call, summaryList: Option[SummaryList])(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        form = Some(form),
-        pageTitle = messages("underpaymentReasonSummary.pageTitle"),
-        customBackLinkUrl = Some(backLink)
-    ) {
+<!-- TODO work out whether title changes like the header or not, if it does make it a variable and pass it into title as well -->
+@layout(
+    form = Some(form),
+    pageTitle = messages("underpaymentReasonSummary.pageTitle"),
+    customBackLinkUrl = Some(backLink)
+) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @if(summaryList.head.rows.size == 1) {
+    @summaryList.map { sl =>
+        @if(sl.rows.size == 1) {
             @h1(messages("underpaymentReasonSummary.pageHeaderSingleReason"))
         } else {
-            @h1(messages("underpaymentReasonSummary.pageHeader", summaryList.head.rows.size))
+            @h1(messages("underpaymentReasonSummary.pageHeader", sl.rows.size))
         }
-
-        @if(summaryList.isDefined) {
-            @govukSummaryList(summaryList.get)
-        }
-
-        @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
-            @yesNoRadio(
-                form,
-                headingKey = "underpaymentReasonSummary.radioMessage",
-                inline = true,
-                isPageHeading = false,
-                classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
-            )
-            @button("common.button.continue")
-        }
-
+        @govukSummaryList(summaryList.get)
     }
 
-    @{
-        //$COVERAGE-OFF$
+    @formHelper(action = controllers.routes.UnderpaymentReasonSummaryController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "underpaymentReasonSummary.radioMessage",
+            inline = true,
+            isPageHeading = false,
+            classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
+        )
+        @button("common.button.continue")
     }
+
+}
+
+@{
+    //$COVERAGE-OFF$
+}

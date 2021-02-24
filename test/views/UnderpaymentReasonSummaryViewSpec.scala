@@ -32,7 +32,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: UnderpaymentReasonSummaryView = app.injector.instanceOf[UnderpaymentReasonSummaryView]
 
   val formProvider: UnderpaymentReasonSummaryFormProvider = injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
-  val tempChangeAndDeleteLink: Call = Call("GET", controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+  val tempChangeAndDeleteLink: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad()
 
   val summaryList: Option[SummaryList] = Some(SummaryList())
 

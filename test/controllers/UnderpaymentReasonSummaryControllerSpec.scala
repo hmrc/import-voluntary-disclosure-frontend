@@ -51,7 +51,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       messagesControllerComponents, view, formProvider)
   }
 
-  "GET /" when {
+  "GET onLoad" when {
 
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
@@ -66,7 +66,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
 
     "payload contains valid data" should {
 
