@@ -17,14 +17,14 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{BoxNumberFormProvider, ImporterEORIExistsFormProvider}
+import forms.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
 import pages.ImporterEORIExistsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{BoxNumberView, ImporterEORIExistsView}
+import views.html.ImporterEORIExistsView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -56,11 +56,16 @@ class ImporterEORIExistsController @Inject()(identity: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+          if (value) {
+            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+          }
+          else {
+            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+          }
         }
       }
     )
 
   }
 
-  }
+}
