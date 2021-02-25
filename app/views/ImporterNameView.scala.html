@@ -24,20 +24,20 @@
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("representativeName.pageTitle"),
+    pageTitle = messages("importerName.pageTitle"),
     form = Some(form),
     customBackLinkUrl = Some(backLink)) {
 
     @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.RepresentativeNameController.onSubmit()) {
+    @formHelper(action = controllers.routes.ImporterNameController.onSubmit()) {
         @inputText(
             form = form,
             id = "fullName",
             name = "fullName",
-            label = "representativeName.pageHeader",
+            label = "importerName.pageHeader",
             isPageHeading = true,
-            hint = Some(Html(messages("representativeName.hint")))
+            hint = Some(Html(messages("importerName.hint")))
         )
         @button("common.button.continue")
     }

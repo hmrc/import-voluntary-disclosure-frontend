@@ -64,7 +64,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
         } yield {
           value match {
             case UserType.Importer => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
-            case UserType.Representative => Redirect(controllers.routes.RepresentativeNameController.onLoad())
+            case UserType.Representative => Redirect(controllers.routes.ImporterNameController.onLoad())
           }
         }
       }

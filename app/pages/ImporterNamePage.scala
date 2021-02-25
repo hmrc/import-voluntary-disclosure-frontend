@@ -18,7 +18,7 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object RepresentativeNamePage extends QuestionPage[String] {
+case object ImporterNamePage extends QuestionPage[String] {
 
   def path: JsPath = JsPath \ toString
 

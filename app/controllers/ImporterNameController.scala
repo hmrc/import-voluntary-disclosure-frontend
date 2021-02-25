@@ -17,31 +17,31 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.RepresentativeNameFormProvider
-import pages.RepresentativeNamePage
+import forms.ImporterNameFormProvider
+import pages.ImporterNamePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.RepresentativeNameView
+import views.html.ImporterNameView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class RepresentativeNameController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             sessionRepository: SessionRepository,
-                                             mcc: MessagesControllerComponents,
-                                             formProvider: RepresentativeNameFormProvider,
-                                             view: RepresentativeNameView
+class ImporterNameController @Inject()(identify: IdentifierAction,
+                                       getData: DataRetrievalAction,
+                                       requireData: DataRequiredAction,
+                                       sessionRepository: SessionRepository,
+                                       mcc: MessagesControllerComponents,
+                                       formProvider: ImporterNameFormProvider,
+                                       view: ImporterNameView
                                             ) extends FrontendController(mcc) with I18nSupport {
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(RepresentativeNamePage).fold(formProvider()) {
+    val form = request.userAnswers.get(ImporterNamePage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, controllers.routes.UserTypeController.onLoad)))
@@ -52,10 +52,10 @@ class RepresentativeNameController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.UserTypeController.onLoad))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeNamePage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterNamePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.RepresentativeNameController.onLoad())
+          Redirect(controllers.routes.ImporterNameController.onLoad())
         }
       }
     )

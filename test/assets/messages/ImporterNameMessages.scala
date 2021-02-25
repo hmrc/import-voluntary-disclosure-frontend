@@ -16,7 +16,7 @@
 
 package messages
 
-object RepresentativeNameMessages extends BaseMessages {
+object ImporterNameMessages extends BaseMessages {
 
   val title: String = "What is the importer’s name?"
   val h1: String = "What is the importer’s name?"

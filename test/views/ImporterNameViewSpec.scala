@@ -17,20 +17,20 @@
 package views
 
 import base.ViewBaseSpec
-import forms.RepresentativeNameFormProvider
-import messages.{BaseMessages, RepresentativeNameMessages}
+import forms.ImporterNameFormProvider
+import messages.{BaseMessages, ImporterNameMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.RepresentativeNameView
+import views.html.ImporterNameView
 
-class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
+class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: RepresentativeNameView = app.injector.instanceOf[RepresentativeNameView]
+  private lazy val injectedView: ImporterNameView = app.injector.instanceOf[ImporterNameView]
 
-  val formProvider: RepresentativeNameFormProvider = injector.instanceOf[RepresentativeNameFormProvider]
+  val formProvider: ImporterNameFormProvider = injector.instanceOf[ImporterNameFormProvider]
 
   "Rendering the Importer's Name page" when {
     "no errors exist" should {
@@ -40,7 +40,7 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe RepresentativeNameMessages.title
+        document.title mustBe ImporterNameMessages.title
       }
 
       "not render an error summary" in {
@@ -60,15 +60,15 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
-          document.title mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.title
+          document.title mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.title
         }
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe RepresentativeNameMessages.nonEmpty
+          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nonEmpty
         }
 
         "render an error message against the field" in {
-          elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nonEmpty
+          elementText("#fullName-error") mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.nonEmpty
         }
       }
     }
@@ -81,15 +81,15 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
-          document.title mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.title
+          document.title mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.title
         }
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe RepresentativeNameMessages.nameMinLength
+          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nameMinLength
         }
 
         "render an error message against the field" in {
-          elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameMinLength
+          elementText("#fullName-error") mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.nameMinLength
         }
       }
     }
@@ -102,15 +102,15 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
-          document.title mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.title
+          document.title mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.title
         }
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe RepresentativeNameMessages.nameMaxLength
+          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nameMaxLength
         }
 
         "render an error message against the field" in {
-          elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameMaxLength
+          elementText("#fullName-error") mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.nameMaxLength
         }
       }
     }
@@ -123,15 +123,15 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
-          document.title mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.title
+          document.title mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.title
         }
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe RepresentativeNameMessages.nameAllowableCharacters
+          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nameAllowableCharacters
         }
 
         "render an error message against the field" in {
-          elementText("#fullName-error") mustBe RepresentativeNameMessages.errorPrefix + RepresentativeNameMessages.nameAllowableCharacters
+          elementText("#fullName-error") mustBe ImporterNameMessages.errorPrefix + ImporterNameMessages.nameAllowableCharacters
         }
       }
     }
@@ -143,12 +143,12 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(form, Call("GET", controllers.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${RepresentativeNameMessages.h1}'" in {
-      elementText("h1") mustBe RepresentativeNameMessages.h1
+    s"have the correct h1 of '${ImporterNameMessages.h1}'" in {
+      elementText("h1") mustBe ImporterNameMessages.h1
     }
 
     s"have the correct hint" in {
-      elementText("#fullName-hint") mustBe RepresentativeNameMessages.hint
+      elementText("#fullName-hint") mustBe ImporterNameMessages.hint
     }
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)

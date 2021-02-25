@@ -19,27 +19,27 @@ package forms
 import base.SpecBase
 import play.api.data.Form
 
-class RepresentativeNameFormProviderSpec extends SpecBase {
+class ImporterNameFormProviderSpec extends SpecBase {
 
   private final val fullName1 = "fullName"
-  private final val fullNameNonEmptyKey = "representativeName.error.nameNonEmpty"
-  private final val fullNameTooShortKey = "representativeName.error.nameMinLength"
-  private final val fullNameTooLongKey = "representativeName.error.nameMaxLength"
-  private final val fullNameInvalidCharactersKey = "representativeName.error.nameAllowableCharacters"
+  private final val fullNameNonEmptyKey = "importerName.error.nameNonEmpty"
+  private final val fullNameTooShortKey = "importerName.error.nameMinLength"
+  private final val fullNameTooLongKey = "importerName.error.nameMaxLength"
+  private final val fullNameInvalidCharactersKey = "importerName.error.nameAllowableCharacters"
 
   def formBuilder(fullName: String = ""): Map[String, String] = Map(
     "fullName" -> fullName
   )
 
   def formBinder(formValues: Map[String, String] = Map(fullName1 -> "")): Form[String] =
-    new RepresentativeNameFormProvider()().bind(formValues)
+    new ImporterNameFormProvider()().bind(formValues)
 
   "Binding a form with invalid data" when {
 
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new RepresentativeNameFormProvider()().bind(missingOption)
+      val form = new ImporterNameFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -57,7 +57,7 @@ class RepresentativeNameFormProviderSpec extends SpecBase {
     "wth full name too short" should {
 
       val data = Map("fullName" -> "a")
-      val form = new RepresentativeNameFormProvider()().bind(data)
+      val form = new ImporterNameFormProvider()().bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -75,7 +75,7 @@ class RepresentativeNameFormProviderSpec extends SpecBase {
     "wth full name too long" should {
 
       val data = Map("fullName" -> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-      val form = new RepresentativeNameFormProvider()().bind(data)
+      val form = new ImporterNameFormProvider()().bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -93,7 +93,7 @@ class RepresentativeNameFormProviderSpec extends SpecBase {
     "wth full name using invalid characters" should {
 
       val data = Map("fullName" -> "First/Name")
-      val form = new RepresentativeNameFormProvider()().bind(data)
+      val form = new ImporterNameFormProvider()().bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

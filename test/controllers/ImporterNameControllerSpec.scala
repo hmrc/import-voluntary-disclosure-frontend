@@ -18,23 +18,23 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.RepresentativeNameFormProvider
+import forms.ImporterNameFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.RepresentativeNamePage
+import pages.ImporterNamePage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.RepresentativeNameView
+import views.html.ImporterNameView
 
 import scala.concurrent.Future
 
-class RepresentativeNameControllerSpec extends ControllerSpecBase {
+class ImporterNameControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithRepresentativeName: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+  val userAnswersWithImporterName: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
-      RepresentativeNamePage, "test"
+      ImporterNamePage, "test"
     ).success.value
   )
 
@@ -44,21 +44,21 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new RepresentativeNameController(
+    lazy val controller = new ImporterNameController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      RepresentativeNameView
+      ImporterNameView
     )
-    private lazy val RepresentativeNameView = app.injector.instanceOf[RepresentativeNameView]
+    private lazy val ImporterNameView = app.injector.instanceOf[ImporterNameView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    val formProvider: RepresentativeNameFormProvider = injector.instanceOf[RepresentativeNameFormProvider]
+    val formProvider: ImporterNameFormProvider = injector.instanceOf[ImporterNameFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: RepresentativeNameFormProvider = formProvider
+    val form: ImporterNameFormProvider = formProvider
   }
 
   "GET onLoad" should {
@@ -70,7 +70,7 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("some-cred-id").set(RepresentativeNamePage, "test").success.value
+        UserAnswers("some-cred-id").set(ImporterNamePage, "test").success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -86,11 +86,11 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.RepresentativeNameController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.ImporterNameController.onLoad().url)
 
       }
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = userAnswersWithRepresentativeName
+        override val userAnswers: Option[UserAnswers] = userAnswersWithImporterName
         await(controller.onSubmit()(fakeRequestGenerator("test")))
         verifyCalls()
       }
