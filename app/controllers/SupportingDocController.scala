@@ -27,7 +27,7 @@ import views.html.SupportingDocView
 import scala.concurrent.Future
 
 @Singleton
-class SupportingDocController @Inject()(identity: IdentifierAction,
+class SupportingDocController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      mcc: MessagesControllerComponents,
                                      requireData: DataRequiredAction,
@@ -35,7 +35,7 @@ class SupportingDocController @Inject()(identity: IdentifierAction,
                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     Future.successful(Ok(view(controllers.routes.UnderpaymentSummaryController.onLoad())))
 
   }

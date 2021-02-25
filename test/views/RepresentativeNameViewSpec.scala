@@ -154,6 +154,10 @@ class RepresentativeNameViewSpec extends ViewBaseSpec with BaseMessages {
       elementAttributes("#back-link") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
     }
 
+    s"the input field is rendered" in {
+      document.select("#fullName").size mustBe 1
+    }
+
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue
     }
