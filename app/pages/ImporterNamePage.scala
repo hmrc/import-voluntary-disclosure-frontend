@@ -22,6 +22,6 @@ case object ImporterNamePage extends QuestionPage[String] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "representative-name"
+  override def toString: String = "importer-name"
 
 }
