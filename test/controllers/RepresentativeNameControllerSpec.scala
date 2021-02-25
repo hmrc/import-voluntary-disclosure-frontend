@@ -55,7 +55,7 @@ class RepresentativeNameControllerSpec extends ControllerSpecBase {
     )
     private lazy val RepresentativeNameView = app.injector.instanceOf[RepresentativeNameView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = None
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     val formProvider: RepresentativeNameFormProvider = injector.instanceOf[RepresentativeNameFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: RepresentativeNameFormProvider = formProvider
