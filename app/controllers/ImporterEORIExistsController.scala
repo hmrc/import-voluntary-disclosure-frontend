@@ -26,6 +26,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{BoxNumberView, ImporterEORIExistsView}
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
@@ -48,7 +49,17 @@ class ImporterEORIExistsController @Inject()(identity: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
-    ???
+    formProvider().bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      value => {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+        }
+      }
+    )
 
   }
 
