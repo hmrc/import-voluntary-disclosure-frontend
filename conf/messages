@@ -320,3 +320,10 @@ hasFurtherInformation.pageTitle = Do you want to tell us anything else about the
 hasFurtherInformation.heading = Do you want to tell us anything else about the underpayment?
 hasFurtherInformation.hint = That you have not told us about already.
 hasFurtherInformation.error.required = Select yes if you want to provide more information about the underpayment
+
+# Importer EORI Exists
+importerEORIExists.pageTitle = Does the importer have an EORI number?
+importerEORIExists.heading = Does the importer have an EORI number?
+importerEORIExists.hint = The EORI starts with GB and is followed by 12 numbers, for example GB345834921000
+importerEORIExists.error.required = Select yes if the importer has an EORI number
+
