@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterEORINumberFormProvider
-import pages.ImporterNamePage
+import pages.ImporterEORINumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -41,7 +41,7 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(ImporterNamePage).fold(formProvider()) {
+    val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, controllers.routes.ImporterEORINumberController.onLoad)))
@@ -52,7 +52,7 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.ImporterEORINumberController.onLoad))),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterNamePage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           Redirect(controllers.routes.ImporterEORINumberController.onLoad())

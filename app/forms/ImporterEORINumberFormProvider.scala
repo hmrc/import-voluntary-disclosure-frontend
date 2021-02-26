@@ -26,8 +26,8 @@ class ImporterEORINumberFormProvider @Inject() extends Mappings {
 
   def apply()(implicit messages: Messages): Form[String] =
     Form(
-      "fullName" -> text("")
-        .verifying(regexp("", ""))
+      "importerEORI" -> text("importerEORINumber.error.nonEmpty")
+        .verifying(regexp("^(?i)GB[0-9]{12,15}$", "importerEORINumber.error.incorrectFormat"))
     )
 
 }
