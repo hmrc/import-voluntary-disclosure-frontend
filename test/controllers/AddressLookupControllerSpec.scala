@@ -21,7 +21,7 @@ import assets.BaseTestConstants.errorModel
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import mocks.services.MockAddressLookupService
+import mocks.services.{MockAddressLookupService, MockFlowService}
 import models.UserAnswers
 import models.addressLookup.AddressLookupOnRampModel
 import play.api.http.Status
@@ -32,9 +32,11 @@ import scala.concurrent.Future
 
 class AddressLookupControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockAddressLookupService with MockSessionRepository {
+  trait Test extends MockAddressLookupService with MockSessionRepository with MockFlowService {
 
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
+
+    MockedFlowService.isRepFlow(false)
 
     lazy val controller = new AddressLookupController(
       authenticatedAction,
@@ -42,6 +44,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       mockAddressLookupService,
+      mockFlowService,
       errorHandler,
       messagesControllerComponents,
       appConfig,
