@@ -22,6 +22,7 @@ import messages.{AcceptanceDateMessages, BaseMessages, ImporterEORIExistsMessage
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.{AcceptanceDateView, ImporterEORIExistsView}
 
@@ -29,13 +30,15 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: ImporterEORIExistsView = app.injector.instanceOf[ImporterEORIExistsView]
 
+  private val backLink: Call = Call("GET", "url")
+
   val formProvider: ImporterEORIExistsFormProvider = injector.instanceOf[ImporterEORIExistsFormProvider]
 
   "Rendering the ImportEORIExists page" when {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -53,7 +56,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
@@ -74,7 +77,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterEORIExistsMessages.h1}'" in {
@@ -94,7 +97,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterNameController.onLoad().url)
+      elementAttributes("#back-link") must contain("href" -> "url")
     }
 
     s"have the correct Continue button" in {
