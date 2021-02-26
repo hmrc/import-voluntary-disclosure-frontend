@@ -18,10 +18,10 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.{ImporterEORINumberFormProvider, ImporterNameFormProvider}
+import forms.ImporterEORINumberFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.{ImporterEORINumberPage, ImporterNamePage}
+import pages.ImporterEORINumberPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -86,7 +86,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("GB345834921000"))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterEORINumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
 
       }
       "update the UserAnswers in session" in new Test {
