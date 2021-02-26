@@ -331,8 +331,8 @@ importerName.error.nameMaxLength = Full name must be 50 characters or fewer
 importerName.error.nameAllowableCharacters = Full name must only include letters a to z, hyphens, spaces and apostrophes
 
 # Importer EORI Number
-importerEORINumber.pageTitle = What is the importer's EORI number?
-importerEORINumber.pageHeader = What is the importer's EORI number?
+importerEORINumber.pageTitle = What is the importer’s EORI number?
+importerEORINumber.pageHeader = What is the importer’s EORI number?
 importerEORINumber.hint = The EORI starts with GB and is followed by 12 numbers, for example GB345834921000.
-importerEORINumber.error.nonEmpty = Enter the importer's EORI number
-importerEORINumber.error.incorrectFormat = Incorrect Format
+importerEORINumber.error.nonEmpty = Enter the importer''s EORI number
+importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
