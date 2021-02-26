@@ -46,13 +46,13 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImporterEORIExistsPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form,backLink)))
+    Future.successful(Ok(view(form, backLink)))
 
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       eoriExists => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
