@@ -44,18 +44,18 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, controllers.routes.ImporterEORINumberController.onLoad)))
+    Future.successful(Ok(view(form, controllers.routes.ImporterEORINumberController.onLoad))) // change to Jake's controller
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.ImporterEORINumberController.onLoad))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.ImporterEORINumberController.onLoad))), // change to Jake's controller
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ImporterEORINumberController.onLoad())
+          Redirect(controllers.routes.NumberOfEntriesController.onLoad())
         }
       }
     )
