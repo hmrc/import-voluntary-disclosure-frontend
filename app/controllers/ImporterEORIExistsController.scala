@@ -21,7 +21,7 @@ import forms.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
 import pages.ImporterEORIExistsPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterEORIExistsView
@@ -30,7 +30,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-class ImporterEORIExistsController @Inject()(identity: IdentifierAction,
+class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
                                              getData: DataRetrievalAction,
                                              requireData: DataRequiredAction,
                                              sessionRepository: SessionRepository,
@@ -40,23 +40,25 @@ class ImporterEORIExistsController @Inject()(identity: IdentifierAction,
                                             )
   extends FrontendController(mcc) with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+  private lazy val backLink: Call = controllers.routes.ImporterNameController.onLoad()
+
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORIExistsPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form,backLink)))
 
   }
 
-  def onSubmit: Action[AnyContent] = (identity andThen getData andThen requireData).async { implicit request =>
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-      value => {
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
+      eoriExists => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (value) {
+          if (eoriExists) {
             Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
           }
           else {
