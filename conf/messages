@@ -62,6 +62,7 @@ importerAddress_lookupPage.editPage.heading = Enter the importer’s address
 importerAddress_lookupPage.editPage.addressLabel1 = Building and street
 importerAddress_lookupPage.editPage.townOrCity = Town or city
 importerAddress_lookupPage.editPage.postcode = Postcode
+importerAddress_lookupPage.editPage.country = Country
 
 error.date.length = You have entered too many numbers for {0}
 error.year.length = Year must be 4 numbers

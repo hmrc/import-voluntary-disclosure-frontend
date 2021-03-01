@@ -26,7 +26,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit reques
 
   // general journey overrides
   val showPhaseBanner: Boolean = true
-  val ukMode: Boolean = true
+  val ukMode: Boolean = false
   val conf: AppConfig = config
   val deskproServiceName: String = "TBC" //TODO: Needs to contain name if we need it
   val accessibilityFooterUrl: String = "TBC" //TODO: Needs to point somewhere
@@ -61,7 +61,6 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit reques
       "heading" -> message("importerAddress_lookupPage.heading"),
       "filterLabel" -> message("importerAddress_lookupPage.filter"),
       "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
-      "postcodeHint" -> message("importerAddress_lookupPage.postcode.hint"),
       "submitLabel" -> message("importerAddress_lookupPage.lookupPage.submit")
     )
 
@@ -78,7 +77,6 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit reques
       "line2Label" -> "",
       "line3Label" -> "",
       "townLabel" -> message("importerAddress_lookupPage.editPage.townOrCity"),
-      "postcodeLabel" -> message("importerAddress_lookupPage.editPage.postcode"),
       "submitLabel" -> message("common.continue")
     )
 
