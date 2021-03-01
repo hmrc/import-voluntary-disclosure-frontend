@@ -94,29 +94,29 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     }
   }
 
-    it should {
+  it should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+    val form: Form[String] = formProvider.apply()
+    lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct h1 of '${ImporterEORINumberMessages.h1}'" in {
-        elementText("h1") mustBe ImporterEORINumberMessages.h1
-      }
+    s"have the correct h1 of '${ImporterEORINumberMessages.h1}'" in {
+      elementText("h1") mustBe ImporterEORINumberMessages.h1
+    }
 
-      s"have the correct hint" in {
-        elementText("#importerEORI-hint") mustBe ImporterEORINumberMessages.hint
-      }
-      "render a back link with the correct URL" in {
-        elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORIExistsController.onLoad().url)
-      }
+    s"have the correct hint" in {
+      elementText("#importerEORI-hint") mustBe ImporterEORINumberMessages.hint
+    }
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORIExistsController.onLoad().url)
+    }
 
-      s"the input field is rendered" in {
-        document.select("#importerEORI").size mustBe 1
-      }
+    s"the input field is rendered" in {
+      document.select("#importerEORI").size mustBe 1
+    }
 
-      s"have the correct Continue button" in {
-        elementText(".govuk-button") mustBe continue
-      }
+    s"have the correct Continue button" in {
+      elementText(".govuk-button") mustBe continue
     }
   }
+}
