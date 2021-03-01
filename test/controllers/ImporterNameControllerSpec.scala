@@ -87,8 +87,8 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.AddressLookupController.initialiseImporterJourney().url)
-
       }
+      
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithImporterName
         await(controller.onSubmit()(fakeRequestGenerator("test")))
