@@ -19,15 +19,16 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.NumberOfEntriesFormProvider
+import javax.inject.{Inject, Singleton}
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
-import models.{NumberOfEntries, UserAnswers, UserType}
-import pages.{ImporterEORIExistsPage, NumberOfEntriesPage, UserTypePage}
+import models.{NumberOfEntries, UserAnswers}
+import pages.NumberOfEntriesPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
+import services.FlowService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
-import javax.inject.{Inject, Singleton}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,6 +40,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
                                           sessionRepository: SessionRepository,
                                           appConfig: AppConfig,
                                           mcc: MessagesControllerComponents,
+                                          flowService: FlowService,
                                           formProvider: NumberOfEntriesFormProvider,
                                           view: NumberOfEntriesView)
   extends FrontendController(mcc) with I18nSupport {
@@ -74,12 +76,11 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
     case MoreThanOneEntry => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
-    if(userAnswers.get(UserTypePage).get)
-//    if (!userAnswers.get(ImporterEORIExistsPage).get) {
-//      controllers.routes.ImporterEORIExistsController.onLoad()
-//    } else  {
-//      controllers.routes.ImporterEORINumberController.onLoad()
-//    }
-  }
+  private[controllers] def backLink(userAnswers: UserAnswers): Call =
+    (flowService.isRepFlow(userAnswers), flowService.doesImporterEORIExist(userAnswers)) match {
+      case (true, true) => controllers.routes.ImporterEORINumberController.onLoad()
+      case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()
+      case (false, false) => controllers.routes.UserTypeController.onLoad()
+
+    }
 }
