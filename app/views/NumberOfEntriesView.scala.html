@@ -22,12 +22,12 @@
         inputRadio: components.inputRadio,
         button: components.button)
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("numberOfEntries.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UserTypeController.onLoad)
+    customBackLinkUrl = Some(backLink)
 ) {
 
     @errorSummary(form.errors)
