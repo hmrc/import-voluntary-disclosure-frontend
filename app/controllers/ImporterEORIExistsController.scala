@@ -59,10 +59,10 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (eoriExists) {
-            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+            Redirect(controllers.routes.ImporterEORINumberController.onLoad())
           }
           else {
-            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+            Redirect(controllers.routes.NumberOfEntriesController.onLoad())
           }
         }
       }

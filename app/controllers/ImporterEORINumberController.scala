@@ -20,7 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.ImporterEORINumberFormProvider
 import pages.ImporterEORINumberPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterEORINumberView
@@ -39,17 +39,18 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
                                              view: ImporterEORINumberView
                                             ) extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink = controllers.routes.ImporterEORIExistsController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, controllers.routes.ImporterEORINumberController.onLoad))) // change to Jake's controller
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.ImporterEORINumberController.onLoad))), // change to Jake's controller
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
