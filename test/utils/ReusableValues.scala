@@ -31,7 +31,7 @@ trait ReusableValues {
   val errorModel: HttpResponse = HttpResponse(Status.NOT_FOUND, "Error Message")
 
   val traderAddressJson: JsObject = Json.obj(
-    "addressLine1" -> "first",
+    "streetAndNumber" -> "first",
     "city" -> "second",
     "postalCode" -> Some("third"),
     "countryCode" -> "fourth"

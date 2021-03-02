@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-package services
+package messages
 
-import javax.inject.Singleton
-import models.{UserAnswers, UserType}
-import pages.{ImporterEORIExistsPage, UserTypePage}
+object ImporterEORINumberMessages extends BaseMessages {
 
-@Singleton
-class FlowService {
-
-  def isRepFlow(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(UserTypePage) match {
-      case Some(userType) => userType == UserType.Representative
-      case _ => false
-    }
-
-  def doesImporterEORIExist(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ImporterEORIExistsPage) match {
-      case Some(value) => value
-      case _ => false
-    }
+  val title: String = "What is the importer’s EORI number?"
+  val h1: String = "What is the importer’s EORI number?"
+  val hint: String = "The EORI starts with GB and is followed by 12 numbers, for example GB345834921000."
+  val nonEmpty: String = "Enter the importer’s EORI number"
+  val incorrectFormat: String = "Enter an EORI number in the correct format"
 
 }

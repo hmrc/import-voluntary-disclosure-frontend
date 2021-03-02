@@ -14,25 +14,19 @@
  * limitations under the License.
  */
 
-package services
+package forms
 
-import javax.inject.Singleton
-import models.{UserAnswers, UserType}
-import pages.{ImporterEORIExistsPage, UserTypePage}
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
+import play.api.i18n.Messages
 
-@Singleton
-class FlowService {
+class ImporterEORINumberFormProvider @Inject() extends Mappings {
 
-  def isRepFlow(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(UserTypePage) match {
-      case Some(userType) => userType == UserType.Representative
-      case _ => false
-    }
-
-  def doesImporterEORIExist(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(ImporterEORIExistsPage) match {
-      case Some(value) => value
-      case _ => false
-    }
+  def apply()(implicit messages: Messages): Form[String] =
+    Form(
+      "importerEORI" -> text("importerEORINumber.error.nonEmpty")
+        .verifying(regexp("^(?i)GB[0-9]{12,15}$", "importerEORINumber.error.incorrectFormat"))
+    )
 
 }

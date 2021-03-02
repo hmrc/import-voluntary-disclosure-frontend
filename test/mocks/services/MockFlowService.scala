@@ -30,5 +30,10 @@ trait MockFlowService extends SpecBase with MockFactory {
         .expects(*)
         .returns(response)
     }
+    def doesImporterEORIExist(response: Boolean) = {
+      (mockFlowService.doesImporterEORIExist(_))
+        .expects(*)
+        .returns(response)
+    }
   }
 }

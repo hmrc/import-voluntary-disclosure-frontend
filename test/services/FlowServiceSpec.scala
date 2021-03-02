@@ -19,7 +19,7 @@ package services
 import base.SpecBase
 import models.UserType.{Importer, Representative}
 import models.{UserAnswers, UserType}
-import pages.UserTypePage
+import pages.{ImporterEORIExistsPage, UserTypePage}
 
 
 class FlowServiceSpec extends SpecBase {
@@ -28,19 +28,31 @@ class FlowServiceSpec extends SpecBase {
     lazy val userType: UserType = Importer
     lazy val service = new FlowService
 
-    def setupUserAnswers = UserAnswers("some-cred-id").set(UserTypePage, userType).success.value
+    def setupUserAnswersForRepFlow = UserAnswers("some-cred-id").set(UserTypePage, userType).success.value
+    def setupUserAnswersForEoriExists(exists: Boolean) = UserAnswers("some-cred-id").set(ImporterEORIExistsPage, exists).success.value
   }
 
   "isRep call" should {
 
     "return true for representative journey" in new Test {
       override lazy val userType = Representative
-      service.isRepFlow(setupUserAnswers) mustBe true
+      service.isRepFlow(setupUserAnswersForRepFlow) mustBe true
     }
 
     "return false for Importer journey" in new Test {
       override lazy val userType = Importer
-      service.isRepFlow(setupUserAnswers) mustBe false
+      service.isRepFlow(setupUserAnswersForRepFlow) mustBe false
     }
   }
+
+  "doesImporterEORIExist call" should {
+    "return true if EORI exist" in new Test {
+      service.doesImporterEORIExist(setupUserAnswersForEoriExists(true)) mustBe true
+    }
+
+    "return false if EORI does not exist" in new Test {
+      service.doesImporterEORIExist(setupUserAnswersForEoriExists(false)) mustBe false
+    }
+  }
+
 }

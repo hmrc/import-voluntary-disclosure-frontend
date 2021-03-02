@@ -27,7 +27,7 @@ import utils.ReusableValues
 class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
 
   val traderAddressJsonWithoutPostcode: JsObject = Json.obj(
-    "addressLine1" -> "first",
+    "streetAndNumber" -> "first",
     "city" -> "second",
     "postalCode" -> Some("None"),
     "countryCode" -> "fourth"
