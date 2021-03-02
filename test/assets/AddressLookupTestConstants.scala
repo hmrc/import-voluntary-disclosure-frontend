@@ -217,9 +217,6 @@ object AddressLookupTestConstants extends BaseMessages {
         ),
         "editPageLabels" -> Json.obj(
           "heading" -> ImporterAddressLookupMessages.editHeading,
-          "line1Label" -> ImporterAddressLookupMessages.editLine1,
-          "line2Label" -> ImporterAddressLookupMessages.editLine2,
-          "line3Label" -> ImporterAddressLookupMessages.editLine3,
           "townLabel" -> ImporterAddressLookupMessages.editTown,
           "submitLabel" -> continue
         )
@@ -250,9 +247,6 @@ object AddressLookupTestConstants extends BaseMessages {
         ),
         "editPageLabels" -> Json.obj(
           "heading" -> ImporterAddressLookupMessages.editHeading,
-          "line1Label" -> ImporterAddressLookupMessages.editLine1,
-          "line2Label" -> ImporterAddressLookupMessages.editLine2,
-          "line3Label" -> ImporterAddressLookupMessages.editLine3,
           "townLabel" -> ImporterAddressLookupMessages.editTown,
           "submitLabel" -> continue
         )
