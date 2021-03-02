@@ -21,7 +21,7 @@ import connectors.AddressLookupConnector
 
 import javax.inject.{Inject, Singleton}
 import models.ErrorModel
-import models.addressLookup.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel, ImporterAddressLookupJsonBuilder}
+import models.addressLookup._
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, Request}

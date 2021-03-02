@@ -53,8 +53,8 @@ object AddressLookupTestConstants extends BaseMessages {
   val customerAddressMissingLine3: AddressModel = AddressModel(
     Some(addressLine1),
     Some(addressLine2),
-    None,
     Some(addressLine4),
+    None,
     Some(postcode),
     Some(countryCode)
   )
