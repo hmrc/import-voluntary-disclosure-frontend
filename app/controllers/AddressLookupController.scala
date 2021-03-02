@@ -83,7 +83,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, contactAddress))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.routes.ImporterNameController.onLoad())
+            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
           }
         } else {
           for {

@@ -36,6 +36,15 @@ object ContactAddress {
     ContactAddress(addressLine1, addressLine2, city, postalCode, countryCode)
   }
 
+  val sub09Reads: Reads[ContactAddress] = for {
+    addressLine1 <- (__ \\ "streetAndNumber").read[String]
+    city <- (__ \\ "city").read[String]
+    postalCode <- (__ \\ "postalCode").readNullable[String]
+    countryCode <- (__ \\ "countryCode").read[String]
+  } yield {
+    ContactAddress(addressLine1, None, city, postalCode, countryCode)
+  }
+
   implicit val format: Format[ContactAddress] = Json.format[ContactAddress]
 
 }
