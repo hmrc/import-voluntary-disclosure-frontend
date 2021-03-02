@@ -32,9 +32,11 @@ import scala.concurrent.Future
 
 class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
+  val importerEORINumber = "GB345834921000"
+
   val userAnswersWithImporterEORINumber: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(
-      ImporterEORINumberPage, "GB345834921000"
+      ImporterEORINumberPage, importerEORINumber
     ).success.value
   )
 
@@ -63,15 +65,12 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("some-cred-id").set(ImporterEORINumberPage, "GB345834921000").success.value
-      )
+      override val userAnswers: Option[UserAnswers] = userAnswersWithImporterEORINumber
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -83,15 +82,14 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data with character values" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("GB345834921000"))
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator(importerEORINumber))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
 
       }
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithImporterEORINumber
-        await(controller.onSubmit()(fakeRequestGenerator("GB345834921000")))
+        await(controller.onSubmit()(fakeRequestGenerator(importerEORINumber)))
         verifyCalls()
       }
     }
@@ -103,8 +101,13 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
 
-      "return BAD REQUEST when data is less than 2 in length" in new Test {
+      "return BAD REQUEST when incorrect data is sent" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("345834921000"))
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
+      "return BAD REQUEST when data exceeds max length" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("GB3458349210002222222"))
         status(result) mustBe Status.BAD_REQUEST
       }
 

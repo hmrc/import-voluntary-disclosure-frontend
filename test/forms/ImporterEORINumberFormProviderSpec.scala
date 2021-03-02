@@ -52,7 +52,43 @@ class ImporterEORINumberFormProviderSpec extends SpecBase {
       }
     }
 
-    "wth EORI Number entered in an incorrect format" should {
+    "with EORI Number entered in an incorrect format" should {
+
+      val data = Map("importerEORI" -> "345834921000")
+      val form = new ImporterEORINumberFormProvider()().bind(data)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe importerEORINumberIncorrectFormat
+      }
+    }
+
+    "with EORI Number exceeding max length" should {
+
+      val data = Map("importerEORI" -> "GB3458349210002222222")
+      val form = new ImporterEORINumberFormProvider()().bind(data)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe importerEORINumberIncorrectFormat
+      }
+    }
+
+    "with EORI Number not minimum length" should {
 
       val data = Map("importerEORI" -> "345834921000")
       val form = new ImporterEORINumberFormProvider()().bind(data)
