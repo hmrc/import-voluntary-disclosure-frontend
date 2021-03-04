@@ -60,17 +60,18 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     )
   }
 
-  private def weightFormMapping(regex: String): Form[UnderpaymentReasonValue] = {
+  private def weightFormMapping: Form[UnderpaymentReasonValue] = {
     Form(
       mapping(
         "original" -> weightNumeric(
           requiredKey = "amendmentValue.error.original.missing",
-          nonNumericKey = "amendmentValue.error.original.format")
+          nonNumericKey = "amendmentValue.error.original.format",
+          invalidDecimalPoints = "amendmentValue.error.original.weight.invalidDecimals")
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.original.weight.outOfRange")),
-        "amended" -> numeric(
+        "amended" -> weightNumeric(
           requiredKey = "amendmentValue.error.amended.missing",
-          invalidNumeric = "amendmentValue.error.amended.format",
-          nonNumericKey = "amendmentValue.error.amended.format")
+          nonNumericKey = "amendmentValue.error.amended.format",
+          invalidDecimalPoints = "amendmentValue.error.amended.weight.invalidDecimals")
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.amended.weight.outOfRange"))
       )
       ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))

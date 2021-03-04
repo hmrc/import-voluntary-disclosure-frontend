@@ -22,7 +22,7 @@ import play.api.data.format.Formatter
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Formatters {
+trait Formatters extends Constraints {
 
   private[mappings] def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
 
@@ -161,16 +161,21 @@ trait Formatters {
 
   private[mappings] def weightNumericFormatter(requiredKey: String,
                                                nonNumericKey: String,
+                                               invalidDecimalPoints: String,
                                                args: Seq[String] = Seq.empty): Formatter[BigDecimal] =
     new Formatter[BigDecimal] {
 
       private val baseFormatter = stringFormatter(requiredKey)
       val validNumeric = """(^-?\d*$)|(^-?\d*\.\d*$)"""
+      val validDecimalPoints = """(^-?\d*$)|(^-?\d*\.\d{1,3}$)"""
+//      val validDecimalPoints = """(^-?\d*$)|(^-?\d*$\.\d{1,3}$)"""
 
       override def bind(key: String, data: Map[String, String]) = {
         baseFormatter.bind(key, data).right.flatMap {
           case s if !s.matches(validNumeric) =>
             Left(Seq(FormError(key, nonNumericKey, args)))
+          case s if !s.matches(validDecimalPoints) =>
+            Left(Seq(FormError(key, invalidDecimalPoints, args)))
           case s =>
             nonFatalCatch
               .either(BigDecimal(s))

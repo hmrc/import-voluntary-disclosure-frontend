@@ -68,8 +68,9 @@ trait Mappings extends Formatters with Constraints {
     of(foreignCurrencyFormatter(requiredKey, invalidNumeric))
 
   protected def weightNumeric(requiredKey: String = "error.required",
-                              nonNumericKey: String = "error.nonNumeric"
+                              nonNumericKey: String = "error.nonNumeric",
+                              invalidDecimalPoints: String = "error.invalidDecimalPoints"
                              ): FieldMapping[BigDecimal] =
-    of(weightNumericFormatter(requiredKey,nonNumericKey))
+    of(weightNumericFormatter(requiredKey,nonNumericKey, invalidDecimalPoints))
 
 }
