@@ -168,7 +168,6 @@ trait Formatters extends Constraints {
       private val baseFormatter = stringFormatter(requiredKey)
       val validNumeric = """(^-?\d*$)|(^-?\d*\.\d*$)"""
       val validDecimalPoints = """(^-?\d*$)|(^-?\d*\.\d{1,3}$)"""
-//      val validDecimalPoints = """(^-?\d*$)|(^-?\d*$\.\d{1,3}$)"""
 
       override def bind(key: String, data: Map[String, String]) = {
         baseFormatter.bind(key, data).right.flatMap {

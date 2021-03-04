@@ -75,7 +75,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.amended.weight.outOfRange"))
       )
       ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
-      (value => Some(BigDecimal(value.amended), BigDecimal(value.amended)))
+      (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
