@@ -18,8 +18,8 @@ package controllers
 
 import config.{AppConfig, ErrorHandler}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.ContactAddress
-import pages.{ImporterAddressFinalPage, RepFlowImporterAddressPage}
+import models.{ContactAddress, EoriDetails}
+import pages.{ImporterAddressFinalPage, KnownEoriDetails, RepFlowImporterAddressPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -66,21 +66,27 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
         val addressLine2: Option[String] = (address.line2, address.line3) match {
           case (Some(line2), _) if line2 == city => None
           case (Some(line2), Some(line3)) if line3 == city => Some(line2)
-          case (Some(line2), Some(line3))  => Some(line2 + ", " + line3)
+          case (Some(line2), Some(line3)) => Some(line2 + ", " + line3)
           case _ => None
         }
 
-        val contactAddress = ContactAddress(
-          addressLine1 = address.line1.getOrElse(""),
-          addressLine2 = addressLine2,
-          city = city,
-          postalCode = address.postcode,
-          countryCode = address.countryCode.getOrElse("")
+        val traderDetails: EoriDetails = request.userAnswers.get(KnownEoriDetails).get
+
+        val contactAddress = EoriDetails(
+          eori = traderDetails.eori,
+          name = traderDetails.name,
+          ContactAddress(
+            addressLine1 = address.line1.getOrElse(""),
+            addressLine2 = addressLine2,
+            city = city,
+            postalCode = address.postcode,
+            countryCode = address.countryCode.getOrElse("")
+          )
         )
 
         if (flowService.isRepFlow(request.userAnswers)) {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, contactAddress))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, contactAddress.address))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             Redirect(controllers.routes.ImporterEORIExistsController.onLoad())

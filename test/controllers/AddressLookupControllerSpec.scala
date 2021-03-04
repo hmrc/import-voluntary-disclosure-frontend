@@ -22,9 +22,9 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.{MockAddressLookupService, MockFlowService}
-import models.{UserAnswers, UserType}
+import models.{ContactAddress, EoriDetails, UserAnswers, UserType}
 import models.addressLookup.AddressLookupOnRampModel
-import pages.UserTypePage
+import pages.{KnownEoriDetails, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
@@ -35,7 +35,21 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockAddressLookupService with MockSessionRepository with MockFlowService {
 
-    lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
+    lazy val dataRetrievalAction = new FakeDataRetrievalAction(
+      Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(KnownEoriDetails, EoriDetails(
+          "GB987654321000",
+          "Fast Food ltd",
+          ContactAddress(
+            addressLine1 = "99 Avenue Road",
+            addressLine2 = None,
+            city = "Anyold Town",
+            postalCode = Some("99JZ 1AA"),
+            countryCode = "GB"
+          ))).success.value
+      )
+    )
     lazy val repFlow = false
 
     private def setupMocks(repFlow: Boolean) = {
@@ -56,7 +70,6 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
         appConfig,
         ec)
     }
-
   }
 
   "Calling .callback" must {
@@ -74,13 +87,8 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           }
         }
 
-        "for a Representative entering partial address for Importer" should {
+      "for a Representative entering partial address for Importer" should {
           "redirect the user to the deferment page" in new Test {
-            override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
-              Some(UserAnswers("some-cred-id")
-                .set(UserTypePage, UserType.Representative).success.value
-              )
-            )
             override lazy val repFlow: Boolean = true
             MockedSessionRepository.set(Future.successful(true))
             setupMockRetrieveAddress(Right(customerAddressMissingLine3))
@@ -90,6 +98,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
             verifyCalls()
           }
         }
+
     }
 
       "and business address lookup service returns an error" should {
@@ -100,6 +109,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           status(result) mustBe Status.INTERNAL_SERVER_ERROR
 
         }
+
       }
   }
 
@@ -118,6 +128,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
           redirectLocation(result) mustBe Some("redirect-url")
         }
+
     }
 
     "address lookup service returns an error" should {
@@ -127,7 +138,9 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
+
     }
+
   }
 
   "Calling .initialiseImporterJourney" when {
@@ -147,10 +160,10 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
           redirectLocation(result) mustBe Some("redirect-url")
         }
+
     }
 
     "address lookup service returns an error" should {
-
       "return InternalServerError" in new Test {
         override lazy val repFlow: Boolean = true
         setupMockInitialiseImporterJourney(Left(errorModel))
@@ -158,5 +171,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
+
   }
+
 }

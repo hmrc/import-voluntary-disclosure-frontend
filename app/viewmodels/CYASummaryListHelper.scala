@@ -384,7 +384,8 @@ trait CYASummaryListHelper {
       )
     }
 
-    val addressSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterAddressFinalPage) map { address =>
+    val addressSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterAddressFinalPage) map { details =>
+      val address = details.address
       val addressString = address.postalCode match {
         case Some(value) => address.addressLine1 + "<br/>" +
           address.city + "<br/>" +

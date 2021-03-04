@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterAddressFormProvider
-import models.ContactAddress
+import models.{ContactAddress, EoriDetails}
 import pages.{ImporterAddressFinalPage, KnownEoriDetails, ReuseKnowAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -67,14 +67,14 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetails).get.address
+    val traderDetails: EoriDetails = request.userAnswers.get(KnownEoriDetails).get
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderDetails.address))),
       value => {
         if (value) {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ReuseKnowAddressPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(ImporterAddressFinalPage, traderAddress))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(ImporterAddressFinalPage, traderDetails))
             updatedAnswers <- Future.fromTry(updatedAnswers.remove(KnownEoriDetails))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {

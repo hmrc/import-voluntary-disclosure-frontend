@@ -17,13 +17,13 @@
 package viewmodels
 
 import java.time.LocalDateTime
-
 import base.SpecBase
-import models.{EntryDetails, FileUploadInfo, NumberOfEntries, ContactAddress, ContactDetails, UserAnswers}
+import models.{ContactAddress, ContactDetails, EntryDetails, EoriDetails, FileUploadInfo, NumberOfEntries, UserAnswers}
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import views.data.CheckYourAnswersData._
 import views.data.UnderpaymentSummaryData.{cdUnderpayment, edUnderpayment, ivUnderpayment}
+
 import java.time.LocalDate
 
 
@@ -48,7 +48,10 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
         "First Second",
         "email@email.com",
         "1234567890")).success.value
-      .set(ImporterAddressFinalPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+      .set(
+        ImporterAddressFinalPage,
+        EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK"))
+      ).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
       .set(DefermentPage, false).success.value
 

@@ -73,7 +73,7 @@ object IvdSubmission extends FixedConfig {
       entryDetails <- EntryDetailsPage.path.read[EntryDetails]
       originalCpc <- EnterCustomsProcedureCodePage.path.read[String]
       traderContactDetails <- TraderContactDetailsPage.path.read[ContactDetails]
-      traderAddress <- ImporterAddressFinalPage.path.read[ContactAddress]
+      traderAddress <- ImporterAddressFinalPage.path.read[EoriDetails]
       customsDuty <- CustomsDutyPage.path.readNullable[UnderpaymentAmount]
       importVat <- ImportVATPage.path.readNullable[UnderpaymentAmount]
       exciseDuty <- ExciseDutyPage.path.readNullable[UnderpaymentAmount]
@@ -95,7 +95,7 @@ object IvdSubmission extends FixedConfig {
         entryDetails = entryDetails,
         originalCpc = originalCpc,
         declarantContactDetails = traderContactDetails,
-        declarantAddress = traderAddress,
+        declarantAddress = traderAddress.address,
         underpaymentDetails = underpaymentDetails,
         supportingDocuments = supportingDocuments
       )

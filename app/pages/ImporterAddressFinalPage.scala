@@ -16,13 +16,13 @@
 
 package pages
 
-import models.ContactAddress
+import models.EoriDetails
 import play.api.libs.json.JsPath
 
-case object ImporterAddressFinalPage extends QuestionPage[ContactAddress] {
+case object ImporterAddressFinalPage extends QuestionPage[EoriDetails] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "final-importer-address"
+  override def toString: String = "final-importer-details"
 
 }

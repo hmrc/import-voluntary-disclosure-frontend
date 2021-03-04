@@ -37,7 +37,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.repositories.MockSessionRepository
-import models.{EntryDetails, ErrorModel, FileUploadInfo, NumberOfEntries, SubmissionResponse, ContactAddress, ContactDetails, UserAnswers, UserType}
+import models.{ContactAddress, ContactDetails, EntryDetails, EoriDetails, ErrorModel, FileUploadInfo, NumberOfEntries, SubmissionResponse, UserAnswers, UserType}
 import pages._
 import play.api.http.Status
 import play.api.mvc.Result
@@ -76,8 +76,10 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
         "f",
         "fefewfew@gmail.com",
         "07485939292")).success.value
-      .set(ImporterAddressFinalPage,ContactAddress(
-        "street", None, "city", Some("postcode"), "country code")).success.value
+      .set(
+        ImporterAddressFinalPage,
+        EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress("street", None, "city", Some("postcode"), "country code"))
+      ).success.value
       .set(EnterCustomsProcedureCodePage,"3333333").success.value
       .set(DefermentPage,true).success.value
     )
@@ -108,6 +110,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
   }
 
+  // TODO - POST?
   "GET onSubmit" should {
 
     "return Redirect" in new Test {
@@ -116,7 +119,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server error is submission fails" in new Test {
-      override lazy val connectorMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Not Working"))
+      override lazy val connectorMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working"))
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }

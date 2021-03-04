@@ -64,8 +64,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(ExciseDutyPage, UnderpaymentAmount(BigDecimal("123.22"), BigDecimal("4409.55")))
     answers <- answers.set(ReuseKnowAddressPage, true)
     answers <- answers.set(TraderContactDetailsPage, submission.declarantContactDetails)
-    answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
-    answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
+    answers <- answers.set(ImporterAddressFinalPage, EoriDetails("GB987654321000", "Fast Food ltd", submission.declarantAddress)) // TODO why the duplicate?
+    answers <- answers.set(ImporterAddressFinalPage, EoriDetails("GB987654321000", "Fast Food ltd", submission.declarantAddress))
     answers <- answers.set(EnterCustomsProcedureCodePage, submission.originalCpc)
     answers <- answers.set(FileUploadPage, submission.supportingDocuments)
     answers <- answers.set(DefermentPage, false)
