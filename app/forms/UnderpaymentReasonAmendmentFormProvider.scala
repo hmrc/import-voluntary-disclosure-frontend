@@ -64,13 +64,13 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     Form(
       mapping(
         "original" -> weightNumeric(
-          requiredKey = "amendmentValue.error.original.missing",
-          nonNumericKey = "amendmentValue.error.original.format",
+          requiredKey = "amendmentValue.error.original.weight.missing",
+          nonNumericKey = "amendmentValue.error.original.weight.nonNumeric",
           invalidDecimalPoints = "amendmentValue.error.original.weight.invalidDecimals")
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.original.weight.outOfRange")),
         "amended" -> weightNumeric(
-          requiredKey = "amendmentValue.error.amended.missing",
-          nonNumericKey = "amendmentValue.error.amended.format",
+          requiredKey = "amendmentValue.error.amended.weight.missing",
+          nonNumericKey = "amendmentValue.error.amended.weight.nonNumeric",
           invalidDecimalPoints = "amendmentValue.error.amended.weight.invalidDecimals")
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.amended.weight.outOfRange"))
       )
