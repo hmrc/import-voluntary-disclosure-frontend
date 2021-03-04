@@ -29,6 +29,10 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val originalMissingMessageKey = "amendmentValue.error.original.missing"
   val amendedMissingMessageKey = "amendmentValue.error.amended.missing"
   val keysDifferentMessageKey = "amendmentValue.error.amended.different"
+  val originalWeightMissingMessageKey = "amendmentValue.error.original.weight.missing"
+  val amendedWeightMissingMessageKey = "amendmentValue.error.amended.weight.missing"
+  val originalWeightFormatMessageKey = "amendmentValue.error.original.weight.nonNumeric"
+  val amendedWeightFormatMessageKey = "amendmentValue.error.amended.weight.nonNumeric"
   val commodityCodeAmendedValue = "2204109400X411"
   val commodityCodeOriginalValue = "2204109400X412"
   val invalidBoxAmendedValue = "2204109400X411"
@@ -36,6 +40,9 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val foreignCurrencyAmendedValue = "GBP50"
   val foreignCurrencyOriginalValue = "GBP40"
   val nonNumeric = "@£$%FGB"
+  val weightOriginalValue = 1500
+  val weightAmendedValue = 3593.44
+
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
     originalKey -> original,
@@ -250,6 +257,95 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
           )
       }
     }
+  }
+
+  "Binding a form with invalid data for a weight box selected" when {
+    "no values provided" should {
+      "result in a form with errors" in {
+        formBinderBox(box = 35).errors mustBe Seq(
+          FormError(originalKey, originalWeightMissingMessageKey),
+          FormError(amendedKey, amendedWeightMissingMessageKey)
+        )
+      }
+    }
+
+    "no original value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(amended = weightAmendedValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError(originalKey, originalWeightMissingMessageKey)
+          )
+      }
+    }
+
+    "no amended value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = weightOriginalValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError(amendedKey, amendedWeightMissingMessageKey)
+          )
+      }
+    }
+
+    "non numeric values provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = 35).errors mustBe Seq(
+          FormError(originalKey, originalWeightFormatMessageKey),
+          FormError(amendedKey, amendedWeightFormatMessageKey)
+        )
+      }
+    }
+
+    "non numeric original value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = nonNumeric, amended = weightAmendedValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError(originalKey, originalWeightFormatMessageKey)
+          )
+      }
+    }
+
+    "non numeric amended value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = nonNumeric), box = 35).errors mustBe
+          Seq(
+            FormError(amendedKey, amendedWeightFormatMessageKey)
+          )
+      }
+    }
+//
+//    "original and amended value are the same" should {
+//      "result in a form with errors" in {
+//        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyAmendedValue), box = 22).errors mustBe
+//          Seq(
+//            FormError("", keysDifferentMessageKey)
+//          )
+//      }
+//    }
+//  }
+//
+//  "Binding a form with valid data for a foreignCurrency box selected" when {
+//    "provided with valid values" should {
+//      "result in a form with no errors" in {
+//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
+//        form.hasErrors mustBe false
+//      }
+//
+//      "generate the correct model" in {
+//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
+//        form.value mustBe Some(UnderpaymentReasonValue(foreignCurrencyOriginalValue, foreignCurrencyAmendedValue))
+//      }
+//    }
+//  }
+//
+//  "A foreignCurrency form " when {
+//    "built from a valid model" should {
+//      "generate the correct mapping" in {
+//        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(foreignCurrencyAmendedValue, foreignCurrencyOriginalValue)
+//        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(22).fill(model)
+//        form.data mustBe formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyOriginalValue)
+//      }
+//    }
   }
 
   "Binding a form with valid data for an unrecognised box selected" when {
