@@ -51,7 +51,7 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
       request = Some(request)
     )
 
-    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and allEnrolments) {
+    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments) {
       case Some(userId) ~ allEnrolments =>
         val Some(eori) =
           for {
@@ -62,9 +62,6 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           }
         val req = IdentifierRequest(request, userId, eori)
         block(req)
-      case Some(userId) ~ _ =>
-        logger.warn(s"User ${userId} does not have appropriate enrolment")
-        Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
