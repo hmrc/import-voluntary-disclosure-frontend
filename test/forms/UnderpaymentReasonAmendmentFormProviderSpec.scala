@@ -33,6 +33,8 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val amendedWeightMissingMessageKey = "amendmentValue.error.amended.weight.missing"
   val originalWeightFormatMessageKey = "amendmentValue.error.original.weight.nonNumeric"
   val amendedWeightFormatMessageKey = "amendmentValue.error.amended.weight.nonNumeric"
+  val originalWeightDecimalMessageKey = "amendmentValue.error.original.weight.invalidDecimals"
+  val amendedWeightDecimalMessageKey = "amendmentValue.error.amended.weight.invalidDecimals"
   val commodityCodeAmendedValue = "2204109400X411"
   val commodityCodeOriginalValue = "2204109400X412"
   val invalidBoxAmendedValue = "2204109400X411"
@@ -42,6 +44,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val nonNumeric = "@£$%FGB"
   val weightOriginalValue = 1500
   val weightAmendedValue = 3593.44
+  val tooManyDecimalValue = 950.3829
 
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
@@ -310,6 +313,33 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
         formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = nonNumeric), box = 35).errors mustBe
           Seq(
             FormError(amendedKey, amendedWeightFormatMessageKey)
+          )
+      }
+    }
+
+    "too many decimal values provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = 35).errors mustBe Seq(
+          FormError(originalKey, originalWeightDecimalMessageKey),
+          FormError(amendedKey, amendedWeightDecimalMessageKey)
+        )
+      }
+    }
+
+    "too many decimal original value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = weightAmendedValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError(originalKey, originalWeightDecimalMessageKey)
+          )
+      }
+    }
+
+    "too many decimal  amended value provided" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = tooManyDecimalValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError(amendedKey, amendedWeightDecimalMessageKey)
           )
       }
     }
