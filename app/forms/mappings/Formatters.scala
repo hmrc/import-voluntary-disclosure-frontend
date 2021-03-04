@@ -158,4 +158,28 @@ trait Formatters {
       override def unbind(key: String, value: String): Map[String, String] =
         baseFormatter.unbind(key, value)
     }
+
+  private[mappings] def weightNumericFormatter(requiredKey: String,
+                                               nonNumericKey: String,
+                                               args: Seq[String] = Seq.empty): Formatter[BigDecimal] =
+    new Formatter[BigDecimal] {
+
+      private val baseFormatter = stringFormatter(requiredKey)
+      val validNumeric = """(^-?\d*$)|(^-?\d*\.\d*$)"""
+
+      override def bind(key: String, data: Map[String, String]) = {
+        baseFormatter.bind(key, data).right.flatMap {
+          case s if !s.matches(validNumeric) =>
+            Left(Seq(FormError(key, nonNumericKey, args)))
+          case s =>
+            nonFatalCatch
+              .either(BigDecimal(s))
+              .left.map(_ => Seq(FormError(key, nonNumericKey, args)))
+            }
+        }
+
+      override def unbind(key: String, value: BigDecimal) =
+        baseFormatter.unbind(key, value.toString)
+    }
+
 }
