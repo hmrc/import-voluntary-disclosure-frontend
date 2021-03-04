@@ -20,12 +20,10 @@ import config.FixedConfig
 import pages._
 import play.api.libs.json.{Json, Reads, Writes}
 
-import java.time.LocalDate
-
 case class IvdSubmission(userType: UserType,
                          numEntries: NumberOfEntries,
                          acceptedBeforeBrexit: Boolean,
-                         additionalInfo: String,
+                         additionalInfo: String = "Not Applicable",
                          entryDetails: EntryDetails,
                          originalCpc: String,
                          declarantContactDetails: ContactDetails,
@@ -79,6 +77,7 @@ object IvdSubmission extends FixedConfig {
       exciseDuty <- ExciseDutyPage.path.readNullable[UnderpaymentAmount]
       supportingDocuments <- FileUploadPage.path.read[Seq[FileUploadInfo]]
       additionalInfo <- MoreInformationPage.path.readNullable[String]
+      amendedItems <- UnderpaymentReasonsPage.path.read[Seq[UnderpaymentReason]]
     } yield {
 
       val underpaymentDetails = Seq(
@@ -99,7 +98,8 @@ object IvdSubmission extends FixedConfig {
         declarantAddress = traderAddress,
         underpaymentDetails = underpaymentDetails,
         supportingDocuments = supportingDocuments,
-        additionalInfo = additionalInfo.getOrElse("Not Applicable")
+        additionalInfo = additionalInfo.getOrElse("Not Applicable"),
+        amendedItems = amendedItems
       )
     }
 }

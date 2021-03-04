@@ -37,7 +37,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.repositories.MockSessionRepository
-import models.{EntryDetails, ErrorModel, FileUploadInfo, NumberOfEntries, SubmissionResponse, ContactAddress, ContactDetails, UserAnswers, UserType}
+import models._
 import pages._
 import play.api.http.Status
 import play.api.mvc.Result
@@ -81,6 +81,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       .set(EnterCustomsProcedureCodePage,"3333333").success.value
       .set(DefermentPage,true).success.value
       .set(MoreInformationPage, "some text").success.value
+      .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200"))).success.value
     )
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

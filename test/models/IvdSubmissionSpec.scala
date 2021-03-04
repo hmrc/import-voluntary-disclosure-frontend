@@ -51,7 +51,10 @@ class IvdSubmissionSpec extends ModelSpecBase {
         fileMimeType = "application/pdf"
       )
     ),
-    additionalInfo = "some text"
+    additionalInfo = "some text",
+    amendedItems = Seq(
+      UnderpaymentReason(62, 0, "GBP100", "GBP200")
+    )
   )
 
   val userAnswers: UserAnswers = (for {
@@ -71,6 +74,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(FileUploadPage, submission.supportingDocuments)
     answers <- answers.set(DefermentPage, false)
     answers <- answers.set(MoreInformationPage, "some text")
+    answers <- answers.set(UnderpaymentReasonsPage, submission.amendedItems)
   } yield answers).getOrElse(new UserAnswers("some-cred-id"))
 
   val userAnswersJson: JsValue = userAnswers.data
@@ -161,7 +165,16 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct json for the amendedItems" in {
-        data("amendedItems") shouldBe Json.arr()
+        val item = submission.amendedItems.head
+
+        data("amendedItems") shouldBe Json.arr(
+          Json.obj(
+            "boxNumber" -> item.boxNumber,
+            "itemNumber" -> item.itemNumber,
+            "original" -> item.original,
+            "amended" -> item.amended
+          )
+        )
       }
 
       "generate the correct json for the supportingDocuments" in {
