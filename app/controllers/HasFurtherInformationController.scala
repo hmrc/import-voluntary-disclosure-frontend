@@ -59,7 +59,7 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (hasFurtherInfo) {
-            Redirect(controllers.routes.MoreInformationController.onLoad()) // Further Info page
+            Redirect(controllers.routes.MoreInformationController.onLoad())
           } else {
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
