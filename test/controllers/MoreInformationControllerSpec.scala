@@ -18,15 +18,15 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.{HasFurtherInformationFormProvider, MoreInformationFormProvider}
+import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.HasFurtherInformationPage
+import pages.MoreInformationPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.{HasFurtherInformationView, MoreInformationView}
+import views.html.MoreInformationView
 
 import scala.concurrent.Future
 
@@ -55,7 +55,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(HasFurtherInformationPage, true).success.value)
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(MoreInformationPage, "some text").success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")

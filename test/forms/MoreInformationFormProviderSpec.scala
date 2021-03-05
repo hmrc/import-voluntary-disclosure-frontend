@@ -73,7 +73,7 @@ class MoreInformationFormProviderSpec extends SpecBase {
   "Binding a form with valid punctuation characters" should {
 
     val data = Map("value" ->
-      """"!@£$%^&*(na
+      """"!?@£$%^&*(na
         |
         |sd671263-'][./,"""".stripMargin)
     val form = new MoreInformationFormProvider()().bind(data)
