@@ -343,39 +343,14 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
           )
       }
     }
+
+//    TODO:
 //
-//    "original and amended value are the same" should {
-//      "result in a form with errors" in {
-//        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyAmendedValue), box = 22).errors mustBe
-//          Seq(
-//            FormError("", keysDifferentMessageKey)
-//          )
-//      }
-//    }
-//  }
-//
-//  "Binding a form with valid data for a foreignCurrency box selected" when {
-//    "provided with valid values" should {
-//      "result in a form with no errors" in {
-//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
-//        form.hasErrors mustBe false
-//      }
-//
-//      "generate the correct model" in {
-//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
-//        form.value mustBe Some(UnderpaymentReasonValue(foreignCurrencyOriginalValue, foreignCurrencyAmendedValue))
-//      }
-//    }
-//  }
-//
-//  "A foreignCurrency form " when {
-//    "built from a valid model" should {
-//      "generate the correct mapping" in {
-//        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(foreignCurrencyAmendedValue, foreignCurrencyOriginalValue)
-//        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(22).fill(model)
-//        form.data mustBe formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyOriginalValue)
-//      }
-//    }
+//    "original and amended value are the same" should
+//    "original and amended value are out of range
+//    "Binding a form with valid data for a weight box selected" when
+//     "generate the correct model" in
+//     "A weight form " when
   }
 
   "Binding a form with valid data for an unrecognised box selected" when {
