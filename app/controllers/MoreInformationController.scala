@@ -17,15 +17,15 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{HasFurtherInformationFormProvider, MoreInformationFormProvider}
+import forms.MoreInformationFormProvider
 import javax.inject.{Inject, Singleton}
-import pages.{FurtherInformationPage, HasFurtherInformationPage, MoreInformationPage}
+import pages.MoreInformationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{HasFurtherInformationView, MoreInformationView}
+import views.html.MoreInformationView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -41,7 +41,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
                                           view: MoreInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad
+  private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreInformationPage).fold(formProvider()) {
@@ -58,7 +58,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.routes.MoreInformationController.onLoad()) // More Info page
+            Redirect(controllers.routes.SupportingDocController.onLoad())
           }
       }
     )

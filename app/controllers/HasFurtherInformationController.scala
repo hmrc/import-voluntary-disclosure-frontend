@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.HasFurtherInformationFormProvider
-import pages.{FurtherInformationPage, HasFurtherInformationPage}
+import pages.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -53,24 +53,17 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      hasFurtherInfo => {
-        if (hasFurtherInfo) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.routes.HasFurtherInformationController.onLoad()) // Further Info page
-          }
-        } else {
-          for {
-            hasFurtherInfoAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
-            updatedAnswers <- Future.fromTry(hasFurtherInfoAnswers.set(FurtherInformationPage, " "))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
+      hasFurtherInfo =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if (hasFurtherInfo) {
+            Redirect(controllers.routes.MoreInformationController.onLoad()) // Further Info page
+          } else {
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
         }
-      }
     )
   }
 
