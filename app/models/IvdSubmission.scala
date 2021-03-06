@@ -18,16 +18,20 @@ package models
 
 import config.FixedConfig
 import pages._
-import play.api.libs.json.{Json, Reads, Writes}
+import play.api.libs.json.{JsObject, Json, Reads, Writes}
 
 case class IvdSubmission(userType: UserType,
+                         knownDetails: EoriDetails,
                          numEntries: NumberOfEntries,
                          acceptedBeforeBrexit: Boolean,
                          additionalInfo: String = "Not Applicable",
                          entryDetails: EntryDetails,
                          originalCpc: String,
                          declarantContactDetails: ContactDetails,
-                         declarantAddress: ContactAddress,
+                         traderContactDetails: ContactDetails,
+                         traderAddress: ContactAddress,
+                         importerContactDetails: Option[ContactDetails] = None,
+                         importerAddress: Option[ContactAddress] = None,
                          defermentType: Option[String] = None,
                          defermentAccountNumber: Option[String] = None,
                          additionalDefermentNumber: Option[String] = None,
@@ -42,7 +46,15 @@ object IvdSubmission extends FixedConfig {
     val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(euExitDate) && data.acceptedBeforeBrexit
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
 
-    Json.obj(
+    val importerDetails: JsObject = Json.obj(
+      "importer" -> Json.obj(
+        "eori" -> "GB000000000000001",
+        "contactDetails" -> data.declarantContactDetails,
+        "address" -> data.traderAddress
+      )
+    )
+
+    val payload = Json.obj(
       "userType" -> data.userType,
       "isBulkEntry" -> isBulkEntry,
       "isEuropeanUnionDuty" -> isEuropeanUnionDuty,
@@ -50,22 +62,19 @@ object IvdSubmission extends FixedConfig {
       "entryDetails" -> data.entryDetails,
       "customsProcessingCode" -> data.originalCpc,
       "declarantContactDetails" -> data.declarantContactDetails,
-      "declarantAddress" -> data.declarantAddress,
       "underpaymentDetails" -> data.underpaymentDetails,
       "supportingDocumentTypes" -> data.documentsSupplied,
       "amendedItems" -> data.amendedItems,
-      "supportingDocuments" -> data.supportingDocuments,
-      "importer" -> Json.obj(
-        "eori" -> "GB000000000000001",
-        "contactDetails" -> data.declarantContactDetails,
-        "address" -> data.declarantAddress
-      )
+      "supportingDocuments" -> data.supportingDocuments
     )
+
+    payload ++ importerDetails
   }
 
   implicit val reads: Reads[IvdSubmission] =
     for {
       userType <- UserTypePage.path.read[UserType]
+      knownDetails <- KnownEoriDetails.path.read[EoriDetails]
       numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
       acceptanceDate <- AcceptanceDatePage.path.readNullable[Boolean]
       entryDetails <- EntryDetailsPage.path.read[EntryDetails]
@@ -90,12 +99,14 @@ object IvdSubmission extends FixedConfig {
 
       IvdSubmission(
         userType = userType,
+        knownDetails = knownDetails,
         numEntries = numEntries,
         acceptedBeforeBrexit = acceptanceDate.getOrElse(false),
         entryDetails = entryDetails,
         originalCpc = originalCpc,
         declarantContactDetails = traderContactDetails,
-        declarantAddress = traderAddress,
+        traderContactDetails = traderContactDetails, // TODO needs to come from Known EORI Details
+        traderAddress = traderAddress,
         underpaymentDetails = underpaymentDetails,
         supportingDocuments = supportingDocuments,
         additionalInfo = additionalInfo.getOrElse("Not Applicable"),

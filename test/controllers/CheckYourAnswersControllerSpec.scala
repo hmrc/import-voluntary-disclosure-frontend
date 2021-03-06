@@ -60,6 +60,11 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
       .set(UserTypePage, UserType.Importer).success.value
+      .set(KnownEoriDetails, EoriDetails(
+        "GB000000001",
+        "Importers Inc.",
+        ContactAddress("street", None, "city", Some("postcode"), "country code"))
+      ).success.value
       .set(NumberOfEntriesPage,NumberOfEntries.OneEntry).success.value
       .set(EntryDetailsPage, EntryDetails("123","123456Q",LocalDate.of(2020, 12, 1))).success.value
       .set(AcceptanceDatePage,true).success.value
@@ -133,6 +138,3 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   }
 }
-
-
-

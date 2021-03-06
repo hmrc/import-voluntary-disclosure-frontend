@@ -26,14 +26,19 @@ class IvdSubmissionSpec extends ModelSpecBase {
 
   private val currentTimestamp = LocalDateTime.now()
 
+  private val contactDetails = ContactDetails("John Smith", "test@test.com", "0123456789")
+  private val address = ContactAddress("99 Avenue Road", None, "Any Old Town", Some("99JZ 1AA"), "United Kingdom")
+
   val submission: IvdSubmission = IvdSubmission(
     userType = UserType.Importer,
+    knownDetails = EoriDetails("GB000000000000001", "Importer Inc.", address),
     numEntries = NumberOfEntries.OneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12")),
     originalCpc = "4000C09",
-    declarantContactDetails = ContactDetails("John Smith", "test@test.com", "0123456789"),
-    declarantAddress = ContactAddress("99 Avenue Road", None, "Any Old Town", Some("99JZ 1AA"), "United Kingdom"),
+    declarantContactDetails = contactDetails,
+    traderContactDetails = contactDetails, // TODO needs to come from Known EORI Details
+    traderAddress = address,
     defermentType = None,
     defermentAccountNumber = None,
     additionalDefermentNumber = None,
@@ -52,14 +57,13 @@ class IvdSubmissionSpec extends ModelSpecBase {
       )
     ),
     additionalInfo = "some text",
-    amendedItems = Seq(
-      UnderpaymentReason(62, 0, "GBP100", "GBP200")
-    )
+    amendedItems = Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200"))
   )
 
   val userAnswers: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(UserTypePage, submission.userType)
     answers <- answers.set(EntryDetailsPage, submission.entryDetails)
+    answers <- answers.set(KnownEoriDetails, submission.knownDetails)
     answers <- answers.set(NumberOfEntriesPage, submission.numEntries)
     answers <- answers.set(AcceptanceDatePage, submission.acceptedBeforeBrexit)
     answers <- answers.set(UnderpaymentTypePage, UnderpaymentType(customsDuty = true, importVAT = true, exciseDuty = true))
@@ -68,8 +72,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(ExciseDutyPage, UnderpaymentAmount(BigDecimal("123.22"), BigDecimal("4409.55")))
     answers <- answers.set(ReuseKnowAddressPage, true)
     answers <- answers.set(TraderContactDetailsPage, submission.declarantContactDetails)
-    answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
-    answers <- answers.set(ImporterAddressFinalPage, submission.declarantAddress)
+    answers <- answers.set(ImporterAddressFinalPage, submission.traderAddress)
     answers <- answers.set(EnterCustomsProcedureCodePage, submission.originalCpc)
     answers <- answers.set(FileUploadPage, submission.supportingDocuments)
     answers <- answers.set(DefermentPage, false)
@@ -87,8 +90,10 @@ class IvdSubmissionSpec extends ModelSpecBase {
   "IVD Submission model" when {
     "converting from a user answers" should {
       "produce a valid model" in {
-        val result = Json.fromJson[IvdSubmission](userAnswersJson).get
-        result shouldBe submission
+        userAnswersJson.validate[IvdSubmission] match {
+          case JsSuccess(result, _) => result shouldBe submission
+          case JsError(errors) => fail(s"Failed to parse JSON with: $errors")
+        }
       }
     }
 
@@ -128,15 +133,6 @@ class IvdSubmissionSpec extends ModelSpecBase {
           "fullName" -> "John Smith",
           "email" -> "test@test.com",
           "phoneNumber" -> "0123456789"
-        )
-      }
-
-      "generate the correct json for the declarantAddress" in {
-        data("declarantAddress") shouldBe Json.obj(
-          "addressLine1" -> "99 Avenue Road",
-          "city" -> "Any Old Town",
-          "postalCode" -> "99JZ 1AA",
-          "countryCode" -> "United Kingdom"
         )
       }
 
@@ -193,7 +189,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
         data("importer") shouldBe Json.obj(
           "eori" -> "GB000000000000001",
           "contactDetails" -> submission.declarantContactDetails,
-          "address" -> submission.declarantAddress
+          "address" -> submission.traderAddress
         )
       }
 
