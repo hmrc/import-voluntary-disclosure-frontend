@@ -19,7 +19,6 @@ package controllers
 import connectors.IvdSubmissionConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.IvdSubmission
-import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
@@ -62,9 +61,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
           case Left(error) => Future.successful(InternalServerError)
         }
       }
-      case JsError(error) =>
-        Logger.error(s"Boooooo: $error")
-        throw new RuntimeException("Completed journey answers does not parse to IVDSubmission model")
+      case JsError(_) => throw new RuntimeException("Completed journey answers does not parse to IVDSubmission model")
     }
   }
 
