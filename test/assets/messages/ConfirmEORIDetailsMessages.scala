@@ -22,5 +22,6 @@ object ConfirmEORIDetailsMessages {
   val h1 = "Confirm your EORI details"
   val eoriNumber = "EORI number"
   val name = "Name"
+  val continue = "Confirm and continue"
 
 }

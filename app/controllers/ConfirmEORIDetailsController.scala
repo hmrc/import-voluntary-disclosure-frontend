@@ -17,7 +17,7 @@
 package controllers
 
 import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import javax.inject.Singleton
 import models.{EoriDetails, UserAnswers}
 import pages.KnownEoriDetails

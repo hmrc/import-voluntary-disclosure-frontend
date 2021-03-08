@@ -20,19 +20,19 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
-import models.{ErrorModel, UnderpaymentReason, UnderpaymentReasonValue, UserAnswers}
+import models.{ErrorModel, UserAnswers}
 import pages._
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import utils.ReusableValues
-import views.data.{ConfirmEORIDetailsData, ConfirmReasonData}
-import views.html.{ConfirmEORIDetailsView, ConfirmReasonDetailView}
+import views.data.ConfirmEORIDetailsData
+import views.html.ConfirmEORIDetailsView
 
 import scala.concurrent.Future
 
 
-class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase  with MockEoriDetailsService with ReusableValues {
+class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
 
   trait Test extends MockSessionRepository {
     private lazy val view: ConfirmEORIDetailsView = app.injector.instanceOf[ConfirmEORIDetailsView]
@@ -47,7 +47,6 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase  with MockEori
       messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view)
 
     val importerAddressYes: Boolean = true
-
 
 
   }
@@ -74,60 +73,13 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase  with MockEori
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+
+    "produce correct summary list" in new Test {
+      val result = controller.summaryList(eoriDetails)
+      val expectedResult = Some(ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd"))
+      result mustBe expectedResult
+    }
   }
 
-//    "produce correct summary list" in new Test {
-//      val result = controller.summaryList(EORIDetails("GB987654321000", "Fast Food ltd.")
-//      )
-//
-//      val expectedResult = Some(ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd."))
-//      result mustBe expectedResult
-//    }
 
-
-//  "GET onSubmit" when {
-//
-//    "payload contains valid data" should {
-//
-//      "return a SEE OTHER entry level response when correct data is sent" in new Test {
-//        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
-//        status(result) mustBe Status.SEE_OTHER
-//        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
-//      }
-//
-//      "return a SEE OTHER item level response when correct data is sent" in new Test {
-//        override val userAnswers: Option[UserAnswers] = Some(
-//          UserAnswers("credId")
-//            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
-//            .set(UnderpaymentReasonItemNumberPage, 1).success.value
-//            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-//        )
-//        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
-//        status(result) mustBe Status.SEE_OTHER
-//        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
-//        verifyCalls()
-//      }
-//
-//      "return a SEE OTHER when existing reason are present" in new Test {
-//        override val userAnswers: Option[UserAnswers] = Some(
-//          UserAnswers("credId")
-//            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
-//            .set(UnderpaymentReasonItemNumberPage, 1).success.value
-//            .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-//            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(22, 0, "GBP871.12", "EUR2908946"))).success.value
-//        )
-//        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
-//        status(result) mustBe Status.SEE_OTHER
-//        redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
-//        verifyCalls()
-//      }
-//
-//      "payload contains no data" should {
-//        "produce no summary list" in new Test {
-//          val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
-//          result mustBe None
-//        }
-//      }
-//    }
-//  }
 }

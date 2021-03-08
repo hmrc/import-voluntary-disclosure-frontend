@@ -78,10 +78,13 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > dl > div:nth-child(2) > dt") mustBe ConfirmEORIDetailsMessages.name
     }
 
+    s"have the correct Continue button" in {
+      elementText(".govuk-button") mustBe ConfirmEORIDetailsMessages.continue
+    }
 
-//    s"have the correct Continue button" in {
-//      elementText(".govuk-button") mustBe ConfirmEORIDetailsMessages.continue
-//    }
+    "render a continue button with the correct URL " in {
+      elementAttributes(".govuk-button")  must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
+    }
 
   }
 
