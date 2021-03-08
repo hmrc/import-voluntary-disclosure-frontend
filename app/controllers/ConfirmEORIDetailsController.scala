@@ -38,7 +38,6 @@ import scala.concurrent.Future
 @Singleton
 class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
                                              getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
                                              mcc: MessagesControllerComponents,
                                              sessionRepository: SessionRepository,
                                              eoriDetailsService: EoriDetailsService,

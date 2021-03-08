@@ -37,15 +37,18 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase  with MockEori
   trait Test extends MockSessionRepository {
     private lazy val view: ConfirmEORIDetailsView = app.injector.instanceOf[ConfirmEORIDetailsView]
 
+    MockedSessionRepository.set(Future.successful(true))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
+    lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
       messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view)
 
     val importerAddressYes: Boolean = true
+
+
 
   }
 
