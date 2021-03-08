@@ -7,6 +7,7 @@ GET         /assets/*file                                                control
 GET         /                                                            controllers.IndexController.onPageLoad
 GET         /address-initialise                                          controllers.AddressLookupController.initialiseJourney
 GET         /address-callback                                            controllers.AddressLookupController.callback(id: String)
+GET         /importer-address-callback                                   controllers.AddressLookupController.importerCallback(id: String)
 
 GET         /importer-address-initialise                                 controllers.AddressLookupController.initialiseImporterJourney
 

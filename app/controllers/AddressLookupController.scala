@@ -19,6 +19,7 @@ package controllers
 import config.{AppConfig, ErrorHandler}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.ContactAddress
+import models.addressLookup.AddressModel
 import pages.{ImporterAddressFinalPage, RepFlowImporterAddressPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -62,40 +63,48 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
   def callback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
-        val city = address.line4.getOrElse(address.line3.getOrElse(address.line2.getOrElse("")))
-        val addressLine2: Option[String] = (address.line2, address.line3) match {
-          case (Some(line2), _) if line2 == city => None
-          case (Some(line2), Some(line3)) if line3 == city => Some(line2)
-          case (Some(line2), Some(line3))  => Some(line2 + ", " + line3)
-          case _ => None
-        }
-
-        val contactAddress = ContactAddress(
-          addressLine1 = address.line1.getOrElse(""),
-          addressLine2 = addressLine2,
-          city = city,
-          postalCode = address.postcode,
-          countryCode = address.countryCode.getOrElse("")
-        )
-
-        if (flowService.isRepFlow(request.userAnswers)) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, contactAddress))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
-          }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressFinalPage, contactAddress))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.routes.DefermentController.onLoad())
-          }
+         for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressFinalPage, formatAddress(address)))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.DefermentController.onLoad())
         }
 
       case Left(_) =>
         Future.successful(errorHandler.showInternalServerError)
     }
+  }
+
+  def importerCallback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    addressLookupService.retrieveAddress(id) flatMap {
+      case Right(address) =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, formatAddress(address)))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+        }
+
+      case Left(_) =>
+        Future.successful(errorHandler.showInternalServerError)
+    }
+  }
+
+  private def formatAddress(address: AddressModel): ContactAddress = {
+    val city = address.line4.getOrElse(address.line3.getOrElse(address.line2.getOrElse("")))
+    val addressLine2: Option[String] = (address.line2, address.line3) match {
+      case (Some(line2), _) if line2 == city => None
+      case (Some(line2), Some(line3)) if line3 == city => Some(line2)
+      case (Some(line2), Some(line3))  => Some(line2 + ", " + line3)
+      case _ => None
+    }
+
+    ContactAddress(
+      addressLine1 = address.line1.getOrElse(""),
+      addressLine2 = addressLine2,
+      city = city,
+      postalCode = address.postcode,
+      countryCode = address.countryCode.getOrElse("")
+    )
   }
 }
