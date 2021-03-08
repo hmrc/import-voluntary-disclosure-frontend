@@ -54,6 +54,7 @@ class ImporterAddressController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
     // TODO - need the EORI id
+
     eoriDetailsService.retrieveEoriDetails("GB987654321000").flatMap {
       case Right(eoriDetails) =>
         for {

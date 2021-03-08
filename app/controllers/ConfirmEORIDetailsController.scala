@@ -16,39 +16,60 @@
 
 package controllers
 
+import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import javax.inject.Inject
-import models.EORIDetails
+import javax.inject.Singleton
+import models.EoriDetails
+import pages.KnownEoriDetails
+import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.EoriDetailsService
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ConfirmEORIDetailsView
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+@Singleton
 class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
                                              getData: DataRetrievalAction,
                                              requireData: DataRequiredAction,
                                              mcc: MessagesControllerComponents,
-                                             view: ConfirmEORIDetailsView)
+                                             sessionRepository: SessionRepository,
+                                             eoriDetailsService: EoriDetailsService,
+                                             view: ConfirmEORIDetailsView
+                                            )
   extends FrontendController(mcc) with I18nSupport {
+
+  private val logger = Logger("application." + getClass.getCanonicalName)
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val eoriDetails = EORIDetails("GB987654321000", "Fast Food ltd.")
-    val summary = summaryList(eoriDetails).getOrElse(Seq.empty)
-    Future.successful(Ok(view(summary)))
+
+    val getEoriDetails = request.userAnswers.get(KnownEoriDetails)
+    if (getEoriDetails.isEmpty) {
+      eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
+        case Right(eoriDetails) =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetails, eoriDetails))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield Ok(view(summaryList(eoriDetails).getOrElse(Seq.empty)))
+        case Left(error) =>
+          logger.error(error.message + " " + error.status)
+          Future.successful(NotFound(error.message + " " + error.status))
+      }
+    } else {
+      Future.successful(Ok(view(summaryList(getEoriDetails.get).getOrElse(Seq.empty))))
+    }
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    ???
-  }
 
-  def summaryList(eoriDetails: EORIDetails)(implicit messages: Messages): Option[Seq[SummaryList]] = {
+  def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): Option[Seq[SummaryList]] = {
 
     val eoriNumberSummaryListRow: Option[Seq[SummaryListRow]] = Some(
       Seq(
@@ -58,7 +79,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(eoriDetails.EORINumber)
+            content = HtmlContent(eoriDetails.eori)
           )
         )
       ))
@@ -72,7 +93,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(eoriDetails.Name)
+            content = HtmlContent(eoriDetails.name)
           )
         )
       ))
@@ -88,3 +109,5 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   }
 
 }
+
+

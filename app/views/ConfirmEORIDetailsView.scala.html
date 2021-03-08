@@ -17,8 +17,8 @@
 @this(layout: templates.Layout,
 govukSummaryList: GovukSummaryList,
 h1: components.h1,
-formHelper: FormWithCSRF,
-button: components.button
+button: components.button,
+linkButton: components.linkButton
 )
 
 @(details: Seq[SummaryList])(implicit request: Request[_], messages: Messages)
@@ -34,9 +34,8 @@ showBackLink = false
 @govukSummaryList(detail)
 }
 
-@formHelper(action = controllers.routes.ConfirmReasonDetailController.onSubmit()) {
-@button("common.button.confirmAndContinue")
-}
+@linkButton(url = controllers.routes.ConfirmEORIDetailsController.onLoad().url,messages(("common.button.confirmAndContinue")))
+
 
 }
 
