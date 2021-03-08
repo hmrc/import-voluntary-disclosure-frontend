@@ -22,7 +22,7 @@ import play.api.data.format.Formatter
 
 import scala.util.control.Exception.nonFatalCatch
 
-trait Formatters extends Constraints {
+trait Formatters {
 
   private[mappings] def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
 
