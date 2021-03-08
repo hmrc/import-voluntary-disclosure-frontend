@@ -335,7 +335,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
       }
     }
 
-    "too many decimal  amended value provided" should {
+    "too many decimal amended value provided" should {
       "result in a form with errors" in {
         formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = tooManyDecimalValue.toString), box = 35).errors mustBe
           Seq(
@@ -344,13 +344,38 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
       }
     }
 
-//    TODO:
-//
-//    "original and amended value are the same" should
-//    "original and amended value are out of range
-//    "Binding a form with valid data for a weight box selected" when
-//     "generate the correct model" in
-//     "A weight form " when
+    "original and amended value are the same" should {
+      "result in a form with errors" in {
+        formBinderBox(formBuilder(original = weightAmendedValue.toString, amended = weightAmendedValue.toString), box = 35).errors mustBe
+          Seq(
+            FormError("", keysDifferentMessageKey)
+          )
+      }
+    }
+  }
+
+  "Binding a form with valid data for a weightForm box selected" when {
+    "provided with valid values" should {
+      "result in a form with no errors" in {
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = 35)
+        form.hasErrors mustBe false
+      }
+
+      "generate the correct model" in {
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = 35)
+        form.value mustBe Some(UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString))
+      }
+    }
+  }
+
+  "A weight form " when {
+    "built from a valid model" should {
+      "generate the correct mapping" in {
+        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(35).fill(model)
+        form.data mustBe formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString)
+      }
+    }
   }
 
   "Binding a form with valid data for an unrecognised box selected" when {

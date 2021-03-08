@@ -29,7 +29,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     boxNumber match {
       case 22 | 62 | 63 | 66 | 67 | 68 => foreignCurrencyFormMapping
       case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
-      case 35 => weightFormMapping
+      case 35 | 38 => weightFormMapping
       case _ => textFormMapping(regex = """^.*$""") // TODO: Remove this when all box numbers added to story
     }
   }
