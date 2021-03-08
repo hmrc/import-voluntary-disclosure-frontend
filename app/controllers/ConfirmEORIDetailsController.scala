@@ -19,7 +19,7 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.Singleton
-import models.EoriDetails
+import models.{EoriDetails, UserAnswers}
 import pages.KnownEoriDetails
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
@@ -49,14 +49,14 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   private val logger = Logger("application." + getClass.getCanonicalName)
 
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val getEoriDetails = request.userAnswers.get(KnownEoriDetails)
+  def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+    val getEoriDetails = userAnswers.get(KnownEoriDetails)
     if (getEoriDetails.isEmpty) {
       eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
         case Right(eoriDetails) =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetails, eoriDetails))
+            updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetails, eoriDetails))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Ok(view(summaryList(eoriDetails).getOrElse(Seq.empty)))
         case Left(error) =>
