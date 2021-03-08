@@ -36,15 +36,18 @@ feedback.after = will help us to improve it.
 banner.phaseName = BETA
 
 #Address Lookup
-address_lookupPage.title = Find your address
-address_lookupPage.heading = Find your address
+address_lookupPage.title = Find the address
+address_lookupPage.heading = Find the address
 address_lookupPage.filter = Property name or number (optional)
 address_lookupPage.postcode = UK postcode
 address_lookupPage.postcode.link = The address does not have a post code
-address_lookupPage.selectPage.heading = Select the new address
+address_lookupPage.selectPage.heading = Select the address
 address_lookupPage.selectPage.editLink = Edit the address manually
-address_lookupPage.confirmPage.heading = Confirm address
+address_lookupPage.confirmPage.heading = Confirm the address
 address_lookupPage.lookupPage.submit = Find Address
+address_lookupPage.editPage.heading = Enter the address
+address_lookupPage.editPage.townOrCity = Town or city
+address_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
 
 #Importer Address Lookup
 importerAddress_lookupPage.title = What address should we send the importer’s copy of the demand note to?
@@ -363,6 +366,12 @@ hasFurtherInformation.pageTitle = Do you want to tell us anything else about the
 hasFurtherInformation.heading = Do you want to tell us anything else about the underpayment?
 hasFurtherInformation.hint = That you have not told us about already.
 hasFurtherInformation.error.required = Select yes if you want to provide more information about the underpayment
+
+# More Information
+moreInformation.pageTitle = Tell us the extra information about the underpayment
+moreInformation.heading = Tell us the extra information about the underpayment
+moreInformation.error.required = Enter more information
+moreInformation.error.maxLength = More information must be 1500 characters or fewer
 
 # Importer name
 importerName.pageTitle = What is the importer’s name?

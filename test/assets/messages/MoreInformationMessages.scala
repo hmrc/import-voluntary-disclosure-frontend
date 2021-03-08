@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package base
+package messages
 
-import controllers.actions._
+object MoreInformationMessages extends BaseMessages {
 
-trait ControllerSpecBase extends SpecBase {
-  lazy val authenticatedAction: IdentifierAction =
-    FakeIdentifierAction.identifierAction(messagesControllerComponents.parsers.anyContent, "some_external_id", "GB987654321000")
+  val title: String = "Tell us the extra information about the underpayment"
+  val h1: String = "Tell us the extra information about the underpayment"
+  val requiredError: String = "Enter more information"
+  val maxLengthError: String = "More information must be 1500 characters or fewer"
 
-  lazy val dataRequiredAction: DataRequiredAction = injector.instanceOf[DataRequiredActionImpl]
 }

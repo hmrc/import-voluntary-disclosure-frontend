@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package base
+package models
 
-import controllers.actions._
+import play.api.libs.json.{Json, Reads, __}
 
-trait ControllerSpecBase extends SpecBase {
-  lazy val authenticatedAction: IdentifierAction =
-    FakeIdentifierAction.identifierAction(messagesControllerComponents.parsers.anyContent, "some_external_id", "GB987654321000")
+case class EoriDetails(eori: String, name: String, address: ContactAddress)
 
-  lazy val dataRequiredAction: DataRequiredAction = injector.instanceOf[DataRequiredActionImpl]
+object EoriDetails {
+
+  implicit val reads: Reads[EoriDetails] = for {
+    eori <- (__ \\ "eori").read[String]
+    name <- (__ \\ "name").read[String]
+    address <- __.read[ContactAddress](ContactAddress.sub09Reads)
+  } yield {
+    EoriDetails(eori, name, address)
+  }
+
+  implicit val format = Json.format[EoriDetails]
+
 }

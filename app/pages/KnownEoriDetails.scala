@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package base
+package pages
 
-import controllers.actions._
+import models.EoriDetails
+import play.api.libs.json.JsPath
 
-trait ControllerSpecBase extends SpecBase {
-  lazy val authenticatedAction: IdentifierAction =
-    FakeIdentifierAction.identifierAction(messagesControllerComponents.parsers.anyContent, "some_external_id", "GB987654321000")
+case object KnownEoriDetails extends QuestionPage[EoriDetails] {
 
-  lazy val dataRequiredAction: DataRequiredAction = injector.instanceOf[DataRequiredActionImpl]
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "known-eori-details"
+
 }

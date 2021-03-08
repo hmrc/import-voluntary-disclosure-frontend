@@ -16,12 +16,22 @@
 
 package pages
 
+import models.UserAnswers
 import play.api.libs.json.JsPath
+
+import scala.util.Try
 
 case object HasFurtherInformationPage extends QuestionPage[Boolean] {
 
   def path: JsPath = JsPath \ toString
 
   override def toString: String = "has-further-info"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    value match {
+      case Some(answer) if !answer => Try(userAnswers.remove(MoreInformationPage).getOrElse(userAnswers))
+      case _ => super.cleanup(value, userAnswers)
+    }
+  }
 
 }
