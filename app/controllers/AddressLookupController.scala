@@ -24,7 +24,7 @@ import pages.{ImporterAddressFinalPage, RepFlowImporterAddressPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import services.{AddressLookupService, FlowService}
+import services.AddressLookupService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
@@ -36,7 +36,6 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
                                         requireData: DataRequiredAction,
                                         sessionRepository: SessionRepository,
                                         addressLookupService: AddressLookupService,
-                                        flowService: FlowService,
                                         val errorHandler: ErrorHandler,
                                         val mcc: MessagesControllerComponents,
                                         implicit val appConfig: AppConfig,
