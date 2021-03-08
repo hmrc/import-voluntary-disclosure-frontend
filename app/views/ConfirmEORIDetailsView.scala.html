@@ -15,24 +15,23 @@
  *@
 
 @this(layout: templates.Layout,
-govukSummaryList: GovukSummaryList,
-h1: components.h1,
-button: components.button,
-linkButton: components.linkButton
-)
+      govukSummaryList: GovukSummaryList,
+      h1: components.h1,
+      button: components.button,
+      linkButton: components.linkButton
+      )
 
 @(details: Seq[SummaryList])(implicit request: Request[_], messages: Messages)
 
 @layout(
-pageTitle = messages("confirmEORI.pageTitle"),
-showBackLink = false
-) {
+    pageTitle = messages("confirmEORI.pageTitle"),
+    showBackLink = false) {
 
-@h1(messages("confirmEORI.heading"))
+    @h1(messages("confirmEORI.heading"))
 
-@details.map { detail =>
-@govukSummaryList(detail)
-}
+    @details.map { detail =>
+    @govukSummaryList(detail)
+    }
 
 @linkButton( url = controllers.routes.UserTypeController.onLoad().url, messages(("common.button.confirmAndContinue")), id = Some("value"))
 
