@@ -35,6 +35,8 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val amendedWeightFormatMessageKey = "amendmentValue.error.amended.weight.nonNumeric"
   val originalWeightDecimalMessageKey = "amendmentValue.error.original.weight.invalidDecimals"
   val amendedWeightDecimalMessageKey = "amendmentValue.error.amended.weight.invalidDecimals"
+  val originalWeightRangeMessageKey = "amendmentValue.error.original.weight.outOfRange"
+  val amendedWeightRangeMessageKey = "amendmentValue.error.amended.weight.outOfRange"
   val commodityCodeAmendedValue = "2204109400X411"
   val commodityCodeOriginalValue = "2204109400X412"
   val invalidBoxAmendedValue = "2204109400X411"
@@ -45,6 +47,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val weightOriginalValue = 1500
   val weightAmendedValue = 3593.44
   val tooManyDecimalValue = 950.3829
+  val outOfRangeValue = 95043953
 
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
@@ -272,15 +275,6 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
       }
     }
 
-    "no original value provided" should {
-      "result in a form with errors" in {
-        formBinderBox(formBuilder(amended = weightAmendedValue.toString), box = 35).errors mustBe
-          Seq(
-            FormError(originalKey, originalWeightMissingMessageKey)
-          )
-      }
-    }
-
     "no amended value provided" should {
       "result in a form with errors" in {
         formBinderBox(formBuilder(original = weightOriginalValue.toString), box = 35).errors mustBe
@@ -296,15 +290,6 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
           FormError(originalKey, originalWeightFormatMessageKey),
           FormError(amendedKey, amendedWeightFormatMessageKey)
         )
-      }
-    }
-
-    "non numeric original value provided" should {
-      "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = weightAmendedValue.toString), box = 35).errors mustBe
-          Seq(
-            FormError(originalKey, originalWeightFormatMessageKey)
-          )
       }
     }
 
@@ -341,6 +326,16 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
           Seq(
             FormError(amendedKey, amendedWeightDecimalMessageKey)
           )
+      }
+    }
+
+    "out of range values provided" should {
+      "result in a form with errors" in {
+        val rangeValueArgs = Seq(0, 9999999.999)
+        formBinderBox(formBuilder(original = outOfRangeValue.toString, amended = outOfRangeValue.toString), box = 35).errors mustBe Seq(
+          FormError(originalKey, originalWeightRangeMessageKey, rangeValueArgs),
+          FormError(amendedKey, amendedWeightRangeMessageKey,  rangeValueArgs)
+        )
       }
     }
 

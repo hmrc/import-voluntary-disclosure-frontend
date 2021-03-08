@@ -23,7 +23,6 @@ import models.UnderpaymentReasonValue
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.{Form, FormError}
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.WeightAmendmentView
 
@@ -51,7 +50,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
       val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
       lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
+        form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -75,7 +74,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no value has been specified for original amount)" should {
       lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(emptyString, validValue)
       lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
+        form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -91,125 +90,124 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalWeightNonEmpty
       }
     }
+  }
 
-    "an error exists (no value has been specified for amended amount)" should {
-      lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)
-      lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+  "an error exists (no value has been specified for amended amount)" should {
+    lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)
+    lazy val view: Html = injectedView(
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
-      }
-
-      "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedWeightNonEmpty
-      }
-
-      "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedWeightNonEmpty
-      }
+    s"have the correct page title" in {
+      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
     }
 
-    "an error exists (same value has been entered for original and amended amount)" should {
-      lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, validValue)
-        .discardingErrors
-        .withError(FormError("amended", AmendReasonValuesMessages.amendedDifferent))
-      lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
-      }
-
-      "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedDifferent
-      }
-
-      "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedDifferent
-      }
+    "render an error summary with the correct message " in {
+      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedWeightNonEmpty
     }
 
-    "an error exists (value has been entered in an none numeric format for both original and amended)" should {
-      lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue1, invalidValue1)
-      lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+    "render an error message against the field" in {
+      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedWeightNonEmpty
+    }
+  }
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
-      }
+  "an error exists (same value has been entered for original and amended amount)" should {
+    lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, validValue)
+      .discardingErrors
+      .withError(FormError("amended", AmendReasonValuesMessages.amendedDifferent))
+    lazy val view: Html = injectedView(
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightFormat + " " + AmendReasonValuesMessages.amendedInvalidWeightFormat
-      }
-
-      "render an error message against the original field" in {
-        elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightFormat
-      }
-
-      "render an error message against the amended field" in {
-        elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightFormat
-      }
+    s"have the correct page title" in {
+      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
     }
 
-    "an error exists (value has been entered with too many decimal points for both original and amended)" should {
-      lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue2, invalidValue2)
-      lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
-      }
-
-      "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightDecimal + " " + AmendReasonValuesMessages.amendedInvalidWeightDecimal
-      }
-
-      "render an error message against the original field" in {
-        elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightDecimal
-      }
-
-      "render an error message against the amended field" in {
-        elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightDecimal
-      }
+    "render an error summary with the correct message " in {
+      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedDifferent
     }
 
-    "an error exists (value has been entered out of range for both original and amended)" should {
-      lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue3, invalidValue3)
-      lazy val view: Html = injectedView(
-        form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+    "render an error message against the field" in {
+      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedDifferent
+    }
+  }
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
-      }
+  "an error exists (value has been entered in an none numeric format for both original and amended)" should {
+    lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue1, invalidValue1)
+    lazy val view: Html = injectedView(
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightOutOfRange + " " + AmendReasonValuesMessages.amendedInvalidWeightOutOfRange
-      }
-
-      "render an error message against the original field" in {
-        elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightOutOfRange
-      }
-
-      "render an error message against the amended field" in {
-        elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightOutOfRange
-      }
+    s"have the correct page title" in {
+      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
     }
 
+    "render an error summary with the correct message " in {
+      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightFormat + " " + AmendReasonValuesMessages.amendedInvalidWeightFormat
+    }
+
+    "render an error message against the original field" in {
+      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightFormat
+    }
+
+    "render an error message against the amended field" in {
+      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightFormat
+    }
+  }
+
+  "an error exists (value has been entered with too many decimal points for both original and amended)" should {
+    lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue2, invalidValue2)
+    lazy val view: Html = injectedView(
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct page title" in {
+      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
+    }
+
+    "render an error summary with the correct message " in {
+      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightDecimal + " " + AmendReasonValuesMessages.amendedInvalidWeightDecimal
+    }
+
+    "render an error message against the original field" in {
+      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightDecimal
+    }
+
+    "render an error message against the amended field" in {
+      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightDecimal
+    }
+  }
+
+  "an error exists (value has been entered out of range for both original and amended)" should {
+    lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue3, invalidValue3)
+    lazy val view: Html = injectedView(
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
+    )(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct page title" in {
+      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box35PageTitle
+    }
+
+    "render an error summary with the correct message " in {
+      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidWeightOutOfRange + " " + AmendReasonValuesMessages.amendedInvalidWeightOutOfRange
+    }
+
+    "render an error message against the original field" in {
+      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidWeightOutOfRange
+    }
+
+    "render an error message against the amended field" in {
+      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidWeightOutOfRange
+    }
   }
 
   "The Underpayment Reason Amendment page" when {
-    Seq(35).map { testBox =>
+    Seq(35,38).map { testBox =>
       checkContent(testBox)
     }
 
@@ -217,7 +215,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       s"rendered for box ${boxNumber}" should {
         val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
         lazy val view: Html = injectedView(
-          form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
+          form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -244,7 +242,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)
     lazy val view: Html = injectedView(
-      form, boxNumber, itemNumber, Call("GET", controllers.routes.BoxNumberController.onLoad().url)
+      form, boxNumber, itemNumber, controllers.routes.BoxNumberController.onLoad()
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -254,6 +252,14 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have correct legend for the amended amount" in {
       elementText("#main-content > div > div > form > div:nth-child(3) > label") mustBe AmendReasonValuesMessages.amendedAmount
+    }
+
+    s"the original input field is rendered" in {
+      document.select("#original").size mustBe 1
+    }
+
+    s"the amended input field is rendered" in {
+      document.select("#amended").size mustBe 1
     }
 
     "have the correct Continue button" in {
