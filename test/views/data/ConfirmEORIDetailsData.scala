@@ -16,7 +16,7 @@
 
 package views.data
 
-import messages.{ConfirmEORIDetailsMessages, ConfirmReasonDetailMessages}
+import messages.ConfirmEORIDetailsMessages
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -28,7 +28,7 @@ object ConfirmEORIDetailsData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmEORIDetailsMessages.eoriNumber),
-        classes = "govuk-!-width-two-thirds"
+        classes = "govuk-summary-list__key govuk-!-width-one-half"
       ),
       value = Value(
         content = HtmlContent(number)
@@ -40,7 +40,7 @@ object ConfirmEORIDetailsData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmEORIDetailsMessages.name),
-        classes = "govuk-!-width-two-thirds"
+        classes = "govuk-summary-list__key govuk-!-width-one-half"
       ),
       value = Value(
         content = HtmlContent(name)
@@ -50,9 +50,7 @@ object ConfirmEORIDetailsData {
   )
 
 
-  def details(number: String, name: String): Seq[SummaryList] = Seq(
-    SummaryList(
-      eoriNumber(number) ++ eoriName(name).getOrElse(Seq.empty)
-    )
+  def details(number: String, name: String): SummaryList = SummaryList(
+    eoriNumber(number) ++ eoriName(name).getOrElse(Seq.empty)
   )
 }

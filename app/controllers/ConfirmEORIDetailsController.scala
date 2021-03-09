@@ -51,59 +51,38 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
     val getEoriDetails = userAnswers.get(KnownEoriDetails)
-    if (getEoriDetails.isEmpty) {
-      eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
-        case Right(eoriDetails) =>
-          for {
-            updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetails, eoriDetails))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Ok(view(summaryList(eoriDetails).getOrElse(Seq.empty)))
-        case Left(error) =>
-          logger.error(error.message + " " + error.status)
-          Future.successful(NotFound(error.message + " " + error.status))
-      }
-    } else {
-      Future.successful(Ok(view(summaryList(getEoriDetails.get).getOrElse(Seq.empty))))
+
+    getEoriDetails match {
+      case Some(eoriDetails) => Future.successful(Ok(view(summaryList(eoriDetails))))
+      case _ =>
+        eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
+          case Right(eoriDetails) =>
+            for {
+              updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetails, eoriDetails))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield {
+              Ok(view(summaryList(eoriDetails)))
+            }
+          case Left(error) =>
+            logger.error(error.message + " " + error.status)
+            Future.successful(NotFound(error.message + " " + error.status))
+        }
     }
+
   }
 
 
-  def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): Option[Seq[SummaryList]] = {
+  def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
 
-    val eoriNumberSummaryListRow: Option[Seq[SummaryListRow]] = Some(
-      Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("confirmEORI.eoriNumber")),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            content = HtmlContent(eoriDetails.eori)
-          )
-        )
-      ))
+    def rowItem(message: String, value: String) = SummaryListRow(
+      key = Key(content = Text(messages(message)), classes = "govuk-summary-list__key govuk-!-width-one-half"),
+      value = Value(content = HtmlContent(value))
+    )
 
+    val eoriNumberSummaryListRow: SummaryListRow = rowItem("confirmEORI.eoriNumber", eoriDetails.eori)
+    val nameSummaryListRow: SummaryListRow = rowItem("confirmEORI.name", eoriDetails.name)
 
-    val nameSummaryListRow: Option[Seq[SummaryListRow]] = Some(
-      Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("confirmEORI.name")),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            content = HtmlContent(eoriDetails.name)
-          )
-        )
-      ))
-
-    val rows = eoriNumberSummaryListRow.getOrElse(Seq.empty) ++
-      nameSummaryListRow.getOrElse(Seq.empty)
-    if (rows.nonEmpty) {
-      Some(Seq(SummaryList(rows)))
-    } else {
-      None
-    }
+    SummaryList(Seq(eoriNumberSummaryListRow, nameSummaryListRow))
 
   }
 

@@ -21,8 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.ImporterAddressFormProvider
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
-import models.{ErrorModel, UserAnswers}
-import pages.{ReuseKnowAddressPage, KnownEoriDetails}
+import models.{ContactAddress, EoriDetails, UserAnswers}
+import pages.KnownEoriDetails
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -40,8 +40,6 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockEoriDeta
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
-      mockEoriDetailsService,
-      errorHandler,
       messagesControllerComponents,
       form,
       importerAddressView)
@@ -49,7 +47,14 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockEoriDeta
     private lazy val importerAddressView: ImporterAddressView = app.injector.instanceOf[ImporterAddressView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+      .set(KnownEoriDetails, EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress(
+        addressLine1 = "99 Avenue Road",
+        addressLine2 = None,
+        city = "Anyold Town",
+        postalCode = Some("99JZ 1AA"),
+        countryCode = "GB"
+      ))).success.value)
     val formProvider: ImporterAddressFormProvider = injector.instanceOf[ImporterAddressFormProvider]
     val form: ImporterAddressFormProvider = formProvider
 
@@ -60,27 +65,18 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockEoriDeta
   }
 
   "GET /" should {
+
     "return OK" in new Test {
-      setupMockRetrieveAddress(Right(eoriDetails))
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return error model" in new Test {
-      setupMockRetrieveAddress(Left(ErrorModel(404, "")))
-      val result: Future[Result] = controller.onLoad(fakeRequest)
-      status(result) mustBe Status.NOT_FOUND
-    }
-
     "return HTML" in new Test {
-      setupMockRetrieveAddress(Right(eoriDetails))
-      override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("some-cred-id").set(ReuseKnowAddressPage, importerAddressYes).success.value
-      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+
   }
 
   "POST /" when {
