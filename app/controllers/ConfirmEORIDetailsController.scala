@@ -50,9 +50,8 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    val getEoriDetails = userAnswers.get(KnownEoriDetails)
 
-    getEoriDetails match {
+    userAnswers.get(KnownEoriDetails) match {
       case Some(eoriDetails) => Future.successful(Ok(view(summaryList(eoriDetails))))
       case _ =>
         eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
@@ -72,7 +71,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   }
 
 
-  def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
+  private[controllers] def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
 
     def rowItem(message: String, value: String) = SummaryListRow(
       key = Key(content = Text(messages(message)), classes = "govuk-summary-list__key govuk-!-width-one-half"),

@@ -54,14 +54,12 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
   "GET /" when {
     "no userAnswers exist" should {
       "return OK" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         setupMockRetrieveAddress(Right(eoriDetails))
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
 
       "return error model" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         setupMockRetrieveAddress(Left(ErrorModel(404, "")))
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.NOT_FOUND
@@ -70,7 +68,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
       "return HTML" in new Test {
         setupMockRetrieveAddress(Right(eoriDetails))
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(ReuseKnowAddressPage, true).success.value
+          UserAnswers("some-cred-id").set(TraderAddressCorrectPage, true).success.value
         )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         contentType(result) mustBe Some("text/html")

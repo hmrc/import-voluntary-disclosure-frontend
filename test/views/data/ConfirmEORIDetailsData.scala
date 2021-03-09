@@ -21,36 +21,30 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
+
 object ConfirmEORIDetailsData {
-
-
-  def eoriNumber(number: String): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmEORIDetailsMessages.eoriNumber),
-        classes = "govuk-summary-list__key govuk-!-width-one-half"
-      ),
-      value = Value(
-        content = HtmlContent(number)
-      )
-    )
-    )
-
-  def eoriName(name: String): Option[Seq[SummaryListRow]] = Some(
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmEORIDetailsMessages.name),
-        classes = "govuk-summary-list__key govuk-!-width-one-half"
-      ),
-      value = Value(
-        content = HtmlContent(name)
-      )
-    )
-    )
-  )
-
+  private final val classStyling = "govuk-summary-list__key govuk-!-width-one-half"
 
   def details(number: String, name: String): SummaryList = SummaryList(
-    eoriNumber(number) ++ eoriName(name).getOrElse(Seq.empty)
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmEORIDetailsMessages.eoriNumber),
+          classes = classStyling
+        ),
+        value = Value(
+          content = HtmlContent(number)
+        )
+      ),
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmEORIDetailsMessages.name),
+          classes = classStyling
+        ),
+        value = Value(
+          content = HtmlContent(name)
+        )
+      )
+    )
   )
 }
