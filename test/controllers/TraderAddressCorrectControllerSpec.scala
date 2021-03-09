@@ -18,45 +18,40 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.ImporterAddressFormProvider
+import forms.TraderAddressCorrectFormProvider
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
-import models.{ContactAddress, EoriDetails, UserAnswers}
-import pages.KnownEoriDetails
+import models.{ErrorModel, UserAnswers}
+import pages.{TraderAddressCorrectPage, KnownEoriDetails}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.ReusableValues
-import views.html.ImporterAddressView
+import views.html.TraderAddressCorrectView
 
 import scala.concurrent.Future
 
-class ImporterAddressControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
+class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new ImporterAddressController(
+    lazy val controller = new TraderAddressCorrectController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
+      mockEoriDetailsService,
+      errorHandler,
       messagesControllerComponents,
       form,
-      importerAddressView)
+      traderAddressCorrectView)
 
-    private lazy val importerAddressView: ImporterAddressView = app.injector.instanceOf[ImporterAddressView]
+    private lazy val traderAddressCorrectView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(KnownEoriDetails, EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress(
-        addressLine1 = "99 Avenue Road",
-        addressLine2 = None,
-        city = "Anyold Town",
-        postalCode = Some("99JZ 1AA"),
-        countryCode = "GB"
-      ))).success.value)
-    val formProvider: ImporterAddressFormProvider = injector.instanceOf[ImporterAddressFormProvider]
-    val form: ImporterAddressFormProvider = formProvider
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
+    val form: TraderAddressCorrectFormProvider = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
@@ -65,18 +60,27 @@ class ImporterAddressControllerSpec extends ControllerSpecBase with MockEoriDeta
   }
 
   "GET /" should {
-
     "return OK" in new Test {
+      setupMockRetrieveAddress(Right(eoriDetails))
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
+    "return error model" in new Test {
+      setupMockRetrieveAddress(Left(ErrorModel(404, "")))
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.NOT_FOUND
+    }
+
     "return HTML" in new Test {
+      setupMockRetrieveAddress(Right(eoriDetails))
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id").set(TraderAddressCorrectPage, importerAddressYes).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
-
   }
 
   "POST /" when {
