@@ -20,7 +20,7 @@ import config.{AppConfig, ErrorHandler}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.ContactAddress
 import models.addressLookup.AddressModel
-import pages.{ImporterAddressFinalPage, RepFlowImporterAddressPage}
+import pages.{TraderAddressPage, ImporterAddressPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -63,7 +63,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
          for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressFinalPage, formatAddress(address)))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressPage, formatAddress(address)))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           Redirect(controllers.routes.DefermentController.onLoad())
@@ -78,7 +78,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepFlowImporterAddressPage, formatAddress(address)))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, formatAddress(address)))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
