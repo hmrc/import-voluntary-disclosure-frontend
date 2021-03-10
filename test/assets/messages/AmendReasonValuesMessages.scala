@@ -73,7 +73,9 @@ object AmendReasonValuesMessages extends BaseMessages {
       "Box 39 quota amendment for item 1",
       "Box 39 quota amendment for item 1",
       Some("Must be 7 characters.")),
-    41 -> ExpectedContent("n/a", "n/a", Some("n/a")),
+    41 -> ExpectedContent(
+      "Box amendment details for item 1",
+      "Box amendment details for item 1", None),
     42 -> ExpectedContent("n/a", "n/a", Some("n/a")),
     43 -> ExpectedContent("n/a", "n/a", Some("n/a")),
     45 -> ExpectedContent("n/a", "n/a", Some("n/a")),
