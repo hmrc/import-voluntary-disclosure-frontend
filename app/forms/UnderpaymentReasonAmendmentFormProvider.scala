@@ -29,7 +29,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     boxNumber match {
       case 22 | 62 | 63 | 66 | 67 | 68 => foreignCurrencyFormMapping()
       case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
-      case 34 => textFormMapping(regex = """^([a-zA-Z]{2}$)""")
+      case 34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
       case 35 | 38 => weightFormMapping
       case 36 => textFormMapping(regex = """^([0-9]{3}$)""")
       case 37 => textFormMapping(regex = """^([0-9]{4}[A-Za-z0-9][0-9]{2}$)""")
@@ -47,12 +47,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
         "amended" -> foreignCurrency(
           "amendmentValue.error.amended.missing",
           "amendmentValue.error.amended.format")
-      )
-      ((original, amended) =>
-        if (toUpper) UnderpaymentReasonValue.apply(original.toUpperCase(), amended.toUpperCase())
-        else UnderpaymentReasonValue.apply(original, amended)
-      )
-      (value => Some(value.original, value.amended)).verifying(different("amendmentValue.error.amended.different"))
+      ) (UnderpaymentReasonValue.apply) (UnderpaymentReasonValue.unapply)
+      .verifying(different("amendmentValue.error.amended.different"))
     )
   }
 
@@ -63,12 +59,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
           .verifying(regexp(regex, "amendmentValue.error.original.format")),
         "amended" -> text("amendmentValue.error.amended.missing")
           .verifying(regexp(regex, "amendmentValue.error.amended.format"))
-      )
-      ((original, amended) =>
-        if (toUpper) UnderpaymentReasonValue.apply(original.toUpperCase(), amended.toUpperCase())
-        else UnderpaymentReasonValue.apply(original, amended)
-      )
-      (value => Some(value.original, value.amended)).verifying(different("amendmentValue.error.amended.different"))
+      ) (UnderpaymentReasonValue.apply) (UnderpaymentReasonValue.unapply)
+        .verifying(different("amendmentValue.error.amended.different"))
     )
   }
 
@@ -95,7 +87,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
   private[forms] def different(errorKey: String): Constraint[UnderpaymentReasonValue] =
     Constraint {
       input =>
-        if (input.original != input.amended) {
+        if (input.original.toUpperCase != input.amended.toUpperCase) {
           Valid
         } else {
           Invalid(errorKey)
