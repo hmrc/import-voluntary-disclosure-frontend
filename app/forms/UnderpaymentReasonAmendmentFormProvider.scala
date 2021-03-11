@@ -53,6 +53,16 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
+      case 42 => decimalFormMapping(
+        isCurrency = false,
+        requiredKey = "decimal.missing",
+        nonNumericKey = "decimal.nonNumeric",
+        invalidDecimalPlacesKey = "decimal.invalidDecimals",
+        outOfRangeKey = "decimal.outOfRange",
+        numDecimalPlaces = 2,
+        rangeMin = Some(BigDecimal(0)),
+        rangeMax = Some(BigDecimal(999999999999.99))
+      )
       case 46  => decimalFormMapping(
         isCurrency = true,
         requiredKey = "currency.missing",
