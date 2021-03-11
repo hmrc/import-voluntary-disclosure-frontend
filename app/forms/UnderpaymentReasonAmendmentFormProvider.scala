@@ -34,6 +34,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
       case 36 => textFormMapping(regex = """^[0-9]{3}$""")
       case 37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
       case 39 => textFormMapping(regex = """^[0-9a-zA-Z]{7}$""")
+      case 42 => decimalMapping
       case _ => textFormMapping(regex = """^.*$""") // TODO: Remove this when all box numbers added to story
     }
   }
@@ -77,6 +78,26 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
           nonNumericKey = "amendmentValue.error.amended.weight.nonNumeric",
           invalidDecimalPoints = "amendmentValue.error.amended.weight.invalidDecimals")
           .verifying(inRange[BigDecimal](0, 9999999.999, "amendmentValue.error.amended.weight.outOfRange"))
+      )
+      ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
+      (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
+        .verifying(different("amendmentValue.error.amended.different"))
+    )
+  }
+
+  private def decimalMapping: Form[UnderpaymentReasonValue] = {
+    Form(
+      mapping(
+        "original" -> numeric(
+          requiredKey = "amendmentValue.error.original.decimal.missing",
+          nonNumericKey = "amendmentValue.error.original.decimal.nonNumeric",
+          invalidNumeric = "amendmentValue.error.original.decimal.invalidDecimals")
+          .verifying(inRange[BigDecimal](0, 999999999999.99, "amendmentValue.error.original.decimal.outOfRange")),
+        "amended" -> numeric(
+          requiredKey = "amendmentValue.error.amended.decimal.missing",
+          nonNumericKey = "amendmentValue.error.amended.decimal.nonNumeric",
+          invalidNumeric = "amendmentValue.error.amended.decimal.invalidDecimals")
+          .verifying(inRange[BigDecimal](0, 999999999999.99, "amendmentValue.error.amended.decimal.outOfRange"))
       )
       ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
       (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
