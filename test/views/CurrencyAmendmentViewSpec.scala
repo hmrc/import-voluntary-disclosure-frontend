@@ -227,7 +227,6 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   }
 
-
   it should {
 
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)

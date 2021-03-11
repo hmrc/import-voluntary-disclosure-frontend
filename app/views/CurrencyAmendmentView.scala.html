@@ -24,13 +24,6 @@
 )
 
 @(form: Form[_], boxNumber: Int, itemNumber: Int, backLink: Call, inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
-@bodyMessage=@{
-    if (messages.isDefinedAt(s"box${boxNumber}.pageBody")) {
-        Some(messages(s"box${boxNumber}.pageBody"))
-    } else {
-        None
-    }
-}
 
 @layout(
     pageTitle = messages(s"box${boxNumber}.pageTitle", itemNumber),
@@ -40,8 +33,6 @@
     @errorSummary(form.errors)
 
     @h1(messages(s"box${boxNumber}.pageHeader", itemNumber))
-
-    @bodyMessage.map{msg => @p{ @msg } }
 
     @formHelper(action = controllers.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)) {
         @currencyInput(form, "original", messages("amendmentValue.originalAmount"), 10, false,

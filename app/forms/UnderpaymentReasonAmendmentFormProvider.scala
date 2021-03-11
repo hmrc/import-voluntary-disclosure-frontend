@@ -31,6 +31,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
       case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
       case 34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
       case 35 | 38  => decimalFormMapping(
+        isCurrency = false,
         requiredKey = "weight.missing",
         nonNumericKey = "weight.nonNumeric",
         invalidDecimalPlacesKey = "weight.invalidDecimals",
@@ -43,6 +44,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
       case 37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
       case 39 => textFormMapping(regex = """^[0-9a-zA-Z]{7}$""")
       case 41  => decimalFormMapping(
+        isCurrency = false,
         requiredKey = "unit.missing",
         nonNumericKey = "unit.nonNumeric",
         invalidDecimalPlacesKey = "unit.invalidDecimals",
@@ -51,7 +53,16 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
-      case 46 => currencyFormMapping
+      case 46  => decimalFormMapping(
+        isCurrency = true,
+        requiredKey = "currency.missing",
+        nonNumericKey = "currency.nonNumeric",
+        invalidDecimalPlacesKey = "currency.invalidDecimals",
+        outOfRangeKey = "currency.outOfRange",
+        numDecimalPlaces = 2,
+        rangeMin = Some(BigDecimal(0)),
+        rangeMax = Some(BigDecimal(999999999999.99))
+      )
       case _ => textFormMapping(regex = """^.*$""") // TODO: Remove this when all box numbers added to story
     }
   }
@@ -83,6 +94,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
   }
 
   private def decimalFormMapping(
+                                  isCurrency: Boolean,
                                   requiredKey: String,
                                   nonNumericKey: String,
                                   invalidDecimalPlacesKey: String,
@@ -94,41 +106,19 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     Form(
       mapping(
         "original" -> numeric(
+          isCurrency = isCurrency,
           numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.original." + requiredKey,
           nonNumericKey = "amendmentValue.error.original." + nonNumericKey,
           invalidDecimalPlacesKey = "amendmentValue.error.original." + invalidDecimalPlacesKey)
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.original." + outOfRangeKey)),
         "amended" -> numeric(
+          isCurrency = isCurrency,
           numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.amended." + requiredKey,
           nonNumericKey = "amendmentValue.error.amended." + nonNumericKey,
           invalidDecimalPlacesKey = "amendmentValue.error.amended." + invalidDecimalPlacesKey)
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.amended." + outOfRangeKey))
-      )
-      ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
-      (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
-        .verifying(different("amendmentValue.error.amended.different"))
-    )
-  }
-
-  private def currencyFormMapping: Form[UnderpaymentReasonValue] = {
-    Form(
-      mapping(
-        "original" -> numeric(
-          isCurrency = true,
-          requiredKey = "amendmentValue.error.original.currency.missing",
-          invalidDecimalPlacesKey = "amendmentValue.error.original.currency.format",
-          nonNumericKey = "amendmentValue.error.original.currency.nonNumeric")
-          .verifying(inRange[BigDecimal](0, 999999999999.99, "amendmentValue.error.original.currency.outOfRange")),
-        //          .verifying(regexp("""[0-9]{1,12}\d*\.\d{2}$""", "amendmentValue.error.original.currency.format")),
-        "amended" -> numeric(
-          isCurrency = true,
-          requiredKey = "amendmentValue.error.amended.currency.missing",
-          invalidDecimalPlacesKey = "amendmentValue.error.amended.currency.format",
-          nonNumericKey = "amendmentValue.error.amended.currency.nonNumeric")
-          .verifying(inRange[BigDecimal](0, 999999999999.99, "amendmentValue.error.amended.currency.outOfRange")),
-        //          .verifying(regexp("""[0-9]{1,12}\d*\.\d{2}$""", "amendmentValue.error.original.currency.format")),
       )
       ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
       (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
