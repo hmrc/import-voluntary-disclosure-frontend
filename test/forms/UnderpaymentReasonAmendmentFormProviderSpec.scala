@@ -63,7 +63,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val outOfRangeValue = 95043953
   val decimalOriginalValue = 1500
   val decimalAmendedValue = 3593.44
-  val decimalOutOfRangeValue = 9999999999999.99
+  val decimalOutOfRangeValue: BigDecimal = 9999999999999.99
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
     originalKey -> original,
@@ -388,6 +388,16 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
     }
   }
 
+  "A weight form " when {
+    "built from a valid model" should {
+      "generate the correct mapping" in {
+        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(35).fill(model)
+        form.data mustBe formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString)
+      }
+    }
+  }
+
   "Binding a form with valid data for a decimal box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
@@ -466,15 +476,16 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
       }
     }
 
-//    "out of range values provided" should {
-//      "result in a form with errors" in {
-//        val rangeValueArgs = Seq(0, 999999999999.99)
-//        formBinderBox(formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString), box = 42).errors mustBe Seq(
-//          FormError(originalKey, originalDecimalRangeMessageKey, rangeValueArgs),
-//          FormError(amendedKey, amendedDecimalRangeMessageKey,  rangeValueArgs)
-//        )
-//      }
-//    }
+    "out of range values provided" should {
+      "result in a form with errors" in {
+        val bigDecimal: BigDecimal = 999999999999.99
+        val rangeValueArgs = Seq(0, bigDecimal)
+        formBinderBox(formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString), box = 42).errors mustBe Seq(
+          FormError(originalKey, originalDecimalRangeMessageKey, rangeValueArgs),
+          FormError(amendedKey, amendedDecimalRangeMessageKey,  rangeValueArgs)
+        )
+      }
+    }
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
@@ -486,12 +497,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
     }
   }
 
-  "A weight form " when {
+  "A decimal form " when {
     "built from a valid model" should {
       "generate the correct mapping" in {
-        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(35).fill(model)
-        form.data mustBe formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString)
+        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(decimalOriginalValue.toString, decimalAmendedValue.toString)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(42).fill(model)
+        form.data mustBe formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString)
       }
     }
   }
