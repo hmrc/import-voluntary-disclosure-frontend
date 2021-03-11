@@ -24,6 +24,7 @@ object AmendReasonValuesMessages extends BaseMessages {
   val box22P1: String = "You must include the currency code followed by the invoice price or the customs value, for example GBP871.12 or EUR2908946."
   val box35PageTitle: String = "Box 35 gross mass amendment for item 1"
   val box35P1: String = "Must be in kilograms and can be up to 3 decimal places."
+  val box46PageTitle: String = "Box 46 statistical value amendment for item 1"
   val originalAmount: String = "Original value"
   val amendedAmount: String = "Amended value"
   val originalNonEmpty: String = "Enter the original value"
@@ -39,6 +40,14 @@ object AmendReasonValuesMessages extends BaseMessages {
   val amendedInvalidWeightDecimal: String = "Amended value must have 3 decimal places or fewer"
   val originalInvalidWeightOutOfRange: String = "Original value must be between 0 and 9999999.999kg"
   val amendedInvalidWeightOutOfRange: String = "Amended value must be between 0 and 9999999.999kg"
+  val originalCurrencyNonEmpty: String = "Enter the original value, in pounds"
+  val amendedCurrencyNonEmpty: String = "Enter the amended value, in pounds"
+  val originalInvalidCurrencyFormat: String = "Original value must be a number"
+  val amendedInvalidCurrencyFormat: String = "Amended value must be a number"
+  val originalInvalidCurrencyDecimal: String = "Original value must have 2 decimal places or fewer"
+  val amendedInvalidCurrencyDecimal: String = "Amended value must have 2 decimal places or fewer"
+  val originalInvalidCurrencyOutOfRange: String = "Original value must be between £0 and £999999999999.99"
+  val amendedInvalidCurrencyOutOfRange: String = "Amended value must be between £0 and £999999999999.99"
 
   val boxContent: Map[Int, ExpectedContent] = Map(
     22 -> ExpectedContent(
