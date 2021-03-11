@@ -32,10 +32,10 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
       case 34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
       case 35 | 38  => decimalFormMapping(
         requiredKey = "weight.missing",
-        invalidFormatKey = "weight.nonNumeric",
+        nonNumericKey = "weight.nonNumeric",
         invalidDecimalPlacesKey = "weight.invalidDecimals",
         outOfRangeKey = "weight.outOfRange",
-        numDecimalPoints = 3,
+        numDecimalPlaces = 3,
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
@@ -44,10 +44,10 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
       case 39 => textFormMapping(regex = """^[0-9a-zA-Z]{7}$""")
       case 41  => decimalFormMapping(
         requiredKey = "unit.missing",
-        invalidFormatKey = "unit.nonNumeric",
+        nonNumericKey = "unit.nonNumeric",
         invalidDecimalPlacesKey = "unit.invalidDecimals",
         outOfRangeKey = "unit.outOfRange",
-        numDecimalPoints = 3,
+        numDecimalPlaces = 3,
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
@@ -83,25 +83,25 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
 
   private def decimalFormMapping(
                                   requiredKey: String,
-                                  invalidFormatKey: String,
+                                  nonNumericKey: String,
                                   invalidDecimalPlacesKey: String,
                                   outOfRangeKey: String,
-                                  numDecimalPoints: Int,
+                                  numDecimalPlaces: Int,
                                   rangeMin: Option[BigDecimal] = None,
                                   rangeMax: Option[BigDecimal] = None
                                 ): Form[UnderpaymentReasonValue] = {
     Form(
       mapping(
         "original" -> numeric(
-          numDecimalPoints = numDecimalPoints,
+          numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.original." + requiredKey,
-          nonNumericKey = "amendmentValue.error.original." + invalidFormatKey,
+          nonNumericKey = "amendmentValue.error.original." + nonNumericKey,
           invalidDecimalPlacesKey = "amendmentValue.error.original." + invalidDecimalPlacesKey)
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.original." + outOfRangeKey)),
         "amended" -> numeric(
-          numDecimalPoints = numDecimalPoints,
+          numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.amended." + requiredKey,
-          nonNumericKey = "amendmentValue.error.amended." + invalidFormatKey,
+          nonNumericKey = "amendmentValue.error.amended." + nonNumericKey,
           invalidDecimalPlacesKey = "amendmentValue.error.amended." + invalidDecimalPlacesKey)
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.amended." + outOfRangeKey))
       )

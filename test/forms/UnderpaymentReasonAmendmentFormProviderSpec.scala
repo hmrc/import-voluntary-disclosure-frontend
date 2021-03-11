@@ -18,7 +18,7 @@ package forms
 
 import base.SpecBase
 import models.UnderpaymentReasonValue
-import play.api.data.validation.{Invalid, Valid}
+import play.api.data.validation.{Constraint, Invalid, Valid}
 import play.api.data.{Form, FormError}
 
 class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
@@ -537,6 +537,43 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
 
     "return Invalid for identical strings" in {
       diff(UnderpaymentReasonValue("Field1", "Field1")) mustEqual Invalid("error.key")
+    }
+  }
+
+  "minMaxRange Constraint" must {
+
+    val minAmount = BigDecimal(0)
+    val maxAmount = BigDecimal(100)
+    lazy val rangeResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), Some(maxAmount),"error.key")
+    lazy val minResult: Constraint[BigDecimal] = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), None,"error.key")
+    lazy val maxResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(None, Some(maxAmount),"error.key")
+
+    "return Valid if value is greater than Min" in {
+      minResult(BigDecimal(5)) mustEqual Valid
+    }
+
+    "return Invalid if value is less than Min" in {
+      minResult(BigDecimal(-1)) mustEqual Invalid("error.key", minAmount)
+    }
+
+    "return Valid if value is less than Max" in {
+      maxResult(BigDecimal(5)) mustEqual Valid
+    }
+
+    "return Invalid if value is greater than Max" in {
+      maxResult(BigDecimal(101)) mustEqual Invalid("error.key", maxAmount)
+    }
+
+    "return Valid if value is in Range" in {
+      rangeResult(BigDecimal(5)) mustEqual Valid
+    }
+
+    "return Invalid if value is greater than Range" in {
+      rangeResult(BigDecimal(101)) mustEqual Invalid("error.key", minAmount, maxAmount)
+    }
+
+    "return Invalid if value is less than Range" in {
+      rangeResult(BigDecimal(-1)) mustEqual Invalid("error.key", minAmount, maxAmount)
     }
   }
 }

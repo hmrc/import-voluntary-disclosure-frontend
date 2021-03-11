@@ -35,15 +35,15 @@ trait Mappings extends Formatters with Constraints {
     of(intFormatter(requiredKey, wholeNumberKey, nonNumericKey))
 
   protected def numeric(isCurrency: Boolean = false,
-                        numDecimalPoints: Int = 2,
+                        numDecimalPlaces: Int = 2,
                         requiredKey: String = "error.required",
                         invalidDecimalPlacesKey: String = "error.invalidNumeric",
                         nonNumericKey: String = "error.nonNumeric"
                        ): FieldMapping[BigDecimal] =
     if (isCurrency) {
-      of(numericFormatter(isCurrency = true, numDecimalPoints, requiredKey, invalidDecimalPlacesKey, nonNumericKey))
+      of(numericFormatter(isCurrency = true, numDecimalPlaces, requiredKey, invalidDecimalPlacesKey, nonNumericKey))
     } else {
-      of(numericFormatter(isCurrency = false, numDecimalPoints, requiredKey, invalidDecimalPlacesKey, nonNumericKey))
+      of(numericFormatter(isCurrency = false, numDecimalPlaces, requiredKey, invalidDecimalPlacesKey, nonNumericKey))
     }
 
   protected def boolean(requiredKey: String = "error.required",

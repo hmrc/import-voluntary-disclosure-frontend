@@ -37,8 +37,8 @@ object AmendReasonValuesMessages extends BaseMessages {
   val amendedInvalidWeightFormat: String = "Amended value must be a number"
   val originalInvalidWeightDecimal: String = "Original value must have 3 decimal places or fewer"
   val amendedInvalidWeightDecimal: String = "Amended value must have 3 decimal places or fewer"
-  val originalInvalidWeightOutOfRange: String = "Original value must be 9999999.999kg or fewer"
-  val amendedInvalidWeightOutOfRange: String = "Amended value must be 9999999.999kg or fewer"
+  val originalInvalidWeightOutOfRange: String = "Original value must be between 0 and 9999999.999kg"
+  val amendedInvalidWeightOutOfRange: String = "Amended value must be between 0 and 9999999.999kg"
 
   val boxContent: Map[Int, ExpectedContent] = Map(
     22 -> ExpectedContent(
