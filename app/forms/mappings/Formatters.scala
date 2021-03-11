@@ -86,7 +86,7 @@ trait Formatters {
                                          args: Seq[String] = Seq.empty): Formatter[BigDecimal] =
     new Formatter[BigDecimal] {
 
-      val isdp = """(^-?\d*$)|(^-?\d*\.\d{1,""" + numDecimalPlaces + """}$)"""
+      val correctDecimalPlaces = """(^-?\d*$)|(^-?\d*\.\d{1,""" + numDecimalPlaces + """}$)"""
       val validNumeric = """(^-?\d*$)|(^-?\d*\.\d*$)"""
 
       private val baseFormatter = stringFormatter(requiredKey)
@@ -103,7 +103,7 @@ trait Formatters {
         val validation: PartialFunction[String, Either[Seq[FormError], BigDecimal]] = {
           case s if !s.matches(validNumeric) =>
             Left(Seq(FormError(key, nonNumericKey, args)))
-          case s if !s.matches(isdp) =>
+          case s if !s.matches(correctDecimalPlaces) =>
             Left(Seq(FormError(key, invalidDecimalPlacesKey, args)))
           case s =>
             nonFatalCatch
