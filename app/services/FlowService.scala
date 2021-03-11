@@ -16,9 +16,10 @@
 
 package services
 
+import models.{UnderpaymentType, UserAnswers, UserType}
+import pages.{ImporterEORIExistsPage, UnderpaymentTypePage, UserTypePage}
+
 import javax.inject.Singleton
-import models.{UserAnswers, UserType}
-import pages.{ImporterEORIExistsPage, UserTypePage}
 
 @Singleton
 class FlowService {
@@ -33,6 +34,12 @@ class FlowService {
     userAnswers.get(ImporterEORIExistsPage) match {
       case Some(value) => value
       case _ => false
+    }
+
+  def underpaymentTypesSelected(userAnswers: UserAnswers): UnderpaymentType =
+    userAnswers.get(UnderpaymentTypePage) match {
+      case Some(value) => value
+      case _ => UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
     }
 
 }

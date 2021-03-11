@@ -16,10 +16,32 @@
 
 package models
 
+import play.api.i18n.Messages
 import play.api.libs.json.Json
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
+import views.ViewUtils.hint
 
 case class UnderpaymentType(customsDuty: Boolean, importVAT: Boolean, exciseDuty: Boolean)
 
 object UnderpaymentType {
   implicit val format = Json.format[UnderpaymentType]
+
+  // TODO take in the boolean and then check the radio thats selected if selected
+  def options()(implicit messages: Messages): Seq[RadioItem] =
+    Seq(
+      RadioItem(
+        value = Some("true"),
+        content = Text(messages("deferment.payingByDeferment")),
+        hint = None,
+        checked = false // TODO
+      ),
+      RadioItem(
+        value = Some("false"),
+        content = Text(messages("deferment.payingByOther")),
+        hint = Some(hint("deferment.hint")),
+        checked = false // TODO
+      )
+    )
+
 }

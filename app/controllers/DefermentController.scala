@@ -17,17 +17,18 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{DefermentFormProvider, UserTypeFormProvider}
-import models.UserAnswers
-import pages.{DefermentPage, UserTypePage}
+import forms.DefermentFormProvider
+import models.{UnderpaymentType, UserAnswers}
+import pages.DefermentPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
+import services.FlowService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{DefermentView, UserTypeView}
-import javax.inject.{Inject, Singleton}
+import views.html.DefermentView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -38,26 +39,30 @@ class DefermentController @Inject()(identify: IdentifierAction,
                                     requireData: DataRequiredAction,
                                     sessionRepository: SessionRepository,
                                     mcc: MessagesControllerComponents,
+                                    flowService: FlowService,
                                     formProvider: DefermentFormProvider,
                                     view: DefermentView)
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    Future.successful(Ok(view(form, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => Future.successful(
+        BadRequest(
+          view(formWithErrors, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options())
+        )
+      ),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentPage, value))
           _ <- sessionRepository.set(updatedAnswers)
-        }  yield {
+        } yield {
           if (value) {
             Redirect(controllers.routes.DefermentController.onLoad())
           } else {
@@ -69,5 +74,16 @@ class DefermentController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def backLink: Call = Call("GET", controllers.routes.TraderAddressCorrectController.onLoad().url)
+
+  private[controllers] def getHeaderMessage(userAnswers: UserAnswers) = {
+    flowService.underpaymentTypesSelected(userAnswers) match {
+      case UnderpaymentType(false, true, false) => "deferment.headingOnlyVAT"
+      case UnderpaymentType(_, false, _) => "deferment.headingDutyOnly"
+      case UnderpaymentType(true, true, true) => "deferment.headingVATandDuty"
+      case UnderpaymentType(true, true, false) => "deferment.headingVATandDuty"
+      case UnderpaymentType(false, true, true) => "deferment.headingVATandDuty"
+      case _ => ""
+    }
+  }
 
 }
