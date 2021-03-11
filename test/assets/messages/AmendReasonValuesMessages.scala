@@ -79,7 +79,10 @@ object AmendReasonValuesMessages extends BaseMessages {
     42 -> ExpectedContent("n/a", "n/a", Some("n/a")),
     43 -> ExpectedContent("n/a", "n/a", Some("n/a")),
     45 -> ExpectedContent("n/a", "n/a", Some("n/a")),
-    46 -> ExpectedContent("n/a", "n/a", Some("n/a")),
+    46 -> ExpectedContent(
+      "Box 46 statistical value amendment for item 1",
+      "Box 46 statistical value amendment for item 1",
+      Some("n/a")),
     62 -> ExpectedContent(
       "Box 62 air transport costs amendment",
       "Box 62 air transport costs amendment",
