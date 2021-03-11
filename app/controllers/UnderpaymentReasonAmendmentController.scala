@@ -26,7 +26,6 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{TextAmendmentView, WeightAmendmentView}
 import javax.inject.{Inject, Singleton}
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -38,7 +37,8 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                       mcc: MessagesControllerComponents,
                                                       formProvider: UnderpaymentReasonAmendmentFormProvider,
                                                       textAmendmentView: TextAmendmentView,
-                                                      weightAmendmentView: WeightAmendmentView)
+                                                      weightAmendmentView: WeightAmendmentView
+                                                     )
   extends FrontendController(mcc) with I18nSupport {
 
   private[controllers] def backLink(boxNumber: Int): Call = {
