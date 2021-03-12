@@ -22,10 +22,10 @@
     button: components.button
 )
 
-@(form: Form[_], backLink: Call, headerMessage: String, radioItems: Seq[RadioItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, headerAndTitleMessage: String, radioItems: Seq[RadioItem])(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("deferment.pageTitle"),
+    pageTitle = messages(headerAndTitleMessage),
     form = Some(form),
     customBackLinkUrl = Some(backLink)
 ) {
@@ -35,7 +35,7 @@
    @formHelper(action = controllers.routes.DefermentController.onSubmit()) {
        @inputRadio(
            form = form,
-           legend = messages(headerMessage),
+           legend = messages(headerAndTitleMessage),
            items = radioItems,
            legendAsHeading = true
        )

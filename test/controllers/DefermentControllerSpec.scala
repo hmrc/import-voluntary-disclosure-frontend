@@ -19,9 +19,10 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.DefermentFormProvider
+import messages.DefermentMessages
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
-import pages.DefermentPage
+import models.{UnderpaymentType, UserAnswers}
+import pages.{DefermentPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -62,6 +63,34 @@ class DefermentControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+
+    "return VAT only header and title" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentPage, true).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(false, true, false)).success.value
+      )
+      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingOnlyVAT
+    }
+
+    "return duty only header and title" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentPage, true).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, false, false)).success.value
+      )
+      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingDutyOnly
+    }
+
+    "return duty and VAT header and title" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentPage, true).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+      )
+      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingVATandDuty
+    }
+
   }
 
   "POST /" when {

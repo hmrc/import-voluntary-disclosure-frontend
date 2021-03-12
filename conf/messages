@@ -198,7 +198,6 @@ uploadProgress.request = Please refresh to view latest progress
 uploadProgress.refresh = Refresh
 
 # Deferement page
-deferment.pageTitle = Are you paying by deferment?
 deferment.headingOnlyVAT = How will you pay for the import VAT owed?
 deferment.headingVATandDuty = How will you pay for the import VAT and duty owed?
 deferment.headingDutyOnly = How will you pay for the duty owed?
