@@ -64,6 +64,10 @@ class DefermentControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
+  }
+
+  "Controller getHeaderMessage" should {
+
     "return VAT only header and title" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
