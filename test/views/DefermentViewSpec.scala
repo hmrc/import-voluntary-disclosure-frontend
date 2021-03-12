@@ -39,7 +39,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
@@ -62,7 +62,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
@@ -85,7 +85,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
@@ -108,7 +108,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
@@ -131,7 +131,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
@@ -154,7 +154,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+        controllers.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty",
         UnderpaymentType.options(form)
       )(fakeRequest, messages)
