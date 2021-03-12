@@ -19,12 +19,11 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.DefermentFormProvider
 import models.{UnderpaymentType, UserAnswers}
-import pages.DefermentPage
+import pages.{DefermentPage, UnderpaymentTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import services.FlowService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.DefermentView
 
@@ -39,18 +38,17 @@ class DefermentController @Inject()(identify: IdentifierAction,
                                     requireData: DataRequiredAction,
                                     sessionRepository: SessionRepository,
                                     mcc: MessagesControllerComponents,
-                                    flowService: FlowService,
                                     formProvider: DefermentFormProvider,
                                     view: DefermentView)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val isChecked = request.userAnswers.get(DefermentPage)
-    val form = isChecked match {
-      case Some(value) => formProvider().fill(value)
-      case _ => formProvider()
+  lazy val backLink: Call = controllers.routes.TraderAddressCorrectController.onLoad()
+
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
+      formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options(isChecked))))
+    Future.successful(Ok(view(form, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options(form))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -61,7 +59,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
             formWithErrors,
             backLink,
             getHeaderMessage(request.userAnswers),
-            UnderpaymentType.options(request.userAnswers.get(DefermentPage))
+            UnderpaymentType.options(formWithErrors)
           )
         )
       ),
@@ -80,16 +78,13 @@ class DefermentController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def backLink: Call = Call("GET", controllers.routes.TraderAddressCorrectController.onLoad().url)
-
-  private[controllers] def getHeaderMessage(userAnswers: UserAnswers) = {
-    flowService.underpaymentTypesSelected(userAnswers) match {
-      case UnderpaymentType(true, true, true) => "deferment.headingVATandDuty"
-      case UnderpaymentType(true, true, false) => "deferment.headingVATandDuty"
-      case UnderpaymentType(false, true, true) => "deferment.headingVATandDuty"
-      case UnderpaymentType(false, true, false) => "deferment.headingOnlyVAT"
-      case UnderpaymentType(_, false, _) => "deferment.headingDutyOnly"
-      case _ => ""
+  private[controllers] def getHeaderMessage(userAnswers: UserAnswers): String = {
+    userAnswers.get(UnderpaymentTypePage).fold("not set") {
+      value => value.dutyType match {
+        case "vat" => "deferment.headingOnlyVAT"
+        case "duty" => "deferment.headingDutyOnly"
+        case "both" => "deferment.headingVATandDuty"
+      }
     }
   }
 

@@ -16,36 +16,39 @@
 
 package models
 
+import play.api.data.Form
 import play.api.i18n.Messages
 import play.api.libs.json.Json
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import views.ViewUtils.hint
 
-case class UnderpaymentType(customsDuty: Boolean, importVAT: Boolean, exciseDuty: Boolean)
+case class UnderpaymentType(customsDuty: Boolean, importVAT: Boolean, exciseDuty: Boolean) {
+  def dutyType: String = {
+    this match {
+      case UnderpaymentType(false, true, false) => "vat"
+      case UnderpaymentType(_, false, _) => "duty"
+      case _ => "both"
+    }
+  }
+}
 
 object UnderpaymentType {
   implicit val format = Json.format[UnderpaymentType]
 
-  def options(checked: Option[Boolean])(implicit messages: Messages): Seq[RadioItem] =
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] =
     Seq(
       RadioItem(
         value = Some("true"),
         content = Text(messages("deferment.payingByDeferment")),
         hint = None,
-        checked = checked match {
-          case Some(value) => if (value) true else false
-          case None => false
-        }
+        checked = form("value").value.contains("true")
       ),
       RadioItem(
         value = Some("false"),
         content = Text(messages("deferment.payingByOther")),
         hint = Some(hint("deferment.hint")),
-        checked = checked match {
-          case Some(value) => if (!value) true else false
-          case None => false
-        }
+        checked = form("value").value.contains("false")
       )
     )
 

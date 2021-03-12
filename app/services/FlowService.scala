@@ -36,10 +36,4 @@ class FlowService {
       case _ => false
     }
 
-  def underpaymentTypesSelected(userAnswers: UserAnswers): UnderpaymentType =
-    userAnswers.get(UnderpaymentTypePage) match {
-      case Some(value) => value
-      case _ => UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
-    }
-
 }
