@@ -84,11 +84,11 @@ class DefermentController @Inject()(identify: IdentifierAction,
 
   private[controllers] def getHeaderMessage(userAnswers: UserAnswers) = {
     flowService.underpaymentTypesSelected(userAnswers) match {
-      case UnderpaymentType(false, true, false) => "deferment.headingOnlyVAT"
-      case UnderpaymentType(_, false, _) => "deferment.headingDutyOnly"
       case UnderpaymentType(true, true, true) => "deferment.headingVATandDuty"
       case UnderpaymentType(true, true, false) => "deferment.headingVATandDuty"
       case UnderpaymentType(false, true, true) => "deferment.headingVATandDuty"
+      case UnderpaymentType(false, true, false) => "deferment.headingOnlyVAT"
+      case UnderpaymentType(_, false, _) => "deferment.headingDutyOnly"
       case _ => ""
     }
   }
