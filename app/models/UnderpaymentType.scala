@@ -27,20 +27,25 @@ case class UnderpaymentType(customsDuty: Boolean, importVAT: Boolean, exciseDuty
 object UnderpaymentType {
   implicit val format = Json.format[UnderpaymentType]
 
-  // TODO take in the boolean and then check the radio thats selected if selected
-  def options()(implicit messages: Messages): Seq[RadioItem] =
+  def options(checked: Option[Boolean])(implicit messages: Messages): Seq[RadioItem] =
     Seq(
       RadioItem(
         value = Some("true"),
         content = Text(messages("deferment.payingByDeferment")),
         hint = None,
-        checked = false // TODO
+        checked = checked match {
+          case Some(value) => if (value) true else false
+          case None => false
+        }
       ),
       RadioItem(
         value = Some("false"),
         content = Text(messages("deferment.payingByOther")),
         hint = Some(hint("deferment.hint")),
-        checked = false // TODO
+        checked = checked match {
+          case Some(value) => if (!value) true else false
+          case None => false
+        }
       )
     )
 

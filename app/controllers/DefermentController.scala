@@ -45,17 +45,24 @@ class DefermentController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
-      formProvider().fill
+    val isChecked = request.userAnswers.get(DefermentPage)
+    val form = isChecked match {
+      case Some(value) => formProvider().fill(value)
+      case _ => formProvider()
     }
-    Future.successful(Ok(view(form, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options())))
+    Future.successful(Ok(view(form, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options(isChecked))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(
         BadRequest(
-          view(formWithErrors, backLink, getHeaderMessage(request.userAnswers), UnderpaymentType.options())
+          view(
+            formWithErrors,
+            backLink,
+            getHeaderMessage(request.userAnswers),
+            UnderpaymentType.options(request.userAnswers.get(DefermentPage))
+          )
         )
       ),
       value => {
