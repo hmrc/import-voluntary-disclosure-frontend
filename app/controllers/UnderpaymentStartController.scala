@@ -19,12 +19,10 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
-import models.UserAnswers
-import pages.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{SupportingDocView, UnderpaymentStartView}
+import views.html.UnderpaymentStartView
 
 import scala.concurrent.Future
 
