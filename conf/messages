@@ -452,3 +452,12 @@ confirmEORI.pageTitle = Confirm your EORI details
 confirmEORI.heading = Confirm your EORI details
 confirmEORI.eoriNumber = EORI number
 confirmEORI.name = Name
+
+# Underpayment Start page
+UnderpaymentStart.pageTitle = Tell us what was underpaid
+UnderpaymentStart.heading = Tell us what was underpaid
+UnderpaymentStart.p1 = You will need to tell us about each type of tax or duty where not enough was paid for the original import. It does not matter which you tell us about first.
+UnderpaymentStart.p2 = You will need to provide:
+UnderpaymentStart.bullet1 = the type of duty or tax that was underpaid
+UnderpaymentStart.bullet2 = the amount of tax or duty that was paid to HMRC with the original import declaration
+UnderpaymentStart.bullet3 = the amount that should have been paid to HMRC
