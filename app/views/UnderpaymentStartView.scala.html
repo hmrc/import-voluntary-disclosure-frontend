@@ -25,19 +25,19 @@
 
 @(backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("UnderpaymentStart.pageTitle"),
+@layout(pageTitle = messages("underpaymentStart.pageTitle"),
     customBackLinkUrl = Some(backLink)) {
 
-    @h1(messages("UnderpaymentStart.heading"))
+    @h1(messages("underpaymentStart.heading"))
 
-    @p{ @messages("UnderpaymentStart.p1") }
+    @p{ @messages("underpaymentStart.p1") }
 
-    @p{ @messages("UnderpaymentStart.p2") }
+    @p{ @messages("underpaymentStart.p2") }
 
     @bullets(Seq(
-        Html(messages("UnderpaymentStart.bullet1")),
-        Html(messages("UnderpaymentStart.bullet2")),
-        Html(messages("UnderpaymentStart.bullet3"))
+        Html(messages("underpaymentStart.bullet1")),
+        Html(messages("underpaymentStart.bullet2")),
+        Html(messages("underpaymentStart.bullet3"))
         ))
 
     @linkButton(url = controllers.routes.UnderpaymentTypeController.onLoad().url,messages(("common.button.continue")))
