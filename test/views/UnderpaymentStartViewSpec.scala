@@ -36,42 +36,42 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       s"have the correct page title of '${UnderpaymentStartMessages.pageTitle}'" in {
         document.title mustBe UnderpaymentStartMessages.pageTitle
       }
+    }
+  }
 
-      "it" should {
-        lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad())(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page heading of '${UnderpaymentStartMessages.heading}'" in {
-          elementText("h1") mustBe UnderpaymentStartMessages.heading
-        }
+  "it" should {
+    lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad())(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+    s"have the correct page heading of '${UnderpaymentStartMessages.heading}'" in {
+      elementText("h1") mustBe UnderpaymentStartMessages.heading
+    }
 
-        s"have the correct page text of '${UnderpaymentStartMessages.p1}'" in {
-          elementText("#main-content p:nth-of-type(1)") mustBe UnderpaymentStartMessages.p1
-        }
+    s"have the correct page text of '${UnderpaymentStartMessages.p1}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe UnderpaymentStartMessages.p1
+    }
 
-        s"have the correct page text of '${UnderpaymentStartMessages.p2}'" in {
-          elementText("#main-content p:nth-of-type(2)") mustBe UnderpaymentStartMessages.p2
-        }
+    s"have the correct page text of '${UnderpaymentStartMessages.p2}'" in {
+      elementText("#main-content p:nth-of-type(2)") mustBe UnderpaymentStartMessages.p2
+    }
 
-        s"have the correct page text of '${UnderpaymentStartMessages.bullet1}'" in {
-          elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.bullet1
-        }
+    s"have the correct page text of '${UnderpaymentStartMessages.bullet1}'" in {
+      elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.bullet1
+    }
 
-        s"have the correct page text of '${UnderpaymentStartMessages.bullet2}'" in {
-          elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.bullet2
-        }
+    s"have the correct page text of '${UnderpaymentStartMessages.bullet2}'" in {
+      elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.bullet2
+    }
 
-        s"have the correct page text of '${UnderpaymentStartMessages.bullet3}'" in {
-          elementText("#main-content li:nth-of-type(3)") mustBe UnderpaymentStartMessages.bullet3
-        }
+    s"have the correct page text of '${UnderpaymentStartMessages.bullet3}'" in {
+      elementText("#main-content li:nth-of-type(3)") mustBe UnderpaymentStartMessages.bullet3
+    }
 
-        "render a continue button with the correct URL " in {
-          elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UnderpaymentTypeController.onLoad().url)
-        }
+    "render a continue button with the correct URL " in {
+      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UnderpaymentTypeController.onLoad().url)
+    }
 
-        "render a back link with the correct URL" in {
-          elementAttributes("#back-link") must contain("href" -> controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
-        }
-      }
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
     }
   }
 }
