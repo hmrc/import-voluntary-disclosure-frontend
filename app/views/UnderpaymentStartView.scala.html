@@ -23,7 +23,7 @@
       linkButton: components.linkButton
       )
 
-@(backLink: Call)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("UnderpaymentStart.pageTitle"),
     customBackLinkUrl = Some(backLink)) {

@@ -32,9 +32,9 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
 
     lazy val controller = new UnderpaymentStartController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig)
+      messagesControllerComponents, dataRequiredAction, view)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view = injector.instanceOf[UnderpaymentStartView]
+    val view: UnderpaymentStartView = injector.instanceOf[UnderpaymentStartView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 

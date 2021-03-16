@@ -31,8 +31,7 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             mcc: MessagesControllerComponents,
                                             requireData: DataRequiredAction,
-                                            view: UnderpaymentStartView,
-                                            implicit val appConfig: AppConfig)
+                                            view: UnderpaymentStartView)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.EnterCustomsProcedureCodeController.onLoad()
