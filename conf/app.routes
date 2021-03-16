@@ -151,5 +151,5 @@ POST        /disclosure/importer-eori-number                             control
 
 GET         /confirm-eori                                                controllers.ConfirmEORIDetailsController.onLoad
 
-GET         /disclosure/underpayment-start                               controllers.UnderpaymentStartController.onLoad
+GET         /disclosure/underpayment-introduction                        controllers.UnderpaymentStartController.onLoad
 
