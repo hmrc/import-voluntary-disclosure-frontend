@@ -75,5 +75,74 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
     }
   }
 
+  it should {
+
+    val form: Form[String] = formProvider.apply()
+    lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons)(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct h1 of '${UnderpaymentTypeMessages.pageHeader}'" in {
+      elementText("h1") mustBe UnderpaymentTypeMessages.pageHeader
+    }
+
+    s"have the correct value for the first radio button of '${UnderpaymentTypeMessages.importVAT}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe
+        UnderpaymentTypeMessages.importVAT
+    }
+
+    s"have the correct value for the second radio button of '${UnderpaymentTypeMessages.customsDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe
+        UnderpaymentTypeMessages.customsDuty
+    }
+
+    s"have the correct value for the third radio button of '${UnderpaymentTypeMessages.exciseDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(3)") mustBe
+        UnderpaymentTypeMessages.exciseDuty
+    }
+
+    s"have the correct value for the fourth radio button of '${UnderpaymentTypeMessages.additionalDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(4)") mustBe
+        UnderpaymentTypeMessages.additionalDuty
+    }
+
+    s"have the correct value for the fifth radio button of '${UnderpaymentTypeMessages.definitiveAntiDumpingDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(5)") mustBe
+        UnderpaymentTypeMessages.definitiveAntiDumpingDuty
+    }
+
+    s"have the correct value for the sixth radio button of '${UnderpaymentTypeMessages.provisionalAntiDumpingDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(6)") mustBe
+        UnderpaymentTypeMessages.provisionalAntiDumpingDuty
+    }
+
+    s"have the correct value for the seventh radio button of '${UnderpaymentTypeMessages.definitiveCountervailingDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(7)") mustBe
+        UnderpaymentTypeMessages.definitiveCountervailingDuty
+    }
+
+    s"have the correct value for the eighth radio button of '${UnderpaymentTypeMessages.provisionalCountervailingDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(8)") mustBe
+        UnderpaymentTypeMessages.provisionalCountervailingDuty
+    }
+
+    s"have the correct value for the ninth radio button of '${UnderpaymentTypeMessages.agriculturalDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(9)") mustBe
+        UnderpaymentTypeMessages.agriculturalDuty
+    }
+
+    s"have the correct value for the tenth radio button of '${UnderpaymentTypeMessages.compensatoryDuty}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(10)") mustBe
+        UnderpaymentTypeMessages.compensatoryDuty
+    }
+
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> backLink.url)
+    }
+
+    s"have the correct Continue button" in {
+      elementText(".govuk-button") mustBe continue
+    }
+
+  }
 
 }
