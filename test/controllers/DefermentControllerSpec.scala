@@ -21,8 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.DefermentFormProvider
 import messages.DefermentMessages
 import mocks.repositories.MockSessionRepository
-import models.{UnderpaymentType, UserAnswers}
-import pages.{DefermentPage, UnderpaymentTypePage}
+import models.{UnderpaymentType, UserAnswers, UserType}
+import pages.{DefermentPage, UnderpaymentTypePage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -107,18 +107,59 @@ class DefermentControllerSpec extends ControllerSpecBase {
       }
 
       "return a SEE OTHER response when true" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Importer).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "return the correct location header when user is importer and has import VAT and custom duties" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Importer).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterDanController.onLoad().url)
+      }
+
+      "return the correct location header when user is representative and has import VAT and excise duty" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(false, true, true)).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
+      }
+
+      "return the correct location header when user is representative and has import VAT and custom duty" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
+      }
+
+      "return the correct location header when user is representative and other duties and no import VAT" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, false, true)).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Importer).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+        )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()
