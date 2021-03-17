@@ -129,8 +129,8 @@ SupportDoc.fileSize = Each file must be {0}MB or less, and in one of the followi
 error.summary.title = There is a problem
 
 # Underpayment Type
-underpaymentType.pageTitle = What have you underpaid?
-underpaymentType.pageHeader = What have you underpaid?
+underpaymentType.pageTitle = Which type of tax or duty was underpaid?
+underpaymentType.pageHeader = Which type of tax or duty was underpaid?
 underpaymentType.pageWarning = Select all that apply.
 underpaymentType.error.required = Select which type of tax or duty was underpaid
 underpaymentType.importVAT = Import VAT (B00)

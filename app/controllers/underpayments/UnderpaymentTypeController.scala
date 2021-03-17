@@ -18,7 +18,6 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentTypeFormProvider
-import pages.ExciseDutyPage
 import pages.underpayments.TempUnderpaymentTypePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
@@ -64,9 +63,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           value match {
-            case "B00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
-            case "A00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
-            case "E00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+            case _ => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
           }
         }
       }
@@ -75,47 +72,27 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
 
   private[underpayments] def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
     Seq(
-      RadioItem(
-        value = Some("B00"),
-        content = Text(messages("underpaymentType.importVAT")),
-        checked = form("value").value.contains("B00")
-      ),
-      RadioItem(
-        value = Some("A00"),
-        content = Text(messages("underpaymentType.customsDuty")),
-        checked = form("value").value.contains("A00")
-      ),
-      RadioItem(
-        value = Some("E00"),
-        content = Text(messages("underpaymentType.exciseDuty")),
-        checked = form("value").value.contains("E00")
-      ),
-      RadioItem(
-        value = Some("A20"),
-        content = Text(messages("underpaymentType.additionalDuty")),
-        checked = form("value").value.contains("A20")
-      ),
-      RadioItem(
-        value = Some("A30"),
-        content = Text(messages("underpaymentType.definitiveAntiDumpingDuty")),
-        checked = form("value").value.contains("A30")
-      ),
-      RadioItem(
-        value = Some("A35"),
-        content = Text(messages("underpaymentType.provisionalAntiDumpingDuty")),
-        checked = form("value").value.contains("A35")
-      ),
-      RadioItem(
-        value = Some("A40"),
-        content = Text(messages("underpaymentType.definitiveCountervailingDuty")),
-        checked = form("value").value.contains("A40")
-      ),
-      RadioItem(
-        value = Some("A10"),
-        content = Text(messages("underpaymentType.compensatoryDuty")),
-        checked = form("value").value.contains("A10")
-      )
+      createRadioButton(form, "B00", "underpaymentType.importVAT"),
+      createRadioButton(form, "A00", "underpaymentType.customsDuty"),
+      createRadioButton(form, "E00", "underpaymentType.exciseDuty"),
+      createRadioButton(form, "A20", "underpaymentType.additionalDuty"),
+      createRadioButton(form, "A30", "underpaymentType.definitiveAntiDumpingDuty"),
+      createRadioButton(form, "A35", "underpaymentType.provisionalAntiDumpingDuty"),
+      createRadioButton(form, "A40", "underpaymentType.definitiveCountervailingDuty"),
+      createRadioButton(form, "A45", "underpaymentType.provisionalCountervailingDuty"),
+      createRadioButton(form, "A10", "underpaymentType.agriculturalDuty"),
+      createRadioButton(form, "D10", "underpaymentType.compensatoryDuty"),
+    )
+  }
 
+  private[underpayments] def createRadioButton(
+                                                form: Form[_],
+                                                value: String,
+                                                messageKey: String)(implicit messages: Messages): RadioItem = {
+    RadioItem(
+      value = Some(value),
+      content = Text(messages(messageKey)),
+      checked = form("value").value.contains(value)
     )
   }
 
