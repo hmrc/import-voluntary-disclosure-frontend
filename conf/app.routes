@@ -155,3 +155,6 @@ GET         /disclosure/importer-deferment-account-number                control
 POST        /disclosure/importer-deferment-account-number                controllers.ImporterDanController.onSubmit
 
 GET         /disclosure/underpayment-introduction                        controllers.UnderpaymentStartController.onLoad
+
+GET         /disclosure/split-deferment-payment                          controllers.SplitPaymentController.onLoad
+POST        /disclosure/split-deferment-payment                          controllers.SplitPaymentController.onSubmit
