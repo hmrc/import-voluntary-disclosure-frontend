@@ -18,15 +18,19 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentTypeFormProvider
-import models.UnderpaymentType
-import pages.UnderpaymentTypePage
-import play.api.i18n.I18nSupport
+import pages.ExciseDutyPage
+import pages.underpayments.TempUnderpaymentTypePage
+import play.api.data.Form
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
@@ -41,45 +45,78 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val form = request.userAnswers.get(TempUnderpaymentTypePage).fold(formProvider()) {
+      formProvider().fill
+    }
     Future.successful(
-      Ok(
-        underpaymentTypeView(
-          formProvider.apply(),
-          request.userAnswers.get(UnderpaymentTypePage).getOrElse(
-            UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false)
-          ),
-          backLink
-        )
-      )
+      Ok(underpaymentTypeView(form, backLink, options(form)))
     )
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(
-          BadRequest(
-            underpaymentTypeView(
-              formWithErrors,
-              UnderpaymentType(customsDuty = false, importVAT = false, exciseDuty = false),
-              backLink
-            )
-          )
-        )
+        Future.successful(BadRequest(underpaymentTypeView(formWithErrors, backLink, options(formWithErrors))))
       },
       value => {
-        Future.successful(Redirect(controllers.routes.UnderpaymentTypeController.onLoad()))
-        //        for {
-        //          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePage, value))
-        //          _ <- sessionRepository.set(updatedAnswers)
-        //        } yield {
-        //          value match {
-        //            case UnderpaymentType(true, _, _) => Redirect(controllers.routes.CustomsDutyController.onLoad())
-        //            case UnderpaymentType(false, true, _) => Redirect(controllers.routes.ImportVATController.onLoad())
-        //            case UnderpaymentType(false, false, true) => Redirect(controllers.routes.ExciseDutyController.onLoad())
-        //          }
-        //        }
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          value match {
+            case "B00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+            case "A00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+            case "E00" => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+          }
+        }
       }
     )
   }
+
+  private[underpayments] def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
+    Seq(
+      RadioItem(
+        value = Some("B00"),
+        content = Text(messages("underpaymentType.importVAT")),
+        checked = form("value").value.contains("B00")
+      ),
+      RadioItem(
+        value = Some("A00"),
+        content = Text(messages("underpaymentType.customsDuty")),
+        checked = form("value").value.contains("A00")
+      ),
+      RadioItem(
+        value = Some("E00"),
+        content = Text(messages("underpaymentType.exciseDuty")),
+        checked = form("value").value.contains("E00")
+      ),
+      RadioItem(
+        value = Some("A20"),
+        content = Text(messages("underpaymentType.additionalDuty")),
+        checked = form("value").value.contains("A20")
+      ),
+      RadioItem(
+        value = Some("A30"),
+        content = Text(messages("underpaymentType.definitiveAntiDumpingDuty")),
+        checked = form("value").value.contains("A30")
+      ),
+      RadioItem(
+        value = Some("A35"),
+        content = Text(messages("underpaymentType.provisionalAntiDumpingDuty")),
+        checked = form("value").value.contains("A35")
+      ),
+      RadioItem(
+        value = Some("A40"),
+        content = Text(messages("underpaymentType.definitiveCountervailingDuty")),
+        checked = form("value").value.contains("A40")
+      ),
+      RadioItem(
+        value = Some("A10"),
+        content = Text(messages("underpaymentType.compensatoryDuty")),
+        checked = form("value").value.contains("A10")
+      )
+
+    )
+  }
+
 }
