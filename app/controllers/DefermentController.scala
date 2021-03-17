@@ -18,16 +18,16 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.DefermentFormProvider
-import models.{UnderpaymentType, UserAnswers}
-import pages.{DefermentPage, UnderpaymentTypePage}
+import models.{UnderpaymentType, UserAnswers, UserType}
+import pages.{DefermentPage, UnderpaymentTypePage, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.DefermentView
-
 import javax.inject.{Inject, Singleton}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -69,13 +69,26 @@ class DefermentController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
-            Redirect(controllers.routes.ImporterDanController.onLoad())
+            redirectToSplitPayment(request.userAnswers)
           } else {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           }
         }
       }
     )
+  }
+
+  private[controllers] def redirectToSplitPayment(userAnswers: UserAnswers): Result = {
+    userAnswers.get(UserTypePage).getOrElse("No user type") match {
+      case UserType.Importer => Redirect(controllers.routes.ImporterDanController.onLoad())
+      case _ =>
+        userAnswers.get(UnderpaymentTypePage).getOrElse("No underpayment type") match {
+          case UnderpaymentType(_,true,true) => Redirect(controllers.routes.SplitPaymentController.onLoad())
+          case UnderpaymentType(true,true,_) => Redirect(controllers.routes.SplitPaymentController.onLoad())
+          case UnderpaymentType(_,false,_) => Redirect(controllers.routes.SplitPaymentController.onLoad()) //TODO - routing to be updated as part of CIVDT-264
+        }
+    }
+
   }
 
   private[controllers] def getHeaderMessage(userAnswers: UserAnswers): String = {
