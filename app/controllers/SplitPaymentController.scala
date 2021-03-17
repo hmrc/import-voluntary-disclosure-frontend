@@ -41,7 +41,7 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
                                        view: SplitPaymentView)
   extends FrontendController(mcc) with I18nSupport {
 
-  lazy val backLink: Call = controllers.routes.TraderAddressCorrectController.onLoad()
+  lazy val backLink: Call = controllers.routes.DefermentController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(SplitPaymentPage).fold(formProvider()) {
