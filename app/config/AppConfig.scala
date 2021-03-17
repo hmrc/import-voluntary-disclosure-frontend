@@ -70,6 +70,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
+  lazy val underpaymentTypeUseOld: Boolean = servicesConfig.getBoolean("feature-switch.underpaymentTypeUseOld")
 
 }
 
@@ -105,6 +106,7 @@ trait AppConfig extends FixedConfig {
 
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
+  val underpaymentTypeUseOld: Boolean
 }
 
 trait FixedConfig {
