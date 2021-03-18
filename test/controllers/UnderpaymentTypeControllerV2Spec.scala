@@ -48,7 +48,7 @@ class UnderpaymentTypeControllerV2Spec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -56,7 +56,7 @@ class UnderpaymentTypeControllerV2Spec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentTypePageV2, "A00").success.value
       )
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -68,7 +68,7 @@ class UnderpaymentTypeControllerV2Spec extends ControllerSpecBase {
 
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit(
+        lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "A00")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -76,7 +76,7 @@ class UnderpaymentTypeControllerV2Spec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(fakeRequest.withFormUrlEncodedBody("value" -> "A00")))
+        await(controller.onSubmit()(fakeRequest.withFormUrlEncodedBody("value" -> "A00")))
         verifyCalls()
       }
 
@@ -84,7 +84,7 @@ class UnderpaymentTypeControllerV2Spec extends ControllerSpecBase {
 
     "payload contains invalid data" should {
       "return BAD REQUEST when no value is sent" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest.withFormUrlEncodedBody("" -> ""))
+        val result: Future[Result] = controller.onSubmit()(fakeRequest.withFormUrlEncodedBody("" -> ""))
         status(result) mustBe Status.BAD_REQUEST
       }
     }
