@@ -44,7 +44,7 @@ class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UnderpaymentTypePageV2).fold(formProvider()) {
       formProvider().fill
     }
@@ -53,7 +53,7 @@ class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
     )
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
