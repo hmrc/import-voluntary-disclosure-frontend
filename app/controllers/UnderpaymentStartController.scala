@@ -38,7 +38,7 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.EnterCustomsProcedureCodeController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(backLink, appConfig.underpaymentTypeUseOld)))
+    Future.successful(Ok(view(backLink, appConfig.useOldUnderpaymentType)))
   }
 
 }
