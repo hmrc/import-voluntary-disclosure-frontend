@@ -27,6 +27,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import services.FlowService
 import views.html.DefermentView
 
 import scala.concurrent.Future
@@ -42,23 +43,33 @@ class DefermentControllerSpec extends ControllerSpecBase {
 
     val formProvider: DefermentFormProvider = injector.instanceOf[DefermentFormProvider]
     val form: DefermentFormProvider = formProvider
+    val flowService: FlowService = app.injector.instanceOf[FlowService]
 
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new DefermentController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, defermentView)
+      mockSessionRepository, messagesControllerComponents, form, flowService, defermentView)
   }
 
   val acceptanceDateYes: Boolean = true
 
   "GET onLoad" should {
     "return OK" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentPage, true).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, false, false)).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(DefermentPage, true).success.value)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentPage, true).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(true, false, false)).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -135,10 +146,10 @@ class DefermentControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
       }
 
-      "return the correct location header when user is representative and has import VAT and custom duty" in new Test {
+      "return the correct location header when user is representative only has import VAT" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+          .set(UnderpaymentTypePage, UnderpaymentType(false, true, false)).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -155,6 +166,15 @@ class DefermentControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
       }
 
+      "return an internal server error when user is representative only has no underpayment type" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      }
+
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Importer).success.value
@@ -168,6 +188,11 @@ class DefermentControllerSpec extends ControllerSpecBase {
 
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(DefermentPage, true).success.value
+            .set(UnderpaymentTypePage, UnderpaymentType(true, true, false)).success.value
+        )
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
