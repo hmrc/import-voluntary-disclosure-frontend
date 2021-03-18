@@ -70,7 +70,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[underpayments] def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
+  private def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
     Seq(
       createRadioButton(form, "B00", "underpaymentTypeTemp.importVAT"),
       createRadioButton(form, "A00", "underpaymentTypeTemp.customsDuty"),
@@ -85,7 +85,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[underpayments] def createRadioButton(
+  private def createRadioButton(
                                                 form: Form[_],
                                                 value: String,
                                                 messageKey: String)(implicit messages: Messages): RadioItem = {
