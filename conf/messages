@@ -129,20 +129,29 @@ SupportDoc.fileSize = Each file must be {0}MB or less, and in one of the followi
 error.summary.title = There is a problem
 
 # Underpayment Type
-underpaymentType.pageTitle = Which type of tax or duty was underpaid?
-underpaymentType.pageHeader = Which type of tax or duty was underpaid?
+underpaymentType.pageTitle = What have you underpaid?
+underpaymentType.pageHeader = What have you underpaid?
 underpaymentType.pageWarning = Select all that apply.
-underpaymentType.error.required = Select which type of tax or duty was underpaid
-underpaymentType.importVAT = Import VAT (B00)
-underpaymentType.customsDuty = Customs Duty (A00)
+underpaymentType.error.required = Select if you have underpaid Customs Duty, Import VAT or Excise Duty
+underpaymentType.customsDuty = Customs Duty
+underpaymentType.importVAT = Import VAT
 underpaymentType.exciseDuty = Excise Duty
-underpaymentType.additionalDuty = Additional Duty (A20)
-underpaymentType.definitiveAntiDumpingDuty = Definitive Anti-Dumping Duty (A30)
-underpaymentType.provisionalAntiDumpingDuty = Provisional Anti-Dumping Duty (A35)
-underpaymentType.definitiveCountervailingDuty = Definitive Countervailing Duty (A40)
-underpaymentType.provisionalCountervailingDuty = Provisional Countervailing Duty (A45)
-underpaymentType.agriculturalDuty = Customs Duty on Agricultural products (A10)
-underpaymentType.compensatoryDuty = Compensatory Duty (D10)
+
+# Underpayment Type Temp
+underpaymentTypeTemp.pageTitle = Which type of tax or duty was underpaid?
+underpaymentTypeTemp.pageHeader = Which type of tax or duty was underpaid?
+underpaymentTypeTemp.pageWarning = Select all that apply.
+underpaymentTypeTemp.error.required = Select which type of tax or duty was underpaid
+underpaymentTypeTemp.importVAT = Import VAT (B00)
+underpaymentTypeTemp.customsDuty = Customs Duty (A00)
+underpaymentTypeTemp.exciseDuty = Excise Duty
+underpaymentTypeTemp.additionalDuty = Additional Duty (A20)
+underpaymentTypeTemp.definitiveAntiDumpingDuty = Definitive Anti-Dumping Duty (A30)
+underpaymentTypeTemp.provisionalAntiDumpingDuty = Provisional Anti-Dumping Duty (A35)
+underpaymentTypeTemp.definitiveCountervailingDuty = Definitive Countervailing Duty (A40)
+underpaymentTypeTemp.provisionalCountervailingDuty = Provisional Countervailing Duty (A45)
+underpaymentTypeTemp.agriculturalDuty = Customs Duty on Agricultural products (A10)
+underpaymentTypeTemp.compensatoryDuty = Compensatory Duty (D10)
 
 # Customs Duty page
 customsDuty.pageTitle = Customs Duty underpayment details

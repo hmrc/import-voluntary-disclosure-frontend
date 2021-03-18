@@ -72,16 +72,16 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
 
   private[underpayments] def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
     Seq(
-      createRadioButton(form, "B00", "underpaymentType.importVAT"),
-      createRadioButton(form, "A00", "underpaymentType.customsDuty"),
-      createRadioButton(form, "E00", "underpaymentType.exciseDuty"),
-      createRadioButton(form, "A20", "underpaymentType.additionalDuty"),
-      createRadioButton(form, "A30", "underpaymentType.definitiveAntiDumpingDuty"),
-      createRadioButton(form, "A35", "underpaymentType.provisionalAntiDumpingDuty"),
-      createRadioButton(form, "A40", "underpaymentType.definitiveCountervailingDuty"),
-      createRadioButton(form, "A45", "underpaymentType.provisionalCountervailingDuty"),
-      createRadioButton(form, "A10", "underpaymentType.agriculturalDuty"),
-      createRadioButton(form, "D10", "underpaymentType.compensatoryDuty"),
+      createRadioButton(form, "B00", "underpaymentTypeTemp.importVAT"),
+      createRadioButton(form, "A00", "underpaymentTypeTemp.customsDuty"),
+      createRadioButton(form, "E00", "underpaymentTypeTemp.exciseDuty"),
+      createRadioButton(form, "A20", "underpaymentTypeTemp.additionalDuty"),
+      createRadioButton(form, "A30", "underpaymentTypeTemp.definitiveAntiDumpingDuty"),
+      createRadioButton(form, "A35", "underpaymentTypeTemp.provisionalAntiDumpingDuty"),
+      createRadioButton(form, "A40", "underpaymentTypeTemp.definitiveCountervailingDuty"),
+      createRadioButton(form, "A45", "underpaymentTypeTemp.provisionalCountervailingDuty"),
+      createRadioButton(form, "A10", "underpaymentTypeTemp.agriculturalDuty"),
+      createRadioButton(form, "D10", "underpaymentTypeTemp.compensatoryDuty"),
     )
   }
 
