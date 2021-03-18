@@ -81,7 +81,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       createRadioButton(form, "A40", "underpaymentTypeTemp.definitiveCountervailingDuty"),
       createRadioButton(form, "A45", "underpaymentTypeTemp.provisionalCountervailingDuty"),
       createRadioButton(form, "A10", "underpaymentTypeTemp.agriculturalDuty"),
-      createRadioButton(form, "D10", "underpaymentTypeTemp.compensatoryDuty"),
+      createRadioButton(form, "D10", "underpaymentTypeTemp.compensatoryDuty")
     )
   }
 
