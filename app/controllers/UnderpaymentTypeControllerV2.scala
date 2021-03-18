@@ -42,43 +42,42 @@ class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
+  private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UnderpaymentTypePageV2).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(
-      Ok(underpaymentTypeView(form, backLink, options(form)))
+      Ok(underpaymentTypeView(form, backLink, createRadioButton(form, underpaymentTypes)))
     )
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
-        Future.successful(BadRequest(underpaymentTypeView(formWithErrors, backLink, options(formWithErrors))))
+        Future.successful(
+          BadRequest(underpaymentTypeView(formWithErrors, backLink, createRadioButton(formWithErrors, underpaymentTypes)))
+        )
       },
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePageV2, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          value match {
-            case _ => Redirect(controllers.routes.UnderpaymentTypeControllerV2.onLoad())
-          }
+          Redirect(controllers.routes.UnderpaymentTypeControllerV2.onLoad())
         }
       }
     )
   }
 
-  private def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
-    Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10").map(value => createRadioButton(form, value))
-  }
-
-  private def createRadioButton(form: Form[_], value: String)(implicit messages: Messages): RadioItem = {
-    RadioItem(
-      value = Some(value),
-      content = Text(messages(s"underpaymentTypeTemp.$value.radio")),
-      checked = form("value").value.contains(value)
+  private def createRadioButton(form: Form[_], values: Seq[String])(implicit messages: Messages): Seq[RadioItem] = {
+    values.map( keyValue =>
+      RadioItem(
+        value = Some(keyValue),
+        content = Text(messages(s"underpaymentTypeTemp.$keyValue.radio")),
+        checked = form("value").value.contains(keyValue)
+      )
     )
   }
 
