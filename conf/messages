@@ -140,7 +140,6 @@ underpaymentType.exciseDuty = Excise Duty
 # Underpayment Type Temp
 underpaymentTypeTemp.pageTitle = Which type of tax or duty was underpaid?
 underpaymentTypeTemp.pageHeader = Which type of tax or duty was underpaid?
-underpaymentTypeTemp.pageWarning = Select all that apply.
 underpaymentTypeTemp.error.required = Select which type of tax or duty was underpaid
 underpaymentTypeTemp.importVAT = Import VAT (B00)
 underpaymentTypeTemp.customsDuty = Customs Duty (A00)

@@ -22,7 +22,6 @@ object UnderpaymentTypeMessages extends BaseMessages {
 
   val pageTitle = "Which type of tax or duty was underpaid?"
   val pageHeader = "Which type of tax or duty was underpaid?"
-  val pageWarning = "Select all that apply."
   val errorRequired = "Select which type of tax or duty was underpaid"
   val importVAT = "Import VAT (B00)"
   val customsDuty = "Customs Duty (A00)"
