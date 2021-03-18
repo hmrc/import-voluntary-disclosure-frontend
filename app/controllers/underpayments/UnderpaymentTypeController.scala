@@ -86,9 +86,9 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
   }
 
   private def createRadioButton(
-                                                form: Form[_],
-                                                value: String,
-                                                messageKey: String)(implicit messages: Messages): RadioItem = {
+                                 form: Form[_],
+                                 value: String,
+                                 messageKey: String)(implicit messages: Messages): RadioItem = {
     RadioItem(
       value = Some(value),
       content = Text(messages(messageKey)),
