@@ -71,27 +71,13 @@ class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
   }
 
   private def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = {
-    Seq(
-      createRadioButton(form, "B00", "underpaymentTypeTemp.importVAT"),
-      createRadioButton(form, "A00", "underpaymentTypeTemp.customsDuty"),
-      createRadioButton(form, "E00", "underpaymentTypeTemp.exciseDuty"),
-      createRadioButton(form, "A20", "underpaymentTypeTemp.additionalDuty"),
-      createRadioButton(form, "A30", "underpaymentTypeTemp.definitiveAntiDumpingDuty"),
-      createRadioButton(form, "A35", "underpaymentTypeTemp.provisionalAntiDumpingDuty"),
-      createRadioButton(form, "A40", "underpaymentTypeTemp.definitiveCountervailingDuty"),
-      createRadioButton(form, "A45", "underpaymentTypeTemp.provisionalCountervailingDuty"),
-      createRadioButton(form, "A10", "underpaymentTypeTemp.agriculturalDuty"),
-      createRadioButton(form, "D10", "underpaymentTypeTemp.compensatoryDuty")
-    )
+    Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10").map(value => createRadioButton(form, value))
   }
 
-  private def createRadioButton(
-                                 form: Form[_],
-                                 value: String,
-                                 messageKey: String)(implicit messages: Messages): RadioItem = {
+  private def createRadioButton(form: Form[_], value: String)(implicit messages: Messages): RadioItem = {
     RadioItem(
       value = Some(value),
-      content = Text(messages(messageKey)),
+      content = Text(messages(s"underpaymentTypeTemp.$value.radio")),
       checked = form("value").value.contains(value)
     )
   }
