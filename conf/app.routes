@@ -158,3 +158,7 @@ GET         /disclosure/underpayment-introduction                        control
 
 GET         /disclosure/split-deferment-payment                          controllers.SplitPaymentController.onLoad
 POST        /disclosure/split-deferment-payment                          controllers.SplitPaymentController.onSubmit
+
+# Underpayments
+GET         /disclosure/select-duty-type-underpaid                       controllers.UnderpaymentTypeControllerV2.onLoad
+POST        /disclosure/select-duty-type-underpaid                       controllers.UnderpaymentTypeControllerV2.onSubmit
