@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentTypeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.underpayments.TempUnderpaymentTypePage
+import pages.underpayments.UnderpaymentTypeTempPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -54,7 +54,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("credId").set(TempUnderpaymentTypePage, "A00").success.value
+        UserAnswers("credId").set(UnderpaymentTypeTempPage, "A00").success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")

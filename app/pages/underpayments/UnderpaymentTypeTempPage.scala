@@ -19,7 +19,7 @@ package pages.underpayments
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object TempUnderpaymentTypePage extends QuestionPage[String] {
+case object UnderpaymentTypeTempPage extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 

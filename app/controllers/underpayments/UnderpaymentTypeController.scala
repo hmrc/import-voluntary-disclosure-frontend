@@ -18,7 +18,7 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentTypeFormProvider
-import pages.underpayments.TempUnderpaymentTypePage
+import pages.underpayments.UnderpaymentTypeTempPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -44,7 +44,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
   private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(TempUnderpaymentTypePage).fold(formProvider()) {
+    val form = request.userAnswers.get(UnderpaymentTypeTempPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(
@@ -59,7 +59,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       },
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypeTempPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           value match {
