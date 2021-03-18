@@ -21,25 +21,11 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentTypeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.UnderpaymentTypePage
+import pages.underpayments.TempUnderpaymentTypePage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import views.html.underpayments.UnderpaymentTypeView
-
-import base.ControllerSpecBase
-import controllers.actions.FakeDataRetrievalAction
-import forms.AcceptanceDateFormProvider
-import mocks.repositories.MockSessionRepository
-import models.UserAnswers
-import pages.AcceptanceDatePage
-import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
-import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.AcceptanceDateView
-
-import scala.concurrent.Future
+import views.html.underpayments.UnderpaymentTypeView
 
 import scala.concurrent.Future
 
@@ -60,18 +46,49 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
       mockSessionRepository, messagesControllerComponents, underpaymentTypeView, form)
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(UnderpaymentTypePage, "A00").success.value)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(TempUnderpaymentTypePage, "A00").success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+  }
+
+  "POST onSubmit" when {
+
+    "payload contains valid data" should {
+
+      "return a SEE OTHER entry level response when correct data is sent" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequest.withFormUrlEncodedBody("value" -> "A00")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        await(controller.onSubmit(fakeRequest.withFormUrlEncodedBody("value" -> "A00")))
+        verifyCalls()
+      }
+
+    }
+
+    "payload contains invalid data" should {
+      "return BAD REQUEST when no value is sent" in new Test {
+        val result: Future[Result] = controller.onSubmit(fakeRequest.withFormUrlEncodedBody("" -> ""))
+        status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+
   }
 
 }
