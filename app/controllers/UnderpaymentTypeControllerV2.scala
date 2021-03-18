@@ -41,7 +41,7 @@ class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
                                              formProvider: UnderpaymentTypeFormProviderV2)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
+  private lazy val backLink: Call = controllers.underpayments.routes.UnderpaymentStartController.onLoad()
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.underpayments
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction

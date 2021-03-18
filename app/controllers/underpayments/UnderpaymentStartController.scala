@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.underpayments
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
