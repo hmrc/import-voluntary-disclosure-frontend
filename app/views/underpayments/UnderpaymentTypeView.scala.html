@@ -19,8 +19,7 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputRadio: components.inputRadio,
-        govukCheckboxes: GovukCheckboxes
+        inputRadio: components.inputRadio
 )
 
 @(form: Form[_], backLink: Call, radioItems: Seq[RadioItem])(implicit request: Request[_], messages: Messages)
