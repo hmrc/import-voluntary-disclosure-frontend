@@ -23,6 +23,6 @@ case object UnderpaymentTypePage extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "temp-underpayment-type"
+  override def toString: String = "underpayment-type-temp"
 
 }
