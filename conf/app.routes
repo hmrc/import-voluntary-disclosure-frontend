@@ -157,5 +157,5 @@ POST        /disclosure/importer-deferment-account-number                control
 GET         /disclosure/underpayment-introduction                        controllers.underpayments.UnderpaymentStartController.onLoad
 
 # Underpayments
-GET         /disclosure/select-duty-type-underpaid                       controllers.UnderpaymentTypeControllerV2.onLoad
-POST        /disclosure/select-duty-type-underpaid                       controllers.UnderpaymentTypeControllerV2.onSubmit
+GET         /disclosure/select-duty-type-underpaid                       controllers.underpayments.UnderpaymentTypeController.onLoad
+POST        /disclosure/select-duty-type-underpaid                       controllers.underpayments.UnderpaymentTypeController.onSubmit
