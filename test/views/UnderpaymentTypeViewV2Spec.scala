@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package views.underpayments
+package views
 
 import base.ViewBaseSpec
-import forms.underpayments.UnderpaymentTypeFormProvider
+import forms.UnderpaymentTypeFormProviderV2
 import messages.BaseMessages
 import messages.underpayments.UnderpaymentTypeMessages
 import org.jsoup.Jsoup
@@ -25,13 +25,13 @@ import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
 import utils.ReusableValues
-import views.html.underpayments.UnderpaymentTypeView
+import views.html.UnderpaymentTypeViewV2
 
-class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with ReusableValues {
+class UnderpaymentTypeViewV2Spec extends ViewBaseSpec with BaseMessages with ReusableValues {
 
-  private lazy val injectedView: UnderpaymentTypeView = app.injector.instanceOf[UnderpaymentTypeView]
+  private lazy val injectedView: UnderpaymentTypeViewV2 = app.injector.instanceOf[UnderpaymentTypeViewV2]
 
-  val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
+  val formProvider: UnderpaymentTypeFormProviderV2 = injector.instanceOf[UnderpaymentTypeFormProviderV2]
 
   private lazy val backLink = controllers.routes.UnderpaymentStartController.onLoad()
 

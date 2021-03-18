@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package controllers.underpayments
+package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.underpayments.UnderpaymentTypeFormProvider
-import pages.underpayments.UnderpaymentTypeTempPage
+import forms.UnderpaymentTypeFormProviderV2
+import pages.UnderpaymentTypePageV2
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -26,25 +26,25 @@ import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.underpayments.UnderpaymentTypeView
+import views.html.UnderpaymentTypeViewV2
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           sessionRepository: SessionRepository,
-                                           mcc: MessagesControllerComponents,
-                                           underpaymentTypeView: UnderpaymentTypeView,
-                                           formProvider: UnderpaymentTypeFormProvider)
+class UnderpaymentTypeControllerV2 @Inject()(identify: IdentifierAction,
+                                             getData: DataRetrievalAction,
+                                             requireData: DataRequiredAction,
+                                             sessionRepository: SessionRepository,
+                                             mcc: MessagesControllerComponents,
+                                             underpaymentTypeView: UnderpaymentTypeViewV2,
+                                             formProvider: UnderpaymentTypeFormProviderV2)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.UnderpaymentStartController.onLoad()
 
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(UnderpaymentTypeTempPage).fold(formProvider()) {
+    val form = request.userAnswers.get(UnderpaymentTypePageV2).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(
@@ -59,11 +59,11 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       },
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypeTempPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePageV2, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           value match {
-            case _ => Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+            case _ => Redirect(controllers.routes.UnderpaymentTypeControllerV2.onLoad())
           }
         }
       }

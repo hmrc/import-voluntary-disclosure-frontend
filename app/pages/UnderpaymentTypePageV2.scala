@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package pages.underpayments
+package pages
 
-import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object UnderpaymentTypeTempPage extends QuestionPage[String] {
+case object UnderpaymentTypePageV2 extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 

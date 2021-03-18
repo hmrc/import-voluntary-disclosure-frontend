@@ -24,29 +24,29 @@
 
 @(form: Form[_], backLink: Call, radioItems: Seq[RadioItem])(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("underpaymentTypeTemp.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(backLink)
-) {
+    @layout(
+        pageTitle = messages("underpaymentTypeTemp.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(backLink)
+    ) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @formHelper(action = controllers.underpayments.routes.UnderpaymentTypeController.onSubmit()) {
+        @formHelper(action = controllers.routes.UnderpaymentTypeControllerV2.onSubmit()) {
 
-        @inputRadio(
-            form = form,
-            legend = messages("underpaymentTypeTemp.pageHeader"),
-            items = radioItems,
-            legendAsHeading = true
-        )
+            @inputRadio(
+                form = form,
+                legend = messages("underpaymentTypeTemp.pageHeader"),
+                items = radioItems,
+                legendAsHeading = true
+            )
 
-        @button("common.button.continue")
+            @button("common.button.continue")
+
+        }
 
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }
