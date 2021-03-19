@@ -16,7 +16,6 @@
 
 package forms.underpayments
 
-import config.AppConfig
 import forms.mappings.Mappings
 import models.underpayments.UnderpaymentAmount
 import play.api.data.Form
@@ -24,37 +23,38 @@ import play.api.data.Forms.mapping
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import play.api.i18n.Messages
 
-import javax.inject.Inject
 
+class UnderpaymentDetailsFormProvider extends Mappings {
 
-class UnderpaymentDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+  private final val minimum: BigDecimal = 0
+  private final val maximum: BigDecimal = 9999999999.99
 
   def apply()(implicit messages: Messages): Form[UnderpaymentAmount] =
     Form(
       mapping(
         "original" -> numeric(
           isCurrency = true,
-          requiredKey = "underpaymentTypeTemp.error.originalNonEmpty",
-          invalidDecimalPlacesKey = "underpaymentTypeTemp.error.originalNonNumber",
-          nonNumericKey = "underpaymentTypeTemp.error.originalNonNumber"
-        ).verifying(inRange[BigDecimal](0, 9999999999.99, "underpaymentTypeTemp.error.originalOutOfRange")),
+          requiredKey = "underpaymentDetails.error.originalNonEmpty",
+          invalidDecimalPlacesKey = "underpaymentDetails.error.originalNonNumber",
+          nonNumericKey = "underpaymentDetails.error.originalNonNumber"
+        ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.originalOutOfRange")),
         "amended" -> numeric(
           isCurrency = true,
-          requiredKey = "underpaymentTypeTemp.error.amendedNonEmpty",
-          invalidDecimalPlacesKey = "underpaymentTypeTemp.error.amendedNonNumber",
-          nonNumericKey = "underpaymentTypeTemp.error.amendedNonNumber"
-        ).verifying(inRange[BigDecimal](0, 9999999999.99, "underpaymentTypeTemp.error.originalOutOfRange"))
+          requiredKey = "underpaymentDetails.error.amendedNonEmpty",
+          invalidDecimalPlacesKey = "underpaymentDetails.error.amendedNonNumber",
+          nonNumericKey = "underpaymentDetails.error.amendedNonNumber"
+        ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.originalOutOfRange"))
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
-        .verifying(different("underpaymentTypeTemp.error.amendedDifferent"))
+        .verifying(different())
     )
 
-  private[forms] def different(errorKey: String): Constraint[UnderpaymentAmount] =
+  private[forms] def different(): Constraint[UnderpaymentAmount] =
     Constraint {
       input =>
         if (input.original != input.amended) {
           Valid
         } else {
-          Invalid(errorKey)
+          Invalid("underpaymentDetails.error.amendedDifferent")
         }
     }
 
