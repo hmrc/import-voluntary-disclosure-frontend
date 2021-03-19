@@ -57,7 +57,11 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
       formProvider().bindFromRequest().fold(
         formWithErrors => {
           val newErrors = formWithErrors.errors.map { error =>
-            if (error.key.isEmpty) {FormError("amended", error.message)} else {error}
+            if (error.key.isEmpty) {
+              FormError("amended", error.message)
+            } else {
+              error
+            }
           }
           Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink)))
         },
