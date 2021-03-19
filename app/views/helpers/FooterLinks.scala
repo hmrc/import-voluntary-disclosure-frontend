@@ -17,10 +17,9 @@
 package views.helpers
 
 import config.AppConfig
+import javax.inject.{Inject, Singleton}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.footer.FooterItem
-
-import javax.inject.{Inject, Singleton}
 
 @Singleton
 class FooterLinks @Inject()(appConfig: AppConfig) {

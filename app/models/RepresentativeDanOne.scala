@@ -16,17 +16,11 @@
 
 package models
 
-import play.api.data.Form
-import play.api.i18n.Messages
 import play.api.libs.json.Json
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import views.ViewUtils.hint
 
-case class RepresentativeDanOne(accountNumber: String, value: String)
+case class RepresentativeDanOne(accountNumber: String, danType: String)
 
 object RepresentativeDanOne {
   implicit val format = Json.format[RepresentativeDanOne]
-
 }
 

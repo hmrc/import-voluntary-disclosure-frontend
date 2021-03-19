@@ -52,12 +52,15 @@ class RepresentativeDanOneController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors,
         backLink(request.userAnswers)
       ))),
-      value => {
+      dan => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDanOnePage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDanOnePage, dan))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+          dan.danType match {
+            case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            case _ => Redirect(controllers.routes.RepresentativeDanOneController.onLoad())
+          }
         }
       }
     )

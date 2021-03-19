@@ -43,22 +43,22 @@
                 legend = messages("repDanOne.radioLabel"),
                 items = Seq(
                             RadioItem(
-                                value = Some("value-1"),
+                                value = Some("A"),
                                 content = Text(messages("repDanOne.radio1")),
                                 hint = None,
-                                checked = form("value").value.contains("value-1")
+                                checked = form("value").value.contains("A")
                             ),
                             RadioItem(
-                                value = Some("value-2"),
+                                value = Some("B"),
                                 content = Text(messages("repDanOne.radio2")),
                                 hint = Some(hint("repDanOne.radio2.hint")),
-                                checked = form("value").value.contains("value-2")
+                                checked = form("value").value.contains("B")
                             ),
                             RadioItem(
-                                value = Some("value-3"),
+                                value = Some("C"),
                                 content = Text(messages("repDanOne.radio3")),
                                 hint = None,
-                                checked = form("value").value.contains("value-3")
+                                checked = form("value").value.contains("C")
                             )
                         ),
                 legendAsHeading = false,
