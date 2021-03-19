@@ -66,7 +66,7 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad())
+            Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(underpaymentType))
           }
         }
       )
