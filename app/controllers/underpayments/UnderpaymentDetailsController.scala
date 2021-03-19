@@ -56,11 +56,12 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
       formProvider().bindFromRequest().fold(
         formWithErrors => {
-          Future.successful(BadRequest(view(formWithErrors, underpaymentType, backLink)))
+          val newErrors = formWithErrors.errors.map { error =>
+            if (error.key.isEmpty) {FormError("amended", error.message)} else {error}
+          }
+          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink)))
         },
         value => {
-          println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-          println(value)
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
