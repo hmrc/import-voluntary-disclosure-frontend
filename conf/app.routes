@@ -162,3 +162,6 @@ POST        /disclosure/split-deferment-payment                          control
 # Underpayments
 GET         /disclosure/select-duty-type-underpaid                       controllers.underpayments.UnderpaymentTypeController.onLoad
 POST        /disclosure/select-duty-type-underpaid                       controllers.underpayments.UnderpaymentTypeController.onSubmit
+
+GET         /disclosure/import-vat-underpayment-details                  controllers.underpayments.UnderpaymentDetailsController.onLoad(underpaymentType = "B00")
+POST        /disclosure/import-vat-underpayment-details                  controllers.underpayments.UnderpaymentDetailsController.onSubmit(underpaymentType = "B00")
