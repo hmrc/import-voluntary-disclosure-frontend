@@ -28,27 +28,5 @@ case class RepresentativeDanOne(accountNumber: String, value: String)
 object RepresentativeDanOne {
   implicit val format = Json.format[RepresentativeDanOne]
 
-  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] =
-    Seq(
-      RadioItem(
-        value = Some("value-1"),
-        content = Text(messages("repDanOne.radio1")),
-        hint = None,
-        checked = form("value").value.contains("value-1")
-      ),
-      RadioItem(
-        value = Some("value-2"),
-        content = Text(messages("repDanOne.radio2")),
-        hint = Some(hint("repDanOne.radio2.hint")),
-        checked = form("value").value.contains("value-2")
-      ),
-      RadioItem(
-        value = Some("value-3"),
-        content = Text(messages("repDanOne.radio3")),
-        hint = None,
-        checked = form("value").value.contains("value-3")
-      )
-    )
-
 }
 

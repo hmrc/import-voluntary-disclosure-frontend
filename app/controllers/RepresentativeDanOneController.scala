@@ -17,43 +17,40 @@
 package controllers
 
 import com.google.inject.Inject
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{EnterCustomsProcedureCodeFormProvider, RepresentativeDanOneFormProvider}
-import models.{EntryDetails, RepresentativeDanOne}
-import pages.{EnterCustomsProcedureCodePage, EntryDetailsPage, RepresentativeDanOnePage}
+import forms.RepresentativeDanOneFormProvider
+import models.UserAnswers
+import pages.{RepresentativeDanOnePage, SplitPaymentPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{DanOneView, EnterCustomsProcedureCodeView, RepresentativeDanOneView}
+import views.html.RepresentativeDanOneView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class RepresentativeDanOneController @Inject()(identify: IdentifierAction,
-                                 getData: DataRetrievalAction,
-                                 requireData: DataRequiredAction,
-                                 appConfig: AppConfig,
-                                 sessionRepository: SessionRepository,
-                                 mcc: MessagesControllerComponents,
-                                 view: RepresentativeDanOneView,
-                                 formProvider: RepresentativeDanOneFormProvider
-                                     )
+                                               getData: DataRetrievalAction,
+                                               requireData: DataRequiredAction,
+                                               sessionRepository: SessionRepository,
+                                               mcc: MessagesControllerComponents,
+                                               view: RepresentativeDanOneView,
+                                               formProvider: RepresentativeDanOneFormProvider
+                                              )
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(RepresentativeDanOnePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink(request.userAnswers.get(EntryDetailsPage)),RepresentativeDanOne.options(form))))
+    Future.successful(Ok(view(form, backLink(request.userAnswers))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors,
-        backLink(request.userAnswers.get(EntryDetailsPage)),
-        RepresentativeDanOne.options(formWithErrors)
+        backLink(request.userAnswers)
       ))),
       value => {
         for {
@@ -66,11 +63,11 @@ class RepresentativeDanOneController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def backLink(entryDetails: Option[EntryDetails]): Call =
-    if (entryDetails.get.entryDate.isBefore(appConfig.euExitDate)) {
-      controllers.routes.AcceptanceDateController.onLoad()
+  private[controllers] def backLink(userAnswers: UserAnswers): Call =
+    if (userAnswers.get(SplitPaymentPage).isDefined) {
+      controllers.routes.SplitPaymentController.onLoad()
     } else {
-      controllers.routes.EntryDetailsController.onLoad()
+      controllers.routes.DefermentController.onLoad()
     }
 
 }

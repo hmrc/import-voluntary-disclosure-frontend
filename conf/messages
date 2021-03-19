@@ -499,6 +499,10 @@ repDanOne.radio1 = My deferment account
 repDanOne.radio2 = The importer’s account and I have authority to use it
 repDanOne.radio2.hint = You will be asked to upload proof of authority
 repDanOne.radio3 = The importer’s account and I have standing authority to use it
+repDanOne.error.input.required = Enter the deferment account number
+repDanOne.error.input.format = Enter the deferment account number in the correct format, like 1234567
+repDanOne.error.radio.required = Select whose deferment account this is
+
 
 
 

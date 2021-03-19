@@ -29,9 +29,9 @@ class RepresentativeDanOneFormProvider @Inject()(implicit appConfig: AppConfig) 
   def apply()(implicit messages: Messages): Form[RepresentativeDanOne] = {
 
     Form( mapping(
-      "accountNumber" -> text("entryDetails.epu.error.missing")
-        .verifying(regexp("[0-9]{3}","entryDetails.epu.error.format")),
-      "value" -> text("entryDetails.entryNumber.error.missing")
+      "accountNumber" -> text("repDanOne.error.input.required")
+        .verifying(regexp("[0-9]{7}","repDanOne.error.input.format")),
+      "value" -> text("repDanOne.error.radio.required")
     )(RepresentativeDanOne.apply)(RepresentativeDanOne.unapply)
     )
   }
