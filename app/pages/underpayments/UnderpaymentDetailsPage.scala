@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.underpayments
 
 import models.underpayments.UnderpaymentAmount
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ImportVATPage extends QuestionPage[UnderpaymentAmount] {
+case object UnderpaymentDetailsPage extends QuestionPage[UnderpaymentAmount] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "import-vat"
+  override def toString: String = "underpayment-details-temp"
 
 }
