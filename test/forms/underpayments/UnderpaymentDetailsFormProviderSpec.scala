@@ -33,7 +33,7 @@ class UnderpaymentDetailsFormProviderSpec extends SpecBase {
   private final val amendedNonNumberErrorKey = "underpaymentDetails.error.amendedNonNumber"
   private final val originalOutOfRangeErrorKey = "underpaymentDetails.error.originalOutOfRange"
   private final val amendedOutOfRangeErrorKey = "underpaymentDetails.error.amendedOutOfRange"
-  private final val originalGreaterThanAmendedErrorKey = "underpaymentDetails.error.amendedDifferent"
+  private final val originalGreaterThanAmendedErrorKey = "underpaymentDetails.error.positiveAmountOwed"
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
     originalKey -> original,

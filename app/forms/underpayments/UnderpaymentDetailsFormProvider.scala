@@ -21,8 +21,6 @@ import models.underpayments.UnderpaymentAmount
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import play.api.i18n.Messages
-
 
 class UnderpaymentDetailsFormProvider extends Mappings {
 
@@ -45,16 +43,16 @@ class UnderpaymentDetailsFormProvider extends Mappings {
           nonNumericKey = "underpaymentDetails.error.amendedNonNumber"
         ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.amendedOutOfRange"))
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
-        .verifying(different())
+        .verifying(positiveAmountOwing())
     )
 
-  private[forms] def different(): Constraint[UnderpaymentAmount] =
+  private[forms] def positiveAmountOwing(): Constraint[UnderpaymentAmount] =
     Constraint {
       input =>
         if (input.original < input.amended) {
           Valid
         } else {
-          Invalid("underpaymentDetails.error.amendedDifferent")
+          Invalid("underpaymentDetails.error.positiveAmountOwed")
         }
     }
 
