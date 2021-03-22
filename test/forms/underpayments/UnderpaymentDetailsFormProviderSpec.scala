@@ -192,4 +192,20 @@ class UnderpaymentDetailsFormProviderSpec extends SpecBase {
 
   }
 
-}
+  "Binding a form with valid data" when {
+
+    "with original and amended values being correct" should {
+
+      val missingOption: Map[String, String] = formBuilder(original = "35", amended = fifty)
+      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+
+      "result in a form with no errors" in {
+        form.hasErrors mustBe false
+      }
+
+    }
+
+  }
+
+
+  }
