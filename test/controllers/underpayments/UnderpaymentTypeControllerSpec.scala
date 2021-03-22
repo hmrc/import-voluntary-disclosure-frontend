@@ -72,7 +72,8 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase {
           fakeRequest.withFormUrlEncodedBody("value" -> "A00")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url)
+        redirectLocation(result) mustBe
+          Some(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad("A00").url)
       }
 
       "update the UserAnswers in session" in new Test {
