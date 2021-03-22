@@ -22,6 +22,7 @@ object UnderpaymentDetailsMessages extends BaseMessages {
 
   val originalAmount = "Amount that was paid to HMRC"
   val amendedAmount = "Amount that should have been paid"
+
   val B00pageTitle = "Import VAT underpayment details"
   val B00pageHeader = "Import VAT underpayment details"
   val A00pageTitle = "Customs Duty underpayment details"
@@ -42,6 +43,14 @@ object UnderpaymentDetailsMessages extends BaseMessages {
   val A10pageHeader = "Customs Duty on Agricultural Products underpayment details"
   val D10pageTitle = "Compensatory Duty underpayment details"
   val D10pageHeader = "Compensatory Duty underpayment details"
+
+  val originalNonEmpty = "Enter the amount that was paid to HMRC, in pounds"
+  val originalNonNumber = "Amount that was paid to HMRC must be a number like 7235 or 67.39"
+  val originalOutOfRange = "Amount that was paid to HMRC must be between £0 and £9,999,999,999.99"
+  val amendedNonEmpty = "Enter the amount that should have been paid, in pounds"
+  val amendedNonNumber = "Amount that should have been paid must be a number like 7235 or 67.39"
+  val amendedOutOfRange = "Amount that should have been paid must be between £0 and £9,999,999,999.99"
+  val amendedDifferent = "Amount that should have been paid must be more than amount that was paid to HMRC"
 
   val underpaymentTypeContent: Map[String, ExpectedContent] = Map(
     "B00" -> ExpectedContent(

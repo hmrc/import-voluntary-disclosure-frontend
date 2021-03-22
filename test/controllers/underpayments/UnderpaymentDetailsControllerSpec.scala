@@ -89,10 +89,19 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
+
       "return BAD REQUEST when no value is sent" in new Test {
         val result: Future[Result] = controller.onSubmit(underpaymentType)(fakeRequest.withFormUrlEncodedBody("" -> ""))
         status(result) mustBe Status.BAD_REQUEST
       }
+
+      "return BAD REQUEST when the original value is greater than amended" in new Test {
+        val result: Future[Result] = controller.onSubmit(underpaymentType)(
+          fakeRequest.withFormUrlEncodedBody("original" -> "60", "amended" -> "40")
+        )
+        status(result) mustBe Status.BAD_REQUEST
+      }
+
     }
 
   }
