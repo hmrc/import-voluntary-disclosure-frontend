@@ -32,6 +32,8 @@ import scala.concurrent.Future
 
 class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
+  private final val underpaymentType = "A00"
+
   trait Test extends MockSessionRepository {
     private lazy val underpaymentDetailsView: UnderpaymentDetailsView = app.injector.instanceOf[UnderpaymentDetailsView]
 
@@ -49,7 +51,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad("A00")(fakeRequest)
+      val result: Future[Result] = controller.onLoad(underpaymentType)(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -57,7 +59,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailsPage, UnderpaymentAmount(50, 60)).success.value
       )
-      val result: Future[Result] = controller.onLoad("A00")(fakeRequest)
+      val result: Future[Result] = controller.onLoad(underpaymentType)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -69,16 +71,16 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit("A00")(
+        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad("A00").url)
+          Some(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(underpaymentType).url)
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit("A00")(
+        await(controller.onSubmit(underpaymentType)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
         )
         verifyCalls()
@@ -88,7 +90,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
     "payload contains invalid data" should {
       "return BAD REQUEST when no value is sent" in new Test {
-        val result: Future[Result] = controller.onSubmit("A00")(fakeRequest.withFormUrlEncodedBody("" -> ""))
+        val result: Future[Result] = controller.onSubmit(underpaymentType)(fakeRequest.withFormUrlEncodedBody("" -> ""))
         status(result) mustBe Status.BAD_REQUEST
       }
     }
