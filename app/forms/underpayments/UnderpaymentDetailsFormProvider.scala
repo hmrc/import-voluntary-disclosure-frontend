@@ -29,7 +29,7 @@ class UnderpaymentDetailsFormProvider extends Mappings {
   private final val minimum: BigDecimal = 0
   private final val maximum: BigDecimal = 9999999999.99
 
-  def apply()(implicit messages: Messages): Form[UnderpaymentAmount] =
+  def apply(): Form[UnderpaymentAmount] =
     Form(
       mapping(
         "original" -> numeric(
@@ -43,7 +43,7 @@ class UnderpaymentDetailsFormProvider extends Mappings {
           requiredKey = "underpaymentDetails.error.amendedNonEmpty",
           invalidDecimalPlacesKey = "underpaymentDetails.error.amendedNonNumber",
           nonNumericKey = "underpaymentDetails.error.amendedNonNumber"
-        ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.originalOutOfRange"))
+        ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.amendedOutOfRange"))
       )(UnderpaymentAmount.apply)(UnderpaymentAmount.unapply)
         .verifying(different())
     )
@@ -51,7 +51,7 @@ class UnderpaymentDetailsFormProvider extends Mappings {
   private[forms] def different(): Constraint[UnderpaymentAmount] =
     Constraint {
       input =>
-        if (input.original != input.amended) {
+        if (input.original < input.amended) {
           Valid
         } else {
           Invalid("underpaymentDetails.error.amendedDifferent")
