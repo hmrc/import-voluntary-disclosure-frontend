@@ -20,8 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
-import models.{RepresentativeDan, UserAnswers}
-import pages.{DefermentPage, RepresentativeDanPage, SplitPaymentPage}
+import models.UserAnswers
+import pages.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage}
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
 import play.api.test.Helpers._
@@ -39,7 +39,7 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
       )
 
   trait Test extends MockSessionRepository {
-    private lazy val representativeDanOneView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
+    private lazy val representativeDanView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -50,7 +50,7 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RepresentativeDanController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, representativeDanOneView, form)
+      mockSessionRepository, messagesControllerComponents, representativeDanView, form)
   }
 
   "GET Representative Dan page" should {
@@ -61,7 +61,11 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] =
-        Some(UserAnswers("some-cred-id").set(RepresentativeDanPage, RepresentativeDan("1234567", "A")).success.value)
+        Some(
+          UserAnswers("some-cred-id")
+            .set(DefermentTypePage, "A").success.value
+            .set(DefermentAccountPage, "1234567").success.value
+        )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")

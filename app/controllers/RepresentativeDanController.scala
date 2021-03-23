@@ -19,8 +19,8 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeDanFormProvider
-import models.UserAnswers
-import pages.{RepresentativeDanPage, SplitPaymentPage}
+import models.{RepresentativeDan, UserAnswers}
+import pages.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -41,9 +41,13 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(RepresentativeDanPage).fold(formProvider()) {
-      formProvider().fill
-    }
+    val form = (for {
+      danType <- request.userAnswers.get(DefermentTypePage)
+      accountNumber <- request.userAnswers.get(DefermentAccountPage)
+    } yield {
+      formProvider().fill(RepresentativeDan(accountNumber, danType))
+    }).getOrElse(formProvider())
+
     Future.successful(Ok(view(form, backLink(request.userAnswers))))
   }
 
@@ -54,7 +58,8 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
       ))),
       dan => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDanPage, dan))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
+          updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           dan.danType match {
