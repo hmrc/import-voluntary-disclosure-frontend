@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package models
+package pages
 
-import play.api.libs.json.Json
+import models.RepresentativeDan
+import play.api.libs.json.JsPath
 
-case class RepresentativeDanOne(accountNumber: String, danType: String)
+case object RepresentativeDanPage extends QuestionPage[RepresentativeDan] {
 
-object RepresentativeDanOne {
-  implicit val format = Json.format[RepresentativeDanOne]
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "representative-dan-one"
+
 }
-

@@ -19,20 +19,20 @@ package forms
 import config.AppConfig
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.{EntryDetails, RepresentativeDanOne}
+import models.{EntryDetails, RepresentativeDan}
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.Messages
 
-class RepresentativeDanOneFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+class RepresentativeDanFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[RepresentativeDanOne] = {
+  def apply()(implicit messages: Messages): Form[RepresentativeDan] = {
 
     Form( mapping(
-      "accountNumber" -> text("repDanOne.error.input.required")
-        .verifying(regexp("[0-9]{7}","repDanOne.error.input.format")),
-      "value" -> text("repDanOne.error.radio.required")
-    )(RepresentativeDanOne.apply)(RepresentativeDanOne.unapply)
+      "accountNumber" -> text("repDan.error.input.required")
+        .verifying(regexp("[0-9]{7}","repDan.error.input.format")),
+      "value" -> text("repDan.error.radio.required")
+    )(RepresentativeDan.apply)(RepresentativeDan.unapply)
     )
   }
 }

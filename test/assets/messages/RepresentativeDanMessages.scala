@@ -16,7 +16,7 @@
 
 package messages
 
-object RepresentativeDanOneMessages extends BaseMessages {
+object RepresentativeDanMessages extends BaseMessages {
 
   val title: String = "Deferment account details"
   val h1: String = "Deferment account details"

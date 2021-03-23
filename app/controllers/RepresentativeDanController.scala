@@ -18,30 +18,30 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.RepresentativeDanOneFormProvider
+import forms.RepresentativeDanFormProvider
 import models.UserAnswers
-import pages.{RepresentativeDanOnePage, SplitPaymentPage}
+import pages.{RepresentativeDanPage, SplitPaymentPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.RepresentativeDanOneView
+import views.html.RepresentativeDanView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class RepresentativeDanOneController @Inject()(identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               sessionRepository: SessionRepository,
-                                               mcc: MessagesControllerComponents,
-                                               view: RepresentativeDanOneView,
-                                               formProvider: RepresentativeDanOneFormProvider
-                                              )
+class RepresentativeDanController @Inject()(identify: IdentifierAction,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            sessionRepository: SessionRepository,
+                                            mcc: MessagesControllerComponents,
+                                            view: RepresentativeDanView,
+                                            formProvider: RepresentativeDanFormProvider
+                                           )
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(RepresentativeDanOnePage).fold(formProvider()) {
+    val form = request.userAnswers.get(RepresentativeDanPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink(request.userAnswers))))
@@ -54,12 +54,12 @@ class RepresentativeDanOneController @Inject()(identify: IdentifierAction,
       ))),
       dan => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDanOnePage, dan))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(RepresentativeDanPage, dan))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           dan.danType match {
             case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-            case _ => Redirect(controllers.routes.RepresentativeDanOneController.onLoad())
+            case _ => Redirect(controllers.routes.RepresentativeDanController.onLoad())
           }
         }
       }
