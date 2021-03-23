@@ -26,7 +26,9 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
-  private val contactHost = servicesConfig.getString("contact-frontend.host")
+  private val contactHost = servicesConfig.baseUrl("contact-frontend")
+  private val feedbackHost = servicesConfig.baseUrl("feedback-frontend")
+  lazy val surveyUrl = feedbackHost + servicesConfig.getString("feedback-frontend.url")
 
   private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
 
@@ -65,7 +67,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
   lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
-  lazy val upScanAcceptedFileTypes: String = allowedUploadFileTypes.map(x=>"."+x).mkString(",").toLowerCase
+  lazy val upScanAcceptedFileTypes: String = allowedUploadFileTypes.map(x => "." + x).mkString(",").toLowerCase
 
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
@@ -78,8 +80,11 @@ trait AppConfig extends FixedConfig {
   val footerLinkItems: Seq[String]
   val contactFormServiceIdentifier: String
   val contactUrl: String
+  val surveyUrl: String
   val host: String
+
   def feedbackUrl(implicit request: RequestHeader): String
+
   val appName: String
   val loginUrl: String
   val signOutUrl: String
