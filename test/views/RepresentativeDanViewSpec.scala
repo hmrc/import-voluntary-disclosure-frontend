@@ -29,6 +29,8 @@ import views.html.RepresentativeDanView
 
 class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
+  val backLink = Call("GET","backLinkUrl")
+
   private lazy val injectedView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
   val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
@@ -42,7 +44,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[RepresentativeDan] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.SplitPaymentController.onLoad()
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -67,7 +69,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues(emptyString, "A")
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.SplitPaymentController.onLoad()
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -88,7 +90,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("!234567", "A")
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.SplitPaymentController.onLoad()
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -109,7 +111,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("1234567", emptyString)
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.SplitPaymentController.onLoad()
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -130,7 +132,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html = injectedView(form, Call("GET", controllers.routes.SplitPaymentController.onLoad().toString))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title of '${RepresentativeDanMessages.title}'" in {
@@ -166,7 +168,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.SplitPaymentController.onLoad().toString)
+      elementAttributes("#back-link") must contain("href" -> backLink.url)
     }
   }
 }
