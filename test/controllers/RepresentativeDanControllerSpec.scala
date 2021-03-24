@@ -76,14 +76,14 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id").set(DefermentPage, false).success.value
         )
-        controller.backLink(userAnswers.get) mustBe Call("GET", controllers.routes.DefermentController.onLoad().url)
+        controller.backLink(userAnswers.get) mustBe controllers.routes.DefermentController.onLoad()
       }
 
       "redirect to the split payments page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id").set(SplitPaymentPage, true).success.value
         )
-        controller.backLink(userAnswers.get) mustBe Call("GET", controllers.routes.SplitPaymentController.onLoad().url)
+        controller.backLink(userAnswers.get) mustBe controllers.routes.SplitPaymentController.onLoad()
       }
     }
   }

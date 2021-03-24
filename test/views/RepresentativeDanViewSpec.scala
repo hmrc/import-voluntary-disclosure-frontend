@@ -29,59 +29,108 @@ import views.html.RepresentativeDanView
 
 class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
-  def formDataSetup(accountNumber: Option[String] = Some("1234567"),
-                    danType: Option[String] = Some("A")): Map[String, String] =
-    (
-      accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
-        danType.map(_ => "value" -> danType.get)
-      ).toMap
-
   private lazy val injectedView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
   val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
 
-  val backLinkUrl = "backLinkUrl"
+  def repDanFormWithValues(accountNumber: String, danType: String): Form[RepresentativeDan] =
+    formProvider().bind(Map("accountNumber" -> accountNumber, "value" -> danType))
 
-  "Rendering the Representative Dan One view" when {
+  "Rendering the RepresentativeDan page" when {
 
-    val missingAccountNumber = formDataSetup(accountNumber = None)
-    val missingDanType = formDataSetup(danType = None)
-    val formatAccountNumber = formDataSetup(accountNumber = Some("!23456"))
+    "no errors exist" should {
+      val form: Form[RepresentativeDan] = formProvider.apply()
+      lazy val view: Html = injectedView(
+        form,
+        controllers.routes.SplitPaymentController.onLoad()
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    // represents error scenario description, data and expected error message
-    val testScenarios: Map[String, (Map[String, String], String)] = Map(
-      "Account Number is missing" -> (missingAccountNumber -> RepresentativeDanMessages.accountNumberRequiredError),
-      "Dan Type is missing" -> (missingDanType -> RepresentativeDanMessages.danTypeRequiredError),
-      "Account Number is incorrect" -> (formatAccountNumber -> RepresentativeDanMessages.accountNumberFormatError)
-    )
+      s"have the correct page title" in {
+        document.title mustBe RepresentativeDanMessages.title
+      }
 
-    testScenarios.foreach { scenario =>
-      val (description, (formData, errorMessage)) = scenario
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
 
-      description should {
-        lazy val form: Form[RepresentativeDan] = formProvider().bind(formData)
-        lazy val view: Html = injectedView(form, Call("GET", backLinkUrl))(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
+      "not render an error message against the input field" in {
+        document.select("#accountNumber-error").size mustBe 0
+      }
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title
-        }
-
-        s"have correct message in the error summary" in {
-          elementText(".govuk-error-summary__list") mustBe errorMessage
-        }
-
-        s"have correct error message against the field in error" in {
-          // Note: the error message includes a visually hidden "Error:" prompt to accessibility
-          elementText(".govuk-error-message") mustBe "Error: " + errorMessage
-        }
+      "not render an error message against the radio field" in {
+        document.select("#value-error").size mustBe 0
       }
     }
+
+    "an error exists (no value has been specified for the account number)" should {
+      lazy val form: Form[RepresentativeDan] = repDanFormWithValues(emptyString, "A")
+      lazy val view: Html = injectedView(
+        form,
+        controllers.routes.SplitPaymentController.onLoad()
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title
+      }
+
+      "render an error summary with the correct message " in {
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.accountNumberRequiredError
+      }
+
+      "render an error message against the field" in {
+        elementText("#accountNumber-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberRequiredError
+      }
+    }
+
+    "an error exists (account number value is an invalid format)" should {
+      lazy val form: Form[RepresentativeDan] = repDanFormWithValues("!234567", "A")
+      lazy val view: Html = injectedView(
+        form,
+        controllers.routes.SplitPaymentController.onLoad()
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title
+      }
+
+      "render an error summary with the correct message " in {
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.accountNumberFormatError
+      }
+
+      "render an error message against the field" in {
+        elementText("#accountNumber-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberFormatError
+      }
+    }
+
+    "an error exists (dan type radio selection has not been provided)" should {
+      lazy val form: Form[RepresentativeDan] = repDanFormWithValues("1234567", emptyString)
+      lazy val view: Html = injectedView(
+        form,
+        controllers.routes.SplitPaymentController.onLoad()
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title
+      }
+
+      "render an error summary with the correct message " in {
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.danTypeRequiredError
+      }
+
+      "render an error message against the field" in {
+        elementText("#value-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.danTypeRequiredError
+      }
+    }
+
   }
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html = injectedView(form, Call("GET", backLinkUrl))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Call("GET", controllers.routes.SplitPaymentController.onLoad().toString))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title of '${RepresentativeDanMessages.title}'" in {
@@ -117,7 +166,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "backLinkUrl")
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.SplitPaymentController.onLoad().toString)
     }
   }
 }
