@@ -65,7 +65,7 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
-            Redirect(controllers.routes.SplitPaymentController.onLoad())
+            Redirect(controllers.routes.RepresentativeDanDutyController.onLoad())
           } else {
             Redirect(controllers.routes.RepresentativeDanController.onLoad())
           }
