@@ -18,7 +18,7 @@ package controllers
 
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.RepresentativeDanDutyFormProvider
+import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import pages.{DefermentAccountPage, DefermentTypePage}
 import play.api.i18n.I18nSupport
@@ -36,7 +36,7 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                 sessionRepository: SessionRepository,
                                                 mcc: MessagesControllerComponents,
                                                 view: RepresentativeDanDutyView,
-                                                formProvider: RepresentativeDanDutyFormProvider
+                                                formProvider: RepresentativeDanFormProvider
                                                )
   extends FrontendController(mcc) with I18nSupport {
 

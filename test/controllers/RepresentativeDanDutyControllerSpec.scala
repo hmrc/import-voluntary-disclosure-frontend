@@ -18,7 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.RepresentativeDanDutyFormProvider
+import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import pages.{DefermentAccountPage, DefermentTypePage}
@@ -44,8 +44,8 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val formProvider: RepresentativeDanDutyFormProvider = injector.instanceOf[RepresentativeDanDutyFormProvider]
-    val form: RepresentativeDanDutyFormProvider = formProvider
+    val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
+    val form: RepresentativeDanFormProvider = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
