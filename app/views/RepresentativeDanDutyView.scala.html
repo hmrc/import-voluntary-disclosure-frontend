@@ -37,26 +37,26 @@
         @h1(messages("repDuty.heading"))
 
         @formHelper(action = controllers.routes.RepresentativeDanDutyController.onSubmit()) {
-            @inputText(form, "accountNumber", "accountNumber", messages("repDuty.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
+            @inputText(form, "accountNumber", "accountNumber", messages("repDan.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
             @inputRadio(
                 form = form,
-                legend = messages("repDuty.radioLabel"),
+                legend = messages("repDan.radioLabel"),
                 items = Seq(
                             RadioItem(
                                 value = Some("A"),
-                                content = Text(messages("repDuty.radio1")),
+                                content = Text(messages("repDan.radio1")),
                                 hint = None,
                                 checked = form("value").value.contains("A")
                             ),
                             RadioItem(
                                 value = Some("B"),
-                                content = Text(messages("repDuty.radio2")),
-                                hint = Some(hint("repDuty.radio2.hint")),
+                                content = Text(messages("repDan.radio2")),
+                                hint = Some(hint("repDan.radio2.hint")),
                                 checked = form("value").value.contains("B")
                             ),
                             RadioItem(
                                 value = Some("C"),
-                                content = Text(messages("repDuty.radio3")),
+                                content = Text(messages("repDan.radio3")),
                                 hint = None,
                                 checked = form("value").value.contains("C")
                             )

@@ -17,7 +17,7 @@
 package views
 
 import base.ViewBaseSpec
-import forms.RepresentativeDanDutyFormProvider
+import forms.RepresentativeDanFormProvider
 import messages.{BaseMessages, RepresentativeDanDutyMessages, RepresentativeDanMessages}
 import models.RepresentativeDan
 import org.jsoup.Jsoup
@@ -33,7 +33,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: RepresentativeDanDutyView = app.injector.instanceOf[RepresentativeDanDutyView]
 
-  val formProvider: RepresentativeDanDutyFormProvider = injector.instanceOf[RepresentativeDanDutyFormProvider]
+  val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
 
   def repDanFormWithValues(accountNumber: String, danType: String): Form[RepresentativeDan] =
     formProvider().bind(Map("accountNumber" -> accountNumber, "value" -> danType))
