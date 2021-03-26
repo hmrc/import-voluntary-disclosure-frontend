@@ -40,7 +40,7 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.SplitPaymentController.onLoad()
+  private[controllers] lazy val backLink: Call = controllers.routes.SplitPaymentController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
