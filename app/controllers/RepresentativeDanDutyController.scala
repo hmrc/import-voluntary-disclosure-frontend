@@ -40,6 +40,8 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                )
   extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink: Call = controllers.routes.SplitPaymentController.onLoad()
+
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
       danType <- request.userAnswers.get(DefermentTypePage)
@@ -70,7 +72,4 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
       }
     )
   }
-
-  val backLink: Call = Call("GET", controllers.routes.SplitPaymentController.onLoad().url)
-
 }
