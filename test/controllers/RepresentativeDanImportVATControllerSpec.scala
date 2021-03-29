@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.{DefermentAccountPage, DefermentTypePage}
+import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, DefermentAccountPage, DefermentTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
@@ -63,8 +63,8 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] =
         Some(
           UserAnswers("some-cred-id")
-            .set(DefermentTypePage, "A").success.value
-            .set(DefermentAccountPage, "1234567").success.value
+            .set(AdditionalDefermentTypePage, "A").success.value
+            .set(AdditionalDefermentNumberPage, "1234567").success.value
         )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
