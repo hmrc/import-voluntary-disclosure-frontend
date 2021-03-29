@@ -221,7 +221,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         importerName = Some("Importer Inc."),
         importerAddress = Some(address),
         defermentType = Some("B"),
-        additionalDefermentNumber = Some("C1234567")
+        additionalDefermentNumber = Some("1234567"),
+        additionalDefermentType = Some("C")
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)

@@ -92,11 +92,6 @@ object IvdSubmission extends FixedConfig {
     val defermentDetails = if (data.paymentByDeferment) {
       (data.defermentType, data.defermentAccountNumber, data.additionalDefermentNumber, data.additionalDefermentType) match {
         case (Some(dt), Some(dan), Some(add), Some(dtAdd)) if data.userType == UserType.Representative => // TODO: Needs guard to check user has selected split
-          println(Console.RED + "Duty Deferment Account Number: " + Console.RESET)
-          println(s"$dt$dan")
-
-          println(Console.BLUE + "Import VAT Deferment Account Number: " + Console.RESET)
-          println(s"$dtAdd$add")
 
           Json.obj(
             "defermentType" -> dt,
