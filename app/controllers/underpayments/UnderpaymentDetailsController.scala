@@ -38,13 +38,11 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
                                               mcc: MessagesControllerComponents,
                                               formProvider: UnderpaymentDetailsFormProvider,
                                               view: UnderpaymentDetailsView)
-
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentTypeController.onLoad()
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.userAnswers.get(UnderpaymentDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
@@ -53,7 +51,6 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       formProvider().bindFromRequest().fold(
         formWithErrors => {
           val newErrors = formWithErrors.errors.map { error =>
@@ -70,11 +67,10 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType))
+            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, change = false))
           }
         }
       )
-
   }
 
 }

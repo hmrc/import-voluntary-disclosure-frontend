@@ -18,7 +18,6 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailsFormProvider
-import javax.inject.{Inject, Singleton}
 import models.underpayments.UnderpaymentAmount
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
 import play.api.data.FormError
@@ -26,8 +25,9 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.underpayments.{ChangeUnderpaymentDetailsView, UnderpaymentDetailsView}
+import views.html.underpayments.ChangeUnderpaymentDetailsView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -55,7 +55,6 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-
       formProvider().bindFromRequest().fold(
         formWithErrors => {
           val newErrors = formWithErrors.errors.map { error =>
@@ -69,10 +68,15 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
         },
         value => {
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailsPage, UnderpaymentAmount(value.original, value.amended)))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(
+              UnderpaymentDetailsPage, UnderpaymentAmount(value.original, value.amended))
+            )
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, true))
+            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(
+              underpaymentType = underpaymentType,
+              change = true)
+            )
           }
         }
       )
