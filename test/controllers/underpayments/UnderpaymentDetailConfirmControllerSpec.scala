@@ -53,12 +53,12 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
 
     "return OK" in new Test {
       override val userAnswers = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result] = controller.onLoad("B00")(fakeRequest)
+      val result: Future[Result] = controller.onLoad("B00", false)(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad("B00")(fakeRequest)
+      val result: Future[Result] = controller.onLoad("B00", false)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -82,13 +82,13 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
             .set(UnderpaymentTypePage, "B00").success.value
             .set(UnderpaymentDetailsPage, UnderpaymentAmount(0, 1)).success.value
         )
-        lazy val result: Future[Result] = controller.onSubmit("B00")(fakeRequest)
+        lazy val result: Future[Result] = controller.onSubmit("B00", false)(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit("B00")(
+        await(controller.onSubmit("B00", false)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
         )
         verifyCalls()
@@ -102,7 +102,7 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
           UserAnswers("credId")
             .set(UnderpaymentTypePage, "B00").success.value
         )
-        lazy val result: Future[Result] = controller.onSubmit("B00")(fakeRequest)
+        lazy val result: Future[Result] = controller.onSubmit("B00", false)(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
