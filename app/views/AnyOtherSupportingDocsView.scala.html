@@ -20,7 +20,8 @@
         yesNoRadio: components.yesNoRadio,
         button: components.button,
         p: components.p,
-        bullets: components.bullets)
+        bullets: components.bullets,
+        h1: components.h1)
 
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
@@ -31,16 +32,25 @@
 
         @errorSummary(form.errors)
 
+        @h1(messages("anyOtherSupportingDocs.heading"))
+
         @p{ @messages("anyOtherSupportingDocs.p1") }
 
-        @bullets(Seq(messages("anyOtherSupportingDocs.bullet1"),messages("anyOtherSupportingDocs.bullet2"),messages("anyOtherSupportingDocs.bullet3"),messages("anyOtherSupportingDocs.bullet4")).map(Html(_)))
+        @bullets(
+            isSpaced = true,
+            items = Seq(
+                messages("anyOtherSupportingDocs.bullet1"),
+                messages("anyOtherSupportingDocs.bullet2"),
+                messages("anyOtherSupportingDocs.bullet3"),
+                messages("anyOtherSupportingDocs.bullet4")).map(Html(_)
+            )
+        )
 
-        @formHelper(action = controllers.routes.AcceptanceDateController.onSubmit()) {
+        @formHelper(action = controllers.routes.AnyOtherSupportingDocsController.onSubmit()) {
             @yesNoRadio(
                 form,
-                headingKey = "anyOtherSupportingDocs.heading",
-                isPageHeading = false,
-                inline = false
+                headingKey = "",
+                isPageHeading = false
             )
 
             @button("common.button.continue")
