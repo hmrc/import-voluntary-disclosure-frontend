@@ -17,11 +17,10 @@
 package views.underpayments
 
 import base.ViewBaseSpec
-import forms.underpayments.{RemoveUnderpaymentDetailsFormProvider, UnderpaymentDetailsFormProvider}
+import forms.underpayments.UnderpaymentDetailsFormProvider
 import messages.underpayments.ChangeUnderpaymentDetailsMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.underpayments.ChangeUnderpaymentDetailsView
@@ -79,8 +78,6 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec {
 
       // TODO: test error messages (these can be found in the underpaymentDetailsMessages file)
     }
-
-
 
 
   }
