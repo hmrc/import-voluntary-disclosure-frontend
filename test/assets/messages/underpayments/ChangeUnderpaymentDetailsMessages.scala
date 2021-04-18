@@ -18,7 +18,7 @@ package messages.underpayments
 
 import messages.{BaseMessages, ExpectedContent}
 
-object RemoveUnderpaymentDetailsMessages extends BaseMessages {
+object ChangeUnderpaymentDetailsMessages extends BaseMessages {
 
   val B00pageTitle = "import VAT"
   val B00pageHeader = "import VAT"
@@ -40,62 +40,64 @@ object RemoveUnderpaymentDetailsMessages extends BaseMessages {
   val A10pageHeader = "Customs Duty on Agricultural Products"
   val D10pageTitle = "Compensatory Duty"
   val D10pageHeader = "Compensatory Duty"
-  val beginningMessage = "Are you sure you want to remove this "
-  val endingMessage = " underpayment?"
+  val beginningMessage = "Change the "
+  val endingMessage = " underpayment details"
   val radioYes = "Yes"
   val radioNo = "No"
+  val originalValue = "Amount that was paid"
+  val amendedValue = "Amount that should have been paid"
+
 
   val underpaymentTypeContent: Map[String, ExpectedContent] = Map(
     "B00" -> ExpectedContent(
       beginningMessage + B00pageTitle + endingMessage,
       beginningMessage + B00pageHeader + endingMessage,
-      Some("Select yes if you want to remove this import VAT underpayment")
+      None
     ),
     "A00" -> ExpectedContent(
       beginningMessage + A00pageTitle + endingMessage,
       beginningMessage + A00pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Customs Duty VAT underpayment")
+      None
     ),
     "E00" -> ExpectedContent(
       beginningMessage + E00pageTitle + endingMessage,
       beginningMessage + E00pageHeader + endingMessage,
-      Some("Select yes if you want to remove this excise duty underpayment")
+      None
     ),
     "A20" -> ExpectedContent(
       beginningMessage + A20pageTitle + endingMessage,
       beginningMessage + A20pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Additional Duty underpayment")
+      None
     ),
     "A30" -> ExpectedContent(
       beginningMessage + A30pageTitle + endingMessage,
       beginningMessage + A30pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Definitive Anti-Dumping Duty underpayment")
+      None
     ),
     "A35" -> ExpectedContent(
       beginningMessage + A35pageTitle + endingMessage,
       beginningMessage + A35pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Provisional Anti-Dumping Duty underpayment")
+      None
     ),
     "A40" -> ExpectedContent(
       beginningMessage + A40pageTitle + endingMessage,
       beginningMessage + A40pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Definitive Countervailing Duty underpayment")
+      None
     ),
     "A45" -> ExpectedContent(
       beginningMessage + A45pageTitle + endingMessage,
       beginningMessage + A45pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Provisional Countervailing Duty underpayment")
+      None
     ),
     "A10" -> ExpectedContent(
       beginningMessage + A10pageTitle + endingMessage,
       beginningMessage + A10pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Customs Duty on Agricultural Products underpayment")
+      None
     ),
     "D10" -> ExpectedContent(
       beginningMessage + D10pageTitle + endingMessage,
       beginningMessage + D10pageHeader + endingMessage,
-      Some("Select yes if you want to remove this Compensatory Duty underpayment")
+      None
     )
   )
-
 }

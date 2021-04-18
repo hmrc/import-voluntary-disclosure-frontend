@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package views
+package views.underpayments
 
 import base.ViewBaseSpec
 import forms.underpayments.RemoveUnderpaymentDetailsFormProvider
-import messages.RemoveUnderpaymentReasonMessages
 import messages.underpayments.RemoveUnderpaymentDetailsMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -49,7 +48,7 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
-        document.title mustBe RemoveUnderpaymentDetailsMessages.title
+        document.title mustBe RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
       }
 
       "not render an error summary" in {
@@ -61,30 +60,55 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "an error exists" should {
-      lazy val form: Form[Boolean] = formProvider(underpaymentType).bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(
-        form,
-        underpaymentType,
-        backLink
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "update the page title to include the error prefix" in {
-        document.title mustBe RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.title
+    "The Underpayment Detail Summary page" when {
+      Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10").foreach { testType =>
+        checkContent(testType)
       }
 
-      "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe RemoveUnderpaymentDetailsMessages.requiredError
+      def checkContent(underpaymentType: String): Unit = {
+        s"rendered for type $underpaymentType" should {
+          val form: Form[Boolean] = formProvider.apply(underpaymentType)
+          lazy val view: Html = injectedView(
+            form,
+            underpaymentType,
+            backLink
+          )(fakeRequest, messages)
+          lazy implicit val document: Document = Jsoup.parse(view.body)
+
+          "have the correct page title" in {
+            document.title mustBe
+              RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
+          }
+
+          "have the correct page heading" in {
+            elementText("h1") mustBe
+              RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).heading
+          }
+        }
       }
 
-      "render an error message against the field" in {
-        elementText("#value-error") mustBe RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.requiredError
+      "an error exists" should {
+        lazy val form: Form[Boolean] = formProvider(underpaymentType).bind(Map("value" -> ""))
+        lazy val view: Html = injectedView(
+          form,
+          underpaymentType,
+          backLink
+        )(fakeRequest, messages)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "update the page title to include the error prefix" in {
+          document.title mustBe RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
+        }
+
+        "render an error summary with the correct message" in {
+          elementText("div.govuk-error-summary > div") mustBe
+            RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).body.get
+        }
+
       }
+
     }
-
   }
-
   it should {
 
     val form: Form[Boolean] = formProvider.apply(underpaymentType)
@@ -95,11 +119,11 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct value for the first radio button of '${RemoveUnderpaymentReasonMessages.radioYes}'" in {
+    s"have the correct value for the first radio button of '${RemoveUnderpaymentDetailsMessages.radioYes}'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe RemoveUnderpaymentDetailsMessages.radioYes
     }
 
-    s"have the correct value for the second radio button of '${RemoveUnderpaymentReasonMessages.radioNo}'" in {
+    s"have the correct value for the second radio button of '${RemoveUnderpaymentDetailsMessages.radioNo}'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe RemoveUnderpaymentDetailsMessages.radioNo
     }
 
@@ -113,3 +137,5 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
 
   }
 }
+
+
