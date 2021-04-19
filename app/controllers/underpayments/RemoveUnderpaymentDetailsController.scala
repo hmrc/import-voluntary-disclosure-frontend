@@ -17,11 +17,8 @@
 package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.RemoveUnderpaymentReasonFormProvider
 import forms.underpayments.RemoveUnderpaymentDetailsFormProvider
-import javax.inject.{Inject, Singleton}
-import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
-import pages.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -29,6 +26,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.RemoveUnderpaymentDetailsView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -42,7 +40,6 @@ class RemoveUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
                                                     formProvider: RemoveUnderpaymentDetailsFormProvider,
                                                     view: RemoveUnderpaymentDetailsView)
   extends FrontendController(mcc) with I18nSupport {
-
 
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -88,7 +85,7 @@ class RemoveUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
     )
   }
 
-  def backLink(underpaymentType:String): Call = {
+  def backLink(underpaymentType: String): Call = {
     controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType)
   }
 

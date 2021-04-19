@@ -19,7 +19,7 @@ package views.underpayments
 import base.ViewBaseSpec
 import forms.underpayments.UnderpaymentDetailsFormProvider
 import messages.BaseMessages
-import messages.underpayments.{ChangeUnderpaymentDetailsMessages, UnderpaymentDetailsMessages}
+import messages.underpayments.ChangeUnderpaymentDetailsMessages
 import models.underpayments.UnderpaymentAmount
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -117,7 +117,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       "an error exists (same value has been entered for original and amended amount)" should {
         lazy val form: Form[UnderpaymentAmount] = underpaymentReasonFormWithValues(validValue, validValue)
           .discardingErrors
-          .withError(FormError("amended", UnderpaymentDetailsMessages.amendedDifferent))
+          .withError(FormError("amended", ChangeUnderpaymentDetailsMessages.amendedDifferent))
         lazy val view: Html = injectedView(form, underpaymentType, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
