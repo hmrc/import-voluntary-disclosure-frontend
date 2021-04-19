@@ -16,88 +16,105 @@
 
 package messages.underpayments
 
-import messages.{BaseMessages, ExpectedContent}
+import messages.BaseMessages
 
 object ChangeUnderpaymentDetailsMessages extends BaseMessages {
 
-  val B00pageTitle = "import VAT"
-  val B00pageHeader = "import VAT"
-  val A00pageTitle = "Customs Duty"
-  val A00pageHeader = "Customs Duty"
-  val E00pageTitle = "excise duty"
-  val E00pageHeader = "excise duty"
-  val A20pageTitle = "Additional Duty"
-  val A20pageHeader = "Additional Duty"
-  val A30pageTitle = "Definitive Anti-Dumping Duty"
-  val A30pageHeader = "Definitive Anti-Dumping Duty"
-  val A35pageTitle = "Provisional Anti-Dumping Duty"
-  val A35pageHeader = "Provisional Anti-Dumping Duty"
-  val A40pageTitle = "Definitive Countervailing Duty"
-  val A40pageHeader = "Definitive Countervailing Duty"
-  val A45pageTitle = "Provisional Countervailing Duty"
-  val A45pageHeader = "Provisional Countervailing Duty"
-  val A10pageTitle = "Customs Duty on Agricultural Products"
-  val A10pageHeader = "Customs Duty on Agricultural Products"
-  val D10pageTitle = "Compensatory Duty"
-  val D10pageHeader = "Compensatory Duty"
-  val beginningMessage = "Change the "
-  val endingMessage = " underpayment details"
-  val radioYes = "Yes"
-  val radioNo = "No"
-  val originalValue = "Amount that was paid"
-  val amendedValue = "Amount that should have been paid"
+  case class ExpectedContentChangeUnderpayment(title: String, heading: String, remove: String)
+
+  val B00pageTitle = "Change the import VAT underpayment details"
+  val B00pageHeader = "Change the import VAT underpayment details"
+  val A00pageTitle = "Change the Customs Duty underpayment details"
+  val A00pageHeader = "Change the Customs Duty underpayment details"
+  val E00pageTitle = "Change the excise duty underpayment details"
+  val E00pageHeader = "Change the excise duty underpayment details"
+  val A20pageTitle = "Change the Additional Duty underpayment details"
+  val A20pageHeader = "Change the Additional Duty underpayment details"
+  val A30pageTitle = "Change the Definitive Anti-Dumping Duty underpayment details"
+  val A30pageHeader = "Change the Definitive Anti-Dumping Duty underpayment details"
+  val A35pageTitle = "Change the Provisional Anti-Dumping Duty underpayment details"
+  val A35pageHeader = "Change the Provisional Anti-Dumping Duty underpayment details"
+  val A40pageTitle = "Change the Definitive Countervailing Duty underpayment details"
+  val A40pageHeader = "Change the Definitive Countervailing Duty underpayment details"
+  val A45pageTitle = "Change the Provisional Countervailing Duty underpayment details"
+  val A45pageHeader = "Change the Provisional Countervailing Duty underpayment details"
+  val A10pageTitle = "Change the Customs Duty on Agricultural Products underpayment details"
+  val A10pageHeader = "Change the Customs Duty on Agricultural Products underpayment details"
+  val D10pageTitle = "Change the Compensatory Duty underpayment details"
+  val D10pageHeader = "Change the Compensatory Duty underpayment details"
+  val B00removeLink = "Remove this import VAT underpayment"
+  val A00removeLink = "Remove this Customs Duty underpayment"
+  val E00removeLink = "Remove this excise duty underpayment"
+  val A20removeLink = "Remove this Additional Duty underpayment"
+  val A30removeLink = "Remove this Definitive Anti-Dumping Duty underpayment"
+  val A35removeLink = "Remove this Provisional Anti-Dumping Duty underpayment"
+  val A40removeLink = "Remove this Definitive Countervailing Duty underpayment"
+  val A45removeLink = "Remove this Provisional Countervailing Duty underpayment"
+  val A10removeLink = "Remove this Customs Duty on Agricultural Products underpayment"
+  val D10removeLink = "Remove this Compensatory Duty underpayment"
+
+  val originalAmount = "Amount that was paid"
+  val amendedAmount = "Amount that should have been paid"
+
+  val originalNonEmpty = "Enter the amount that was paid to HMRC, in pounds"
+  val originalNonNumber = "Amount that was paid to HMRC must be a number like 7235 or 67.39"
+  val originalOutOfRange = "Amount that was paid to HMRC must be between £0 and £9,999,999,999.99"
+  val amendedNonEmpty = "Enter the amount that should have been paid, in pounds"
+  val amendedNonNumber = "Amount that should have been paid must be a number like 7235 or 67.39"
+  val amendedOutOfRange = "Amount that should have been paid must be between £0 and £9,999,999,999.99"
+  val amendedDifferent = "Amount that should have been paid must be more than amount that was paid to HMRC"
 
 
-  val underpaymentTypeContent: Map[String, ExpectedContent] = Map(
-    "B00" -> ExpectedContent(
-      beginningMessage + B00pageTitle + endingMessage,
-      beginningMessage + B00pageHeader + endingMessage,
-      None
+  val underpaymentTypeContent: Map[String, ExpectedContentChangeUnderpayment] = Map(
+    "B00" -> ExpectedContentChangeUnderpayment(
+       B00pageTitle,
+       B00pageHeader,
+      B00removeLink
     ),
-    "A00" -> ExpectedContent(
-      beginningMessage + A00pageTitle + endingMessage,
-      beginningMessage + A00pageHeader + endingMessage,
-      None
+    "A00" -> ExpectedContentChangeUnderpayment(
+      A00pageTitle,
+      A00pageHeader,
+      A00removeLink
     ),
-    "E00" -> ExpectedContent(
-      beginningMessage + E00pageTitle + endingMessage,
-      beginningMessage + E00pageHeader + endingMessage,
-      None
+    "E00" -> ExpectedContentChangeUnderpayment(
+      E00pageTitle,
+      E00pageHeader,
+      E00removeLink
     ),
-    "A20" -> ExpectedContent(
-      beginningMessage + A20pageTitle + endingMessage,
-      beginningMessage + A20pageHeader + endingMessage,
-      None
+    "A20" -> ExpectedContentChangeUnderpayment(
+      A20pageTitle,
+      A20pageHeader,
+      A20removeLink
     ),
-    "A30" -> ExpectedContent(
-      beginningMessage + A30pageTitle + endingMessage,
-      beginningMessage + A30pageHeader + endingMessage,
-      None
+    "A30" -> ExpectedContentChangeUnderpayment(
+      A30pageTitle,
+      A30pageHeader,
+      A30removeLink
     ),
-    "A35" -> ExpectedContent(
-      beginningMessage + A35pageTitle + endingMessage,
-      beginningMessage + A35pageHeader + endingMessage,
-      None
+    "A35" -> ExpectedContentChangeUnderpayment(
+      A35pageTitle,
+      A35pageHeader,
+      A35removeLink
     ),
-    "A40" -> ExpectedContent(
-      beginningMessage + A40pageTitle + endingMessage,
-      beginningMessage + A40pageHeader + endingMessage,
-      None
+    "A40" -> ExpectedContentChangeUnderpayment(
+      A40pageTitle,
+      A40pageHeader,
+      A40removeLink
     ),
-    "A45" -> ExpectedContent(
-      beginningMessage + A45pageTitle + endingMessage,
-      beginningMessage + A45pageHeader + endingMessage,
-      None
+    "A45" -> ExpectedContentChangeUnderpayment(
+      A45pageTitle,
+      A45pageHeader,
+      A45removeLink
     ),
-    "A10" -> ExpectedContent(
-      beginningMessage + A10pageTitle + endingMessage,
-      beginningMessage + A10pageHeader + endingMessage,
-      None
+    "A10" -> ExpectedContentChangeUnderpayment(
+      A10pageTitle,
+      A10pageHeader,
+      A10removeLink
     ),
-    "D10" -> ExpectedContent(
-      beginningMessage + D10pageTitle + endingMessage,
-      beginningMessage + D10pageHeader + endingMessage,
-      None
+    "D10" -> ExpectedContentChangeUnderpayment(
+      D10pageTitle,
+      D10pageHeader,
+      D10removeLink
     )
   )
 }
