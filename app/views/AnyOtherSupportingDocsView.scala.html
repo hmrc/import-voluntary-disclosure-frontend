@@ -23,12 +23,12 @@
         bullets: components.bullets,
         h1: components.h1)
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("anyOtherSupportingDocs.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = Some(controllers.routes.SupportingDocController.onLoad)) {
+        customBackLinkUrl = Some(backLink)) {
 
         @errorSummary(form.errors)
 
@@ -49,8 +49,8 @@
         @formHelper(action = controllers.routes.AnyOtherSupportingDocsController.onSubmit()) {
             @yesNoRadio(
                 form,
-                headingKey = "",
-                isPageHeading = false
+                headingKey = "anyOtherSupportingDocs.heading",
+                classes = "govuk-visually-hidden"
             )
 
             @button("common.button.continue")

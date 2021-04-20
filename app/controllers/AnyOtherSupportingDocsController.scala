@@ -17,19 +17,17 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.{AcceptanceDateFormProvider, AnyOtherSupportingDocsFormProvider}
+import forms.AnyOtherSupportingDocsFormProvider
 import javax.inject.{Inject, Singleton}
-import pages.{AcceptanceDatePage, AnyOtherSupportingDocsPage}
+import pages.AnyOtherSupportingDocsPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{AcceptanceDateView, AnyOtherSupportingDocsView}
-
+import views.html.AnyOtherSupportingDocsView
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 @Singleton
 class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
@@ -41,20 +39,19 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  view: AnyOtherSupportingDocsView)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  private lazy val backLink: Call = controllers.routes.SupportingDocController.onLoad()
 
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(AnyOtherSupportingDocsPage).fold(formProvider()) {
       formProvider().fill
     }
-
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-      value => {
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      value =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
@@ -65,8 +62,6 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
             Redirect(controllers.routes.UploadFileController.onLoad())
           }
         }
-      }
     )
   }
-
 }

@@ -22,6 +22,7 @@ import messages.{AnyOtherSupportingDocsMessages, BaseMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.AnyOtherSupportingDocsView
 
@@ -31,10 +32,12 @@ class AnyOtherSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: AnyOtherSupportingDocsFormProvider = injector.instanceOf[AnyOtherSupportingDocsFormProvider]
 
+  val backLink: Call = Call("GET", "url")
+
   "Rendering the AnyOtherSupportDocs page" when {
     "no errors exist" should {
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title of '${AnyOtherSupportingDocsMessages.pageTitle}'" in {
@@ -43,7 +46,7 @@ class AnyOtherSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
       "it" should {
         val form: Form[Boolean] = formProvider.apply()
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page heading of '${AnyOtherSupportingDocsMessages.heading}'" in {
           elementText("h1") mustBe AnyOtherSupportingDocsMessages.heading
@@ -78,7 +81,7 @@ class AnyOtherSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render a back link with the correct URL" in {
-          elementAttributes("#back-link") must contain("href" -> controllers.routes.SupportingDocController.onLoad().url)
+          elementAttributes("#back-link") must contain("href" -> "url")
         }
 
         s"have the correct Continue button" in {
