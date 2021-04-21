@@ -22,6 +22,6 @@ object OptionalSupportingDocsPage extends QuestionPage[Seq[String]] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "which-documents-uploaded"
+  override def toString: String = "optional-documents-uploaded"
 
 }
