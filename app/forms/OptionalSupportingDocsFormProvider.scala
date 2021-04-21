@@ -28,5 +28,4 @@ class OptionalSupportingDocsFormProvider extends Mappings {
         .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
     )
 
-
 }
