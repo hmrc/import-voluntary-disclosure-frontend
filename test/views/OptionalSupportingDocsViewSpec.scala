@@ -98,19 +98,19 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"the checkbox for importAndEntry is rendered" in {
-      document.getElementsByAttributeValue("for", "importAndEntry").get(0).text() mustBe OptionalDocumentsMessages.importAndEntry
+      elementText(".govuk-checkboxes__label[for=importAndEntry]") mustBe OptionalDocumentsMessages.importAndEntry
     }
 
     s"the checkbox for airwayBill is rendered" in {
-      document.getElementsByAttributeValue("for", "airwayBill").get(0).text() mustBe OptionalDocumentsMessages.airwayBill
+      elementText(".govuk-checkboxes__label[for=airwayBill]") mustBe OptionalDocumentsMessages.airwayBill
     }
 
     s"the checkbox for originProof is rendered" in {
-      document.getElementsByAttributeValue("for", "originProof").get(0).text() mustBe OptionalDocumentsMessages.originProof
+      elementText(".govuk-checkboxes__label[for=originProof]") mustBe OptionalDocumentsMessages.originProof
     }
 
     s"the checkbox for other is rendered" in {
-      document.getElementsByAttributeValue("for", "other").get(0).text() mustBe OptionalDocumentsMessages.other
+      elementText(".govuk-checkboxes__label[for=other]") mustBe OptionalDocumentsMessages.other
     }
 
     s"have the correct Continue button" in {
