@@ -21,7 +21,7 @@ object ImporterEORINumberMessages extends BaseMessages {
   val title: String = "What is the importer’s EORI number?"
   val h1: String = "What is the importer’s EORI number?"
   val hint: String = "The EORI starts with GB and is followed by 12 numbers, for example GB345834921000."
-  val nonEmpty: String = "Enter the importer’s EORI number"
+  val nonEmpty: String = "Enter an EORI number"
   val incorrectFormat: String = "Enter an EORI number in the correct format"
 
 }
