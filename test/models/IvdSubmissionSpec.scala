@@ -18,7 +18,6 @@ package models
 
 import base.ModelSpecBase
 import models.SelectedDutyTypes._
-import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
 import pages._
 import play.api.libs.json._
 
@@ -55,7 +54,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
       )
     ),
     additionalInfo = "some text",
-    amendedItems = Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200"))
+    amendedItems = Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200")),
+    documentsSupplied = Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet)
   )
 
   val userAnswers: UserAnswers = (for {
@@ -74,6 +74,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(MoreInformationPage, "some text")
     answers <- answers.set(UnderpaymentReasonsPage, submission.amendedItems)
     answers <- answers.set(SplitPaymentPage, false)
+    answers <- answers.set(OptionalSupportingDocsPage, Seq("OriginalC88", "OriginalC2", "AmendedSubstituteEntryWorksheet"))
   } yield answers).getOrElse(new UserAnswers("some-cred-id"))
 
   val userAnswersJson: JsValue = userAnswers.data
@@ -133,7 +134,11 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct JSON for the supportingDocumentTypes" in {
-        data("supportingDocumentTypes") shouldBe Json.arr()
+        data("supportingDocumentTypes") shouldBe Json.arr(
+          JsString(DocumentTypes.OriginalC88),
+          JsString(DocumentTypes.OriginalC2),
+          JsString(DocumentTypes.AmendedSubstituteEntryWorksheet)
+        )
       }
 
       "generate the correct JSON for the defermentType" in {
@@ -351,7 +356,11 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct JSON without authority document type details" in {
-        data("supportingDocumentTypes") shouldBe Json.arr()
+        data("supportingDocumentTypes") shouldBe Json.arr(
+          JsString(DocumentTypes.OriginalC88),
+          JsString(DocumentTypes.OriginalC2),
+          JsString(DocumentTypes.AmendedSubstituteEntryWorksheet)
+        )
       }
 
       "generate the correct JSON without additional supporting documents for authority" in {
@@ -406,7 +415,12 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct JSON with authority document type details" in {
-        data("supportingDocumentTypes") shouldBe Json.arr(JsString(DocumentTypes.DefermentAuthorisation))
+        data("supportingDocumentTypes") shouldBe Json.arr(
+          JsString(DocumentTypes.OriginalC88),
+          JsString(DocumentTypes.OriginalC2),
+          JsString(DocumentTypes.AmendedSubstituteEntryWorksheet),
+          JsString(DocumentTypes.DefermentAuthorisation)
+        )
       }
 
       "generate the correct JSON with additional supporting documents for authority" in {
@@ -476,7 +490,12 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct JSON with authority document type details" in {
-        data("supportingDocumentTypes") shouldBe Json.arr(JsString(DocumentTypes.DefermentAuthorisation))
+        data("supportingDocumentTypes") shouldBe Json.arr(
+          JsString(DocumentTypes.OriginalC88),
+          JsString(DocumentTypes.OriginalC2),
+          JsString(DocumentTypes.AmendedSubstituteEntryWorksheet),
+          JsString(DocumentTypes.DefermentAuthorisation)
+        )
       }
 
       "generate the correct JSON with additional supporting documents for authority" in {
@@ -539,7 +558,12 @@ class IvdSubmissionSpec extends ModelSpecBase {
       }
 
       "generate the correct JSON with authority document type details" in {
-        data("supportingDocumentTypes") shouldBe Json.arr(JsString(DocumentTypes.DefermentAuthorisation))
+        data("supportingDocumentTypes") shouldBe Json.arr(
+          JsString(DocumentTypes.OriginalC88),
+          JsString(DocumentTypes.OriginalC2),
+          JsString(DocumentTypes.AmendedSubstituteEntryWorksheet),
+          JsString(DocumentTypes.DefermentAuthorisation)
+        )
       }
 
       "generate the correct JSON with additional supporting documents for authority" in {

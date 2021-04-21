@@ -17,51 +17,47 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.AnyOtherSupportingDocsFormProvider
-import javax.inject.{Inject, Singleton}
-import pages.AnyOtherSupportingDocsPage
+import forms.OptionalSupportingDocsFormProvider
+import pages.OptionalSupportingDocsPage
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Format.GenericFormat
-import play.api.mvc._
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.AnyOtherSupportingDocsView
+import views.html.OptionalSupportingDocsView
+
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-@Singleton
-class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
+
+class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  getData: DataRetrievalAction,
                                                  requireData: DataRequiredAction,
                                                  sessionRepository: SessionRepository,
                                                  mcc: MessagesControllerComponents,
-                                                 formProvider: AnyOtherSupportingDocsFormProvider,
-                                                 view: AnyOtherSupportingDocsView)
+                                                 view: OptionalSupportingDocsView,
+                                                 formProvider: OptionalSupportingDocsFormProvider)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.SupportingDocController.onLoad()
+  private lazy val backLink = controllers.routes.AnyOtherSupportingDocsController.onLoad()
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(AnyOtherSupportingDocsPage).fold(formProvider()) {
-      formProvider().fill
-    }
-    Future.successful(Ok(view(form, backLink)))
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val documentsSelected = request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+    Future.successful(Ok(view(formProvider.apply(), backLink, documentsSelected)))
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value =>
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, Seq.empty))),
+      value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (value) {
-            Redirect(controllers.routes.OptionalSupportingDocsController.onLoad())
-          } else {
-            Redirect(controllers.routes.UploadFileController.onLoad())
-          }
+          Redirect(controllers.routes.UploadFileController.onLoad())
         }
+      }
     )
   }
+
 }

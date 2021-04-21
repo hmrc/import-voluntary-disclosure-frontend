@@ -114,4 +114,12 @@ trait Constraints extends InputFilter {
         Invalid(errorKey)
     }
 
+  def nonEmptySeq(errorMessage: String): Constraint[Seq[_]] =
+    Constraint {
+      case seq if seq.nonEmpty =>
+        Valid
+      case _ =>
+        Invalid(errorMessage)
+    }
+
 }
