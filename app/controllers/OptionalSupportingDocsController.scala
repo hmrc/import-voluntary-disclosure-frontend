@@ -39,9 +39,6 @@ class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  formProvider: OptionalSupportingDocsFormProvider)
   extends FrontendController(mcc) with I18nSupport {
 
-  // TODO - changes to the lists from Ians branch
-  // TODO - write tests
-
   private lazy val backLink = controllers.routes.AnyOtherSupportingDocsController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
