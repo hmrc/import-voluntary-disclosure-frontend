@@ -50,9 +50,8 @@ class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val documentsSelected = request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, documentsSelected))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, Seq.empty))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
