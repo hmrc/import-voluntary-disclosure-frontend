@@ -44,7 +44,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
     defermentType = None,
     defermentAccountNumber = Some("1234567"),
     additionalDefermentAccountNumber = None,
-    supportingDocuments = Vector(
+    supportingDocuments = Seq(
       FileUploadInfo(
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
@@ -54,7 +54,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
       )
     ),
     additionalInfo = "some text",
-    amendedItems = Vector(UnderpaymentReason(1, 0, "GBP100", "GBP200")),
+    amendedItems = Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200")),
     documentsSupplied = Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet)
   )
 
