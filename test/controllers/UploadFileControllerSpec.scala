@@ -109,7 +109,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
       .set(AnyOtherSupportingDocsPage, true).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.routes.AnyOtherSupportingDocsController.onLoad.url) mustBe true
+      contentAsString(result).contains(controllers.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
     }
   }
 
