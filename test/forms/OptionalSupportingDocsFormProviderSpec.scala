@@ -33,4 +33,17 @@ class OptionalSupportingDocsFormProviderSpec extends SpecBase {
 
   }
 
+  "Binding a form with valid data" when {
+    val data = Map("optionalDocumentsList[0]" -> "importAndEntry")
+    val form = new OptionalSupportingDocsFormProvider()().bind(data)
+
+    "Valid data present" should {
+
+      "result in a form without errors" in {
+        form.hasErrors mustBe false
+      }
+    }
+
+  }
+
 }
