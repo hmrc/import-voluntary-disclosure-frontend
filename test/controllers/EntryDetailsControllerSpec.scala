@@ -19,7 +19,6 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.EntryDetailsFormProvider
-import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.{EntryDetails, UserAnswers}
 import pages.EntryDetailsPage
@@ -58,10 +57,10 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new EntryDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, MockAppConfig, messagesControllerComponents, form, entryDetailsView)
+      mockSessionRepository, messagesControllerComponents, form, entryDetailsView)
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -90,7 +89,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day=Some("02"),month=Some("01"),year=Some("2021")):_*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
