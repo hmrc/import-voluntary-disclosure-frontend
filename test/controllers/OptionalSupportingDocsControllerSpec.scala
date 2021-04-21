@@ -64,4 +64,26 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
     }
   }
 
+  "POST onSubmit" should {
+
+    "payload contains valid data" should {
+
+      "return a SEE OTHER response and redirect to correct location at least one option is selected" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody("optionalDocumentsList[]" -> "importAndEntry")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+      }
+
+    }
+
+    "payload contains invalid data" should {
+      "return a BAD REQUEST" in new Test {
+        val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+
+  }
+
 }
