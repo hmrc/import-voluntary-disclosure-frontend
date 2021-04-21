@@ -16,10 +16,10 @@
 
 package models.requests
 
-import models.SelectedDutyTypes.{Both, Duty, Neither, SelectedDutyType, Vat}
-import models.{UserAnswers, UserType}
-import pages.{ImporterEORIExistsPage, UserTypePage}
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import models._
+import models.SelectedDutyTypes._
+import pages._
+import pages.underpayments._
 import play.api.mvc.WrappedRequest
 
 case class OptionalDataRequest[A](request: IdentifierRequest[A], credId: String, eori: String, userAnswers: Option[UserAnswers])

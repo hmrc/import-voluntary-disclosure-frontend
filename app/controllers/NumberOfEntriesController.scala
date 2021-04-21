@@ -53,13 +53,13 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
 
-    Future.successful(Ok(view(form, backLink(request))))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request)))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesPage, value))
@@ -76,7 +76,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
     case MoreThanOneEntry => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
   }
 
-  private[controllers] def backLink(request: DataRequest[_]): Call =
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     (request.isRepFlow, request.doesImporterEORIExist) match {
       case (true, true) => controllers.routes.ImporterEORINumberController.onLoad()
       case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()

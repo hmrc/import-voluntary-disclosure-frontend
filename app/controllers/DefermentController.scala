@@ -50,7 +50,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink, getHeaderMessage(request))))
+    Future.successful(Ok(view(form, backLink, getHeaderMessage())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -60,7 +60,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
           view(
             formWithErrors,
             backLink,
-            getHeaderMessage(request)
+            getHeaderMessage()
           )
         )
       ),
@@ -70,7 +70,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
-            redirectToDefermentView(request)
+            redirectToDefermentView()
           } else {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           }
@@ -79,7 +79,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def redirectToDefermentView(request: DataRequest[_]): Result = {
+  private[controllers] def redirectToDefermentView()(implicit request: DataRequest[_]): Result = {
     if (request.isRepFlow) {
       request.dutyType match {
         case underpaymentType if underpaymentType == Both => Redirect(controllers.routes.SplitPaymentController.onLoad())
@@ -91,7 +91,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private[controllers] def getHeaderMessage(request: DataRequest[_]): String = {
+  private[controllers] def getHeaderMessage()(implicit request: DataRequest[_]): String = {
     request.dutyType match {
       case Vat => "deferment.headingOnlyVAT"
       case Duty => "deferment.headingDutyOnly"
