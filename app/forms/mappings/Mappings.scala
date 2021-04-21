@@ -68,13 +68,4 @@ trait Mappings extends Formatters with Constraints {
                                 invalidNumeric: String = "error.invalid"): FieldMapping[String] =
     of(foreignCurrencyFormatter(requiredKey, invalidNumeric))
 
-
-  def nonEmptySeq(errorMessage: String): Constraint[Seq[_]] =
-    Constraint {
-      case seq if seq.nonEmpty =>
-        Valid
-      case _ =>
-        Invalid(errorMessage)
-    }
-
 }

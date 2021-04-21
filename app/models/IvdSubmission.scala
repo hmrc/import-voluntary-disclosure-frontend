@@ -44,7 +44,7 @@ case class IvdSubmission(userType: UserType,
                          additionalDefermentType: Option[String] = None,
                          amendedItems: Seq[UnderpaymentReason] = Seq.empty,
                          underpaymentDetails: Seq[UnderpaymentDetail] = Seq.empty,
-                         documentsSupplied: Seq[DocumentType] = Seq.empty, // mandatory docs
+                         documentsSupplied: Seq[DocumentType] = Seq.empty,
                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty,
                          splitDeferment: Boolean = false,
                          authorityDocuments: Seq[UploadAuthority] = Seq.empty
