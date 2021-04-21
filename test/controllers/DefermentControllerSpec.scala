@@ -17,19 +17,19 @@
 package controllers
 
 import base.ControllerSpecBase
-import controllers.actions.FakeDataRetrievalAction
+import controllers.actions.{DataRequiredAction, FakeDataRetrievalAction}
 import forms.DefermentFormProvider
 import messages.DefermentMessages
 import mocks.repositories.MockSessionRepository
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages.{DefermentPage, UserTypePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import services.FlowService
 import views.html.DefermentView
 
 import scala.concurrent.Future
@@ -44,15 +44,24 @@ class DefermentControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-
+    implicit lazy val dataRequest = new DataRequest(
+      new OptionalDataRequest(
+        new IdentifierRequest(fakeRequest,"credId","eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
     val formProvider: DefermentFormProvider = injector.instanceOf[DefermentFormProvider]
     val form: DefermentFormProvider = formProvider
-    val flowService: FlowService = app.injector.instanceOf[FlowService]
 
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new DefermentController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, flowService, defermentView)
+      mockSessionRepository, messagesControllerComponents, form, defermentView)
   }
 
   val acceptanceDateYes: Boolean = true
@@ -89,7 +98,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
           .set(DefermentPage, true).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
       )
-      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingOnlyVAT
+      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingOnlyVAT
     }
 
     "return duty only header and title" in new Test {
@@ -98,7 +107,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
           .set(DefermentPage, true).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       )
-      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingDutyOnly
+      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingDutyOnly
     }
 
     "return duty and VAT header and title" in new Test {
@@ -111,7 +120,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
           )
           ).success.value
       )
-      messages(controller.getHeaderMessage(userAnswers.get)) mustBe DefermentMessages.headingVATandDuty
+      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingVATandDuty
     }
 
   }
