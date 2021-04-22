@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package messages
+package pages
 
-object ImporterEORINumberMessages extends BaseMessages {
+import play.api.libs.json.JsPath
 
-  val title: String = "What is the importer’s EORI number?"
-  val h1: String = "What is the importer’s EORI number?"
-  val hint: String = "The EORI starts with GB and is followed by 12 numbers, for example GB345834921000."
-  val nonEmpty: String = "Enter an EORI number"
-  val incorrectFormat: String = "Enter an EORI number in the correct format"
+object OptionalSupportingDocsPage extends QuestionPage[Seq[String]] {
+
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "optional-documents-uploaded"
 
 }

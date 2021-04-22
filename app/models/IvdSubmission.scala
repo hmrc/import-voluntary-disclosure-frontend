@@ -185,6 +185,7 @@ object IvdSubmission extends FixedConfig {
       amendedItems <- UnderpaymentReasonsPage.path.read[Seq[UnderpaymentReason]]
       splitDeferment <- SplitPaymentPage.path.readNullable[Boolean]
       authorityDocuments <- UploadAuthorityPage.path.readNullable[Seq[UploadAuthority]]
+      optionalDocumentsSupplied <- OptionalSupportingDocsPage.path.readNullable[Seq[String]]
     } yield {
 
       val traderContactDetails = ContactDetails(
@@ -192,6 +193,18 @@ object IvdSubmission extends FixedConfig {
         declarantContactDetails.email,
         declarantContactDetails.phoneNumber
       )
+
+      val mandatoryDocumentsList: Seq[DocumentType] = Seq(
+        DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet
+      )
+
+      val optionalDocumentsList: Option[Seq[DocumentType]] = Some(optionalDocumentsSupplied.getOrElse(Seq.empty).flatMap {
+        case "importAndEntry" => Seq(DocumentTypes.AmendedC88, DocumentTypes.AmendedC2)
+        case "airwayBill" => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
+        case "originProof" => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
+        case "other" => Seq(DocumentTypes.Other)
+        case _ => Seq.empty
+      })
 
       IvdSubmission(
         userType = userType,
@@ -216,7 +229,8 @@ object IvdSubmission extends FixedConfig {
         additionalInfo = additionalInfo.getOrElse("Not Applicable"),
         amendedItems = amendedItems,
         splitDeferment = splitDeferment.getOrElse(false),
-        authorityDocuments = authorityDocuments.getOrElse(Seq.empty)
+        authorityDocuments = authorityDocuments.getOrElse(Seq.empty),
+        documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList.getOrElse(Seq.empty)
       )
     }
 }

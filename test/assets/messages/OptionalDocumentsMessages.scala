@@ -16,12 +16,15 @@
 
 package messages
 
-object ImporterEORINumberMessages extends BaseMessages {
+object OptionalDocumentsMessages {
 
-  val title: String = "What is the importer’s EORI number?"
-  val h1: String = "What is the importer’s EORI number?"
-  val hint: String = "The EORI starts with GB and is followed by 12 numbers, for example GB345834921000."
-  val nonEmpty: String = "Enter an EORI number"
-  val incorrectFormat: String = "Enter an EORI number in the correct format"
+  val pageTitle = "Which of these documents will you be uploading?"
+  val pageHeader = "Which of these documents will you be uploading?"
+  val hint = "Select all that apply."
+  val errorRequired = "Select which documents you will be uploading"
+  val importAndEntry = "Amendment import declaration (C88) and entry acceptance (E2)"
+  val airwayBill = "Airway bill"
+  val originProof = "Proof of origin"
+  val other = "Other documentation relevant to this underpayment disclosure"
 
 }

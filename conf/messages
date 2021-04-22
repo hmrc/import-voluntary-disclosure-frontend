@@ -584,7 +584,7 @@ importerEORIExists.error.required = Select yes if the importer has an EORI numbe
 importerEORINumber.pageTitle = What is the importer’s EORI number?
 importerEORINumber.pageHeader = What is the importer’s EORI number?
 importerEORINumber.hint = The EORI starts with GB and is followed by 12 numbers, for example GB345834921000.
-importerEORINumber.error.nonEmpty = Enter the importer’s EORI number
+importerEORINumber.error.nonEmpty = Enter an EORI number
 importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
 
 # Confirm EORI Details
@@ -678,3 +678,13 @@ anyOtherSupportingDocs.bullet2 = the airway bill, if the goods were transported 
 anyOtherSupportingDocs.bullet3 = a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences
 anyOtherSupportingDocs.bullet4 = other documentation relevant to this underpayment disclosure
 anyOtherSupportingDocs.error.required = Select yes if you have any of these documents
+
+# Optional Support Documents you will be uploading page
+optionalSupportingDocuments.pageTitle = Which of these documents will you be uploading?
+optionalSupportingDocuments.pageHeader = Which of these documents will you be uploading?
+optionalSupportingDocuments.hint = Select all that apply.
+optionalSupportingDocuments.error.required = Select which documents you will be uploading
+optionalSupportingDocuments.importAndEntry = Amendment import declaration (C88) and entry acceptance (E2)
+optionalSupportingDocuments.airwayBill = Airway bill
+optionalSupportingDocuments.originProof = Proof of origin
+optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure

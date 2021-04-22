@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package messages
+package forms
 
-object ImporterEORINumberMessages extends BaseMessages {
+import forms.mappings.Mappings
+import play.api.data.Form
+import play.api.data.Forms.seq
 
-  val title: String = "What is the importer’s EORI number?"
-  val h1: String = "What is the importer’s EORI number?"
-  val hint: String = "The EORI starts with GB and is followed by 12 numbers, for example GB345834921000."
-  val nonEmpty: String = "Enter an EORI number"
-  val incorrectFormat: String = "Enter an EORI number in the correct format"
+class OptionalSupportingDocsFormProvider extends Mappings {
+
+  def apply(): Form[Seq[String]] =
+    Form(
+      "optionalDocumentsList" -> seq(text("optionalSupportingDocuments.error.required"))
+        .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
+    )
 
 }
