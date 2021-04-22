@@ -49,6 +49,7 @@
     <logger name="uk.gov.hmrc.play.bootstrap" level="WARN"/>
     <logger name="uk.gov.hmrc.audit.handler.DatastreamHandler" level="OFF"/>
     <logger name="reactivemongo.core.actors.MongoDBSystem" level="WARN"/>
+    <logger name="reactivemongo.api.commands" level="WARN"/>
     <logger name="play.shadedr" level="OFF"/>
 
     <logger name="application" level="WARN"/>
