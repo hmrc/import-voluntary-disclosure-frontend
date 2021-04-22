@@ -107,6 +107,10 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("h1") mustBe EnterCustomsProcedureCodeMessages.h1
     }
 
+    s"have the correct p of '${EnterCustomsProcedureCodeMessages.hint}'" in {
+      elementText("#cpc-hint") mustBe EnterCustomsProcedureCodeMessages.hint
+    }
+
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> controllers.routes.EntryDetailsController.onLoad().url)
     }
