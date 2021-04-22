@@ -19,12 +19,13 @@
 
 @this(layout: templates.Layout,
         h1: components.h1,
+        h2: components.h2,
         p: components.p,
         bullets: components.bullets,
         button: components.button
 )
 
-@(upScanResponse: UpScanInitiateResponse, backLink: Call)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(upScanResponse: UpScanInitiateResponse, backLink: Call, optionalDocs: Seq[String] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
     pageTitle = messages("uploadFile.pageTitle"),
@@ -37,13 +38,29 @@
         @messages("uploadFile.mustInclude")
     }
 
-    @bullets(appConfig.mustIncludeFiles.map(Html(_)))
+    @bullets(Seq(
+        Html(messages("uploadFile.originalC88")),
+        Html(messages("uploadFile.originalE2")),
+        Html(messages("uploadFile.originalCalculations"))
+    ))
 
-    @p {
-        @messages("uploadFile.mayInclude")
+    @if(!optionalDocs.isEmpty) {
+        @p {
+            @messages("uploadFile.mayInclude")
+        }
+
+        @bullets(optionalDocs.map(doc =>
+            Html(messages(s"uploadFile.${doc}")))
+        )
     }
 
-    @bullets(appConfig.mayIncludeFiles.map(Html(_)))
+    @h2(messages("uploadFile.fileRequirementsHeader"))
+
+    @bullets(Seq(
+        Html(messages("uploadFile.fileFormats")),
+        Html(messages("uploadFile.fileSize")),
+        Html(messages("uploadFile.oneFileAtTime"))
+    ))
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
@@ -62,7 +79,7 @@
                 data-min-file-size="@appConfig.upScanMinFileSize">
        </div>
 
-        @button("common.button.continue")
+        @button("uploadFile.uploadFile")
     </form>
 }
 
