@@ -54,7 +54,6 @@ object IvdSubmission extends FixedConfig {
   implicit val writes: Writes[IvdSubmission] = (data: IvdSubmission) => {
 
     val DEFAULT_EORI: String = "GBPR"
-    val isEuropeanUnionDuty: Boolean = data.entryDetails.entryDate.isBefore(euExitDate) && data.acceptedBeforeBrexit
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
 
     val importerDetails: JsObject = if (data.userType == UserType.Importer) {
@@ -148,7 +147,7 @@ object IvdSubmission extends FixedConfig {
     val payload = Json.obj(
       "userType" -> data.userType,
       "isBulkEntry" -> isBulkEntry,
-      "isEuropeanUnionDuty" -> isEuropeanUnionDuty,
+      "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
       "additionalInfo" -> data.additionalInfo,
       "entryDetails" -> data.entryDetails,
       "customsProcessingCode" -> data.originalCpc,

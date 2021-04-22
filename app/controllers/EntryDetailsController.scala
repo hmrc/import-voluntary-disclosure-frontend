@@ -16,11 +16,9 @@
 
 package controllers
 
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EntryDetailsFormProvider
 import javax.inject.{Inject, Singleton}
-import models.EntryDetails
 import pages.EntryDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -36,7 +34,6 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
                                        getData: DataRetrievalAction,
                                        requireData: DataRequiredAction,
                                        sessionRepository: SessionRepository,
-                                       appConfig: AppConfig,
                                        mcc: MessagesControllerComponents,
                                        formProvider: EntryDetailsFormProvider,
                                        view: EntryDetailsView)
@@ -59,18 +56,10 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          redirect(value)
+          Redirect(controllers.routes.AcceptanceDateController.onLoad())
         }
       }
     )
   }
-
-  private def redirect(entryDetails: EntryDetails): Result =
-    if (entryDetails.entryDate.isBefore(appConfig.euExitDate)) {
-      Redirect(controllers.routes.AcceptanceDateController.onLoad())
-    } else {
-      Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
-    }
-
 
 }

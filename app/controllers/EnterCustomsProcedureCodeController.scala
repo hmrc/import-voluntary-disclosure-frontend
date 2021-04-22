@@ -20,8 +20,7 @@ import com.google.inject.Inject
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EnterCustomsProcedureCodeFormProvider
-import models.EntryDetails
-import pages.{EnterCustomsProcedureCodePage, EntryDetailsPage}
+import pages.EnterCustomsProcedureCodePage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -34,7 +33,6 @@ import scala.concurrent.Future
 class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
-                                                    appConfig: AppConfig,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     view: EnterCustomsProcedureCodeView,
@@ -42,18 +40,18 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                      )
   extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink: Call = controllers.routes.AcceptanceDateController.onLoad()
+
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink(request.userAnswers.get(EntryDetailsPage)))))
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors,
-        backLink(request.userAnswers.get(EntryDetailsPage))
-      ))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))
@@ -64,12 +62,5 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
       }
     )
   }
-
-  private[controllers] def backLink(entryDetails: Option[EntryDetails]): Call =
-    if (entryDetails.get.entryDate.isBefore(appConfig.euExitDate)) {
-      controllers.routes.AcceptanceDateController.onLoad()
-    } else {
-      controllers.routes.EntryDetailsController.onLoad()
-    }
 
 }

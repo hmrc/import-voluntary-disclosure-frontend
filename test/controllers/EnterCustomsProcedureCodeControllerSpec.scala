@@ -51,7 +51,6 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
-      appConfig,
       mockSessionRepository,
       messagesControllerComponents,
       EnterCustomsProcedureCodeView,
@@ -65,7 +64,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     val form: EnterCustomsProcedureCodeFormProvider = formProvider
   }
 
-  "GET /" when {
+  "GET onLoad" when {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -76,21 +75,9 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
-
-    "the backLink functionality is called" should {
-      "redirect to the Acceptance date page" in new Test {
-        controller.backLink(Some(EntryDetails("false", "true", LocalDate of (2020, 1, 1)))) mustBe controllers.routes.AcceptanceDateController.onLoad()
-      }
-
-      "redirect to the Entry details page" in new Test {
-        controller.backLink(Some(EntryDetails("false", "true", LocalDate of (2021, 1, 1)))) mustBe controllers.routes.EntryDetailsController.onLoad()
-      }
-
-    }
-
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
 
     "payload contains valid data" should {
 
