@@ -77,7 +77,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
   lazy val importVoluntaryDisclosureStub: String = servicesConfig.baseUrl("import-voluntary-disclosure-stub")
-  lazy val retrieveAddressFromStub: Boolean = servicesConfig.getBoolean("features.retrieveAddressFromStub")
+  lazy val retrieveAddressFromStub: Boolean = servicesConfig.getBoolean("retrieveAddressFromStub")
 
   def retrieveAddressUrl: String = {
     if (retrieveAddressFromStub) {
