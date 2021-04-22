@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package filters
+package forms.mappings.filters
 
 import java.util.regex.Pattern
 import java.util.regex.Pattern._

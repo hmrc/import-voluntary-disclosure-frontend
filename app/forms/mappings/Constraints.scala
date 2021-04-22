@@ -16,7 +16,7 @@
 
 package forms.mappings
 
-import filters.InputFilter
+import forms.mappings.filters.InputFilter
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints extends InputFilter {
