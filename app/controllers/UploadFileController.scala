@@ -18,10 +18,11 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+
 import javax.inject.{Inject, Singleton}
 import models.FileUploadInfo
 import models.upscan._
-import pages.{AnyOtherSupportingDocsPage, FileUploadPage}
+import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
@@ -47,14 +48,23 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    lazy val backLink = request.userAnswers.get(AnyOtherSupportingDocsPage) match {
-      case Some(true) => controllers.routes.OptionalSupportingDocsController.onLoad()
+    lazy val backLink =
+      (request.userAnswers.get(FileUploadPage), request.userAnswers.get(AnyOtherSupportingDocsPage)) match {
+      case (Some(files), _ ) if (!files.isEmpty) => controllers.routes.UploadAnotherFileController.onLoad()
+      case (_, Some(true)) => controllers.routes.OptionalSupportingDocsController.onLoad()
       case _ => controllers.routes.AnyOtherSupportingDocsController.onLoad()
+    }
+
+    val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
+    val optionalDocs = if (anyOptionalDocs) {
+      request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+    } else {
+      Seq.empty
     }
 
     upScanService
     .initiateNewJourney().map { response =>
-      Ok(view(response, backLink))
+      Ok(view(response, backLink, optionalDocs))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }

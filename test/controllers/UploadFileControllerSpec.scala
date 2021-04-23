@@ -22,14 +22,15 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
-import models.UserAnswers
-import pages.AnyOtherSupportingDocsPage
+import models.{FileUploadInfo, UserAnswers}
+import pages.{AnyOtherSupportingDocsPage, FileUploadPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.{UploadFileView, UploadProgressView}
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadFileControllerSpec extends ControllerSpecBase {
@@ -110,6 +111,19 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       .set(AnyOtherSupportingDocsPage, true).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
+    }
+
+    "return correct back link if come from Summary screen" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+      .set(FileUploadPage, Seq(FileUploadInfo(
+        fileName = "file1",
+        downloadUrl = "url",
+        uploadTimestamp = LocalDateTime.now(),
+        checksum = "checksum",
+        fileMimeType = "mime"
+      ))).success.value)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      contentAsString(result).contains(controllers.routes.UploadAnotherFileController.onLoad.url) mustBe true
     }
   }
 
