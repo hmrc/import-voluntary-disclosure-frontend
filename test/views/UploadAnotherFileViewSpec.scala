@@ -46,12 +46,13 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
   ))
 
+  private val maxOptDocs: Seq[String] = Seq("importAndEntry","airwayBill","originProof","other")
 
   "Rendering the UploadAnotherFile page" when {
-    "no errors exist when one file is present" should {
+    "no errors exist when one file is present and no optional documents selected" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form,answers)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form,answers, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -72,6 +73,66 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
 
       "first remove contains the correct text" in {
         document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+      }
+
+    }
+
+    "no errors exist when one file is present and all optional documents selected" should {
+
+      val form: Form[Boolean] = formProvider.apply()
+      lazy val view: Html = injectedView(form,answers, maxOptDocs)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page title" in {
+        document.title mustBe UploadAnotherFileMessages.title("1","file")
+      }
+
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
+
+      "remove link is present" in {
+        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 1
+      }
+
+      "first remove contains the correct text" in {
+        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+      }
+
+      s"have the correct text of '${UploadAnotherFileMessages.mustInclude}'" in {
+        elementText("#main-content p:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustInclude
+      }
+
+      "have the correct text for mandatory file bullet 1" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
+      }
+
+      "have the correct text for mandatory file bullet 2" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
+      }
+
+      "have the correct text for mandatory file bullet 3" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
+      }
+
+      s"have the correct text of '${UploadAnotherFileMessages.mayInclude}'" in {
+        elementText("#main-content p:nth-of-type(2)") mustBe UploadAnotherFileMessages.mayInclude
+      }
+
+      "have the correct text for optional file bullet 1" in {
+        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mayIncludeFile1
+      }
+
+      "have the correct text for optional file bullet 2" in {
+        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mayIncludeFile2
+      }
+
+      "have the correct text for optional file bullet 3" in {
+        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mayIncludeFile3
       }
 
     }
@@ -130,7 +191,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form,answers)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form,answers, maxOptDocs)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${UploadAnotherFileMessages.h1("1","file")}'" in {
@@ -145,8 +206,20 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe UploadAnotherFileMessages.siteNo
     }
 
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.SupportingDocController.onLoad().url)
+    s"have the correct text of '${UploadAnotherFileMessages.mustInclude}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustInclude
+    }
+
+    "have the correct text for mandatory file bullet 1" in {
+      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
+    }
+
+    "have the correct text for mandatory file bullet 2" in {
+      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
+    }
+
+    "have the correct text for mandatory file bullet 3" in {
+      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
     }
 
     s"have the correct Continue button" in {
