@@ -32,26 +32,70 @@ class UploadFileViewSpec extends ViewBaseSpec {
   private lazy val initiateResponse: UpScanInitiateResponse =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
   private val backLink: Call = Call("GET", "url")
+  private val maxOptDocs: Seq[String] = Seq("importAndEntry","airwayBill","originProof","other")
 
   "Rendering the UploadFile page" when {
-    lazy val view: Html = injectedView(initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    "Optional Documents have been selected" should {
+      lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs)(fakeRequest, MockAppConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct form action" in {
-      elementAttributes("form").get("action").get mustBe initiateResponse.uploadFormTemplate.href
+      "have the correct form action" in {
+        elementAttributes("form").get("action").get mustBe initiateResponse.uploadFormTemplate.href
+      }
+
+      "have the correct file upload control" in {
+        element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
+      }
+
+      "have the correct file upload control file types" in {
+        element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
+      }
+
+      "have heading for optional docs" in {
+        elementText("#main-content p:nth-of-type(2)") mustBe UploadFileMessages.mayInclude
+      }
+
+      "have the correct text for optional file bullet 1" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadFileMessages.mayIncludeFile1
+      }
+
+      "have the correct text for optional file bullet 2" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadFileMessages.mayIncludeFile2
+      }
+
+      "have the correct text for optional file bullet 3" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(3)") mustBe UploadFileMessages.mayIncludeFile3
+      }
+
+      "have the correct text for optional file bullet 4" in {
+        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(4)") mustBe UploadFileMessages.mayIncludeFile4
+      }
     }
 
-    s"have the correct file upload control" in {
-      element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
-    }
+    "Optional Documents have not been selected" should {
+      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty)(fakeRequest, MockAppConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct file upload control file types" in {
-      element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
+      "have the correct form action" in {
+        elementAttributes("form").get("action").get mustBe initiateResponse.uploadFormTemplate.href
+      }
+
+      "have the correct file upload control" in {
+        element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
+      }
+
+      "have the correct file upload control file types" in {
+        element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
+      }
+
+      "have heading for optional docs" in {
+        elementExtinct("#main-content p:nth-of-type(2)")
+      }
     }
   }
 
   it should {
-    lazy val view: Html = injectedView(initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title" in {
@@ -70,28 +114,36 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(1)") mustBe UploadFileMessages.mustInclude
     }
 
-    s"have the correct text for mandatory file bullet 1" in {
+    "have the correct text for mandatory file bullet 1" in {
       elementText("#main-content ul:nth-of-type(1) li:nth-of-type(1)") mustBe UploadFileMessages.mustIncludeFile1
     }
 
-    s"have the correct text for mandatory file bullet 2" in {
+    "have the correct text for mandatory file bullet 2" in {
       elementText("#main-content ul:nth-of-type(1) li:nth-of-type(2)") mustBe UploadFileMessages.mustIncludeFile2
     }
 
-    s"have the correct text of '${UploadFileMessages.mayInclude}'" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe UploadFileMessages.mayInclude
+    "have the correct text for mandatory file bullet 3" in {
+      elementText("#main-content ul:nth-of-type(1) li:nth-of-type(3)") mustBe UploadFileMessages.mustIncludeFile3
     }
 
-    s"have the correct text for optional file bullet 1" in {
-      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadFileMessages.mayIncludeFile1
+    s"have the correct fileRequirementsHeader of '${UploadFileMessages.fileRequirementsHeader}'" in {
+      elementText("h2") mustBe UploadFileMessages.fileRequirementsHeader
     }
 
-    s"have the correct text for optional file bullet 2" in {
-      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadFileMessages.mayIncludeFile2
+    "have the correct text for file requirements bullet 1" in {
+      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(1)") mustBe UploadFileMessages.fileFormats
     }
 
-    s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe UploadFileMessages.continue
+    "have the correct text for file requirements bullet 2" in {
+      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(2)") mustBe UploadFileMessages.fileSize
+    }
+
+    "have the correct text for file requirements bullet 3" in {
+      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(3)") mustBe UploadFileMessages.oneFileAtTime
+    }
+
+    "have the correct Continue button" in {
+      elementText(".govuk-button") mustBe UploadFileMessages.uploadFile
     }
 
   }
