@@ -18,7 +18,7 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import pages.{EnterCustomsProcedureCodePage, SplitPaymentPage}
+import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
