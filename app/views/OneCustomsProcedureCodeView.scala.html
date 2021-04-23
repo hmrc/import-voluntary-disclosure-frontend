@@ -24,7 +24,8 @@
 
     @layout(
         pageTitle = messages("oneCustomsProcedureCode.pageTitle"),
-        form = Some(form)) {
+        form = Some(form),
+        customBackLinkUrl = Some(backLink)) {
 
         @errorSummary(form.errors)
 
