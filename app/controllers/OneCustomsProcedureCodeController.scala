@@ -20,7 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.OneCustomsProcedureCodeFormProvider
 import pages.OneCustomsProcedureCodePage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.OneCustomsProcedureCodeView
@@ -40,17 +40,19 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                  )
   extends FrontendController(mcc) with I18nSupport {
 
+  private lazy val backLink: Call = controllers.routes.AcceptanceDateController.onLoad()
+
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(OneCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, backLink)))
 
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       oneCPC => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPC))

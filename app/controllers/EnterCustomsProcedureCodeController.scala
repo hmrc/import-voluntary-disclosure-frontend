@@ -40,7 +40,7 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                      )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.AcceptanceDateController.onLoad()
+  private lazy val backLink: Call = controllers.routes.OneCustomsProcedureCodeController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
