@@ -43,7 +43,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val disclosureDetails: CYASummaryList = buildDisclosureDetailsSummaryList(request.userAnswers).get
-    val amendmentDetails: CYASummaryList = buildAmendmentDetailsSummaryList(request.userAnswers).get
+    val amendmentDetails: Option[CYASummaryList] = buildAmendmentDetailsSummaryList(request.userAnswers)
     val supportingDocuments: CYASummaryList = buildSupportingDocumentsSummaryList(request.userAnswers).get
     val yourDetailsDocuments: CYASummaryList = buildYourDetailsSummaryList(request.userAnswers).get
     val paymentInformation: CYASummaryList = buildPaymentInformationSummaryList(request.userAnswers).get
@@ -51,7 +51,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
     Future.successful(Ok(view(
       Seq(
         disclosureDetails,
-        amendmentDetails,
+        if (amendmentDetails.isDefined) amendmentDetails.get,
         supportingDocuments,
         yourDetailsDocuments,
         paymentInformation
