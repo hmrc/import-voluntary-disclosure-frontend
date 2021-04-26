@@ -18,16 +18,18 @@ package controllers.actions
 
 import com.google.inject.Inject
 import config.AppConfig
+import controllers.Assets.Ok
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.{Redirect, Unauthorized}
 import play.api.mvc._
+import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, Enrolment, NoActiveSession}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.SessionUtils.SessionUtils
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -61,16 +63,29 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
             identifier.value
           }
         val req = IdentifierRequest(request, userId, eori)
+        // TODO - CJVRS_USER_TYPE not sure where to know this from as atm everything is unauthorised
+        req.session.getModel[AffinityGroup]("IVD_USER_TYPE") match {
+          case Some(AffinityGroup.Agent) =>
+            Future.successful(Ok(""))
+          case Some(AffinityGroup.Individual) =>
+            Future.successful(Ok(""))
+          case Some(_) =>
+            block(req)
+          case None =>
+            logger.warn(s"Enrolment doesn't exist")
+            Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
+        }
         block(req)
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
     } recover {
-      case _: NoActiveSession =>
+      case _: NoActiveSession => // TODO - isn't this checking for being signed in ?
         Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
       case x: AuthorisationException =>
         logger.warn(s"Authorisation Exception ${x.reason}")
         Unauthorized(unauthorisedView()(request, request2Messages(request)))
     }
   }
+
 }
