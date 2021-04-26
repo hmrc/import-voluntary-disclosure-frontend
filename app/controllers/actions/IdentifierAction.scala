@@ -29,7 +29,6 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.SessionUtils.SessionUtils
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -53,8 +52,8 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
       request = Some(request)
     )
 
-    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments) {
-      case Some(userId) ~ allEnrolments =>
+    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments and affinityGroup) {
+      case Some(userId) ~ allEnrolments ~ Some(affinityGroup) if affinityGroup == AffinityGroup.Organisation =>
         val Some(eori) =
           for {
             enrolment <- allEnrolments.getEnrolment("HMRC-CTS-ORG")
@@ -63,24 +62,16 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
             identifier.value
           }
         val req = IdentifierRequest(request, userId, eori)
-        // TODO - CJVRS_USER_TYPE not sure where to know this from as atm everything is unauthorised
-        req.session.getModel[AffinityGroup]("IVD_USER_TYPE") match {
-          case Some(AffinityGroup.Agent) =>
-            Future.successful(Ok(""))
-          case Some(AffinityGroup.Individual) =>
-            Future.successful(Ok(""))
-          case Some(_) =>
-            block(req)
-          case None =>
-            logger.warn(s"Enrolment doesn't exist")
-            Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
-        }
         block(req)
+      case Some(userId) ~ allEnrolments ~ Some(affinityGroup) if affinityGroup == AffinityGroup.Individual =>
+        Future.successful(Ok("Affinity group individuals hand-off page"))
+      case Some(userId) ~ allEnrolments ~ Some(affinityGroup) if affinityGroup == AffinityGroup.Agent =>
+        Future.successful(Ok("Affinity group agent hand-off page"))
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
     } recover {
-      case _: NoActiveSession => // TODO - isn't this checking for being signed in ?
+      case _: NoActiveSession =>
         Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
       case x: AuthorisationException =>
         logger.warn(s"Authorisation Exception ${x.reason}")
