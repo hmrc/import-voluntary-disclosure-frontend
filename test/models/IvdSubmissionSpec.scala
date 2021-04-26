@@ -74,7 +74,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(MoreInformationPage, "some text")
     answers <- answers.set(UnderpaymentReasonsPage, submission.amendedItems)
     answers <- answers.set(SplitPaymentPage, false)
-    answers <- answers.set(OptionalSupportingDocsPage, Seq("OriginalC88", "OriginalC2", "AmendedSubstituteEntryWorksheet"))
+    answers <- answers.set(OptionalSupportingDocsPage, Seq.empty)
+//    answers <- answers.set(OptionalSupportingDocsPage, Seq("OriginalC88", "OriginalC2", "AmendedSubstituteEntryWorksheet"))
   } yield answers).getOrElse(new UserAnswers("some-cred-id"))
 
   val userAnswersJson: JsValue = userAnswers.data
