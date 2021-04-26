@@ -169,7 +169,7 @@ object IvdSubmission extends FixedConfig {
       acceptanceDate <- AcceptanceDatePage.path.readNullable[Boolean]
       entryDetails <- EntryDetailsPage.path.read[EntryDetails]
       oneCpc <- OneCustomsProcedureCodePage.path.read[Boolean]
-      originalCpc <- EnterCustomsProcedureCodePage.path.read[String]
+      originalCpc <- EnterCustomsProcedureCodePage.path.readNullable[String]
       declarantContactDetails <- DeclarantContactDetailsPage.path.read[ContactDetails]
       traderAddress <- TraderAddressPage.path.read[ContactAddress]
       importerEori <- ImporterEORINumberPage.path.readNullable[String]
@@ -213,7 +213,7 @@ object IvdSubmission extends FixedConfig {
         numEntries = numEntries,
         acceptedBeforeBrexit = acceptanceDate.getOrElse(false),
         entryDetails = entryDetails,
-        originalCpc = if (oneCpc) originalCpc else "VARIOUS",
+        originalCpc = if (oneCpc) originalCpc.getOrElse("cpcError") else "VARIOUS",
         declarantContactDetails = declarantContactDetails,
         traderContactDetails = traderContactDetails,
         traderAddress = traderAddress,
