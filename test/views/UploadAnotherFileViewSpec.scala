@@ -19,6 +19,8 @@ package views
 import base.ViewBaseSpec
 import forms.UploadAnotherFileFormProvider
 import messages.{BaseMessages, UploadAnotherFileMessages}
+import models.OptionalDocument
+import models.OptionalDocument._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -46,7 +48,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
   ))
 
-  private val maxOptDocs: Seq[String] = Seq("importAndEntry","airwayBill","originProof","other")
+  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry,AirwayBill,OriginProof,Other)
 
   "Rendering the UploadAnotherFile page" when {
     "no errors exist when one file is present and no optional documents selected" should {

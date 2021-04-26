@@ -19,6 +19,7 @@ package views
 import base.ViewBaseSpec
 import forms.OptionalSupportingDocsFormProvider
 import messages.{BaseMessages, OptionalDocumentsMessages}
+import models.OptionalDocument
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -38,7 +39,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "no errors exist" should {
 
-      val form: Form[Seq[String]] = formProvider.apply()
+      val form: Form[Seq[OptionalDocument]] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -61,7 +62,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "error exist when no option selected exist" should {
 
-      val form: Form[Seq[String]] = formProvider().bind(Map("" -> ""))
+      val form: Form[Seq[OptionalDocument]] = formProvider().bind(Map("" -> ""))
       lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -86,7 +87,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Seq[String]] = formProvider.apply()
+    val form: Form[Seq[OptionalDocument]] = formProvider.apply()
     lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

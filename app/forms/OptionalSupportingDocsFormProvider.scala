@@ -17,14 +17,15 @@
 package forms
 
 import forms.mappings.Mappings
+import models.OptionalDocument
 import play.api.data.Form
 import play.api.data.Forms.seq
 
 class OptionalSupportingDocsFormProvider extends Mappings {
 
-  def apply(): Form[Seq[String]] =
+  def apply(): Form[Seq[OptionalDocument]] =
     Form(
-      "optionalDocumentsList" -> seq(text("optionalSupportingDocuments.error.required"))
+      "optionalDocumentsList" -> seq(enumerable[OptionalDocument]("optionalSupportingDocuments.error.required"))
         .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
     )
 
