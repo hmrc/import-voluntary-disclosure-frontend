@@ -44,7 +44,7 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments and affinityGroup) {
       case Some(userId) ~ allEnrolments ~ Some(AffinityGroup.Organisation) =>
         val Some(eori) =
