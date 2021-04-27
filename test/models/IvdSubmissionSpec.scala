@@ -18,6 +18,7 @@ package models
 
 import base.ModelSpecBase
 import models.SelectedDutyTypes._
+import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import pages._
 import play.api.libs.json._
 
@@ -67,6 +68,7 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(TraderAddressCorrectPage, true)
     answers <- answers.set(DeclarantContactDetailsPage, submission.declarantContactDetails)
     answers <- answers.set(TraderAddressPage, submission.traderAddress)
+    answers <- answers.set(OneCustomsProcedureCodePage, true)
     answers <- answers.set(EnterCustomsProcedureCodePage, submission.originalCpc)
     answers <- answers.set(FileUploadPage, submission.supportingDocuments)
     answers <- answers.set(DefermentPage, true)
@@ -74,7 +76,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
     answers <- answers.set(MoreInformationPage, "some text")
     answers <- answers.set(UnderpaymentReasonsPage, submission.amendedItems)
     answers <- answers.set(SplitPaymentPage, false)
-    answers <- answers.set(OptionalSupportingDocsPage, Seq("OriginalC88", "OriginalC2", "AmendedSubstituteEntryWorksheet"))
+    answers <- answers.set(OptionalSupportingDocsPage, Seq.empty)
+//    answers <- answers.set(OptionalSupportingDocsPage, Seq("OriginalC88", "OriginalC2", "AmendedSubstituteEntryWorksheet"))
   } yield answers).getOrElse(new UserAnswers("some-cred-id"))
 
   val userAnswersJson: JsValue = userAnswers.data
@@ -588,4 +591,30 @@ class IvdSubmissionSpec extends ModelSpecBase {
     }
 
   }
+
+  "IVD Submission Customs Procedure Code model" when {
+
+    "more than one Customs Procedure Code" should {
+      val cpcUserAnswers = userAnswers.set(OneCustomsProcedureCodePage, false).success.value
+      val cpcSubmission = submission.copy(
+        originalCpc = "VARIOUS"
+      )
+
+      implicit lazy val result: JsValue = Json.toJson(cpcSubmission)
+
+      "generate the correct JSON with cpc details" in {
+        data("customsProcessingCode") shouldBe JsString("VARIOUS")
+      }
+
+      "result in a valid submission model" in {
+        cpcUserAnswers.data.validate[IvdSubmission] match {
+          case JsSuccess(result, _) => result shouldBe cpcSubmission
+          case JsError(errors) => fail(s"Failed to parse JSON with: $errors")
+        }
+      }
+
+    }
+  }
+
 }
+

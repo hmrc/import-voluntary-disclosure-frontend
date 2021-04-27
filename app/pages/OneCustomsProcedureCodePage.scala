@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 
-package forms
+package pages
 
-import forms.mappings.Mappings
-import models.OptionalDocument
-import play.api.data.Form
-import play.api.data.Forms.seq
+import models.UserAnswers
+import play.api.libs.json.JsPath
 
-class OptionalSupportingDocsFormProvider extends Mappings {
+import scala.util.Try
 
-  def apply(): Form[Seq[OptionalDocument]] =
-    Form(
-      "optionalDocumentsList" -> seq(enumerable[OptionalDocument]("optionalSupportingDocuments.error.required"))
-        .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
-    )
+case object OneCustomsProcedureCodePage extends QuestionPage[Boolean] {
 
+  def path: JsPath = JsPath \ "cpc" \ toString
+
+  override def toString: String = "one-customs-procedure-code"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    if (value.get) {
+      Try(userAnswers)
+    } else {
+      Try(userAnswers.remove(EnterCustomsProcedureCodePage).getOrElse(userAnswers))
+    }
+  }
 }

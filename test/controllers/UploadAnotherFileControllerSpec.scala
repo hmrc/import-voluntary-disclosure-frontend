@@ -20,6 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadAnotherFileFormProvider
 import models.UserAnswers
+import pages.AnyOtherSupportingDocsPage
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -54,7 +55,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
        messagesControllerComponents, form, uploadAnotherFileView)
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -62,7 +63,8 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
     "return SEE OTHER when uploaded-files is empty" in new Test {
       override val data: JsObject = Json.obj("uploaded-files" -> Json.arr())
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
+        .set(AnyOtherSupportingDocsPage, true).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
@@ -82,7 +84,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when false" in new Test {

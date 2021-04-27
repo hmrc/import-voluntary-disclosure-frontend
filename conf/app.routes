@@ -30,6 +30,9 @@ GET         /disclosure/mandatory-documents                                     
 GET         /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onLoad
 POST        /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onSubmit
 
+GET         /disclosure/only-one-cpc                                                           controllers.OneCustomsProcedureCodeController.onLoad
+POST        /disclosure/only-one-cpc                                                           controllers.OneCustomsProcedureCodeController.onSubmit
+
 GET         /disclosure/enter-cpc                                                              controllers.EnterCustomsProcedureCodeController.onLoad
 POST        /disclosure/enter-cpc                                                              controllers.EnterCustomsProcedureCodeController.onSubmit
 

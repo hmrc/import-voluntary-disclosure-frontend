@@ -80,6 +80,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
         "07485939292")).success.value
       .set(TraderAddressPage, ContactAddress(
         "street", None, "city", Some("postcode"), "country code")).success.value
+      .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "3333333").success.value
       .set(DefermentPage, true).success.value
       .set(MoreInformationPage, "some text").success.value

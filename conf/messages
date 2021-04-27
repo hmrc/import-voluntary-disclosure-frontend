@@ -293,6 +293,12 @@ underpaymentDetailsConfirm.A45.dueToHmrc = Provisional Countervailing Duty owed 
 underpaymentDetailsConfirm.A10.dueToHmrc = Customs Duty on Agricultural Products owed to HMRC
 underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory Duty owed to HMRC
 
+# One Customs Procedure Code page
+oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
+oneCustomsProcedureCode.heading = Is there only one customs procedure code for this entry?
+oneCustomsProcedureCode.hint = The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the SAD or C88).
+oneCustomsProcedureCode.error.required = Select yes if there is only one customs procedure code for this entry
+
 # Enter Customs Procedure Code page
 enterCustomsProcedureCode.pageTitle = What is the customs procedure code?
 enterCustomsProcedureCode.pageHeader = What is the customs procedure code?
@@ -307,7 +313,7 @@ uploadFile.mustInclude = You must upload:
 uploadFile.mayInclude = You have told us you will upload:
 uploadFile.originalC88 = the import declaration, also known as the C88 or SAD
 uploadFile.originalE2 = the entry acceptance, also known as the E2
-uploadFile.originalCalculations = a document or scanned image showing how you calculated what should have been paid to HMRC
+uploadFile.originalCalculations = a document or scanned image showing how you calculated the tax or duty that should have been paid
 uploadFile.importAndEntry = the amendment import declaration (C88) and entry acceptance (E2)
 uploadFile.airwayBill = the airway bill
 uploadFile.originProof = a proof of origin
