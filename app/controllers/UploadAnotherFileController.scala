@@ -21,7 +21,7 @@ import forms.UploadAnotherFileFormProvider
 
 import javax.inject.Inject
 import models.requests.DataRequest
-import pages.FileUploadPage
+import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -40,15 +40,20 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
 
   extends FrontendController(mcc) with I18nSupport {
 
-
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
       implicit request =>
+        val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
+        val optionalDocs = if (anyOptionalDocs) {
+          request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+        } else {
+          Seq.empty
+        }
         request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
             val helper = new AddFileNameRowHelper(files)
             if(files.isEmpty) {
               Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
             } else {
-              Future.successful(Ok(view(formProvider(), helper.rows)))
+              Future.successful(Ok(view(formProvider(), helper.rows, optionalDocs)))
             }
       }
   }

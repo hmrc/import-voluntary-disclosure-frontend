@@ -16,51 +16,58 @@
 
 package controllers
 
-import com.google.inject.Inject
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.EnterCustomsProcedureCodeFormProvider
-import pages.EnterCustomsProcedureCodePage
+import forms.OneCustomsProcedureCodeFormProvider
+import pages.OneCustomsProcedureCodePage
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.EnterCustomsProcedureCodeView
+import views.html.OneCustomsProcedureCodeView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    view: EnterCustomsProcedureCodeView,
-                                                    formProvider: EnterCustomsProcedureCodeFormProvider
-                                     )
+@Singleton
+class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
+                                                  getData: DataRetrievalAction,
+                                                  requireData: DataRequiredAction,
+                                                  sessionRepository: SessionRepository,
+                                                  mcc: MessagesControllerComponents,
+                                                  formProvider: OneCustomsProcedureCodeFormProvider,
+                                                  view: OneCustomsProcedureCodeView
+                                                 )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.OneCustomsProcedureCodeController.onLoad()
+  private lazy val backLink: Call = controllers.routes.AcceptanceDateController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
+    val form = request.userAnswers.get(OneCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
+
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value => {
+      oneCPC => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPC))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+          if (oneCPC) {
+            Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
+          }
+          else {
+            Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+          }
         }
       }
     )
+
   }
 
 }

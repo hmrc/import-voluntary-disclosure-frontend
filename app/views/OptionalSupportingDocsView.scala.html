@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import models.OptionalDocument._
+
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -22,7 +24,7 @@
         button: components.button
 )
 
-@(form: Form[_], backLink: Call, checked: Seq[String])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, checked: Seq[OptionalDocument])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("optionalSupportingDocuments.pageTitle"),
@@ -54,28 +56,28 @@
                         id = Some("importAndEntry"),
                         value = "importAndEntry",
                         content = Text(messages("optionalSupportingDocuments.importAndEntry")),
-                        checked = checked.contains("importAndEntry")
+                        checked = checked.contains(ImportAndEntry)
                     ),
                     CheckboxItem(
                         name = Some("optionalDocumentsList[]"),
                         id = Some("airwayBill"),
                         value = "airwayBill",
                         content = Text(messages("optionalSupportingDocuments.airwayBill")),
-                        checked = checked.contains("airwayBill")
+                        checked = checked.contains(AirwayBill)
                     ),
                     CheckboxItem(
                         name = Some("optionalDocumentsList[]"),
                         id = Some("originProof"),
                         value = "originProof",
                         content = Text(messages("optionalSupportingDocuments.originProof")),
-                        checked = checked.contains("originProof")
+                        checked = checked.contains(OriginProof)
                     ),
                     CheckboxItem(
                         name = Some("optionalDocumentsList[]"),
                         id = Some("other"),
                         value = "other",
                         content = Text(messages("optionalSupportingDocuments.other")),
-                        checked = checked.contains("other")
+                        checked = checked.contains(Other)
                     )
                 ),
                 errorMessage = form.errors.headOption.map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*))))

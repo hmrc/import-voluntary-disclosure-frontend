@@ -20,6 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.OptionalSupportingDocsFormProvider
 import mocks.repositories.MockSessionRepository
+import models.OptionalDocument._
 import models.UserAnswers
 import pages.OptionalSupportingDocsPage
 import play.api.http.Status
@@ -56,7 +57,7 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(OptionalSupportingDocsPage, Seq("importAndEntry")).success.value
+          .set(OptionalSupportingDocsPage, Seq(ImportAndEntry)).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")

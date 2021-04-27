@@ -17,16 +17,14 @@
 package forms
 
 import forms.mappings.Mappings
-import models.OptionalDocument
 import play.api.data.Form
-import play.api.data.Forms.seq
 
-class OptionalSupportingDocsFormProvider extends Mappings {
+import javax.inject.Inject
 
-  def apply(): Form[Seq[OptionalDocument]] =
+class OneCustomsProcedureCodeFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
     Form(
-      "optionalDocumentsList" -> seq(enumerable[OptionalDocument]("optionalSupportingDocuments.error.required"))
-        .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
+      "value" -> boolean("oneCustomsProcedureCode.error.required")
     )
-
 }

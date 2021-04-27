@@ -17,6 +17,8 @@
 package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.UserAnswers
+import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -34,15 +36,20 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
                                             view: UnderpaymentStartView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.EnterCustomsProcedureCodeController.onLoad()
-
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink)))
+      Future.successful(Ok(view(backLink(request.userAnswers))))
     }
   }
+
+  private[controllers] def backLink(userAnswers: UserAnswers): Call =
+    if (userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
+      controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+    } else {
+      controllers.routes.OneCustomsProcedureCodeController.onLoad()
+    }
 
 }

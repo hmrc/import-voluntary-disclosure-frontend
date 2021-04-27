@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package messages
 
-import forms.mappings.Mappings
-import models.OptionalDocument
-import play.api.data.Form
-import play.api.data.Forms.seq
+object OneCustomsProcedureCodeMessages {
 
-class OptionalSupportingDocsFormProvider extends Mappings {
-
-  def apply(): Form[Seq[OptionalDocument]] =
-    Form(
-      "optionalDocumentsList" -> seq(enumerable[OptionalDocument]("optionalSupportingDocuments.error.required"))
-        .verifying(nonEmptySeq("optionalSupportingDocuments.error.required"))
-    )
+  val title: String = "Is there only one customs procedure code for this entry?"
+  val h1: String = "Is there only one customs procedure code for this entry?"
+  val hint: String = "The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the SAD or C88)."
+  val requiredError: String = "Select yes if there is only one customs procedure code for this entry"
 
 }
