@@ -16,7 +16,7 @@
 
 package messages
 
-object OneCustomsProcedureCodeMessages extends BaseMessages {
+object OneCustomsProcedureCodeMessages {
 
   val title: String = "Is there only one customs procedure code for this entry?"
   val h1: String = "Is there only one customs procedure code for this entry?"

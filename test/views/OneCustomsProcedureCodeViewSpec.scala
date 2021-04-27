@@ -60,7 +60,7 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
-        document.title mustBe OneCustomsProcedureCodeMessages.errorPrefix + OneCustomsProcedureCodeMessages.title
+        document.title mustBe errorPrefix + OneCustomsProcedureCodeMessages.title
       }
 
       "render an error summary with the correct message" in {
@@ -68,7 +68,7 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe OneCustomsProcedureCodeMessages.errorPrefix + OneCustomsProcedureCodeMessages.requiredError
+        elementText("#value-error") mustBe errorPrefix + OneCustomsProcedureCodeMessages.requiredError
       }
 
     }
@@ -88,12 +88,12 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#value-hint") mustBe OneCustomsProcedureCodeMessages.hint
     }
 
-    s"have the correct value for the first radio button of '${OneCustomsProcedureCodeMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe OneCustomsProcedureCodeMessages.siteYes
+    s"have the correct value for the first radio button of '${siteYes}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe siteYes
     }
 
-    s"have the correct value for the second radio button of '${OneCustomsProcedureCodeMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe OneCustomsProcedureCodeMessages.siteNo
+    s"have the correct value for the second radio button of '${siteNo}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe siteNo
     }
 
     "render a back link with the correct URL" in {
