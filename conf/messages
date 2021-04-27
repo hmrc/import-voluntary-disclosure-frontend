@@ -293,6 +293,12 @@ underpaymentDetailsConfirm.A45.dueToHmrc = Provisional Countervailing Duty owed 
 underpaymentDetailsConfirm.A10.dueToHmrc = Customs Duty on Agricultural Products owed to HMRC
 underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory Duty owed to HMRC
 
+# One Customs Procedure Code page
+oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
+oneCustomsProcedureCode.heading = Is there only one customs procedure code for this entry?
+oneCustomsProcedureCode.hint = The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the SAD or C88).
+oneCustomsProcedureCode.error.required = Select yes if there is only one customs procedure code for this entry
+
 # Enter Customs Procedure Code page
 enterCustomsProcedureCode.pageTitle = What is the customs procedure code?
 enterCustomsProcedureCode.pageHeader = What is the customs procedure code?
