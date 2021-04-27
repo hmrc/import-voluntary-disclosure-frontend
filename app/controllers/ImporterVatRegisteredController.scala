@@ -59,7 +59,7 @@ class ImporterVatRegisteredController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterVatRegisteredPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ImporterVatRegisteredController.onLoad())
+          Redirect(controllers.routes.NumberOfEntriesController.onLoad())
         }
       }
     )

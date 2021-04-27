@@ -78,7 +78,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     (request.isRepFlow, request.doesImporterEORIExist) match {
-      case (true, true) => controllers.routes.ImporterEORINumberController.onLoad()
+      case (true, true) => controllers.routes.ImporterVatRegisteredController.onLoad()
       case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()
       case _ => controllers.routes.UserTypeController.onLoad()
     }

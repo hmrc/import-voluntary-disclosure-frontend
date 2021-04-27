@@ -75,7 +75,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterVatRegisteredController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
