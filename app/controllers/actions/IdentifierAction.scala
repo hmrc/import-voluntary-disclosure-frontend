@@ -21,13 +21,13 @@ import config.AppConfig
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results.{Redirect, Unauthorized}
+import play.api.mvc.Results.{Forbidden, Redirect, Unauthorized}
 import play.api.mvc._
+import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisationException, AuthorisedFunctions, Enrolment, NoActiveSession}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -44,15 +44,9 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSessionAndRequest(
-      headers = request.headers,
-      session = Some(request.session),
-      request = Some(request)
-    )
-
-    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments) {
-      case Some(userId) ~ allEnrolments =>
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequest(request)
+    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments and affinityGroup) {
+      case Some(userId) ~ allEnrolments ~ Some(AffinityGroup.Organisation) =>
         val Some(eori) =
           for {
             enrolment <- allEnrolments.getEnrolment("HMRC-CTS-ORG")
@@ -62,6 +56,10 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           }
         val req = IdentifierRequest(request, userId, eori)
         block(req)
+      case _ ~ _ ~ Some(AffinityGroup.Individual) =>
+        Future.successful(Forbidden("Affinity group individuals hand-off page"))
+      case _ ~ _ ~ Some(AffinityGroup.Agent) =>
+        Future.successful(Forbidden("Affinity group agent hand-off page"))
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
@@ -73,4 +71,5 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
         Unauthorized(unauthorisedView()(request, request2Messages(request)))
     }
   }
+
 }

@@ -28,29 +28,24 @@ import views.html.errors.UnauthorisedView
 import scala.concurrent.Future
 
 class AuthActionSpec extends SpecBase {
-  val singleEnrolment = Enrolments(Set(
+  val singleEnrolment: Enrolments = Enrolments(Set(
     Enrolment("HMRC-CTS-ORG", Seq(EnrolmentIdentifier("EORINumber", "GB987654321000")), "Activated")
   ))
 
   trait Test extends MockAuthConnector {
-
     class Harness(authAction: IdentifierAction) {
       def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
     }
 
     lazy val bodyParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
-
     lazy val unauthorisedView: UnauthorisedView = injector.instanceOf[views.html.errors.UnauthorisedView]
-
     lazy val action = new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, appConfig, bodyParsers, messagesApi)
-
     val target = new Harness(action)
   }
 
   "Auth Action" when {
 
     "user is not logged in" must {
-
       "redirect to sign-in" in new Test {
         MockedAuthConnector.authorise(Future.failed(SessionRecordNotFound()))
         private val response = target.onPageLoad()(fakeRequest)
@@ -58,32 +53,46 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "user is logged in and has an external ID" must {
-
+    "user is logged in and has an external ID for organisation" must {
       "execute the action block" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment))
+        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Organisation)))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.OK
       }
     }
 
-    "user is logged in and has no external ID" must {
-
+    "user is logged in and has no external ID for organisation" must {
       "receive an authorised response" in new Test {
-        MockedAuthConnector.authorise(Future.successful(None and singleEnrolment))
+        MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Organisation)))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.UNAUTHORIZED
       }
     }
 
-    "authorisation exception occurs" must {
+    "user is logged in and has no external ID for individual" must {
+      "receive an authorised response" in new Test {
+        MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Individual)))
+        private val response = target.onPageLoad()(fakeRequest)
+        status(response) mustBe Status.FORBIDDEN
+      }
+    }
 
+    "user is logged in and has no external ID for agent" must {
+      "receive an authorised response" in new Test {
+        MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Agent)))
+        private val response = target.onPageLoad()(fakeRequest)
+        status(response) mustBe Status.FORBIDDEN
+      }
+    }
+
+    "authorisation exception occurs" must {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.failed(InternalError()))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.UNAUTHORIZED
       }
     }
+
   }
 
 }

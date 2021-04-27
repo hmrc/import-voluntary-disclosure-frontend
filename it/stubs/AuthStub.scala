@@ -20,6 +20,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.Json
 import support.WireMockMethods
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 object AuthStub extends WireMockMethods {
 
@@ -37,10 +38,11 @@ object AuthStub extends WireMockMethods {
             ),
             "state" -> "Activated"
           )
-        )
+        ),
+        "affinityGroup" -> AffinityGroup.Organisation
       ))
 
   def unauthorised(): StubMapping =
     when(method = POST, uri = authoriseUri).thenReturn(status = UNAUTHORIZED)
-}
 
+}
