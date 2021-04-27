@@ -47,7 +47,8 @@ case class IvdSubmission(userType: UserType,
                          documentsSupplied: Seq[DocumentType] = Seq.empty,
                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty,
                          splitDeferment: Boolean = false,
-                         authorityDocuments: Seq[UploadAuthority] = Seq.empty
+                         authorityDocuments: Seq[UploadAuthority] = Seq.empty,
+                         isImporterVatRegistered: Option[Boolean]
                         )
 
 object IvdSubmission extends FixedConfig {
@@ -69,14 +70,23 @@ object IvdSubmission extends FixedConfig {
         eori <- data.importerEori.orElse(Some(DEFAULT_EORI))
         name <- data.importerName
         address <- data.importerAddress
+        isVatRegistered <- data.isImporterVatRegistered.orElse(Some(false))
       } yield {
-        Json.obj(
-          "importer" -> Json.obj(
+        val mandatoryDetails = Json.obj(
             "eori" -> eori,
             "contactDetails" -> ContactDetails(name),
             "address" -> address
-          )
         )
+        val vatNumber = if (isVatRegistered) {
+          Json.obj(
+              "vatNumber" -> eori.substring(2,11)
+          )
+        } else {
+          Json.obj()
+        }
+
+        val importerDetails = mandatoryDetails ++ vatNumber
+        Json.obj("importer" -> importerDetails)
       }
       details.getOrElse(throw new RuntimeException("Importer details not captured in representative flow"))
     }
@@ -186,6 +196,7 @@ object IvdSubmission extends FixedConfig {
       splitDeferment <- SplitPaymentPage.path.readNullable[Boolean]
       authorityDocuments <- UploadAuthorityPage.path.readNullable[Seq[UploadAuthority]]
       optionalDocumentsSupplied <- OptionalSupportingDocsPage.path.readNullable[Seq[String]]
+      isImporterVatRegistered <- ImporterVatRegisteredPage.path.readNullable[Boolean]
     } yield {
 
       val traderContactDetails = ContactDetails(
@@ -230,7 +241,8 @@ object IvdSubmission extends FixedConfig {
         amendedItems = amendedItems,
         splitDeferment = splitDeferment.getOrElse(false),
         authorityDocuments = authorityDocuments.getOrElse(Seq.empty),
-        documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList.getOrElse(Seq.empty)
+        documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList.getOrElse(Seq.empty),
+        isImporterVatRegistered = isImporterVatRegistered
       )
     }
 }
