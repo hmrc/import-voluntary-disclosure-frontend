@@ -361,3 +361,6 @@ GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success       
 
 GET         /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onLoad
 POST        /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onSubmit
+
+GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
+POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
