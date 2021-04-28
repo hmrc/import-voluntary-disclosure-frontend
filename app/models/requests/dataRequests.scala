@@ -54,4 +54,11 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
     }.getOrElse(Neither)
   }
 
+  def checkMode: Boolean = {
+    userAnswers.get(CheckModePage) match {
+      case Some(value) => value
+      case _ => false
+    }
+  }
+
 }
