@@ -22,7 +22,7 @@ class ImporterVatRegisteredFormProviderSpec extends SpecBase {
 
   "Binding a form with invalid data" when {
 
-    "the no value selected" should {
+    "no value is selected" should {
 
       val missingOption: Map[String, String] = Map.empty
       val form = new ImporterVatRegisteredFormProvider()().bind(missingOption)
@@ -46,8 +46,8 @@ class ImporterVatRegisteredFormProviderSpec extends SpecBase {
     val data = Map("value" -> "true")
     val form = new ImporterVatRegisteredFormProvider()().bind(data)
 
-    "result in a form with no errors" in {
-      form.hasErrors mustBe false
+    "throw no errors" in {
+      form.errors.size mustBe 0
     }
 
   }

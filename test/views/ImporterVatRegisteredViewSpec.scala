@@ -57,7 +57,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
-        document.title mustBe ImporterVatRegisteredMessages.errorPrefix + ImporterVatRegisteredMessages.title
+        document.title mustBe errorPrefix + ImporterVatRegisteredMessages.title
       }
 
       "render an error summary with the correct message" in {
@@ -65,7 +65,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe ImporterVatRegisteredMessages.errorPrefix + ImporterVatRegisteredMessages.requiredError
+        elementText("#value-error") mustBe errorPrefix + ImporterVatRegisteredMessages.requiredError
       }
 
     }
@@ -81,12 +81,12 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("h1") mustBe ImporterVatRegisteredMessages.h1
     }
 
-    s"have the correct value for the first radio button of '${ImporterVatRegisteredMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe ImporterVatRegisteredMessages.siteYes
+    s"have the correct value for the first radio button of '$siteYes'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe siteYes
     }
 
-    s"have the correct value for the second radio button of '${ImporterVatRegisteredMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe ImporterVatRegisteredMessages.siteNo
+    s"have the correct value for the second radio button of '$siteNo'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe siteNo
     }
 
     "render a back link with the correct URL" in {

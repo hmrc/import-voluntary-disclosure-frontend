@@ -16,7 +16,7 @@
 
 package messages
 
-object ImporterVatRegisteredMessages extends BaseMessages {
+object ImporterVatRegisteredMessages {
 
   val title: String = "Is the importer VAT registered?"
   val h1: String = "Is the importer VAT registered?"

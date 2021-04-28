@@ -49,7 +49,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
   }
 
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -63,7 +63,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
@@ -72,8 +72,14 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "return the correct location header when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+      }
+
+      "return the correct location header when false" in new Test {
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
       }

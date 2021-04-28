@@ -17,11 +17,10 @@
 package forms
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
 
 
-class ImporterVatRegisteredFormProvider @Inject() extends Mappings {
+class ImporterVatRegisteredFormProvider extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
