@@ -19,9 +19,11 @@ package controllers
 import connectors.IvdSubmissionConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.IvdSubmission
+import pages.CheckModePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
+import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
@@ -35,13 +37,14 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            getData: DataRetrievalAction,
                                            requireData: DataRequiredAction,
                                            mcc: MessagesControllerComponents,
+                                           sessionRepository: SessionRepository,
                                            ivdSubmissionConnector: IvdSubmissionConnector,
                                            view: CheckYourAnswersView,
                                            confirmationView: ConfirmationView,
                                            implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val disclosureDetails: CYASummaryList = buildDisclosureDetailsSummaryList(request.userAnswers).get
     val amendmentDetails: CYASummaryList = buildAmendmentDetailsSummaryList(request.userAnswers).getOrElse(CYASummaryList("", SummaryList()))
     val supportingDocuments: CYASummaryList = buildSupportingDocumentsSummaryList(request.userAnswers).get
@@ -63,10 +66,12 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
         paymentInformation
       )
     }
-    Future.successful(Ok(view(
-      summaryLists,
-      controllers.routes.CheckYourAnswersController.onLoad))
-    )
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
+      _ <- sessionRepository.set(updatedAnswers)
+    } yield {
+      Ok(view(summaryLists))
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
