@@ -55,7 +55,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       }
       val availableUnderPaymentTypes = underpaymentTypes.filter(item => !existingUnderpaymentDetails.contains(item))
       val availableUnderPaymentTypesOptions = createRadioButton(form, availableUnderPaymentTypes)
-      Future.successful(Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions)))
+      Future.successful(Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime(request.userAnswers))))
     }
   }
 
@@ -63,7 +63,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
-          BadRequest(underpaymentTypeView(formWithErrors, backLink(request.userAnswers), createRadioButton(formWithErrors, underpaymentTypes)))
+          BadRequest(underpaymentTypeView(formWithErrors, backLink(request.userAnswers), createRadioButton(formWithErrors, underpaymentTypes), isFirstTime(request.userAnswers)))
         )
       },
       value => {
@@ -95,6 +95,12 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     } else {
       controllers.underpayments.routes.UnderpaymentStartController.onLoad()
     }
+  }
+
+  def isFirstTime(userAnswers: UserAnswers): Boolean = userAnswers.get(UnderpaymentDetailSummaryPage) match {
+    case Some(value) if value.isEmpty => true
+    case Some(_) => false
+    case _ => true
   }
 
 }
