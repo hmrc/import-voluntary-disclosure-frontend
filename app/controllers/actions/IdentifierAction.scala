@@ -21,7 +21,7 @@ import config.AppConfig
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results.{Forbidden, Redirect, Unauthorized}
+import play.api.mvc.Results.{Redirect, Unauthorized}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
@@ -43,13 +43,18 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
+  private def isValidUser(enrolments: Enrolments) = enrolments.getEnrolment("HMRC-CTS-ORG") match {
+    case Some(enrolment) => enrolment.isActivated
+    case None => false
+  }
+
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-    authorised(Enrolment("HMRC-CTS-ORG")).retrieve(externalId and authorisedEnrolments and affinityGroup) {
-      case Some(userId) ~ allEnrolments ~ Some(AffinityGroup.Organisation) =>
+    authorised().retrieve(externalId and allEnrolments and affinityGroup) {
+      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Organisation) if isValidUser(enrolments) =>
         val Some(eori) =
           for {
-            enrolment <- allEnrolments.getEnrolment("HMRC-CTS-ORG")
+            enrolment <- enrolments.getEnrolment("HMRC-CTS-ORG")
             identifier <- enrolment.getIdentifier("EORINumber")
           } yield {
             identifier.value
@@ -57,9 +62,9 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
         val req = IdentifierRequest(request, userId, eori)
         block(req)
       case _ ~ _ ~ Some(AffinityGroup.Individual) =>
-        Future.successful(Forbidden("Affinity group individuals hand-off page"))
+        Future.successful(Unauthorized("Affinity group individuals hand-off page"))
       case _ ~ _ ~ Some(AffinityGroup.Agent) =>
-        Future.successful(Forbidden("Affinity group agent hand-off page"))
+        Future.successful(Unauthorized("Affinity group agent hand-off page"))
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
