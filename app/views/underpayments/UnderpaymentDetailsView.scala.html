@@ -19,10 +19,11 @@
         h1: components.h1,
         errorSummary: components.errorSummary,
         button: components.button,
-        currencyInput: components.currencyInput
+        currencyInput: components.currencyInput,
+        p: components.p
 )
 
-@(form: Form[_], underpaymentType: String, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], underpaymentType: String, backLink: Call, oneEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages(s"underpaymentDetails.$underpaymentType.pageTitle") + " " + messages("underpaymentDetails.dutyMessageEnding"),
@@ -32,6 +33,10 @@
     @errorSummary(form.errors)
 
     @h1(messages(s"underpaymentDetails.$underpaymentType.pageHeader") + " " + messages("underpaymentDetails.dutyMessageEnding"))
+
+    @if(!oneEntry) {
+        @p{ @messages("underpaymentDetails.bulkMessage") }
+        }
 
     @formHelper(action = controllers.underpayments.routes.UnderpaymentDetailsController.onSubmit(underpaymentType)) {
         @currencyInput(form, "original", messages("underpaymentDetails.originalAmount"), 10, false, classes = "govuk-input--width-20")

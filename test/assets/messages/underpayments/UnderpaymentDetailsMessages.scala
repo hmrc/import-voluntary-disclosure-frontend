@@ -22,6 +22,7 @@ object UnderpaymentDetailsMessages extends BaseMessages {
 
   val originalAmount = "Amount that was paid"
   val amendedAmount = "Amount that should have been paid"
+  val bulkMessage = "This must be the total across all the entries included in this disclosure."
 
   val B00pageTitle = "Import VAT underpayment details, in pounds"
   val B00pageHeader = "Import VAT underpayment details, in pounds"

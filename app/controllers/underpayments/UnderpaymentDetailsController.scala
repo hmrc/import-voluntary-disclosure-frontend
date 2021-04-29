@@ -46,7 +46,7 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(UnderpaymentDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, underpaymentType, backLink)))
+    Future.successful(Ok(view(form, underpaymentType, backLink, request.isOneEntry)))
   }
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,7 +60,7 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink)))
+          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink, request.isOneEntry)))
         },
         value => {
           for {
