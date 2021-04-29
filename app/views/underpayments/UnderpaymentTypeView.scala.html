@@ -19,13 +19,15 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputRadio: components.inputRadio
+        inputRadio: components.inputRadio,
+        h1: components.h1,
+        p: components.p
 )
 
-@(form: Form[_], backLink: Call, radioItems: Seq[RadioItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, radioItems: Seq[RadioItem], isFirstTime: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("underpaymentType.pageTitle"),
+        pageTitle = if(isFirstTime) messages("underpaymentType.firstTime.pageTitle") else messages("underpaymentType.secondTime.pageTitle"),
         form = Some(form),
         customBackLinkUrl = Some(backLink)
     ) {
@@ -36,9 +38,9 @@
 
             @inputRadio(
                 form = form,
-                legend = messages("underpaymentType.pageHeader"),
+                legend = if(isFirstTime) messages("underpaymentType.firstTime.pageHeader") else messages("underpaymentType.secondTime.pageHeader"),
                 items = radioItems,
-                legendAsHeading = true
+                hint = if(isFirstTime) Some(Html(messages("underpaymentType.firstTime.hint"))) else None
             )
 
             @button("common.button.continue")

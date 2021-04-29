@@ -61,6 +61,27 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
       status(result) mustBe Status.SEE_OTHER
     }
 
+    "return OK when some entries are selected" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(UnderpaymentDetailSummaryPage, someUnderpaymentDetailsSelected()).success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return OK when no entries are selected" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return OK with empty Sequence" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq.empty).success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentTypePage, "A00").success.value

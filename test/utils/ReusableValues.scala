@@ -101,4 +101,10 @@ trait ReusableValues {
     )
   }
 
+  def someUnderpaymentDetailsSelected(): Seq[UnderpaymentDetail] = {
+    Seq("B00", "A00", "E00").map(underpayment =>
+      UnderpaymentDetail(underpayment, 0.0, 1.0)
+    )
+  }
+
 }
