@@ -17,9 +17,9 @@
 package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
+import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{EnterCustomsProcedureCodePage, NumberOfEntriesPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -38,12 +38,10 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val numberOfEntries = request.userAnswers.get(NumberOfEntriesPage).getOrElse(NumberOfEntries.OneEntry)
-
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink(request.userAnswers), numberOfEntries)))
+      Future.successful(Ok(view(backLink(request.userAnswers), request.isOneEntry)))
     }
   }
 

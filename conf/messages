@@ -138,9 +138,10 @@ underpaymentType.A10.radio = Customs Duty on Agricultural products (A10)
 underpaymentType.D10.radio = Compensatory Duty (D10)
 
 # Underpayment Details
-underpaymentDetails.originalAmount = Amount that was paid to HMRC
+underpaymentDetails.originalAmount = Amount that was paid
 underpaymentDetails.amendedAmount = Amount that should have been paid
-underpaymentDetails.dutyMessageEnding = ' underpayment details'
+underpaymentDetails.dutyMessageEnding = ' underpayment details, in pounds'
+underpaymentDetails.bulkMessage = This must be the total across all the entries included in this disclosure.
 underpaymentDetails.B00.pageTitle = Import VAT
 underpaymentDetails.B00.pageHeader = Import VAT
 underpaymentDetails.A00.pageTitle = Customs Duty
@@ -161,13 +162,13 @@ underpaymentDetails.A10.pageTitle = Customs Duty on Agricultural Products
 underpaymentDetails.A10.pageHeader = Customs Duty on Agricultural Products
 underpaymentDetails.D10.pageTitle = Compensatory Duty
 underpaymentDetails.D10.pageHeader = Compensatory Duty
-underpaymentDetails.error.originalNonEmpty = Enter the amount that was paid to HMRC, in pounds
-underpaymentDetails.error.originalNonNumber = Amount that was paid to HMRC must be a number like 7235 or 67.39
-underpaymentDetails.error.originalOutOfRange = Amount that was paid to HMRC must be between £0 and £9,999,999,999.99
+underpaymentDetails.error.originalNonEmpty = Enter the amount that was paid, in pounds
+underpaymentDetails.error.originalNonNumber = Amount that was paid must be a number like 7235 or 67.39
+underpaymentDetails.error.originalOutOfRange = Amount that was paid must be between £0 and £9,999,999,999.99
 underpaymentDetails.error.amendedNonEmpty = Enter the amount that should have been paid, in pounds
 underpaymentDetails.error.amendedNonNumber = Amount that should have been paid must be a number like 7235 or 67.39
 underpaymentDetails.error.amendedOutOfRange = Amount that should have been paid must be between £0 and £9,999,999,999.99
-underpaymentDetails.error.positiveAmountOwed = Amount that should have been paid must be more than amount that was paid to HMRC
+underpaymentDetails.error.positiveAmountOwed = Amount that should have been paid must be more than amount that was paid
 
 # Change Underpayment Details
 changeUnderpaymentDetails.originalAmount = Amount that was paid

@@ -21,7 +21,7 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call, numberOfEntries: NumberOfEntries)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, oneEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = messages("underpaymentStart.pageTitle"),
         customBackLinkUrl = Some(backLink)) {
@@ -32,7 +32,7 @@
             @messages("underpaymentStart.p1")
         }
 
-    @if(numberOfEntries.equals(NumberOfEntries.OneEntry)) {
+    @if(oneEntry) {
         @bullets(Seq(
             Html(messages("underpaymentStart.oneEntry.bullet1")),
             Html(messages("underpaymentStart.oneEntry.bullet2")),
