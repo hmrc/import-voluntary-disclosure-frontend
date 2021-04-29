@@ -63,7 +63,7 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
 
   def isOneEntry: Boolean =
     userAnswers.get(NumberOfEntriesPage) match {
-      case Some(bulkEntry) => bulkEntry == NumberOfEntries.OneEntry
+      case Some(oneEntry) => oneEntry == NumberOfEntries.OneEntry
       case _ => false
     }
 
