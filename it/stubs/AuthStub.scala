@@ -30,11 +30,14 @@ object AuthStub extends WireMockMethods {
     when(method = POST, uri = authoriseUri)
       .thenReturn(status = OK, body = Json.obj(
         "externalId" -> "some_external_id",
-        "authorisedEnrolments" -> Json.arr(
+        "allEnrolments" -> Json.arr(
           Json.obj(
             "key" -> "HMRC-CTS-ORG",
             "identifiers" -> Json.arr(
-              Json.obj("key" -> "EORINumber", "value" -> "GB987654321000")
+              Json.obj(
+                "key" -> "EORINumber",
+                "value" -> "GB987654321000"
+              )
             ),
             "state" -> "Activated"
           )
