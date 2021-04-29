@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package messages
+package forms
 
-object UnderpaymentStartMessages  extends BaseMessages {
-
-  val pageTitle: String = "Tell us what was underpaid"
-  val heading: String = "Tell us what was underpaid"
-  val p1: String = "For each type of tax or duty, you will need to provide:"
-  val oneEntryBullet1: String = "the amount that was originally paid"
-  val oneEntryBullet2: String = "the amount that should have been paid"
-  val bulkBullet1: String = "the total amount that was originally paid across all the entries"
-  val bulkBullet2: String = "the total amount that should have been paid across all the entries"
+import forms.mappings.Mappings
+import play.api.data.Form
 
 
+class ImporterVatRegisteredFormProvider extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("importerVatRegistered.error.required")
+    )
 }

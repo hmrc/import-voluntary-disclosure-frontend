@@ -56,7 +56,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
     ),
     additionalInfo = "some text",
     amendedItems = Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200")),
-    documentsSupplied = Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet)
+    documentsSupplied = Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet),
+    isImporterVatRegistered = None
   )
 
   val userAnswers: UserAnswers = (for {
@@ -201,10 +202,12 @@ class IvdSubmissionSpec extends ModelSpecBase {
         knownDetails = EoriDetails("GB1234567890", "Representative Inc.", address),
         importerName = Some("Importer Inc."),
         importerAddress = Some(address),
+        importerEori = Some("GB123456789012345"),
         defermentType = Some("B"),
         additionalDefermentAccountNumber = Some("1234567"),
         additionalDefermentType = Some("C"),
-        splitDeferment = true
+        splitDeferment = true,
+        isImporterVatRegistered = Some(true)
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)
@@ -229,8 +232,13 @@ class IvdSubmissionSpec extends ModelSpecBase {
         data("additionalDefermentAccountNumber") shouldBe JsString("C1234567")
       }
 
-      "render a property for an importer" in {
-        result.as[JsObject].keys should contain("importer")
+      "generate the correct JSON for the importer" in {
+        data("importer") shouldBe Json.obj(
+          "eori" -> repSubmission.importerEori,
+          "contactDetails" -> ContactDetails(repSubmission.importerName.get),
+          "address" -> repSubmission.importerAddress,
+          "vatNumber" -> "123456789"
+        )
       }
 
     }
@@ -240,7 +248,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         userType = UserType.Representative,
         knownDetails = EoriDetails("GB1234567890", "Representative Inc.", address),
         importerAddress = Some(address),
-        defermentType = Some("B")
+        defermentType = Some("B"),
+        isImporterVatRegistered = Some(true)
       )
 
       "throw an exception" in {
@@ -254,7 +263,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         userType = UserType.Representative,
         knownDetails = EoriDetails("GB1234567890", "Representative Inc.", address),
         importerName = Some("Importer Inc."),
-        defermentType = Some("B")
+        defermentType = Some("B"),
+        isImporterVatRegistered = Some(true)
       )
 
       "throw an exception" in {
@@ -267,19 +277,21 @@ class IvdSubmissionSpec extends ModelSpecBase {
       val repSubmission = submission.copy(
         userType = UserType.Representative,
         knownDetails = EoriDetails("GB1234567890", "Representative Inc.", address),
-        importerEori = Some("GB01"),
+        importerEori = Some("GB0123456789"),
         importerName = Some("Importer Inc."),
         importerAddress = Some(address),
-        defermentType = Some("B")
+        defermentType = Some("B"),
+        isImporterVatRegistered = Some(true)
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)
 
       "generate the correct JSON for the importer" in {
         data("importer") shouldBe Json.obj(
-          "eori" -> "GB01",
+          "eori" -> "GB0123456789",
           "contactDetails" -> ContactDetails(repSubmission.importerName.get),
-          "address" -> repSubmission.importerAddress
+          "address" -> repSubmission.importerAddress,
+          "vatNumber" -> "012345678"
         )
       }
 
@@ -291,7 +303,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         knownDetails = EoriDetails("GB1234567890", "Representative Inc.", address),
         importerName = Some("Importer Inc."),
         importerAddress = Some(address),
-        defermentType = Some("B")
+        defermentType = Some("B"),
+        isImporterVatRegistered = Some(false)
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)
@@ -313,7 +326,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         importerName = Some("Importer Inc."),
         importerAddress = Some(address),
         paymentByDeferment = false,
-        defermentAccountNumber = None
+        defermentAccountNumber = None,
+        isImporterVatRegistered = Some(false)
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)
@@ -341,7 +355,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         paymentByDeferment = true,
         splitDeferment = false,
         defermentAccountNumber = Some("1234567"),
-        defermentType = Some("A")
+        defermentType = Some("A"),
+        isImporterVatRegistered = Some(false)
       )
 
       implicit lazy val result: JsValue = Json.toJson(repSubmission)
@@ -383,7 +398,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         defermentType = Some("B"),
         additionalDefermentAccountNumber = Some("7654321"),
         additionalDefermentType = Some("B"),
-        authorityDocuments = Seq(
+        isImporterVatRegistered = Some(false),
+          authorityDocuments = Seq(
           UploadAuthority("1234567", Duty,
             FileUploadInfo(
               fileName = "TestDocument.pdf",
@@ -466,7 +482,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         defermentType = Some("B"),
         additionalDefermentAccountNumber = Some("7654321"),
         additionalDefermentType = Some("C"),
-        authorityDocuments = Seq(
+        isImporterVatRegistered = Some(false),
+          authorityDocuments = Seq(
           UploadAuthority("1234567", Duty,
             FileUploadInfo(
               fileName = "TestDocument.pdf",
@@ -534,7 +551,8 @@ class IvdSubmissionSpec extends ModelSpecBase {
         defermentType = Some("A"),
         additionalDefermentAccountNumber = Some("7654321"),
         additionalDefermentType = Some("B"),
-        authorityDocuments = Seq(
+        isImporterVatRegistered = Some(false),
+          authorityDocuments = Seq(
           UploadAuthority("7654321", Vat,
             FileUploadInfo(
               fileName = "TestDocument.pdf",

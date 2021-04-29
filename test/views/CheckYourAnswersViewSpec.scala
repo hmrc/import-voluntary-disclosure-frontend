@@ -29,11 +29,9 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
 
-  private val backLink: Call = Call("GET", "url")
-
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
-      lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${answers.size + 1} sub-headings" in {
@@ -53,7 +51,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
     }
 
     "single answer provided" should {
-      lazy val view: Html = injectedView(Seq(underpaymentAnswers), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(Seq(underpaymentAnswers))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
@@ -111,7 +109,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(answers, backLink)(fakeRequest, messages)
+    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title" in {
@@ -120,10 +118,6 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
     s"have the correct h1 of '${CYAMessages.heading}'" in {
       elementText("h1") mustBe CYAMessages.heading
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
     }
 
     "have Now Send Disclosure sub-heading " in {

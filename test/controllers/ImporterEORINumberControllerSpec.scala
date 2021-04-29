@@ -84,7 +84,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER response when correct data with character values" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator(importerEORINumber))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.ImporterVatRegisteredController.onLoad().url)
 
       }
       "update the UserAnswers in session" in new Test {

@@ -56,7 +56,7 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+          Redirect(controllers.routes.ImporterVatRegisteredController.onLoad())
         }
       }
     )

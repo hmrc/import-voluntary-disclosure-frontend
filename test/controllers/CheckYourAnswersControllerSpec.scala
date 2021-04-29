@@ -95,19 +95,20 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     lazy val controller = {
       setupConnectorMock(connectorMock)
       new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-        messagesControllerComponents, mockIVDSubmissionConnector, checkYourAnswersView, confirmationView, ec)
+        messagesControllerComponents, mockSessionRepository, mockIVDSubmissionConnector,
+        checkYourAnswersView, confirmationView, ec)
     }
   }
 
 
   "GET onLoad" should {
     "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }

@@ -23,11 +23,11 @@
         p: components.p,
         linkButton: components.linkButton)
 
-@(answers: Seq[CYASummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(answers: Seq[CYASummaryList])(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("cya.pageTitle"),
-    customBackLinkUrl = Some(backLink)
+    showBackLink = false
 ) {
     @h1(messages("cya.heading"))
 

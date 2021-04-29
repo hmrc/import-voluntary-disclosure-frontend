@@ -624,11 +624,11 @@ importerDan.error.format = Enter the deferment account number in the correct for
 # Underpayment Start page
 underpaymentStart.pageTitle = Tell us what was underpaid
 underpaymentStart.heading = Tell us what was underpaid
-underpaymentStart.p1 = You will need to tell us about each type of tax or duty where not enough was paid for the original import. It does not matter which you tell us about first.
-underpaymentStart.p2 = You will need to provide:
-underpaymentStart.bullet1 = the type of duty or tax that was underpaid
-underpaymentStart.bullet2 = the amount of tax or duty that was paid to HMRC with the original import declaration
-underpaymentStart.bullet3 = the amount that should have been paid to HMRC
+underpaymentStart.p1 = For each type of tax or duty, you will need to provide:
+underpaymentStart.oneEntry.bullet1 = the amount that was originally paid
+underpaymentStart.oneEntry.bullet2 = the amount that should have been paid
+underpaymentStart.bulkEntry.bullet1 = the total amount that was originally paid across all the entries
+underpaymentStart.bulkEntry.bullet2 = the total amount that should have been paid across all the entries
 
 # Split Payment page
 splitPayment.pageTitle = Do you want to split payment between two deferment accounts?
@@ -710,3 +710,8 @@ optionalSupportingDocuments.importAndEntry = Amendment import declaration (C88) 
 optionalSupportingDocuments.airwayBill = Airway bill
 optionalSupportingDocuments.originProof = Proof of origin
 optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure
+
+# Import VAT Registered Page
+importerVatRegistered.pageTitle = Is the importer VAT registered?
+importerVatRegistered.heading = Is the importer VAT registered?
+importerVatRegistered.error.required = Select yes if the importer is VAT registered

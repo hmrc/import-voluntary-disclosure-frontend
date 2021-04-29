@@ -16,15 +16,10 @@
 
 package messages
 
-object UnderpaymentStartMessages  extends BaseMessages {
+object ImporterVatRegisteredMessages {
 
-  val pageTitle: String = "Tell us what was underpaid"
-  val heading: String = "Tell us what was underpaid"
-  val p1: String = "For each type of tax or duty, you will need to provide:"
-  val oneEntryBullet1: String = "the amount that was originally paid"
-  val oneEntryBullet2: String = "the amount that should have been paid"
-  val bulkBullet1: String = "the total amount that was originally paid across all the entries"
-  val bulkBullet2: String = "the total amount that should have been paid across all the entries"
-
+  val title: String = "Is the importer VAT registered?"
+  val h1: String = "Is the importer VAT registered?"
+  val requiredError: String = "Select yes if the importer is VAT registered"
 
 }
