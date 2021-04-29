@@ -18,11 +18,12 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailsFormProvider
+import models.requests.DataRequest
 import models.underpayments.UnderpaymentAmount
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
 import play.api.data.FormError
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.ChangeUnderpaymentDetailsView
@@ -42,19 +43,41 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+  private def backLink(underpaymentType: String, summaryPageChange: Boolean)(implicit request: DataRequest[_]) = {
+    if (summaryPageChange)
+      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+    else
+      controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
+  }
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val form = request.userAnswers.get(UnderpaymentDetailSummaryPage).fold(formProvider()) { value =>
-      val underpayment = value.filter(underpayment => underpayment.duty == underpaymentType).head
-      formProvider().fill(UnderpaymentAmount(underpayment.original, underpayment.amended))
+    val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+      case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
+      case None => false
     }
-    Future.successful(Ok(view(form, underpaymentType, backLink)))
+
+    val form = request.userAnswers.get(UnderpaymentDetailsPage) match {
+      case Some(details) => formProvider().fill(details)
+      case None =>
+        request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+          case Some(value) => {
+            val underpayment = value.filter(underpayment => underpayment.duty == underpaymentType).head
+            formProvider().fill(UnderpaymentAmount(underpayment.original, underpayment.amended))
+          }
+          case None => formProvider()
+        }
+    }
+
+    Future.successful(Ok(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange)))
   }
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+        case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
+        case None => false
+      }
+
       formProvider().bindFromRequest().fold(
         formWithErrors => {
           val newErrors = formWithErrors.errors.map { error =>
@@ -64,7 +87,7 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink)))
+          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange)))
         },
         value => {
           for {
@@ -75,7 +98,7 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
           } yield {
             Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(
               underpaymentType = underpaymentType,
-              change = true)
+              change = summaryPageChange)
             )
           }
         }

@@ -22,7 +22,7 @@
         currencyInput: components.currencyInput
 )
 
-@(form: Form[_], underpaymentType: String, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], underpaymentType: String, backLink: Call, summaryPageChange: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages(s"changeUnderpaymentDetails.$underpaymentType.pageTitle"),
@@ -38,7 +38,9 @@
         @currencyInput(form, "amended", messages("changeUnderpaymentDetails.amendedAmount"), 10, false, classes = "govuk-input--width-20")
         @button("common.button.continue")
     }
-    <p><a href=@controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onLoad(underpaymentType).url id="remove-link" class="govuk-link">@messages(s"changeUnderpaymentDetails.$underpaymentType.removeLink")</a></p>
+    @if(summaryPageChange) {
+        <p><a href=@controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onLoad(underpaymentType).url id="remove-link" class="govuk-link">@messages(s"changeUnderpaymentDetails.$underpaymentType.removeLink")</a></p>
+    }
 
 }
 
