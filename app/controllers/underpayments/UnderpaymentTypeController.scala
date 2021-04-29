@@ -28,8 +28,9 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
-
 import javax.inject.Inject
+import models.requests.DataRequest
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -55,7 +56,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       }
       val availableUnderPaymentTypes = underpaymentTypes.filter(item => !existingUnderpaymentDetails.contains(item))
       val availableUnderPaymentTypesOptions = createRadioButton(form, availableUnderPaymentTypes)
-      Future.successful(Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions)))
+      Future.successful(Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime())))
     }
   }
 
@@ -63,7 +64,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         Future.successful(
-          BadRequest(underpaymentTypeView(formWithErrors, backLink(request.userAnswers), createRadioButton(formWithErrors, underpaymentTypes)))
+          BadRequest(underpaymentTypeView(formWithErrors, backLink(request.userAnswers), createRadioButton(formWithErrors, underpaymentTypes), isFirstTime()))
         )
       },
       value => {
@@ -95,6 +96,11 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     } else {
       controllers.underpayments.routes.UnderpaymentStartController.onLoad()
     }
+  }
+
+  private def isFirstTime()(implicit request: DataRequest[_]): Boolean = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+    case Some(value) if value.nonEmpty => false
+    case _ => true
   }
 
 }

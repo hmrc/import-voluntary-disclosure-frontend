@@ -120,8 +120,11 @@ SupportDoc.bullet3 = a document or scanned image showing how you calculated the 
 error.summary.title = There is a problem
 
 # Underpayment Type
-underpaymentType.pageTitle = Which type of tax or duty was underpaid?
-underpaymentType.pageHeader = Which type of tax or duty was underpaid?
+underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
+underpaymentType.secondTime.pageTitle = Which type of tax or duty was underpaid?
+underpaymentType.firstTime.pageHeader = Which type of tax or duty do you want to tell us about first?
+underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid you will be able to select further types later.
+underpaymentType.secondTime.pageHeader = Which type of tax or duty was underpaid?
 underpaymentType.error.required = Select the type of tax or duty that was underpaid
 underpaymentType.B00.radio = Import VAT (B00)
 underpaymentType.A00.radio = Customs Duty (A00)
