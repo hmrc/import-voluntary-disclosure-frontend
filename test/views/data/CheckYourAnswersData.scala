@@ -39,7 +39,82 @@ object CheckYourAnswersData {
   val epu = "123"
   val entryNumber = "123456Q"
   val entryDate = "01 December 2020"
-  val acceptanceDate = "Yes"
+  val yes = "Yes"
+  val eoriNumber = "GB345834921000"
+
+  val aboutImporterAnswers: CYASummaryList = CYASummaryList(
+    CYAMessages.aboutImporterDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.name),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(fullName)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.address),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(buildAddress(traderAddress))
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.eoriNumberExists),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(yes)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.eoriNumber),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(eoriNumber)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.vatRegistered),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(yes)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+      )
+    )
+  )
 
   val underpaymentAnswers: CYASummaryList = CYASummaryList(
     CYAMessages.underpaymentDetails,
@@ -107,32 +182,32 @@ object CheckYourAnswersData {
               Text(CYAMessages.change))
           )))
         )
-//        SummaryListRow(
-//          key = Key(
-//            Text(CYAMessages.numAmendments),
-//            classes = "govuk-!-width-two-thirds"
-//          ),
-//          value = Value(
-//            HtmlContent("5")
-//          ),
-//          actions = Some(Actions(items = Seq(
-//            ActionItem(changeUrl,
-//              Text(CYAMessages.change))
-//          )))
-//        )
-//        SummaryListRow(
-//          key = Key(
-//            Text(CYAMessages.supportingInformation),
-//            classes = "govuk-!-width-two-thirds"
-//          ),
-//          value = Value(
-//            HtmlContent("No")
-//          ),
-//          actions = Some(Actions(items = Seq(
-//            ActionItem(changeUrl,
-//              Text(CYAMessages.change))
-//          )))
-//        )
+        //        SummaryListRow(
+        //          key = Key(
+        //            Text(CYAMessages.numAmendments),
+        //            classes = "govuk-!-width-two-thirds"
+        //          ),
+        //          value = Value(
+        //            HtmlContent("5")
+        //          ),
+        //          actions = Some(Actions(items = Seq(
+        //            ActionItem(changeUrl,
+        //              Text(CYAMessages.change))
+        //          )))
+        //        )
+        //        SummaryListRow(
+        //          key = Key(
+        //            Text(CYAMessages.supportingInformation),
+        //            classes = "govuk-!-width-two-thirds"
+        //          ),
+        //          value = Value(
+        //            HtmlContent("No")
+        //          ),
+        //          actions = Some(Actions(items = Seq(
+        //            ActionItem(changeUrl,
+        //              Text(CYAMessages.change))
+        //          )))
+        //        )
       )
     )
   )
@@ -178,9 +253,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))),
-              classes = "govuk-!-padding-bottom-0")),
+            classes = "govuk-!-padding-bottom-0")),
           classes = "govuk-summary-list__row--no-border"
-          ),
+        ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.email),
@@ -218,10 +293,9 @@ object CheckYourAnswersData {
               changeUrl,
               Text(CYAMessages.change)))
           )))
-     )
+      )
     )
   )
-
 
 
   val disclosureDetailsAnswers: CYASummaryList = CYASummaryList(
@@ -257,7 +331,7 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))
-            ),
+          ),
             classes = "govuk-!-padding-bottom-0")
           ),
           classes = "govuk-summary-list__row--no-border"
@@ -291,7 +365,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent(acceptanceDate)
+            HtmlContent(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -327,6 +401,7 @@ object CheckYourAnswersData {
   )
 
   val answers: Seq[CYASummaryList] = Seq(
+    aboutImporterAnswers,
     disclosureDetailsAnswers,
     underpaymentAnswers,
     amendmentDetailsAnswers,

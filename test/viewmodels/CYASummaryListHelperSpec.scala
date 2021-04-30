@@ -16,13 +16,13 @@
 
 package viewmodels
 
+import java.time.{LocalDate, LocalDateTime}
+
 import base.SpecBase
-import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UserAnswers}
+import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UserAnswers, UserType}
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import views.data.CheckYourAnswersData._
-
-import java.time.{LocalDate, LocalDateTime}
 
 
 class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
@@ -46,6 +46,13 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
       .set(DefermentPage, false).success.value
+      .set(ImporterEORIExistsPage, true).success.value
+      .set(ImporterEORINumberPage, "GB345834921000").success.value
+      .set(ImporterVatRegisteredPage, true).success.value
+      .set(UserTypePage, UserType.Representative).success.value
+      .set(ImporterNamePage, "First Second").success.value
+      .set(ImporterAddressPage, ContactAddress(
+        "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
 
   }
 
@@ -110,6 +117,19 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
       buildPaymentInformationSummaryList(userAnswers) mustBe None
+    }
+
+  }
+
+  "buildAboutImporter" should {
+
+    "produce a valid model when all answers are provided" in new Test {
+      buildAboutImporterSummaryList(userAnswers) mustBe Some(aboutImporterAnswers)
+    }
+
+    "produce a valid model when no answers are provided" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("")
+      buildAboutImporterSummaryList(userAnswers) mustBe None
     }
 
   }
