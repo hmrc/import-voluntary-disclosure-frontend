@@ -28,7 +28,7 @@ object UnderpaymentDetailConfirmData {
       rows = Seq(
         SummaryListRow(
           key = Key(
-            content = Text("Amount that was paid to HMRC"),
+            content = Text("Amount that was paid"),
             classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
           ),
           value = Value(
