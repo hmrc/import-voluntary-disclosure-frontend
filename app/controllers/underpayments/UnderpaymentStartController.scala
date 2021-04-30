@@ -41,7 +41,7 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink(request.userAnswers))))
+      Future.successful(Ok(view(backLink(request.userAnswers), request.isOneEntry)))
     }
   }
 

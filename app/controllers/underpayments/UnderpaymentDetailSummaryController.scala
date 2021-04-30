@@ -79,7 +79,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
-            classes = "govuk-summary-list__key govuk-!-width-two-thirds"
+            classes = "govuk-summary-list__key govuk-!-width-two-thirds govuk-!-font-weight-regular"
           ),
           value = Value(
             content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
@@ -103,7 +103,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(content = HtmlContent(displayMoney(amountOwed))),
-          classes = "govuk-summary-list__row--no-border"
+          classes = "govuk-summary-list__row--no-border govuk-!-font-weight-bold"
         )
       )
     )

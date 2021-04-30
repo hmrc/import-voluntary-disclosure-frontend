@@ -17,6 +17,7 @@ site.yes = Yes
 site.no = No
 common.button.confirmAndContinue = Confirm and continue
 common.button.continue = Continue
+common.button.confirm = Confirm
 common.button.acceptAndSend = Accept and send
 
 footer.cookies.text = Cookies
@@ -120,8 +121,11 @@ SupportDoc.bullet3 = a document or scanned image showing how you calculated the 
 error.summary.title = There is a problem
 
 # Underpayment Type
-underpaymentType.pageTitle = Which type of tax or duty was underpaid?
-underpaymentType.pageHeader = Which type of tax or duty was underpaid?
+underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
+underpaymentType.secondTime.pageTitle = Which type of tax or duty was underpaid?
+underpaymentType.firstTime.pageHeader = Which type of tax or duty do you want to tell us about first?
+underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid you will be able to select further types later.
+underpaymentType.secondTime.pageHeader = Which type of tax or duty was underpaid?
 underpaymentType.error.required = Select the type of tax or duty that was underpaid
 underpaymentType.B00.radio = Import VAT (B00)
 underpaymentType.A00.radio = Customs Duty (A00)
@@ -135,9 +139,10 @@ underpaymentType.A10.radio = Customs Duty on Agricultural products (A10)
 underpaymentType.D10.radio = Compensatory Duty (D10)
 
 # Underpayment Details
-underpaymentDetails.originalAmount = Amount that was paid to HMRC
+underpaymentDetails.originalAmount = Amount that was paid
 underpaymentDetails.amendedAmount = Amount that should have been paid
-underpaymentDetails.dutyMessageEnding = ' underpayment details'
+underpaymentDetails.dutyMessageEnding = ' underpayment details, in pounds'
+underpaymentDetails.bulkMessage = This must be the total across all the entries included in this disclosure.
 underpaymentDetails.B00.pageTitle = Import VAT
 underpaymentDetails.B00.pageHeader = Import VAT
 underpaymentDetails.A00.pageTitle = Customs Duty
@@ -158,13 +163,13 @@ underpaymentDetails.A10.pageTitle = Customs Duty on Agricultural Products
 underpaymentDetails.A10.pageHeader = Customs Duty on Agricultural Products
 underpaymentDetails.D10.pageTitle = Compensatory Duty
 underpaymentDetails.D10.pageHeader = Compensatory Duty
-underpaymentDetails.error.originalNonEmpty = Enter the amount that was paid to HMRC, in pounds
-underpaymentDetails.error.originalNonNumber = Amount that was paid to HMRC must be a number like 7235 or 67.39
-underpaymentDetails.error.originalOutOfRange = Amount that was paid to HMRC must be between £0 and £9,999,999,999.99
+underpaymentDetails.error.originalNonEmpty = Enter the amount that was paid, in pounds
+underpaymentDetails.error.originalNonNumber = Amount that was paid must be a number like 7235 or 67.39
+underpaymentDetails.error.originalOutOfRange = Amount that was paid must be between £0 and £9,999,999,999.99
 underpaymentDetails.error.amendedNonEmpty = Enter the amount that should have been paid, in pounds
 underpaymentDetails.error.amendedNonNumber = Amount that should have been paid must be a number like 7235 or 67.39
 underpaymentDetails.error.amendedOutOfRange = Amount that should have been paid must be between £0 and £9,999,999,999.99
-underpaymentDetails.error.positiveAmountOwed = Amount that should have been paid must be more than amount that was paid to HMRC
+underpaymentDetails.error.positiveAmountOwed = Amount that should have been paid must be more than amount that was paid
 
 # Change Underpayment Details
 changeUnderpaymentDetails.originalAmount = Amount that was paid
@@ -280,7 +285,7 @@ underpaymentDetailsConfirm.A10.pageTitle = Confirm the Customs Duty on Agricultu
 underpaymentDetailsConfirm.A10.pageHeader = Confirm the Customs Duty on Agricultural Products underpayment details
 underpaymentDetailsConfirm.D10.pageTitle = Confirm the Compensatory Duty underpayment details
 underpaymentDetailsConfirm.D10.pageHeader = Confirm the Compensatory Duty underpayment details
-underpaymentDetailsConfirm.originalAmount = Amount that was paid to HMRC
+underpaymentDetailsConfirm.originalAmount = Amount that was paid
 underpaymentDetailsConfirm.amendedAmount = Amount that should have been paid
 underpaymentDetailsConfirm.B00.dueToHmrc = Import VAT owed to HMRC
 underpaymentDetailsConfirm.A00.dueToHmrc = Customs Duty owed to HMRC
@@ -625,11 +630,11 @@ importerDan.error.format = Enter the deferment account number in the correct for
 # Underpayment Start page
 underpaymentStart.pageTitle = Tell us what was underpaid
 underpaymentStart.heading = Tell us what was underpaid
-underpaymentStart.p1 = You will need to tell us about each type of tax or duty where not enough was paid for the original import. It does not matter which you tell us about first.
-underpaymentStart.p2 = You will need to provide:
-underpaymentStart.bullet1 = the type of duty or tax that was underpaid
-underpaymentStart.bullet2 = the amount of tax or duty that was paid to HMRC with the original import declaration
-underpaymentStart.bullet3 = the amount that should have been paid to HMRC
+underpaymentStart.p1 = For each type of tax or duty, you will need to provide:
+underpaymentStart.oneEntry.bullet1 = the amount that was originally paid
+underpaymentStart.oneEntry.bullet2 = the amount that should have been paid
+underpaymentStart.bulkEntry.bullet1 = the total amount that was originally paid across all the entries
+underpaymentStart.bulkEntry.bullet2 = the total amount that should have been paid across all the entries
 
 # Split Payment page
 splitPayment.pageTitle = Do you want to split payment between two deferment accounts?

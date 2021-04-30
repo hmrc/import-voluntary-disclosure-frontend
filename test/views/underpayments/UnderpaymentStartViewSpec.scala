@@ -18,6 +18,7 @@ package views.underpayments
 
 import base.ViewBaseSpec
 import messages.{BaseMessages, UnderpaymentStartMessages}
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -30,7 +31,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Underpayment start page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad())(fakeRequest, messages)
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title of '${UnderpaymentStartMessages.pageTitle}'" in {
@@ -39,8 +40,37 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     }
   }
 
+  "Dynamic bullet points depending on one entry or bulk" when {
+    "one entry" should {
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+          s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet1}'" in {
+            elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.oneEntryBullet1
+          }
+
+          s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet2}'" in {
+            elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.oneEntryBullet2
+          }
+    }
+
+    "bulk entry" should {
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct page text of '${UnderpaymentStartMessages.bulkBullet1}'" in {
+        elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.bulkBullet1
+      }
+
+      s"have the correct page text of '${UnderpaymentStartMessages.bulkBullet2}'" in {
+        elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.bulkBullet2
+      }
+    }
+
+  }
+
   "it" should {
-    lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad())(fakeRequest, messages)
+    lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
     s"have the correct page heading of '${UnderpaymentStartMessages.heading}'" in {
       elementText("h1") mustBe UnderpaymentStartMessages.heading
@@ -48,22 +78,6 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have the correct page text of '${UnderpaymentStartMessages.p1}'" in {
       elementText("#main-content p:nth-of-type(1)") mustBe UnderpaymentStartMessages.p1
-    }
-
-    s"have the correct page text of '${UnderpaymentStartMessages.p2}'" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe UnderpaymentStartMessages.p2
-    }
-
-    s"have the correct page text of '${UnderpaymentStartMessages.bullet1}'" in {
-      elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.bullet1
-    }
-
-    s"have the correct page text of '${UnderpaymentStartMessages.bullet2}'" in {
-      elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.bullet2
-    }
-
-    s"have the correct page text of '${UnderpaymentStartMessages.bullet3}'" in {
-      elementText("#main-content li:nth-of-type(3)") mustBe UnderpaymentStartMessages.bullet3
     }
 
     "render a continue button with the correct URL " in {

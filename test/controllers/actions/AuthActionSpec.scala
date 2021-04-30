@@ -32,6 +32,8 @@ class AuthActionSpec extends SpecBase {
     Enrolment("HMRC-CTS-ORG", Seq(EnrolmentIdentifier("EORINumber", "GB987654321000")), "Activated")
   ))
 
+  val noEnrolment: Enrolments = Enrolments(Set.empty)
+
   trait Test extends MockAuthConnector {
     class Harness(authAction: IdentifierAction) {
       def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
@@ -61,6 +63,14 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
+    "user is logged in and has an external ID for organisation but no enrolment" must {
+      "execute the action block" in new Test {
+        MockedAuthConnector.authorise(Future.successful(Some("abc") and noEnrolment and Some(AffinityGroup.Organisation)))
+        private val response = target.onPageLoad()(fakeRequest)
+        status(response) mustBe Status.UNAUTHORIZED
+      }
+    }
+
     "user is logged in and has no external ID for organisation" must {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Organisation)))
@@ -73,7 +83,7 @@ class AuthActionSpec extends SpecBase {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Individual)))
         private val response = target.onPageLoad()(fakeRequest)
-        status(response) mustBe Status.FORBIDDEN
+        status(response) mustBe Status.UNAUTHORIZED
       }
     }
 
@@ -81,7 +91,7 @@ class AuthActionSpec extends SpecBase {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Agent)))
         private val response = target.onPageLoad()(fakeRequest)
-        status(response) mustBe Status.FORBIDDEN
+        status(response) mustBe Status.UNAUTHORIZED
       }
     }
 

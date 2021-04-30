@@ -20,11 +20,11 @@ object UnderpaymentStartMessages  extends BaseMessages {
 
   val pageTitle: String = "Tell us what was underpaid"
   val heading: String = "Tell us what was underpaid"
-  val p1: String = "You will need to tell us about each type of tax or duty where not enough was paid for the original import. It does not matter which you tell us about first."
-  val p2: String = "You will need to provide:"
-  val bullet1: String = "the type of duty or tax that was underpaid"
-  val bullet2: String = "the amount of tax or duty that was paid to HMRC with the original import declaration"
-  val bullet3: String = "the amount that should have been paid to HMRC"
+  val p1: String = "For each type of tax or duty, you will need to provide:"
+  val oneEntryBullet1: String = "the amount that was originally paid"
+  val oneEntryBullet2: String = "the amount that should have been paid"
+  val bulkBullet1: String = "the total amount that was originally paid across all the entries"
+  val bulkBullet2: String = "the total amount that should have been paid across all the entries"
 
 
 }

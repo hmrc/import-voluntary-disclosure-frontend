@@ -20,7 +20,7 @@ import messages.{BaseMessages, ExpectedContent}
 
 object UnderpaymentDetailConfirmMessages extends BaseMessages {
 
-  val originalAmount = "Amount that was paid to HMRC"
+  val originalAmount = "Amount that was paid"
   val amendedAmount = "Amount that should have been paid"
   val B00pageTitle = "import VAT"
   val B00pageHeader = "import VAT"

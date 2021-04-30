@@ -20,8 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.underpayments.UnderpaymentAmount
-import pages.underpayments.{UnderpaymentDetailsPage, UnderpaymentTypePage}
+import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
+import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -90,6 +90,29 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
       }
 
+      "return a SEE OTHER underpayment summary response when change is true" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", original = 10, amended = 20))).success.value
+            .set(UnderpaymentTypePage, "B00").success.value
+            .set(UnderpaymentDetailsPage, UnderpaymentAmount(0, 1)).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit("B00", change = true)(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+      }
+
+      "return a SEE OTHER underpayment summary response when change is true but values are unchanged" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", original = 10, amended = 20))).success.value
+            .set(UnderpaymentTypePage, "B00").success.value
+            .set(UnderpaymentDetailsPage, UnderpaymentAmount(10, 20)).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit("B00", change = true)(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+      }
 
       "update the UserAnswers in session" in new Test {
         await(controller.onSubmit("B00", change = true)(

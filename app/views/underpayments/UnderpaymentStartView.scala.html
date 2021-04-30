@@ -21,7 +21,7 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, oneEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = messages("underpaymentStart.pageTitle"),
         customBackLinkUrl = Some(backLink)) {
@@ -32,15 +32,17 @@
             @messages("underpaymentStart.p1")
         }
 
-        @p {
-            @messages("underpaymentStart.p2")
-        }
-
+    @if(oneEntry) {
         @bullets(Seq(
-            Html(messages("underpaymentStart.bullet1")),
-            Html(messages("underpaymentStart.bullet2")),
-            Html(messages("underpaymentStart.bullet3"))
+            Html(messages("underpaymentStart.oneEntry.bullet1")),
+            Html(messages("underpaymentStart.oneEntry.bullet2")),
         ))
+    } else {
+        @bullets(Seq(
+            Html(messages("underpaymentStart.bulkEntry.bullet1")),
+            Html(messages("underpaymentStart.bulkEntry.bullet2")),
+        ))
+    }
 
         @linkButton(url = controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url, messages("common.button.continue"))
 

@@ -20,6 +20,8 @@ trait BaseMessages {
 
   val continue = "Continue"
 
+  val confirm = "Confirm"
+
   val back_link = "Back"
 
   val errorPrefix = "Error: "
