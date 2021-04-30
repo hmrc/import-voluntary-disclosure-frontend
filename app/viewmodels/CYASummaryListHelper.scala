@@ -24,7 +24,6 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import views.ViewUtils.displayMoney
 
 trait CYASummaryListHelper {
 
@@ -169,49 +168,49 @@ trait CYASummaryListHelper {
       )
     }
 
-//    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmendmentsPage) map { numberOfAmendments =>
-//      Seq(
-//        SummaryListRow(
-//          key = Key(
-//            content = Text(messages("cya.numberOfAmendments")),
-//            classes = "govuk-!-width-two-thirds"
-//          ),
-//          value = Value(
-//            content = HtmlContent(numberOfAmendments)
-//          ),
-//          actions = Some(Actions(
-//            items = Seq(
-//              ActionItem("Url", Text(messages("cya.change")))
-//            )
-//          )
-//          )
-//        )
-//      )
-//    }
-//
-//val supportingInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(SupportingInformationPage) map { supportingInformation =>
-//  Seq(
-//    SummaryListRow(
-//      key = Key(
-//        content = Text(messages("cya.supportingInformation")),
-//        classes = "govuk-!-width-two-thirds"
-//      ),
-//      value = Value(
-//        content = HtmlContent(supportingInformation)
-//      ),
-//      actions = Some(Actions(
-//        items = Seq(
-//          ActionItem("Url", Text(messages("cya.change")))
-//        )
-//      )
-//      )
-//    )
-//  )
-//}
+    //    val numberOfAmendmentsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(numberOfAmendmentsPage) map { numberOfAmendments =>
+    //      Seq(
+    //        SummaryListRow(
+    //          key = Key(
+    //            content = Text(messages("cya.numberOfAmendments")),
+    //            classes = "govuk-!-width-two-thirds"
+    //          ),
+    //          value = Value(
+    //            content = HtmlContent(numberOfAmendments)
+    //          ),
+    //          actions = Some(Actions(
+    //            items = Seq(
+    //              ActionItem("Url", Text(messages("cya.change")))
+    //            )
+    //          )
+    //          )
+    //        )
+    //      )
+    //    }
+    //
+    //val supportingInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(SupportingInformationPage) map { supportingInformation =>
+    //  Seq(
+    //    SummaryListRow(
+    //      key = Key(
+    //        content = Text(messages("cya.supportingInformation")),
+    //        classes = "govuk-!-width-two-thirds"
+    //      ),
+    //      value = Value(
+    //        content = HtmlContent(supportingInformation)
+    //      ),
+    //      actions = Some(Actions(
+    //        items = Seq(
+    //          ActionItem("Url", Text(messages("cya.change")))
+    //        )
+    //      )
+    //      )
+    //    )
+    //  )
+    //}
 
     val rows = customProcedureCodeSummaryListRow.getOrElse(Seq.empty)
-//      numberOfAmendmentsSummaryListRow.getOrElse(Seq.empty) ++
-//      supportingInformationSummaryListRow.getOrElse(Seq.empty)
+    //      numberOfAmendmentsSummaryListRow.getOrElse(Seq.empty) ++
+    //      supportingInformationSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
       Some(
@@ -231,11 +230,11 @@ trait CYASummaryListHelper {
   def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
     val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
       val fileNames = files map (file => file.fileName)
-      val whichFile = if(fileNames.length == 1) "file" else "files"
+      val whichFile = if (fileNames.length == 1) "file" else "files"
       Seq(
         SummaryListRow(
           key = Key(
-              content = Text(messages("cya.filesUploaded", fileNames.length, whichFile)),
+            content = Text(messages("cya.filesUploaded", fileNames.length, whichFile)),
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
