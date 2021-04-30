@@ -114,7 +114,7 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "have the correct value for Amount that was paid to HMRC" in {
+    "have the correct value for Amount that was paid" in {
       elementText("#main-content > div > div > dl > div:nth-child(1) > dt") mustBe UnderpaymentDetailConfirmMessages.originalAmount
     }
 
