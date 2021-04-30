@@ -59,12 +59,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildDisclosureDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildDisclosureDetailsSummaryList(userAnswers) mustBe Some(disclosureDetailsAnswers)
+      buildDisclosureDetailsSummaryList(userAnswers) mustBe Seq(disclosureDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildDisclosureDetailsSummaryList(userAnswers) mustBe None
+      buildDisclosureDetailsSummaryList(userAnswers) mustBe List.empty
     }
 
   }
@@ -72,12 +72,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildAmendmentDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildAmendmentDetailsSummaryList(userAnswers) mustBe Some(amendmentDetailsAnswers)
+      buildAmendmentDetailsSummaryList(userAnswers) mustBe Seq(amendmentDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildAmendmentDetailsSummaryList(userAnswers) mustBe None
+      buildAmendmentDetailsSummaryList(userAnswers) mustBe List.empty
     }
 
   }
@@ -85,12 +85,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildSupportingDocuments" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildSupportingDocumentsSummaryList(userAnswers) mustBe Some(uploadFilesAnswers)
+      buildSupportingDocumentsSummaryList(userAnswers) mustBe Seq(uploadFilesAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildSupportingDocumentsSummaryList(userAnswers) mustBe None
+      buildSupportingDocumentsSummaryList(userAnswers) mustBe List.empty
     }
 
   }
@@ -98,12 +98,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildYourDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildYourDetailsSummaryList(userAnswers) mustBe Some(yourDetailsAnswers)
+      buildYourDetailsSummaryList(userAnswers) mustBe Seq(yourDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildYourDetailsSummaryList(userAnswers) mustBe None
+      buildYourDetailsSummaryList(userAnswers) mustBe List.empty
     }
 
   }
@@ -111,12 +111,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildPaymentInformation" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildPaymentInformationSummaryList(userAnswers) mustBe Some(defermentAnswers)
+      buildPaymentInformationSummaryList(userAnswers) mustBe Seq(defermentAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildPaymentInformationSummaryList(userAnswers) mustBe None
+      buildPaymentInformationSummaryList(userAnswers) mustBe List.empty
     }
 
   }
@@ -124,12 +124,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildAboutImporter" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildAboutImporterSummaryList(userAnswers) mustBe Some(aboutImporterAnswers)
+      buildAboutImporterSummaryList(userAnswers) mustBe Seq(aboutImporterAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildAboutImporterSummaryList(userAnswers) mustBe None
+      buildAboutImporterSummaryList(userAnswers) mustBe List.empty
     }
 
   }
