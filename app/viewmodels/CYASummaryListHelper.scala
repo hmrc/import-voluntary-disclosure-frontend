@@ -27,7 +27,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
 trait CYASummaryListHelper {
 
-  def buildDisclosureDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildDisclosureDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
 
     val numberOfEntriesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(NumberOfEntriesPage) map { numberOfEntries =>
       val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
@@ -132,7 +132,7 @@ trait CYASummaryListHelper {
       acceptanceDateListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
-      Some(
+      Seq(
         CYASummaryList(
           messages("cya.disclosureDetails"),
           SummaryList(
@@ -142,11 +142,11 @@ trait CYASummaryListHelper {
         )
       )
     } else {
-      None
+      Seq.empty
     }
   }
 
-  def buildAmendmentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildAmendmentDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
 
     val customProcedureCodeSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(EnterCustomsProcedureCodePage) map { customsProcedure =>
       Seq(
@@ -213,7 +213,7 @@ trait CYASummaryListHelper {
     //      supportingInformationSummaryListRow.getOrElse(Seq.empty)
 
     if (rows.nonEmpty) {
-      Some(
+      Seq(
         CYASummaryList(
           messages("cya.amendmentDetails"),
           SummaryList(
@@ -223,11 +223,11 @@ trait CYASummaryListHelper {
         )
       )
     } else {
-      None
+      Seq.empty
     }
   }
 
-  def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildSupportingDocumentsSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
     val uploadedFilesSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(FileUploadPage) map { files =>
       val fileNames = files map (file => file.fileName)
       val whichFile = if (fileNames.length == 1) "file" else "files"
@@ -251,7 +251,7 @@ trait CYASummaryListHelper {
     }
     val rows = uploadedFilesSummaryListRow.getOrElse(Seq.empty)
     if (rows.nonEmpty) {
-      Some(
+      Seq(
         CYASummaryList(
           messages(messages("cya.supportingDocuments")),
           SummaryList(
@@ -261,11 +261,11 @@ trait CYASummaryListHelper {
         )
       )
     } else {
-      None
+      Seq.empty
     }
   }
 
-  def buildYourDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildYourDetailsSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
     val detailsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(DeclarantContactDetailsPage) map { details =>
       Seq(
         SummaryListRow(
@@ -341,7 +341,7 @@ trait CYASummaryListHelper {
 
     val rows = detailsSummaryListRow.getOrElse(Seq.empty) ++ addressSummaryListRow.getOrElse(Seq.empty)
     if (rows.nonEmpty) {
-      Some(
+      Seq(
         CYASummaryList(
           messages(messages("cya.yourDetails")),
           SummaryList(
@@ -351,11 +351,11 @@ trait CYASummaryListHelper {
         )
       )
     } else {
-      None
+      Seq.empty
     }
   }
 
-  def buildPaymentInformationSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildPaymentInformationSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
     val paymentInformationSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(DefermentPage) map { deferment =>
       val payingByDeferment = if (deferment) messages("site.yes") else messages("site.no")
       Seq(
@@ -376,7 +376,7 @@ trait CYASummaryListHelper {
       )
     }
     if (paymentInformationSummaryListRow.nonEmpty) {
-      Some(
+      Seq(
         CYASummaryList(
           messages(messages("cya.paymentInformation")),
           SummaryList(
@@ -386,11 +386,11 @@ trait CYASummaryListHelper {
         )
       )
     } else {
-      None
+      Seq.empty
     }
   }
 
-  def buildAboutImporterSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+  def buildAboutImporterSummaryList(answer: UserAnswers)(implicit messages: Messages): Seq[CYASummaryList] = {
     val importerNameSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterNamePage) map { importerName =>
       Seq(
         SummaryListRow(
@@ -499,17 +499,15 @@ trait CYASummaryListHelper {
       eoriNumberSummaryListRow.getOrElse(Seq.empty) ++
       VatRegisteredSummaryListRow.getOrElse(Seq.empty)
     if (rows.nonEmpty) {
-      Some(
-        CYASummaryList(
-          messages(messages("cya.aboutImporter")),
-          SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = rows
-          )
+      Seq(CYASummaryList(
+        messages(messages("cya.aboutImporter")),
+        SummaryList(
+          classes = "govuk-!-margin-bottom-9",
+          rows = rows
         )
-      )
+      ))
     } else {
-      None
+      Seq.empty
     }
   }
 

@@ -25,7 +25,6 @@ import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.{CYASummaryList, CYASummaryListHelper}
 import views.html.{CheckYourAnswersView, ConfirmationView}
@@ -46,29 +45,28 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val aboutImporter: Seq[CYASummaryList] = if (request.isRepFlow) {
-      Seq(buildAboutImporterSummaryList(request.userAnswers).get)
+      buildAboutImporterSummaryList(request.userAnswers)
     } else {
       Seq.empty
     }
-    val disclosureDetails: Seq[CYASummaryList] = Seq(buildDisclosureDetailsSummaryList(request.userAnswers).get)
-    val amendmentDetails: Seq[CYASummaryList] = Seq(buildAmendmentDetailsSummaryList(request.userAnswers).getOrElse(CYASummaryList("", SummaryList())))
-    val supportingDocuments: Seq[CYASummaryList] = Seq(buildSupportingDocumentsSummaryList(request.userAnswers).get)
-    val yourDetailsDocuments: Seq[CYASummaryList] = Seq(buildYourDetailsSummaryList(request.userAnswers).get)
-    val paymentInformation: Seq[CYASummaryList] = Seq(buildPaymentInformationSummaryList(request.userAnswers).get)
-
-
-    val summaryLists = aboutImporter ++
-      disclosureDetails ++
-      amendmentDetails ++
-      supportingDocuments ++
-      yourDetailsDocuments ++
-      paymentInformation
+    val disclosureDetails: Seq[CYASummaryList] = buildDisclosureDetailsSummaryList(request.userAnswers)
+    val amendmentDetails: Seq[CYASummaryList] = buildAmendmentDetailsSummaryList(request.userAnswers)
+    val supportingDocuments: Seq[CYASummaryList] = buildSupportingDocumentsSummaryList(request.userAnswers)
+    val yourDetailsDocuments: Seq[CYASummaryList] = buildYourDetailsSummaryList(request.userAnswers)
+    val paymentInformation: Seq[CYASummaryList] = buildPaymentInformationSummaryList(request.userAnswers)
 
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Ok(view(summaryLists))
+      Ok(view(
+        aboutImporter ++
+        disclosureDetails ++
+        amendmentDetails ++
+        supportingDocuments ++
+        yourDetailsDocuments ++
+        paymentInformation
+      ))
     }
   }
 
