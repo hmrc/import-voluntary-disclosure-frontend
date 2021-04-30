@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EntryDetailsFormProvider
-import javax.inject.{Inject, Singleton}
+import models.requests.DataRequest
 import pages.EntryDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -26,6 +26,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.EntryDetailsView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -40,26 +41,40 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.userAnswers.get(EntryDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
-
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.AcceptanceDateController.onLoad())
+          Redirect(submitLink())
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.NumberOfEntriesController.onLoad()
+    }
+  }
+
+  private[controllers] def submitLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.AcceptanceDateController.onLoad()
+    }
   }
 
 }

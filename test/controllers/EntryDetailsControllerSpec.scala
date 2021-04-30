@@ -20,23 +20,24 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.EntryDetailsFormProvider
 import mocks.repositories.MockSessionRepository
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{EntryDetails, UserAnswers}
-import pages.EntryDetailsPage
+import pages.{CheckModePage, EntryDetailsPage}
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.EntryDetailsView
-import java.time.LocalDate
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends ControllerSpecBase {
 
   def buildForm(epu: Option[String] = Some("123"),
-                    entryNumber: Option[String] = Some("123456Q"),
-                    day: Option[String] = Some("31"),
-                    month: Option[String] = Some("12"),
-                    year: Option[String] = Some("2020")): Seq[(String, String)] =
+                entryNumber: Option[String] = Some("123456Q"),
+                day: Option[String] = Some("31"),
+                month: Option[String] = Some("12"),
+                year: Option[String] = Some("2020")): Seq[(String, String)] =
     (
       (epu.map(_ => "epu" -> epu.get) ++
         entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
@@ -53,7 +54,17 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
 
     val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
     val form: EntryDetailsFormProvider = formProvider
-
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new EntryDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
@@ -68,7 +79,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] =
-        Some(UserAnswers("some-cred-id").set(EntryDetailsPage, EntryDetails("123","123456Q",LocalDate.now)).success.value)
+        Some(UserAnswers("some-cred-id").set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -79,21 +90,21 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response and redirect to correct location for date BEFORE EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day=Some("31"),month=Some("12"),year=Some("2020")):_*)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("31"), month = Some("12"), year = Some("2020")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
       "return a SEE OTHER response and redirect to correct location for date AFTER EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day=Some("02"),month=Some("01"),year=Some("2021")):_*)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm():_*)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
         await(controller.onSubmit(request))
         verifyCalls()
       }
@@ -106,4 +117,61 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
       }
     }
   }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "when loading page back button should take you to Acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "when loading page back button should take you to Check your answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
+  }
+
+    "submitLink" when {
+
+      "not in change mode after successful submission" should {
+        "redirect to Acceptance date page" in new Test {
+          override val userAnswers: Option[UserAnswers] =
+            Some(UserAnswers("some-cred-id")
+              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+              .set(CheckModePage, false).success.value
+            )
+          lazy val result: Call = controller.submitLink()
+          result mustBe controllers.routes.AcceptanceDateController.onLoad()
+        }
+      }
+
+      "in change mode after successful submission" should {
+        "redirect to Check your answers page" in new Test {
+          override val userAnswers: Option[UserAnswers] =
+            Some(UserAnswers("some-cred-id")
+              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+              .set(CheckModePage, true).success.value
+            )
+          lazy val result: Call = controller.submitLink()
+          result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        }
+      }
+
+    }
+
 }

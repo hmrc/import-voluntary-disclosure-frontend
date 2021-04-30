@@ -49,6 +49,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
 
+  lazy val backLink = controllers.routes.NumberOfEntriesController.onSubmit()
+
   "Rendering the Entry Details view" when {
 
     val missingEpu = formDataSetup(epu = None)
@@ -93,7 +95,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
       description should {
         lazy val form: Form[EntryDetails] = formProvider().bind(formData)
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -114,7 +116,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "multiple errors" should {
 
       lazy val form: Form[EntryDetails] = formProvider().bind(Map("entryNumber" -> "123456Q"))
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
@@ -131,7 +133,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[EntryDetails] = formProvider()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title of '${EntryDetailsMessages.title}'" in {
@@ -182,8 +184,5 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       elementText(".govuk-button") mustBe continue
     }
 
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.NumberOfEntriesController.onLoad().url)
-    }
   }
 }

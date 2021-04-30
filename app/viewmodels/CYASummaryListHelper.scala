@@ -64,7 +64,7 @@ trait CYASummaryListHelper {
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem("Url", Text(messages("cya.change")))
+              ActionItem(controllers.routes.EntryDetailsController.onLoad().url, Text(messages("cya.change")))
             ),
             classes = "govuk-!-padding-bottom-0")
           ),
