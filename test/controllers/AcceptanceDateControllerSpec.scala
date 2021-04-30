@@ -21,9 +21,9 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.AcceptanceDatePage
+import pages.{AcceptanceDatePage, CheckModePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.AcceptanceDateView
@@ -92,6 +92,62 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
     }
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "when loading page back button should take you to Entry details page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "when loading page back button should take you to Check your answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
+  }
+
+  "submitLink" when {
+
+    "not in change mode after successful submission" should {
+      "redirect to One Customs Procedure Code page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.submitLink()
+        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
+      }
+    }
+
+    "in change mode after successful submission" should {
+      "redirect to Check your answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.submitLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
   }
 
 }

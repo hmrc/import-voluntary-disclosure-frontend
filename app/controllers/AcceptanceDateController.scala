@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.AcceptanceDateFormProvider
+import models.requests.DataRequest
+
 import javax.inject.{Inject, Singleton}
 import pages.AcceptanceDatePage
 import play.api.i18n.I18nSupport
@@ -47,22 +49,38 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
 
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(AcceptanceDatePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+          Redirect(submitLink())
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.EntryDetailsController.onLoad()
+    }
+  }
+
+  private[controllers] def submitLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.OneCustomsProcedureCodeController.onLoad()
+    }
   }
 
 }

@@ -27,6 +27,8 @@ import views.html.AcceptanceDateView
 
 class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
+  lazy val backLink = controllers.routes.EntryDetailsController.onSubmit()
+
   private lazy val injectedView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
 
   val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
@@ -35,7 +37,7 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -53,7 +55,7 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
@@ -74,7 +76,7 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${AcceptanceDateMessages.h1}'" in {
@@ -87,10 +89,6 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have the correct value for the second radio button of '${AcceptanceDateMessages.siteNo}'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateMessages.siteNo
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.EntryDetailsController.onLoad().url)
     }
 
     s"have the correct Continue button" in {
