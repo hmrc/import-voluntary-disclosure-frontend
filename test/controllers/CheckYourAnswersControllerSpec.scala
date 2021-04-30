@@ -86,11 +86,12 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       .set(MoreInformationPage, "some text").success.value
       .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200"))).success.value
       .set(ImporterEORIExistsPage, true).success.value
+      .set(ImporterEORINumberPage, "GB345834921000").success.value
       .set(ImporterVatRegisteredPage, true).success.value
       .set(UserTypePage, UserType.Representative).success.value
       .set(ImporterNamePage, "First Second").success.value
       .set(ImporterAddressPage, ContactAddress(
-        "street", None, "city", Some("postcode"), "country code")).success.value
+        "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
     )
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

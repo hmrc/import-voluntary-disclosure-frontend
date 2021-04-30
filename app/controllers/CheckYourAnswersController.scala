@@ -45,16 +45,17 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val disclosureDetails: Seq[CYASummaryList] = Seq(buildDisclosureDetailsSummaryList(request.userAnswers).get)
-    val amendmentDetails: Seq[CYASummaryList] = Seq(buildAmendmentDetailsSummaryList(request.userAnswers).getOrElse(CYASummaryList("", SummaryList())))
-    val supportingDocuments: Seq[CYASummaryList] = Seq(buildSupportingDocumentsSummaryList(request.userAnswers).get)
-    val yourDetailsDocuments: Seq[CYASummaryList] = Seq(buildYourDetailsSummaryList(request.userAnswers).get)
-    val paymentInformation: Seq[CYASummaryList] = Seq(buildPaymentInformationSummaryList(request.userAnswers).get)
     val aboutImporter: Seq[CYASummaryList] = if (request.isRepFlow) {
       Seq(buildAboutImporterSummaryList(request.userAnswers).get)
     } else {
       Seq.empty
     }
+    val disclosureDetails: Seq[CYASummaryList] = Seq(buildDisclosureDetailsSummaryList(request.userAnswers).get)
+    val amendmentDetails: Seq[CYASummaryList] = Seq(buildAmendmentDetailsSummaryList(request.userAnswers).getOrElse(CYASummaryList("", SummaryList())))
+    val supportingDocuments: Seq[CYASummaryList] = Seq(buildSupportingDocumentsSummaryList(request.userAnswers).get)
+    val yourDetailsDocuments: Seq[CYASummaryList] = Seq(buildYourDetailsSummaryList(request.userAnswers).get)
+    val paymentInformation: Seq[CYASummaryList] = Seq(buildPaymentInformationSummaryList(request.userAnswers).get)
+
 
     val summaryLists = aboutImporter ++
       disclosureDetails ++
