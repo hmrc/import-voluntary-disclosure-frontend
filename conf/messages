@@ -545,6 +545,10 @@ cya.payingByDeferment = By deferment?
 cya.numberOfAmendments = Number of amendments
 cya.supportingInformation = Supporting information
 cya.newCustomsProcedure = Amended customs procedure code
+cya.aboutImporter = About the Importer
+cya.vatRegistered = VAT registered?
+cya.eoriNumberExists = Importer has EORI number?
+cya.eoriNumber = Importer EORI number
 
 # Item Number
 itemNo.pageTitle = What is the item number?

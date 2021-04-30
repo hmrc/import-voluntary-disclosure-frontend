@@ -391,4 +391,127 @@ trait CYASummaryListHelper {
     }
   }
 
+  def buildAboutImporterSummaryList(answer: UserAnswers)(implicit messages: Messages): Option[CYASummaryList] = {
+    val importerNameSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterNamePage) map { importerName =>
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.name")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(importerName)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ))
+          )
+        )
+      )
+    }
+    val addressSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterAddressPage) map { address =>
+      val addressString = address.postalCode match {
+        case Some(value) => address.addressLine1 + "<br/>" +
+          address.city + "<br/>" +
+          address.postalCode.get + "<br/>" +
+          address.countryCode
+        case None => address.addressLine1 + "<br/>" +
+          address.city + "<br/>" +
+          address.countryCode
+      }
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.address")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(addressString)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            )
+          )
+          )
+        )
+      )
+    }
+    val eoriNumberExistsSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterEORIExistsPage) map { eoriExists =>
+      val eoriNumberExists = if (eoriExists) messages("site.yes") else messages("site.no")
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.eoriNumberExists")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(eoriNumberExists)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ))
+          )
+        )
+      )
+    }
+    val eoriNumberSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterEORINumberPage) map { eoriNumber =>
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.eoriNumber")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(eoriNumber)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ))
+          )
+        )
+      )
+    }
+    val VatRegisteredSummaryListRow: Option[Seq[SummaryListRow]] = answer.get(ImporterVatRegisteredPage) map { registered =>
+      val isVatRegistered = if (registered) messages("site.yes") else messages("site.no")
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(messages("cya.vatRegistered")),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(isVatRegistered)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem("Url", Text(messages("cya.change")))
+            ))
+          )
+        )
+      )
+    }
+    val rows = importerNameSummaryListRow.getOrElse(Seq.empty) ++
+      addressSummaryListRow.getOrElse(Seq.empty) ++
+      eoriNumberExistsSummaryListRow.getOrElse(Seq.empty) ++
+      eoriNumberSummaryListRow.getOrElse(Seq.empty) ++
+      VatRegisteredSummaryListRow.getOrElse(Seq.empty)
+    if (rows.nonEmpty) {
+      Some(
+        CYASummaryList(
+          messages(messages("cya.aboutImporter")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else {
+      None
+    }
+  }
+
 }
