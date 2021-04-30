@@ -20,12 +20,12 @@
         yesNoRadio: components.yesNoRadio,
         button: components.button)
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("acceptanceDate.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = Some(controllers.routes.EntryDetailsController.onLoad)) {
+        customBackLinkUrl = Some(backLink)) {
 
         @errorSummary(form.errors)
 
