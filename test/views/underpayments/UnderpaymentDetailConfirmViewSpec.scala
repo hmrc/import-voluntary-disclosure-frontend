@@ -123,7 +123,7 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe continue
+      elementText(".govuk-button") mustBe confirm
     }
   }
 

@@ -17,6 +17,7 @@ site.yes = Yes
 site.no = No
 common.button.confirmAndContinue = Confirm and continue
 common.button.continue = Continue
+common.button.confirm = Confirm
 common.button.acceptAndSend = Accept and send
 
 footer.cookies.text = Cookies
