@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.{AcceptanceDatePage, CheckModePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.AcceptanceDateView
@@ -41,6 +42,18 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
     val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
     val form: AcceptanceDateFormProvider = formProvider
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     MockedSessionRepository.set(Future.successful(true))
 
@@ -104,7 +117,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
+        result mustBe controllers.routes.EntryDetailsController.onLoad()
       }
     }
 
@@ -151,6 +164,3 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
   }
 
 }
-
-
-
