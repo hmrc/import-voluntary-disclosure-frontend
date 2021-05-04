@@ -54,7 +54,11 @@ object ConfirmReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.ItemNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(
+              controllers.routes.ItemNumberController.onLoad().url,
+              Text(ConfirmReasonDetailMessages.change),
+              Some(ConfirmReasonDetailMessages.itemChange)
+            )
           )
         ))
       ))
@@ -72,7 +76,11 @@ object ConfirmReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(
+              controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+              Text(ConfirmReasonDetailMessages.change),
+              Some(ConfirmReasonDetailMessages.itemValues)
+            )
           ),
           classes = "govuk-!-padding-bottom-0")
         ),
