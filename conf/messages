@@ -307,6 +307,16 @@ underpaymentDetailsConfirm.A40.dueToHmrc = Definitive Countervailing Duty owed t
 underpaymentDetailsConfirm.A45.dueToHmrc = Provisional Countervailing Duty owed to HMRC
 underpaymentDetailsConfirm.A10.dueToHmrc = Customs Duty on Agricultural Products owed to HMRC
 underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory Duty owed to HMRC
+underpaymentDetailsConfirm.B00.change = Change the import VAT underpayment details
+underpaymentDetailsConfirm.A00.change = Change the Customs Duty underpayment details
+underpaymentDetailsConfirm.E00.change = Change the excise duty underpayment details
+underpaymentDetailsConfirm.A20.change = Change the Additional Duty underpayment details
+underpaymentDetailsConfirm.A30.change = Change the Definitive Anti-Dumping Duty underpayment details
+underpaymentDetailsConfirm.A35.change = Change the Provisional Anti-Dumping Duty underpayment details
+underpaymentDetailsConfirm.A40.change = Change the Definitive Countervailing Duty underpayment details
+underpaymentDetailsConfirm.A45.change = Change the Provisional Countervailing Duty underpayment details
+underpaymentDetailsConfirm.A10.change = Change the Customs Duty on Agricultural Products underpayment details
+underpaymentDetailsConfirm.D10.change = Change the Compensatory Duty underpayment details
 
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?

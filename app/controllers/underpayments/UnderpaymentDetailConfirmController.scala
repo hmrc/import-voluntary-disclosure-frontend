@@ -109,7 +109,8 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(
                 controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                Text(messages("common.change"))
+                Text(messages("common.change")),
+                Some(messages(s"underpaymentDetailsConfirm.$underpaymentType.change"))
               )
             ),
             classes = "govuk-!-padding-bottom-0")
