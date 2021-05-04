@@ -23,6 +23,7 @@ import models.EntryDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.EntryDetailsView
 
@@ -49,7 +50,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
 
-  lazy val backLink = controllers.routes.NumberOfEntriesController.onSubmit()
+  lazy val backLink: Call = Call("GET", "url")
 
   "Rendering the Entry Details view" when {
 

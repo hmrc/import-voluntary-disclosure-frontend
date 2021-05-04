@@ -110,6 +110,34 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
       }
     }
 
+    "not in change mode after successful submission" should {
+      "not in change mode after successful submission redirect to Acceptance date page" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
+      }
+    }
+
+    "in change mode after successful submission" should {
+      "redirect to Check your answers page" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+    }
+
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
@@ -145,33 +173,5 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     }
 
   }
-
-    "submitLink" when {
-
-      "not in change mode after successful submission" should {
-        "redirect to Acceptance date page" in new Test {
-          override val userAnswers: Option[UserAnswers] =
-            Some(UserAnswers("some-cred-id")
-              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-              .set(CheckModePage, false).success.value
-            )
-          lazy val result: Call = controller.submitLink()
-          result mustBe controllers.routes.AcceptanceDateController.onLoad()
-        }
-      }
-
-      "in change mode after successful submission" should {
-        "redirect to Check your answers page" in new Test {
-          override val userAnswers: Option[UserAnswers] =
-            Some(UserAnswers("some-cred-id")
-              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-              .set(CheckModePage, true).success.value
-            )
-          lazy val result: Call = controller.submitLink()
-          result mustBe controllers.routes.CheckYourAnswersController.onLoad()
-        }
-      }
-
-    }
 
 }
