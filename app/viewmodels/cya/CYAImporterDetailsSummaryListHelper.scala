@@ -118,7 +118,7 @@ trait CYAImporterDetailsSummaryListHelper {
         )
       case None => Seq.empty
     }
-    val VatRegisteredSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterVatRegisteredPage) match {
+    val vatRegisteredSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterVatRegisteredPage) match {
       case Some(registered) =>
         val isVatRegistered = if (registered) messages("site.yes") else messages("site.no")
         Seq(
@@ -145,7 +145,7 @@ trait CYAImporterDetailsSummaryListHelper {
         addressSummaryListRow ++
         eoriNumberExistsSummaryListRow ++
         eoriNumberSummaryListRow ++
-        VatRegisteredSummaryListRow
+        vatRegisteredSummaryListRow
       if (rows.nonEmpty) {
         Seq(cya.CYASummaryList(
           messages(messages("cya.aboutImporter")),
