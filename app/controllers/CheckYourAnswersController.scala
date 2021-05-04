@@ -18,18 +18,17 @@ package controllers
 
 import connectors.IvdSubmissionConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import javax.inject.{Inject, Singleton}
 import models.IvdSubmission
 import pages.CheckModePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.{CYASummaryList, CYASummaryListHelper}
+import viewmodels.cya.CYASummaryListHelper
 import views.html.{CheckYourAnswersView, ConfirmationView}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -45,32 +44,17 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val disclosureDetails: CYASummaryList = buildDisclosureDetailsSummaryList(request.userAnswers).get
-    val amendmentDetails: CYASummaryList = buildAmendmentDetailsSummaryList(request.userAnswers).getOrElse(CYASummaryList("", SummaryList()))
-    val supportingDocuments: CYASummaryList = buildSupportingDocumentsSummaryList(request.userAnswers).get
-    val yourDetailsDocuments: CYASummaryList = buildYourDetailsSummaryList(request.userAnswers).get
-    val paymentInformation: CYASummaryList = buildPaymentInformationSummaryList(request.userAnswers).get
-    val summaryLists = if (amendmentDetails.summaryList.rows.nonEmpty) {
-      Seq(
-        disclosureDetails,
-        amendmentDetails,
-        supportingDocuments,
-        yourDetailsDocuments,
-        paymentInformation
-      )
-    } else {
-      Seq(
-        disclosureDetails,
-        supportingDocuments,
-        yourDetailsDocuments,
-        paymentInformation
-      )
-    }
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Ok(view(summaryLists))
+      Ok(view(
+          buildImporterDetailsSummaryList ++
+          buildEntryDetailsSummaryList ++
+          buildUnderpaymentDetailsSummaryList ++
+          buildYourDetailsSummaryList ++
+          buildPaymentDetailsSummaryList
+      ))
     }
   }
 

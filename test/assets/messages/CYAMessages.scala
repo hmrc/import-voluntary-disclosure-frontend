@@ -24,6 +24,11 @@ object CYAMessages extends BaseMessages {
   val disclosureConfirmation = "By sending this disclosure you are confirming that, to the best of your knowledge, the details you are providing are correct."
   val acceptAndSend = "Accept and send"
 
+  val aboutImporterDetails = "About the Importer"
+  val eoriNumberExists = "Importer has EORI number?"
+  val eoriNumber = "Importer EORI number"
+  val vatRegistered = "Importer VAT registered?"
+
   val disclosureDetails = "Disclosure details"
   val numberOfEntries = "Number of entries"
   val epu = "EPU"
