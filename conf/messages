@@ -263,6 +263,16 @@ underpaymentDetailsSummary.A40 = Definitive Countervailing Duty
 underpaymentDetailsSummary.A45 = Provisional Countervailing Duty
 underpaymentDetailsSummary.A10 = Customs Duty on Agricultural Products
 underpaymentDetailsSummary.D10 = Compensatory Duty
+underpaymentDetailsSummary.B00.change = Change Import VAT underpayment
+underpaymentDetailsSummary.A00.change = Change Customs Duty underpayment
+underpaymentDetailsSummary.E00.change = Change Excise duty underpayment
+underpaymentDetailsSummary.A20.change = Change Additional Duty underpayment
+underpaymentDetailsSummary.A30.change = Change Definitive Anti-Dumping Duty underpayment
+underpaymentDetailsSummary.A35.change = Change Provisional Anti-Dumping Duty underpayment
+underpaymentDetailsSummary.A40.change = Change Definitive Countervailing Duty underpayment
+underpaymentDetailsSummary.A45.change = Change Provisional Countervailing Duty underpayment
+underpaymentDetailsSummary.A10.change = Change Customs Duty on Agricultural Products underpayment
+underpaymentDetailsSummary.D10.change = Change Compensatory Duty underpayment
 
 # Underpayment Details Confirm
 underpaymentDetailsConfirm.B00.pageTitle = Confirm the import VAT underpayment details
