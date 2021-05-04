@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels
+package viewmodels.cya
 
 import java.time.{LocalDate, LocalDateTime}
 
 import base.SpecBase
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UserAnswers, UserType}
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
@@ -28,6 +29,7 @@ import views.data.CheckYourAnswersData._
 class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
 
   trait Test {
+
 
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
       .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
@@ -54,43 +56,42 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       .set(ImporterAddressPage, ContactAddress(
         "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
 
+    implicit lazy val dataRequest = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        Some(userAnswers)
+      ),
+      "credId",
+      "eori",
+      userAnswers
+    )
+
   }
 
-  "buildDisclosureDetails" should {
+  "buildEntryDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildDisclosureDetailsSummaryList(userAnswers) mustBe Seq(disclosureDetailsAnswers)
+      buildEntryDetailsSummaryList mustBe Seq(entryDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildDisclosureDetailsSummaryList(userAnswers) mustBe List.empty
+      buildEntryDetailsSummaryList mustBe List.empty
     }
 
   }
 
-  "buildAmendmentDetails" should {
+  "buildUnderpaymentDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildAmendmentDetailsSummaryList(userAnswers) mustBe Seq(amendmentDetailsAnswers)
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildAmendmentDetailsSummaryList(userAnswers) mustBe List.empty
-    }
-
-  }
-
-  "buildSupportingDocuments" should {
-
-    "produce a valid model when all answers are provided" in new Test {
-      buildSupportingDocumentsSummaryList(userAnswers) mustBe Seq(uploadFilesAnswers)
-    }
-
-    "produce a valid model when no answers are provided" in new Test {
-      override val userAnswers: UserAnswers = UserAnswers("")
-      buildSupportingDocumentsSummaryList(userAnswers) mustBe List.empty
+      buildUnderpaymentDetailsSummaryList mustBe List.empty
     }
 
   }
@@ -98,38 +99,51 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
   "buildYourDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildYourDetailsSummaryList(userAnswers) mustBe Seq(yourDetailsAnswers)
+      buildYourDetailsSummaryList mustBe Seq(yourDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildYourDetailsSummaryList(userAnswers) mustBe List.empty
+      buildYourDetailsSummaryList mustBe List.empty
     }
 
   }
 
-  "buildPaymentInformation" should {
+  "buildPaymentDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildPaymentInformationSummaryList(userAnswers) mustBe Seq(defermentAnswers)
+      buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildPaymentInformationSummaryList(userAnswers) mustBe List.empty
+      buildPaymentDetailsSummaryList mustBe List.empty
     }
 
   }
 
-  "buildAboutImporter" should {
+  "buildImporterDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildAboutImporterSummaryList(userAnswers) mustBe Seq(aboutImporterAnswers)
+      buildImporterDetailsSummaryList mustBe Seq(importerDetailsAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
-      buildAboutImporterSummaryList(userAnswers) mustBe List.empty
+      buildImporterDetailsSummaryList mustBe List.empty
+    }
+
+    "produce no model when userType is Importer" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+        .set(ImporterEORIExistsPage, true).success.value
+        .set(ImporterEORINumberPage, "GB345834921000").success.value
+        .set(ImporterVatRegisteredPage, true).success.value
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(ImporterNamePage, "First Second").success.value
+        .set(ImporterAddressPage, ContactAddress(
+          "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+
+      buildImporterDetailsSummaryList mustBe List.empty
     }
 
   }

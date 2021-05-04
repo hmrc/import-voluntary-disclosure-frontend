@@ -26,7 +26,7 @@ import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.CYASummaryListHelper
+import viewmodels.cya.CYASummaryListHelper
 import views.html.{CheckYourAnswersView, ConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -49,12 +49,11 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Ok(view(
-          buildAboutImporterSummaryList(request.userAnswers) ++
-          buildDisclosureDetailsSummaryList(request.userAnswers) ++
-          buildAmendmentDetailsSummaryList(request.userAnswers) ++
-          buildSupportingDocumentsSummaryList(request.userAnswers) ++
-          buildYourDetailsSummaryList(request.userAnswers) ++
-          buildPaymentInformationSummaryList(request.userAnswers)
+          buildImporterDetailsSummaryList ++
+          buildEntryDetailsSummaryList ++
+          buildUnderpaymentDetailsSummaryList ++
+          buildYourDetailsSummaryList ++
+          buildPaymentDetailsSummaryList
       ))
     }
   }
