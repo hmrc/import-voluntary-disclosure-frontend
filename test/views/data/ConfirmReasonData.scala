@@ -83,7 +83,7 @@ object ConfirmReasonData {
             ActionItem(
               controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
               Text(ConfirmReasonDetailMessages.change),
-              Some(ConfirmReasonDetailMessages.itemValues)
+              Some(ConfirmReasonDetailMessages.itemValuesChange)
             )
           ),
           classes = "govuk-!-padding-bottom-0")

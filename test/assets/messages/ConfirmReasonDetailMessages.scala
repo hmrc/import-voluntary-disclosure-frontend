@@ -25,8 +25,8 @@ object ConfirmReasonDetailMessages extends BaseMessages {
   val originalValue = "Original value"
   val amendedValue = "Amended value"
   val change = "Change"
-  val boxChange = "Change box number"
-  val itemChange = "Change item number"
-  val itemValues = "Change values"
+  val boxChange = " Change box number"
+  val itemChange = " Change item number"
+  val itemValuesChange = " Change values"
 
 }
