@@ -50,61 +50,6 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       }
     }
 
-    "single answer provided" should {
-      lazy val view: Html = injectedView(Seq(underpaymentAnswers))(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have ${CYAMessages.underpaymentDetails} sub-heading" in {
-        document.select("main h2").first.text mustBe CYAMessages.underpaymentDetails
-      }
-
-      s"have 1 Summary List" in {
-        document.select(".govuk-summary-list").size mustBe 1
-      }
-
-      "have 3 Summary List Rows" in {
-        document.select(".govuk-summary-list__row").size mustBe 3
-      }
-
-      "have correct customs duty key" in {
-        document.select(".govuk-summary-list__key").eachText.get(0) mustBe CYAMessages.customsDuty
-      }
-
-      "have correct customs duty value" in {
-        document.select(".govuk-summary-list__value").eachText.get(0) mustBe "£5,000.00"
-      }
-
-      "have correct customs duty Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe CYAMessages.change.trim
-        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe changeUrl
-      }
-
-      "have correct Import VAT key" in {
-        document.select(".govuk-summary-list__key").eachText.get(1) mustBe CYAMessages.importVAT
-      }
-
-      "have correct Import VAT value" in {
-        document.select(".govuk-summary-list__value").eachText.get(1) mustBe "£900.00"
-      }
-
-      "have correct Import VAT Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe CYAMessages.change.trim
-        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe changeUrl
-      }
-
-      "have correct excise duty key" in {
-        document.select(".govuk-summary-list__key").eachText.get(2) mustBe CYAMessages.exciseDuty
-      }
-
-      "have correct excise duty value" in {
-        document.select(".govuk-summary-list__value").eachText.get(2) mustBe "£140.00"
-      }
-
-      "have correct excise duty Change link " in {
-        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe CYAMessages.change.trim
-        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe changeUrl
-      }
-    }
   }
 
   it should {
