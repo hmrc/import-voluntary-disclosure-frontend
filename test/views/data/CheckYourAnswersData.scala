@@ -234,7 +234,9 @@ object CheckYourAnswersData {
           actions = Some(Actions(items = Seq(
             ActionItem(
               controllers.routes.EntryDetailsController.onLoad().url,
-              Text(CYAMessages.change))
+              Text(CYAMessages.change),
+              Some(CYAMessages.epuChange)
+            )
           ),
             classes = "govuk-!-padding-bottom-0")
           ),
