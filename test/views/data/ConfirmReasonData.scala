@@ -36,7 +36,11 @@ object ConfirmReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.BoxNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(
+              controllers.routes.BoxNumberController.onLoad().url,
+              Text(ConfirmReasonDetailMessages.change),
+              Some(ConfirmReasonDetailMessages.boxChange)
+            )
           )
         ))
       )
