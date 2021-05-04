@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels
+package viewmodels.cya
 
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-
-case class CYASummaryList(heading: String, summaryList: SummaryList)
+trait CYASummaryListHelper
+  extends CYAImporterDetailsSummaryListHelper
+    with CYAEntryDetailsSummaryListHelper
+    with CYAUnderpaymentDetailsSummaryListHelper
+    with CYAYourDetailsSummaryListHelper
+    with CYAPaymentDetailsSummaryListHelper

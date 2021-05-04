@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import viewmodels.CYASummaryList
+@import viewmodels.cya.CYASummaryList
 
 @this(layout: templates.Layout,
         govukSummaryList: GovukSummaryList,
@@ -30,9 +30,8 @@
     showBackLink = false
 ) {
     @h1(messages("cya.heading"))
-
     @answers.map { answer =>
-        @h2(messages(answer.heading))
+        @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
         @govukSummaryList(answer.summaryList)
     }
 
