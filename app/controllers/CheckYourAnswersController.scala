@@ -26,7 +26,7 @@ import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.{CYASummaryList, CYASummaryListHelper}
+import viewmodels.CYASummaryListHelper
 import views.html.{CheckYourAnswersView, ConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,28 +44,17 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val aboutImporter: Seq[CYASummaryList] = if (request.isRepFlow) {
-      buildAboutImporterSummaryList(request.userAnswers)
-    } else {
-      Seq.empty
-    }
-    val disclosureDetails: Seq[CYASummaryList] = buildDisclosureDetailsSummaryList(request.userAnswers)
-    val amendmentDetails: Seq[CYASummaryList] = buildAmendmentDetailsSummaryList(request.userAnswers)
-    val supportingDocuments: Seq[CYASummaryList] = buildSupportingDocumentsSummaryList(request.userAnswers)
-    val yourDetailsDocuments: Seq[CYASummaryList] = buildYourDetailsSummaryList(request.userAnswers)
-    val paymentInformation: Seq[CYASummaryList] = buildPaymentInformationSummaryList(request.userAnswers)
-
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Ok(view(
-        aboutImporter ++
-        disclosureDetails ++
-        amendmentDetails ++
-        supportingDocuments ++
-        yourDetailsDocuments ++
-        paymentInformation
+          buildAboutImporterSummaryList(request.userAnswers) ++
+          buildDisclosureDetailsSummaryList(request.userAnswers) ++
+          buildAmendmentDetailsSummaryList(request.userAnswers) ++
+          buildSupportingDocumentsSummaryList(request.userAnswers) ++
+          buildYourDetailsSummaryList(request.userAnswers) ++
+          buildPaymentInformationSummaryList(request.userAnswers)
       ))
     }
   }
