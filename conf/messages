@@ -551,7 +551,7 @@ cya.numberOfAmendments = Number of amendments
 cya.supportingInformation = Supporting information
 cya.newCustomsProcedure = Amended customs procedure code
 cya.aboutImporter = About the Importer
-cya.vatRegistered = VAT registered?
+cya.vatRegistered = Importer VAT registered?
 cya.eoriNumberExists = Importer has EORI number?
 cya.eoriNumber = Importer EORI number
 

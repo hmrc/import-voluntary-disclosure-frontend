@@ -27,7 +27,7 @@ object CYAMessages extends BaseMessages {
   val aboutImporterDetails = "About the Importer"
   val eoriNumberExists = "Importer has EORI number?"
   val eoriNumber = "Importer EORI number"
-  val vatRegistered = "VAT registered?"
+  val vatRegistered = "Importer VAT registered?"
 
   val disclosureDetails = "Disclosure details"
   val numberOfEntries = "Number of entries"
