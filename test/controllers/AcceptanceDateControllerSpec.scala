@@ -65,13 +65,13 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(AcceptanceDatePage, acceptanceDateYes).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -82,13 +82,13 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller.onSubmit()(request)
         redirectLocation(result) mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad().url)
       }
 
@@ -99,20 +99,20 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller.onSubmit()(request)
         redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        await(controller.onSubmit(request))
+        await(controller.onSubmit()(request))
         verifyCalls()
       }
     }
 
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
     }
@@ -145,33 +145,5 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     }
 
   }
-
-//  "submitLink" when {
-//
-//    "not in change mode after successful submission" should {
-//      "redirect to One Customs Procedure Code page" in new Test {
-//        override val userAnswers: Option[UserAnswers] =
-//          Some(UserAnswers("some-cred-id")
-//            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-//            .set(CheckModePage, false).success.value
-//          )
-//        lazy val result: Call = controller.submitLink()
-//        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
-//      }
-//    }
-//
-//    "in change mode after successful submission" should {
-//      "redirect to Check your answers page" in new Test {
-//        override val userAnswers: Option[UserAnswers] =
-//          Some(UserAnswers("some-cred-id")
-//            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-//            .set(CheckModePage, true).success.value
-//          )
-//        lazy val result: Call = controller.submitLink()
-//        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
-//      }
-//    }
-//
-//  }
 
 }
