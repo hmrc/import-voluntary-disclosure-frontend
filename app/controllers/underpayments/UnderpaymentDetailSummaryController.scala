@@ -85,7 +85,17 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
             content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
             classes = "govuk-summary-list__value"
           ),
-          actions = Some(Actions(items = Seq(ActionItem(controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url, Text(messages("common.change")), Some("key")))))
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
+                  Text(messages("common.change")),
+                  Some("key")
+                )
+              )
+            )
+          )
         )
     )
   }
