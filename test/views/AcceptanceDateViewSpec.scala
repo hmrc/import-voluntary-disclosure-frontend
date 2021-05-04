@@ -22,12 +22,13 @@ import messages.{AcceptanceDateMessages, BaseMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.AcceptanceDateView
 
 class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
-  lazy val backLink = controllers.routes.EntryDetailsController.onSubmit()
+  lazy val backLink = Call("GET","url")
 
   private lazy val injectedView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
 
@@ -89,6 +90,10 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have the correct value for the second radio button of '${AcceptanceDateMessages.siteNo}'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateMessages.siteNo
+    }
+
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> "url")
     }
 
     s"have the correct Continue button" in {

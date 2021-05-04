@@ -61,7 +61,12 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(AcceptanceDatePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(submitLink())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          }
+          else {
+            Redirect(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+          }
         }
       }
     )
@@ -72,14 +77,6 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.EntryDetailsController.onLoad()
-    }
-  }
-
-  private[controllers] def submitLink()(implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      controllers.routes.OneCustomsProcedureCodeController.onLoad()
     }
   }
 

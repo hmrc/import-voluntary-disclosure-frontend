@@ -63,7 +63,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   val acceptanceDateYes: Boolean = true
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -77,7 +77,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
@@ -90,6 +90,17 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad().url)
+      }
+
+      "return the correct location header in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(CheckModePage, true).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -135,32 +146,32 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   }
 
-  "submitLink" when {
-
-    "not in change mode after successful submission" should {
-      "redirect to One Customs Procedure Code page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(CheckModePage, false).success.value
-          )
-        lazy val result: Call = controller.submitLink()
-        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
-      }
-    }
-
-    "in change mode after successful submission" should {
-      "redirect to Check your answers page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(CheckModePage, true).success.value
-          )
-        lazy val result: Call = controller.submitLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
-      }
-    }
-
-  }
+//  "submitLink" when {
+//
+//    "not in change mode after successful submission" should {
+//      "redirect to One Customs Procedure Code page" in new Test {
+//        override val userAnswers: Option[UserAnswers] =
+//          Some(UserAnswers("some-cred-id")
+//            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+//            .set(CheckModePage, false).success.value
+//          )
+//        lazy val result: Call = controller.submitLink()
+//        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
+//      }
+//    }
+//
+//    "in change mode after successful submission" should {
+//      "redirect to Check your answers page" in new Test {
+//        override val userAnswers: Option[UserAnswers] =
+//          Some(UserAnswers("some-cred-id")
+//            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+//            .set(CheckModePage, true).success.value
+//          )
+//        lazy val result: Call = controller.submitLink()
+//        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+//      }
+//    }
+//
+//  }
 
 }

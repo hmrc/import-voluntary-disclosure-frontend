@@ -128,7 +128,10 @@ trait CYAEntryDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(controllers.routes.AcceptanceDateController.onLoad().url, Text(messages("cya.change")))
+                ActionItem(
+                  controllers.routes.AcceptanceDateController.onLoad().url,
+                  Text(messages("cya.change")),
+                  Some(messages("cya.acceptanceDate.change")))
               )
             )
             )
