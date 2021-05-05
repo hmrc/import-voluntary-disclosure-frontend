@@ -119,7 +119,7 @@ trait CYAEntryDetailsSummaryListHelper {
 
     val acceptanceDateListRow: Seq[SummaryListRow] = request.userAnswers.get(AcceptanceDatePage) match {
       case Some(acceptanceDate) =>
-        val acceptanceDateValue = if (acceptanceDate) messages("cya.before") else messages("cya.after")
+        val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
         Seq(
           SummaryListRow(
             key = Key(
