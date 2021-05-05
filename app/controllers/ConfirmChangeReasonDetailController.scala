@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+
 import javax.inject.{Inject, Singleton}
 import models.UserAnswers
 import pages.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
@@ -27,6 +28,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.ActionItemHelper
 import views.html.ConfirmChangeReasonDetailView
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -83,7 +85,10 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(controllers.routes.ChangeItemNumberController.onLoad().url, Text(messages("confirmReason.change")))
+              ActionItemHelper.createChangeActionItem(
+                controllers.routes.ChangeItemNumberController.onLoad().url,
+                messages("confirmReason.change")
+              )
             )
           ))
         )
@@ -105,7 +110,10 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url, Text(messages("confirmReason.change")))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                  messages("confirmReason.change")
+                )
               ),
               classes = "govuk-!-padding-bottom-0")
             ),

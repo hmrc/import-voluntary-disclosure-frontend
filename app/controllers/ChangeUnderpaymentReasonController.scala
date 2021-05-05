@@ -26,6 +26,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.ActionItemHelper
 import views.html.ChangeUnderpaymentReasonView
 
 import javax.inject.{Inject, Singleton}
@@ -74,7 +75,12 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
             key = Key(content = Text(messages("changeUnderpaymentReason.itemNumber"))),
             value = Value(content = HtmlContent(underpaymentReason.itemNumber.toString)),
             actions = Some(Actions(
-              items = Seq(ActionItem(controllers.routes.ChangeItemNumberController.onLoad().url, Text(messages("changeUnderpaymentReason.change"))))
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.ChangeItemNumberController.onLoad().url,
+                  messages("changeUnderpaymentReason.item.change")
+                )
+              )
             ))
           )
         )
@@ -89,9 +95,9 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
         value = Value(content = HtmlContent(underpaymentReason.original), classes = "govuk-!-padding-bottom-0"),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(
+            ActionItemHelper.createChangeActionItem(
               controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
-              Text(messages("changeUnderpaymentReason.change"))
+              messages("changeUnderpaymentReason.values.change")
             )
           ),
           classes = "govuk-!-padding-bottom-0")
