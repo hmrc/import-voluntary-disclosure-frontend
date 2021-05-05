@@ -19,7 +19,7 @@ package viewmodels.cya
 import java.time.format.DateTimeFormatter
 import models.NumberOfEntries
 import models.requests.DataRequest
-import pages.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage}
+import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 import play.api.i18n.Messages
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Content, SummaryList}
@@ -119,7 +119,7 @@ trait CYAEntryDetailsSummaryListHelper {
 
     val acceptanceDateListRow: Seq[SummaryListRow] = request.userAnswers.get(AcceptanceDatePage) match {
       case Some(acceptanceDate) =>
-        val acceptanceDateValue = if (acceptanceDate) messages("site.yes") else messages("site.no")
+        val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
         Seq(
           SummaryListRow(
             key = Key(
@@ -143,16 +143,63 @@ trait CYAEntryDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
+    val oneCustomsProcedureCodeListRow: Seq[SummaryListRow] = request.userAnswers.get(OneCustomsProcedureCodePage) match {
+      case Some(customsProcedureCode) =>
+        val oneCustomsProcedureCode = if (customsProcedureCode) messages("site.yes") else messages("site.no")
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.oneCustomsProcedureCode")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(oneCustomsProcedureCode)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+
+    val customsProcedureCodeListRow: Seq[SummaryListRow] = request.userAnswers.get(EnterCustomsProcedureCodePage) match {
+      case Some(customsProcedureCode) =>
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.customsProcedureCode")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(customsProcedureCode)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+
     val rows = numberOfEntriesSummaryListRow ++
       epuSummaryListRow ++
       entryNumberListRow ++
       entryDateListRow ++
-      acceptanceDateListRow
+      acceptanceDateListRow ++
+      oneCustomsProcedureCodeListRow ++
+      customsProcedureCodeListRow
 
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages("cya.disclosureDetails"),
+          messages("cya.entryDetails"),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows
