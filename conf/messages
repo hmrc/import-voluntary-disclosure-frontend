@@ -263,6 +263,16 @@ underpaymentDetailsSummary.A40 = Definitive Countervailing Duty
 underpaymentDetailsSummary.A45 = Provisional Countervailing Duty
 underpaymentDetailsSummary.A10 = Customs Duty on Agricultural Products
 underpaymentDetailsSummary.D10 = Compensatory Duty
+underpaymentDetailsSummary.B00.change = Change Import VAT underpayment
+underpaymentDetailsSummary.A00.change = Change Customs Duty underpayment
+underpaymentDetailsSummary.E00.change = Change Excise duty underpayment
+underpaymentDetailsSummary.A20.change = Change Additional Duty underpayment
+underpaymentDetailsSummary.A30.change = Change Definitive Anti-Dumping Duty underpayment
+underpaymentDetailsSummary.A35.change = Change Provisional Anti-Dumping Duty underpayment
+underpaymentDetailsSummary.A40.change = Change Definitive Countervailing Duty underpayment
+underpaymentDetailsSummary.A45.change = Change Provisional Countervailing Duty underpayment
+underpaymentDetailsSummary.A10.change = Change Customs Duty on Agricultural Products underpayment
+underpaymentDetailsSummary.D10.change = Change Compensatory Duty underpayment
 
 # Underpayment Details Confirm
 underpaymentDetailsConfirm.B00.pageTitle = Confirm the import VAT underpayment details
@@ -297,6 +307,16 @@ underpaymentDetailsConfirm.A40.dueToHmrc = Definitive Countervailing Duty owed t
 underpaymentDetailsConfirm.A45.dueToHmrc = Provisional Countervailing Duty owed to HMRC
 underpaymentDetailsConfirm.A10.dueToHmrc = Customs Duty on Agricultural Products owed to HMRC
 underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory Duty owed to HMRC
+underpaymentDetailsConfirm.B00.change = Change the import VAT underpayment details
+underpaymentDetailsConfirm.A00.change = Change the Customs Duty underpayment details
+underpaymentDetailsConfirm.E00.change = Change the excise duty underpayment details
+underpaymentDetailsConfirm.A20.change = Change the Additional Duty underpayment details
+underpaymentDetailsConfirm.A30.change = Change the Definitive Anti-Dumping Duty underpayment details
+underpaymentDetailsConfirm.A35.change = Change the Provisional Anti-Dumping Duty underpayment details
+underpaymentDetailsConfirm.A40.change = Change the Definitive Countervailing Duty underpayment details
+underpaymentDetailsConfirm.A45.change = Change the Provisional Countervailing Duty underpayment details
+underpaymentDetailsConfirm.A10.change = Change the Customs Duty on Agricultural Products underpayment details
+underpaymentDetailsConfirm.D10.change = Change the Compensatory Duty underpayment details
 
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
@@ -574,6 +594,9 @@ confirmReason.itemNumber = Item number
 confirmReason.change = Change
 confirmReason.original = Original value
 confirmReason.amended = Amended value
+confirmReason.box.change = Change box number
+confirmReason.item.change = Change item number
+confirmReason.values.change = Change values
 
 # Underpayment Reason Summary
 underpaymentReasonSummary.pageTitle = Reason summary
@@ -674,6 +697,10 @@ changeUnderpaymentReason.itemNumber = Item number
 changeUnderpaymentReason.change = Change
 changeUnderpaymentReason.original = Original value
 changeUnderpaymentReason.amended = Amended value
+changeUnderpaymentReason.item.change = Change item number
+changeUnderpaymentReason.values.change = Change values
+changeUnderpaymentReason.itemLevel.change = Change box {0} item {1} reason for underpayment details
+changeUnderpaymentReason.entryLevel.change = Change box {0} reason for underpayment details
 
 # Remove Underpayment Reason Page
 removeUnderpaymentReason.pageTitle = Are you sure you want to remove this reason for underpayment?

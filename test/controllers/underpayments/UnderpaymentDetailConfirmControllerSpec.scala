@@ -70,7 +70,8 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
       controller.summaryList("B00", UnderpaymentAmount(0, 1)) mustBe
         UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
           "B00",
-          "Import VAT owed to HMRC"
+          "Import VAT owed to HMRC",
+          messages("underpaymentDetailsConfirm.B00.change")
         )
     }
   }

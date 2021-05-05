@@ -54,8 +54,8 @@ object UnderpaymentReasonSummaryData {
               items = Seq(
                 ActionItem(
                   changeAction(boxNumber = 22, itemNumber = 0).url,
-                  Text("Change"),
-                  Some("key")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change box 22 reason for underpayment details")
                 )
               ),
               classes = "govuk-!-width-one-third"
@@ -81,8 +81,8 @@ object UnderpaymentReasonSummaryData {
               items = Seq(
                 ActionItem(
                   changeAction(boxNumber = 22,itemNumber = 0).url,
-                  Text("Change"),
-                  Some("key")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change box 22 reason for underpayment details")
                 )
               ),
               classes = "govuk-!-width-one-third"
@@ -101,8 +101,8 @@ object UnderpaymentReasonSummaryData {
               items = Seq(
                 ActionItem(
                   changeAction(boxNumber = 33, itemNumber = 1).url,
-                  Text("Change"),
-                  Some("key")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change box 33 item 1 reason for underpayment details")
                 )
               ),
               classes = "govuk-!-width-one-third"

@@ -25,6 +25,7 @@ import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.ActionItemHelper
 import views.html.UnderpaymentReasonSummaryView
 
 import javax.inject.Inject
@@ -87,10 +88,16 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
             actions = Some(
               Actions(
                 items = Seq(
-                  ActionItem(
+                  ActionItemHelper.createChangeActionItem(
                     changeAction(underpayment.boxNumber, underpayment.itemNumber).url,
-                    Text(messages("common.change")),
-                    Some("key")
+                    underpayment.boxNumber match {
+                      case 33|34|35|36|37|38|39|41|42|43|45|46 => messages(
+                        "changeUnderpaymentReason.itemLevel.change",
+                        underpayment.boxNumber,
+                        underpayment.itemNumber
+                      )
+                      case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
+                    }
                   )
                 ),
                 classes = "govuk-!-width-one-third"
