@@ -132,7 +132,11 @@ trait CYAEntryDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
+                ActionItem(
+                  href = controllers.routes.AcceptanceDateController.onLoad().url,
+                  content = HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  visuallyHiddenText = Some(messages("cya.acceptanceDate.change"))
+                )
               )
             )
             )
