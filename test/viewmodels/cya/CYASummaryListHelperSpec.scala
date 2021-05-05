@@ -46,6 +46,7 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
         "email@email.com",
         "1234567890")).success.value
       .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+      .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
       .set(DefermentPage, false).success.value
       .set(ImporterEORIExistsPage, true).success.value
