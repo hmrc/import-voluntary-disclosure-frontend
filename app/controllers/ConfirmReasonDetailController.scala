@@ -80,7 +80,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(
                 controllers.routes.BoxNumberController.onLoad().url,
-                Text(messages("confirmReason.change")),
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(messages("confirmReason.box.change"))
               )
             )
@@ -102,7 +102,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(
                 controllers.routes.ItemNumberController.onLoad().url,
-                Text(messages("confirmReason.change")),
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(messages("confirmReason.item.change"))
               )
             )
@@ -126,7 +126,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(
                 controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-                Text(messages("confirmReason.change")),
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(messages("confirmReason.values.change"))
               )
             ),

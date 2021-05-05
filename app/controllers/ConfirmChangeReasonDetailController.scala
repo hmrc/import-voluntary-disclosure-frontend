@@ -83,7 +83,11 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(controllers.routes.ChangeItemNumberController.onLoad().url, Text(messages("confirmReason.change")))
+              ActionItem(
+                controllers.routes.ChangeItemNumberController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(messages("confirmReason.change"))
+              )
             )
           ))
         )
@@ -105,7 +109,11 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url, Text(messages("confirmReason.change")))
+                ActionItem(
+                  controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(messages("confirmReason.change"))
+                )
               ),
               classes = "govuk-!-padding-bottom-0")
             ),

@@ -109,7 +109,7 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItem(
                 controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                Text(messages("common.change")),
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(messages(s"underpaymentDetailsConfirm.$underpaymentType.change"))
               )
             ),

@@ -88,8 +88,9 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
           actions = Some(
             Actions(
               items = Seq(
-                ActionItem(controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
-                  Text(messages("common.change")),
+                ActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(messages(s"underpaymentDetailsSummary.${underpayment.duty}.change"))
                 )
               )

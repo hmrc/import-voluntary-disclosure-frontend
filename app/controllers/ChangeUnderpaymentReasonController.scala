@@ -74,7 +74,12 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
             key = Key(content = Text(messages("changeUnderpaymentReason.itemNumber"))),
             value = Value(content = HtmlContent(underpaymentReason.itemNumber.toString)),
             actions = Some(Actions(
-              items = Seq(ActionItem(controllers.routes.ChangeItemNumberController.onLoad().url, Text(messages("changeUnderpaymentReason.change"))))
+              items = Seq(
+                ActionItem(
+                  controllers.routes.ChangeItemNumberController.onLoad().url,
+                  Text(messages("changeUnderpaymentReason.change"))
+                )
+              )
             ))
           )
         )
