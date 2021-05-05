@@ -25,7 +25,7 @@ import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Content, SummaryList}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -68,10 +68,9 @@ trait CYAEntryDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(
-                  href = controllers.routes.EntryDetailsController.onLoad().url,
-                  content = HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  visuallyHiddenText = Some(messages("cya.epu.change"))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.EntryDetailsController.onLoad().url,
+                  messages("cya.epu.change")
                 )
               ),
               classes = "govuk-!-padding-bottom-0")
@@ -132,10 +131,9 @@ trait CYAEntryDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem(
-                  href = controllers.routes.AcceptanceDateController.onLoad().url,
-                  content = HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  visuallyHiddenText = Some(messages("cya.acceptanceDate.change"))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.AcceptanceDateController.onLoad().url,
+                  messages("cya.acceptanceDate.change")
                 )
               )
             )

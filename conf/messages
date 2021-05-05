@@ -699,6 +699,8 @@ changeUnderpaymentReason.original = Original value
 changeUnderpaymentReason.amended = Amended value
 changeUnderpaymentReason.item.change = Change item number
 changeUnderpaymentReason.values.change = Change values
+changeUnderpaymentReason.itemLevel.change = Change box {0} item {1} reason for underpayment details
+changeUnderpaymentReason.entryLevel.change = Change box {0} reason for underpayment details
 
 # Remove Underpayment Reason Page
 removeUnderpaymentReason.pageTitle = Are you sure you want to remove this reason for underpayment?
