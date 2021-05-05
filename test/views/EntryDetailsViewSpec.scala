@@ -23,6 +23,7 @@ import models.EntryDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.EntryDetailsView
 
@@ -48,6 +49,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: EntryDetailsView = app.injector.instanceOf[EntryDetailsView]
 
   val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
+
+  lazy val backLink: Call = Call("GET", "url")
 
   "Rendering the Entry Details view" when {
 
@@ -93,7 +96,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
       description should {
         lazy val form: Form[EntryDetails] = formProvider().bind(formData)
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -114,7 +117,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "multiple errors" should {
 
       lazy val form: Form[EntryDetails] = formProvider().bind(Map("entryNumber" -> "123456Q"))
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "update the page title to include the error prefix" in {
@@ -131,7 +134,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[EntryDetails] = formProvider()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title of '${EntryDetailsMessages.title}'" in {
@@ -183,7 +186,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.NumberOfEntriesController.onLoad().url)
+      elementAttributes("#back-link") must contain("href" -> "url")
     }
+
   }
 }

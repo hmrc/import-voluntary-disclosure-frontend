@@ -535,6 +535,7 @@ cya.numberOfEntries = Number of entries
 cya.oneEntry = One
 cya.bulkEntry = Bulk Entry
 cya.epu = EPU
+cya.epu.change = Change entry details
 cya.entryNumber = Entry number
 cya.entryDate = Entry date
 cya.acceptanceDate = Entry acceptance date before 1 January 2021?

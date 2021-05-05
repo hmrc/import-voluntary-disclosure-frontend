@@ -17,12 +17,12 @@
 package viewmodels.cya
 
 import java.time.format.DateTimeFormatter
-
 import models.NumberOfEntries
 import models.requests.DataRequest
 import pages.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage}
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
+import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.Aliases.{Content, SummaryList}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
@@ -68,7 +68,11 @@ trait CYAEntryDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
+                ActionItem(
+                  href = controllers.routes.EntryDetailsController.onLoad().url,
+                  content = HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  visuallyHiddenText = Some(messages("cya.epu.change"))
+                )
               ),
               classes = "govuk-!-padding-bottom-0")
             ),
