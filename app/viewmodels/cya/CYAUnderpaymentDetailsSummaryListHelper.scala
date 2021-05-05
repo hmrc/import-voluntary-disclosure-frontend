@@ -18,15 +18,39 @@ package viewmodels.cya
 
 import models.requests.DataRequest
 import pages.FileUploadPage
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
+import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
 
   def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+    val owedToHmrc: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+      case Some(amount) =>
+        val amountOwed = amount.map(underpayment => underpayment.amended - underpayment.original).sum
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.underpaymentDetails.owedToHmrc")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(displayMoney(amountOwed))
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.viewSummary")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
     val uploadedFilesSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(FileUploadPage) match {
       case Some(files) =>
         val fileNames = files map (file => file.fileName)
@@ -43,18 +67,21 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
-              )
+              ),
+                classes = "govuk-!-width-two-thirds"
             )
             )
           )
         )
       case None => Seq.empty
     }
-    val rows = uploadedFilesSummaryListRow
+    val rows = owedToHmrc ++
+      uploadedFilesSummaryListRow
+
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.supportingDocuments")),
+          messages(messages("cya.underpaymentDetails")),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

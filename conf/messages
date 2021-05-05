@@ -554,6 +554,9 @@ cya.aboutImporter = About the Importer
 cya.vatRegistered = Importer VAT registered?
 cya.eoriNumberExists = Importer has EORI number?
 cya.eoriNumber = Importer EORI number
+cya.underpaymentDetails = Underpayment details
+cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
+cya.viewSummary = View summary
 
 # Item Number
 itemNo.pageTitle = What is the item number?
