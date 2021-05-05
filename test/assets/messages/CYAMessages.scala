@@ -61,4 +61,5 @@ object CYAMessages extends BaseMessages {
   val payingByDeferment = "By deferment?"
 
   val change = "Change"
+  val changeAcceptanceDate = "Change acceptance date"
 }
