@@ -234,7 +234,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(items = Seq(
             ActionItem(
               controllers.routes.EntryDetailsController.onLoad().url,
-              Text(CYAMessages.change),
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.epuChange)
             )
           ),
