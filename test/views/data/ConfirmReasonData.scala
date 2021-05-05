@@ -17,34 +17,33 @@
 package views.data
 
 import messages.ConfirmReasonDetailMessages
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryList, SummaryListRow, Value}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
 object ConfirmReasonData {
 
   val itemNumberExample: Int = 1
 
   def boxNumber(box: Int): Seq[SummaryListRow] =
-      Seq(SummaryListRow(
-        key = Key(
-          content = Text(ConfirmReasonDetailMessages.boxNumber),
-          classes = "govuk-!-width-two-thirds"
-        ),
-        value = Value(
-          content = HtmlContent(box.toString)
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              controllers.routes.BoxNumberController.onLoad().url,
-              Text(ConfirmReasonDetailMessages.change),
-              Some(ConfirmReasonDetailMessages.boxChange)
-            )
+    Seq(SummaryListRow(
+      key = Key(
+        content = Text(ConfirmReasonDetailMessages.boxNumber),
+        classes = "govuk-!-width-two-thirds"
+      ),
+      value = Value(
+        content = HtmlContent(box.toString)
+      ),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItem(
+            controllers.routes.BoxNumberController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(ConfirmReasonDetailMessages.boxChange)
           )
-        ))
-      )
-  )
+        )
+      ))
+    )
+    )
 
   def itemNumber(item: Option[Int]): Option[Seq[SummaryListRow]] =
     item.map { itemNo =>
@@ -60,7 +59,7 @@ object ConfirmReasonData {
           items = Seq(
             ActionItem(
               controllers.routes.ItemNumberController.onLoad().url,
-              Text(ConfirmReasonDetailMessages.change),
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(ConfirmReasonDetailMessages.itemChange)
             )
           )
@@ -70,40 +69,40 @@ object ConfirmReasonData {
 
   def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
     Seq(SummaryListRow(
-        key = Key(
-          content = Text(ConfirmReasonDetailMessages.originalValue),
-          classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+      key = Key(
+        content = Text(ConfirmReasonDetailMessages.originalValue),
+        classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+      ),
+      value = Value(
+        content = HtmlContent(originalValue),
+        classes = "govuk-!-padding-bottom-0"
+      ),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItem(
+            controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(ConfirmReasonDetailMessages.itemValuesChange)
+          )
         ),
-        value = Value(
-          content = HtmlContent(originalValue),
-          classes = "govuk-!-padding-bottom-0"
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-              Text(ConfirmReasonDetailMessages.change),
-              Some(ConfirmReasonDetailMessages.itemValuesChange)
-            )
-          ),
-          classes = "govuk-!-padding-bottom-0")
-        ),
-        classes = "govuk-summary-list__row--no-border"
-      )
+        classes = "govuk-!-padding-bottom-0")
+      ),
+      classes = "govuk-summary-list__row--no-border"
+    )
     )
 
   def amendedAmount(amendedValue: String): Seq[SummaryListRow] =
     Seq(SummaryListRow(
-        key = Key(
-          content = Text(ConfirmReasonDetailMessages.amendedValue),
-          classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-        ),
-        value = Value(
-          content = HtmlContent(amendedValue),
-          classes = "govuk-!-padding-top-0"
-        )
-        )
+      key = Key(
+        content = Text(ConfirmReasonDetailMessages.amendedValue),
+        classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+      ),
+      value = Value(
+        content = HtmlContent(amendedValue),
+        classes = "govuk-!-padding-top-0"
       )
+    )
+    )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(

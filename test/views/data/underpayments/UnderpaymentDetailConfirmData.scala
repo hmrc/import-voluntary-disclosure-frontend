@@ -39,7 +39,7 @@ object UnderpaymentDetailConfirmData {
             items = Seq(
               ActionItem(
                 controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                Text("Change"),
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(changeLinkMessage)
               )
             ),

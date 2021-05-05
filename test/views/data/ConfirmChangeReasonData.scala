@@ -17,8 +17,7 @@
 package views.data
 
 import messages.ConfirmReasonDetailMessages
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
 object ConfirmChangeReasonData {
@@ -37,7 +36,11 @@ object ConfirmChangeReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.ChangeItemNumberController.onLoad().url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(
+              controllers.routes.ChangeItemNumberController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(ConfirmReasonDetailMessages.change)
+            )
           )
         ))
       ))
@@ -55,7 +58,11 @@ object ConfirmChangeReasonData {
         ),
         actions = Some(Actions(
           items = Seq(
-            ActionItem(controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url, Text(ConfirmReasonDetailMessages.change))
+            ActionItem(
+              controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(ConfirmReasonDetailMessages.change)
+            )
           ),
           classes = "govuk-!-padding-bottom-0")
         ),

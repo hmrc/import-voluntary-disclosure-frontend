@@ -53,7 +53,8 @@ object ChangeUnderpaymentReasonData {
               items = Seq(
                 ActionItem(
                   changeItemAction.url,
-                  Text("Change")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(" Change item number")
                 )
               )
             )
@@ -73,7 +74,8 @@ object ChangeUnderpaymentReasonData {
               items = Seq(
                 ActionItem(
                   changeDetailsAction(boxNumber).url,
-                  Text("Change")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(" Change values")
                 )
               ),
               classes = "govuk-!-padding-bottom-0"
@@ -111,7 +113,8 @@ object ChangeUnderpaymentReasonData {
               items = Seq(
                 ActionItem(
                   changeDetailsAction(boxNumber).url,
-                  Text("Change")
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change")
                 )
               ),
               classes = "govuk-!-padding-bottom-0"
