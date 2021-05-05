@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package messages
+package viewmodels
 
-object ConfirmReasonDetailMessages extends BaseMessages {
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 
-  val title = "Confirm the details of the reason for underpayment"
-  val h1 = "Confirm the details of the reason for underpayment"
-  val boxNumber = "Box number"
-  val itemNumber = "Item number"
-  val originalValue = "Original value"
-  val amendedValue = "Amended value"
-  val change = "Change"
-  val boxChange = "Change box number"
-  val itemChange = "Change item number"
-  val itemValuesChange = "Change values"
+object ActionItemHelper {
+
+  def createChangeActionItem(url: String, accessibilityMessage: String)(implicit messages: Messages): ActionItem = {
+    ActionItem(
+      url,
+      HtmlContent(s"""<span aria-hidden="true">${messages("common.change")}</span>"""),
+      Some(accessibilityMessage)
+    )
+  }
 
 }

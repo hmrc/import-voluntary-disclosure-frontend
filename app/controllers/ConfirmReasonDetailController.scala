@@ -26,6 +26,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.ActionItemHelper
 import views.html.ConfirmReasonDetailView
 
 import javax.inject.Inject
@@ -78,10 +79,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(
+              ActionItemHelper.createChangeActionItem(
                 controllers.routes.BoxNumberController.onLoad().url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(messages("confirmReason.box.change"))
+                messages("confirmReason.box.change")
               )
             )
           ))
@@ -100,10 +100,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(
+              ActionItemHelper.createChangeActionItem(
                 controllers.routes.ItemNumberController.onLoad().url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(messages("confirmReason.item.change"))
+                messages("confirmReason.item.change")
               )
             )
           ))
@@ -124,10 +123,9 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
           ),
           actions = Some(Actions(
             items = Seq(
-              ActionItem(
+              ActionItemHelper.createChangeActionItem(
                 controllers.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(messages("confirmReason.values.change"))
+                messages("confirmReason.values.change")
               )
             ),
             classes = "govuk-!-padding-bottom-0")
