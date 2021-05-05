@@ -70,7 +70,7 @@ trait CYAEntryDetailsSummaryListHelper {
               items = Seq(
                 ActionItem(
                   href = controllers.routes.EntryDetailsController.onLoad().url,
-                  content = HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+                  content = HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   visuallyHiddenText = Some(messages("cya.epu.change"))
                 )
               ),
