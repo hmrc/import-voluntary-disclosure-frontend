@@ -233,8 +233,10 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))
+              controllers.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.epuChange)
+            )
           ),
             classes = "govuk-!-padding-bottom-0")
           ),
@@ -273,8 +275,9 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.AcceptanceDateController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )
           )))
         )
