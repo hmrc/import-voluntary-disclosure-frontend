@@ -538,7 +538,7 @@ cya.epu = EPU
 cya.entryNumber = Entry number
 cya.entryDate = Entry date
 cya.acceptanceDate = Entry acceptance date before 1 January 2021?
-cya.acceptanceDate.change
+cya.acceptanceDate.change = Change acceptance date
 cya.supportingDocuments = Supporting documents
 cya.filesUploaded = {0} {1} uploaded
 cya.yourDetails = Your details

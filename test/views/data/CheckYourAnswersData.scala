@@ -274,7 +274,8 @@ object CheckYourAnswersData {
           actions = Some(Actions(items = Seq(
             ActionItem(
               controllers.routes.AcceptanceDateController.onLoad().url,
-              Text(CYAMessages.change)
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )
           )))
         )
