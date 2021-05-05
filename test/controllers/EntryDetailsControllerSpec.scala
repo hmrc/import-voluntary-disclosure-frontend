@@ -103,28 +103,6 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
-      "update the UserAnswers in session" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
-        await(controller.onSubmit(request))
-        verifyCalls()
-      }
-    }
-
-    "not in change mode after successful submission" should {
-      "not in change mode after successful submission redirect to Acceptance date page" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-            .set(CheckModePage, false).success.value
-          )
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
-      }
-    }
-
-    "in change mode after successful submission" should {
       "redirect to Check your answers page" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
         override val userAnswers: Option[UserAnswers] =
@@ -135,6 +113,12 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
+        await(controller.onSubmit(request))
+        verifyCalls()
       }
     }
 
@@ -149,7 +133,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "when loading page back button should take you to Acceptance date page" in new Test {
+      "point to Acceptance date page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
@@ -161,7 +145,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     }
 
     "in change mode" should {
-      "when loading page back button should take you to Check your answers page" in new Test {
+      "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value

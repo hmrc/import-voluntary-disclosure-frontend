@@ -185,5 +185,9 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       elementText(".govuk-button") mustBe continue
     }
 
+    "render a back link with the correct URL" in {
+      elementAttributes("#back-link") must contain("href" -> "url")
+    }
+
   }
 }
