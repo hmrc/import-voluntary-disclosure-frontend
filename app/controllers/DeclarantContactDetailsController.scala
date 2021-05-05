@@ -18,9 +18,10 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.DeclarantContactDetailsFormProvider
+import models.requests.DataRequest
 import pages.DeclarantContactDetailsPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.DeclarantContactDetailsView
@@ -42,21 +43,33 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(DeclarantContactDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarantContactDetailsPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.TraderAddressCorrectController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.routes.TraderAddressCorrectController.onLoad())
+          }
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.UploadAnotherFileController.onLoad()
+    }
   }
 
 }
