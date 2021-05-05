@@ -32,6 +32,7 @@ object CYAMessages extends BaseMessages {
   val disclosureDetails = "Disclosure details"
   val numberOfEntries = "Number of entries"
   val epu = "EPU"
+  val epuChange = "Change entry details"
   val entryNumber = "Entry number"
   val entryDate = "Entry date"
   val acceptanceDate = "Entry acceptance date before 1 January 2021?"
@@ -61,4 +62,5 @@ object CYAMessages extends BaseMessages {
   val payingByDeferment = "By deferment?"
 
   val change = "Change"
+  val changeAcceptanceDate = "Change acceptance date"
 }
