@@ -25,6 +25,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import viewmodels.ActionItemHelper
 import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
@@ -88,10 +89,9 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
           actions = Some(
             Actions(
               items = Seq(
-                ActionItem(
+                ActionItemHelper.createChangeActionItem(
                   controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
-                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  Some(messages(s"underpaymentDetailsSummary.${underpayment.duty}.change"))
+                  messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
                 )
               )
             )
