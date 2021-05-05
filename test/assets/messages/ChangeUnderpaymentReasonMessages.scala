@@ -21,9 +21,12 @@ object ChangeUnderpaymentReasonMessages extends BaseMessages {
   def title(box: Int): String = s"Change box ${box} of the reason for underpayment"
   val h1: String = "Underpayment amount summary"
   val itemNumber = "Item number"
+  val itemNumberChange = "Change item number"
   val change = "Change"
   val originalValue = "Original value"
+  val valuesChange = "Change values"
   val amendedValue = "Amended value"
   val removeLink = "Remove this reason for underpayment"
   val backToReasons = "Back to reasons list"
+
 }
