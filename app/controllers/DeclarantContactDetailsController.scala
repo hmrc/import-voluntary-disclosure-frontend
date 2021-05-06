@@ -39,14 +39,14 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
                                                   view: DeclarantContactDetailsView)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DeclarantContactDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink())))
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value => {

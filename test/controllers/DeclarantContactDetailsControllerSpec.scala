@@ -71,7 +71,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
 
   "GET /" when {
     "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -82,7 +82,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
           ContactDetails("First Second", "email@email.com", "+1234567890")
         ).success.value
       )
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -93,7 +93,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data is sent" in new Test {
-        lazy val result: Future[Result] = controller.onSubmit(
+        lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequestGenerator(
             fullName = "First",
             email = "email@email.com",
@@ -108,7 +108,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id").set(CheckModePage, true).success.value
         )
-        lazy val result: Future[Result] = controller.onSubmit(
+        lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequestGenerator(
             fullName = "First",
             email = "email@email.com",
@@ -120,7 +120,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(
+        await(controller.onSubmit()(
           fakeRequestGenerator(
             fullName = "First",
             email = "email@email.com",
@@ -135,7 +135,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
     "payload contains invalid data" should {
 
       "return BAD REQUEST when original amount is exceeded" in new Test {
-        val result: Future[Result] = controller.onSubmit(
+        val result: Future[Result] = controller.onSubmit()(
           fakeRequestGenerator(
             fullName = "",
             email = "",
@@ -146,7 +146,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "return BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
 
