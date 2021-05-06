@@ -18,9 +18,10 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterNameFormProvider
+import models.requests.DataRequest
 import pages.ImporterNamePage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterNameView
@@ -44,20 +45,33 @@ class ImporterNameController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(ImporterNamePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, controllers.routes.UserTypeController.onLoad)))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, controllers.routes.UserTypeController.onLoad))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterNamePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.AddressLookupController.initialiseImporterJourney())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.routes.AddressLookupController.initialiseImporterJourney())
+          }
         }
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.UserTypeController.onLoad()
+    }
+  }
+
 }
