@@ -585,7 +585,8 @@ cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
 cya.viewSummary = View summary
 cya.reasonForUnderpayment = Reason for underpayment
 cya.numberOfUnderpayments = {0} {1} given
-cya.hasFurtherInformation
+cya.hasFurtherInformation = Tell us anything else?
+cya.extraInformation = Extra information
 
 # Item Number
 itemNo.pageTitle = What is the item number?
