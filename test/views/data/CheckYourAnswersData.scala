@@ -57,10 +57,17 @@ object CheckYourAnswersData {
           value = Value(
             HtmlContent(fullName)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.routes.ImporterNameController.onLoad().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(CYAMessages.changeImporterName)
+                )
+              )
+            )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -171,11 +178,16 @@ object CheckYourAnswersData {
             HtmlContent(fullName),
             classes = "govuk-!-padding-bottom-0"
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))),
-            classes = "govuk-!-padding-bottom-0")),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.routes.DeclarantContactDetailsController.onLoad().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(CYAMessages.changeContactDetails)
+                )
+              ),
+              classes = "govuk-!-padding-bottom-0")),
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(

@@ -22,12 +22,12 @@
         inputText: components.inputText
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("declarantContactDetails.pageTitle"),
     form = Some(form),
-    customBackLinkUrl = Some(controllers.routes.UploadAnotherFileController.onLoad())) {
+    customBackLinkUrl = Some(backLink)) {
 
     @errorSummary(form.errors)
 
