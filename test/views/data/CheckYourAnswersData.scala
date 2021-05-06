@@ -42,6 +42,9 @@ object CheckYourAnswersData {
   val yes = "Yes"
   val acceptanceDate = "Before 1 January 2021"
   val eoriNumber = "GB345834921000"
+  val amount = "£1.00"
+  val reason = "1 reason given"
+  val extraInformation = "Stock losses in warehouse."
 
   val importerDetailsAnswers: CYASummaryList = cya.CYASummaryList(
     CYAMessages.aboutImporterDetails,
@@ -118,10 +121,68 @@ object CheckYourAnswersData {
   )
 
   val underpaymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.supportingDocuments,
+    CYAMessages.underpaymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.totalOwed),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(amount)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.viewSummary))
+          ))),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.reasonForUnderpayment),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(reason)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.viewSummary))
+          ))),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.tellUsAnythingElse),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(yes)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.extraInformation),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(extraInformation)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.filesUploaded(1)),

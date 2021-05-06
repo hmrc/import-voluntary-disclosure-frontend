@@ -52,7 +52,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         )
       case None => Seq.empty
     }
-    val reasonForUnderpaymentSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+    val reasonForUnderpaymentSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentReasonsPage) match {
       case Some(underpaymentReason) =>
         val whichReason = if (underpaymentReason.size == 1) "reason" else "reasons"
         Seq(
