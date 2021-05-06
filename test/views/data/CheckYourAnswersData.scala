@@ -35,11 +35,12 @@ object CheckYourAnswersData {
   val email = "email@email.com"
   val phone = "1234567890"
   val traderAddress = ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")
-  val numberOfEntries = "One"
+  val numberOfEntries = "One Entry"
   val epu = "123"
   val entryNumber = "123456Q"
   val entryDate = "01 December 2020"
   val yes = "Yes"
+  val acceptanceDate = "Before 1 January 2021"
   val eoriNumber = "GB345834921000"
 
   val importerDetailsAnswers: CYASummaryList = cya.CYASummaryList(
@@ -203,7 +204,7 @@ object CheckYourAnswersData {
 
 
   val entryDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.disclosureDetails,
+    CYAMessages.entryDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -233,8 +234,10 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))
+              controllers.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.epuChange)
+            )
           ),
             classes = "govuk-!-padding-bottom-0")
           ),
@@ -269,7 +272,38 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
+            HtmlContent(acceptanceDate)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.AcceptanceDateController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.oneCustomsProcedureCode),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
             HtmlContent(yes)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.cpc),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(cpc)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(

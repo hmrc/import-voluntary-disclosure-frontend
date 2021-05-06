@@ -22,7 +22,7 @@ import views.ViewUtils.displayMoney
 
 object UnderpaymentDetailConfirmData {
 
-  def underpaymentDetailSummaryList(underpaymentType: String, bodyMessage: String): SummaryList =
+  def underpaymentDetailSummaryList(underpaymentType: String, bodyMessage: String, changeLinkMessage: String): SummaryList =
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -39,7 +39,8 @@ object UnderpaymentDetailConfirmData {
             items = Seq(
               ActionItem(
                 controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                Text("Change")
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(changeLinkMessage)
               )
             ),
             classes = "govuk-!-padding-bottom-0")

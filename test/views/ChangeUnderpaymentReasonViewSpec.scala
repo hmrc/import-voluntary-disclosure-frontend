@@ -75,10 +75,10 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
       "have correct Change links" in {
         document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe
-          ChangeUnderpaymentReasonMessages.change.trim
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.itemNumberChange
 
         document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe
-          ChangeUnderpaymentReasonMessages.change.trim
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.valuesChange
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
           controllers.routes.ChangeItemNumberController.onLoad().url
@@ -123,7 +123,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
       "have correct Change link" in {
         document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe
-          ChangeUnderpaymentReasonMessages.change.trim
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.change
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
           controllers.routes.ChangeUnderpaymentReasonDetailsController.onLoad(35).url

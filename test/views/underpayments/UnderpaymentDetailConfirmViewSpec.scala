@@ -44,7 +44,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
         underpaymentType,
         UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
           underpaymentType,
-          UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get
+          UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
+          messages("underpaymentDetailsConfirm.B00.change")
         ),
         backLink,
         submitCall
@@ -76,7 +77,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
           underpaymentType,
           UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
             underpaymentType,
-            UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get
+            UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
+            messages("underpaymentDetailsConfirm.B00.change")
           ),
           backLink,
           submitCall
@@ -107,7 +109,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
       underpaymentType,
       UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
         underpaymentType,
-        UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get
+        UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
+        messages("underpaymentDetailsConfirm.B00.change")
       ),
       backLink,
       submitCall
