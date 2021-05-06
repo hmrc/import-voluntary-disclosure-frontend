@@ -557,6 +557,9 @@ cya.eoriNumber = Importer EORI number
 cya.underpaymentDetails = Underpayment details
 cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
 cya.viewSummary = View summary
+cya.reasonForUnderpayment = Reason for underpayment
+cya.numberOfUnderpayments = {0} {1} given
+cya.hasFurtherInformation
 
 # Item Number
 itemNo.pageTitle = What is the item number?

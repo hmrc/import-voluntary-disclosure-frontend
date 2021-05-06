@@ -17,7 +17,7 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import pages.FileUploadPage
+import pages.{FileUploadPage, HasFurtherInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -44,7 +44,8 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.viewSummary")))
-              )
+              ),
+              classes = "govuk-!-width-two-thirds"
             )
             )
           )
@@ -75,7 +76,53 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         )
       case None => Seq.empty
     }
+    val tellUsAnythingElseSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(HasFurtherInformationPage) match {
+      case Some(hasFurtherInformation) =>
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.hasFurtherInformation")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(hasFurtherInformation)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              ),
+              classes = "govuk-!-width-two-thirds"
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+    val reasonForUnderpaymentSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentReasonsPage) match {
+      case Some(underpaymentReason) =>
+        val whichReason = if (underpaymentReason.size == 1) "reason" else "reasons"
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.reasonForUnderpayment")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(messages("cya.numberOfUnderpayments", underpaymentReason.size, whichReason))
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.viewSummary")))
+              ),
+              classes = "govuk-!-width-two-thirds"
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
     val rows = owedToHmrc ++
+      reasonForUnderpaymentSummaryListRow ++
       uploadedFilesSummaryListRow
 
     if (rows.nonEmpty) {
