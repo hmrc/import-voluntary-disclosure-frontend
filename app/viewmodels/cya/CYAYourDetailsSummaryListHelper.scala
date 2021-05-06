@@ -43,7 +43,7 @@ trait CYAYourDetailsSummaryListHelper {
               items = Seq(
                 ActionItemHelper.createChangeActionItem(
                   controllers.routes.DeclarantContactDetailsController.onLoad().url,
-                  messages("cya.name.change")
+                  messages("cya.contactDetails.change")
                 )
               ),
               classes = "govuk-!-padding-bottom-0")

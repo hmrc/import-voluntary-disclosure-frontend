@@ -42,7 +42,7 @@ trait CYAImporterDetailsSummaryListHelper {
               items = Seq(
                 ActionItemHelper.createChangeActionItem(
                   controllers.routes.ImporterNameController.onLoad().url,
-                  messages("cya.contactDetails.change")
+                  messages("cya.importerName.change")
                 )
               ))
             )
