@@ -137,8 +137,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.viewSummary))
-          ))),
-          classes = "govuk-!-width-two-thirds"
+          ),
+            classes = "govuk-!-width-two-thirds"
+          )),
         ),
         SummaryListRow(
           key = Key(
@@ -152,8 +153,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.viewSummary))
-          ))),
-          classes = "govuk-!-width-two-thirds"
+          ),
+            classes = "govuk-!-width-two-thirds"
+          )),
         ),
         SummaryListRow(
           key = Key(
@@ -167,7 +169,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))
-          )))
+          ),
+            classes = "govuk-!-width-two-thirds"
+          ))
         ),
         SummaryListRow(
           key = Key(
@@ -181,7 +185,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))
-          )))
+          ),
+            classes = "govuk-!-width-two-thirds"
+          ))
         ),
         SummaryListRow(
           key = Key(
@@ -195,7 +201,9 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))
-          )))
+          ),
+            classes = "govuk-!-width-two-thirds"
+          ))
         )
       )
     )
