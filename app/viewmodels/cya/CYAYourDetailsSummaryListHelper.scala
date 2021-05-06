@@ -53,7 +53,7 @@ trait CYAYourDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
-    val detailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
+    val contactDetailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
       case Some(details) =>
         Seq(
           SummaryListRow(
@@ -131,7 +131,7 @@ trait CYAYourDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
-    val rows = userTypeSummaryListRow ++ detailsSummaryListRow ++ addressSummaryListRow
+    val rows = userTypeSummaryListRow ++ contactDetailsSummaryListRow ++ addressSummaryListRow
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
