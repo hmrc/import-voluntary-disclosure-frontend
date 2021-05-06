@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 
+//noinspection ScalaStyle
 trait CYAYourDetailsSummaryListHelper {
 
   def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -55,15 +56,20 @@ trait CYAYourDetailsSummaryListHelper {
 
     val contactDetailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
       case Some(details) =>
+        val contactDetailsVaalue = {
+          details.fullName + "<br/>" +
+            details.email + "<br/>" +
+            details.phoneNumber
+        }
         Seq(
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.contactDetails")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
             ),
             value = Value(
-              content = HtmlContent(details.fullName),
-              classes = "govuk-!-padding-bottom-0"
+              content = HtmlContent(contactDetailsVaalue),
+              classes = "govuk-!-padding-top-0"
             ),
             actions = Some(Actions(
               items = Seq(
@@ -71,30 +77,9 @@ trait CYAYourDetailsSummaryListHelper {
                   controllers.routes.DeclarantContactDetailsController.onLoad().url,
                   messages("cya.contactDetails.change")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-0")
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          ),
-          SummaryListRow(
-            key = Key(
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            value = Value(
-              content = HtmlContent(details.email),
-              classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          ),
-          SummaryListRow(
-            key = Key(
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-            ),
-            value = Value(
-              content = HtmlContent(details.phoneNumber),
-              classes = "govuk-!-padding-top-0"
-            ),
-            classes = "govuk-!-padding-top-0"
+              )
+              )
+            )
           )
         )
       case None => Seq.empty
