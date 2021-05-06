@@ -569,6 +569,7 @@ cya.filesUploaded = {0} {1} uploaded
 cya.yourDetails = Your details
 cya.name = Name
 cya.name.change = Change importer name
+cya.contactDetails.change = Change contact details
 cya.email = Email address
 cya.phone = Telephone number
 cya.address = Address

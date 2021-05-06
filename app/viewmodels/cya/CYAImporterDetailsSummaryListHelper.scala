@@ -22,7 +22,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 
 trait CYAImporterDetailsSummaryListHelper {
 
@@ -40,7 +40,10 @@ trait CYAImporterDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.ImporterNameController.onLoad().url,
+                  messages("cya.contactDetails.change")
+                )
               ))
             )
           )
