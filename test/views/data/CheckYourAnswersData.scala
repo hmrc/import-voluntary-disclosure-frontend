@@ -42,6 +42,7 @@ object CheckYourAnswersData {
   val yes = "Yes"
   val acceptanceDate = "Before 1 January 2021"
   val eoriNumber = "GB345834921000"
+  val userType = "Representative"
 
   val importerDetailsAnswers: CYASummaryList = cya.CYASummaryList(
     CYAMessages.aboutImporterDetails,
@@ -147,7 +148,23 @@ object CheckYourAnswersData {
       rows = Seq(
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.name),
+            Text(CYAMessages.userType),
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(userType),
+            classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))),
+            classes = "govuk-!-padding-bottom-0")),
+          classes = "govuk-!-padding-top-0"
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.contactDetails),
             classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
           ),
           value = Value(
@@ -163,7 +180,6 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.email),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
@@ -175,7 +191,6 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.phone),
             classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
           ),
           value = Value(

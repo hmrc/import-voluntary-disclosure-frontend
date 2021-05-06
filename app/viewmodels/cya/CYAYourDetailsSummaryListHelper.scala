@@ -16,8 +16,9 @@
 
 package viewmodels.cya
 
+import models.UserType
 import models.requests.DataRequest
-import pages.{DeclarantContactDetailsPage, TraderAddressPage}
+import pages.{DeclarantContactDetailsPage, TraderAddressPage, UserTypePage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -27,12 +28,37 @@ import viewmodels.cya
 trait CYAYourDetailsSummaryListHelper {
 
   def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+    val userTypeSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UserTypePage) match {
+      case Some(details) =>
+        val userTypeValue = if (details.equals(UserType.Importer)) messages("cya.importer") else messages("cya.representative")
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.userType")),
+              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            ),
+            value = Value(
+              content = HtmlContent(userTypeValue),
+              classes = "govuk-!-padding-top-0"
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              ),
+              classes = "govuk-!-padding-bottom-0")
+            ),
+            classes = "govuk-!-padding-top-0"
+          )
+        )
+      case None => Seq.empty
+    }
+
     val detailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
       case Some(details) =>
         Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.name")),
+              content = Text(messages("cya.contactDetails")),
               classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
             ),
             value = Value(
@@ -49,7 +75,6 @@ trait CYAYourDetailsSummaryListHelper {
           ),
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.email")),
               classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
             ),
             value = Value(
@@ -60,7 +85,6 @@ trait CYAYourDetailsSummaryListHelper {
           ),
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.phone")),
               classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
             ),
             value = Value(
@@ -104,7 +128,7 @@ trait CYAYourDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
-    val rows = detailsSummaryListRow ++ addressSummaryListRow
+    val rows = userTypeSummaryListRow ++ detailsSummaryListRow ++ addressSummaryListRow
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(

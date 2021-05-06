@@ -55,6 +55,8 @@ object CYAMessages extends BaseMessages {
   }
   val yourDetails = "Your details"
   val name = "Name"
+  val userType = "Importer or representative?"
+  val contactDetails = "Contact details"
   val email = "Email address"
   val phone = "Telephone number"
   val address = "Address"
