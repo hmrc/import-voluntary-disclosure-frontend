@@ -33,7 +33,7 @@ trait CYAImporterDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.name")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(importerName)
@@ -65,7 +65,7 @@ trait CYAImporterDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.address")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(addressString)
@@ -87,7 +87,7 @@ trait CYAImporterDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.eoriNumberExists")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(eoriNumberExists)
@@ -107,7 +107,7 @@ trait CYAImporterDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.eoriNumber")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(eoriNumber)
@@ -128,7 +128,7 @@ trait CYAImporterDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.vatRegistered")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(isVatRegistered)

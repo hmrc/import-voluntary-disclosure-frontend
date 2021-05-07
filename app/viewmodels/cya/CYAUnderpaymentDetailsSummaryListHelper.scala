@@ -17,28 +17,73 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import pages.FileUploadPage
+import pages.{FileUploadPage, HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
+import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
 
   def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val uploadedFilesSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(FileUploadPage) match {
-      case Some(files) =>
-        val fileNames = files map (file => file.fileName)
-        val whichFile = if (fileNames.length == 1) "file" else "files"
+    val owedToHmrc: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+      case Some(amount) =>
+        val amountOwed = amount.map(underpayment => underpayment.amended - underpayment.original).sum
         Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.filesUploaded", fileNames.length, whichFile)),
-              classes = "govuk-!-width-two-thirds"
+              content = Text(messages("cya.underpaymentDetails.owedToHmrc")),
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(fileNames.mkString("\n"))
+              content = HtmlContent(displayMoney(amountOwed))
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.viewSummary")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+    val reasonForUnderpaymentSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentReasonsPage) match {
+      case Some(underpaymentReason) =>
+        val numberOfReasons = if (underpaymentReason.size == 1) "cya.numberOfUnderpaymentsSingle" else "cya.numberOfUnderpaymentsPlural"
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.reasonForUnderpayment")),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = HtmlContent(messages(numberOfReasons, underpaymentReason.size))
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.viewSummary")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+    val tellUsAnythingElseSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(HasFurtherInformationPage) match {
+      case Some(hasFurtherInformation) =>
+        val furtherInformation = if (hasFurtherInformation) messages("site.yes") else messages("site.no")
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.hasFurtherInformation")),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = HtmlContent(furtherInformation)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -50,11 +95,61 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         )
       case None => Seq.empty
     }
-    val rows = uploadedFilesSummaryListRow
+    val extraInformationSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(MoreInformationPage) match {
+      case Some(extraInformation) =>
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.extraInformation")),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = HtmlContent(extraInformation)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+    val uploadedFilesSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(FileUploadPage) match {
+      case Some(files) =>
+        val fileNames = files map (file => file.fileName)
+        val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages(numberOfFiles, fileNames.length)),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = HtmlContent(fileNames.mkString("<br/>"))
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              )
+            )
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+
+    val rows = owedToHmrc ++
+      reasonForUnderpaymentSummaryListRow ++
+      tellUsAnythingElseSummaryListRow ++
+      extraInformationSummaryListRow ++
+      uploadedFilesSummaryListRow
+
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.supportingDocuments")),
+          messages(messages("cya.underpaymentDetails")),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

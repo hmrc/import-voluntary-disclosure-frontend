@@ -20,9 +20,11 @@ import java.time.{LocalDate, LocalDateTime}
 
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UserAnswers, UserType}
+import models.underpayments.UnderpaymentDetail
+import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UnderpaymentReason, UserAnswers, UserType}
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.CheckYourAnswersData._
 
 
@@ -56,6 +58,16 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       .set(ImporterNamePage, "First Second").success.value
       .set(ImporterAddressPage, ContactAddress(
         "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+      .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+      .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
+        boxNumber = 22, original = "50", amended = "60")
+      )).success.value
+      .set(HasFurtherInformationPage, true).success.value
+      .set(MoreInformationPage, "Stock losses in warehouse.").success.value
+
+
+
+
 
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(

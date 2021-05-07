@@ -42,6 +42,9 @@ object CheckYourAnswersData {
   val yes = "Yes"
   val acceptanceDate = "Before 1 January 2021"
   val eoriNumber = "GB345834921000"
+  val amount = "£1.00"
+  val reason = "1 reason given"
+  val extraInformation = "Stock losses in warehouse."
   val userType = "Representative"
   val contactDetails = ContactDetails("First Second", "email@email.com", "1234567890")
 
@@ -53,7 +56,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.name),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(fullName)
@@ -73,7 +76,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.address),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(buildAddress(traderAddress))
@@ -86,7 +89,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.eoriNumberExists),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(yes)
@@ -99,7 +102,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.eoriNumber),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(eoriNumber)
@@ -112,7 +115,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.vatRegistered),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(yes)
@@ -127,14 +130,74 @@ object CheckYourAnswersData {
   )
 
   val underpaymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.supportingDocuments,
+    CYAMessages.underpaymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
         SummaryListRow(
           key = Key(
+            Text(CYAMessages.totalOwed),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(amount)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.viewSummary))
+          )
+          )),
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.reasonForUnderpayment),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(reason)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.viewSummary))
+          )
+          )),
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.tellUsAnythingElse),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(yes)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))
+          )
+          ))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.extraInformation),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(extraInformation)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))
+          )
+          ))
+        ),
+        SummaryListRow(
+          key = Key(
             Text(CYAMessages.filesUploaded(1)),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(file)
@@ -143,7 +206,8 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))
-          )))
+          )
+          ))
         )
       )
     )
@@ -157,7 +221,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.userType),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(userType),
@@ -171,7 +235,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.contactDetails),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(buildContactDetails(contactDetails)),
@@ -189,7 +253,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.address),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(buildAddress(traderAddress))
@@ -212,7 +276,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.numberOfEntries),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(numberOfEntries)
@@ -227,7 +291,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.epu),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
           ),
           value = Value(
             HtmlContent(epu),
@@ -247,7 +311,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryNumber),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
             HtmlContent(entryNumber),
@@ -259,7 +323,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryDate),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
           ),
           value = Value(
             HtmlContent(entryDate),
@@ -270,7 +334,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.acceptanceDate),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(acceptanceDate)
@@ -286,7 +350,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.oneCustomsProcedureCode),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(yes)
@@ -301,7 +365,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.cpc),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent(cpc)
@@ -325,7 +389,7 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.payingByDeferment),
-            classes = "govuk-!-width-two-thirds"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
             HtmlContent("No")

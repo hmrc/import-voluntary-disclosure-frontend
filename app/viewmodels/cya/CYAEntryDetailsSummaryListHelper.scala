@@ -38,7 +38,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.numberOfEntries")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(numberOfEntriesValue)
@@ -60,7 +60,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.epu")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+              classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
             ),
             value = Value(
               content = HtmlContent(entryDetails.epu),
@@ -87,7 +87,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.entryNumber")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+              classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
             ),
             value = Value(
               content = HtmlContent(entryDetails.entryNumber),
@@ -106,7 +106,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.entryDate")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+              classes = "govuk-!-width-one-third govuk-!-padding-top-0"
             ),
             value = Value(
               content = HtmlContent(entryDateFormat),
@@ -124,7 +124,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.acceptanceDate")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(acceptanceDateValue)
@@ -150,7 +150,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.oneCustomsProcedureCode")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(oneCustomsProcedureCode)
@@ -172,7 +172,7 @@ trait CYAEntryDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.customsProcedureCode")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(customsProcedureCode)

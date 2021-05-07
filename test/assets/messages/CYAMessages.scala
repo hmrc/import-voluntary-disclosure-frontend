@@ -43,13 +43,18 @@ object CYAMessages extends BaseMessages {
   val importVAT = "Import VAT"
   val exciseDuty = "Excise Duty"
 
+  val totalOwed = "Total owed to HMRC"
+  val viewSummary = "View summary"
+  val reasonForUnderpayment = "Reason for underpayment"
+  val tellUsAnythingElse = "Tell us anything else?"
+  val extraInformation = "Extra information"
+
   val amendmentDetails = "Amendment details"
   val cpc = "Customs procedure code"
   val cpcAmended = "Amended customs procedure code"
   val cpcChanged = "Customs procedure code changed?"
   val numAmendments = "Number of amendments"
   val supportingInformation = "Supporting information"
-  val supportingDocuments = "Supporting documents"
   def filesUploaded(numberOfFiles: Int): String = {
     if(numberOfFiles ==1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
   }
