@@ -34,7 +34,7 @@ trait CYAPaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.payingByDeferment")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(payingByDeferment)

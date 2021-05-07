@@ -36,7 +36,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.underpaymentDetails.owedToHmrc")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(displayMoney(amountOwed))
@@ -44,8 +44,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.viewSummary")))
-              ),
-              classes = "govuk-!-width-two-thirds"
+              )
             )
             )
           )
@@ -59,7 +58,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.reasonForUnderpayment")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(messages(numberOfReasons, underpaymentReason.size))
@@ -67,8 +66,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.viewSummary")))
-              ),
-              classes = "govuk-!-width-two-thirds"
+              )
             )
             )
           )
@@ -82,7 +80,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.hasFurtherInformation")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(furtherInformation)
@@ -90,8 +88,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
-              ),
-              classes = "govuk-!-width-two-thirds"
+              )
             )
             )
           )
@@ -104,7 +101,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.extraInformation")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(extraInformation)
@@ -112,8 +109,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
-              ),
-              classes = "govuk-!-width-two-thirds"
+              )
             )
             )
           )
@@ -128,16 +124,15 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages(numberOfFiles, fileNames.length)),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(fileNames.mkString("br/"))
+              content = HtmlContent(fileNames.mkString("<br/>"))
             ),
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
-              ),
-              classes = "govuk-!-width-two-thirds"
+              )
             )
             )
           )

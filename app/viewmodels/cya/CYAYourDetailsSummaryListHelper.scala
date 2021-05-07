@@ -35,7 +35,7 @@ trait CYAYourDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.userType")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(userTypeValue)
@@ -61,7 +61,7 @@ trait CYAYourDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.contactDetails")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(contactDetailsVaalue)
@@ -95,7 +95,7 @@ trait CYAYourDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.address")),
-              classes = "govuk-!-width-two-thirds"
+              classes = "govuk-!-width-one-third"
             ),
             value = Value(
               content = HtmlContent(addressString)
