@@ -17,7 +17,7 @@
 package views.data
 
 import messages.CYAMessages
-import models.ContactAddress
+import models.{ContactAddress, ContactDetails}
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -42,6 +42,8 @@ object CheckYourAnswersData {
   val yes = "Yes"
   val acceptanceDate = "Before 1 January 2021"
   val eoriNumber = "GB345834921000"
+  val userType = "Representative"
+  val contactDetails = ContactDetails("First Second", "email@email.com", "1234567890")
 
   val importerDetailsAnswers: CYASummaryList = cya.CYASummaryList(
     CYAMessages.aboutImporterDetails,
@@ -154,12 +156,25 @@ object CheckYourAnswersData {
       rows = Seq(
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.name),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            Text(CYAMessages.userType),
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent(fullName),
-            classes = "govuk-!-padding-bottom-0"
+            HtmlContent(userType),
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              changeUrl,
+              Text(CYAMessages.change))),
+            )),
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.contactDetails),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            HtmlContent(buildContactDetails(contactDetails)),
           ),
           actions = Some(
             Actions(
@@ -169,33 +184,7 @@ object CheckYourAnswersData {
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(CYAMessages.changeContactDetails)
                 )
-              ),
-              classes = "govuk-!-padding-bottom-0")),
-          classes = "govuk-summary-list__row--no-border"
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.email),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-          ),
-          value = Value(
-            HtmlContent(email),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-          ),
-          actions = None,
-          classes = "govuk-summary-list__row--no-border"
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.phone),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-          ),
-          value = Value(
-            HtmlContent(phone),
-            classes = "govuk-!-padding-top-0"
-          ),
-          actions = None,
-          classes = "govuk-!-padding-top-0"
+              )))
         ),
         SummaryListRow(
           key = Key(
@@ -368,4 +357,10 @@ object CheckYourAnswersData {
         address.city + "<br/>" +
         address.countryCode
     }
+
+  def buildContactDetails(contactDetails: ContactDetails): String = {
+    contactDetails.fullName + "<br/>" +
+    contactDetails.email + "<br/>" +
+    contactDetails.phoneNumber
+  }
 }

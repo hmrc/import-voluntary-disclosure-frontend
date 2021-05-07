@@ -16,8 +16,9 @@
 
 package viewmodels.cya
 
+import models.UserType
 import models.requests.DataRequest
-import pages.{DeclarantContactDetailsPage, TraderAddressPage}
+import pages.{DeclarantContactDetailsPage, TraderAddressPage, UserTypePage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -27,17 +28,43 @@ import viewmodels.{ActionItemHelper, cya}
 trait CYAYourDetailsSummaryListHelper {
 
   def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val detailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
+    val userTypeSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UserTypePage) match {
       case Some(details) =>
+        val userTypeValue = if (details.equals(UserType.Importer)) messages("cya.importer") else messages("cya.representative")
         Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.name")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+              content = Text(messages("cya.userType")),
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(details.fullName),
-              classes = "govuk-!-padding-bottom-0"
+              content = HtmlContent(userTypeValue)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              )
+              ))
+          )
+        )
+      case None => Seq.empty
+    }
+
+    val contactDetailsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DeclarantContactDetailsPage) match {
+      case Some(details) =>
+        val contactDetailsVaalue = {
+          details.fullName + "<br/>" +
+            details.email + "<br/>" +
+            details.phoneNumber
+        }
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.contactDetails")),
+              classes = "govuk-!-width-two-thirds"
+            ),
+            value = Value(
+              content = HtmlContent(contactDetailsVaalue)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -45,32 +72,9 @@ trait CYAYourDetailsSummaryListHelper {
                   controllers.routes.DeclarantContactDetailsController.onLoad().url,
                   messages("cya.contactDetails.change")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-0")
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          ),
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.email")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            value = Value(
-              content = HtmlContent(details.email),
-              classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          ),
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.phone")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
-            ),
-            value = Value(
-              content = HtmlContent(details.phoneNumber),
-              classes = "govuk-!-padding-top-0"
-            ),
-            classes = "govuk-!-padding-top-0"
+              )
+              )
+            )
           )
         )
       case None => Seq.empty
@@ -107,7 +111,7 @@ trait CYAYourDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
-    val rows = detailsSummaryListRow ++ addressSummaryListRow
+    val rows = userTypeSummaryListRow ++ contactDetailsSummaryListRow ++ addressSummaryListRow
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
