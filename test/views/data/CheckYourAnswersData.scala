@@ -157,27 +157,24 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.userType),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
             HtmlContent(userType),
-            classes = "govuk-!-padding-top-0"
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))),
-            classes = "govuk-!-padding-bottom-0")),
-          classes = "govuk-!-padding-top-0"
+            )),
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.contactDetails),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
             HtmlContent(buildContactDetails(contactDetails)),
-            classes = "govuk-!-padding-top-0"
           ),
           actions = Some(
             Actions(

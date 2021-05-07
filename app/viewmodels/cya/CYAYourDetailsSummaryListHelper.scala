@@ -25,7 +25,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 
-//noinspection ScalaStyle
 trait CYAYourDetailsSummaryListHelper {
 
   def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -36,19 +35,16 @@ trait CYAYourDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.userType")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
               content = HtmlContent(userTypeValue),
-              classes = "govuk-!-padding-top-0"
             ),
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
               ),
-              classes = "govuk-!-padding-bottom-0")
-            ),
-            classes = "govuk-!-padding-top-0"
+              )),
           )
         )
       case None => Seq.empty
@@ -65,11 +61,10 @@ trait CYAYourDetailsSummaryListHelper {
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.contactDetails")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
               content = HtmlContent(contactDetailsVaalue),
-              classes = "govuk-!-padding-top-0"
             ),
             actions = Some(Actions(
               items = Seq(
