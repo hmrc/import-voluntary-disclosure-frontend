@@ -36,7 +36,7 @@ object CYAMessages extends BaseMessages {
   val epuChange = "Change entry details"
   val entryNumber = "Entry number"
   val entryDate = "Entry date"
-  val acceptanceDate = "Entry acceptance date before 1 January 2021?"
+  val acceptanceDate = "Acceptance date"
 
   val underpaymentDetails = "Underpayment details"
   val customsDuty = "Customs Duty"
