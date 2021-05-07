@@ -38,13 +38,13 @@ trait CYAYourDetailsSummaryListHelper {
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(userTypeValue),
+              content = HtmlContent(userTypeValue)
             ),
             actions = Some(Actions(
               items = Seq(
                 ActionItem("Url", Text(messages("cya.change")))
-              ),
-              )),
+              )
+              ))
           )
         )
       case None => Seq.empty
@@ -64,7 +64,7 @@ trait CYAYourDetailsSummaryListHelper {
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(contactDetailsVaalue),
+              content = HtmlContent(contactDetailsVaalue)
             ),
             actions = Some(Actions(
               items = Seq(
