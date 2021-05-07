@@ -54,7 +54,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
     val reasonForUnderpaymentSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentReasonsPage) match {
       case Some(underpaymentReason) =>
-        val whichReason = if (underpaymentReason.size == 1) "reason" else "reasons"
+        val numberOfReasons = if (underpaymentReason.size == 1) "cya.numberOfUnderpaymentsSingle" else "cya.numberOfUnderpaymentsPlural"
         Seq(
           SummaryListRow(
             key = Key(
@@ -62,7 +62,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(messages("cya.numberOfUnderpayments", underpaymentReason.size, whichReason))
+              content = HtmlContent(messages(numberOfReasons, underpaymentReason.size))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -123,15 +123,15 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     val uploadedFilesSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(FileUploadPage) match {
       case Some(files) =>
         val fileNames = files map (file => file.fileName)
-        val whichFile = if (fileNames.length == 1) "file" else "files"
+        val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
         Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.filesUploaded", fileNames.length, whichFile)),
+              content = Text(messages(numberOfFiles, fileNames.length)),
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(fileNames.mkString("\n"))
+              content = HtmlContent(fileNames.mkString("br/"))
             ),
             actions = Some(Actions(
               items = Seq(
