@@ -24,7 +24,7 @@ import mocks.repositories.MockSessionRepository
 import mocks.services.MockAddressLookupService
 import models.{UserAnswers, UserType}
 import models.addressLookup.AddressLookupOnRampModel
-import pages.UserTypePage
+import pages.{CheckModePage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
@@ -90,6 +90,21 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(controllers.routes.ImporterEORIExistsController.onLoad.url)
+          verifyCalls()
+        }
+
+        "redirect the user to the check your answer page in check mode" in new Test {
+          override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
+            Some(UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+            )
+          )
+          MockedSessionRepository.set(Future.successful(true))
+          setupMockRetrieveAddress(Right(customerAddressMissingLine3))
+          val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
+          status(result) mustBe Status.SEE_OTHER
+          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad.url)
           verifyCalls()
         }
       }
