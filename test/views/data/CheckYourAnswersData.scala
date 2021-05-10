@@ -34,7 +34,7 @@ object CheckYourAnswersData {
   val fullName = "First Second"
   val email = "email@email.com"
   val phone = "1234567890"
-  val traderAddress = ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")
+  val traderAddress = ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")
   val numberOfEntries = "One Entry"
   val epu = "123"
   val entryNumber = "123456Q"
@@ -81,10 +81,17 @@ object CheckYourAnswersData {
           value = Value(
             HtmlContent(buildAddress(traderAddress))
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(CYAMessages.changeImporterAddress)
+                )
+              )
+            )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -413,13 +420,25 @@ object CheckYourAnswersData {
 
   def buildAddress(address: ContactAddress) =
     address.postalCode match {
-      case Some(value) => address.addressLine1 + "<br/>" +
-        address.city + "<br/>" +
-        address.postalCode.get + "<br/>" +
-        address.countryCode
-      case None => address.addressLine1 + "<br/>" +
-        address.city + "<br/>" +
-        address.countryCode
+      case Some(postcode) =>
+        val street = if (address.addressLine2.isDefined) {
+          address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+        } else {
+          address.addressLine1 + "<br/>"
+        }
+        street +
+          address.city + "<br/>" +
+          postcode + "<br/>" +
+          address.countryCode
+      case None =>
+        val street = if (address.addressLine2.isDefined) {
+          address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+        } else {
+          address.addressLine1 + "<br/>"
+        }
+        street +
+          address.city + "<br/>" +
+          address.countryCode
     }
 
   def buildContactDetails(contactDetails: ContactDetails): String = {

@@ -83,13 +83,25 @@ trait CYAYourDetailsSummaryListHelper {
     val addressSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(TraderAddressPage) match {
       case Some(address) =>
         val addressString = address.postalCode match {
-          case Some(value) => address.addressLine1 + "<br/>" +
-            address.city + "<br/>" +
-            address.postalCode.get + "<br/>" +
-            address.countryCode
-          case None => address.addressLine1 + "<br/>" +
-            address.city + "<br/>" +
-            address.countryCode
+          case Some(postcode) =>
+            val street = if (address.addressLine2.isDefined) {
+              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+            } else {
+              address.addressLine1 + "<br/>"
+            }
+            street +
+              address.city + "<br/>" +
+              postcode + "<br/>" +
+              address.countryCode
+          case None =>
+            val street = if (address.addressLine2.isDefined) {
+              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+            } else {
+              address.addressLine1 + "<br/>"
+            }
+            street +
+              address.city + "<br/>" +
+              address.countryCode
         }
         Seq(
           SummaryListRow(

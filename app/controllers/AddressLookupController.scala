@@ -81,7 +81,11 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, formatAddress(address)))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+          }
         }
 
       case Left(_) =>

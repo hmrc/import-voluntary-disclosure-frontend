@@ -53,11 +53,23 @@ trait CYAImporterDetailsSummaryListHelper {
     val addressSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterAddressPage) match {
       case Some(address) =>
         val addressString = address.postalCode match {
-          case Some(value) => address.addressLine1 + "<br/>" +
+          case Some(postcode) =>
+            val street = if (address.addressLine2.isDefined) {
+              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+            } else {
+              address.addressLine1 + "<br/>"
+            }
+            street +
             address.city + "<br/>" +
-            address.postalCode.get + "<br/>" +
+            postcode + "<br/>" +
             address.countryCode
-          case None => address.addressLine1 + "<br/>" +
+          case None =>
+            val street = if (address.addressLine2.isDefined) {
+              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+            } else {
+              address.addressLine1 + "<br/>"
+            }
+            street +
             address.city + "<br/>" +
             address.countryCode
         }
@@ -72,7 +84,10 @@ trait CYAImporterDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+                  messages("cya.importerAddress.change")
+                )
               )
             )
             )
