@@ -16,6 +16,7 @@
 
 package viewmodels.cya
 
+import models.SelectedDutyTypes
 import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
@@ -79,9 +80,14 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
     }
 
     val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
+      val filterDan = request.userAnswers.get(UploadAuthorityPage).get.filter(defermentAccount =>
+        defermentAccount.dan == request.userAnswers.get(DefermentAccountPage).getOrElse("") &&
+          defermentAccount.dutyType == SelectedDutyTypes.Vat)
+
+      val getFileNames = filterDan.map(doc => doc.file.fileName)
+      val fileNameValue = getFileNames.headOption.getOrElse("")
       (request.userAnswers.get(UploadAuthorityPage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(file), Some(true)) =>
-          val fileName = file.map (doc => doc.file.fileName).last
+        case (Some(file), Some(true)) if !fileNameValue.isEmpty =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -89,7 +95,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third"
               ),
               value = Value(
-                content = HtmlContent(fileName)
+                content = HtmlContent(fileNameValue)
               ),
               actions = Some(Actions(
                 items = Seq(

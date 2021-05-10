@@ -20,6 +20,7 @@
         govukSummaryList: GovukSummaryList,
         h1: components.h1,
         h2: components.h2,
+        h3: components.h3,
         p: components.p,
         linkButton: components.linkButton)
 
@@ -31,7 +32,14 @@
 ) {
     @h1(messages("cya.heading"))
     @answers.map { answer =>
-        @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+
+        @if(answer.heading.startsWith("Deferment")) {
+            @h3(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+        } else {
+            @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+        }
+
+
         @govukSummaryList(answer.summaryList)
     }
 
