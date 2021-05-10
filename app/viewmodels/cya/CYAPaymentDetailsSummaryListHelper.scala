@@ -17,19 +17,20 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import pages.DefermentPage
+import pages.{DefermentAccountPage, DefermentPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
+//noinspection ScalaStyle
 trait CYAPaymentDetailsSummaryListHelper {
 
   def buildPaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val paymentInformationSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DefermentPage) match {
+    val defermentTypeSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DefermentPage) match {
       case Some(deferment) =>
-        val payingByDeferment = if (deferment) messages("site.yes") else messages("site.no")
+        val payingByDeferment = if (deferment) messages("cya.payingByDeferment") else messages("cya.payingByOther")
         Seq(
           SummaryListRow(
             key = Key(
@@ -48,13 +49,38 @@ trait CYAPaymentDetailsSummaryListHelper {
         )
       case None => Seq.empty
     }
-    if (paymentInformationSummaryListRow.nonEmpty) {
+
+    val accountNumberSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DefermentAccountPage) match {
+      case Some(accountNumber) =>
+        Seq(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.accountNumber")),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = HtmlContent(accountNumber)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              ))
+            )
+          )
+        )
+      case None => Seq.empty
+    }
+
+    val rows = defermentTypeSummaryListRow ++ accountNumberSummaryListRow
+
+
+    if (defermentTypeSummaryListRow.nonEmpty) {
       Seq(
         cya.CYASummaryList(
           messages(messages("cya.paymentInformation")),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
-            rows = paymentInformationSummaryListRow
+            rows = rows
           )
         )
       )
