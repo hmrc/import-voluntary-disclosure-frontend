@@ -53,7 +53,9 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
           buildEntryDetailsSummaryList ++
           buildUnderpaymentDetailsSummaryList ++
           buildYourDetailsSummaryList ++
-          buildPaymentDetailsSummaryList
+          buildPaymentDetailsSummaryList ++
+          buildDefermentDutySummaryList ++
+          buildDefermentImportVatSummaryList
       ))
     }
   }

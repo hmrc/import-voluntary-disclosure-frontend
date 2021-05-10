@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
+//noinspection ScalaStyle
 trait CYAPaymentDetailsSummaryListHelper {
 
   def buildPaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -34,7 +35,7 @@ trait CYAPaymentDetailsSummaryListHelper {
         Seq(
           SummaryListRow(
             key = Key(
-              content = Text(messages("cya.payingByDeferment")),
+              content = Text(messages("cya.paymentMethod")),
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
@@ -75,22 +76,28 @@ trait CYAPaymentDetailsSummaryListHelper {
 
     val accountNumberSummaryListRow: Seq[SummaryListRow] = {
       val accountNumberContent = if(request.isRepFlow) messages("cya.repAccountNumber") else messages("cya.importerAccountNumber")
+      val valuePadding = if(request.isRepFlow) "govuk-!-padding-bottom-0" else "govuk-summary-list__row"
+      val borderPadding = if(request.isRepFlow) "govuk-summary-list__row--no-border" else "govuk-summary-list__row"
+
       (request.userAnswers.get(DefermentAccountPage), request.dutyType, request.userAnswers.get(SplitPaymentPage)) match {
         case (Some(accountNumber), SelectedDutyTypes.Both, Some(false)) =>
           Seq(
             SummaryListRow(
               key = Key(
                 content = Text(accountNumberContent),
-                classes = "govuk-!-width-one-third"
+                classes = s"govuk-!-width-one-third $valuePadding"
               ),
               value = Value(
-                content = HtmlContent(accountNumber)
+                content = HtmlContent(accountNumber),
+                classes = valuePadding
               ),
               actions = Some(Actions(
                 items = Seq(
                   ActionItem("Url", Text(messages("cya.change")))
-                ))
-              )
+                ),
+                classes = valuePadding)
+              ),
+              classes = borderPadding
             )
           )
         case (Some(accountNumber), _, None) =>
@@ -98,16 +105,19 @@ trait CYAPaymentDetailsSummaryListHelper {
             SummaryListRow(
               key = Key(
                 content = Text(accountNumberContent),
-                classes = "govuk-!-width-one-third"
+                classes = s"govuk-!-width-one-third $valuePadding"
               ),
               value = Value(
-                content = HtmlContent(accountNumber)
+                content = HtmlContent(accountNumber),
+                classes = valuePadding
               ),
               actions = Some(Actions(
                 items = Seq(
                   ActionItem("Url", Text(messages("cya.change")))
-                ))
-              )
+                ),
+                classes = valuePadding)
+              ),
+              classes = borderPadding
             )
           )
         case _ => Seq.empty
@@ -126,15 +136,11 @@ trait CYAPaymentDetailsSummaryListHelper {
             SummaryListRow(
               key = Key(
                 content = Text(messages("cya.accountOwner")),
-                classes = "govuk-!-width-one-third"
+                classes = "govuk-!-width-one-third govuk-!-padding-top-0"
               ),
               value = Value(
-                content = HtmlContent(accountOwnerContent)
-              ),
-              actions = Some(Actions(
-                items = Seq(
-                  ActionItem("Url", Text(messages("cya.change")))
-                ))
+                content = HtmlContent(accountOwnerContent),
+                classes = "govuk-!-padding-top-0"
               )
             )
           )
@@ -143,15 +149,11 @@ trait CYAPaymentDetailsSummaryListHelper {
             SummaryListRow(
               key = Key(
                 content = Text(messages("cya.accountOwner")),
-                classes = "govuk-!-width-one-third"
+                classes = "govuk-!-width-one-third govuk-!-padding-top-0"
               ),
               value = Value(
-                content = HtmlContent(accountOwnerContent)
-              ),
-              actions = Some(Actions(
-                items = Seq(
-                  ActionItem("Url", Text(messages("cya.change")))
-                ))
+                content = HtmlContent(accountOwnerContent),
+                classes = "govuk-!-padding-top-0"
               )
             )
           )

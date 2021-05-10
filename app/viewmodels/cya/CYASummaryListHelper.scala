@@ -22,3 +22,5 @@ trait CYASummaryListHelper
     with CYAUnderpaymentDetailsSummaryListHelper
     with CYAYourDetailsSummaryListHelper
     with CYAPaymentDetailsSummaryListHelper
+    with CYADefermentDutyDetailsSummaryListHelper
+    with CYADefermentImportVATDetailsSummaryListHelper
