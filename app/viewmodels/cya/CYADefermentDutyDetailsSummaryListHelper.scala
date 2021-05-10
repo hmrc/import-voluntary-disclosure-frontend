@@ -16,7 +16,6 @@
 
 package viewmodels.cya
 
-import models.SelectedDutyTypes
 import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
@@ -25,7 +24,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
-//noinspection ScalaStyle
 trait CYADefermentDutyDetailsSummaryListHelper {
 
   def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -84,7 +82,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
       (request.userAnswers.get(UploadAuthorityPage), request.userAnswers.get(SplitPaymentPage)) match {
         case (Some(file), Some(true)) =>
-          val fileName = file.map (doc => doc.file.fileName).head
+          val fileName = file.map(doc => doc.file.fileName).head
           Seq(
             SummaryListRow(
               key = Key(
