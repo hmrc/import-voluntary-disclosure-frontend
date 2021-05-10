@@ -16,8 +16,9 @@
 
 package viewmodels.cya
 
+import models.SelectedDutyTypes
 import models.requests.DataRequest
-import pages.{DefermentAccountPage, DefermentPage}
+import pages.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage, UploadAuthorityPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -50,28 +51,162 @@ trait CYAPaymentDetailsSummaryListHelper {
       case None => Seq.empty
     }
 
-    val accountNumberSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(DefermentAccountPage) match {
-      case Some(accountNumber) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.accountNumber")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = HtmlContent(accountNumber)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
+    val splitDefermentSummaryListRow: Seq[SummaryListRow] =
+      (request.userAnswers.get(SplitPaymentPage), request.dutyType) match {
+        case (Some(splitDeferment), SelectedDutyTypes.Both) =>
+          val isSplitDeferment = if (splitDeferment) messages("site.yes") else messages("site.no")
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(messages("cya.splitDeferment")),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(isSplitDeferment)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
             )
           )
-        )
-      case None => Seq.empty
+        case _ => Seq.empty
+      }
+
+    val accountNumberSummaryListRow: Seq[SummaryListRow] = {
+      val accountNumberContent = if(request.isRepFlow) messages("cya.repAccountNumber") else messages("cya.importerAccountNumber")
+      (request.userAnswers.get(DefermentAccountPage), request.dutyType, request.userAnswers.get(SplitPaymentPage)) match {
+        case (Some(accountNumber), SelectedDutyTypes.Both, Some(false)) =>
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(accountNumberContent),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(accountNumber)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case (Some(accountNumber), _, None) =>
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(accountNumberContent),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(accountNumber)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case _ => Seq.empty
+      }
     }
 
-    val rows = defermentTypeSummaryListRow ++ accountNumberSummaryListRow
+    val accountOwnerSummaryListRow: Seq[SummaryListRow] = {
+      val accountOwnerContent = request.userAnswers.get(DefermentTypePage) match {
+        case Some(value) if value == "A" => messages("cya.myDefermentAccount")
+        case Some(value) if value == "B" => messages("cya.importerAuthority")
+        case _ => messages("cya.importerStandingAuthority")
+      }
+      (request.userAnswers.get(DefermentTypePage), request.dutyType, request.userAnswers.get(SplitPaymentPage)) match {
+        case (Some(_), SelectedDutyTypes.Both, Some(false)) =>
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(messages("cya.accountOwner")),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(accountOwnerContent)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case (Some(_), _, None) =>
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(messages("cya.accountOwner")),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(accountOwnerContent)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case _ => Seq.empty
+      }
+    }
+
+    val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
+      (request.userAnswers.get(UploadAuthorityPage), request.dutyType, request.userAnswers.get(SplitPaymentPage)) match {
+        case (Some(file), SelectedDutyTypes.Both, Some(false)) =>
+          val fileName = file.map (doc => doc.file.fileName).head
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(messages("cya.proofOfAuth")),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(fileName)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case (Some(file), _, None) =>
+          val fileName = file.map (doc => doc.file.fileName).head
+          Seq(
+            SummaryListRow(
+              key = Key(
+                content = Text(messages("cya.proofOfAuth")),
+                classes = "govuk-!-width-one-third"
+              ),
+              value = Value(
+                content = HtmlContent(fileName)
+              ),
+              actions = Some(Actions(
+                items = Seq(
+                  ActionItem("Url", Text(messages("cya.change")))
+                ))
+              )
+            )
+          )
+        case _ => Seq.empty
+      }
+    }
+
+    val rows = defermentTypeSummaryListRow ++
+      splitDefermentSummaryListRow ++
+      accountNumberSummaryListRow ++
+      accountOwnerSummaryListRow ++
+      proofOfAuthSummaryListRow
 
 
     if (defermentTypeSummaryListRow.nonEmpty) {
