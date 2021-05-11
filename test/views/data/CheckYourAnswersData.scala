@@ -381,34 +381,12 @@ object CheckYourAnswersData {
     )
   )
 
-  val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.paymentInformation,
-    SummaryList(
-      classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.payingByDeferment),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            HtmlContent("No")
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
-        )
-      )
-    )
-  )
 
   val answers: Seq[CYASummaryList] = Seq(
     importerDetailsAnswers,
     entryDetailsAnswers,
     underpaymentDetailsAnswers,
-    yourDetailsAnswers,
-    paymentDetailsAnswers
+    yourDetailsAnswers
   )
 
   def buildAddress(address: ContactAddress) =
