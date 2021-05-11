@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
+//noinspection ScalaStyle
 trait CYADefermentDutyDetailsSummaryListHelper {
 
   def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -81,6 +82,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     }
 
     val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
+
+      val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+
+
       val filterDan = request.userAnswers.get(UploadAuthorityPage).get.filter(defermentAccount =>
         defermentAccount.dan == request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse("") &&
           defermentAccount.dutyType == SelectedDutyTypes.Duty)
