@@ -92,8 +92,8 @@ entryDetails.entryDate.error.past = Entry date must be today or in the past
 # User Type Page
 userType.pageTitle = Importer or representative?
 userType.heading = Are you the importer or their representative?
-userType.importer = Importer
-userType.representative = Representative
+userType.importer = I am the importer
+userType.representative = I am a representative of the importer
 userType.error.required = Select if you are the importer or their representative
 
 # Number of entries page
