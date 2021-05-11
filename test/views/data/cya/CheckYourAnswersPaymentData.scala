@@ -17,7 +17,6 @@
 package views.data.cya
 
 import messages.CYAMessages
-import models.ContactDetails
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -26,21 +25,38 @@ import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersPaymentData {
   val changeUrl = "Url"
-  val contactDetails = ContactDetails("First Second", "email@email.com", "1234567890")
+  val payingByOther ="By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
+  val payingByDeferment ="By duty deferment"
+  val accountNumberDuty = "1284958"
+  val danTypeB = "The importer’s account and I have authority to use it"
+  val dutyFileExample = "DutyFileExamplee"
 
 
   val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.paymentInformation,
+    CYAMessages.paymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.payingByDeferment),
+            Text(CYAMessages.paymentMethod),
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent("No")
+            HtmlContent(payingByDeferment)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.splitDeferment),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent("Yes")
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -51,9 +67,61 @@ object CheckYourAnswersPaymentData {
     )
   )
 
+  val defermentDutyAnswers: CYASummaryList = cya.CYASummaryList(
+    CYAMessages.defermentInfoDuty,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.repAccountNumber),
+            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            HtmlContent(accountNumberDuty),
+            classes = "govuk-!-padding-bottom-0"
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          ),
+            classes = "govuk-!-padding-bottom-0"
+          )),
+          classes = "govuk-summary-list__row--no-border"
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.accountOwner),
+            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+          ),
+          value = Value(
+            HtmlContent(danTypeB),
+            classes = "govuk-!-padding-top-0"
+
+          )
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.proofOfAuthority),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(dutyFileExample)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )
+          ))
+        )
+      )
+    )
+  )
+
   val answers: Seq[CYASummaryList] = Seq(
 
-    paymentDetailsAnswers
+    paymentDetailsAnswers,
+      defermentDutyAnswers
   )
 
 }

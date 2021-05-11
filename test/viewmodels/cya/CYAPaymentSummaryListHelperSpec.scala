@@ -19,10 +19,11 @@ package viewmodels.cya
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UnderpaymentReason, UserAnswers, UserType}
+import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, SelectedDutyTypes, UnderpaymentReason, UploadAuthority, UserAnswers, UserType}
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
+import views.data.cya.CheckYourAnswersPaymentData.{answers, paymentDetailsAnswers}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -49,7 +50,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
       .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
       .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
-      .set(DefermentPage, false).success.value
+      .set(DefermentPage, true).success.value
       .set(ImporterEORIExistsPage, true).success.value
       .set(ImporterEORINumberPage, "GB345834921000").success.value
       .set(ImporterVatRegisteredPage, true).success.value
@@ -57,12 +58,26 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
       .set(ImporterNamePage, "First Second").success.value
       .set(ImporterAddressPage, ContactAddress(
         "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-      .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+      .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
         boxNumber = 22, original = "50", amended = "60")
       )).success.value
       .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
+      .set(SplitPaymentPage, true).success.value
+      .set(DefermentAccountPage, "1284958").success.value
+      .set(DefermentTypePage, "B").success.value
+      .set(UploadAuthorityPage, Seq(UploadAuthority(
+        "1284958",
+        SelectedDutyTypes.Duty,
+        FileUploadInfo(
+          "DutyFileExample.pdf",
+          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+          LocalDateTime.now,
+          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "application/pdf")))
+      ).success.value
+
 
 
     implicit lazy val dataRequest = DataRequest(
@@ -79,8 +94,15 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
 
   }
 
-  "buildPaymentDetails" should {
+  "buildPaymentDetails" when {
 
+    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        buildPaymentDetailsSummaryList mustBe Seq(answers)
+      }
+
+    }
 
 
   }
