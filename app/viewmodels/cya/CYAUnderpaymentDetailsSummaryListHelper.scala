@@ -39,7 +39,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(displayMoney(amountOwed))
+              content = Text(displayMoney(amountOwed))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -61,7 +61,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(messages(numberOfReasons, underpaymentReason.size))
+              content = Text(messages(numberOfReasons, underpaymentReason.size))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -83,7 +83,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(furtherInformation)
+              content = Text(furtherInformation)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -104,7 +104,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(extraInformation)
+              content = Text(extraInformation)
             ),
             actions = Some(Actions(
               items = Seq(

@@ -21,9 +21,8 @@ import models.NumberOfEntries
 import models.requests.DataRequest
 import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 import play.api.i18n.Messages
-import play.twirl.api.Html
-import uk.gov.hmrc.govukfrontend.views.Aliases.{Content, SummaryList}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 
@@ -41,7 +40,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(numberOfEntriesValue)
+              content = Text(numberOfEntriesValue)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -63,7 +62,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
             ),
             value = Value(
-              content = HtmlContent(entryDetails.epu),
+              content = Text(entryDetails.epu),
               classes = "govuk-!-padding-bottom-0"
             ),
             actions = Some(Actions(
@@ -90,7 +89,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
             ),
             value = Value(
-              content = HtmlContent(entryDetails.entryNumber),
+              content = Text(entryDetails.entryNumber),
               classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
             ),
             classes = "govuk-summary-list__row--no-border"
@@ -109,7 +108,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third govuk-!-padding-top-0"
             ),
             value = Value(
-              content = HtmlContent(entryDateFormat),
+              content = Text(entryDateFormat),
               classes = "govuk-!-padding-top-0"
             )
           )
@@ -127,7 +126,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(acceptanceDateValue)
+              content = Text(acceptanceDateValue)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -153,7 +152,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(oneCustomsProcedureCode)
+              content = Text(oneCustomsProcedureCode)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -175,7 +174,7 @@ trait CYAEntryDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(customsProcedureCode)
+              content = Text(customsProcedureCode)
             ),
             actions = Some(Actions(
               items = Seq(

@@ -19,12 +19,15 @@ package viewmodels.cya
 import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 
 trait CYAImporterDetailsSummaryListHelper {
+
+  private def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
   def buildImporterDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val importerNameSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterNamePage) match {
@@ -36,7 +39,7 @@ trait CYAImporterDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(importerName)
+              content = Text(importerName)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -52,26 +55,21 @@ trait CYAImporterDetailsSummaryListHelper {
     }
     val addressSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterAddressPage) match {
       case Some(address) =>
-        val addressString = address.postalCode match {
+        val addressParts: Seq[String] = address.postalCode match {
           case Some(postcode) =>
             val street = if (address.addressLine2.isDefined) {
-              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+              Seq(address.addressLine1, address.addressLine2.get)
             } else {
-              address.addressLine1 + "<br/>"
+              Seq(address.addressLine1)
             }
-            street +
-            address.city + "<br/>" +
-            postcode + "<br/>" +
-            address.countryCode
+            street ++ Seq(address.city, postcode, address.countryCode)
           case None =>
             val street = if (address.addressLine2.isDefined) {
-              address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+              Seq(address.addressLine1, address.addressLine2.get)
             } else {
-              address.addressLine1 + "<br/>"
+              Seq(address.addressLine1)
             }
-            street +
-            address.city + "<br/>" +
-            address.countryCode
+            street ++ Seq(address.city, address.countryCode)
         }
         Seq(
           SummaryListRow(
@@ -80,7 +78,7 @@ trait CYAImporterDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(addressString)
+              content = HtmlContent(encodeMultilineText(addressParts))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -105,7 +103,7 @@ trait CYAImporterDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(eoriNumberExists)
+              content = Text(eoriNumberExists)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -125,7 +123,7 @@ trait CYAImporterDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(eoriNumber)
+              content = Text(eoriNumber)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -146,7 +144,7 @@ trait CYAImporterDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(isVatRegistered)
+              content = Text(isVatRegistered)
             ),
             actions = Some(Actions(
               items = Seq(

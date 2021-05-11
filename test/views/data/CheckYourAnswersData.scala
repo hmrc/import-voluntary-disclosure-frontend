@@ -18,8 +18,7 @@ package views.data
 
 import messages.CYAMessages
 import models.{ContactAddress, ContactDetails}
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 import viewmodels.cya.CYASummaryList
@@ -60,7 +59,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(fullName)
+            Text(fullName)
           ),
           actions = Some(
             Actions(
@@ -100,7 +99,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -113,7 +112,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(eoriNumber)
+            Text(eoriNumber)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -126,7 +125,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -148,7 +147,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(amount)
+            Text(amount)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -163,7 +162,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(reason)
+            Text(reason)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -178,7 +177,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -193,7 +192,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(extraInformation)
+            Text(extraInformation)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -232,7 +231,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(userType),
+            Text(userType),
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -287,7 +286,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(numberOfEntries)
+            Text(numberOfEntries)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -302,7 +301,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
           ),
           value = Value(
-            HtmlContent(epu),
+            Text(epu),
             classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(items = Seq(
@@ -322,7 +321,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
-            HtmlContent(entryNumber),
+            Text(entryNumber),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           actions = None,
@@ -334,7 +333,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-top-0"
           ),
           value = Value(
-            HtmlContent(entryDate),
+            Text(entryDate),
             classes = "govuk-!-padding-top-0"
           ),
           actions = None
@@ -345,7 +344,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(acceptanceDate)
+            Text(acceptanceDate)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -361,7 +360,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -376,7 +375,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(cpc)
+            Text(cpc)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -400,7 +399,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent("No")
+            Text("No")
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,

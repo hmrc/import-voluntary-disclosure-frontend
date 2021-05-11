@@ -20,7 +20,7 @@ import models.requests.DataRequest
 import pages.DefermentPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
@@ -37,7 +37,7 @@ trait CYAPaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(payingByDeferment)
+              content = Text(payingByDeferment)
             ),
             actions = Some(Actions(
               items = Seq(
