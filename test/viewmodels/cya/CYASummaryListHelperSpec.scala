@@ -32,7 +32,6 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
 
   trait Test {
 
-
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
       .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
       .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
@@ -47,7 +46,7 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
         "First Second",
         "email@email.com",
         "1234567890")).success.value
-      .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+      .set(TraderAddressPage, ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")).success.value
       .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
       .set(DefermentPage, false).success.value
@@ -57,17 +56,13 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       .set(UserTypePage, UserType.Representative).success.value
       .set(ImporterNamePage, "First Second").success.value
       .set(ImporterAddressPage, ContactAddress(
-        "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+        "21 Street", Some("Mayfair"), "London", None, "UK")).success.value
       .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
       .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
         boxNumber = 22, original = "50", amended = "60")
       )).success.value
       .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
-
-
-
-
 
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
