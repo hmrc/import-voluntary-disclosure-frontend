@@ -28,10 +28,15 @@ import viewmodels.cya
 trait CYADefermentImportVATDetailsSummaryListHelper {
 
   def buildDefermentImportVatSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+    val paymentMethod = request.userAnswers.get(DefermentPage)
+    val splitPayment = request.userAnswers.get(SplitPaymentPage)
+    val dan = request.userAnswers.get(AdditionalDefermentNumberPage)
+    val defermentType = request.userAnswers.get(AdditionalDefermentTypePage)
+    val uploadAuthority = request.userAnswers.get(UploadAuthorityPage)
 
     val accountNumberSummaryListRow: Seq[SummaryListRow] = {
-      (request.userAnswers.get(AdditionalDefermentNumberPage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(accountNumber), Some(true)) =>
+      dan match {
+        case Some(accountNumber) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -56,13 +61,13 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
     }
 
     val accountOwnerSummaryListRow: Seq[SummaryListRow] = {
-      val accountOwnerContent = request.userAnswers.get(AdditionalDefermentTypePage) match {
-        case Some(value) if value == "A" => messages("cya.myDefermentAccount")
-        case Some(value) if value == "B" => messages("cya.importerAuthority")
+      val accountOwnerContent = defermentType match {
+        case Some("A") => messages("cya.myDefermentAccount")
+        case Some("B") => messages("cya.importerAuthority")
         case _ => messages("cya.importerStandingAuthority")
       }
-      (request.userAnswers.get(DefermentTypePage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(_), Some(true)) =>
+      defermentType match {
+        case Some(_) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -80,14 +85,13 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
     }
 
     val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
-      val filterDan = request.userAnswers.get(UploadAuthorityPage).get.filter(defermentAccount =>
-        defermentAccount.dan == request.userAnswers.get(DefermentAccountPage).getOrElse("") &&
-          defermentAccount.dutyType == SelectedDutyTypes.Vat)
+      val fileName = (uploadAuthority, dan) match {
+        case (Some(files), Some(dan)) => files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+        case _ => "No authority file found"
+      }
 
-      val getFileNames = filterDan.map(doc => doc.file.fileName)
-      val fileNameValue = getFileNames.headOption.getOrElse("")
-      (request.userAnswers.get(UploadAuthorityPage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(file), Some(true)) if !fileNameValue.isEmpty =>
+      (uploadAuthority, defermentType) match {
+        case (Some(_), Some("B")) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -95,7 +99,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third"
               ),
               value = Value(
-                content = HtmlContent(fileNameValue)
+                content = HtmlContent(fileName)
               ),
               actions = Some(Actions(
                 items = Seq(
@@ -108,12 +112,16 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
       }
     }
 
-    val rows = accountNumberSummaryListRow ++
-      accountOwnerSummaryListRow ++
-      proofOfAuthSummaryListRow
+    val rows = (request.isRepFlow, paymentMethod, splitPayment, request.dutyType) match {
+      case (true, Some(true), Some(true), SelectedDutyTypes.Both) =>
+        accountNumberSummaryListRow ++
+          accountOwnerSummaryListRow ++
+          proofOfAuthSummaryListRow
+      case _ => Seq.empty
+    }
 
 
-    if (accountNumberSummaryListRow.nonEmpty) {
+    if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
           messages(messages("cya.defermentInfoImportVAT")),

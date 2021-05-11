@@ -25,14 +25,18 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
-//noinspection ScalaStyle
 trait CYADefermentDutyDetailsSummaryListHelper {
 
   def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+    val paymentMethod = request.userAnswers.get(DefermentPage)
+    val splitPayment = request.userAnswers.get(SplitPaymentPage)
+    val dan = request.userAnswers.get(DefermentAccountPage)
+    val defermentType = request.userAnswers.get(DefermentTypePage)
+    val uploadAuthority = request.userAnswers.get(UploadAuthorityPage)
 
     val accountNumberSummaryListRow: Seq[SummaryListRow] = {
-      (request.userAnswers.get(DefermentAccountPage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(accountNumber), Some(true)) =>
+      dan match {
+        case Some(accountNumber) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -58,13 +62,13 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     }
 
     val accountOwnerSummaryListRow: Seq[SummaryListRow] = {
-      val accountOwnerContent = request.userAnswers.get(DefermentTypePage) match {
-        case Some(value) if value == "A" => messages("cya.myDefermentAccount")
-        case Some(value) if value == "B" => messages("cya.importerAuthority")
+      val accountOwnerContent = defermentType match {
+        case Some("A") => messages("cya.myDefermentAccount")
+        case Some("B") => messages("cya.importerAuthority")
         case _ => messages("cya.importerStandingAuthority")
       }
-      (request.userAnswers.get(DefermentTypePage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(_), Some(true)) =>
+      defermentType match {
+        case Some(_) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -82,18 +86,13 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     }
 
     val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
+      val fileName = (uploadAuthority, dan) match {
+        case (Some(files), Some(dan)) => files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+        case _ => "No authority file found"
+      }
 
-      val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
-
-
-      val filterDan = request.userAnswers.get(UploadAuthorityPage).get.filter(defermentAccount =>
-        defermentAccount.dan == request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse("") &&
-          defermentAccount.dutyType == SelectedDutyTypes.Duty)
-
-      val getFileNames = filterDan.map(doc => doc.file.fileName)
-      val fileNameValue = getFileNames.headOption.getOrElse("")
-      (request.userAnswers.get(UploadAuthorityPage), request.userAnswers.get(SplitPaymentPage)) match {
-        case (Some(file), Some(true)) if !fileNameValue.isEmpty =>
+      (uploadAuthority, defermentType) match {
+        case (Some(_), Some("B")) =>
           Seq(
             SummaryListRow(
               key = Key(
@@ -101,7 +100,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third"
               ),
               value = Value(
-                content = HtmlContent(fileNameValue)
+                content = HtmlContent(fileName)
               ),
               actions = Some(Actions(
                 items = Seq(
@@ -114,12 +113,15 @@ trait CYADefermentDutyDetailsSummaryListHelper {
       }
     }
 
-    val rows = accountNumberSummaryListRow ++
-      accountOwnerSummaryListRow ++
-      proofOfAuthSummaryListRow
+    val rows = (request.isRepFlow, paymentMethod, splitPayment, request.dutyType) match {
+      case (true, Some(true), Some(true), SelectedDutyTypes.Both) =>
+        accountNumberSummaryListRow ++
+          accountOwnerSummaryListRow ++
+          proofOfAuthSummaryListRow
+      case _ => Seq.empty
+    }
 
-
-    if (accountNumberSummaryListRow.nonEmpty) {
+    if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
           messages(messages("cya.defermentInfoDuty")),
