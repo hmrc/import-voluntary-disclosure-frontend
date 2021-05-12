@@ -68,6 +68,7 @@ object CYAMessages extends BaseMessages {
 
   val paymentDetails = "Payment details"
   val defermentInfoDuty = "Deferment account details for duty owed"
+  val defermentInfoVAT = "Deferment account details for import VAT owed"
   val paymentMethod = "Payment method"
   val splitDeferment = "Split deferment payment?"
   val repAccountNumber = "Account number"

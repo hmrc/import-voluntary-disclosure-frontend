@@ -27,8 +27,10 @@ object CheckYourAnswersPaymentData {
   val payingByOther = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
   val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
+  val accountNumberVat = "5293747"
   val danTypeB = "The importer’s account and I have authority to use it"
   val dutyFileExample = "DutyFileExample.pdf"
+  val vatFileExample = "VATFileExample.pdf"
 
 
   val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
@@ -117,10 +119,63 @@ object CheckYourAnswersPaymentData {
     )
   )
 
+  val defermentVATAnswers: CYASummaryList = cya.CYASummaryList(
+    CYAMessages.defermentInfoVAT,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.repAccountNumber),
+            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+          ),
+          value = Value(
+            Text(accountNumberVat),
+            classes = "govuk-!-padding-bottom-0"
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          ),
+            classes = "govuk-!-padding-bottom-0"
+          )),
+          classes = "govuk-summary-list__row--no-border"
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.accountOwner),
+            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+          ),
+          value = Value(
+            Text(danTypeB),
+            classes = "govuk-!-padding-top-0"
+
+          )
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.proofOfAuthority),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(vatFileExample)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(changeUrl,
+              Text(CYAMessages.change))
+          )
+          ))
+        )
+      )
+    )
+  )
+
+
   val answers: Seq[CYASummaryList] = Seq(
 
     paymentDetailsAnswers,
-    defermentDutyAnswers
+    defermentDutyAnswers,
+    defermentVATAnswers
   )
 
 }

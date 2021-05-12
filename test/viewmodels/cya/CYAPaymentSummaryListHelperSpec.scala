@@ -67,7 +67,8 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
       .set(SplitPaymentPage, true).success.value
       .set(DefermentAccountPage, "1284958").success.value
       .set(DefermentTypePage, "B").success.value
-      .set(UploadAuthorityPage, Seq(UploadAuthority(
+      .set(UploadAuthorityPage, Seq(
+        UploadAuthority(
         "1284958",
         SelectedDutyTypes.Duty,
         FileUploadInfo(
@@ -75,8 +76,19 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
           LocalDateTime.now,
           "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "application/pdf")))
+          "application/pdf")),
+        UploadAuthority(
+          "5293747",
+          SelectedDutyTypes.Duty,
+          FileUploadInfo(
+            "VATFileExample.pdf",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            LocalDateTime.now,
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "application/pdf")))
       ).success.value
+      .set(AdditionalDefermentNumberPage, "5293747").success.value
+      .set(AdditionalDefermentTypePage, "B").success.value
 
 
     implicit lazy val dataRequest = DataRequest(
@@ -117,4 +129,17 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
 
   }
 
+  "buildDefermentVAT" when {
+
+    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers)
+      }
+
+    }
+
   }
+
+
+}
