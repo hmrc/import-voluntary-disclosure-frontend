@@ -51,6 +51,13 @@ class MappingsSpec extends WordSpec with MustMatchers with OptionValues with Map
       result.get mustEqual "foobar"
     }
 
+    "strip out null characters from a string" in {
+      val input = "a" + "\u0000" + "b"
+      val cleanedInput = "ab"
+      val result = testForm.bind(Map("value" -> input))
+      result.get mustEqual cleanedInput
+    }
+
     "not bind an empty string" in {
       val result = testForm.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "error.required"))

@@ -29,8 +29,14 @@ trait Formatters {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
         case None => Left(Seq(FormError(key, errorKey)))
-        case Some(x) if x.trim.length == 0 => Left(Seq(FormError(key, errorKey)))
-        case Some(s) => Right(s.trim)
+        case Some(s) => {
+          val sanitisedInput = s.replace("\u0000", "").trim
+          if (sanitisedInput.isEmpty) {
+            Left(Seq(FormError(key, errorKey)))
+          } else {
+            Right(sanitisedInput)
+          }
+        }
       }
 
     override def unbind(key: String, value: String): Map[String, String] =
