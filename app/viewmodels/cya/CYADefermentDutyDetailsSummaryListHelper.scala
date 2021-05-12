@@ -21,7 +21,7 @@ import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 
@@ -44,7 +44,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
               ),
               value = Value(
-                content = HtmlContent(accountNumber),
+                content = Text(accountNumber),
                 classes = "govuk-!-padding-bottom-0"
               ),
               actions = Some(Actions(
@@ -76,7 +76,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third govuk-!-padding-top-0"
               ),
               value = Value(
-                content = HtmlContent(accountOwnerContent),
+                content = Text(accountOwnerContent),
                 classes = "govuk-!-padding-top-0"
               )
             )
@@ -100,7 +100,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
                 classes = "govuk-!-width-one-third"
               ),
               value = Value(
-                content = HtmlContent(fileName)
+                content = Text(fileName)
               ),
               actions = Some(Actions(
                 items = Seq(

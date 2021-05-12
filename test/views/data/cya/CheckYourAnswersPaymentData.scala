@@ -17,7 +17,6 @@
 package views.data.cya
 
 import messages.CYAMessages
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
@@ -25,11 +24,11 @@ import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersPaymentData {
   val changeUrl = "Url"
-  val payingByOther ="By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
-  val payingByDeferment ="By duty deferment"
+  val payingByOther = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
+  val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
   val danTypeB = "The importer’s account and I have authority to use it"
-  val dutyFileExample = "DutyFileExamplee"
+  val dutyFileExample = "DutyFileExample.pdf"
 
 
   val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
@@ -43,7 +42,7 @@ object CheckYourAnswersPaymentData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(payingByDeferment)
+            Text(payingByDeferment)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -56,7 +55,7 @@ object CheckYourAnswersPaymentData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent("Yes")
+            Text("Yes")
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -78,7 +77,7 @@ object CheckYourAnswersPaymentData {
             classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
           ),
           value = Value(
-            HtmlContent(accountNumberDuty),
+            Text(accountNumberDuty),
             classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(items = Seq(
@@ -95,7 +94,7 @@ object CheckYourAnswersPaymentData {
             classes = "govuk-!-width-one-third govuk-!-padding-top-0"
           ),
           value = Value(
-            HtmlContent(danTypeB),
+            Text(danTypeB),
             classes = "govuk-!-padding-top-0"
 
           )
@@ -106,7 +105,7 @@ object CheckYourAnswersPaymentData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(dutyFileExample)
+            Text(dutyFileExample)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -121,7 +120,7 @@ object CheckYourAnswersPaymentData {
   val answers: Seq[CYASummaryList] = Seq(
 
     paymentDetailsAnswers,
-      defermentDutyAnswers
+    defermentDutyAnswers
   )
 
 }

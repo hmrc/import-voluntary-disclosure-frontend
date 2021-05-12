@@ -23,7 +23,7 @@ import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, Num
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import views.data.cya.CheckYourAnswersPaymentData.{answers, paymentDetailsAnswers}
+import views.data.cya.CheckYourAnswersPaymentData._
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -79,7 +79,6 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
       ).success.value
 
 
-
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -99,12 +98,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
     "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildPaymentDetailsSummaryList mustBe Seq(answers)
+        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers)
       }
 
     }
 
+  }
+
+  "buildDefermentDuty" when {
+
+    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers)
+      }
+
+    }
 
   }
 
-}
+  }
