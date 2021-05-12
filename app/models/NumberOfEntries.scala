@@ -34,11 +34,11 @@ object NumberOfEntries extends Enumerable.Implicits {
     OneEntry, MoreThanOneEntry
   )
 
-  def options(form: Form[_], request: Boolean)(implicit messages: Messages): Seq[RadioItem] = values.map {
+  def options(form: Form[_], isRepFlow: Boolean)(implicit messages: Messages): Seq[RadioItem] = values.map {
 
     val hintMap = Map[NumberOfEntries, Option[Hint]](
       OneEntry -> None,
-      if(request) {
+      if(isRepFlow) {
         MoreThanOneEntry -> Some(hint(s"numberOfEntries.moreThanOneEntry.hint"))
       } else {
         MoreThanOneEntry -> None
