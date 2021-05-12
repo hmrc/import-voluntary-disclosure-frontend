@@ -19,11 +19,10 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.NumberOfEntriesFormProvider
-
 import javax.inject.{Inject, Singleton}
+import models.NumberOfEntries
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.DataRequest
-import models.{NumberOfEntries, UserAnswers}
 import pages.NumberOfEntriesPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -53,13 +52,13 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       formProvider().fill
     }
 
-    Future.successful(Ok(view(form, backLink())))
+    Future.successful(Ok(view(form, request.isRepFlow, backLink())))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.isRepFlow, backLink()))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesPage, value))
