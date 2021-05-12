@@ -64,7 +64,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages(numberOfFiles, fileNames.length)),
         HtmlContent(encodeMultilineText(fileNames)),
-        ActionItem("Url", Text(messages("cya.change")))
+        Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
   }
@@ -74,7 +74,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.extraInformation")),
         Text(extraInformation),
-        ActionItem("Url", Text(messages("cya.change")))
+        Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
   }
@@ -85,7 +85,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.hasFurtherInformation")),
         Text(furtherInformation),
-        ActionItem("Url", Text(messages("cya.change")))
+        Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
   }
@@ -96,7 +96,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.reasonForUnderpayment")),
         Text(messages(numberOfReasons, underpaymentReason.size)),
-        ActionItem("Url", Text(messages("cya.viewSummary")))
+        Some(ActionItem("Url", Text(messages("cya.viewSummary"))))
       )
     }
   }
@@ -107,14 +107,18 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.underpaymentDetails.owedToHmrc")),
         Text(displayMoney(amountOwed)),
-        ActionItem("Url", Text(messages("cya.viewSummary")))
+        Some(ActionItem("Url", Text(messages("cya.viewSummary"))))
       )
     }
   }
 
-  private def createRow(keyText: Content, valueContent: Content, action: ActionItem): SummaryListRow = SummaryListRow(
-    key = Key(content = keyText, classes = "govuk-!-width-one-third"),
-    value = Value(content = valueContent),
-    actions = Some(Actions(items = Seq(action)))
-  )
+  private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
+                        columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
+    SummaryListRow(
+      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
+      value = Value(content = valueContent, classes = columnClasses),
+      actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
+      classes = rowClasses
+    )
+  }
 }

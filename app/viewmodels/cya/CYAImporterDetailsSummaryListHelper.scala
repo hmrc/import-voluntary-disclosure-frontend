@@ -16,12 +16,13 @@
 
 package viewmodels.cya
 
+import models.UserAnswers
 import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 
@@ -30,138 +31,16 @@ trait CYAImporterDetailsSummaryListHelper {
   private def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
   def buildImporterDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val importerNameSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterNamePage) match {
-      case Some(importerName) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.name")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(importerName)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.routes.ImporterNameController.onLoad().url,
-                  messages("cya.importerName.change")
-                )
-              ))
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-    val addressSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterAddressPage) match {
-      case Some(address) =>
-        val addressParts: Seq[String] = address.postalCode match {
-          case Some(postcode) =>
-            val street = if (address.addressLine2.isDefined) {
-              Seq(address.addressLine1, address.addressLine2.get)
-            } else {
-              Seq(address.addressLine1)
-            }
-            street ++ Seq(address.city, postcode, address.countryCode)
-          case None =>
-            val street = if (address.addressLine2.isDefined) {
-              Seq(address.addressLine1, address.addressLine2.get)
-            } else {
-              Seq(address.addressLine1)
-            }
-            street ++ Seq(address.city, address.countryCode)
-        }
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.address")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = HtmlContent(encodeMultilineText(addressParts))
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.routes.AddressLookupController.initialiseImporterJourney().url,
-                  messages("cya.importerAddress.change")
-                )
-              )
-            )
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-    val eoriNumberExistsSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterEORIExistsPage) match {
-      case Some(eoriExists) =>
-        val eoriNumberExists = if (eoriExists) messages("site.yes") else messages("site.no")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.eoriNumberExists")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(eoriNumberExists)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-    val eoriNumberSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterEORINumberPage) match {
-      case Some(eoriNumber) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.eoriNumber")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(eoriNumber)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-    val vatRegisteredSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(ImporterVatRegisteredPage) match {
-      case Some(registered) =>
-        val isVatRegistered = if (registered) messages("site.yes") else messages("site.no")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.vatRegistered")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(isVatRegistered)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
     if (request.isRepFlow) {
-      val rows = importerNameSummaryListRow ++
-        addressSummaryListRow ++
-        eoriNumberExistsSummaryListRow ++
-        eoriNumberSummaryListRow ++
-        vatRegisteredSummaryListRow
+      val answers = request.userAnswers
+      val rows = Seq(
+        buildImporterNameSummaryListRow(answers),
+        buildAddressSummaryListRow(answers),
+        buildEoriNumberExistsSummaryListRow(answers),
+        buildEoriNumberSummaryListRow(answers),
+        buildVatRegisteredSummaryListRow(answers)
+      ).flatten
+
       if (rows.nonEmpty) {
         Seq(cya.CYASummaryList(
           messages(messages("cya.aboutImporter")),
@@ -177,4 +56,85 @@ trait CYAImporterDetailsSummaryListHelper {
       Seq.empty
     }
   }
+
+  private def buildImporterNameSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ImporterNamePage).map { importerName =>
+      createRow(
+        keyText = Text(messages("cya.name")),
+        valueContent = Text(importerName),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.ImporterNameController.onLoad().url,
+          messages("cya.importerName.change")
+        ))
+      )
+    }
+
+  private def buildAddressSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ImporterAddressPage).map { address =>
+      val addressParts: Seq[String] = address.postalCode match {
+        case Some(postcode) =>
+          val street = if (address.addressLine2.isDefined) {
+            Seq(address.addressLine1, address.addressLine2.get)
+          } else {
+            Seq(address.addressLine1)
+          }
+          street ++ Seq(address.city, postcode, address.countryCode)
+        case None =>
+          val street = if (address.addressLine2.isDefined) {
+            Seq(address.addressLine1, address.addressLine2.get)
+          } else {
+            Seq(address.addressLine1)
+          }
+          street ++ Seq(address.city, address.countryCode)
+      }
+      createRow(
+        keyText = Text(messages("cya.address")),
+        valueContent = HtmlContent(encodeMultilineText(addressParts)),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+          messages("cya.importerAddress.change")
+        ))
+      )
+    }
+
+  private def buildEoriNumberExistsSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ImporterEORIExistsPage).map { eoriExists =>
+      val eoriNumberExists = if (eoriExists) messages("site.yes") else messages("site.no")
+      createRow(
+        keyText = Text(messages("cya.eoriNumberExists")),
+        valueContent = Text(eoriNumberExists),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+  private def buildEoriNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ImporterEORINumberPage).map { eoriNumber =>
+      createRow(
+        keyText = Text(messages("cya.eoriNumber")),
+        valueContent = Text(eoriNumber),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+  private def buildVatRegisteredSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ImporterVatRegisteredPage).map { registered =>
+      val isVatRegistered = if (registered) messages("site.yes") else messages("site.no")
+      createRow(
+        keyText = Text(messages("cya.vatRegistered")),
+        valueContent = Text(isVatRegistered),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+
+  private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
+                        columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
+    SummaryListRow(
+      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
+      value = Value(content = valueContent, classes = columnClasses),
+      actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
+      classes = rowClasses
+    )
+  }
+
 }

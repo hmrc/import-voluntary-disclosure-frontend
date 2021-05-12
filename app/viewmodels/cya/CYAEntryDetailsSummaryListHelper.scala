@@ -133,9 +133,8 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
                         columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
-    val keyClasses = if (columnClasses.isEmpty) "govuk-!-width-one-third" else s"govuk-!-width-one-third ${columnClasses}"
     SummaryListRow(
-      key = Key(content = keyText, classes = keyClasses),
+      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
       value = Value(content = valueContent, classes = columnClasses),
       actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
       classes = rowClasses
