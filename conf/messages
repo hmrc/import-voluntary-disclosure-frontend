@@ -590,6 +590,7 @@ cya.eoriNumberExists = Importer has EORI number?
 cya.eoriNumber = Importer EORI number
 cya.underpaymentDetails = Underpayment details
 cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
+cya.underpaymentDetails.owedToHmrc.change = View underpayments summary
 cya.viewSummary = View summary
 cya.reasonForUnderpayment = Reason for underpayment
 cya.numberOfUnderpaymentsSingle = 1 reason given
