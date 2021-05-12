@@ -105,41 +105,74 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
 
   }
 
-  "buildPaymentDetails" when {
+  "Representative wants to split deferment payment and pay by DAN type B for both accounts" when {
 
-    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+    "buildPaymentDetails" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers)
+        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodSplitRow, splitDefermentYesRow)))
       }
+    }
 
+    "buildDefermentDuty" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow, proofOfAuthorityRow)))
+      }
+    }
+
+    "buildDefermentVAT" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow, proofOfAuthorityAdditional)))
+      }
     }
 
   }
 
-  "buildDefermentDuty" when {
+  "Representative chooses to not pay by deferment" when {
 
-    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+    "buildPaymentDetails" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers)
-      }
+        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+          .set(DefermentPage, false).success.value
 
+        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodOtherRow)))
+      }
     }
 
   }
 
-  "buildDefermentVAT" when {
+  "Representative wants to split deferment payment and chooses DAN type A for Duty and DAN type C for VAT" when {
 
-    "Representative wants to split deferment payment and uploads proof of authority for both accounts" should {
+    "buildPaymentDetails" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers)
+        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodSplitRow, splitDefermentYesRow)))
       }
+    }
 
+    "buildDefermentDuty" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+          .set(DefermentTypePage, "A").success.value
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeARow)))
+      }
+    }
+
+    "buildDefermentVAT" should {
+
+      "produce a valid model when all answers are provided" in new Test {
+        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+          .set(AdditionalDefermentTypePage, "C").success.value
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCRow )))
+      }
     }
 
   }
+
 
 
 }

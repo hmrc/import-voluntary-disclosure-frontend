@@ -27,155 +27,220 @@ object CheckYourAnswersPaymentData {
   val payingByOther = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
   val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
-  val accountNumberVat = "5293747"
+  val accountNumberVAT = "5293747"
+  val danTypeA = "My deferment account"
   val danTypeB = "The importer’s account and I have authority to use it"
+  val danTypeC = "The importer’s account and I have standing authority to use it"
   val dutyFileExample = "DutyFileExample.pdf"
   val vatFileExample = "VATFileExample.pdf"
 
+  val paymentMethodOtherRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.paymentMethod),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text(payingByOther)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )))
+  )
 
-  val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
+  val paymentMethodSplitRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.paymentMethod),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text(payingByDeferment)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )))
+  )
+
+  val splitDefermentYesRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.splitDeferment),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text("Yes")
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )))
+  )
+
+  val splitDefermentNoRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.splitDeferment),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text("No")
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )))
+  )
+
+  val importerAccountNumberRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.importerAccountNumber),
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+    ),
+    value = Value(
+      Text(accountNumberDuty),
+      classes = "govuk-!-padding-bottom-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    ),
+      classes = "govuk-!-padding-bottom-0"
+    )),
+    classes = "govuk-summary-list__row--no-border"
+  )
+
+
+  def paymentDetailsAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
     CYAMessages.paymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.paymentMethod),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text(payingByDeferment)
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.splitDeferment),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text("Yes")
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
-        )
-      )
+      rows = rows
     )
   )
 
-  val defermentDutyAnswers: CYASummaryList = cya.CYASummaryList(
+  val repAccountNumberDutyRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.repAccountNumber),
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+    ),
+    value = Value(
+      Text(accountNumberDuty),
+      classes = "govuk-!-padding-bottom-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    ),
+      classes = "govuk-!-padding-bottom-0"
+    )),
+    classes = "govuk-summary-list__row--no-border"
+  )
+
+  val accountOwnerTypeARow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeA),
+      classes = "govuk-!-padding-top-0"
+
+    )
+  )
+
+  val accountOwnerTypeBRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeB),
+      classes = "govuk-!-padding-top-0"
+
+    )
+  )
+
+  val accountOwnerTypeCRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeC),
+      classes = "govuk-!-padding-top-0"
+
+    )
+  )
+
+  val proofOfAuthorityRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.proofOfAuthority),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text(dutyFileExample)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )
+    ))
+  )
+
+  def defermentDutyAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
     CYAMessages.defermentInfoDuty,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.repAccountNumber),
-            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
-          ),
-          value = Value(
-            Text(accountNumberDuty),
-            classes = "govuk-!-padding-bottom-0"
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          ),
-            classes = "govuk-!-padding-bottom-0"
-          )),
-          classes = "govuk-summary-list__row--no-border"
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.accountOwner),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-          ),
-          value = Value(
-            Text(danTypeB),
-            classes = "govuk-!-padding-top-0"
-
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.proofOfAuthority),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text(dutyFileExample)
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )
-          ))
-        )
-      )
+      rows = rows
     )
   )
 
-  val defermentVATAnswers: CYASummaryList = cya.CYASummaryList(
+  val repAccountNumberVATRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.repAccountNumber),
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+    ),
+    value = Value(
+      Text(accountNumberVAT),
+      classes = "govuk-!-padding-bottom-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    ),
+      classes = "govuk-!-padding-bottom-0"
+    )),
+    classes = "govuk-summary-list__row--no-border"
+  )
+
+  val proofOfAuthorityAdditional = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.proofOfAuthority),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text(vatFileExample)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(changeUrl,
+        Text(CYAMessages.change))
+    )
+    ))
+  )
+
+  def defermentVATAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
     CYAMessages.defermentInfoVAT,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.repAccountNumber),
-            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
-          ),
-          value = Value(
-            Text(accountNumberVat),
-            classes = "govuk-!-padding-bottom-0"
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          ),
-            classes = "govuk-!-padding-bottom-0"
-          )),
-          classes = "govuk-summary-list__row--no-border"
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.accountOwner),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-          ),
-          value = Value(
-            Text(danTypeB),
-            classes = "govuk-!-padding-top-0"
-
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.proofOfAuthority),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text(vatFileExample)
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )
-          ))
-        )
-      )
+      rows = rows
     )
   )
 
 
   val answers: Seq[CYASummaryList] = Seq(
 
-    paymentDetailsAnswers,
-    defermentDutyAnswers,
-    defermentVATAnswers
+    paymentDetailsAnswers(Seq(paymentMethodSplitRow, splitDefermentYesRow)),
+    defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow)),
+    defermentVATAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow))
   )
 
 }
