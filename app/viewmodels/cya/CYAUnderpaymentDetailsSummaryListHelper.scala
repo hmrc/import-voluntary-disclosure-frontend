@@ -20,6 +20,7 @@ import models.requests.DataRequest
 import pages.{FileUploadPage, HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -27,6 +28,8 @@ import viewmodels.cya
 import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
+
+  private def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
   def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val owedToHmrc: Seq[SummaryListRow] = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
@@ -39,7 +42,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(displayMoney(amountOwed))
+              content = Text(displayMoney(amountOwed))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -61,7 +64,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(messages(numberOfReasons, underpaymentReason.size))
+              content = Text(messages(numberOfReasons, underpaymentReason.size))
             ),
             actions = Some(Actions(
               items = Seq(
@@ -83,7 +86,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(furtherInformation)
+              content = Text(furtherInformation)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -104,7 +107,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(extraInformation)
+              content = Text(extraInformation)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -127,7 +130,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
               classes = "govuk-!-width-one-third"
             ),
             value = Value(
-              content = HtmlContent(fileNames.mkString("<br/>"))
+              content = HtmlContent(encodeMultilineText(fileNames))
             ),
             actions = Some(Actions(
               items = Seq(
