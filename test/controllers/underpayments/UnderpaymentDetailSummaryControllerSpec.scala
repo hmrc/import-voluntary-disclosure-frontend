@@ -22,6 +22,7 @@ import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.underpayments.UnderpaymentDetail
+import pages.CheckModePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.mvc.Result
 import play.api.test.Helpers
@@ -102,6 +103,20 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
           Some(controllers.routes.BoxGuidanceController.onLoad().url)
+      }
+
+      "return a SEE OTHER Check Your Answers page when false is selected" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(CheckModePage, true).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
     }
