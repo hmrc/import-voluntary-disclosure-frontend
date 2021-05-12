@@ -18,8 +18,7 @@ package views.data
 
 import messages.CYAMessages
 import models.{ContactAddress, ContactDetails}
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 import viewmodels.cya.CYASummaryList
@@ -34,7 +33,8 @@ object CheckYourAnswersData {
   val fullName = "First Second"
   val email = "email@email.com"
   val phone = "1234567890"
-  val traderAddress = ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")
+  val traderAddress = ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")
+  val importerAddress = ContactAddress("21 Street", Some("Mayfair"), "London", None, "UK")
   val numberOfEntries = "One Entry"
   val epu = "123"
   val entryNumber = "123456Q"
@@ -59,7 +59,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(fullName)
+            Text(fullName)
           ),
           actions = Some(
             Actions(
@@ -79,12 +79,19 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(buildAddress(traderAddress))
+            HtmlContent(buildAddress(importerAddress))
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(CYAMessages.changeImporterAddress)
+                )
+              )
+            )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -92,7 +99,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -105,7 +112,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(eoriNumber)
+            Text(eoriNumber)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -118,7 +125,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(changeUrl,
@@ -140,7 +147,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(amount)
+            Text(amount)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -155,7 +162,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(reason)
+            Text(reason)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -170,7 +177,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -185,7 +192,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(extraInformation)
+            Text(extraInformation)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -224,7 +231,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(userType),
+            Text(userType),
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -279,7 +286,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(numberOfEntries)
+            Text(numberOfEntries)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -294,7 +301,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
           ),
           value = Value(
-            HtmlContent(epu),
+            Text(epu),
             classes = "govuk-!-padding-bottom-0"
           ),
           actions = Some(Actions(items = Seq(
@@ -314,7 +321,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           value = Value(
-            HtmlContent(entryNumber),
+            Text(entryNumber),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
           ),
           actions = None,
@@ -326,7 +333,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third govuk-!-padding-top-0"
           ),
           value = Value(
-            HtmlContent(entryDate),
+            Text(entryDate),
             classes = "govuk-!-padding-top-0"
           ),
           actions = None
@@ -337,7 +344,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(acceptanceDate)
+            Text(acceptanceDate)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -353,7 +360,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(yes)
+            Text(yes)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -368,7 +375,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(cpc)
+            Text(cpc)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -391,13 +398,25 @@ object CheckYourAnswersData {
 
   def buildAddress(address: ContactAddress) =
     address.postalCode match {
-      case Some(value) => address.addressLine1 + "<br/>" +
-        address.city + "<br/>" +
-        address.postalCode.get + "<br/>" +
-        address.countryCode
-      case None => address.addressLine1 + "<br/>" +
-        address.city + "<br/>" +
-        address.countryCode
+      case Some(postcode) =>
+        val street = if (address.addressLine2.isDefined) {
+          address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+        } else {
+          address.addressLine1 + "<br/>"
+        }
+        street +
+          address.city + "<br/>" +
+          postcode + "<br/>" +
+          address.countryCode
+      case None =>
+        val street = if (address.addressLine2.isDefined) {
+          address.addressLine1 + "<br/>" + address.addressLine2.get + "<br/>"
+        } else {
+          address.addressLine1 + "<br/>"
+        }
+        street +
+          address.city + "<br/>" +
+          address.countryCode
     }
 
   def buildContactDetails(contactDetails: ContactDetails): String = {

@@ -92,8 +92,8 @@ entryDetails.entryDate.error.past = Entry date must be today or in the past
 # User Type Page
 userType.pageTitle = Importer or representative?
 userType.heading = Are you the importer or their representative?
-userType.importer = Importer
-userType.representative = Representative
+userType.importer = I am the importer
+userType.representative = I am a representative of the importer
 userType.error.required = Select if you are the importer or their representative
 
 # Number of entries page
@@ -578,6 +578,9 @@ cya.contactDetails.change = Change contact details
 cya.email = Email address
 cya.phone = Telephone number
 cya.address = Address
+cya.importerAddress.change = Change importer address
+cya.paymentInformation = Payment information
+cya.payingByDeferment = By deferment?
 cya.paymentInformation = Payment details
 cya.defermentInfoDuty = Deferment account details for duty owed
 cya.defermentInfoImportVAT = Deferment account details for import VAT owed
@@ -650,24 +653,24 @@ moreInformation.error.required = Enter more information
 moreInformation.error.maxLength = More information must be 1500 characters or fewer
 
 # Importer name
-importerName.pageTitle = What is the importer’s name?
-importerName.pageHeader = What is the importer’s name?
-importerName.hint = We will send a copy of the demand for payment note to the importer by post. We will use this name on the envelope and letter.
-importerName.error.nameNonEmpty = Enter the name of the importer
-importerName.error.nameMinLength = Full name must be 2 characters or more
-importerName.error.nameMaxLength = Full name must be 50 characters or fewer
-importerName.error.nameAllowableCharacters = Full name must only include letters a to z, hyphens, spaces and apostrophes
+importerName.pageTitle = What is the name of the importer?
+importerName.pageHeader = What is the name of the importer?
+importerName.hint = This should match the name as it appears on the import declaration (also known as the C88 or SAD). If you are representing an individual then enter their full name.
+importerName.error.nameNonEmpty = Enter the company name of the importer
+importerName.error.nameMinLength = Company name of the importer must be 2 characters or more
+importerName.error.nameMaxLength = Company name of the importer must be 50 characters or fewer
+importerName.error.nameAllowableCharacters = Company name of the importer must only include letters a to z, hyphens, spaces and apostrophes
 
 # Importer EORI Exists
 importerEORIExists.pageTitle = Does the importer have an EORI number?
 importerEORIExists.heading = Does the importer have an EORI number?
-importerEORIExists.hint = The EORI starts with GB and is followed by 12 numbers, for example GB345834921000
+importerEORIExists.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
 importerEORIExists.error.required = Select yes if the importer has an EORI number
 
 # Importer EORI Number
 importerEORINumber.pageTitle = What is the importer’s EORI number?
 importerEORINumber.pageHeader = What is the importer’s EORI number?
-importerEORINumber.hint = The EORI starts with GB and is followed by 12 numbers, for example GB345834921000.
+importerEORINumber.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
 importerEORINumber.error.nonEmpty = Enter an EORI number
 importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
 

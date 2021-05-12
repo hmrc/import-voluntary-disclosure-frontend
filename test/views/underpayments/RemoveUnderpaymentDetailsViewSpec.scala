@@ -132,7 +132,7 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe RemoveUnderpaymentDetailsMessages.continue
+      elementText(".govuk-button") mustBe RemoveUnderpaymentDetailsMessages.confirm
     }
 
   }
