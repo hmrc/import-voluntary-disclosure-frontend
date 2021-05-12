@@ -38,7 +38,7 @@ class ImporterNameController @Inject()(identify: IdentifierAction,
                                        mcc: MessagesControllerComponents,
                                        formProvider: ImporterNameFormProvider,
                                        view: ImporterNameView
-                                            ) extends FrontendController(mcc) with I18nSupport {
+                                      ) extends FrontendController(mcc) with I18nSupport {
 
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
