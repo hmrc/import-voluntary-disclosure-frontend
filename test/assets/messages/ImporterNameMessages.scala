@@ -18,13 +18,12 @@ package messages
 
 object ImporterNameMessages extends BaseMessages {
 
-  val title: String = "What is the importer’s name?"
-  val h1: String = "What is the importer’s name?"
-  val hint: String = "We will send a copy of the demand for payment note to the importer by post. We will use this name on the envelope and letter."
-  val nonEmpty: String = "Enter the name of the importer"
-  val nameMinLength: String = "Full name must be 2 characters or more"
-  val nameMaxLength: String = "Full name must be 50 characters or fewer"
-  val nameAllowableCharacters: String = "Full name must only include letters a to z, hyphens, spaces and apostrophes"
-
+  val title: String = "What is the name of the importer?"
+  val h1: String = "What is the name of the importer?"
+  val hint: String = "This should match the name as it appears on the import declaration (also known as the C88 or SAD). If you are representing an individual then enter their full name."
+  val nonEmpty: String = "Enter the company name of the importer"
+  val nameMinLength: String = "Company name of the importer must be 2 characters or more"
+  val nameMaxLength: String = "Company name of the importer must be 50 characters or fewer"
+  val nameAllowableCharacters: String = "Company name of the importer must only include letters a to z, hyphens, spaces and apostrophes"
 
 }
