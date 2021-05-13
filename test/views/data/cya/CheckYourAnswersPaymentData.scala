@@ -48,7 +48,7 @@ object CheckYourAnswersPaymentData {
     )))
   )
 
-  val paymentMethodSplitRow = SummaryListRow(
+  val paymentMethodDefermentRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.paymentMethod),
       classes = "govuk-!-width-one-third"
@@ -93,19 +93,19 @@ object CheckYourAnswersPaymentData {
   val importerAccountNumberRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.importerAccountNumber),
-      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+      classes = s"govuk-!-width-one-third govuk-summary-list__row"
     ),
     value = Value(
       Text(accountNumberDuty),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-summary-list__row"
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(changeUrl,
         Text(CYAMessages.change))
     ),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-summary-list__row"
     )),
-    classes = "govuk-summary-list__row--no-border"
+    classes = "govuk-summary-list__row"
   )
 
 
@@ -143,7 +143,6 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeA),
       classes = "govuk-!-padding-top-0"
-
     )
   )
 
@@ -155,7 +154,6 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB),
       classes = "govuk-!-padding-top-0"
-
     )
   )
 
@@ -167,7 +165,6 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeC),
       classes = "govuk-!-padding-top-0"
-
     )
   )
 
@@ -238,7 +235,7 @@ object CheckYourAnswersPaymentData {
 
   val answers: Seq[CYASummaryList] = Seq(
 
-    paymentDetailsAnswers(Seq(paymentMethodSplitRow, splitDefermentYesRow)),
+    paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)),
     defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow)),
     defermentVATAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow))
   )
