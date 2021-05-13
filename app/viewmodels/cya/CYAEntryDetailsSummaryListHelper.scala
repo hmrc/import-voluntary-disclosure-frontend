@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
+import viewmodels.cya.CYAHelper._
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -130,15 +131,5 @@ trait CYAEntryDetailsSummaryListHelper {
         action = Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
-
-  private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
-                        columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
-    SummaryListRow(
-      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
-      value = Value(content = valueContent, classes = columnClasses),
-      actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
-      classes = rowClasses
-    )
-  }
 
 }

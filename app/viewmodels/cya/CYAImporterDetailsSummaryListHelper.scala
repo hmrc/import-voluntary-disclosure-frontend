@@ -25,10 +25,9 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
+import viewmodels.cya.CYAHelper._
 
 trait CYAImporterDetailsSummaryListHelper {
-
-  private def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
   def buildImporterDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     if (request.isRepFlow) {
@@ -125,16 +124,5 @@ trait CYAImporterDetailsSummaryListHelper {
         action = Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
-
-
-  private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
-                        columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
-    SummaryListRow(
-      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
-      value = Value(content = valueContent, classes = columnClasses),
-      actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
-      classes = rowClasses
-    )
-  }
 
 }

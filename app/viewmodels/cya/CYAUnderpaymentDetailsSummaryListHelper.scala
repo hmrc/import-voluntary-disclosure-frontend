@@ -26,20 +26,19 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
+import viewmodels.cya.CYAHelper._
 import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
 
-  private def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
-
   def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
     val rows = Seq(
-      buildOwedToHmrcRow(messages, answers),
-      buildReasonForUnderpaymentRow(messages, answers),
-      buildTellUsAnythingElseRow(messages, answers),
-      buildExtraInformationRow(messages, answers),
-      buildUploadedFilesRow(messages, answers)
+      buildOwedToHmrcRow(answers),
+      buildReasonForUnderpaymentRow(answers),
+      buildTellUsAnythingElseRow(answers),
+      buildExtraInformationRow(answers),
+      buildUploadedFilesRow(answers)
     ).flatten
 
     if (rows.nonEmpty) {
@@ -57,7 +56,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildUploadedFilesRow(messages: Messages, answers: UserAnswers): Option[SummaryListRow] = {
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(FileUploadPage).map { files =>
       val fileNames = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
@@ -69,7 +68,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildExtraInformationRow(messages: Messages, answers: UserAnswers): Option[SummaryListRow] = {
+  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(MoreInformationPage).map { extraInformation =>
       createRow(
         Text(messages("cya.extraInformation")),
@@ -79,7 +78,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildTellUsAnythingElseRow(messages: Messages, answers: UserAnswers): Option[SummaryListRow] = {
+  private def buildTellUsAnythingElseRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(HasFurtherInformationPage).map { hasFurtherInformation =>
       val furtherInformation = if (hasFurtherInformation) messages("site.yes") else messages("site.no")
       createRow(
@@ -90,7 +89,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildReasonForUnderpaymentRow(messages: Messages, answers: UserAnswers): Option[SummaryListRow] = {
+  private def buildReasonForUnderpaymentRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(UnderpaymentReasonsPage).map { underpaymentReason =>
       val numberOfReasons = if (underpaymentReason.size == 1) "cya.numberOfUnderpaymentsSingle" else "cya.numberOfUnderpaymentsPlural"
       createRow(
@@ -101,7 +100,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildOwedToHmrcRow(messages: Messages, answers: UserAnswers): Option[SummaryListRow] = {
+  private def buildOwedToHmrcRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(UnderpaymentDetailSummaryPage).map { amount =>
       val amountOwed = amount.map(underpayment => underpayment.amended - underpayment.original).sum
       createRow(
@@ -110,15 +109,5 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         Some(ActionItem("Url", Text(messages("cya.viewSummary"))))
       )
     }
-  }
-
-  private def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
-                        columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
-    SummaryListRow(
-      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
-      value = Value(content = valueContent, classes = columnClasses),
-      actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
-      classes = rowClasses
-    )
   }
 }
