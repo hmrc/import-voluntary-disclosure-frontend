@@ -17,7 +17,7 @@
 package viewmodels.cya
 
 import java.time.format.DateTimeFormatter
-import models.NumberOfEntries
+import models.{NumberOfEntries, UserAnswers}
 import models.requests.DataRequest
 import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 import play.api.i18n.Messages
@@ -25,175 +25,21 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
+import viewmodels.cya.CYAHelper._
 
 trait CYAEntryDetailsSummaryListHelper {
 
   def buildEntryDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-
-    val numberOfEntriesSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(NumberOfEntriesPage) match {
-      case Some(numberOfEntries) =>
-        val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.numberOfEntries")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(numberOfEntriesValue)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              )
-            )
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val epuSummaryListRow: Seq[SummaryListRow] = request.userAnswers.get(EntryDetailsPage) match {
-      case Some(entryDetails) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.epu")),
-              classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
-            ),
-            value = Value(
-              content = Text(entryDetails.epu),
-              classes = "govuk-!-padding-bottom-0"
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.routes.EntryDetailsController.onLoad().url,
-                  messages("cya.epu.change")
-                )
-              ),
-              classes = "govuk-!-padding-bottom-0")
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val entryNumberListRow: Seq[SummaryListRow] = request.userAnswers.get(EntryDetailsPage) match {
-      case Some(entryDetails) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.entryNumber")),
-              classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            value = Value(
-              content = Text(entryDetails.entryNumber),
-              classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
-            ),
-            classes = "govuk-summary-list__row--no-border"
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val entryDateListRow: Seq[SummaryListRow] = request.userAnswers.get(EntryDetailsPage) match {
-      case Some(entryDetails) =>
-        val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.entryDate")),
-              classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-            ),
-            value = Value(
-              content = Text(entryDateFormat),
-              classes = "govuk-!-padding-top-0"
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val acceptanceDateListRow: Seq[SummaryListRow] = request.userAnswers.get(AcceptanceDatePage) match {
-      case Some(acceptanceDate) =>
-        val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.acceptanceDate")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(acceptanceDateValue)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.routes.AcceptanceDateController.onLoad().url,
-                  messages("cya.acceptanceDate.change")
-                )
-              )
-            )
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val oneCustomsProcedureCodeListRow: Seq[SummaryListRow] = request.userAnswers.get(OneCustomsProcedureCodePage) match {
-      case Some(customsProcedureCode) =>
-        val oneCustomsProcedureCode = if (customsProcedureCode) messages("site.yes") else messages("site.no")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.oneCustomsProcedureCode")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(oneCustomsProcedureCode)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              )
-            )
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val customsProcedureCodeListRow: Seq[SummaryListRow] = request.userAnswers.get(EnterCustomsProcedureCodePage) match {
-      case Some(customsProcedureCode) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.customsProcedureCode")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(customsProcedureCode)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              )
-            )
-            )
-          )
-        )
-      case None => Seq.empty
-    }
-
-    val rows = numberOfEntriesSummaryListRow ++
-      epuSummaryListRow ++
-      entryNumberListRow ++
-      entryDateListRow ++
-      acceptanceDateListRow ++
-      oneCustomsProcedureCodeListRow ++
-      customsProcedureCodeListRow
+    val answers = request.userAnswers
+    val rows = Seq(
+      buildNumberOfEntriesSummaryListRow(answers),
+      buildEpuSummaryListRow(answers),
+      buildEntryNumberListRow(answers),
+      buildEntryDateListRow(answers),
+      buildAcceptanceDateListRow(answers),
+      buildOneCustomsProcedureCodeListRow(answers),
+      buildCustomsProcedureCodeListRow(answers)
+    ).flatten
 
     if (rows.nonEmpty) {
       Seq(
@@ -209,5 +55,81 @@ trait CYAEntryDetailsSummaryListHelper {
       Seq.empty
     }
   }
+
+  private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(NumberOfEntriesPage).map { numberOfEntries =>
+      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
+      createRow(
+        keyText = Text(messages("cya.numberOfEntries")),
+        valueContent = Text(numberOfEntriesValue),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+  private def buildEpuSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EntryDetailsPage).map { entryDetails =>
+      createRow(
+        keyText = Text(messages("cya.epu")),
+        valueContent = Text(entryDetails.epu),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.EntryDetailsController.onLoad().url,
+          messages("cya.epu.change")
+        )),
+        columnClasses = "govuk-!-padding-bottom-0",
+        rowClasses = "govuk-summary-list__row--no-border"
+      )
+    }
+
+  private def buildEntryNumberListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EntryDetailsPage).map { entryDetails =>
+      createRow(
+        keyText = Text(messages("cya.entryNumber")),
+        valueContent = Text(entryDetails.entryNumber),
+        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-0",
+        rowClasses = "govuk-summary-list__row--no-border"
+      )
+    }
+
+  private def buildEntryDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EntryDetailsPage).map { entryDetails =>
+      val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+      createRow(
+        keyText = Text(messages("cya.entryDate")),
+        valueContent = Text(entryDateFormat),
+        columnClasses = "govuk-!-padding-top-0"
+      )
+    }
+
+  private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(AcceptanceDatePage).map { acceptanceDate =>
+      val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
+      createRow(
+        keyText = Text(messages("cya.acceptanceDate")),
+        valueContent = Text(acceptanceDateValue),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.AcceptanceDateController.onLoad().url,
+          messages("cya.acceptanceDate.change")
+        ))
+      )
+    }
+
+  private def buildOneCustomsProcedureCodeListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(OneCustomsProcedureCodePage).map { customsProcedureCode =>
+      val oneCustomsProcedureCode = if (customsProcedureCode) messages("site.yes") else messages("site.no")
+      createRow(
+        keyText = Text(messages("cya.oneCustomsProcedureCode")),
+        valueContent = Text(oneCustomsProcedureCode),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+  private def buildCustomsProcedureCodeListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(EnterCustomsProcedureCodePage).map { customsProcedureCode =>
+      createRow(
+        keyText = Text(messages("cya.customsProcedureCode")),
+        valueContent = Text(customsProcedureCode),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
 
 }
