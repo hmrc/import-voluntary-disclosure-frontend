@@ -24,6 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
+import viewmodels.cya.CYAHelper.createRow
 
 trait CYAPaymentDetailsSummaryListHelper {
 
@@ -59,19 +60,10 @@ trait CYAPaymentDetailsSummaryListHelper {
   private def buildDefermentTypeSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DefermentPage).map { deferment =>
       val payingByDeferment = if (deferment) messages("cya.payingByDeferment") else messages("cya.payingByOther")
-      SummaryListRow(
-        key = Key(
-          content = Text(messages("cya.paymentMethod")),
-          classes = "govuk-!-width-one-third"
-        ),
-        value = Value(
-          content = Text(payingByDeferment)
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem("Url", Text(messages("cya.change")))
-          ))
-        )
+      createRow(
+        Text(messages("cya.paymentMethod")),
+        Text(payingByDeferment),
+        Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
 
@@ -80,19 +72,10 @@ trait CYAPaymentDetailsSummaryListHelper {
       case (Some(splitDeferment), SelectedDutyTypes.Both) =>
         val isSplitDeferment = if (splitDeferment) messages("site.yes") else messages("site.no")
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.splitDeferment")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(isSplitDeferment)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
+          createRow(
+            Text(messages("cya.splitDeferment")),
+            Text(isSplitDeferment),
+            Some(ActionItem("Url", Text(messages("cya.change"))))
           )
         )
       case _ => None
@@ -102,22 +85,12 @@ trait CYAPaymentDetailsSummaryListHelper {
     (answers.get(DefermentPage), answers.get(DefermentAccountPage)) match {
       case (Some(true), Some(accountNumber)) =>
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.importerAccountNumber")),
-              classes = s"govuk-!-width-one-third govuk-summary-list__row"
-            ),
-            value = Value(
-              content = Text(accountNumber),
-              classes = "govuk-summary-list__row"
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ),
-              classes = "govuk-summary-list__row")
-            ),
-            classes = "govuk-summary-list__row"
+          createRow(
+            Text(messages("cya.importerAccountNumber")),
+            Text(accountNumber),
+            Some(ActionItem("Url", Text(messages("cya.change")))),
+            columnClasses = "govuk-summary-list__row",
+            rowClasses = "govuk-summary-list__row"
           )
         )
       case _ => None
@@ -128,22 +101,12 @@ trait CYAPaymentDetailsSummaryListHelper {
       case (Some(true), Some(true), SelectedDutyTypes.Both, _) => None
       case (Some(true), _, _, Some(accountNumber)) =>
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.repAccountNumber")),
-              classes = s"govuk-!-width-one-third govuk-!-padding-bottom-0"
-            ),
-            value = Value(
-              content = Text(accountNumber),
-              classes = "govuk-!-padding-bottom-0"
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ),
-              classes = "govuk-!-padding-bottom-0")
-            ),
-            classes = "govuk-summary-list__row--no-border"
+          createRow(
+            Text(messages("cya.repAccountNumber")),
+            Text(accountNumber),
+            Some(ActionItem("Url", Text(messages("cya.change")))),
+            columnClasses = "govuk-!-padding-bottom-0",
+            rowClasses = "govuk-summary-list__row--no-border"
           )
         )
       case _ => None
@@ -159,15 +122,10 @@ trait CYAPaymentDetailsSummaryListHelper {
       case (Some(true), Some(true), SelectedDutyTypes.Both) => None
       case (Some(true), _, _) =>
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.accountOwner")),
-              classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-            ),
-            value = Value(
-              content = Text(accountOwnerContent),
-              classes = "govuk-!-padding-top-0"
-            )
+          createRow(
+            Text(messages("cya.accountOwner")),
+            Text(accountOwnerContent),
+            columnClasses = "govuk-!-padding-top-0"
           )
         )
       case _ => None
@@ -180,19 +138,10 @@ trait CYAPaymentDetailsSummaryListHelper {
       case (Some(true), _, _, Some("B"), Some(files), Some(dan)) =>
         val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.proofOfAuth")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(fileName)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
+          createRow(
+            Text(messages("cya.proofOfAuth")),
+            Text(fileName),
+            Some(ActionItem("Url", Text(messages("cya.change"))))
           )
         )
       case _ => None

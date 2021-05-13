@@ -24,6 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
+import viewmodels.cya.CYAHelper.createRow
 
 trait CYADefermentDutyDetailsSummaryListHelper {
 
@@ -57,23 +58,12 @@ trait CYADefermentDutyDetailsSummaryListHelper {
 
   private def buildAccountNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DefermentAccountPage).map { accountNumber =>
-      SummaryListRow(
-        key = Key(
-          content = Text(messages("cya.repAccountNumber")),
-          classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
-        ),
-        value = Value(
-          content = Text(accountNumber),
-          classes = "govuk-!-padding-bottom-0"
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem("Url", Text(messages("cya.change")))
-          ),
-          classes = "govuk-!-padding-bottom-0"
-        )
-        ),
-        classes = "govuk-summary-list__row--no-border"
+      createRow(
+        Text(messages("cya.repAccountNumber")),
+        Text(accountNumber),
+        Some(ActionItem("Url", Text(messages("cya.change")))),
+        columnClasses = "govuk-!-padding-bottom-0",
+        rowClasses = "govuk-summary-list__row--no-border"
       )
     }
 
@@ -84,15 +74,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
       case _ => messages("cya.importerStandingAuthority")
     }
     answers.get(DefermentTypePage).map { _ =>
-      SummaryListRow(
-        key = Key(
-          content = Text(messages("cya.accountOwner")),
-          classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-        ),
-        value = Value(
-          content = Text(accountOwnerContent),
-          classes = "govuk-!-padding-top-0"
-        )
+      createRow(
+        Text(messages("cya.accountOwner")),
+        Text(accountOwnerContent),
+        columnClasses = "govuk-!-padding-top-0"
       )
     }
   }
@@ -106,19 +91,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     (answers.get(UploadAuthorityPage), answers.get(DefermentTypePage)) match {
       case (Some(_), Some("B")) =>
         Some(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.proofOfAuth")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(fileName)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
+          createRow(
+            Text(messages("cya.proofOfAuth")),
+            Text(fileName),
+            Some(ActionItem("Url", Text(messages("cya.change"))))
           )
         )
       case _ => None
