@@ -16,8 +16,8 @@
 
 package viewmodels.cya
 
-import models.SelectedDutyTypes
 import models.requests.DataRequest
+import models.{SelectedDutyTypes, UserAnswers}
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -28,38 +28,58 @@ import viewmodels.cya
 trait CYAPaymentDetailsSummaryListHelper {
 
   def buildPaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val paymentMethod = request.userAnswers.get(DefermentPage)
-    val splitPayment = request.userAnswers.get(SplitPaymentPage)
-    val dan1 = request.userAnswers.get(DefermentAccountPage)
-    val defermentType = request.userAnswers.get(DefermentTypePage)
-    val uploadAuthority = request.userAnswers.get(UploadAuthorityPage)
 
-    val defermentTypeSummaryListRow: Seq[SummaryListRow] = paymentMethod match {
-      case Some(deferment) =>
-        val payingByDeferment = if (deferment) messages("cya.payingByDeferment") else messages("cya.payingByOther")
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("cya.paymentMethod")),
-              classes = "govuk-!-width-one-third"
-            ),
-            value = Value(
-              content = Text(payingByDeferment)
-            ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
-            )
-          )
-        )
-      case None => Seq.empty
+    val answers = request.userAnswers
+    val rows = if (request.isRepFlow) {
+      Seq(buildDefermentTypeSummaryListRow(answers),
+        buildSplitDefermentSummaryListRow(answers),
+        buildAccountNumberRepSummaryListRow(answers),
+        buildAccountOwnerSummaryListRow(answers),
+        buildProofOfAuthSummaryListRow(answers)).flatten
+    } else {
+      Seq(buildDefermentTypeSummaryListRow(answers),
+        buildAccountNumberImporterSummaryListRow(answers)).flatten
     }
 
-    val splitDefermentSummaryListRow: Seq[SummaryListRow] = (splitPayment, request.dutyType) match {
+    if (rows.nonEmpty) {
+      Seq(
+        cya.CYASummaryList(
+          messages(messages("cya.paymentInformation")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
+          )
+        )
+      )
+    } else {
+      Seq.empty
+    }
+  }
+
+  private def buildDefermentTypeSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(DefermentPage).map { deferment =>
+      val payingByDeferment = if (deferment) messages("cya.payingByDeferment") else messages("cya.payingByOther")
+      SummaryListRow(
+        key = Key(
+          content = Text(messages("cya.paymentMethod")),
+          classes = "govuk-!-width-one-third"
+        ),
+        value = Value(
+          content = Text(payingByDeferment)
+        ),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItem("Url", Text(messages("cya.change")))
+          ))
+        )
+      )
+    }
+
+  private def buildSplitDefermentSummaryListRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] =
+    (answers.get(SplitPaymentPage), request.dutyType) match {
       case (Some(splitDeferment), SelectedDutyTypes.Both) =>
         val isSplitDeferment = if (splitDeferment) messages("site.yes") else messages("site.no")
-        Seq(
+        Some(
           SummaryListRow(
             key = Key(
               content = Text(messages("cya.splitDeferment")),
@@ -75,137 +95,109 @@ trait CYAPaymentDetailsSummaryListHelper {
             )
           )
         )
-      case _ => Seq.empty
+      case _ => None
     }
 
-    val accountNumberImporterSummaryListRow: Seq[SummaryListRow] = {
-      (paymentMethod, dan1) match {
-        case (Some(true), Some(accountNumber)) =>
-          Seq(
-            SummaryListRow(
-              key = Key(
-                content = Text(messages("cya.importerAccountNumber")),
-                classes = s"govuk-!-width-one-third govuk-summary-list__row"
-              ),
-              value = Value(
-                content = Text(accountNumber),
-                classes = "govuk-summary-list__row"
-              ),
-              actions = Some(Actions(
-                items = Seq(
-                  ActionItem("Url", Text(messages("cya.change")))
-                ),
-                classes = "govuk-summary-list__row")
-              ),
+  private def buildAccountNumberImporterSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    (answers.get(DefermentPage), answers.get(DefermentAccountPage)) match {
+      case (Some(true), Some(accountNumber)) =>
+        Some(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.importerAccountNumber")),
+              classes = s"govuk-!-width-one-third govuk-summary-list__row"
+            ),
+            value = Value(
+              content = Text(accountNumber),
               classes = "govuk-summary-list__row"
-            )
-          )
-        case _ => Seq.empty
-      }
-    }
-
-    val accountNumberRepSummaryListRow: Seq[SummaryListRow] = {
-      (paymentMethod, splitPayment, request.dutyType, dan1) match {
-        case (Some(true), Some(true), SelectedDutyTypes.Both, _) => Seq.empty
-        case (Some(true), _, _, Some(accountNumber)) =>
-          Seq(
-            SummaryListRow(
-              key = Key(
-                content = Text(messages("cya.repAccountNumber")),
-                classes = s"govuk-!-width-one-third govuk-!-padding-bottom-0"
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
               ),
-              value = Value(
-                content = Text(accountNumber),
-                classes = "govuk-!-padding-bottom-0"
-              ),
-              actions = Some(Actions(
-                items = Seq(
-                  ActionItem("Url", Text(messages("cya.change")))
-                ),
-                classes = "govuk-!-padding-bottom-0")
-              ),
-              classes = "govuk-summary-list__row--no-border"
-            )
-          )
-        case _ => Seq.empty
-      }
-    }
-
-    val accountOwnerSummaryListRow: Seq[SummaryListRow] = {
-      val accountOwnerContent = defermentType match {
-        case Some("A") => messages("cya.myDefermentAccount")
-        case Some("B") => messages("cya.importerAuthority")
-        case _ => messages("cya.importerStandingAuthority")
-      }
-      (paymentMethod, splitPayment, request.dutyType) match {
-        case (Some(true), Some(true), SelectedDutyTypes.Both) => Seq.empty
-        case (Some(true), _, _) =>
-          Seq(
-            SummaryListRow(
-              key = Key(
-                content = Text(messages("cya.accountOwner")),
-                classes = "govuk-!-width-one-third govuk-!-padding-top-0"
-              ),
-              value = Value(
-                content = Text(accountOwnerContent),
-                classes = "govuk-!-padding-top-0"
-              )
-            )
-          )
-        case _ => Seq.empty
-      }
-    }
-
-    val proofOfAuthSummaryListRow: Seq[SummaryListRow] = {
-      (paymentMethod, splitPayment, request.dutyType, defermentType, uploadAuthority, dan1) match {
-        case (Some(true), Some(true), SelectedDutyTypes.Both, _, _, _) => Seq.empty
-        case (Some(true), _, _, Some("B") ,Some(files), Some(dan)) =>
-          val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
-          Seq(
-            SummaryListRow(
-              key = Key(
-                content = Text(messages("cya.proofOfAuth")),
-                classes = "govuk-!-width-one-third"
-              ),
-              value = Value(
-                content = Text(fileName)
-              ),
-              actions = Some(Actions(
-                items = Seq(
-                  ActionItem("Url", Text(messages("cya.change")))
-                ))
-              )
-            )
-          )
-        case _ => Seq.empty
-      }
-    }
-
-    val rows = if (request.isRepFlow) {
-      defermentTypeSummaryListRow ++
-        splitDefermentSummaryListRow ++
-        accountNumberRepSummaryListRow ++
-        accountOwnerSummaryListRow ++
-        proofOfAuthSummaryListRow
-    } else {
-      defermentTypeSummaryListRow ++
-        accountNumberImporterSummaryListRow
-    }
-
-
-    if (defermentTypeSummaryListRow.nonEmpty) {
-      Seq(
-        cya.CYASummaryList(
-          messages(messages("cya.paymentInformation")),
-          SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = rows
+              classes = "govuk-summary-list__row")
+            ),
+            classes = "govuk-summary-list__row"
           )
         )
-      )
-    } else {
-      Seq.empty
+      case _ => None
+    }
+
+  private def buildAccountNumberRepSummaryListRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] =
+    (answers.get(DefermentPage), answers.get(SplitPaymentPage), request.dutyType, answers.get(DefermentAccountPage)) match {
+      case (Some(true), Some(true), SelectedDutyTypes.Both, _) => None
+      case (Some(true), _, _, Some(accountNumber)) =>
+        Some(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.repAccountNumber")),
+              classes = s"govuk-!-width-one-third govuk-!-padding-bottom-0"
+            ),
+            value = Value(
+              content = Text(accountNumber),
+              classes = "govuk-!-padding-bottom-0"
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              ),
+              classes = "govuk-!-padding-bottom-0")
+            ),
+            classes = "govuk-summary-list__row--no-border"
+          )
+        )
+      case _ => None
+    }
+
+  private def buildAccountOwnerSummaryListRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+    val accountOwnerContent = answers.get(DefermentTypePage) match {
+      case Some("A") => messages("cya.myDefermentAccount")
+      case Some("B") => messages("cya.importerAuthority")
+      case _ => messages("cya.importerStandingAuthority")
+    }
+    (answers.get(DefermentPage), answers.get(SplitPaymentPage), request.dutyType) match {
+      case (Some(true), Some(true), SelectedDutyTypes.Both) => None
+      case (Some(true), _, _) =>
+        Some(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.accountOwner")),
+              classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+            ),
+            value = Value(
+              content = Text(accountOwnerContent),
+              classes = "govuk-!-padding-top-0"
+            )
+          )
+        )
+      case _ => None
     }
   }
+
+  private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+    (answers.get(DefermentPage), answers.get(SplitPaymentPage), request.dutyType, answers.get(DefermentTypePage), answers.get(UploadAuthorityPage), answers.get(DefermentAccountPage)) match {
+      case (Some(true), Some(true), SelectedDutyTypes.Both, _, _, _) => None
+      case (Some(true), _, _, Some("B"), Some(files), Some(dan)) =>
+        val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+        Some(
+          SummaryListRow(
+            key = Key(
+              content = Text(messages("cya.proofOfAuth")),
+              classes = "govuk-!-width-one-third"
+            ),
+            value = Value(
+              content = Text(fileName)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItem("Url", Text(messages("cya.change")))
+              ))
+            )
+          )
+        )
+      case _ => None
+    }
+  }
+
 
 }
