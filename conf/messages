@@ -101,7 +101,7 @@ numberOfEntries.pageTitle = How many entries are you disclosing an underpayment 
 numberOfEntries.title = How many entries are you disclosing an underpayment for?
 numberOfEntries.oneEntry = One entry
 numberOfEntries.moreThanOneEntry = More than one entry
-numberOfEntries.moreThanOneEntry.hint = Multiple entries must be for the same importer, and have the same reason for underpayment.
+numberOfEntries.moreThanOneEntry.hint = All the entries must be for the same importer.
 numberOfEntries.error.required = Select if you are disclosing an underpayment for one declaration or more than one declaration
 
 #Acceptance Date Page
@@ -604,6 +604,7 @@ cya.eoriNumberExists = Importer has EORI number?
 cya.eoriNumber = Importer EORI number
 cya.underpaymentDetails = Underpayment details
 cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
+cya.underpaymentDetails.owedToHmrc.change = View underpayments summary
 cya.viewSummary = View summary
 cya.reasonForUnderpayment = Reason for underpayment
 cya.numberOfUnderpaymentsSingle = 1 reason given

@@ -17,14 +17,14 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import pages.{FileUploadPage, HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.{FileUploadPage, HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
@@ -44,11 +44,15 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
             value = Value(
               content = Text(displayMoney(amountOwed))
             ),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItem("Url", Text(messages("cya.viewSummary")))
+            actions = Some(
+              Actions(
+                items = Seq(
+                  ActionItemHelper.createViewSummaryActionItem(
+                    controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url,
+                    messages(s"cya.underpaymentDetails.owedToHmrc.change")
+                  )
+                )
               )
-            )
             )
           )
         )
