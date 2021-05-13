@@ -27,11 +27,9 @@ import views.data.cya.CheckYourAnswersPaymentData._
 
 import java.time.{LocalDate, LocalDateTime}
 
-
 class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
 
   trait Test {
-
 
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
       .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
@@ -190,7 +188,6 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
         buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeARow)))
         buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCRow)))
-
       }
     }
 
@@ -241,7 +238,6 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
         buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeCRow)))
         buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeARow)))
-
       }
     }
 
@@ -431,7 +427,6 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(DefermentAccountPage, "1284958").success.value
 
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, importerAccountNumberRow)))
-
       }
 
       "produce a valid model when no answers are provided" in new Test {

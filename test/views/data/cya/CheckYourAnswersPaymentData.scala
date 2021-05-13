@@ -108,7 +108,6 @@ object CheckYourAnswersPaymentData {
     classes = "govuk-summary-list__row"
   )
 
-
   def paymentDetailsAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
     CYAMessages.paymentDetails,
     SummaryList(
@@ -231,7 +230,6 @@ object CheckYourAnswersPaymentData {
       rows = rows
     )
   )
-
 
   val answers: Seq[CYASummaryList] = Seq(
 
