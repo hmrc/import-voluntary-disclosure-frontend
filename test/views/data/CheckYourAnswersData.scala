@@ -151,8 +151,10 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.viewSummary))
+              controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">View summary</span>"""),
+              Some(CYAMessages.viewSummaryChange)
+            )
           )
           )),
         ),

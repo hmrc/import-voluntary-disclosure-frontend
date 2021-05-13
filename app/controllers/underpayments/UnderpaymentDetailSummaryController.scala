@@ -16,6 +16,7 @@
 
 package controllers.underpayments
 
+import controllers.Assets.{BadRequest, Ok, Redirect}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import models.underpayments.UnderpaymentDetail
@@ -56,7 +57,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val result = formProvider().bindFromRequest().fold(
+    Future.successful(formProvider().bindFromRequest().fold(
       formWithErrors => {
         val underpayments = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
         BadRequest(view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length))
@@ -65,12 +66,15 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         if (value) {
           Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
         } else {
-          Redirect(controllers.routes.BoxGuidanceController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.routes.BoxGuidanceController.onLoad())
+          }
         }
       }
     )
-
-    Future.successful(result)
+    )
   }
 
   private[controllers] def summaryList(underpaymentDetail: Seq[UnderpaymentDetail])

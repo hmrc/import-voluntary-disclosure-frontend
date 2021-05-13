@@ -30,4 +30,12 @@ object ActionItemHelper {
     )
   }
 
+  def createViewSummaryActionItem(url: String, accessibilityMessage: String)(implicit messages: Messages): ActionItem = {
+    ActionItem(
+      url,
+      HtmlContent(s"""<span aria-hidden="true">${messages("cya.viewSummary")}</span>"""),
+      Some(accessibilityMessage)
+    )
+  }
+
 }

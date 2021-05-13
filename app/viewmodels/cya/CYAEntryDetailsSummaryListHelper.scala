@@ -22,7 +22,7 @@ import models.requests.DataRequest
 import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper._

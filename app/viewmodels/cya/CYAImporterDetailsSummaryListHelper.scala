@@ -20,9 +20,8 @@ import models.UserAnswers
 import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{Content, HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper._
