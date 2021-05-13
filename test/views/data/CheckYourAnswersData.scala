@@ -48,7 +48,7 @@ object CheckYourAnswersData {
   val userType = "Representative"
   val contactDetails = ContactDetails("First Second", "email@email.com", "1234567890")
 
-  val importerDetailsAnswers: CYASummaryList = cya.CYASummaryList(
+  val importerDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.aboutImporterDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -136,7 +136,7 @@ object CheckYourAnswersData {
     )
   )
 
-  val underpaymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
+  val underpaymentDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.underpaymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -222,7 +222,7 @@ object CheckYourAnswersData {
     )
   )
 
-  val yourDetailsAnswers: CYASummaryList = cya.CYASummaryList(
+  val yourDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.yourDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -277,7 +277,7 @@ object CheckYourAnswersData {
   )
 
 
-  val entryDetailsAnswers: CYASummaryList = cya.CYASummaryList(
+  val entryDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.entryDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -390,34 +390,12 @@ object CheckYourAnswersData {
     )
   )
 
-  val paymentDetailsAnswers: CYASummaryList = cya.CYASummaryList(
-    CYAMessages.paymentInformation,
-    SummaryList(
-      classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            Text(CYAMessages.payingByDeferment),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text("No")
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
-        )
-      )
-    )
-  )
 
   val answers: Seq[CYASummaryList] = Seq(
     importerDetailsAnswers,
     entryDetailsAnswers,
     underpaymentDetailsAnswers,
-    yourDetailsAnswers,
-    paymentDetailsAnswers
+    yourDetailsAnswers
   )
 
   def buildAddress(address: ContactAddress) =
