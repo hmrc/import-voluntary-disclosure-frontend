@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,15 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package viewmodels.cya
+@this()
 
-trait CYASummaryListHelper
-  extends CYAImporterDetailsSummaryListHelper
-    with CYAEntryDetailsSummaryListHelper
-    with CYAUnderpaymentDetailsSummaryListHelper
-    with CYAYourDetailsSummaryListHelper
-    with CYAPaymentDetailsSummaryListHelper
-    with CYADefermentDutyDetailsSummaryListHelper
-    with CYADefermentImportVATDetailsSummaryListHelper
+@(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
+
+ @if(id.isDefined){
+  <h3 class="govuk-heading-s" id ="@id">@messages(headingMsg)</h3>
+ } else {
+  <h3 class="govuk-heading-s" >@messages(headingMsg)</h3>
+ }
+
+@{
+ //$COVERAGE-OFF$
+}

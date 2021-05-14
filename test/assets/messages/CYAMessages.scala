@@ -45,6 +45,7 @@ object CYAMessages extends BaseMessages {
 
   val totalOwed = "Total owed to HMRC"
   val viewSummary = "View summary"
+  val viewSummaryChange = "View underpayments summary"
   val reasonForUnderpayment = "Reason for underpayment"
   val tellUsAnythingElse = "Tell us anything else?"
   val extraInformation = "Extra information"
@@ -66,8 +67,17 @@ object CYAMessages extends BaseMessages {
   val phone = "Telephone number"
   val address = "Address"
 
-  val paymentInformation = "Payment information"
-  val payingByDeferment = "By deferment?"
+  val paymentDetails = "Payment details"
+  val defermentInfoDuty = "Deferment account details for duty owed"
+  val defermentInfoVAT = "Deferment account details for import VAT owed"
+  val paymentMethod = "Payment method"
+  val splitDeferment = "Split deferment payment?"
+  val importerAccountNumber = "Deferment account number"
+  val repAccountNumber = "Account number"
+  val accountOwner = "Account owner"
+  val proofOfAuthority = "Proof of authority"
+
+
 
   val change = "Change"
   val changeAcceptanceDate = "Change acceptance date"

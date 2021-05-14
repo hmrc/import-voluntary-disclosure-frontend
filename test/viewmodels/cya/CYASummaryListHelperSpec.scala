@@ -117,19 +117,6 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
 
   }
 
-  "buildPaymentDetails" should {
-
-    "produce a valid model when all answers are provided" in new Test {
-      buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers)
-    }
-
-    "produce a valid model when no answers are provided" in new Test {
-      override val userAnswers: UserAnswers = UserAnswers("")
-      buildPaymentDetailsSummaryList mustBe List.empty
-    }
-
-  }
-
   "buildImporterDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
