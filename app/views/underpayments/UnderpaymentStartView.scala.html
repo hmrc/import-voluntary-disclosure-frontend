@@ -24,7 +24,7 @@
 @(backLink: Call, oneEntry: Boolean, checkMode: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = messages("underpaymentStart.pageTitle"),
-        customBackLinkUrl = Some(backLink), showBackLink = !checkMode) {
+        customBackLinkUrl = Some(backLink), showBackLink = checkMode) {
 
         @h1(messages("underpaymentStart.heading"))
 
