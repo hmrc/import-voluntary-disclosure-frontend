@@ -101,7 +101,10 @@ trait CYAImporterDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.eoriNumberExists")),
         valueContent = Text(eoriNumberExists),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.ImporterEORIExistsController.onLoad().url,
+          messages("cya.change")
+        ))
       )
     }
 
