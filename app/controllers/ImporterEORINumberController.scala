@@ -19,9 +19,10 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterEORINumberFormProvider
 import javax.inject.{Inject, Singleton}
-import pages.ImporterEORINumberPage
+import models.requests.DataRequest
+import pages.{ImporterEORINumberPage, ImporterVatRegisteredPage}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterEORINumberView
@@ -39,7 +40,6 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
                                              view: ImporterEORINumberView
                                             ) extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink = controllers.routes.ImporterEORIExistsController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
@@ -56,9 +56,20 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.ImporterVatRegisteredController.onLoad())
+          request.userAnswers.get(ImporterVatRegisteredPage) match {
+            case Some(valueExists) => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            case _ => Redirect(controllers.routes.ImporterVatRegisteredController.onLoad())
+          }
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.ImporterEORIExistsController.onLoad()
+    }
   }
 }

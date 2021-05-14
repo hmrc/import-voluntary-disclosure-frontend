@@ -19,7 +19,8 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
-import pages.ImporterEORIExistsPage
+import models.requests.DataRequest
+import pages.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterVatRegisteredPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -40,7 +41,6 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
                                             )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.ImporterNameController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORIExistsPage).fold(formProvider()) {
@@ -54,20 +54,57 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       eoriExists => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (eoriExists) {
-            Redirect(controllers.routes.ImporterEORINumberController.onLoad())
-          }
-          else {
-            Redirect(controllers.routes.NumberOfEntriesController.onLoad())
-          }
+        (request.checkMode, eoriExists) match {
+          case (true, true) =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              _ <- sessionRepository.set(updatedAnswers)
+            }
+              yield {
+                Redirect(controllers.routes.ImporterEORINumberController.onLoad())
+              }
+
+          case (false, true) =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              _ <- sessionRepository.set(updatedAnswers)
+            }
+              yield {
+                Redirect(controllers.routes.ImporterEORINumberController.onLoad())
+              }
+
+          case (true, false) =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
+              _ <- sessionRepository.set(updatedAnswers)
+            }
+              yield {
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              }
+
+          case _ =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              _ <- sessionRepository.set(updatedAnswers)
+            }
+              yield {
+                Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+              }
         }
       }
     )
 
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.ImporterNameController.onLoad()
+    }
+  }
+
 
 }

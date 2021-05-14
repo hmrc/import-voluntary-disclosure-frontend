@@ -127,8 +127,11 @@ trait CYAImporterDetailsSummaryListHelper {
             ),
             actions = Some(Actions(
               items = Seq(
-                ActionItem("Url", Text(messages("cya.change")))
-              ))
+                ActionItemHelper.createChangeActionItem(
+                  controllers.routes.ImporterEORINumberController.onLoad().url,
+                  messages("cya.contactDetails.change")
+                ))
+            )
             )
           )
         )
