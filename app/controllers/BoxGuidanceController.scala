@@ -18,6 +18,7 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import pages.UnderpaymentReasonsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -36,7 +37,12 @@ class BoxGuidanceController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())))
+
+    if (request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty).nonEmpty) {
+      Future.successful(Redirect(controllers.routes.UnderpaymentReasonSummaryController.onLoad()))
+    } else {
+      Future.successful(Ok(view(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())))
+    }
   }
 
 }
