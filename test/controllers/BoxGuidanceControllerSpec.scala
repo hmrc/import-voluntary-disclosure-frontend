@@ -51,7 +51,7 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "return 303" in new Test {
+    "redirect to the summary page when underpayment reasons already exist" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(35, 1, "100", "350"))).success.value
