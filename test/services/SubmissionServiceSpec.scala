@@ -23,10 +23,10 @@ import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
 import play.api.libs.json.Json
-import utils.ReusableValues
+import utils.{ReusableValues, SubmissionServiceTestData, SubmissionServiceTestJson}
 
 
-class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with ReusableValues {
+class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
   trait Test {
     def setupMock(response: Either[ErrorModel, SubmissionResponse]) = {
@@ -49,68 +49,10 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
     val failedCreateCaseConnectorCall = ErrorModel(400, "Downstream error returned when retrieving SubmissionResponse from back end")
     val invalidUserAnswersError = ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model")
 
-    val completeSubmission: SubmissionData = SubmissionData(
-      userType = representative,
-      knownDetails = eoriDetails,
-      numEntries = oneEntry,
-      acceptedBeforeBrexit = true,
-      entryDetails = entryDetails,
-      oneCpc = true,
-      originalCpc = Some(cpc),
-      declarantContactDetails = contactDetails,
-      traderAddressCorrect = true,
-      traderAddress = addressDetails,
-      importerEoriExists = true,
-      importerEori = Some(eoriDetails.eori),
-      importerName = Some("Joe Bloggs"),
-      importerAddress = Some(addressDetails),
-      paymentByDeferment = true,
-      defermentType = Some("C"),
-      defermentAccountNumber = Some(defermentAccountNumber),
-      additionalDefermentAccountNumber = Some(defermentAccountNumber),
-      additionalDefermentType = Some("D"),
-      amendedItems = underpaymentReasons,
-      hasAdditionalInfo = true,
-      additionalInfo = Some("Additional information"),
-      underpaymentDetails = someUnderpaymentDetailsSelected,
-      anyOtherSupportingDocs = true,
-      optionalDocumentsSupplied = Some(optionalSupportingDocuments),
-      supportingDocuments = supportingDocuments,
-      splitDeferment = Some(true),
-      authorityDocuments = Some(authorityDocuments),
-      isImporterVatRegistered = Some(true)
-    )
-    val userAnswers: UserAnswers = (for {
-      answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
-      answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
-      answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
-      answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
-      answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails)
-      answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc)
-      answers <- answers.set(EnterCustomsProcedureCodePage, completeSubmission.originalCpc.getOrElse("cpcError"))
-      answers <- answers.set(DeclarantContactDetailsPage, completeSubmission.declarantContactDetails)
-      answers <- answers.set(TraderAddressCorrectPage, completeSubmission.traderAddressCorrect)
-      answers <- answers.set(TraderAddressPage, completeSubmission.traderAddress)
-      answers <- answers.set(ImporterEORIExistsPage, completeSubmission.importerEoriExists)
-      answers <- answers.set(ImporterEORINumberPage, completeSubmission.importerEori.getOrElse("GB021111240000"))
-      answers <- answers.set(ImporterNamePage, completeSubmission.importerName.getOrElse("Joe Bloggs"))
-      answers <- answers.set(ImporterAddressPage, completeSubmission.importerAddress.getOrElse(addressDetails))
-      answers <- answers.set(DefermentPage, completeSubmission.paymentByDeferment)
-      answers <- answers.set(DefermentTypePage, completeSubmission.defermentType.getOrElse("C"))
-      answers <- answers.set(DefermentAccountPage, completeSubmission.defermentAccountNumber.getOrElse(defermentAccountNumber))
-      answers <- answers.set(AdditionalDefermentTypePage, completeSubmission.additionalDefermentType.getOrElse("C"))
-      answers <- answers.set(AdditionalDefermentNumberPage, completeSubmission.additionalDefermentAccountNumber.getOrElse(defermentAccountNumber))
-      answers <- answers.set(UnderpaymentReasonsPage, completeSubmission.amendedItems)
-      answers <- answers.set(HasFurtherInformationPage, completeSubmission.hasAdditionalInfo)
-      answers <- answers.set(MoreInformationPage, completeSubmission.additionalInfo.getOrElse("Additional information"))
-      answers <- answers.set(UnderpaymentDetailSummaryPage, completeSubmission.underpaymentDetails)
-      answers <- answers.set(AnyOtherSupportingDocsPage, completeSubmission.anyOtherSupportingDocs)
-      answers <- answers.set(OptionalSupportingDocsPage, completeSubmission.optionalDocumentsSupplied.getOrElse(optionalSupportingDocuments))
-      answers <- answers.set(FileUploadPage, completeSubmission.supportingDocuments)
-      answers <- answers.set(SplitPaymentPage, completeSubmission.splitDeferment.get)
-      answers <- answers.set(UploadAuthorityPage, completeSubmission.authorityDocuments.getOrElse(Seq.empty))
-      answers <- answers.set(ImporterVatRegisteredPage, completeSubmission.isImporterVatRegistered.getOrElse(true))
-    } yield answers).getOrElse(new UserAnswers("some-cred-id"))
+    val submission: SubmissionData = completeSubmission
+    val userAnswers: UserAnswers = completeUserAnswers
+
+    val outputJson = completeOutputJson
 
     val service = new SubmissionService(mockIVDSubmissionConnector)
 
@@ -144,6 +86,14 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
   }
 
   "buildSubmission" when {
+
+    "called with a complete User Answers" should {
+      "return expect json" in new Test {
+        lazy val result = service.buildSubmission(userAnswers)
+
+        result mustBe Right(Json.parse(completeOutputJson))
+      }
+    }
 
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
