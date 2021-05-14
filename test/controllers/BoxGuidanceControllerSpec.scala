@@ -58,6 +58,8 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+
     }
 
   }
