@@ -43,7 +43,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "not be displayed" in {
-        document.getElementsByClass("govuk-back-link").size() mustBe 0
+        elementExtinct("#back-link")
       }
     }
 
