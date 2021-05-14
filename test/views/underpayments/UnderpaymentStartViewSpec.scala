@@ -18,7 +18,6 @@ package views.underpayments
 
 import base.ViewBaseSpec
 import messages.{BaseMessages, UnderpaymentStartMessages}
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -38,6 +37,16 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         document.title mustBe UnderpaymentStartMessages.pageTitle
       }
     }
+
+    "when in change mode back button" should {
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not be displayed" in {
+        document.getElementsByClass("govuk-back-link").size() mustBe 0
+      }
+    }
+
   }
 
   "Dynamic bullet points depending on one entry or bulk" when {
