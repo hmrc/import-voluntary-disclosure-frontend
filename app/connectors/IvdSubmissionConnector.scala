@@ -20,6 +20,7 @@ import config.AppConfig
 import connectors.httpParsers.IvdSubmissionHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import models.{EoriDetails, IvdSubmission, SubmissionResponse}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import javax.inject.{Inject, Singleton}
@@ -37,8 +38,8 @@ class IvdSubmissionConnector @Inject()(val http: HttpClient,
     http.GET[HttpGetResult[EoriDetails]](getEoriDetailsUrl(id))
   }
 
-  def postSubmission(submission: IvdSubmission)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
-    http.POST[IvdSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
+  def postSubmission(submission: JsValue)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
+    http.POST[JsValue, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
   }
 
 }

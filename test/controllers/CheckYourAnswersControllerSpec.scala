@@ -34,79 +34,41 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.connectors.MockIvdSubmissionConnector
 import mocks.repositories.MockSessionRepository
+import mocks.services.MockSubmissionService
 import models._
-import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.{CheckYourAnswersView, ConfirmationView}
 
-import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.Future
 
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository with MockIvdSubmissionConnector {
+  trait Test extends MockSessionRepository with MockSubmissionService {
 
     private def setupConnectorMock(response: Either[ErrorModel, SubmissionResponse]) = {
-      setupMockPostSubmission(response)
+      setupMockCreateCase(response)
     }
 
     private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
     private lazy val confirmationView: ConfirmationView = app.injector.instanceOf[ConfirmationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-      .set(UserTypePage, UserType.Importer).success.value
-      .set(KnownEoriDetails, EoriDetails(
-        "GB000000001",
-        "Importers Inc.",
-        ContactAddress("street", None, "city", Some("postcode"), "country code"))
-      ).success.value
-      .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
-      .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
-      .set(AcceptanceDatePage, true).success.value
-      .set(FileUploadPage, Seq(FileUploadInfo(
-        "test.pdf",
-        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        LocalDateTime.now,
-        "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "application/pdf"))).success.value
-      .set(DeclarantContactDetailsPage, ContactDetails(
-        "f",
-        "fefewfew@gmail.com",
-        "07485939292")).success.value
-      .set(TraderAddressPage, ContactAddress(
-        "street", None, "city", Some("postcode"), "country code")).success.value
-      .set(OneCustomsProcedureCodePage, true).success.value
-      .set(EnterCustomsProcedureCodePage, "3333333").success.value
-      .set(DefermentPage, true).success.value
-      .set(MoreInformationPage, "some text").success.value
-      .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(1, 0, "GBP100", "GBP200"))).success.value
-      .set(ImporterEORIExistsPage, true).success.value
-      .set(ImporterEORINumberPage, "GB345834921000").success.value
-      .set(ImporterVatRegisteredPage, true).success.value
-      .set(UserTypePage, UserType.Representative).success.value
-      .set(ImporterNamePage, "First Second").success.value
-      .set(ImporterAddressPage, ContactAddress(
-        "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-    )
-
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val connectorMock: Either[ErrorModel, SubmissionResponse] = Right(SubmissionResponse("123"))
+    lazy val serviceMock: Either[ErrorModel, SubmissionResponse] = Right(SubmissionResponse("123"))
     lazy val controller = {
-      setupConnectorMock(connectorMock)
+      setupConnectorMock(serviceMock)
       new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-        messagesControllerComponents, mockSessionRepository, mockIVDSubmissionConnector,
+        messagesControllerComponents, mockSessionRepository, mockSubmissionService,
         checkYourAnswersView, confirmationView, ec)
     }
   }
-
 
   "GET onLoad" should {
     "return OK" in new Test {
@@ -129,18 +91,10 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server error is submission fails" in new Test {
-      override lazy val connectorMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working"))
+      override lazy val serviceMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working"))
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
-
-    "throw a Runtime error if the user answers doesn't parse to a submission model" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UserTypePage, UserType.Importer).success.value)
-
-      val result = intercept[RuntimeException](await(controller.onSubmit()(fakeRequest)))
-      assert(result.getMessage.contains("Completed journey answers does not parse to IVDSubmission model"))
-    }
-
   }
+
 }

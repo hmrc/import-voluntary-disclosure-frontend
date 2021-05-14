@@ -17,13 +17,16 @@
 package utils
 
 import messages.underpayments.UnderpaymentTypeMessages
+import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
 import models.underpayments.UnderpaymentDetail
-import models.{ContactAddress, EoriDetails}
+import models._
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.http.HttpResponse
+
+import java.time.{LocalDate, LocalDateTime}
 
 trait ReusableValues {
 
@@ -86,6 +89,42 @@ trait ReusableValues {
     createRadioButton("D10", UnderpaymentTypeMessages.compensatoryDuty)
   )
 
+  val importer: UserType = UserType.Importer
+  val representative: UserType = UserType.Representative
+  val entryDetails: EntryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12"))
+  val oneEntry: NumberOfEntries = NumberOfEntries.OneEntry
+  val bulkEntry: NumberOfEntries = NumberOfEntries.MoreThanOneEntry
+  val contactDetails: ContactDetails = ContactDetails("John Smith", "test@test.com", "0123456789")
+  val cpc: String = "4000C09"
+  val supportingDocuments: Seq[FileUploadInfo] = Seq(
+    FileUploadInfo(
+      fileName = "TestDocument.pdf",
+      downloadUrl = "http://some/location",
+      uploadTimestamp = LocalDateTime.now,
+      checksum = "the file checksum",
+      fileMimeType = "application/pdf"
+    )
+  )
+  val authorityDocuments: Seq[UploadAuthority] = Seq(
+    UploadAuthority(
+      defermentAccountNumber,
+      SelectedDutyTypes.Duty,
+      FileUploadInfo(
+        fileName = "TestDocument.pdf",
+        downloadUrl = "http://some/location",
+        uploadTimestamp = LocalDateTime.now,
+        checksum = "the file checksum",
+        fileMimeType = "application/pdf"
+      )
+    ))
+  val defermentAccountNumber: String = "1234567"
+  val underpaymentReasons = Seq(
+    UnderpaymentReason(22, 0, "GBP100", "GBP200"),
+    UnderpaymentReason(33, 1, "2204109400X411", "2204109400X412")
+  )
+  val optionalSupportingDocuments: Seq[OptionalDocument] = Seq(
+    ImportAndEntry, AirwayBill, OriginProof, Other
+  )
 
   def createRadioButton(value: String, message: String): RadioItem = {
     RadioItem(

@@ -19,9 +19,8 @@ package connectors
 import base.SpecBase
 import mocks.MockHttp
 import models._
+import play.api.libs.json.Json
 import utils.ReusableValues
-
-import java.time.LocalDate
 
 class IvdSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableValues {
 
@@ -38,34 +37,15 @@ class IvdSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
       setupMockHttpGet(target.getEoriDetailsUrl(idOne))(Left(errorModel))
       await(target.getEoriDetails(idOne)) mustBe Left(errorModel)
     }
-
   }
 
   "called to post the Submission" should {
-
-    val submission = IvdSubmission(
-      userType = UserType.Importer,
-      knownDetails = EoriDetails("GB000000000001", "Importers Inc.", addressDetails),
-      numEntries = NumberOfEntries.OneEntry,
-      acceptedBeforeBrexit = false,
-      additionalInfo = "some text",
-      entryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-01-12")),
-      originalCpc = "cpc",
-      declarantContactDetails = ContactDetails("name", "email", "phone"),
-      traderContactDetails = ContactDetails("Importer Inc.", "email", "phone"),
-      traderAddress = addressDetails,
-      paymentByDeferment = false,
-      defermentType = None,
-      defermentAccountNumber = None,
-      additionalDefermentAccountNumber = None,
-      isImporterVatRegistered = Some(true)
-    )
 
     val submissionResponse = SubmissionResponse("1234")
 
     "return the Right response" in {
       setupMockHttpPost(target.postSubmissionUrl)(Right(submissionResponse))
-      await(target.postSubmission(submission)) mustBe Right(submissionResponse)
+      await(target.postSubmission(Json.obj())) mustBe Right(submissionResponse)
     }
   }
 

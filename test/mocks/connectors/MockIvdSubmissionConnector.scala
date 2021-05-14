@@ -19,6 +19,7 @@ package mocks.connectors
 import connectors.IvdSubmissionConnector
 import models.{EoriDetails, ErrorModel, IvdSubmission, SubmissionResponse}
 import org.scalamock.scalatest.MockFactory
+import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +37,7 @@ trait MockIvdSubmissionConnector extends MockFactory {
   }
 
   def setupMockPostSubmission(response: Either[ErrorModel, SubmissionResponse]): Unit = {
-    (mockIVDSubmissionConnector.postSubmission(_: IvdSubmission)(_: HeaderCarrier, _: ExecutionContext))
+    (mockIVDSubmissionConnector.postSubmission(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
   }
