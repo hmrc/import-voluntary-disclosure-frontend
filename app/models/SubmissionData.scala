@@ -26,25 +26,30 @@ case class SubmissionData(userType: UserType,
                           knownDetails: EoriDetails,
                           numEntries: NumberOfEntries,
                           acceptedBeforeBrexit: Boolean,
-                          additionalInfo: String = "Not Applicable",
+                          hasAdditionalInfo: Boolean,
+                          additionalInfo: Option[String],
                           entryDetails: EntryDetails,
-                          originalCpc: String,
+                          oneCpc: Boolean,
+                          originalCpc: Option[String],
                           declarantContactDetails: ContactDetails,
+                          traderAddressCorrect: Boolean,
                           traderAddress: ContactAddress,
-                          importerEori: Option[String] = None,
-                          importerName: Option[String] = None,
-                          importerAddress: Option[ContactAddress] = None,
+                          importerEoriExists: Boolean,
+                          importerEori: Option[String],
+                          importerName: Option[String],
+                          importerAddress: Option[ContactAddress],
                           paymentByDeferment: Boolean,
-                          defermentType: Option[String] = None,
-                          defermentAccountNumber: Option[String] = None,
-                          additionalDefermentAccountNumber: Option[String] = None,
-                          additionalDefermentType: Option[String] = None,
-                          amendedItems: Seq[UnderpaymentReason] = Seq.empty,
-                          underpaymentDetails: Seq[UnderpaymentDetail] = Seq.empty,
-                          optionalDocumentsSupplied: Option[Seq[String]] = None,
-                          supportingDocuments: Seq[FileUploadInfo] = Seq.empty,
-                          splitDeferment: Boolean = false,
-                          authorityDocuments: Seq[UploadAuthority] = Seq.empty,
+                          defermentType: Option[String],
+                          defermentAccountNumber: Option[String],
+                          additionalDefermentAccountNumber: Option[String],
+                          additionalDefermentType: Option[String],
+                          amendedItems: Seq[UnderpaymentReason],
+                          underpaymentDetails: Seq[UnderpaymentDetail],
+                          anyOtherSupportingDocs: Boolean,
+                          optionalDocumentsSupplied: Option[Seq[OptionalDocument]],
+                          supportingDocuments: Seq[FileUploadInfo],
+                          splitDeferment: Option[Boolean],
+                          authorityDocuments: Option[Seq[UploadAuthority]],
                           isImporterVatRegistered: Option[Boolean]
                         )
 
@@ -55,52 +60,61 @@ object SubmissionData extends FixedConfig {
       userType <- UserTypePage.path.read[UserType]
       knownDetails <- KnownEoriDetails.path.read[EoriDetails]
       numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
-      acceptanceDate <- AcceptanceDatePage.path.readNullable[Boolean]
+      acceptanceDate <- AcceptanceDatePage.path.read[Boolean]
       entryDetails <- EntryDetailsPage.path.read[EntryDetails]
       oneCpc <- OneCustomsProcedureCodePage.path.read[Boolean]
       originalCpc <- EnterCustomsProcedureCodePage.path.readNullable[String]
       declarantContactDetails <- DeclarantContactDetailsPage.path.read[ContactDetails]
+      traderAddressCorrect <- TraderAddressCorrectPage.path.read[Boolean]
       traderAddress <- TraderAddressPage.path.read[ContactAddress]
+      importerEoriExists <- ImporterEORIExistsPage.path.read[Boolean]
       importerEori <- ImporterEORINumberPage.path.readNullable[String]
       importerName <- ImporterNamePage.path.readNullable[String]
       importerAddress <- ImporterAddressPage.path.readNullable[ContactAddress]
-      underpaymentDetails <- UnderpaymentDetailSummaryPage.path.readNullable[Seq[UnderpaymentDetail]]
+      underpaymentDetails <- UnderpaymentDetailSummaryPage.path.read[Seq[UnderpaymentDetail]]
       supportingDocuments <- FileUploadPage.path.read[Seq[FileUploadInfo]]
       paymentByDeferment <- DefermentPage.path.read[Boolean]
       defermentType <- DefermentTypePage.path.readNullable[String]
       defermentAccountNumber <- DefermentAccountPage.path.readNullable[String]
       additionalDefermentNumber <- AdditionalDefermentNumberPage.path.readNullable[String]
       additionalDefermentType <- AdditionalDefermentTypePage.path.readNullable[String]
+      hasAdditionalInfo <- HasFurtherInformationPage.path.read[Boolean]
       additionalInfo <- MoreInformationPage.path.readNullable[String]
       amendedItems <- UnderpaymentReasonsPage.path.read[Seq[UnderpaymentReason]]
       splitDeferment <- SplitPaymentPage.path.readNullable[Boolean]
       authorityDocuments <- UploadAuthorityPage.path.readNullable[Seq[UploadAuthority]]
-      optionalDocumentsSupplied <- OptionalSupportingDocsPage.path.readNullable[Seq[String]]
+      anyOtherSupportingDocs <- AnyOtherSupportingDocsPage.path.read[Boolean]
+      optionalDocumentsSupplied <- OptionalSupportingDocsPage.path.readNullable[Seq[OptionalDocument]]
       isImporterVatRegistered <- ImporterVatRegisteredPage.path.readNullable[Boolean]
     } yield {
       SubmissionData(
         userType = userType,
         knownDetails = knownDetails,
         numEntries = numEntries,
-        acceptedBeforeBrexit = acceptanceDate.getOrElse(false),
+        acceptedBeforeBrexit = acceptanceDate,
         entryDetails = entryDetails,
-        originalCpc = if (oneCpc) originalCpc.getOrElse("cpcError") else "VARIOUS",
+        oneCpc = oneCpc,
+        originalCpc = originalCpc,
         declarantContactDetails = declarantContactDetails,
+        traderAddressCorrect = traderAddressCorrect,
         traderAddress = traderAddress,
+        importerEoriExists = importerEoriExists,
         importerEori = importerEori,
         importerName = importerName,
         importerAddress = importerAddress,
-        underpaymentDetails = underpaymentDetails.getOrElse(Seq.empty),
+        underpaymentDetails = underpaymentDetails,
         supportingDocuments = supportingDocuments,
         paymentByDeferment = paymentByDeferment,
         defermentType = defermentType,
         defermentAccountNumber = defermentAccountNumber,
         additionalDefermentAccountNumber = additionalDefermentNumber,
         additionalDefermentType = additionalDefermentType,
-        additionalInfo = additionalInfo.getOrElse("Not Applicable"),
+        hasAdditionalInfo = hasAdditionalInfo,
+        additionalInfo = additionalInfo,
         amendedItems = amendedItems,
-        splitDeferment = splitDeferment.getOrElse(false),
-        authorityDocuments = authorityDocuments.getOrElse(Seq.empty),
+        splitDeferment = splitDeferment,
+        authorityDocuments = authorityDocuments,
+        anyOtherSupportingDocs = anyOtherSupportingDocs,
         optionalDocumentsSupplied = optionalDocumentsSupplied,
         isImporterVatRegistered = isImporterVatRegistered
       )

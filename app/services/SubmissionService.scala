@@ -18,6 +18,7 @@ package services
 
 import connectors.IvdSubmissionConnector
 import models.DocumentTypes.{DefermentAuthorisation, DocumentType}
+import models.OptionalDocument._
 import models.SelectedDutyTypes.{Duty, Vat}
 import models.requests.DataRequest
 import models._
@@ -37,7 +38,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
     buildSubmission(request.userAnswers) match {
       case Right(submission) => {
-        ivdSubmissionConnector.postSubmission(submission).map {
+        ivdSubmissionConnector.createCase(submission).map {
           case Right(confirmationResponse) => Right(confirmationResponse)
           case Left(errorResponse) => {
             logger.error("Error in response from EIS/Pega: " + errorResponse.message)
@@ -72,13 +73,14 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
+    val customsProcessingCode = if (data.oneCpc) data.originalCpc.getOrElse("cpcError") else "VARIOUS"
 
     Json.obj(
       "userType" -> data.userType,
       "isBulkEntry" -> isBulkEntry,
       "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
       "entryDetails" -> data.entryDetails,
-      "customsProcessingCode" -> data.originalCpc
+      "customsProcessingCode" -> customsProcessingCode
     )
   }
 
@@ -89,37 +91,39 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   }
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
+    val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
     Json.obj(
-      "additionalInfo" -> data.additionalInfo,
+      "additionalInfo" -> additionalInfo,
       "amendedItems" -> data.amendedItems
     )
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
+    val authorityDocuments = data.authorityDocuments.getOrElse(Seq.empty)
     val mandatoryDocumentsList: Seq[DocumentType] = Seq(
       DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet
     )
 
-    val optionalDocumentsList: Option[Seq[DocumentType]] = Some(data.optionalDocumentsSupplied.getOrElse(Seq.empty).flatMap {
-      case "importAndEntry" => Seq(DocumentTypes.AmendedC88, DocumentTypes.AmendedC2)
-      case "airwayBill" => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
-      case "originProof" => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
-      case "other" => Seq(DocumentTypes.Other)
+    val optionalDocumentsList: Seq[DocumentType] = data.optionalDocumentsSupplied.getOrElse(Seq.empty).flatMap {
+      case ImportAndEntry => Seq(DocumentTypes.AmendedC88, DocumentTypes.AmendedC2)
+      case AirwayBill => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
+      case OriginProof => Seq(DocumentTypes.InvoiceAirwayBillPreferenceCertificate)
+      case Other => Seq(DocumentTypes.Other)
       case _ => Seq.empty
-    })
+    }
 
-    val documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList.getOrElse(Seq.empty)
+    val documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList
 
     val supportingDocuments = if (data.paymentByDeferment) {
       (data.splitDeferment, data.defermentType, data.additionalDefermentType) match {
-        case (true, Some("B"), Some("B")) =>
-          data.authorityDocuments.filter(x => Seq(Duty, Vat).contains(x.dutyType)).map(_.file) ++ data.supportingDocuments
-        case (true, Some("B"), _) =>
-          data.authorityDocuments.filter(_.dutyType == Duty).map(_.file) ++ data.supportingDocuments
-        case (true, _, Some("B")) =>
-          data.authorityDocuments.filter(_.dutyType == Vat).map(_.file) ++ data.supportingDocuments
-        case (false, Some("B"), _) =>
-          data.authorityDocuments.map(_.file) ++ data.supportingDocuments
+        case (Some(true), Some("B"), Some("B")) =>
+          authorityDocuments.filter(x => Seq(Duty, Vat).contains(x.dutyType)).map(_.file) ++ data.supportingDocuments
+        case (Some(true), Some("B"), _) =>
+          authorityDocuments.filter(_.dutyType == Duty).map(_.file) ++ data.supportingDocuments
+        case (Some(true), _, Some("B")) =>
+          authorityDocuments.filter(_.dutyType == Vat).map(_.file) ++ data.supportingDocuments
+        case (Some(false), Some("B"), _) =>
+          authorityDocuments.map(_.file) ++ data.supportingDocuments
         case _ => data.supportingDocuments
       }
     } else {
@@ -128,9 +132,9 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
     val supportingDocumentTypes = if (data.paymentByDeferment) {
       (data.splitDeferment, data.defermentType, data.additionalDefermentType) match {
-        case (true, Some(dt), Some(addDt)) if dt != "B" && addDt != "B" => documentsSupplied
-        case (true, _, _) => documentsSupplied ++ Seq(DefermentAuthorisation)
-        case (false, Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
+        case (Some(true), Some(dt), Some(addDt)) if dt != "B" && addDt != "B" => documentsSupplied
+        case (Some(true), _, _) => documentsSupplied ++ Seq(DefermentAuthorisation)
+        case (Some(false), Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
         case _ => documentsSupplied
       }
     } else {
@@ -145,19 +149,19 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildDefermentDetails(data: SubmissionData): JsObject = {
     if (data.paymentByDeferment) {
-      (data.defermentType, data.defermentAccountNumber, data.additionalDefermentAccountNumber, data.additionalDefermentType) match {
-        case (Some(dt), Some(dan), Some(addDan), Some(addDT)) if data.userType == UserType.Representative && data.splitDeferment =>
+      (data.defermentType, data.defermentAccountNumber, data.additionalDefermentAccountNumber, data.additionalDefermentType, data.splitDeferment) match {
+        case (Some(dt), Some(dan), Some(addDan), Some(addDT), Some(true)) if data.userType == UserType.Representative =>
           Json.obj(
             "defermentType" -> dt,
             "defermentAccountNumber" -> s"$dt$dan",
             "additionalDefermentAccountNumber" -> s"$addDT$addDan"
           )
-        case (Some(dt), Some(dan), _, _) if data.userType == UserType.Representative =>
+        case (Some(dt), Some(dan), _, _, _) if data.userType == UserType.Representative =>
           Json.obj(
             "defermentType" -> dt,
             "defermentAccountNumber" -> s"$dt$dan"
           )
-        case (_, Some(dan), _, _) if data.userType == UserType.Importer =>
+        case (_, Some(dan), _, _, _) if data.userType == UserType.Importer =>
           Json.obj(
             "defermentType" -> "D",
             "defermentAccountNumber" -> s"D$dan"

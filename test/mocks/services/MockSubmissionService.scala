@@ -22,15 +22,15 @@ import org.scalamock.scalatest.MockFactory
 import services.SubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 trait MockSubmissionService extends MockFactory {
 
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
 
   def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit = {
-    (mockSubmissionService.createCase()(_: DataRequest[_], _: HeaderCarrier))
-      .expects(*, *)
+    (mockSubmissionService.createCase()(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *)
       .returns(Future.successful(response))
   }
 

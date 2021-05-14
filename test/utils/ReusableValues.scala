@@ -30,6 +30,8 @@ import java.time.{LocalDate, LocalDateTime}
 
 trait ReusableValues {
 
+  private val currentTimestamp = LocalDateTime.now()
+
   val idOne: String = "1"
 
   val addressDetails: ContactAddress = ContactAddress(
@@ -100,7 +102,7 @@ trait ReusableValues {
     FileUploadInfo(
       fileName = "TestDocument.pdf",
       downloadUrl = "http://some/location",
-      uploadTimestamp = LocalDateTime.now,
+      uploadTimestamp = currentTimestamp,
       checksum = "the file checksum",
       fileMimeType = "application/pdf"
     )
@@ -112,7 +114,7 @@ trait ReusableValues {
       FileUploadInfo(
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
-        uploadTimestamp = LocalDateTime.now,
+        uploadTimestamp = currentTimestamp,
         checksum = "the file checksum",
         fileMimeType = "application/pdf"
       )
