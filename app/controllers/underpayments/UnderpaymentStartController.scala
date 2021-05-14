@@ -37,11 +37,10 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink(request.userAnswers), request.isOneEntry)))
+      Future.successful(Ok(view(backLink(request.userAnswers), request.isOneEntry, !request.checkMode)))
     }
   }
 
