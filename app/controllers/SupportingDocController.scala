@@ -20,7 +20,7 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import models.UserAnswers
-import pages.HasFurtherInformationPage
+import pages.{FileUploadPage, HasFurtherInformationPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -45,7 +45,10 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
   }
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(backLink(request.userAnswers))))
-
+    if (request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty).nonEmpty) {
+      Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
+    } else {
+      Future.successful(Ok(view(backLink(request.userAnswers))))
+    }
   }
 }
