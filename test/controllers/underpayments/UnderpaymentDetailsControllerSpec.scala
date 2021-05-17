@@ -22,7 +22,6 @@ import forms.underpayments.UnderpaymentDetailsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.underpayments.UnderpaymentAmount
-import pages.CheckModePage
 import pages.underpayments.UnderpaymentDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
@@ -77,7 +76,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType,false).url)
+          Some(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, false).url)
       }
 
       "update the UserAnswers in session" in new Test {
