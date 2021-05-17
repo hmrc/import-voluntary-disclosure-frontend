@@ -105,7 +105,7 @@ object CheckYourAnswersData {
               ActionItem(
                 controllers.routes.ImporterEORIExistsController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(CYAMessages.change)
+                Some(CYAMessages.changeImporterEoriExists)
               )
             )
           )
@@ -124,7 +124,7 @@ object CheckYourAnswersData {
               ActionItem(
                 controllers.routes.ImporterEORINumberController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(CYAMessages.change)
+                Some(CYAMessages.changeImporterEoriNumber)
               )
             )
           )
@@ -143,7 +143,7 @@ object CheckYourAnswersData {
               ActionItem(
                 controllers.routes.ImporterVatRegisteredController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(CYAMessages.change)
+                Some(CYAMessages.changeImporterVatRegistered)
               )
             )
           )

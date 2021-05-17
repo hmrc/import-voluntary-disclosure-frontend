@@ -103,7 +103,7 @@ trait CYAImporterDetailsSummaryListHelper {
         valueContent = Text(eoriNumberExists),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.ImporterEORIExistsController.onLoad().url,
-          messages("cya.change")
+          messages("cya.eoriExists.change")
         ))
       )
     }
@@ -115,7 +115,7 @@ trait CYAImporterDetailsSummaryListHelper {
         valueContent = Text(eoriNumber),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.ImporterEORINumberController.onLoad().url,
-          messages("cya.change")
+          messages("cya.eoriNumber.change")
         ))
       )
     }
@@ -128,7 +128,7 @@ trait CYAImporterDetailsSummaryListHelper {
         valueContent = Text(isVatRegistered),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.ImporterVatRegisteredController.onLoad().url,
-          messages("cya.change")
+          messages("cya.vatRegistered.change")
         ))
       )
     }

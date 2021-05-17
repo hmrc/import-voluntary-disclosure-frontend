@@ -62,7 +62,7 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
             yield {
               Redirect(controllers.routes.ImporterEORINumberController.onLoad())
             }
-        } else if (!eoriExists && request.checkMode) {
+        } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
             updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
@@ -70,15 +70,12 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           }
             yield {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-            }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-            _ <- sessionRepository.set(updatedAnswers)
-          }
-            yield {
-              Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+              if (request.checkMode) {
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+
+              }
             }
         }
       }
