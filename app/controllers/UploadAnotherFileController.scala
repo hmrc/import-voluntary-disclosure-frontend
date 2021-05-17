@@ -62,11 +62,15 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => resultWithErrors(formWithErrors),
       value => {
-          if (value) {
-            Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+        if (value) {
+          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+        } else {
+          if (request.checkMode) {
+            Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.routes.DeclarantContactDetailsController.onLoad()))
           }
+        }
       }
     )
   }
