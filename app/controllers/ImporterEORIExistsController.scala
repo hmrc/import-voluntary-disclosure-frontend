@@ -83,7 +83,6 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
         }
       }
     )
-
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
@@ -93,6 +92,5 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
       controllers.routes.ImporterNameController.onLoad()
     }
   }
-
 
 }
