@@ -113,7 +113,10 @@ trait CYAImporterDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.eoriNumber")),
         valueContent = Text(eoriNumber),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.ImporterEORINumberController.onLoad().url,
+          messages("cya.change")
+        ))
       )
     }
 
@@ -123,7 +126,10 @@ trait CYAImporterDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.vatRegistered")),
         valueContent = Text(isVatRegistered),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.ImporterVatRegisteredController.onLoad().url,
+          messages("cya.change")
+        ))
       )
     }
 

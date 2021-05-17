@@ -108,7 +108,7 @@ object CheckYourAnswersData {
                 Some(CYAMessages.change)
               )
             )
-           )
+          )
           )
         ),
         SummaryListRow(
@@ -119,10 +119,16 @@ object CheckYourAnswersData {
           value = Value(
             Text(eoriNumber)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.ImporterEORINumberController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.change)
+              )
+            )
+          )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -132,10 +138,16 @@ object CheckYourAnswersData {
           value = Value(
             Text(yes)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.ImporterVatRegisteredController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.change)
+              )
+            )
+          )
+          )
         ),
       )
     )

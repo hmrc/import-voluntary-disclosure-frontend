@@ -54,44 +54,32 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       eoriExists => {
-        (request.checkMode, eoriExists) match {
-          case (true, true) =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-              _ <- sessionRepository.set(updatedAnswers)
+        if (eoriExists) {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+            _ <- sessionRepository.set(updatedAnswers)
+          }
+            yield {
+              Redirect(controllers.routes.ImporterEORINumberController.onLoad())
             }
-              yield {
-                Redirect(controllers.routes.ImporterEORINumberController.onLoad())
-              }
-
-          case (false, true) =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-              _ <- sessionRepository.set(updatedAnswers)
+        } else if (!eoriExists && request.checkMode) {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
+            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
+            _ <- sessionRepository.set(updatedAnswers)
+          }
+            yield {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
             }
-              yield {
-                Redirect(controllers.routes.ImporterEORINumberController.onLoad())
-              }
-
-          case (true, false) =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
-              _ <- sessionRepository.set(updatedAnswers)
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+            _ <- sessionRepository.set(updatedAnswers)
+          }
+            yield {
+              Redirect(controllers.routes.NumberOfEntriesController.onLoad())
             }
-              yield {
-                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-              }
-
-          case _ =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-              _ <- sessionRepository.set(updatedAnswers)
-            }
-              yield {
-                Redirect(controllers.routes.NumberOfEntriesController.onLoad())
-              }
         }
       }
     )
