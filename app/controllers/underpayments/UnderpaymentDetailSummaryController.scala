@@ -16,13 +16,13 @@
 
 package controllers.underpayments
 
-import controllers.Assets.{BadRequest, Ok, Redirect}
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import models.underpayments.UnderpaymentDetail
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.underpayments.{ChangeUnderpaymentDetailSummaryPage, UnderpaymentDetailSummaryPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -31,11 +31,13 @@ import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
+                                                    sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentDetailSummaryView,
                                                     formProvider: UnderpaymentDetailSummaryFormProvider
@@ -43,12 +45,12 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    // TODO - create new page
-    // TODO - save the existing underpayment in the new page
-    // TODO - redirect to onLoad
-
-
-    Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentDetailSummaryPage, request.dutyType))
+      _ <- sessionRepository.set(updatedAnswers)
+    } yield {
+      Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
+    }
   }
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
