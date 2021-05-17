@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package pages
+package models.upscan
 
-import models.FileUploadInfo
-import play.api.libs.json._
+import play.api.libs.json.{Format, Json}
 
-object FileUploadPage extends QuestionPage[Seq[FileUploadInfo]] {
+object UpscanErrors extends Enumeration {
+  type UpscanError = Value
 
-  override def path: JsPath = JsPath \ "uploaded-files"
+  val Unknown: UpscanError = Value
+  val Rejected: UpscanError = Value
+  val Quarantined: UpscanError = Value
+  val TooSmall: UpscanError = Value
+  val TooBig: UpscanError = Value
+  val Missing: UpscanError = Value
 
-  val queryWrites: Writes[Seq[FileUploadInfo]] = files => Json.toJson(files)
+  implicit val formats: Format[UpscanError] = Json.formatEnum(this)
 }
