@@ -48,7 +48,6 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
     Future.successful(Ok(view(
       underpaymentType,
       summaryList(underpaymentType, underpaymentDetail),
-      backLink(underpaymentType),
       submitCall(underpaymentType, change)
     )))
   }
@@ -79,10 +78,6 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
         }
       case None => Future.successful(InternalServerError("Couldn't find underpayment details"))
     }
-  }
-
-  private def backLink(underpaymentType: String): Call = {
-    controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(underpaymentType)
   }
 
   private def submitCall(underpaymentType: String, change: Boolean): Call = {
