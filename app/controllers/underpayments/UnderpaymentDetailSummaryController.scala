@@ -42,6 +42,15 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
+  def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    // TODO - create new page
+    // TODO - save the existing underpayment in the new page
+    // TODO - redirect to onLoad
+
+
+    Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
+  }
+
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val fallbackResponse = Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
