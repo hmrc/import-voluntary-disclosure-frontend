@@ -33,8 +33,7 @@ object UnderpaymentDetailSummaryPage extends QuestionPage[Seq[UnderpaymentDetail
     value match {
       case Some(answer) =>
         val underpaymentType = userAnswers.remove(UnderpaymentTypePage).getOrElse(userAnswers)
-        val changeUnderpaymentType = underpaymentType.remove(TempUnderpaymentTypePage).getOrElse(userAnswers)
-        val underpaymentDetail = changeUnderpaymentType.remove(UnderpaymentDetailsPage).getOrElse(userAnswers)
+        val underpaymentDetail = underpaymentType.remove(UnderpaymentDetailsPage).getOrElse(userAnswers)
         Try(underpaymentDetail)
       case None => super.cleanup(value, userAnswers)
     }

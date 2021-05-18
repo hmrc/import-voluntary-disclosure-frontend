@@ -119,6 +119,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(UploadAuthorityPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentTypePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Redirect(controllers.routes.DefermentController.onLoad())
