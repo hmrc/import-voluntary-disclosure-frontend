@@ -25,7 +25,7 @@
     @layout(
         pageTitle = messages("importerVatRegistered.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = Some(controllers.routes.ImporterEORINumberController.onLoad)) {
+        customBackLinkUrl = None) {
 
         @errorSummary(form.errors)
 
