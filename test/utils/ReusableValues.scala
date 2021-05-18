@@ -119,6 +119,18 @@ trait ReusableValues {
         fileMimeType = "application/pdf"
       )
     ))
+  val vatAuthorityDocuments: Seq[UploadAuthority] = Seq(
+    UploadAuthority(
+      defermentAccountNumber,
+      SelectedDutyTypes.Vat,
+      FileUploadInfo(
+        fileName = "TestDocument.pdf",
+        downloadUrl = "http://some/location",
+        uploadTimestamp = validTimestamp,
+        checksum = "the file checksum",
+        fileMimeType = "application/pdf"
+      )
+    ))
   val defermentAccountNumber: String = "1234567"
   val underpaymentReasons = Seq(
     UnderpaymentReason(22, 0, "GBP100", "GBP200"),

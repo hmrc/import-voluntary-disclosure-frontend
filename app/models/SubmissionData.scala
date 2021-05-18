@@ -34,7 +34,7 @@ case class SubmissionData(userType: UserType,
                           declarantContactDetails: ContactDetails,
                           traderAddressCorrect: Boolean,
                           traderAddress: ContactAddress,
-                          importerEoriExists: Boolean,
+                          importerEoriExists: Option[Boolean],
                           importerEori: Option[String],
                           importerName: Option[String],
                           importerAddress: Option[ContactAddress],
@@ -67,7 +67,7 @@ object SubmissionData extends FixedConfig {
       declarantContactDetails <- DeclarantContactDetailsPage.path.read[ContactDetails]
       traderAddressCorrect <- TraderAddressCorrectPage.path.read[Boolean]
       traderAddress <- TraderAddressPage.path.read[ContactAddress]
-      importerEoriExists <- ImporterEORIExistsPage.path.read[Boolean]
+      importerEoriExists <- ImporterEORIExistsPage.path.readNullable[Boolean]
       importerEori <- ImporterEORINumberPage.path.readNullable[String]
       importerName <- ImporterNamePage.path.readNullable[String]
       importerAddress <- ImporterAddressPage.path.readNullable[ContactAddress]

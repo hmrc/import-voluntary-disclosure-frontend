@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package services
+package services.submissionService
 
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
-import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages._
 import play.api.libs.json.Json
-import utils.{ReusableValues, SubmissionServiceTestData, SubmissionServiceTestJson}
+import services.SubmissionService
 
 
 class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
