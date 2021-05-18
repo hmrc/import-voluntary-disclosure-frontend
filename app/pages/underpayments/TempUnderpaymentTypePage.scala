@@ -20,10 +20,10 @@ import models.SelectedDutyTypes.SelectedDutyType
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-object ChangeUnderpaymentDetailSummaryPage extends QuestionPage[SelectedDutyType] {
+object TempUnderpaymentTypePage extends QuestionPage[SelectedDutyType] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "change-underpayment-detail-summary"
+  override def toString: String = "temp-underpayment-type"
 
 }

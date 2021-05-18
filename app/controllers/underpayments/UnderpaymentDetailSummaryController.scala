@@ -18,10 +18,13 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
+import models.SelectedDutyTypes._
+import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
-import pages.underpayments.{ChangeUnderpaymentDetailSummaryPage, UnderpaymentDetailSummaryPage}
+import pages._
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -46,7 +49,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
 
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentDetailSummaryPage, request.dutyType))
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, request.dutyType))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
@@ -68,24 +71,58 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(formProvider().bindFromRequest().fold(
+    formProvider().bindFromRequest().fold(
       formWithErrors => {
         val underpayments = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
-        BadRequest(view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length))
+        Future.successful(BadRequest(view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length)))
       },
-      value => {
-        if (value) {
-          Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad())
+      addAnother => {
+        if (addAnother) {
+          Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad()))
         } else {
-          if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          if (request.isRepFlow) {
+            redirectForRepFlow()
           } else {
-            Redirect(controllers.routes.BoxGuidanceController.onLoad())
+            if (request.checkMode) {
+              Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+            } else {
+              Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+            }
           }
         }
       }
     )
-    )
+  }
+
+  def redirectForRepFlow()(implicit request: DataRequest[_]): Future[Result] = {
+    val newUnderpaymentType: SelectedDutyType = request.dutyType
+    val oldUnderpaymentType = request.userAnswers.get(TempUnderpaymentTypePage)
+    val splitThePayment = request.userAnswers.get(SplitPaymentPage)
+    val dutyOrVatOnly = Seq(Duty, Vat)
+
+    (oldUnderpaymentType, newUnderpaymentType, splitThePayment) match {
+      case (Some(oldType), Both, _) if dutyOrVatOnly.contains(oldType) =>
+        removePaymentDataAndRedirect()
+      case (Some(Both), newType, Some(true)) if dutyOrVatOnly.contains(newType) =>
+        removePaymentDataAndRedirect()
+      case (None, _, _) => Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+      case _ => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+    }
+  }
+
+  def removePaymentDataAndRedirect()(implicit request: DataRequest[_]): Future[Result] = {
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.remove(DefermentPage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(SplitPaymentPage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentTypePage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentAccountPage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(UploadAuthorityPage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentTypePage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
+      _ <- sessionRepository.set(updatedAnswers)
+    } yield {
+      Redirect(controllers.routes.DefermentController.onLoad())
+    }
   }
 
   private[controllers] def summaryList(underpaymentDetail: Seq[UnderpaymentDetail])
@@ -117,7 +154,6 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
 
   def amountOwedSummaryList(underpaymentDetail: Seq[UnderpaymentDetail])(implicit messages: Messages): SummaryList = {
     val amountOwed = underpaymentDetail.map(underpayment => underpayment.amended - underpayment.original).sum
-
     SummaryList(
       rows = Seq(
         SummaryListRow(
