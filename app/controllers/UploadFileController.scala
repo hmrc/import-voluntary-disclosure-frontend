@@ -55,6 +55,9 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       case _ => controllers.routes.AnyOtherSupportingDocsController.onLoad()
     }
 
+    val files = request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty)
+    val checkModeNoBackLink: Boolean = files.isEmpty && request.checkMode
+
     val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
     val optionalDocs = if (anyOptionalDocs) {
       request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
@@ -64,7 +67,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
 
     upScanService
     .initiateNewJourney().map { response =>
-      Ok(view(response, backLink, optionalDocs))
+      Ok(view(response, backLink, optionalDocs, checkModeNoBackLink))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }

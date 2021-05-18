@@ -25,11 +25,12 @@
         button: components.button
 )
 
-@(upScanResponse: UpScanInitiateResponse, backLink: Call, optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(upScanResponse: UpScanInitiateResponse, backLink: Call, optionalDocs: Seq[OptionalDocument] = Seq.empty, checkModeNoBackLink: Boolean)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
     pageTitle = messages("uploadFile.pageTitle"),
-    customBackLinkUrl = Some(backLink)
+    customBackLinkUrl = Some(backLink),
+    showBackLink = !checkModeNoBackLink
 ) {
 
     @h1(messages("uploadFile.pageHeader"))
