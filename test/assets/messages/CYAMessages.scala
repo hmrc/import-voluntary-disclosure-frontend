@@ -84,4 +84,5 @@ object CYAMessages extends BaseMessages {
   val changeContactDetails = "Change contact details"
   val changeImporterName = "Change importer name"
   val changeImporterAddress = "Change importer address"
+  val changeSupportingDocuments = "Change supporting documents"
 }
