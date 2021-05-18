@@ -29,7 +29,7 @@ import javax.inject.Inject
 class DeclarantContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
 
   val fullNameRegex = "^[a-zA-Z '-]+$"
-  val phoneNumberRegex = "^(\\+)?[0-9 ]{1,15}$"
+  val phoneNumberRegex = "^(\\+)?[0-9 ]{9,16}$"
   val emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
 
   def apply()(implicit messages: Messages): Form[ContactDetails] =
