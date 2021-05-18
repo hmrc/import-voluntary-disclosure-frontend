@@ -16,12 +16,30 @@
 
 @import templates.Layout
 
-@this(layout: Layout)
+@this(layout: Layout,
+        h1: components.h1,
+        p: components.p
+)
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-@layout(pageTitle = Some("import-voluntary-disclosure-frontend")) {
-    <h1 class="govuk-heading-xl">Unauthorised</h1>
+@layout(
+    pageTitle = messages("unauthorised.agent.title"),
+    showBackLink = false
+) {
+
+    @h1(messages("unauthorised.agent.title"))
+
+    @p {
+       @messages("unauthorised.agent.para1")
+    }
+
+    @p {
+       @messages("unauthorised.agent.para2.1")
+       <a href="@appConfig.signOutUrl">@messages("unauthorised.agent.signInAgain")</a>
+       @messages("unauthorised.agent.para2.2")
+    }
+
 }
 
 @{

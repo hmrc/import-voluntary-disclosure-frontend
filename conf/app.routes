@@ -18,6 +18,7 @@ GET         /one-or-more-entries                                                
 POST        /one-or-more-entries                                                               controllers.NumberOfEntriesController.onSubmit
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad
+GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess
 
 GET         /disclosure/entry-details                                                          controllers.EntryDetailsController.onLoad
 POST        /disclosure/entry-details                                                          controllers.EntryDetailsController.onSubmit

@@ -29,6 +29,13 @@ footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
 
+#Unauthorised
+unauthorised.agent.title = You cannot access this service to disclose a Customs Duty or import VAT underpayment
+unauthorised.agent.para1 = You have signed in with an agent Government user ID that cannot access this service.
+unauthorised.agent.para2.1 = 'If you are an importer or an importer’s representative you need to '
+unauthorised.agent.para2.2 = ' with the Government Gateway user ID you use for your business.'
+unauthorised.agent.signInAgain = sign in again
+
 #Feedback
 feedback.title = Give feedback
 feedback.before = This is a new service – your
