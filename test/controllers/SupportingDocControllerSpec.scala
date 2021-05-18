@@ -16,11 +16,12 @@
 
 package controllers
 
+import java.time.LocalDateTime
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
-import pages.HasFurtherInformationPage
+import models.{FileUploadInfo, UserAnswers}
+import pages.{FileUploadPage, HasFurtherInformationPage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
@@ -49,6 +50,17 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+
+    "redirect to the summary page when uploaded file already exists" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(FileUploadPage, Seq(FileUploadInfo("test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType"))).success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
+
     }
   }
 

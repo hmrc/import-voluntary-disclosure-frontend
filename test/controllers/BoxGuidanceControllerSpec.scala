@@ -19,7 +19,8 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
+import models.{UnderpaymentReason, UserAnswers}
+import pages.UnderpaymentReasonsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, status, _}
@@ -38,7 +39,7 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return 200" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
@@ -48,6 +49,17 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+
+    "redirect to the summary page when underpayment reasons already exist" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(35, 1, "100", "350"))).success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
+
     }
 
   }

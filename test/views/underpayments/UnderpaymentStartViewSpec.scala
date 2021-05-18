@@ -18,7 +18,6 @@ package views.underpayments
 
 import base.ViewBaseSpec
 import messages.{BaseMessages, UnderpaymentStartMessages}
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -31,18 +30,28 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Underpayment start page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title of '${UnderpaymentStartMessages.pageTitle}'" in {
         document.title mustBe UnderpaymentStartMessages.pageTitle
       }
     }
+
+    "when in change mode back button" should {
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not be displayed" in {
+        elementExtinct("#back-link")
+      }
+    }
+
   }
 
   "Dynamic bullet points depending on one entry or bulk" when {
     "one entry" should {
-      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
           s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet1}'" in {
@@ -55,7 +64,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "bulk entry" should {
-      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), false)(fakeRequest, messages)
+      lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), false, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page text of '${UnderpaymentStartMessages.bulkBullet1}'" in {
@@ -70,7 +79,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   "it" should {
-    lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true)(fakeRequest, messages)
+    lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
     s"have the correct page heading of '${UnderpaymentStartMessages.heading}'" in {
       elementText("h1") mustBe UnderpaymentStartMessages.heading
