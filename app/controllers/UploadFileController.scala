@@ -61,6 +61,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     } else {
       Seq.empty
     }
+
     upScanService
     .initiateNewJourney().map { response =>
       Ok(view(response, backLink, optionalDocs))
