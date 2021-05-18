@@ -89,8 +89,8 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe siteNo
     }
 
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORINumberController.onLoad().url)
+    "render a back link with the correct browser back URL" in {
+      elementAttributes("#back-link") must contain("href" -> "#")
     }
 
     s"have the correct Continue button" in {
