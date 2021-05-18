@@ -35,7 +35,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
+      lazy val view: Html = injectedView(form)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct page title" in {
@@ -55,7 +55,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> ""))
-        lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
+        lazy val view: Html = injectedView(form)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -76,7 +76,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> "345834921000"))
-        lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
+        lazy val view: Html = injectedView(form)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "update the page title to include the error prefix" in {
@@ -97,7 +97,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, controllers.routes.ImporterEORIExistsController.onLoad())(fakeRequest, messages)
+    lazy val view: Html = injectedView(form)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterEORINumberMessages.h1}'" in {
@@ -107,8 +107,9 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the correct hint" in {
       elementText("#importerEORI-hint") mustBe ImporterEORINumberMessages.hint
     }
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORIExistsController.onLoad().url)
+
+    "render a back link with the correct browser back URL" in {
+      elementAttributes("#back-link") must contain("href" -> "#")
     }
 
     s"the input field is rendered" in {
