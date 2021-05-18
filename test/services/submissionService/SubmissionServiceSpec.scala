@@ -23,7 +23,6 @@ import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
 import play.api.libs.json.Json
 import services.SubmissionService
 
-
 class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
   trait Test {

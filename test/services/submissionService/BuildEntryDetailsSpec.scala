@@ -18,11 +18,9 @@ package services.submissionService
 
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
+import models.SubmissionData
 import play.api.libs.json.Json
 import services.SubmissionService
-
 
 class BuildEntryDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 

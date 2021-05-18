@@ -21,7 +21,6 @@ import mocks.connectors.MockIvdSubmissionConnector
 import play.api.libs.json.Json
 import services.SubmissionService
 
-
 class BuildDefermentDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
   trait Test {

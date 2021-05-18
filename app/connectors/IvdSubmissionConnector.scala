@@ -19,7 +19,7 @@ package connectors
 import config.AppConfig
 import connectors.httpParsers.IvdSubmissionHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
-import models.{EoriDetails, IvdSubmission, SubmissionResponse}
+import models.{EoriDetails, SubmissionResponse}
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
