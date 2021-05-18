@@ -423,7 +423,7 @@ object CheckYourAnswersData {
 
   def buildContactDetails(contactDetails: ContactDetails): String = {
     contactDetails.fullName + "<br/>" +
-      contactDetails.email + "<br/>" +
-      contactDetails.phoneNumber
+    contactDetails.email + "<br/>" +
+    contactDetails.phoneNumber
   }
 }
