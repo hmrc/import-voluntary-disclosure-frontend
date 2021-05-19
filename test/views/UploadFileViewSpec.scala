@@ -16,7 +16,6 @@
 
 package views
 
-import akka.stream.TLSClientAuth.None
 import base.ViewBaseSpec
 import messages.UploadFileMessages
 import mocks.config.MockAppConfig
@@ -25,7 +24,6 @@ import models.OptionalDocument._
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import pages.FileUploadPage
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadFileView
@@ -36,7 +34,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
   private lazy val initiateResponse: UpScanInitiateResponse =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
   private val backLink: Call = Call("GET", "url")
-  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry,AirwayBill,OriginProof,Other)
+  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
