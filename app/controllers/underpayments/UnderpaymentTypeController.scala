@@ -20,7 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.underpayments.UnderpaymentTypeFormProvider
 import models.UserAnswers
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentTypePage}
-import play.api.data.Form
+import play.api.data.{Form, FormError}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -28,6 +28,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
+
 import javax.inject.Inject
 import models.requests.DataRequest
 
@@ -46,25 +47,34 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val underpaymentDetails = request.userAnswers.get(UnderpaymentDetailSummaryPage)
-    val existingUnderpaymentDetails = underpaymentDetails.getOrElse(Seq.empty).map(item => item.duty)
+    val existingUnderpaymentDetails: Seq[String] = getExistingUnderpaymentTypes()
     if (existingUnderpaymentDetails.length == 10){
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
       val form = request.userAnswers.get(UnderpaymentTypePage).fold(formProvider()) {
         formProvider().fill
       }
-      val availableUnderPaymentTypes = underpaymentTypes.filter(item => !existingUnderpaymentDetails.contains(item))
-      val availableUnderPaymentTypesOptions = createRadioButton(form, availableUnderPaymentTypes)
-      Future.successful(Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime())))
+      val availableUnderPaymentTypesOptions = createRadioButton(form, getAvailableUnderpayments(existingUnderpaymentDetails))
+      Future.successful(Ok(
+        underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime())))
     }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
+        val availableUnderPaymentTypes: Seq[String] = getAvailableUnderpayments(getExistingUnderpaymentTypes())
+        val error = formWithErrors.errors.head
+        val newError = formWithErrors.copy(errors = Seq(error.copy(key = availableUnderPaymentTypes.head)))
         Future.successful(
-          BadRequest(underpaymentTypeView(formWithErrors, backLink(request.userAnswers), createRadioButton(formWithErrors, underpaymentTypes), isFirstTime()))
+          BadRequest(
+            underpaymentTypeView(
+              newError,
+              backLink(request.userAnswers),
+              createRadioButton(newError, availableUnderPaymentTypes),
+              isFirstTime()
+            )
+          )
         )
       },
       value => {
@@ -76,6 +86,14 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
         }
       }
     )
+  }
+
+  private[underpayments] def getExistingUnderpaymentTypes()(implicit request: DataRequest[_]): Seq[String] = {
+    request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
+  }
+
+  private[underpayments] def getAvailableUnderpayments(existingUnderpaymentDetails: Seq[String]): Seq[String] = {
+    underpaymentTypes.filter(item => !existingUnderpaymentDetails.contains(item))
   }
 
   private def createRadioButton(form: Form[_], values: Seq[String])(implicit messages: Messages): Seq[RadioItem] = {
