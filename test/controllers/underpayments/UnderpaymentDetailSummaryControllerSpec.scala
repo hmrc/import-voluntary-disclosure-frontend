@@ -130,4 +130,16 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
 
   }
 
+  "cya" should {
+    "return redirect to the onLoad of Underpayment Detail Summary Controller when called" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+      )
+      val result: Future[Result] = controller.cya()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe
+        Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+    }
+  }
+
 }

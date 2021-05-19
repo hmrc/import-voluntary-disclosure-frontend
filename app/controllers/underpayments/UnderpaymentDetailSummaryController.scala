@@ -94,7 +94,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     )
   }
 
-  def redirectForRepFlow()(implicit request: DataRequest[_]): Future[Result] = {
+  private[underpayments] def redirectForRepFlow()(implicit request: DataRequest[_]): Future[Result] = {
     val newUnderpaymentType: SelectedDutyType = request.dutyType
     val oldUnderpaymentType = request.userAnswers.get(TempUnderpaymentTypePage)
     val splitThePayment = request.userAnswers.get(SplitPaymentPage)
@@ -110,7 +110,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     }
   }
 
-  def removePaymentDataAndRedirect()(implicit request: DataRequest[_]): Future[Result] = {
+  private def removePaymentDataAndRedirect()(implicit request: DataRequest[_]): Future[Result] = {
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.remove(DefermentPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(SplitPaymentPage))
