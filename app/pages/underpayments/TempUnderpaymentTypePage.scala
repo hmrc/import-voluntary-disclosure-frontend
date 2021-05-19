@@ -16,27 +16,14 @@
 
 package pages.underpayments
 
-import models.UserAnswers
-import models.underpayments.UnderpaymentDetail
+import models.SelectedDutyTypes.SelectedDutyType
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-import scala.util.Try
-
-object UnderpaymentDetailSummaryPage extends QuestionPage[Seq[UnderpaymentDetail]] {
+object TempUnderpaymentTypePage extends QuestionPage[SelectedDutyType] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "underpayment-detail-summary"
-
-  override def cleanup(value: Option[Seq[UnderpaymentDetail]], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(answer) =>
-        val underpaymentType = userAnswers.remove(UnderpaymentTypePage).getOrElse(userAnswers)
-        val underpaymentDetail = underpaymentType.remove(UnderpaymentDetailsPage).getOrElse(userAnswers)
-        Try(underpaymentDetail)
-      case None => super.cleanup(value, userAnswers)
-    }
-  }
+  override def toString: String = "temp-underpayment-type"
 
 }

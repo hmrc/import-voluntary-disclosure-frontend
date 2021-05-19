@@ -292,6 +292,7 @@ GET         /disclosure/confirm-compensatory-duty-underpayment-details          
 POST        /disclosure/confirm-compensatory-duty-underpayment-details                         controllers.underpayments.UnderpaymentDetailConfirmController.onSubmit(underpaymentType: String = "D10", change: Boolean)
 
 GET         /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onLoad
+GET         /disclosure/underpayment-amount-summary/cya                                        controllers.underpayments.UnderpaymentDetailSummaryController.cya()
 POST        /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onSubmit
 
 GET         /disclosure/change-import-vat-underpayment-details                                 controllers.underpayments.ChangeUnderpaymentDetailsController.onLoad(underpaymentType: String = "B00")
