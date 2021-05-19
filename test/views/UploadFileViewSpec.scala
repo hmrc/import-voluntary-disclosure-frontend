@@ -38,7 +38,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs, false)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -75,7 +75,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "Optional Documents have not been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty, false)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -96,7 +96,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "In check mode and all supporting documents have been removed" should {
-      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty, true)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(initiateResponse, None, Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "no back button displayed" in {
@@ -107,7 +107,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs, false)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title" in {

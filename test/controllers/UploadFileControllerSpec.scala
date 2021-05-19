@@ -23,7 +23,7 @@ import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, FileUploadPage}
+import pages.{AnyOtherSupportingDocsPage, CheckModePage, FileUploadPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
@@ -102,6 +102,8 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     }
 
     "return correct back link for no additional documents" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(AnyOtherSupportingDocsPage, false).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.routes.AnyOtherSupportingDocsController.onLoad.url) mustBe true
     }
