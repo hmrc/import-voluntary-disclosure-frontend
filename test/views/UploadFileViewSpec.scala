@@ -16,6 +16,7 @@
 
 package views
 
+import akka.stream.TLSClientAuth.None
 import base.ViewBaseSpec
 import messages.UploadFileMessages
 import mocks.config.MockAppConfig
@@ -24,6 +25,7 @@ import models.OptionalDocument._
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import pages.FileUploadPage
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadFileView
@@ -38,7 +40,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs, false)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -75,7 +77,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "Optional Documents have not been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty, false)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -94,10 +96,20 @@ class UploadFileViewSpec extends ViewBaseSpec {
         elementExtinct("#main-content p:nth-of-type(2)")
       }
     }
+
+    "In check mode and all supporting documents have been removed" should {
+      lazy val view: Html = injectedView(initiateResponse, backLink, Seq.empty, true)(fakeRequest, MockAppConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "no back button displayed" in {
+        elementExtinct("#back-link")
+      }
+    }
+
   }
 
   it should {
-    lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(initiateResponse, backLink, maxOptDocs, false)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title" in {
