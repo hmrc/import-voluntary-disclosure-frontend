@@ -23,7 +23,7 @@ import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, FileUploadPage}
+import pages.{AnyOtherSupportingDocsPage, CheckModePage, FileUploadPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
@@ -127,6 +127,14 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.routes.UploadAnotherFileController.onLoad.url) mustBe true
     }
+
+    "return no back link if in check mode and all files removed" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(CheckModePage, true).success.value)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      contentAsString(result).contains("url") mustBe false
+    }
+
   }
 
   "GET upscanResponseHandler" when {
