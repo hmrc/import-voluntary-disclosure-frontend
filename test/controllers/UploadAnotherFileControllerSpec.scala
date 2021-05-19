@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadAnotherFileFormProvider
 import models.UserAnswers
-import pages.AnyOtherSupportingDocsPage
+import pages.{AnyOtherSupportingDocsPage, CheckModePage}
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -109,6 +109,15 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.DeclarantContactDetailsController.onLoad().url)
+      }
+
+      "return to check your answers when in check mode and false" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
+          .set(CheckModePage, true).success.value)
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
     }
 
