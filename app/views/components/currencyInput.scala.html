@@ -14,14 +14,14 @@
  * limitations under the License.
  *@
 
-@this(hmrcCurrencyInput: HmrcCurrencyInput)
+@this(govukInput: GovukInput)
 
 @(form: Form[_], id: String, label: String, width: String, isPageHeading: Boolean, classes: String)(implicit messages: Messages)
 
-@hmrcCurrencyInput(
-    CurrencyInput(
+@govukInput(Input(
         id = id,
         name = id,
+        inputType = "text",
         label = Label(
             isPageHeading = isPageHeading,
             classes = classes,
@@ -34,6 +34,9 @@
             err => ErrorMessage(
                 content = Text(messages(err.message, err.args: _*))
             )
-        )
+        ),
+        prefix = Some(PrefixOrSuffix(
+            content = Text("£")
+        ))
     )
 )
