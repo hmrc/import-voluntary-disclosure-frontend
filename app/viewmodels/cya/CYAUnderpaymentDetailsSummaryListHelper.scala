@@ -107,7 +107,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         Text(displayMoney(amountOwed)),
         Some(ActionItemHelper.createViewSummaryActionItem(
           controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
-          messages(s"cya.underpaymentDetails.owedToHmrc.change")
+          messages("cya.underpaymentDetails.owedToHmrc.change")
         ))
       )
     }
