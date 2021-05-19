@@ -23,7 +23,7 @@ import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, CheckModePage, FileUploadPage}
+import pages.{AnyOtherSupportingDocsPage, FileUploadPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
