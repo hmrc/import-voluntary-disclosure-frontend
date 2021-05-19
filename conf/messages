@@ -565,6 +565,7 @@ cya.oneCustomsProcedureCode = One customs procedure code?
 cya.customsProcedureCode = Customs procedure code
 cya.acceptanceDate.change = Change acceptance date
 cya.supportingDocuments = Supporting documents
+cya.supportingDocuments.change = Change supporting documents
 cya.filesUploadedSingle = 1 file uploaded
 cya.filesUploadedPlural = {0} files uploaded
 cya.yourDetails = Your details

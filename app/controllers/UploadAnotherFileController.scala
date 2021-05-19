@@ -40,7 +40,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
 
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
       implicit request =>
         val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
         val optionalDocs = if (anyOptionalDocs) {
@@ -61,12 +61,16 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => resultWithErrors(formWithErrors),
-      value => {
-          if (value) {
-            Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+      addAnotherFile => {
+        if (addAnotherFile) {
+          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+        } else {
+          if (request.checkMode) {
+            Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.routes.DeclarantContactDetailsController.onLoad()))
           }
+        }
       }
     )
   }
