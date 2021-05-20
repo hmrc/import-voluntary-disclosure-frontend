@@ -14,30 +14,22 @@
  * limitations under the License.
  */
 
-package mocks.connectors
+package mocks.services
 
-import connectors.IvdSubmissionConnector
-import models.{EoriDetails, ErrorModel, SubmissionResponse}
+import models.requests.DataRequest
+import models.{ErrorModel, SubmissionResponse}
 import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.JsObject
+import services.SubmissionService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockIvdSubmissionConnector extends MockFactory {
+trait MockSubmissionService extends MockFactory {
 
-  val mockIVDSubmissionConnector: IvdSubmissionConnector = mock[IvdSubmissionConnector]
-
-  type EoriDetailsResponse = Either[ErrorModel, EoriDetails]
-
-  def setupMockGetEoriDetails(response: Either[ErrorModel, EoriDetails]): Unit = {
-    (mockIVDSubmissionConnector.getEoriDetails(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
-  }
+  val mockSubmissionService: SubmissionService = mock[SubmissionService]
 
   def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit = {
-    (mockIVDSubmissionConnector.createCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
+    (mockSubmissionService.createCase()(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
   }

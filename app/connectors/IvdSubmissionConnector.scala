@@ -19,7 +19,8 @@ package connectors
 import config.AppConfig
 import connectors.httpParsers.IvdSubmissionHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
-import models.{EoriDetails, IvdSubmission, SubmissionResponse}
+import models.{EoriDetails, SubmissionResponse}
+import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import javax.inject.{Inject, Singleton}
@@ -31,14 +32,14 @@ class IvdSubmissionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getEoriDetailsUrl(id: String) = s"${config.importVoluntaryDisclosureSubmission}/api/eoriDetails?id=$id"
 
-  private[connectors] def postSubmissionUrl = s"${config.importVoluntaryDisclosureSubmission}/api/case"
+  private[connectors] def createCaseUrl = s"${config.importVoluntaryDisclosureSubmission}/api/case"
 
   def getEoriDetails(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[EoriDetails]] = {
     http.GET[HttpGetResult[EoriDetails]](getEoriDetailsUrl(id))
   }
 
-  def postSubmission(submission: IvdSubmission)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
-    http.POST[IvdSubmission, HttpPostResult[SubmissionResponse]](postSubmissionUrl, submission)
+  def createCase(submission: JsValue)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
+    http.POST[JsValue, HttpPostResult[SubmissionResponse]](createCaseUrl, submission)
   }
 
 }
