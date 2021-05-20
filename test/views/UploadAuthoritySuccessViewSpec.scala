@@ -17,7 +17,7 @@
 package views
 
 import base.ViewBaseSpec
-import messages.UploadAuthoritySuccessMessages
+import messages.{BaseMessages, UploadAuthoritySuccessMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
@@ -45,9 +45,7 @@ class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe UploadAuthoritySuccessMessages.title
-    }
+    checkPageTitle(UploadAuthoritySuccessMessages.title)
 
     "not have a back link" in {
       elementExtinct("#back-link")

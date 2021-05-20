@@ -4,10 +4,10 @@ common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
 
-service.name = Disclose an underpayment of import duties
+service.name = Disclose an underpayment of Customs Duty or import VAT
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
-common.title.suffix = ' - Disclose an underpayment of Customs Duty or import VAT - GOV.UK'
+page.title.suffix = ' - Disclose an underpayment of Customs Duty or import VAT - GOV.UK'
 
 date.day = Day
 date.month = Month
