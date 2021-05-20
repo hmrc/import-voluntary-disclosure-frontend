@@ -49,7 +49,7 @@
     }.orElse(Some(pageTitle))
 }) { title =>
     @govukLayout(
-        pageTitle = title,
+        pageTitle = title.map(_ + messages("common.title.suffix")),
         headBlock = Some(head(headBlock)),
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
