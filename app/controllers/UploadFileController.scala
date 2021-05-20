@@ -50,9 +50,10 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     lazy val backLink =
       (request.userAnswers.get(FileUploadPage), request.userAnswers.get(AnyOtherSupportingDocsPage)) match {
-      case (Some(files), _ ) if (!files.isEmpty) => controllers.routes.UploadAnotherFileController.onLoad()
-      case (_, Some(true)) => controllers.routes.OptionalSupportingDocsController.onLoad()
-      case _ => controllers.routes.AnyOtherSupportingDocsController.onLoad()
+      case (Some(files), _) if !files.isEmpty => Some(controllers.routes.UploadAnotherFileController.onLoad())
+      case (_, Some(true)) if !request.checkMode => Some(controllers.routes.OptionalSupportingDocsController.onLoad())
+      case (_, Some(false)) if !request.checkMode => Some(controllers.routes.AnyOtherSupportingDocsController.onLoad())
+      case _ => None
     }
 
     val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)

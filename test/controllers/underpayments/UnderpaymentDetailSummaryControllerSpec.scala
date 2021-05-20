@@ -20,10 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import mocks.repositories.MockSessionRepository
+import models.SelectedDutyTypes.{Both, Vat}
 import models.UserAnswers
+import models.UserType.Representative
 import models.underpayments.UnderpaymentDetail
-import pages.CheckModePage
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.{CheckModePage, SplitPaymentPage, UserTypePage}
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -47,7 +49,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, underpaymentDetailSummaryView, form)
+      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form)
   }
 
   "GET onLoad" should {
@@ -119,6 +121,72 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
           Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
+      "return a SEE OTHER Box Guidance page when in Representative flow in first pass" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(UserTypePage, Representative).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.routes.BoxGuidanceController.onLoad().url)
+      }
+
+      "return a SEE OTHER Check Your Answers page when in Representative flow Both and Both" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(TempUnderpaymentTypePage, Both).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(
+              UnderpaymentDetail("A00", 0.0, 1.0),
+              UnderpaymentDetail("B00", 0.0, 1.0)
+            )).success.value
+            .set(UserTypePage, Representative).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "return a SEE OTHER Deferment page when in Representative flow VatOrDuty and Both" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(TempUnderpaymentTypePage, Vat).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(
+              UnderpaymentDetail("A00", 0.0, 1.0),
+              UnderpaymentDetail("B00", 0.0, 1.0)
+            )).success.value
+            .set(UserTypePage, Representative).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.routes.DefermentController.onLoad().url)
+      }
+
+      "return a SEE OTHER Deferment page when in Representative flow Both and VatOrDuty and Split initially" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(TempUnderpaymentTypePage, Both).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(UserTypePage, Representative).success.value
+            .set(SplitPaymentPage, true).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.routes.DefermentController.onLoad().url)
+      }
+
     }
 
     "payload contains invalid data" should {
@@ -128,6 +196,18 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       }
     }
 
+  }
+
+  "cya" should {
+    "return redirect to the onLoad of Underpayment Detail Summary Controller when called" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+      )
+      val result: Future[Result] = controller.cya()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe
+        Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+    }
   }
 
 }

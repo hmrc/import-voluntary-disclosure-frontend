@@ -20,7 +20,6 @@ import messages.CYAMessages
 import models.{ContactAddress, ContactDetails}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
 import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersData {
@@ -101,10 +100,16 @@ object CheckYourAnswersData {
           value = Value(
             Text(yes)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.ImporterEORIExistsController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.changeImporterEoriExists)
+              )
+            )
+          )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -114,10 +119,16 @@ object CheckYourAnswersData {
           value = Value(
             Text(eoriNumber)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.ImporterEORINumberController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.changeImporterEoriNumber)
+              )
+            )
+          )
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -127,10 +138,16 @@ object CheckYourAnswersData {
           value = Value(
             Text(yes)
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(changeUrl,
-              Text(CYAMessages.change))
-          )))
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.ImporterVatRegisteredController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.changeImporterVatRegistered)
+              )
+            )
+          )
+          )
         ),
       )
     )
@@ -151,7 +168,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url,
+              controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
               HtmlContent("""<span aria-hidden="true">View summary</span>"""),
               Some(CYAMessages.viewSummaryChange)
             )
@@ -213,14 +230,15 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))
-          )
+              controllers.routes.UploadAnotherFileController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(CYAMessages.changeSupportingDocuments)
+            )
           ))
+          )
         )
       )
-    )
-  )
+    ))
 
   val yourDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.yourDetails,
@@ -239,7 +257,7 @@ object CheckYourAnswersData {
             ActionItem(
               changeUrl,
               Text(CYAMessages.change))),
-            )),
+          )),
         ),
         SummaryListRow(
           key = Key(
@@ -423,7 +441,7 @@ object CheckYourAnswersData {
 
   def buildContactDetails(contactDetails: ContactDetails): String = {
     contactDetails.fullName + "<br/>" +
-    contactDetails.email + "<br/>" +
-    contactDetails.phoneNumber
+      contactDetails.email + "<br/>" +
+      contactDetails.phoneNumber
   }
 }
