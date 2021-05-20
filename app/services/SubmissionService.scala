@@ -78,15 +78,11 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    val customsProcessingCode =
-      if (data.oneCpc) {
-        data.originalCpc match {
-          case Some(cpc) => cpc
-          case _ => throw new RuntimeException (buildSubmissionErrorPrefix + "CPC missing from user answers")
-        }
-      } else {
-        "VARIOUS"
-      }
+    val customsProcessingCode = (data.oneCpc, data.originalCpc) match {
+      case (true, Some(cpc)) => cpc
+      case (false, _) => "VARIOUS"
+      case _ => throw new RuntimeException (buildSubmissionErrorPrefix + "CPC missing from user answers")
+    }
 
     Json.obj(
       "userType" -> data.userType,
