@@ -19,8 +19,9 @@ package controllers.underpayments
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentTypeFormProvider
 import models.UserAnswers
+import models.requests.DataRequest
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentTypePage}
-import play.api.data.{Form, FormError}
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,8 +31,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
 
 import javax.inject.Inject
-import models.requests.DataRequest
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -48,7 +47,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val existingUnderpaymentDetails: Seq[String] = getExistingUnderpaymentTypes()
-    if (existingUnderpaymentDetails.length == 10){
+    if (existingUnderpaymentDetails.length == 10) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
       val form = request.userAnswers.get(UnderpaymentTypePage).fold(formProvider()) {
