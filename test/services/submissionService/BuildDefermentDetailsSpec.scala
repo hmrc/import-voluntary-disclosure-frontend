@@ -23,16 +23,12 @@ import services.SubmissionService
 
 class BuildDefermentDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
-  trait Test {
-
-    val service = new SubmissionService(mockIVDSubmissionConnector)
-
-  }
+  val service = new SubmissionService(mockIVDSubmissionConnector)
 
   "buildDefermentDetails" when {
 
     "called with valid User Answers for importer deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildDefermentDetails(importerDefermentSubmission)
 
         result mustBe Json.parse(importerDefermentDetailsJson)
@@ -40,7 +36,7 @@ class BuildDefermentDetailsSpec extends SpecBase with MockIvdSubmissionConnector
     }
 
     "called with valid User Answers for no deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildDefermentDetails(importerSubmission)
 
         result mustBe Json.obj()
@@ -48,10 +44,18 @@ class BuildDefermentDetailsSpec extends SpecBase with MockIvdSubmissionConnector
     }
 
     "called with valid User Answers for representative no split deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildDefermentDetails(representativeNoSplitDefermentSubmission)
 
         result mustBe Json.parse(representativeNoSplitDefermentDetailsJson)
+      }
+    }
+
+    "called with valid User Answers for representative with split deferment" should {
+      "return expect json" in {
+        lazy val result = service.buildDefermentDetails(completeSubmission)
+
+        result mustBe Json.parse(splitDefermentDetailsJson)
       }
     }
 

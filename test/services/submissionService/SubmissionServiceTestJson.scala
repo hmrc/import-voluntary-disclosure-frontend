@@ -43,7 +43,6 @@ trait SubmissionServiceTestJson {
       |      "AmendedC88",
       |      "AmendedC2",
       |      "InvoiceAirwayBillPreferenceCertificate",
-      |      "InvoiceAirwayBillPreferenceCertificate",
       |      "Other",
       |      "DefermentAuthorisation"
       |   ],
@@ -139,7 +138,7 @@ trait SubmissionServiceTestJson {
       |   "userType":"importer"
       |}""".stripMargin
 
-  val importerUnderpaymentDetailsJson =
+  val underpaymentDetailsJson =
     """{
       |   "underpaymentDetails":[
       |      {
@@ -195,7 +194,7 @@ trait SubmissionServiceTestJson {
       |   ]
       |}""".stripMargin
 
-  val importerReasonsDetailsJson =
+  val reasonsDetailsJson =
     """{
       |   "amendedItems":[
       |      {
@@ -214,7 +213,7 @@ trait SubmissionServiceTestJson {
       |   "additionalInfo":"Not Applicable"
       |}""".stripMargin
 
-  val importerSupportingDocumentationJson =
+  val supportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[
       |      "OriginalC88",
@@ -267,6 +266,35 @@ trait SubmissionServiceTestJson {
       |      "AmendedC88",
       |      "AmendedC2",
       |      "InvoiceAirwayBillPreferenceCertificate",
+      |      "Other",
+      |      "DefermentAuthorisation"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      },
+      |      {
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val splitDefermentSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
+      |      "OriginalC88",
+      |      "OriginalC2",
+      |      "AmendedSubstituteEntryWorksheet",
+      |      "AmendedC88",
+      |      "AmendedC2",
       |      "InvoiceAirwayBillPreferenceCertificate",
       |      "Other",
       |      "DefermentAuthorisation"
@@ -301,7 +329,14 @@ trait SubmissionServiceTestJson {
       |   "defermentAccountNumber":"B1234567"
       |}""".stripMargin
 
-  val importerDeclarantDetailsJson =
+  val splitDefermentDetailsJson =
+    """{
+      |   "defermentType":"B",
+      |   "defermentAccountNumber":"B1234567",
+      |   "additionalDefermentAccountNumber":"B1234567"
+      |}""".stripMargin
+
+  val declarantDetailsJson =
     """{
       |   "declarantContactDetails":{
       |      "fullName":"John Smith",

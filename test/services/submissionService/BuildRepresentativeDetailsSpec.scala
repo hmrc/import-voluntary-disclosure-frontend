@@ -23,16 +23,12 @@ import services.SubmissionService
 
 class BuildRepresentativeDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
-  trait Test {
-
-    val service = new SubmissionService(mockIVDSubmissionConnector)
-
-  }
+  val service = new SubmissionService(mockIVDSubmissionConnector)
 
   "buildRepresentativeDetails" when {
 
     "called with valid User Answers" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildRepresentativeDetails(completeSubmission)
 
         result mustBe Json.parse(representativeDetailsJson)
@@ -40,7 +36,7 @@ class BuildRepresentativeDetailsSpec extends SpecBase with MockIvdSubmissionConn
     }
 
     "called with valid User Answers in Importer flow" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildRepresentativeDetails(importerSubmission)
 
         result mustBe Json.obj()

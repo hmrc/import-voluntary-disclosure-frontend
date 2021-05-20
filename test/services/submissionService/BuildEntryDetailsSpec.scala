@@ -24,20 +24,13 @@ import services.SubmissionService
 
 class BuildEntryDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
-  trait Test {
-    val submission: SubmissionData = importerSubmission
-
-    val outputJson = importerEntryDetailsJson
-
-    val service = new SubmissionService(mockIVDSubmissionConnector)
-
-  }
+  val service = new SubmissionService(mockIVDSubmissionConnector)
 
   "buildEntryDetails" when {
 
     "called with valid User Answers" should {
-      "return expect json" in new Test {
-        lazy val result = service.buildEntryDetails(submission)
+      "return expect json" in {
+        lazy val result = service.buildEntryDetails(importerSubmission)
 
         result mustBe Json.parse(importerEntryDetailsJson)
       }

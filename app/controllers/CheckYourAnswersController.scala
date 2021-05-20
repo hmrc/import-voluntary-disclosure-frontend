@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 
 import javax.inject.{Inject, Singleton}
@@ -39,6 +40,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            submissionService: SubmissionService,
                                            view: CheckYourAnswersView,
                                            confirmationView: ConfirmationView,
+                                           errorHandler: ErrorHandler,
                                            implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
@@ -63,7 +65,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
     submissionService.createCase.map {
       case Right(value) => Ok(confirmationView(value.id))
-      case Left(error) => InternalServerError(error.message)
+      case Left(_) => errorHandler.showInternalServerError
     }
 
   }

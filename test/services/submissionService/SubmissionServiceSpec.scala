@@ -20,6 +20,7 @@ import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
+import pages.EnterCustomsProcedureCodePage
 import play.api.libs.json.Json
 import services.SubmissionService
 
@@ -75,9 +76,10 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        lazy val result = service.createCase()(dataRequest, hc, ec)
+        lazy val result = await(service.createCase()(dataRequest, hc, ec))
 
-        await(result) mustBe Left(invalidUserAnswersError)
+        result.isLeft mustBe true
+        result.left.get.message.contains("user-type") mustBe true
       }
     }
   }
@@ -95,9 +97,19 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        lazy val result = service.buildSubmission(userAnswers)
+        lazy val result = await(service.createCase()(dataRequest, hc, ec))
 
-        result mustBe Left(invalidUserAnswersError)
+        result.isLeft mustBe true
+        result.left.get.message.contains("user-type") mustBe true
+      }
+
+      "return error - parsed model is not valid" in new Test {
+        override val userAnswers: UserAnswers =
+          completeUserAnswers.remove(EnterCustomsProcedureCodePage).success.value
+        lazy val result = await(service.createCase()(dataRequest, hc, ec))
+
+        result.isLeft mustBe true
+        result.left.get.message.contains("CPC missing from user answers") mustBe true
       }
     }
   }

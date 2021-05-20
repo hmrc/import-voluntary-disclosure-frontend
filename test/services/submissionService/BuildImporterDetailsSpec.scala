@@ -23,16 +23,12 @@ import services.SubmissionService
 
 class BuildImporterDetailsSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
-  trait Test {
+  val service = new SubmissionService(mockIVDSubmissionConnector)
 
-    val service = new SubmissionService(mockIVDSubmissionConnector)
-
-  }
-
-  "buildUnderpaymentDetails" when {
+  "buildImporterDetails" when {
 
     "called with valid User Answers" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildImporterDetails(importerSubmission)
 
         result mustBe Json.parse(importerDetailsJson)
@@ -40,7 +36,7 @@ class BuildImporterDetailsSpec extends SpecBase with MockIvdSubmissionConnector 
     }
 
     "called with valid User Answers for Importer with no EORI" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildImporterDetails(importerDetailsNoEoriSubmission)
 
         result mustBe Json.parse(importerDetailsNoEoriJson)

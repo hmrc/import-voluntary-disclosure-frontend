@@ -33,6 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector) {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
+  private val buildSubmissionErrorPrefix = "buildSubmission error - "
 
   def createCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubmissionResponse]] = {
 
@@ -40,10 +41,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case Right(submission) => {
         ivdSubmissionConnector.createCase(submission).map {
           case Right(confirmationResponse) => Right(confirmationResponse)
-          case Left(errorResponse) => {
-            logger.error("Error in response from EIS/Pega: " + errorResponse.message)
-            Left(errorResponse)
-          }
+          case Left(errorResponse) => Left(errorResponse)
         }
       }
       case Left(err) => Future.successful(Left(err))
@@ -54,26 +52,41 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   private[services] def buildSubmission(answers: UserAnswers): Either[ErrorModel, JsValue] = {
     Json.fromJson[SubmissionData](answers.data) match {
       case JsSuccess(data, _) =>
-        Right(
-          buildEntryDetails(data) ++
-          buildUnderpaymentDetails(data) ++
-          buildReasonsDetails(data) ++
-          buildSupportingDocumentation(data) ++
-          buildDefermentDetails(data) ++
-          buildDeclarantDetails(data) ++
-          buildImporterDetails(data) ++
-          buildRepresentativeDetails(data)
-        )
-      case JsError(_) => {
-        logger.error("Invalid User Answers data. Failed to read into SubmissionData model")
-        Left(ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model"))
+        try {
+          Right(
+            buildEntryDetails(data) ++
+              buildUnderpaymentDetails(data) ++
+              buildReasonsDetails(data) ++
+              buildSupportingDocumentation(data) ++
+              buildDefermentDetails(data) ++
+              buildDeclarantDetails(data) ++
+              buildImporterDetails(data) ++
+              buildRepresentativeDetails(data)
+          )
+        } catch {
+          case err: Exception => {
+            logger.error(s"Failed to build SubmissionData Json. Error: ${err.getMessage}")
+            Left(ErrorModel(-1, err.getMessage))
+          }
+        }
+      case JsError(err) => {
+        logger.error(s"Invalid User Answers data. Failed to parse into SubmissionData model. Error: ${err}")
+        Left(ErrorModel(-1, err))
       }
     }
   }
 
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    val customsProcessingCode = if (data.oneCpc) data.originalCpc.getOrElse("cpcError") else "VARIOUS"
+    val customsProcessingCode =
+      if (data.oneCpc) {
+        data.originalCpc match {
+          case Some(cpc) => cpc
+          case _ => throw new RuntimeException (buildSubmissionErrorPrefix + "CPC missing from user answers")
+        }
+      } else {
+        "VARIOUS"
+      }
 
     Json.obj(
       "userType" -> data.userType,
@@ -112,7 +125,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case _ => Seq.empty
     }
 
-    val documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList
+    val documentsSupplied = mandatoryDocumentsList ++ optionalDocumentsList.distinct
 
     val supportingDocuments = if (data.paymentByDeferment) {
       (data.splitDeferment, data.defermentType, data.additionalDefermentType) match {
@@ -166,7 +179,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
             "defermentType" -> "D",
             "defermentAccountNumber" -> s"D$dan"
           )
-        case _ => Json.obj()
+        case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "Deferment information missing")
       }
     } else {
       Json.obj()
@@ -212,7 +225,9 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
         val importerDetails = mandatoryDetails ++ vatNumber
         Json.obj("importer" -> importerDetails)
       }
-      details.getOrElse(throw new RuntimeException("Importer details not captured in representative flow"))
+      details.getOrElse(
+        throw new RuntimeException(buildSubmissionErrorPrefix + "Importer details not captured in representative flow")
+      )
     }
   }
 

@@ -23,24 +23,20 @@ import services.SubmissionService
 
 class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
 
-  trait Test {
-
-    val service = new SubmissionService(mockIVDSubmissionConnector)
-
-  }
+  val service = new SubmissionService(mockIVDSubmissionConnector)
 
   "buildSupportingDocumentation" when {
 
     "called with valid User Answers for Importer deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildSupportingDocumentation(importerSubmission)
 
-        result mustBe Json.parse(importerSupportingDocumentationJson)
+        result mustBe Json.parse(supportingDocumentationJson)
       }
     }
 
     "called with valid User Answers for Duty only deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildSupportingDocumentation(dutyOnlyDefermentSubmission)
 
         result mustBe Json.parse(singleUnderpaymentDefermentSupportingDocumentationJson)
@@ -48,7 +44,7 @@ class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionCo
     }
 
     "called with valid User Answers for Vat only deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildSupportingDocumentation(vatOnlyDefermentSubmission)
 
         result mustBe Json.parse(singleUnderpaymentDefermentSupportingDocumentationJson)
@@ -56,10 +52,18 @@ class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionCo
     }
 
     "called with valid User Answers for no split deferment" should {
-      "return expect json" in new Test {
+      "return expect json" in {
         lazy val result = service.buildSupportingDocumentation(representativeNoSplitDefermentSubmission)
 
         result mustBe Json.parse(noSplitDefermentSupportingDocumentationJson)
+      }
+    }
+
+    "called with valid User Answers for split deferment" should {
+      "return expect json" in {
+        lazy val result = service.buildSupportingDocumentation(completeSubmission)
+
+        result mustBe Json.parse(splitDefermentSupportingDocumentationJson)
       }
     }
 

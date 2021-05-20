@@ -33,6 +33,7 @@
 package controllers
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockSubmissionService
@@ -56,6 +57,8 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
     private lazy val confirmationView: ConfirmationView = app.injector.instanceOf[ConfirmationView]
 
+    val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
+
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -66,7 +69,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       setupConnectorMock(serviceMock)
       new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
         messagesControllerComponents, mockSessionRepository, mockSubmissionService,
-        checkYourAnswersView, confirmationView, ec)
+        checkYourAnswersView, confirmationView, errorHandler, ec)
     }
   }
 
