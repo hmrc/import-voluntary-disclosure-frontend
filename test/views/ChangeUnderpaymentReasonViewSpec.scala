@@ -37,9 +37,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
       lazy val view: Html = injectedView(backLink, summaryList(22), singleItemReason.original.boxNumber )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber)
-      }
+      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber))
 
       "have correct heading" in {
         document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber)
@@ -93,9 +91,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
       lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), singleEntryLevelReason.original.boxNumber )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber)
-      }
+      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber))
 
       "have correct heading" in {
         document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber)

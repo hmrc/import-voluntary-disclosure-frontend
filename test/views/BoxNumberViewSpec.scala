@@ -61,9 +61,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       lazy val view: Html = injectedView(form, controllers.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe BoxNumberMessages.pageTitle
-      }
+      checkPageTitle(BoxNumberMessages.pageTitle)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -79,9 +77,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       lazy val view: Html = injectedView(form, controllers.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe BoxNumberMessages.errorPrefix + BoxNumberMessages.pageTitle
-      }
+      checkPageTitle(BoxNumberMessages.errorPrefix + BoxNumberMessages.pageTitle)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe BoxNumberMessages.errorRequired

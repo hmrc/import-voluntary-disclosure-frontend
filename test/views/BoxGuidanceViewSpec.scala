@@ -33,9 +33,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(Call("GET","backLink"))(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title of '${BoxGuidanceMessages.title}'" in {
-        document.title mustBe BoxGuidanceMessages.title
-      }
+      checkPageTitle(BoxGuidanceMessages.title)
 
       "it" should {
         lazy val view: Html = injectedView(Call("GET","backLink"))(fakeRequest, appConfig, messages)

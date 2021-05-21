@@ -99,9 +99,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title
-        }
+        checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
 
         s"have correct message in the error summary" in {
           elementText(".govuk-error-summary__list") mustBe errorMessage
@@ -120,9 +118,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title
-      }
+      checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
 
       "produce correct error summary" in {
         elementText(".govuk-error-summary__list") mustBe
@@ -137,9 +133,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title of '${EntryDetailsMessages.title}'" in {
-      document.title mustBe EntryDetailsMessages.title
-    }
+    checkPageTitle(EntryDetailsMessages.title)
 
     s"have the correct h1 of '${EntryDetailsMessages.h1}'" in {
       elementText("h1") mustBe EntryDetailsMessages.h1

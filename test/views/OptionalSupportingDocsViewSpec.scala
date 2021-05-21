@@ -43,12 +43,10 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe OptionalDocumentsMessages.pageTitle
-      }
+      checkPageTitle(OptionalDocumentsMessages.pageTitle)
 
       s"have the correct page header" in {
-        document.title mustBe OptionalDocumentsMessages.pageHeader
+        elementText("h1") mustBe OptionalDocumentsMessages.pageHeader
       }
 
       "not render an error summary" in {
@@ -66,13 +64,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe errorPrefix + OptionalDocumentsMessages.pageTitle
-      }
-
-      s"have the correct page header" in {
-        document.title mustBe errorPrefix + OptionalDocumentsMessages.pageHeader
-      }
+      checkPageTitle(errorPrefix + OptionalDocumentsMessages.pageTitle)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe OptionalDocumentsMessages.errorRequired
