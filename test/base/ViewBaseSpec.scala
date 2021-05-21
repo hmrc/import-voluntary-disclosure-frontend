@@ -16,7 +16,6 @@
 
 package base
 
-import messages.UploadAuthoritySuccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion

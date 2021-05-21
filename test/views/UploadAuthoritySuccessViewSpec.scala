@@ -17,10 +17,9 @@
 package views
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, UploadAuthoritySuccessMessages}
+import messages.UploadAuthoritySuccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadAuthoritySuccessView
 
@@ -59,7 +58,7 @@ class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthoritySuccessMessages.bodyText
     }
 
-     s"have the correct Continue button text" in {
+    s"have the correct Continue button text" in {
       elementText("#main-content .govuk-button") mustBe UploadAuthoritySuccessMessages.continue
     }
 
