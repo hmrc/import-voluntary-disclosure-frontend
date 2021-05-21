@@ -52,9 +52,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-      }
+      checkPageTitle(ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
       "have correct heading" in {
         document.select("h1").text mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
@@ -82,9 +80,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle)
 
         "render an error summary with the correct message " in {
           elementText(govErrorSummaryListClass) mustBe ChangeUnderpaymentDetailsMessages.originalNonEmpty
@@ -100,9 +96,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle)
 
         "render an error summary with the correct message " in {
           elementText(govErrorSummaryListClass) mustBe ChangeUnderpaymentDetailsMessages.amendedNonEmpty
@@ -120,9 +114,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle)
 
         "render an error summary with the correct message " in {
           elementText(govErrorSummaryListClass) mustBe ChangeUnderpaymentDetailsMessages.amendedDifferent
@@ -138,9 +130,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.errorPrefix + ChangeUnderpaymentDetailsMessages.B00pageTitle)
 
         "render an error summary with the correct message " in {
           elementText(govErrorSummaryListClass) mustBe ChangeUnderpaymentDetailsMessages.originalNonNumber + " " + ChangeUnderpaymentDetailsMessages.amendedNonNumber
@@ -167,9 +157,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, false)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).heading
@@ -184,9 +172,7 @@ class ChangeUnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-        }
+        checkPageTitle(ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe ChangeUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).heading

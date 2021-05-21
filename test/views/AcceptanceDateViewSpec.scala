@@ -41,9 +41,7 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AcceptanceDateMessages.title
-      }
+      checkPageTitle(AcceptanceDateMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -59,9 +57,7 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe AcceptanceDateMessages.errorPrefix + AcceptanceDateMessages.title
-      }
+      checkPageTitle(AcceptanceDateMessages.errorPrefix + AcceptanceDateMessages.title)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe AcceptanceDateMessages.requiredError

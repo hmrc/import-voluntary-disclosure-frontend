@@ -43,9 +43,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe DefermentMessages.headingOnlyVAT
-      }
+      checkPageTitle(DefermentMessages.headingOnlyVAT)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -65,9 +63,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe DefermentMessages.headingDutyOnly
-      }
+      checkPageTitle(DefermentMessages.headingDutyOnly)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -87,9 +83,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe DefermentMessages.headingVATandDuty
-      }
+      checkPageTitle(DefermentMessages.headingVATandDuty)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -109,9 +103,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe DefermentMessages.errorPrefix + DefermentMessages.headingDutyOnly
-      }
+      checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingDutyOnly)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError
@@ -131,9 +123,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe DefermentMessages.errorPrefix + DefermentMessages.headingOnlyVAT
-      }
+      checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingOnlyVAT)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError
@@ -153,9 +143,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe DefermentMessages.errorPrefix + DefermentMessages.headingVATandDuty
-      }
+      checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingVATandDuty)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError

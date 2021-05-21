@@ -48,9 +48,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RepresentativeDanDutyMessages.title
-      }
+      checkPageTitle(RepresentativeDanDutyMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -73,9 +71,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanDutyMessages.title
-      }
+      checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanDutyMessages.title)
 
       "render an error summary with the correct message " in {
         elementText("div.govuk-error-summary > div") mustBe RepresentativeDanDutyMessages.accountNumberRequiredError
@@ -94,9 +90,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RepresentativeDanDutyMessages.errorPrefix + RepresentativeDanDutyMessages.title
-      }
+      checkPageTitle(RepresentativeDanDutyMessages.errorPrefix + RepresentativeDanDutyMessages.title)
 
       "render an error summary with the correct message " in {
         elementText("div.govuk-error-summary > div") mustBe RepresentativeDanDutyMessages.accountNumberFormatError
@@ -115,9 +109,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RepresentativeDanDutyMessages.errorPrefix + RepresentativeDanDutyMessages.title
-      }
+      checkPageTitle(RepresentativeDanDutyMessages.errorPrefix + RepresentativeDanDutyMessages.title)
 
       "render an error summary with the correct message " in {
         elementText("div.govuk-error-summary > div") mustBe RepresentativeDanDutyMessages.danTypeRequiredError
@@ -135,9 +127,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title of '${RepresentativeDanDutyMessages.title}'" in {
-      document.title mustBe RepresentativeDanDutyMessages.title
-    }
+    checkPageTitle(RepresentativeDanDutyMessages.title)
 
     s"have the correct h1 of '${RepresentativeDanDutyMessages.h1}'" in {
       elementText("h1") mustBe RepresentativeDanDutyMessages.h1
