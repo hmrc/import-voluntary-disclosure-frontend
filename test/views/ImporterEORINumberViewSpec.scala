@@ -38,9 +38,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ImporterEORINumberMessages.title
-      }
+      checkPageTitle(ImporterEORINumberMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -58,9 +56,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title
-        }
+        checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe ImporterEORINumberMessages.nonEmpty
@@ -79,9 +75,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title
-        }
+        checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe ImporterEORINumberMessages.incorrectFormat

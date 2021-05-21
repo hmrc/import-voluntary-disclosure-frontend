@@ -40,9 +40,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, isRepFlow = true, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe NumberOfEntriesMessages.title
-      }
+      checkPageTitle(NumberOfEntriesMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -68,9 +66,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, isRepFlow = false, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe NumberOfEntriesMessages.title
-      }
+      checkPageTitle(NumberOfEntriesMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -95,9 +91,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, isRepFlow = true, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe NumberOfEntriesMessages.errorPrefix + NumberOfEntriesMessages.title
-      }
+      checkPageTitle(NumberOfEntriesMessages.errorPrefix + NumberOfEntriesMessages.title)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe NumberOfEntriesMessages.requiredError

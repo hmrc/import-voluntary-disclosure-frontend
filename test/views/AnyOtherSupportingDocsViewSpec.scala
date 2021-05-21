@@ -40,9 +40,7 @@ class AnyOtherSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title of '${AnyOtherSupportingDocsMessages.pageTitle}'" in {
-        document.title mustBe AnyOtherSupportingDocsMessages.pageTitle
-      }
+      checkPageTitle(AnyOtherSupportingDocsMessages.pageTitle)
 
       "it" should {
         val form: Form[Boolean] = formProvider.apply()

@@ -59,9 +59,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.box46PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.box46PageTitle)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -79,9 +77,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalCurrencyNonEmpty
@@ -100,9 +96,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-    }
+    checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
       elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedCurrencyNonEmpty
@@ -122,9 +116,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-    }
+    checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
       elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedDifferent
@@ -142,9 +134,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-    }
+    checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
       elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyFormat + " " + AmendReasonValuesMessages.amendedInvalidCurrencyFormat
@@ -166,9 +156,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-    }
+    checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
       elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyDecimal + " " + AmendReasonValuesMessages.amendedInvalidCurrencyDecimal
@@ -190,9 +178,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle
-    }
+    checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
       elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyOutOfRange + " " + AmendReasonValuesMessages.amendedInvalidCurrencyOutOfRange
@@ -220,9 +206,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.title
-        }
+        checkPageTitle(AmendReasonValuesMessages.boxContent.get(boxNumber).get.title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.heading

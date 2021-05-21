@@ -47,9 +47,7 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-      }
+      checkPageTitle(RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -75,10 +73,7 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
           )(fakeRequest, messages)
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
-          "have the correct page title" in {
-            document.title mustBe
-              RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-          }
+          checkPageTitle(RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
           "have the correct page heading" in {
             elementText("h1") mustBe
@@ -96,9 +91,7 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-        }
+        checkPageTitle(RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe

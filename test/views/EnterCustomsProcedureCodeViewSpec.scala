@@ -39,9 +39,7 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, Call("GET", controllers.routes.EntryDetailsController.onLoad().url))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe EnterCustomsProcedureCodeMessages.title
-      }
+      checkPageTitle(EnterCustomsProcedureCodeMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -59,9 +57,7 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, Call("GET", controllers.routes.EntryDetailsController.onLoad().url))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title
-        }
+        checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe EnterCustomsProcedureCodeMessages.requiredError
@@ -81,9 +77,7 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, Call("GET", controllers.routes.EntryDetailsController.onLoad().url))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title
-        }
+        checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe EnterCustomsProcedureCodeMessages.formatError

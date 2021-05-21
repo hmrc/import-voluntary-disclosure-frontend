@@ -49,9 +49,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailsMessages.B00pageTitle
-      }
+      checkPageTitle(UnderpaymentDetailsMessages.B00pageTitle)
 
       s"have the correct H1 text of '${UnderpaymentDetailsMessages.B00pageHeader}'" in {
         elementText("h1") mustBe UnderpaymentDetailsMessages.B00pageHeader
@@ -71,9 +69,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle
-      }
+      checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe UnderpaymentDetailsMessages.originalNonEmpty
@@ -89,9 +85,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle
-      }
+      checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe UnderpaymentDetailsMessages.amendedNonEmpty
@@ -109,9 +103,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle
-      }
+      checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe UnderpaymentDetailsMessages.amendedDifferent
@@ -127,9 +119,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle
-      }
+      checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe UnderpaymentDetailsMessages.originalNonNumber + " " + UnderpaymentDetailsMessages.amendedNonNumber
@@ -167,9 +157,7 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe UnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title
-        }
+        checkPageTitle(UnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe UnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).heading

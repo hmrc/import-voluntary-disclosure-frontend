@@ -48,9 +48,7 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe RemoveUnderpaymentReasonMessages.title
-      }
+      checkPageTitle(RemoveUnderpaymentReasonMessages.title)
 
       s"have the correct paragraph" in {
         document.select("#main-content > div > div > p").text() mustBe RemoveUnderpaymentReasonMessages.box35Paragraph(itemNumber)
@@ -75,9 +73,7 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe RemoveUnderpaymentReasonMessages.errorPrefix + RemoveUnderpaymentReasonMessages.title
-      }
+      checkPageTitle(RemoveUnderpaymentReasonMessages.errorPrefix + RemoveUnderpaymentReasonMessages.title)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe RemoveUnderpaymentReasonMessages.requiredError

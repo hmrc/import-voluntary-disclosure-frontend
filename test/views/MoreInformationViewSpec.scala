@@ -39,9 +39,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, Call("GET", "url"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe MoreInformationMessages.title
-      }
+      checkPageTitle(MoreInformationMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -59,9 +57,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, Call("GET", "url"))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.title
-        }
+        checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe MoreInformationMessages.requiredError

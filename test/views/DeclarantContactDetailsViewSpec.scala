@@ -42,9 +42,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -66,9 +64,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
         elementText("#main-content > div > div > div > div > ul > li:nth-child(1) > a") mustBe TraderContactDetailsMessages.errorNameNonEmpty
@@ -107,9 +103,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameNonEmpty
@@ -132,9 +126,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorEmailNonEmpty
@@ -157,9 +149,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
@@ -182,9 +172,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameMinLength
@@ -207,9 +195,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameMaxLength
@@ -232,9 +218,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameAllowableCharacters
@@ -257,9 +241,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorEmailInvalidFormat
@@ -282,9 +264,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title
-      }
+      checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
         elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorPhoneNumberInvalidFormat

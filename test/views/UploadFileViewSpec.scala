@@ -110,9 +110,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe UploadFileMessages.title
-    }
+    checkPageTitle(UploadFileMessages.title)
 
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> "url")
