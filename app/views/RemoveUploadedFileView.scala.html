@@ -28,15 +28,12 @@
 
 @legendContent = {
     @h1("removeUploadedFile.heading")
-
     @p(Html(filename))
 }
 
 @layout(pageTitle = messages("removeUploadedFile.pageTitle"), form = Some(form), customBackLinkUrl = Some(controllers.routes.UploadAnotherFileController.onLoad)) {
 
     @errorSummary(form.errors)
-
-
 
     @formHelper(action = controllers.routes.RemoveUploadedFileController.onSubmit(index)) {
 
