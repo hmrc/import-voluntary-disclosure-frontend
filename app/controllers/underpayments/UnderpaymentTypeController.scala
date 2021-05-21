@@ -89,7 +89,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
 
   private[underpayments] def getAvailableUnderpayments()(implicit request: DataRequest[_]): Seq[String] = {
     val existingUnderpaymentDetails = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
-    underpaymentTypes.filter(item => !existingUnderpaymentDetails.contains(item))
+    underpaymentTypes.filterNot(item => existingUnderpaymentDetails.contains(item))
   }
 
   private def createRadioButton(form: Form[_], values: Seq[String])(implicit messages: Messages): Seq[RadioItem] = {
