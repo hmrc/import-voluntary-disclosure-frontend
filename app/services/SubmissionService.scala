@@ -25,12 +25,14 @@ import models._
 import play.api.Logger
 import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
 import uk.gov.hmrc.http.HeaderCarrier
-
 import javax.inject.{Inject, Singleton}
+import models.audit.CreateCaseAuditEvent
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector) {
+class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector,
+                                  auditService: AuditService) {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
   private val buildSubmissionErrorPrefix = "buildSubmission error - "
@@ -40,7 +42,9 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     buildSubmission(request.userAnswers) match {
       case Right(submission) => {
         ivdSubmissionConnector.createCase(submission).map {
-          case Right(confirmationResponse) => Right(confirmationResponse)
+          case Right(confirmationResponse) =>
+            auditService.audit(CreateCaseAuditEvent(confirmationResponse,submission))
+            Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
       }
