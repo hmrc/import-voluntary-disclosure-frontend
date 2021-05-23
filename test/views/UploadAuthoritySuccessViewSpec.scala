@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.UploadAuthoritySuccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadAuthoritySuccessView
 
@@ -45,9 +44,7 @@ class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe UploadAuthoritySuccessMessages.title
-    }
+    checkPageTitle(UploadAuthoritySuccessMessages.title)
 
     "not have a back link" in {
       elementExtinct("#back-link")
@@ -61,7 +58,7 @@ class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthoritySuccessMessages.bodyText
     }
 
-     s"have the correct Continue button text" in {
+    s"have the correct Continue button text" in {
       elementText("#main-content .govuk-button") mustBe UploadAuthoritySuccessMessages.continue
     }
 

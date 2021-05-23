@@ -57,9 +57,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe CYAMessages.title
-    }
+    checkPageTitle(CYAMessages.title)
 
     s"have the correct h1 of '${CYAMessages.heading}'" in {
       elementText("h1") mustBe CYAMessages.heading

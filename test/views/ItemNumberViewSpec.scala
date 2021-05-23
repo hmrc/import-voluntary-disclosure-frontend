@@ -42,9 +42,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, formAction, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ItemNumberMessages.title
-      }
+      checkPageTitle(ItemNumberMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -62,9 +60,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(form, formAction, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "update the page title to include the error prefix" in {
-          document.title mustBe ItemNumberMessages.errorPrefix + ItemNumberMessages.title
-        }
+        checkPageTitle(ItemNumberMessages.errorPrefix + ItemNumberMessages.title)
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe ItemNumberMessages.requiredError

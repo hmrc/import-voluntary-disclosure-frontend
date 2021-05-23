@@ -19,8 +19,8 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.SelectedDutyTypes._
-import models.{FileUploadInfo, UploadAuthority}
 import models.upscan._
+import models.{UploadAuthority, UserAnswers}
 import pages.{SplitPaymentPage, UploadAuthorityPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -32,21 +32,21 @@ import views.html.{UploadAuthorityProgressView, UploadAuthoritySuccessView, Uplo
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
+import scala.util.Try
 
 @Singleton
 class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           getData: DataRetrievalAction,
                                           requireData: DataRequiredAction,
                                           mcc: MessagesControllerComponents,
-                                          fileUploadRepository: FileUploadRepository,
-                                          sessionRepository: SessionRepository,
+                                          val fileUploadRepository: FileUploadRepository,
+                                          val sessionRepository: SessionRepository,
                                           upScanService: UpScanService,
                                           view: UploadAuthorityView,
                                           progressView: UploadAuthorityProgressView,
                                           successView: UploadAuthoritySuccessView,
                                           implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+  extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
   private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean): Call = {
     selectedDutyTypes match {
@@ -81,63 +81,41 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                             errorRequestId: Option[String] = None
                            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    if (errorCode.isDefined) {
-      // TODO: Redirect to synchronous error page
-      Future.successful(
-        Redirect(controllers.routes.UploadAuthorityController.onLoad(dutyType, dan))
-          .flashing(
-            "key" -> key.getOrElse(""),
-            "errorCode" -> errorCode.getOrElse(""),
-            "errorMessage" -> errorMessage.getOrElse(""),
-            "errorResource" -> errorResource.getOrElse(""),
-            "errorRequestId" -> errorRequestId.getOrElse("")
-          )
-      )
-    } else {
-      key match {
-        case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
-          Thread.sleep(appConfig.upScanPollingDelayMilliSeconds)
-          Redirect(controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key))
-        }
-        case _ => throw new RuntimeException("No key returned for successful upload")
-      }
-    }
+    val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
+    val errorRoute = Redirect(controllers.routes.UploadAuthorityController.onLoad(dutyType, dan))
+    val successRoute = Redirect(controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key.getOrElse("this will never be used")))
+
+    handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
-  def uploadProgress(dutyType: SelectedDutyType, dan: String, key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    fileUploadRepository.getRecord(key).flatMap {
-      case Some(doc) => doc.fileStatus match {
-        case Some(status) if (status == FileStatusEnum.READY) => {
-          val newAuthority: UploadAuthority = UploadAuthority(
-            dan,
-            dutyType,
-            file = FileUploadInfo(
-              fileName = doc.fileName.get,
-              downloadUrl = doc.downloadUrl.get,
-              uploadTimestamp = doc.uploadDetails.get.uploadTimestamp,
-              checksum = doc.uploadDetails.get.checksum,
-              fileMimeType = doc.uploadDetails.get.fileMimeType
-            )
-          )
-
-          val newList = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == dutyType) ++ Seq(newAuthority)
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAuthorityPage, newList)(UploadAuthorityPage.queryWrites))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.routes.UploadAuthorityController.onSuccess(dutyType, dan))
-              .addingToSession("AuthorityFilename" -> newAuthority.file.fileName)
-          }
-        }
-        case Some(status) => Future.successful(Redirect(controllers.routes.UploadAuthorityController.onLoad(dutyType, dan))) // TODO: Failure
-        case None => Future.successful(Ok(
-          progressView(key = key,
-            backLink = controllers.routes.UploadAuthorityController.onLoad(dutyType, dan),
-            action = controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url)
-        ))
-      }
-      case None => Future.successful(InternalServerError)
+  def uploadProgress(dutyType: SelectedDutyType,
+                     dan: String,
+                     key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val uploadCompleteRoute = Redirect(controllers.routes.UploadAuthorityController.onSuccess(dutyType, dan))
+    val uploadFailedRoute = Redirect(controllers.routes.UploadAuthorityController.onLoad(dutyType, dan))
+    val uploadInProgressRoute = Ok(
+      progressView(
+        key = key,
+        backLink = controllers.routes.UploadAuthorityController.onLoad(dutyType, dan),
+        action = controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url
+      )
+    )
+    val updateFilesList: FileUpload => Seq[UploadAuthority] = { file =>
+      val upload = extractFileDetails(file, key)
+      val newAuthority: UploadAuthority = UploadAuthority(dan, dutyType, upload)
+      request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == dutyType) :+ newAuthority
     }
+    val saveFilesList: Seq[UploadAuthority] => Try[UserAnswers] = { list =>
+      request.userAnswers.set(UploadAuthorityPage, list)(UploadAuthorityPage.queryWrites)
+    }
+
+    handleUpscanFileProcessing(key,
+      uploadCompleteRoute,
+      uploadInProgressRoute,
+      uploadFailedRoute,
+      updateFilesList,
+      saveFilesList
+    )
   }
 
   def onSuccess(dutyType: SelectedDutyType, dan: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

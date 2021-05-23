@@ -49,9 +49,7 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).title
-      }
+      checkPageTitle(UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -81,10 +79,7 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe
-            UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).title
-        }
+        checkPageTitle(UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe

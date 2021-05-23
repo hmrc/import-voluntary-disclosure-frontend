@@ -33,9 +33,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(controllers.routes.EnterCustomsProcedureCodeController.onLoad(), true, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title of '${UnderpaymentStartMessages.pageTitle}'" in {
-        document.title mustBe UnderpaymentStartMessages.pageTitle
-      }
+      checkPageTitle(UnderpaymentStartMessages.pageTitle)
     }
 
     "when in change mode back button" should {

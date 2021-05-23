@@ -42,9 +42,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
       lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentTypeMessages.firstTimePageTitle
-      }
+      checkPageTitle(UnderpaymentTypeMessages.firstTimePageTitle)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -60,9 +58,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
       lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.firstTimePageTitle
-      }
+      checkPageTitle(UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.firstTimePageTitle)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe UnderpaymentTypeMessages.errorRequired
@@ -150,9 +146,7 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
       lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UnderpaymentTypeMessages.secondTimePageTitle
-      }
+      checkPageTitle(UnderpaymentTypeMessages.secondTimePageTitle)
 
       s"have the correct h1 of '${UnderpaymentTypeMessages.secondTimePageHeader}'" in {
         elementText("h1") mustBe UnderpaymentTypeMessages.secondTimePageHeader

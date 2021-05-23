@@ -43,9 +43,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe ReasonSummary.pageTitle
-      }
+      checkPageTitle(ReasonSummary.pageTitle)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -61,9 +59,7 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe ReasonSummary.errorPrefix + ReasonSummary.pageTitle
-      }
+      checkPageTitle(ReasonSummary.errorPrefix + ReasonSummary.pageTitle)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe ReasonSummary.errorRequired

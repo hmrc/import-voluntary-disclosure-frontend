@@ -165,9 +165,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe ConfirmReasonDetailMessages.title
-    }
+    checkPageTitle(ConfirmReasonDetailMessages.title)
 
     s"have the correct h1 of '${ConfirmReasonDetailMessages.h1}'" in {
       elementText("h1") mustBe ConfirmReasonDetailMessages.h1

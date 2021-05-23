@@ -34,9 +34,7 @@ class ConfirmationViewSpec extends ViewBaseSpec {
       lazy val view: Html = injectedView(entryNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title of '${ConfirmationMessages.pageTitle}'" in {
-        document.title mustBe ConfirmationMessages.pageTitle
-      }
+      checkPageTitle(ConfirmationMessages.pageTitle)
 
       s"have the correct Entry number value" in {
         elementText(".govuk-panel__body > strong") mustBe entryNumber
