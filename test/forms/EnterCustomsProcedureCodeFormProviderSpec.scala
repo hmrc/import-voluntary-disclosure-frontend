@@ -81,5 +81,19 @@ class EnterCustomsProcedureCodeFormProviderSpec extends SpecBase {
 
   }
 
+  "Binding a form with valid data with spaces" should {
+
+    val form = formBinder(formBuilder("1234 567"))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "result in a form with correct value" in {
+      form.value mustBe Some("1234567")
+    }
+
+  }
+
 }
 

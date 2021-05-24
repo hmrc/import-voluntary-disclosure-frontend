@@ -17,15 +17,18 @@
 package forms
 
 import forms.mappings.Mappings
+import forms.utils.FormHelpers
+
 import javax.inject.Inject
 import play.api.data.Form
 import play.api.i18n.Messages
 
-class ImporterEORINumberFormProvider @Inject() extends Mappings {
+class ImporterEORINumberFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply()(implicit messages: Messages): Form[String] =
     Form(
       "importerEORI" -> text("importerEORINumber.error.nonEmpty")
+        .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
         .verifying(regexp("^(?i)GB[0-9]{12,15}$", "importerEORINumber.error.incorrectFormat"))
     )
 

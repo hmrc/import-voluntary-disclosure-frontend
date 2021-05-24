@@ -18,12 +18,13 @@ package forms
 
 import models.UnderpaymentReasonValue
 import forms.mappings.Mappings
+import forms.utils.FormHelpers
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import play.api.i18n.Messages
 
-class UnderpaymentReasonAmendmentFormProvider extends Mappings {
+class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
   def apply(boxNumber: Int)(implicit messages: Messages): Form[UnderpaymentReasonValue] = {
     boxNumber match {
@@ -97,8 +98,10 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings {
     Form(
       mapping(
         "original" -> text("amendmentValue.error.original.missing")
+          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
           .verifying(regexp(regex, "amendmentValue.error.original.format")),
         "amended" -> text("amendmentValue.error.amended.missing")
+          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
           .verifying(regexp(regex, "amendmentValue.error.amended.format"))
       ) (UnderpaymentReasonValue.apply) (UnderpaymentReasonValue.unapply)
         .verifying(different("amendmentValue.error.amended.different"))
