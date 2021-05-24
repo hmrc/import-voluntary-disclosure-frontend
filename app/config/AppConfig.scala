@@ -72,8 +72,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
-  lazy val eccSubscribeUrl: String = servicesConfig.baseUrl("eori-common-component-frontend") +
-    servicesConfig.getString("urls.eccSubscribeUrl")
+  lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
 }
 
