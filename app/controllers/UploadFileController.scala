@@ -18,10 +18,8 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-
-import javax.inject.{Inject, Singleton}
-import models.FileUploadInfo
-import models.upscan._
+import models.upscan.FileUpload
+import models.{FileUploadInfo, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -30,41 +28,38 @@ import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{UploadFileView, UploadProgressView}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-
+import scala.util.Try
 
 @Singleton
 class UploadFileController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
                                      requireData: DataRequiredAction,
                                      mcc: MessagesControllerComponents,
-                                     fileUploadRepository: FileUploadRepository,
-                                     sessionRepository: SessionRepository,
+                                     val fileUploadRepository: FileUploadRepository,
+                                     val sessionRepository: SessionRepository,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
                                      progressView: UploadProgressView,
                                      implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+  extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     lazy val backLink =
       (request.userAnswers.get(FileUploadPage), request.userAnswers.get(AnyOtherSupportingDocsPage)) match {
-      case (Some(files), _ ) if (!files.isEmpty) => controllers.routes.UploadAnotherFileController.onLoad()
-      case (_, Some(true)) => controllers.routes.OptionalSupportingDocsController.onLoad()
-      case _ => controllers.routes.AnyOtherSupportingDocsController.onLoad()
+      case (Some(files), _) if files.nonEmpty => Some(controllers.routes.UploadAnotherFileController.onLoad())
+      case (_, Some(true)) if !request.checkMode => Some(controllers.routes.OptionalSupportingDocsController.onLoad())
+      case (_, Some(false)) if !request.checkMode => Some(controllers.routes.AnyOtherSupportingDocsController.onLoad())
+      case _ => None
     }
 
-    val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
-    val optionalDocs = if (anyOptionalDocs) {
-      request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
-    } else {
-      Seq.empty
-    }
+    val anyOtherDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
+    val otherDocs = request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+    val docs = if (anyOtherDocs) otherDocs else Seq.empty
 
-    upScanService
-    .initiateNewJourney().map { response =>
-      Ok(view(response, backLink, optionalDocs))
+    upScanService.initiateNewJourney().map { response =>
+      Ok(view(response, backLink, docs))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }
@@ -77,54 +72,32 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                             errorRequestId: Option[String] = None
                            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    if (errorCode.isDefined) {
-      // TODO: Redirect to synchronous error page
-      Future.successful(
-        Redirect(controllers.routes.UploadFileController.onLoad)
-          .flashing(
-            "key" -> key.getOrElse(""),
-            "errorCode" -> errorCode.getOrElse(""),
-            "errorMessage" -> errorMessage.getOrElse(""),
-            "errorResource" -> errorResource.getOrElse(""),
-            "errorRequestId" -> errorRequestId.getOrElse("")
-          )
-      )
-    } else {
-      key match {
-        case Some(key) => fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
-          Thread.sleep(appConfig.upScanPollingDelayMilliSeconds)
-          Redirect(controllers.routes.UploadFileController.uploadProgress(key))
-        }
-        case _ => throw new RuntimeException("No key returned for successful upload")
-      }
-    }
+    val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
+    val errorRoute = Redirect(controllers.routes.UploadFileController.onLoad())
+    val successRoute = Redirect(controllers.routes.UploadFileController.uploadProgress(key.getOrElse("this will never be used")))
+
+    handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    fileUploadRepository.getRecord(key).flatMap {
-      case Some(doc) => doc.fileStatus match {
-        case Some(status) if (status == FileStatusEnum.READY) => {
-          val newFile: FileUploadInfo = FileUploadInfo(
-            fileName = doc.fileName.get,
-            downloadUrl = doc.downloadUrl.get,
-            uploadTimestamp = doc.uploadDetails.get.uploadTimestamp,
-            checksum = doc.uploadDetails.get.checksum,
-            fileMimeType = doc.uploadDetails.get.fileMimeType
-          )
-
-          val updatedListFiles = request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty) ++ Seq(newFile)
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(FileUploadPage, updatedListFiles)(FileUploadPage.queryWrites))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.routes.UploadAnotherFileController.onLoad())
-          }
-        }
-        case Some(status) => Future.successful(Redirect(controllers.routes.UploadFileController.onLoad())) // TODO: Failure
-        case None => Future.successful(Ok(progressView(key, controllers.routes.UploadFileController.onLoad)))
-      }
-      case None => Future.successful(InternalServerError)
+    val uploadCompleteRoute = Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+    val uploadFailedRoute = Redirect(controllers.routes.UploadFileController.onLoad())
+    val uploadInProgressRoute = Ok(progressView(key, controllers.routes.UploadFileController.onLoad()))
+    val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
+      val upload = extractFileDetails(file, key)
+      request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty) :+ upload
     }
+    val saveFilesList: Seq[FileUploadInfo] => Try[UserAnswers] = { list =>
+      request.userAnswers.set(FileUploadPage, list)(FileUploadPage.queryWrites)
+    }
+
+    handleUpscanFileProcessing(key,
+      uploadCompleteRoute,
+      uploadInProgressRoute,
+      uploadFailedRoute,
+      updateFilesList,
+      saveFilesList
+    )
   }
 
 }

@@ -16,15 +16,15 @@
 
 package controllers
 
-import connectors.IvdSubmissionConnector
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+
 import javax.inject.{Inject, Singleton}
-import models.IvdSubmission
 import pages.CheckModePage
 import play.api.i18n.I18nSupport
-import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc._
 import repositories.SessionRepository
+import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYASummaryListHelper
 import views.html.{CheckYourAnswersView, ConfirmationView}
@@ -37,9 +37,10 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            requireData: DataRequiredAction,
                                            mcc: MessagesControllerComponents,
                                            sessionRepository: SessionRepository,
-                                           ivdSubmissionConnector: IvdSubmissionConnector,
+                                           submissionService: SubmissionService,
                                            view: CheckYourAnswersView,
                                            confirmationView: ConfirmationView,
+                                           errorHandler: ErrorHandler,
                                            implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
 
@@ -62,15 +63,11 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    Json.fromJson[IvdSubmission](request.userAnswers.data) match {
-      case JsSuccess(submission, _) => {
-        ivdSubmissionConnector.postSubmission(submission).flatMap {
-          case Right(value) => Future.successful(Ok(confirmationView(value.id)))
-          case Left(error) => Future.successful(InternalServerError)
-        }
-      }
-      case JsError(_) => throw new RuntimeException("Completed journey answers does not parse to IVDSubmission model")
+    submissionService.createCase.map {
+      case Right(value) => Ok(confirmationView(value.id))
+      case Left(_) => errorHandler.showInternalServerError
     }
+
   }
 
 }

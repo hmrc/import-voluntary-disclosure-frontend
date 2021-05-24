@@ -168,7 +168,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url,
+              controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
               HtmlContent("""<span aria-hidden="true">View summary</span>"""),
               Some(CYAMessages.viewSummaryChange)
             )
@@ -230,14 +230,15 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))
-          )
+              controllers.routes.UploadAnotherFileController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(CYAMessages.changeSupportingDocuments)
+            )
           ))
+          )
         )
       )
-    )
-  )
+    ))
 
   val yourDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.yourDetails,

@@ -26,6 +26,7 @@ trait ViewBaseSpec extends SpecBase {
 
   final val emptyString = ""
   final val govErrorSummaryListClass = ".govuk-error-summary__list"
+  final val titleSuffix = " - Disclose an underpayment of Customs Duty or import VAT - GOV.UK"
 
   def elementText(selector: String)(implicit document: Document): String = {
     element(selector).text()
@@ -61,5 +62,11 @@ trait ViewBaseSpec extends SpecBase {
   def paragraph(index: Int)(implicit document: Document): String = elementText(s"article > p:nth-of-type($index)")
 
   def bullet(index: Int)(implicit document: Document): String = elementText(s"article li:nth-of-type($index)")
+
+  def checkPageTitle(title: String)(implicit document: Document): Unit = {
+    "have the correct page title" in {
+      document.title mustBe title + titleSuffix
+    }
+  }
 
 }

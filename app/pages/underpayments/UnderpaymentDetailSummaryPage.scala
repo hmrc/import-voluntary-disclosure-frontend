@@ -31,11 +31,10 @@ object UnderpaymentDetailSummaryPage extends QuestionPage[Seq[UnderpaymentDetail
 
   override def cleanup(value: Option[Seq[UnderpaymentDetail]], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(answer) => {
+      case Some(answer) =>
         val underpaymentType = userAnswers.remove(UnderpaymentTypePage).getOrElse(userAnswers)
         val underpaymentDetail = underpaymentType.remove(UnderpaymentDetailsPage).getOrElse(userAnswers)
         Try(underpaymentDetail)
-      }
       case None => super.cleanup(value, userAnswers)
     }
   }

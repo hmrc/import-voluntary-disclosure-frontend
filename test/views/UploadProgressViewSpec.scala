@@ -46,9 +46,7 @@ class UploadProgressViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(reference, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe UploadProgressMessages.title
-    }
+    checkPageTitle(UploadProgressMessages.title)
 
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> "url")

@@ -58,9 +58,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.box22PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.box22PageTitle)
 
       s"have the correct p1 text of '${AmendReasonValuesMessages.box22P1}'" in {
         elementText("#main-content p:nth-of-type(1)") mustBe AmendReasonValuesMessages.box22P1
@@ -82,9 +80,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalNonEmpty
@@ -102,9 +98,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedNonEmpty
@@ -124,9 +118,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.amendedDifferent
@@ -144,9 +136,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle
-      }
+      checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box22PageTitle)
 
       "render an error summary with the correct message " in {
         elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidFormat + " " + AmendReasonValuesMessages.amendedInvalidFormat
@@ -175,9 +165,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        "have the correct page title" in {
-          document.title mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.title
-        }
+        checkPageTitle(AmendReasonValuesMessages.boxContent.get(boxNumber).get.title)
 
         "have the correct page heading" in {
           elementText("h1") mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.heading

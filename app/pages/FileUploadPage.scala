@@ -23,10 +23,5 @@ object FileUploadPage extends QuestionPage[Seq[FileUploadInfo]] {
 
   override def path: JsPath = JsPath \ "uploaded-files"
 
-  def queryWrites: Writes[Seq[FileUploadInfo]] =
-    new Writes[Seq[FileUploadInfo]] {
-      override def writes(files: Seq[FileUploadInfo]): JsValue = JsArray(files.map { file =>
-        Json.toJson(file)
-      })
-    }
+  val queryWrites: Writes[Seq[FileUploadInfo]] = files => Json.toJson(files)
 }

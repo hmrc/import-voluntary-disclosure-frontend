@@ -42,9 +42,7 @@ class SplitPaymentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe SplitPaymentMessages.title
-      }
+      checkPageTitle(SplitPaymentMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -63,9 +61,7 @@ class SplitPaymentViewSpec extends ViewBaseSpec with BaseMessages {
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe SplitPaymentMessages.errorPrefix + SplitPaymentMessages.title
-      }
+      checkPageTitle(SplitPaymentMessages.errorPrefix + SplitPaymentMessages.title)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe SplitPaymentMessages.requiredError

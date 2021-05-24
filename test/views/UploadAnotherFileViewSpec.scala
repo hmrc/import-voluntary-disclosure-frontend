@@ -57,9 +57,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form,answers, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UploadAnotherFileMessages.title("1","file")
-      }
+      checkPageTitle(UploadAnotherFileMessages.title("1","file"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -85,9 +83,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form,answers, maxOptDocs)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UploadAnotherFileMessages.title("1","file")
-      }
+      checkPageTitle(UploadAnotherFileMessages.title("1","file"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -145,9 +141,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form,answersTwoFiles)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct page title" in {
-        document.title mustBe UploadAnotherFileMessages.title("2","files")
-      }
+      checkPageTitle(UploadAnotherFileMessages.title("2","files"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -175,9 +169,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(form,answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "update the page title to include the error prefix" in {
-        document.title mustBe UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1","file")
-      }
+      checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1","file"))
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe UploadAnotherFileMessages.requiredError

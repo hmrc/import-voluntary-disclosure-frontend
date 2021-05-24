@@ -62,9 +62,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(details("GB987654321000","Fast Food ltd."))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page title" in {
-      document.title mustBe ConfirmEORIDetailsMessages.title
-    }
+    checkPageTitle(ConfirmEORIDetailsMessages.title)
 
     s"have the correct h1 of '${ConfirmEORIDetailsMessages.h1}'" in {
       elementText("h1") mustBe ConfirmEORIDetailsMessages.h1

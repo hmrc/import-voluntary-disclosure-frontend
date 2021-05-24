@@ -4,9 +4,10 @@ common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
 
-service.name = Disclose an underpayment of import duties
+service.name = Disclose an underpayment of Customs Duty or import VAT
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
+page.title.suffix = ' - Disclose an underpayment of Customs Duty or import VAT - GOV.UK'
 
 date.day = Day
 date.month = Month
@@ -572,6 +573,7 @@ cya.oneCustomsProcedureCode = One customs procedure code?
 cya.customsProcedureCode = Customs procedure code
 cya.acceptanceDate.change = Change acceptance date
 cya.supportingDocuments = Supporting documents
+cya.supportingDocuments.change = Change supporting documents
 cya.filesUploadedSingle = 1 file uploaded
 cya.filesUploadedPlural = {0} files uploaded
 cya.yourDetails = Your details

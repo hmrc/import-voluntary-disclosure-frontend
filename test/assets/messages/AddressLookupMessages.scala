@@ -18,7 +18,7 @@ package messages
 
 object AddressLookupMessages {
 
-  val navTitle = "Disclose an underpayment of import duties"
+  val navTitle = "Disclose an underpayment of Customs Duty or import VAT"
   val startHeading = "Find the address"
   val filter = "Property name or number (optional)"
   val postcode = "UK postcode"

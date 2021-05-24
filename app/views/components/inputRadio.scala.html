@@ -23,7 +23,8 @@
     legendAsHeading: Boolean = true,
     hint: Option[Html] = None,
     classes: String = "govuk-fieldset__legend--l",
-    inline: Boolean = false
+    inline: Boolean = false,
+    errorKey: Option[String] = None
 )(implicit messages: Messages)
 
 @govukRadios(Radios(
@@ -40,7 +41,7 @@
         content = HtmlContent(hint)
     )},
     items = items,
-    errorMessage = form("value").error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    errorMessage = form(errorKey.getOrElse("value")).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
 ))
 
 @{
