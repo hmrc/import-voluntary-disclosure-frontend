@@ -63,15 +63,15 @@ class AddFileRowHelperSpec extends SpecBase with MustMatchers with TryValues wit
 
       val first = result.head
       first.value.content.asHtml mustEqual Html("text.txt")
-//      first.removeAction.href mustEqual routes.RemoveRestaurantController.onPageLoad(Index(0)).url
+      first.removeAction.get.visuallyHiddenText mustBe Some(s"Remove text.txt")
 
       val second = result(1)
       second.value.content.asHtml mustEqual Html("text2.txt")
-//      second.removeAction.href mustEqual routes.RemoveRestaurantController.onPageLoad(Index(1)).url
+      second.removeAction.get.visuallyHiddenText mustBe Some(s"Remove text2.txt")
 
       val third = result(2)
       third.value.content.asHtml mustEqual Html("text3.txt")
-//      third.removeAction.href mustEqual routes.RemoveRestaurantController.onPageLoad(Index(2)).url
+      third.removeAction.get.visuallyHiddenText mustBe Some(s"Remove text3.txt")
     }
   }
 }
