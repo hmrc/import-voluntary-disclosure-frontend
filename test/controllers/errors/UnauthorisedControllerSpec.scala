@@ -17,6 +17,7 @@
 package controllers.errors
 
 import base.ControllerSpecBase
+import mocks.config.MockAppConfig
 import play.api.http.Status
 import play.api.test.Helpers._
 import views.html.errors._
@@ -24,8 +25,9 @@ import views.html.errors._
 class UnauthorisedControllerSpec extends ControllerSpecBase {
 
   lazy val view: UnauthorisedView = app.injector.instanceOf[UnauthorisedView]
+  lazy val unauthorisedAgentAccessView: UnauthorisedAgentAccessView = app.injector.instanceOf[UnauthorisedAgentAccessView]
 
-  private lazy val controller = new UnauthorisedController(messagesControllerComponents, view)
+  private lazy val controller = new UnauthorisedController(messagesControllerComponents, view, unauthorisedAgentAccessView, MockAppConfig)
 
   "onPageLoad" should {
     "return 200" in {
@@ -35,6 +37,19 @@ class UnauthorisedControllerSpec extends ControllerSpecBase {
 
     "return HTML" in {
       val result = controller.onPageLoad(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
+  }
+
+  "unauthorisedAgentAccess" should {
+    "return 200" in {
+      val result = controller.unauthorisedAgentAccess(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return HTML" in {
+      val result = controller.unauthorisedAgentAccess(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }

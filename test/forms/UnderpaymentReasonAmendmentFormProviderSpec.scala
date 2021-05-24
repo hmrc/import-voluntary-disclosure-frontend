@@ -188,6 +188,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
         form.hasErrors mustBe false
       }
     }
+    "provided with valid values with spaces" should {
+      "result in a form with no errors" in {
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "gbp 40", amended = " G b P 50 "), box = 22)
+        form.hasErrors mustBe false
+      }
+    }
   }
 
   "A foreignCurrency form " when {
@@ -265,6 +271,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
     "provided with valid values" should {
       "result in a form with no errors" in {
         val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = commodityCodeOriginalValue, amended = commodityCodeAmendedValue), box = 33)
+        form.hasErrors mustBe false
+      }
+    }
+    "provided with valid values with spaces" should {
+      "result in a form with no errors" in {
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "2204109400 x 412", amended = " 220410 9400X411 "), box = 33)
         form.hasErrors mustBe false
       }
     }

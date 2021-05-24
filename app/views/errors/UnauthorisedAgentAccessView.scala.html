@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,36 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package forms
+@import templates.Layout
 
-import forms.mappings.Mappings
-import forms.utils.FormHelpers
+@this(layout: Layout,
+        h1: components.h1,
+        p: components.p
+)
 
-import javax.inject.Inject
-import play.api.data.Form
-import play.api.i18n.Messages
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
+@layout(
+    pageTitle = messages("unauthorised.agent.title"),
+    showBackLink = false
+) {
 
-class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with FormHelpers {
+    @h1(messages("unauthorised.agent.title"))
 
-  def apply()(implicit messages: Messages): Form[String] =
-    Form(
-        "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
-          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-          .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )
+    @p {
+       @messages("unauthorised.agent.para1")
+    }
 
+    @p {
+       @messages("unauthorised.agent.para2.1")
+       <a href="@appConfig.signOutUrl">@messages("unauthorised.agent.signInAgain")</a>
+       @messages("unauthorised.agent.para2.2")
+    }
 
+}
+
+@{
+    //$COVERAGE-OFF$
 }

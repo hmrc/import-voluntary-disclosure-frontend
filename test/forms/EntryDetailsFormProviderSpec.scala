@@ -178,6 +178,11 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     "generate the correct model" in {
       form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
     }
+
+    "generate the correct model if space are in input" in {
+      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(entryNumber = Some("123 456q")))
+      form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
+    }
   }
 
   "A form built from a valid model" should {

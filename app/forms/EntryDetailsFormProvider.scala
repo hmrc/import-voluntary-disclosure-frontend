@@ -18,13 +18,15 @@ package forms
 
 import config.AppConfig
 import forms.mappings.Mappings
+import forms.utils.FormHelpers
+
 import javax.inject.Inject
 import models.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.Messages
 
-class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings with FormHelpers {
 
   def apply()(implicit messages: Messages): Form[EntryDetails] = {
 
@@ -32,8 +34,8 @@ class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends 
       "epu" -> text("entryDetails.epu.error.missing")
         .verifying(regexp("[0-9]{3}","entryDetails.epu.error.format")),
       "entryNumber" -> text("entryDetails.entryNumber.error.missing")
-        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format"))
-        .transform[String](_.toUpperCase, _.toUpperCase),
+        .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
+        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format")),
       "entryDate" -> localDate(
         invalidKey = "entryDetails.entryDate.error.invalid",
         allRequiredKey = "entryDetails.entryDate.error.required.all",

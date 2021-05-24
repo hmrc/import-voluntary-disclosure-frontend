@@ -52,4 +52,6 @@ object MockAppConfig extends AppConfig {
   override val upScanAuthorityErrorRedirectForUser: String = "TBC"
 
   override val importVoluntaryDisclosureSubmission: String = "TBC"
+
+  override val eccSubscribeUrl: String = "TBC"
 }

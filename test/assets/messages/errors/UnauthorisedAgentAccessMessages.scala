@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package messages.errors
 
-import forms.mappings.Mappings
-import forms.utils.FormHelpers
+import messages.BaseMessages
 
-import javax.inject.Inject
-import play.api.data.Form
-import play.api.i18n.Messages
+object UnauthorisedAgentAccessMessages extends BaseMessages {
 
-
-class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with FormHelpers {
-
-  def apply()(implicit messages: Messages): Form[String] =
-    Form(
-        "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
-          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-          .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )
-
-
+  val title = "You cannot access this service to disclose a Customs Duty or import VAT underpayment"
+  val para1 = "You have signed in with an agent Government user ID that cannot access this service."
+  val para2 = "If you are an importer or an importer’s representative you need to sign in again with the Government Gateway user ID you use for your business."
 }

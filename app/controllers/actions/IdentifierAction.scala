@@ -26,7 +26,7 @@ import play.api.mvc._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +37,8 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
                                               unauthorisedView: views.html.errors.UnauthorisedView,
                                               config: AppConfig,
                                               val parser: BodyParsers.Default,
-                                              val messagesApi: MessagesApi
+                                              val messagesApi: MessagesApi,
+                                              val http: HttpClient
                                              )(implicit val executionContext: ExecutionContext)
   extends IdentifierAction with AuthorisedFunctions with I18nSupport {
 
@@ -51,7 +52,9 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     authorised().retrieve(externalId and allEnrolments and affinityGroup) {
-      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Organisation) if isValidUser(enrolments) =>
+      case _ ~ _ ~ Some(AffinityGroup.Agent) =>
+        Future.successful(Redirect(controllers.errors.routes.UnauthorisedController.unauthorisedAgentAccess()))
+      case Some(userId) ~ enrolments ~ _ if isValidUser(enrolments) =>
         val Some(eori) =
           for {
             enrolment <- enrolments.getEnrolment("HMRC-CTS-ORG")
@@ -61,10 +64,8 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           }
         val req = IdentifierRequest(request, userId, eori)
         block(req)
-      case _ ~ _ ~ Some(AffinityGroup.Individual) =>
-        Future.successful(Unauthorized("Affinity group individuals hand-off page"))
-      case _ ~ _ ~ Some(AffinityGroup.Agent) =>
-        Future.successful(Unauthorized("Affinity group agent hand-off page"))
+      case Some(userId) ~ enrolments ~ _ if !isValidUser(enrolments) =>
+        Future.successful(Redirect(config.eccSubscribeUrl))
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))
