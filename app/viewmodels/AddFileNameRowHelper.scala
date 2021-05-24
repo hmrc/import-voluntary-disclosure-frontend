@@ -33,7 +33,7 @@ class AddFileNameRowHelper(val files: Seq[FileUploadInfo])
           removeAction = Some(ActionItem(
             href = controllers.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
             content = Text(messages("common.remove")),
-            visuallyHiddenText = Some(file.fileName)
+            visuallyHiddenText = Some(messages("common.remove") + " " + file.fileName)
           )
         )
       )
