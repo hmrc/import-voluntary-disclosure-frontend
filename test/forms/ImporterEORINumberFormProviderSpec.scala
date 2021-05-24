@@ -115,6 +115,18 @@ class ImporterEORINumberFormProviderSpec extends SpecBase {
           form.hasErrors mustBe false
         }
       }
+
+      "Valid data present with spaces" should {
+        val form = formBinder(formBuilder("gb 345834921000"))
+
+        "result in a form with no errors" in {
+          form.hasErrors mustBe false
+        }
+
+        "result in a form with correct data" in {
+          form.value mustBe Some("GB345834921000")
+        }
+      }
     }
   }
 }

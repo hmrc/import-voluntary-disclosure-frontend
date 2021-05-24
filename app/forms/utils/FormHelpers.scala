@@ -14,24 +14,9 @@
  * limitations under the License.
  */
 
-package forms
+package forms.utils
 
-import forms.mappings.Mappings
-import forms.utils.FormHelpers
+trait FormHelpers {
 
-import javax.inject.Inject
-import play.api.data.Form
-import play.api.i18n.Messages
-
-
-class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with FormHelpers {
-
-  def apply()(implicit messages: Messages): Form[String] =
-    Form(
-        "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
-          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-          .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )
-
-
+  def toUpperNoSpaces(input: String): String = input.replaceAll("\\s","").toUpperCase
 }

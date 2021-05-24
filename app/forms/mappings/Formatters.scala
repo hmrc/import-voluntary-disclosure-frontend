@@ -155,8 +155,9 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
         baseFormatter.bind(key, data).right.flatMap {
           str =>
-            if (str.take(3).matches(countryCurrencyRegex) && str.drop(3).matches(valid2dpCurrency)) {
-              Right(str)
+            val input = str.replaceAll("\\s","").toUpperCase
+            if (input.take(3).matches(countryCurrencyRegex) && input.drop(3).matches(valid2dpCurrency)) {
+              Right(input)
             } else {
               Left(Seq(FormError(key, invalidKey)))
             }
