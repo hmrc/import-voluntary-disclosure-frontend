@@ -25,13 +25,7 @@
 
 @(form: Form[_], traderAddress: ContactAddress)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("traderAddressCorrect.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(controllers.routes.DeclarantContactDetailsController.onLoad)) {
-
-        @errorSummary(form.errors)
-
+    @legendContent = {
         @h1(messages("traderAddressCorrect.h1"))
 
         @if(!traderAddress.postalCode.isEmpty) {
@@ -39,8 +33,7 @@
                 traderAddress.addressLine1 + "<br/>" +
                 traderAddress.city + "<br/>" +
                 traderAddress.postalCode.getOrElse("") + "<br/>" +
-                traderAddress.countryCode
-            )
+                traderAddress.countryCode)
             )
         } else {
             @p(
@@ -51,14 +44,34 @@
                 )
             )
         }
+    }
+
+    @layout(
+        pageTitle = messages("traderAddressCorrect.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(controllers.routes.DeclarantContactDetailsController.onLoad)) {
+
+        @errorSummary(form.errors)
 
         @formHelper(action = controllers.routes.TraderAddressCorrectController.onSubmit()) {
-            @yesNoRadio(
-                form = form,
-                headingKey = "",
-                isPageHeading = false
-            )
-            @button("common.button.continue")
+
+
+        @defining({
+            Some(Legend(
+                content = HtmlContent(legendContent.toString()),
+                isPageHeading = false,
+                classes = "govuk-radios--inline"
+            ))
+        }) { legend =>
+                @yesNoRadio(
+                    form = form,
+                    headingKey = messages("traderAddressCorrect.h1"),
+                    isPageHeading = false,
+                    classes = "govuk-visually-hidden",
+                    customLegend = legend
+                )
+                @button("common.button.continue")
+            }
         }
     }
 
