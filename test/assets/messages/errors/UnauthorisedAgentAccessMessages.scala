@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import templates.Layout
+package messages.errors
 
-@this(layout: Layout)
+import messages.BaseMessages
 
-@()(implicit request: Request[_], messages: Messages)
+object UnauthorisedAgentAccessMessages extends BaseMessages {
 
-@layout(pageTitle = Some("import-voluntary-disclosure-frontend")) {
-    <h1 class="govuk-heading-xl">Unauthorised</h1>
-}
-
-@{
-    //$COVERAGE-OFF$
+  val title = "You cannot access this service to disclose a Customs Duty or import VAT underpayment"
+  val para1 = "You have signed in with an agent Government user ID that cannot access this service."
+  val para2 = "If you are an importer or an importer’s representative you need to sign in again with the Government Gateway user ID you use for your business."
 }

@@ -72,6 +72,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
+  lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -107,6 +109,8 @@ trait AppConfig extends FixedConfig {
 
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
+
+  val eccSubscribeUrl: String
 }
 
 trait FixedConfig {
