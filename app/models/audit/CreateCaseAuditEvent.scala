@@ -29,5 +29,3 @@ case class CreateCaseAuditEvent(submissionResponse: SubmissionResponse, submissi
     "credentialId" -> request.credId
   ) ++ Json.toJson(submissionData).asInstanceOf[JsObject]
 }
-
-// TODO unit tests
