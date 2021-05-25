@@ -22,15 +22,16 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.SelectedDutyTypes._
-import models.UserAnswers
+import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
-import pages.SplitPaymentPage
+import pages.{SplitPaymentPage, UploadAuthorityPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.{UploadAuthorityProgressView, UploadAuthoritySuccessView, UploadAuthorityView}
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadAuthorityControllerSpec extends ControllerSpecBase {
@@ -234,6 +235,13 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+    "return HTML with correct filename" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(SplitPaymentPage, true).success.value
+        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("filename.txt","",LocalDateTime.now(),"","")))).success.value)
+      val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
+      contentAsString(result).contains("filename.txt") mustBe true
     }
 
   }

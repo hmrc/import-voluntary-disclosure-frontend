@@ -126,11 +126,16 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
       case _ => controllers.routes.CheckYourAnswersController.onLoad().url
     }
 
+    val filename = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty)
+      .filter(_.dutyType == dutyType)
+      .map(_.file.fileName)
+      .headOption.getOrElse("No filename")
+
     Future.successful(
       Ok(successView(
-        fileName = request.session.get("AuthorityFilename").getOrElse("No filename"),
+        fileName = filename,
         action = action)
-      ).removingFromSession("AuthorityFilename")
+      )
     )
   }
 
