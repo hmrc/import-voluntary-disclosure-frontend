@@ -18,13 +18,14 @@ package services.submissionService
 
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
+import mocks.services.MockAuditService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
 import pages.EnterCustomsProcedureCodePage
 import play.api.libs.json.Json
 import services.SubmissionService
 
-class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with SubmissionServiceTestData with SubmissionServiceTestJson {
+class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
 
   trait Test {
     def setupMock(response: Either[ErrorModel, SubmissionResponse]) = {
@@ -52,7 +53,8 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
 
     val outputJson = completeOutputJson
 
-    val service = new SubmissionService(mockIVDSubmissionConnector)
+    stubAudit()
+    val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
 
   }
 

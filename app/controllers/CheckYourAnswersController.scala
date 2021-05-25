@@ -18,7 +18,6 @@ package controllers
 
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-
 import javax.inject.{Inject, Singleton}
 import pages.CheckModePage
 import play.api.i18n.I18nSupport
