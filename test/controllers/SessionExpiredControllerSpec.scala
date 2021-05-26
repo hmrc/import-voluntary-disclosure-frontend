@@ -25,14 +25,12 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.errors.SessionTimeoutView
-
 import scala.concurrent.Future
-
 
 class SessionExpiredControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val timoutPageView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
+    private lazy val timeoutPageView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
 
@@ -53,7 +51,7 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new SessionExpiredController(messagesControllerComponents, appConfig, timoutPageView)
+    lazy val controller = new SessionExpiredController(messagesControllerComponents, appConfig, timeoutPageView)
   }
 
   "GET keepAlive" should {
