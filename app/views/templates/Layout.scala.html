@@ -32,6 +32,16 @@
         customBackLinkUrl: Option[Call] = None
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
+@hmrcTimeoutDialog(
+    TimeoutDialog(
+        timeout = Some(appConfig.timeoutPeriod),
+        countdown = Some(appConfig.countdown),
+        keepAliveUrl = Some("/disclose-import-taxes-underpayment/keep-alive"),
+        signOutUrl = Some("/disclose-import-taxes-underpayment/timeout"),
+        language = Some(messages.lang.code)
+    )
+)
+
 @scripts = {
     <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
     <script src='@routes.Assets.versioned("lib/hmrc-frontend/hmrc/all.js")'></script>

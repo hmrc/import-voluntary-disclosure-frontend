@@ -21,17 +21,16 @@ import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import utils.SessionDataHelper
 import views.html.errors.TimeoutPageView
 
 
 class SessionExpiredController @Inject()(val mcc: MessagesControllerComponents,
                                          implicit val appConfig: AppConfig,
-                                         timeoutPage: TimeoutPageView) extends FrontendController(mcc) with I18nSupport with SessionDataHelper {
+                                         timeoutPage: TimeoutPageView) extends FrontendController(mcc) with I18nSupport {
 
   def keepAlive(): Action[AnyContent] = Action(NoContent)
 
   def timeout: Action[AnyContent] = Action { implicit request =>
-     Ok(timeoutPage()).withNewSession
+      Ok(timeoutPage()).withNewSession
   }
 }
