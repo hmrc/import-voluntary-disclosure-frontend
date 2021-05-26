@@ -20,7 +20,8 @@
         appConfig: AppConfig,
         footerLinks: FooterLinks,
         head: partials.Head,
-        backLink: components.back_link
+        backLink: components.back_link,
+        hmrcTimeoutDialog: HmrcTimeoutDialog
 )
 
 @(pageTitle: String,
@@ -33,7 +34,9 @@
 
 @scripts = {
     <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+    <script src='@routes.Assets.versioned("lib/hmrc-frontend/hmrc/all.js")'></script>
     <script>window.GOVUKFrontend.initAll();</script>
+    <script>window.HMRCFrontend.initAll();</script>
     @scriptsBlock
 }
 
