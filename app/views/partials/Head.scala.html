@@ -16,7 +16,7 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
 
-@this(hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet)
+@this(hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet, hmrcTimeoutDialog: HmrcTimeoutDialog, appConfig: AppConfig)
 
 @(headBlock: Option[Html] = None)(implicit request: Request[_], messages: Messages)
 
@@ -27,6 +27,16 @@
 <!--[if lte IE 8]><script src='@controllers.routes.Assets.versioned("javascripts/html5shiv.min.js")'></script><![endif]-->
 <!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
 <!--[if gt IE 8]><!--><link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="screen" rel="stylesheet" type="text/css" /><!--<![endif]-->
+
+@hmrcTimeoutDialog(
+  TimeoutDialog(
+    timeout = Some(appConfig.timeoutPeriod),
+    countdown = Some(appConfig.countdown),
+    keepAliveUrl = Some("/disclose-import-taxes-underpayment/keep-alive"),
+    signOutUrl = Some("/disclose-import-taxes-underpayment/timeout-signed-out"),
+    language = Some(messages.lang.code)
+  )
+)
 
 @{
  //$COVERAGE-OFF$
