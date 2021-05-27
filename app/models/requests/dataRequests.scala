@@ -34,6 +34,12 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
       case _ => false
     }
 
+  def isPayByDeferment: Boolean =
+    userAnswers.get(DefermentPage) match {
+      case Some(value) => value
+      case _ => false
+    }
+
   def doesImporterEORIExist: Boolean =
     userAnswers.get(ImporterEORIExistsPage) match {
       case Some(value) => value

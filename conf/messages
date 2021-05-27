@@ -412,15 +412,26 @@ removeUploadedFile.error.required = Select yes to remove file
 confirmation.pageTitle = Confirmation screen
 confirmation.heading = Disclosure complete
 confirmation.entryNumber = Entry number:
-confirmation.p1 = We have received your underpayment disclosure.
-confirmation.printSave = Print or save this page
-confirmation.printSaveRestOfMessage = as we will not send you an email confirmation.
+confirmation.singleEntry.p1 = We have received your disclosure of underpaid customs duty or import VAT for the import declaration {0}-{1}-{2}.
+confirmation.bulkEntry.p1 = We have received your disclosure of underpaid customs duty or import VAT on multiple entries. All of these entries were for goods imported by {0}, EORI number {1}.
 confirmation.whatHappensNext = What happens next
-confirmation.p2 = We will check the information you have provided. We will send a C18 Post Clearance Demand Note in the post within 10 days. This demand note will confirm what is owed to HMRC and will tell you how to pay. Payment must be made within 10 days of receiving the demand note, otherwise interest will become due.
-confirmation.p3 = If you have any questions or have not received the demand note within 10 days contact the C18 team by email npcc@hmrc.gov.uk.
+confirmation.whatHappensNext.deferment.p2 = We will check the information you have provided and process the payment using the deferment account details you have provided. We will then send you a C18 Post Clearance Demand Note in the post, usually within 10 days.
+confirmation.whatHappensNext.deferment.rep.p2 = We will also send a copy to {0} using the address you have provided.
+confirmation.whatHappensNext.deferment.p3 = If we find that the amount owed differs from what you have told us, we will contact you before we process the payment.
+confirmation.whatHappensNext.otherPayment.p2 = We will check the information you have provided and send you a C18 Post Clearance Demand Note in the post, usually within 10 days.
+confirmation.whatHappensNext.otherPayment.rep.p2 = We will also send a copy to {0} using the address you have provided.
+confirmation.whatHappensNext.otherPayment.p3 = The demand note will tell you how to pay. Payment must be made within 10 days of receiving the demand note, otherwise interest will become due.
+confirmation.whatHappensNext.otherPayment.p4 = If we find that the amount owed differs from what you have told us we will contact you before sending the demand note.
+confirmation.whatYouShouldDoNext = What you should do next
+confirmation.whatYouShouldDoNext.printSave = Print or save this page
+confirmation.whatYouShouldDoNext.printSaveRestOfMessage = as we will not send you an email confirmation.
+confirmation.whatYouShouldDoNext.p5 = If either you have not received the demand or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk.
+confirmation.whatYouShouldDoNext.rep.link = Disclose another underpayment
 confirmation.helpImproveService = Help us improve this service
 confirmation.helpImproveServiceLink = What did you think of this service?
 confirmation.helpImproveServiceLinkTime = ' (takes 30 seconds)'
+
+
 
 # Box Guidance page
 boxGuidance.pageTitle = You must tell us the reason for the underpayment

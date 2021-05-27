@@ -20,7 +20,16 @@
         appConfig: AppConfig
 )
 
-@(reference: String = "")(implicit request: Request[_], messages: Messages)
+@(reference: String = "",
+    isRepFlow: Boolean,
+    isPayByDeferment: Boolean,
+    isSingleEntry: Boolean,
+    epuNumber: String = "",
+    entryNumber: String = "",
+    entryDate: String = "",
+    importerName: String = "",
+    eoriNumber: String = ""
+)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
 
@@ -35,17 +44,42 @@
         <br>
     </div>
 
-    @p(Html(messages("confirmation.p1")), id = Some("p1"))
-
-    <img id = "icon" class="print-this__icon" src="https://www.tax.service.gov.uk/assets/4.9.0//images/icon-print.svg" alt="Print Icon"/>
-    <a id = "printSave" class="print-this__link govuk-body" href="javascript:window.print()">@messages("confirmation.printSave")</a>
-    <a id = "printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.printSaveRestOfMessage")</a>
+    @if(isSingleEntry) {
+        @p(Html(messages("confirmation.singleEntry.p1", epuNumber, entryNumber, entryDate)))
+    } else {
+        @p(Html(messages("confirmation.bulkEntry.p1", importerName, eoriNumber)))
+    }
 
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
-    @p(Html(messages("confirmation.p2")), id = Some("p2"))
-    @p(Html(messages("confirmation.p3")), id = Some("p3"))
 
-    @h2(messages("confirmation.helpImproveService"), id = Some("helpImproveService"))
+    @if(isPayByDeferment) {
+        @if(isRepFlow) {
+            <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2") @messages("confirmation.whatHappensNext.deferment.rep.p2", importerName)</p>
+        } else {
+            <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2")</p>
+        }
+        @p(Html(messages("confirmation.whatHappensNext.deferment.p3")))
+    } else {
+        @if(isRepFlow) {
+            <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2") @messages("confirmation.whatHappensNext.otherPayment.rep.p2", importerName)</p>
+        } else {
+            <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2")</p>
+        }
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p3")))
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p4")))
+    }
+
+    @h2(messages("confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
+
+    @p{
+        <a id = "printSave" class="print-this__link govuk-body" href="javascript:window.print()">@messages("confirmation.whatYouShouldDoNext.printSave")</a>
+        <a id = "printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.whatYouShouldDoNext.printSaveRestOfMessage")</a>
+    }
+
+    @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
+
+    @if(isRepFlow) { @p{@Html(<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">{messages("confirmation.whatYouShouldDoNext.rep.link")}</a>)} }
+
     <div id="helpImproveServiceLink">
         @p{
             @Html(<a href={appConfig.surveyUrl} class="govuk-link">{messages("confirmation.helpImproveServiceLink")}</a>)
