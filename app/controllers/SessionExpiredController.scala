@@ -26,11 +26,11 @@ import views.html.errors.SessionTimeoutView
 
 class SessionExpiredController @Inject()(val mcc: MessagesControllerComponents,
                                          implicit val appConfig: AppConfig,
-                                         timeoutPage: SessionTimeoutView) extends FrontendController(mcc) with I18nSupport {
+                                         view: SessionTimeoutView) extends FrontendController(mcc) with I18nSupport {
 
   def keepAlive(): Action[AnyContent] = Action(NoContent)
 
   def timeout: Action[AnyContent] = Action { implicit request =>
-      Ok(timeoutPage()).withNewSession
+      Ok(view()).withNewSession
   }
 }
