@@ -152,6 +152,17 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       }
     }
 
+    "upscan returns an error on upload when only an error code is returned" should {
+      "redirect to error page" in new Test {
+        val result = controller.upscanResponseHandler(
+          Some("key"), Some("errorCode"), None, None, None
+        )(fakeRequest)
+
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+      }
+    }
+
     "upscan returns success on upload" should {
       "for a valid key, redirect to holding page" in new Test {
         val result = controller.upscanResponseHandler(

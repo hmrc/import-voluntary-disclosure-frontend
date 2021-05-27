@@ -36,4 +36,7 @@ object UploadFileMessages extends BaseMessages {
   val uploadAFile: String = "Upload a file"
   val uploadFile: String = "Upload file"
   val fileUploadId: String = "file"
+  val fileTooSmall = "Select a file to upload"
+  val fileTooBig = "The selected file must be smaller than 6MB"
+  val fileUnknown = "The selected file could not be uploaded – try again"
 }
