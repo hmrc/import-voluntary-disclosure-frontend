@@ -77,13 +77,13 @@
             <label class="govuk-label" for="file">
             @messages("uploadFile.uploadAFile")
             </label>
-            
+
             @{
                 if(form.hasErrors) {
                     govukErrorMessage(ErrorMessage(
                         id = Some("file-error"),
                         classes = "govuk-error-message",
-                        visuallyHiddenText = Some("Error:"),
+                        visuallyHiddenText = Some("Error"),
                         content = HtmlContent(form.errors.map(_.message).mkString)
                     ))
                 }
