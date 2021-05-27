@@ -16,6 +16,8 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.config.MockAppConfig
@@ -30,33 +32,34 @@ import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.{UploadFileView, UploadProgressView}
 
-import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadFileControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(s"""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "READY",
-    |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-    |   "uploadDetails": {
-    |     "uploadTimestamp": "2018-04-24T09:30:00Z",
-    |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-    |     "fileName": "test.pdf",
-    |     "fileMimeType": "application/pdf"
-    |   }
-    | }""".stripMargin)
+  private val callbackReadyJson: JsValue = Json.parse(
+    s"""
+       | {
+       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+       |   "fileStatus" : "READY",
+       |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+       |   "uploadDetails": {
+       |     "uploadTimestamp": "2018-04-24T09:30:00Z",
+       |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+       |     "fileName": "test.pdf",
+       |     "fileMimeType": "application/pdf"
+       |   }
+       | }""".stripMargin)
 
-  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "FAILED",
-    |    "failureDetails": {
-    |        "failureReason": "REJECTED",
-    |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
-    |    }
-    | }""".stripMargin)
+  private val callbackFailedRejectedJson: JsValue = Json.parse(
+    s"""
+       | {
+       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+       |   "fileStatus" : "FAILED",
+       |    "failureDetails": {
+       |        "failureReason": "REJECTED",
+       |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
+       |    }
+       | }""".stripMargin)
 
 
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
@@ -66,7 +69,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    def setupMocks():Unit = {
+    def setupMocks(): Unit = {
       MockedFileUploadRepository.updateRecord(Future.successful(true))
       MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
       MockedSessionRepository.set(Future.successful(true))
@@ -110,20 +113,20 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
     "return correct back link for additional documents" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(AnyOtherSupportingDocsPage, true).success.value)
+        .set(AnyOtherSupportingDocsPage, true).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
     }
 
     "return correct back link if come from Summary screen" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(FileUploadPage, Seq(FileUploadInfo(
-        fileName = "file1",
-        downloadUrl = "url",
-        uploadTimestamp = LocalDateTime.now(),
-        checksum = "checksum",
-        fileMimeType = "mime"
-      ))).success.value)
+        .set(FileUploadPage, Seq(FileUploadInfo(
+          fileName = "file1",
+          downloadUrl = "url",
+          uploadTimestamp = LocalDateTime.now(),
+          checksum = "checksum",
+          fileMimeType = "mime"
+        ))).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.routes.UploadAnotherFileController.onLoad.url) mustBe true
     }
@@ -132,7 +135,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(CheckModePage, true).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains("url") mustBe false
+      contentAsString(result).contains("govuk-back-link") mustBe false
     }
 
   }
@@ -162,6 +165,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         override def setupMocks(): Unit = {
           MockedFileUploadRepository.updateRecord(Future.successful(true))
         }
+
         val result = await(controller.upscanResponseHandler(
           Some("key"), None, None, None, None
         )(fakeRequest))

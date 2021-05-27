@@ -797,3 +797,9 @@ optionalSupportingDocuments.other = Other documentation relevant to this underpa
 importerVatRegistered.pageTitle = Is the importer VAT registered?
 importerVatRegistered.heading = Is the importer VAT registered?
 importerVatRegistered.error.required = Select yes if the importer is VAT registered
+
+# Session Timeout Page
+timeout.pageTitle = For your security, we signed you out
+timeout.heading = For your security, we signed you out
+timeout.p = We did not save your answers.
+timeout.button = Sign in

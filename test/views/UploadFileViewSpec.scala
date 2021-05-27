@@ -24,6 +24,8 @@ import models.OptionalDocument._
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.api.data.Form
+import play.api.data.Forms.text
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadFileView
@@ -36,9 +38,14 @@ class UploadFileViewSpec extends ViewBaseSpec {
   private val backLink: Call = Call("GET", "url")
   private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
+  val form: Form[_] = Form("fileName" -> text)
+
+  val formWithErrors: Form[_] = Form("Unknown" -> text).withError("file", "valueUnknown")
+
+
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -72,10 +79,27 @@ class UploadFileViewSpec extends ViewBaseSpec {
       "have the correct text for optional file bullet 4" in {
         elementText("#main-content ul:nth-of-type(2) li:nth-of-type(4)") mustBe UploadFileMessages.mayIncludeFile4
       }
+
+      "an error exists (no file has been uploaded)" should {
+        lazy val view: Html = injectedView(formWithErrors, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
+
+        "render an error summary with the correct message" in {
+          elementText("div.govuk-error-summary > div") mustBe "valueUnknown"
+        }
+
+        "render an error message against the field" in {
+          elementText("#file-error") mustBe UploadFileMessages.errorPrefix + "valueUnknown"
+        }
+
+      }
+
     }
 
     "Optional Documents have not been selected" should {
-      lazy val view: Html = injectedView(initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -96,7 +120,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "In check mode and all supporting documents have been removed" should {
-      lazy val view: Html = injectedView(initiateResponse, None, Seq.empty)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html = injectedView(form, initiateResponse, None, Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "no back button displayed" in {
@@ -107,7 +131,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadFileMessages.title)

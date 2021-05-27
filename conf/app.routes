@@ -9,6 +9,9 @@ GET         /address-initialise                                                 
 GET         /address-callback                                                                  controllers.AddressLookupController.callback(id: String)
 GET         /importer-address-callback                                                         controllers.AddressLookupController.importerCallback(id: String)
 
+GET         /keep-alive                                                                        controllers.SessionExpiredController.keepAlive
+GET         /timeout-signed-out                                                                           controllers.SessionExpiredController.timeout
+
 GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
 
 GET         /who-is-disclosing                                                                 controllers.UserTypeController.onLoad

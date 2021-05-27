@@ -53,8 +53,10 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
     controllers.routes.AddressLookupController.callback("").url
   lazy val importerAddressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
     controllers.routes.AddressLookupController.importerCallback("").url
-  lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+
+  lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
+  lazy val countdown: Int = servicesConfig.getInt("timeout.countdown")
 
   lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
   lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
@@ -95,6 +97,7 @@ trait AppConfig extends FixedConfig {
   val addressLookupCallbackUrl: String
   val importerAddressLookupCallbackUrl: String
   val timeoutPeriod: Int
+  val countdown: Int
   val cacheTtl: Int
   val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String
   val upScanSuccessRedirectForUser: String
