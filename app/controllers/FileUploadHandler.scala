@@ -111,11 +111,15 @@ trait FileUploadHandler[T] {
   def buildUpscanError(errorCode: Option[String],
                        errorMessage: Option[String],
                        errorResource: Option[String],
-                       errorRequestId: Option[String]): Option[UpscanInitiateError] = for {
-    code <- errorCode
-    message <- errorMessage
-    resource <- errorResource
-    requestId <- errorRequestId
-  } yield UpscanInitiateError(code, message, resource, requestId)
+                       errorRequestId: Option[String]): Option[UpscanInitiateError] =
+    errorCode match {
+      case Some(error) =>
+        Some(UpscanInitiateError(
+          error,
+          errorMessage.getOrElse("Not supplied"),
+          errorResource.getOrElse("Not supplied"),
+          errorRequestId.getOrElse("Not supplied")))
+      case _ => None
+    }
 
 }

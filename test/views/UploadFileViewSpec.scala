@@ -40,7 +40,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
   val form: Form[_] = Form("fileName" -> text)
 
-  val formWithErrors: Form[_] = Form("Unknown" -> text).withError("file", "valueUnknown")
+  val formWithErrors: Form[_] = Form("Unknown" -> text).withError("file", UploadFileMessages.fileUnknown)
 
 
   "Rendering the UploadFile page" when {
@@ -87,11 +87,11 @@ class UploadFileViewSpec extends ViewBaseSpec {
         checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe "valueUnknown"
+          elementText("div.govuk-error-summary > div") mustBe UploadFileMessages.fileUnknown
         }
 
         "render an error message against the field" in {
-          elementText("#file-error") mustBe UploadFileMessages.errorPrefix + "valueUnknown"
+          elementText("#file-error") mustBe UploadFileMessages.errorPrefix + UploadFileMessages.fileUnknown
         }
 
       }

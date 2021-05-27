@@ -23,7 +23,7 @@ import models.{FileUploadInfo, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.data.Form
 import play.api.data.Forms.text
-import play.api.i18n.I18nSupport
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
@@ -59,9 +59,9 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     val blankForm: Form[_] = Form("fileName" -> text)
 
     val form = request.flash.get("uploadError") match {
-      case Some("TooSmall") => blankForm.withError("file", "valueTooSmall")
-      case Some("TooBig") => blankForm.withError("file", "valueTooBig")
-      case Some("Unknown") => blankForm.withError("file", "valueUnknown")
+      case Some("TooSmall") => blankForm.withError("file", Messages("uploadFile.error.tooSmall"))
+      case Some("TooBig") => blankForm.withError("file", Messages("uploadFile.error.tooBig"))
+      case Some("Unknown") => blankForm.withError("file", Messages("uploadFile.error.unknown"))
       case _ => blankForm
     }
 
