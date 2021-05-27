@@ -38,6 +38,7 @@ object MockAppConfig extends AppConfig {
   override val addressLookupCallbackUrl: String = "TBC"
   override val importerAddressLookupCallbackUrl: String = "TBC"
   override val timeoutPeriod: Int = 900
+  override val countdown: Int = 120
   override val cacheTtl: Int = 500
   override val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = "TBC"
   override val upScanSuccessRedirectForUser: String = "TBC"
