@@ -75,7 +75,7 @@ trait CYAEntryDetailsSummaryListHelper {
           controllers.routes.EntryDetailsController.onLoad().url,
           messages("cya.epu.change")
         )),
-        columnClasses = "govuk-!-padding-bottom-0",
+        columnClasses = "govuk-!-padding-bottom-1",
         rowClasses = "govuk-summary-list__row--no-border"
       )
     }
@@ -85,7 +85,7 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.entryNumber")),
         valueContent = Text(entryDetails.entryNumber),
-        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-0",
+        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-1",
         rowClasses = "govuk-summary-list__row--no-border"
       )
     }

@@ -63,11 +63,11 @@ object ChangeUnderpaymentReasonData {
         SummaryListRow(
           key = Key(
             content = Text("Original value"),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           value = Value(
             HtmlContent("50"),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(
             Actions(
@@ -78,7 +78,7 @@ object ChangeUnderpaymentReasonData {
                   Some("Change values")
                 )
               ),
-              classes = "govuk-!-padding-bottom-0"
+              classes = "govuk-!-padding-bottom-1"
             )
           ),
           classes = "govuk-summary-list__row--no-border"
@@ -102,11 +102,11 @@ object ChangeUnderpaymentReasonData {
         SummaryListRow(
           key = Key(
             content = Text("Original value"),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           value = Value(
             HtmlContent("50"),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(
             Actions(
@@ -117,7 +117,7 @@ object ChangeUnderpaymentReasonData {
                   Some("Change")
                 )
               ),
-              classes = "govuk-!-padding-bottom-0"
+              classes = "govuk-!-padding-bottom-1"
             )
           ),
           classes = "govuk-summary-list__row--no-border"

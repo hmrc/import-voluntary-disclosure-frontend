@@ -318,11 +318,11 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.epu),
-            classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
           ),
           value = Value(
             Text(epu),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -331,18 +331,18 @@ object CheckYourAnswersData {
               Some(CYAMessages.epuChange)
             )
           ),
-            classes = "govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-1")
           ),
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryNumber),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-1"
           ),
           value = Value(
             Text(entryNumber),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
           ),
           actions = None,
           classes = "govuk-summary-list__row--no-border"

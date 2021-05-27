@@ -91,8 +91,8 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
 
     val originalAmountSummaryListRow: Seq[SummaryListRow] = Seq(
       SummaryListRow(
-        key = Key(content = Text(messages("changeUnderpaymentReason.original")), classes = "govuk-!-padding-bottom-0"),
-        value = Value(content = HtmlContent(underpaymentReason.original), classes = "govuk-!-padding-bottom-0"),
+        key = Key(content = Text(messages("changeUnderpaymentReason.original")), classes = "govuk-!-padding-bottom-1"),
+        value = Value(content = HtmlContent(underpaymentReason.original), classes = "govuk-!-padding-bottom-1"),
         actions = Some(Actions(
           items = Seq(
             ActionItemHelper.createChangeActionItem(
@@ -100,7 +100,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
               messages("changeUnderpaymentReason.values.change")
             )
           ),
-          classes = "govuk-!-padding-bottom-0")
+          classes = "govuk-!-padding-bottom-1")
         ),
         classes = "govuk-summary-list__row--no-border"
       ),

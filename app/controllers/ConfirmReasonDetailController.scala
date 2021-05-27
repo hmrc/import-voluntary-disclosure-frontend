@@ -115,11 +115,11 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages("confirmReason.original")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
           ),
           value = Value(
             content = HtmlContent(underPaymentReasonValue.original),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(Actions(
             items = Seq(
@@ -128,7 +128,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                 messages("confirmReason.values.change")
               )
             ),
-            classes = "govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-1")
           ),
           classes = "govuk-summary-list__row--no-border"
         ),

@@ -119,17 +119,17 @@ object CheckYourAnswersPaymentData {
   val repAccountNumberDutyRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.repAccountNumber),
-      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
     ),
     value = Value(
       Text(accountNumberDuty),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-!-padding-bottom-1"
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(changeUrl,
         Text(CYAMessages.change))
     ),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-!-padding-bottom-1"
     )),
     classes = "govuk-summary-list__row--no-border"
   )
@@ -193,17 +193,17 @@ object CheckYourAnswersPaymentData {
   val repAccountNumberVATRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.repAccountNumber),
-      classes = "govuk-!-width-one-third govuk-!-padding-bottom-0"
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
     ),
     value = Value(
       Text(accountNumberVAT),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-!-padding-bottom-1"
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(changeUrl,
         Text(CYAMessages.change))
     ),
-      classes = "govuk-!-padding-bottom-0"
+      classes = "govuk-!-padding-bottom-1"
     )),
     classes = "govuk-summary-list__row--no-border"
   )
