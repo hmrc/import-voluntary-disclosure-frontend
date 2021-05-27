@@ -78,22 +78,6 @@ class UploadFileViewSpec extends ViewBaseSpec {
         elementText("#main-content ul:nth-of-type(2) li:nth-of-type(4)") mustBe UploadFileMessages.mayIncludeFile4
       }
 
-      "an error exists (no file has been uploaded)" should {
-        lazy val form: Form[_] = form.bind(Map("file" -> "unknown"))
-        lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
-
-        "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe "valueUnknown"
-        }
-
-        "render an error message against the field" in {
-          elementText("#value-error") mustBe UploadFileMessages.errorPrefix + "valueUnknown"
-        }
-
-      }
     }
 
     "Optional Documents have not been selected" should {
