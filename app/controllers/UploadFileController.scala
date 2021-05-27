@@ -21,6 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
+import play.api.data.Form
+import play.api.data.Forms.text
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
@@ -48,10 +50,19 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     lazy val backLink =
       (request.userAnswers.get(FileUploadPage), request.userAnswers.get(AnyOtherSupportingDocsPage)) match {
-      case (Some(files), _) if files.nonEmpty => Some(controllers.routes.UploadAnotherFileController.onLoad())
-      case (_, Some(true)) if !request.checkMode => Some(controllers.routes.OptionalSupportingDocsController.onLoad())
-      case (_, Some(false)) if !request.checkMode => Some(controllers.routes.AnyOtherSupportingDocsController.onLoad())
-      case _ => None
+        case (Some(files), _) if files.nonEmpty => Some(controllers.routes.UploadAnotherFileController.onLoad())
+        case (_, Some(true)) if !request.checkMode => Some(controllers.routes.OptionalSupportingDocsController.onLoad())
+        case (_, Some(false)) if !request.checkMode => Some(controllers.routes.AnyOtherSupportingDocsController.onLoad())
+        case _ => None
+      }
+
+    val blankForm: Form[_] = Form("fileName" -> text)
+
+    val form = request.flash.get("uploadError") match {
+      case Some("TooSmall") => blankForm.withError("file", "valueTooSmall")
+      case Some("TooBig") => blankForm.withError("file", "valueTooBig")
+      case Some("Unknown") => blankForm.withError("file", "valueUnknown")
+      case _ => blankForm
     }
 
     val anyOtherDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
@@ -59,7 +70,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     val docs = if (anyOtherDocs) otherDocs else Seq.empty
 
     upScanService.initiateNewJourney().map { response =>
-      Ok(view(response, backLink, docs))
+      Ok(view(form, response, backLink, docs))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }

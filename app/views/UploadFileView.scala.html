@@ -21,17 +21,22 @@
         h1: components.h1,
         h2: components.h2,
         p: components.p,
+        errorSummary: components.errorSummary,
         bullets: components.bullets,
+        govukErrorMessage: govukErrorMessage,
         button: components.button
 )
 
-@(upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
     pageTitle = messages("uploadFile.pageTitle"),
     customBackLinkUrl = backLink,
+    form = Some(form),
     showBackLink = backLink.isDefined
 ) {
+
+    @errorSummary(form.errors)
 
     @h1(messages("uploadFile.pageHeader"))
 
@@ -64,15 +69,26 @@
     ))
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
-
-        <div id="file-upload-form-group" class="govuk-form-group">
+        <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
            @upScanResponse.uploadFormTemplate.fields.map { row =>
                <input type="hidden" name="@row._1" value="@row._2">
            }
 
-           <label class="govuk-label" for="file">
-                @messages("uploadFile.uploadAFile")
-           </label>
+            <label class="govuk-label" for="file">
+            @messages("uploadFile.uploadAFile")
+            </label>
+
+            @{
+                if(form.hasErrors) {
+                    govukErrorMessage(ErrorMessage(
+                        id = Some("file-error"),
+                        classes = "govuk-error-message",
+                        visuallyHiddenText = Some("Error"),
+                        content = HtmlContent(form.errors.map(_.message).mkString)
+                    ))
+                }
+            }
+
 
            <input class="govuk-file-upload" id="file" name="file" type="file"
                 accept="@appConfig.upScanAcceptedFileTypes"
