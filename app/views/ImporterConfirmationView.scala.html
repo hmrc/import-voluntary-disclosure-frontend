@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import viewmodels.cya.ConfirmationViewData
+
 @this(layout: templates.Layout,
         h2: components.h2,
         p: components.p,
@@ -23,11 +25,7 @@
 @(reference: String = "",
     isPayByDeferment: Boolean,
     isSingleEntry: Boolean,
-    epuNumber: String = "",
-    entryNumber: String = "",
-    entryDate: String = "",
-    importerName: String = "",
-    eoriNumber: String = ""
+    data: ConfirmationViewData,
 )(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
@@ -37,16 +35,16 @@
             @messages("confirmation.heading")
         </h1>
         <div class="govuk-panel__body">
-            <div id = "entryNumber">@messages("confirmation.entryNumber")</div>
+            <div id = "entryNumber">@messages("confirmation.caseId")</div>
             <strong>@reference</strong>
         </div>
         <br>
     </div>
 
     @if(isSingleEntry) {
-        @p(Html(messages("confirmation.singleEntry.p1", epuNumber, entryNumber, entryDate)))
+        @p(Html(messages("confirmation.singleEntry.p1", data.entryDetails)))
     } else {
-        @p(Html(messages("confirmation.bulkEntry.p1", importerName, eoriNumber)))
+        @p(Html(messages("confirmation.bulkEntry.p1", data.importerName, data.eori)))
     }
 
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))

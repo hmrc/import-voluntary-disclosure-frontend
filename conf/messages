@@ -411,8 +411,8 @@ removeUploadedFile.error.required = Select yes to remove file
 # Confirmation page
 confirmation.pageTitle = Confirmation screen
 confirmation.heading = Disclosure sent
-confirmation.entryNumber = Your reference number:
-confirmation.singleEntry.p1 = We have received your disclosure of underpaid customs duty or import VAT for the import declaration {0}-{1}-{2}.
+confirmation.caseId = Your reference number:
+confirmation.singleEntry.p1 = We have received your disclosure of underpaid customs duty or import VAT for the import declaration {0}.
 confirmation.bulkEntry.p1 = We have received your disclosure of underpaid customs duty or import VAT on multiple entries. All of these entries were for goods imported by {0}, EORI number {1}.
 confirmation.whatHappensNext = What happens next
 confirmation.whatHappensNext.deferment.p2 = We will check the information you have provided and process the payment using the deferment account details you have provided. We will then send you a C18 Post Clearance Demand Note in the post, usually within 10 days.

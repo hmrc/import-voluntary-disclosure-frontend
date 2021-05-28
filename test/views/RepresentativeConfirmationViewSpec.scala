@@ -21,6 +21,7 @@ import messages.RepresentativeConfirmationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
+import viewmodels.cya.ConfirmationViewData
 import views.html.RepresentativeConfirmationView
 
 class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
@@ -28,11 +29,13 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
   private lazy val injectedView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
   private val referenceNumber: String = "C18-101"
 
+  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789")
+
   "Rendering the Confirmation page" when {
 
     "no errors exist" should {
       lazy val view: Html = injectedView(
-        referenceNumber, true, true, "123", "123456Q", "01/01/2021", "Test User", "GB123456789")(fakeRequest, messages)
+        referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeConfirmationMessages.pageTitle)
@@ -44,7 +47,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
     "it" should {
 
-      lazy val view: Html = injectedView(referenceNumber, true, true, "123", "123456Q", "01/01/2021", "Test User", "GB123456789")(fakeRequest, messages)
+      lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${RepresentativeConfirmationMessages.heading}'" in {
         elementText("h1") mustBe RepresentativeConfirmationMessages.heading
@@ -59,7 +62,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"have the p1 message for bulk entry of '${RepresentativeConfirmationMessages.p1BulkEntry}'" in {
-        lazy val view: Html = injectedView(referenceNumber, true, false, "123", "123456Q", "01/01/2021", "Test User", "GB123456789")(fakeRequest, messages)
+        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#main-content > div > div > p:nth-child(2)") mustBe RepresentativeConfirmationMessages.p1BulkEntry
       }
@@ -80,7 +83,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
       }
 
       "The what happens next section - Other payment selected" should {
-        lazy val view: Html = injectedView(referenceNumber, false, true, "123", "123456Q", "01/01/2021", "Test User", "GB123456789")(fakeRequest, messages)
+        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2OtherPayment}'" in {

@@ -21,14 +21,13 @@ import java.time.format.DateTimeFormatter
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
-import models.requests.DataRequest
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.cya.CYASummaryListHelper
+import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
 import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -66,48 +65,31 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     submissionService.createCase.map {
-      case Right(value) if request.isRepFlow =>
-        Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry,
-          getEpuNumber(), getEntryNumber(), getEntryDate(), getImporterName(), getEoriNumber()
-        ))
-      case Right(value) if !request.isRepFlow =>
-        Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry,
-          getEpuNumber(), getEntryNumber(), getEntryDate(), getImporterName(), getEoriNumber()
-        ))
+      case Right(value) =>
+        (for {
+          entryDetails <- request.userAnswers.get(EntryDetailsPage)
+          eoriDetails <- request.userAnswers.get(KnownEoriDetails)
+          importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
+          eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+        } yield {
+          val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
+          ConfirmationViewData(
+            s"${entryDetails.epu}-${entryDetails.entryNumber}-${formattedDate}",
+            importerName,
+            eoriNumber
+          )
+        }) match {
+          case Some(confirmationData) => {
+            if (request.isRepFlow) {
+              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+            } else {
+              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+            }
+          }
+          case _ => errorHandler.showInternalServerError
+        }
       case Left(_) => errorHandler.showInternalServerError
     }
-  }
-
-  def getEpuNumber()(implicit request: DataRequest[_]): String = {
-    request.userAnswers.get(EntryDetailsPage).fold("No EPU Number found") { entryDetails =>
-      entryDetails.epu
-    }
-  }
-
-  def getEntryNumber()(implicit request: DataRequest[_]): String = {
-    request.userAnswers.get(EntryDetailsPage).fold("No EPU Number found") { entryDetails =>
-      entryDetails.entryNumber
-    }
-  }
-
-  def getEntryDate()(implicit request: DataRequest[_]): String = {
-    request.userAnswers.get(EntryDetailsPage).fold("No Entry date found") { entryDetails =>
-      entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
-    }
-  }
-
-  def getImporterName()(implicit request: DataRequest[_]): String = {
-    if (request.isRepFlow) {
-      request.userAnswers.get(ImporterNamePage).getOrElse("No Importer name found")
-    } else {
-      request.userAnswers.get(DeclarantContactDetailsPage).fold("No Importer name found") { contactDetails =>
-        contactDetails.fullName
-      }
-    }
-  }
-
-  def getEoriNumber()(implicit request: DataRequest[_]): String = {
-    if (request.isRepFlow) request.userAnswers.get(ImporterEORINumberPage).getOrElse(request.eori) else request.eori
   }
 
 }
