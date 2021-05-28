@@ -17,9 +17,9 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import forms.UploadFileFormProvider
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -88,9 +88,12 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     lazy val controller = {
       setupMocks()
       new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
-        mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadFileView, uploadProgressView, MockAppConfig)
+        mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadFileView, uploadProgressView, form, MockAppConfig)
     }
   }
+
+  val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
+  val form: UploadFileFormProvider = formProvider
 
   "GET onLoad" should {
     "return OK" in new Test {
