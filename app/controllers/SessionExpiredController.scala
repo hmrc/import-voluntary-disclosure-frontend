@@ -43,7 +43,7 @@ class SessionExpiredController @Inject()(identify: IdentifierAction,
     sessionRepository.remove(request.credId).map(_ => Ok(view()).withNewSession)
   }
 
-  def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {
+  private def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {
     case Some(answers) => sessionRepository.set(answers).map(x => x)
     case None => Future.successful(false)
   }
