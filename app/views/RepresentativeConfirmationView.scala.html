@@ -21,7 +21,6 @@
 )
 
 @(reference: String = "",
-    isRepFlow: Boolean,
     isPayByDeferment: Boolean,
     isSingleEntry: Boolean,
     epuNumber: String = "",
@@ -53,18 +52,10 @@
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
     @if(isPayByDeferment) {
-        @if(isRepFlow) {
-            <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2") @messages("confirmation.whatHappensNext.deferment.rep.p2", importerName)</p>
-        } else {
-            <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2")</p>
-        }
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2") @messages("confirmation.whatHappensNext.deferment.rep.p2", importerName)</p>
         @p(Html(messages("confirmation.whatHappensNext.deferment.p3")))
     } else {
-        @if(isRepFlow) {
-            <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2") @messages("confirmation.whatHappensNext.otherPayment.rep.p2", importerName)</p>
-        } else {
-            <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2")</p>
-        }
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2") @messages("confirmation.whatHappensNext.otherPayment.rep.p2", importerName)</p>
         @p(Html(messages("confirmation.whatHappensNext.otherPayment.p3")))
         @p(Html(messages("confirmation.whatHappensNext.otherPayment.p4")))
     }
@@ -78,7 +69,7 @@
 
     @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
 
-    @if(isRepFlow) { @p{@Html(<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">{messages("confirmation.whatYouShouldDoNext.rep.link")}</a>)} }
+    @p{@Html(<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">{messages("confirmation.whatYouShouldDoNext.rep.link")}</a>)}
 
     <div id="helpImproveServiceLink">
         @p{
@@ -86,9 +77,7 @@
             @Html(messages("confirmation.helpImproveServiceLinkTime"))
         }
     </div>
-
 }
-
 
 @{
     //$COVERAGE-OFF$
