@@ -362,7 +362,9 @@ uploadFile.error.pageTitle = Errors on file upload
 uploadFile.error.pageHeader = Errors on file upload
 uploadFile.error.instructions = The above errors were experienced when uploading the file. Return to the Upload supporting documentation page and retry.
 uploadFile.error.retry = Retry
-uploadFile.error.unknown = Unknown error with upload file
+uploadFile.error.tooSmall = Select a file to upload
+uploadFile.error.tooBig = The selected file must be smaller than 6MB
+uploadFile.error.unknown = The selected file could not be uploaded – try again
 
 # Upload Progress page
 uploadProgress.pageTitle = Upload progress

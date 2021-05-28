@@ -95,11 +95,11 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages("underpaymentDetailsConfirm.originalAmount")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
           ),
           value = Value(
             content = HtmlContent(displayMoney(underpaymentAmount.original)),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(Actions(
             items = Seq(
@@ -108,7 +108,7 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
                 messages(s"underpaymentDetailsConfirm.$underpaymentType.change")
               )
             ),
-            classes = "govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-1")
           ),
           classes = "govuk-summary-list__row--no-border"
         ),

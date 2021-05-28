@@ -14,18 +14,17 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
-
 @this(layout: templates.Layout,
   h1: components.h1,
   p: components.p,
   bullets: components.bullets,
-  linkButton: components.linkButton
+  linkButton: components.linkButton,
+  appConfig: AppConfig
 )
 
-@()(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("timeout.pageTitle"), customBackLinkUrl = None, showBackLink = false) {
+@layout(pageTitle = messages("timeout.pageTitle"), customBackLinkUrl = None, showBackLink = false, enableTimeoutDialog = false) {
 
   @h1(messages("timeout.heading"))
 

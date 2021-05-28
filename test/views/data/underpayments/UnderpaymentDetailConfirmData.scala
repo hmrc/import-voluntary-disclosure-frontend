@@ -29,11 +29,11 @@ object UnderpaymentDetailConfirmData {
         SummaryListRow(
           key = Key(
             content = Text("Amount that was paid"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-0"
+            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
           ),
           value = Value(
             content = HtmlContent(displayMoney(0)),
-            classes = "govuk-!-padding-bottom-0"
+            classes = "govuk-!-padding-bottom-1"
           ),
           actions = Some(Actions(
             items = Seq(
@@ -43,7 +43,7 @@ object UnderpaymentDetailConfirmData {
                 Some(changeLinkMessage)
               )
             ),
-            classes = "govuk-!-padding-bottom-0")
+            classes = "govuk-!-padding-bottom-1")
           ),
           classes = "govuk-summary-list__row--no-border"
         ),
