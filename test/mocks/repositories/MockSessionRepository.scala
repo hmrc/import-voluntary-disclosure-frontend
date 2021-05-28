@@ -34,6 +34,11 @@ trait MockSessionRepository extends RepositorySpecBase {
         .expects(*, *)
         .returning(response)
 
+    def remove(response: Future[String]): CallHandler[Future[String]] =
+      (mockSessionRepository.remove(_: String)(_: ExecutionContext))
+        .expects(*, *)
+        .returning(response)
+
   }
 
 }

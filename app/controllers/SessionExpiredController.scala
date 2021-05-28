@@ -16,21 +16,35 @@
 
 package controllers
 
-import config.AppConfig
-import javax.inject.Inject
+import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import models.UserAnswers
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.errors.SessionTimeoutView
 
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-class SessionExpiredController @Inject()(val mcc: MessagesControllerComponents,
-                                         implicit val appConfig: AppConfig,
-                                         view: SessionTimeoutView) extends FrontendController(mcc) with I18nSupport {
 
-  def keepAlive(): Action[AnyContent] = Action(NoContent)
+class SessionExpiredController @Inject()(identify: IdentifierAction,
+                                         getData: DataRetrievalAction,
+                                         sessionRepository: SessionRepository,
+                                         mcc: MessagesControllerComponents,
+                                         view: SessionTimeoutView,
+                                         implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
-  def timeout: Action[AnyContent] = Action { implicit request =>
-      Ok(view()).withNewSession
+  def keepAlive(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+    extendUserAnswersTimeout(request.userAnswers).map(_ => NoContent)
+  }
+
+  def timeout: Action[AnyContent] = (identify andThen getData).async { implicit request =>
+    sessionRepository.remove(request.credId).map(_ => Ok(view()).withNewSession)
+  }
+
+  private def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {
+    case Some(answers) => sessionRepository.set(answers)
+    case None => Future.successful(false)
   }
 }
