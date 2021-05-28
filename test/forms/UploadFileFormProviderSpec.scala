@@ -25,7 +25,7 @@ class UploadFileFormProviderSpec extends SpecBase {
     "file" -> file
   )
 
-  def formBinder(formValues: Map[String, String] = Map("file" -> "Unknown")): Form[String] =
+  def formBinder(formValues: Map[String, String] = Map("file" -> "")): Form[String] =
     new UploadFileFormProvider()().bind(formValues)
 
   "Binding a form with invalid data" when {
