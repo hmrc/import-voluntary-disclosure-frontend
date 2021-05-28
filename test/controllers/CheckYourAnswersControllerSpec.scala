@@ -38,10 +38,11 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockSubmissionService
 import models._
+import pages.UserTypePage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import views.html.{CheckYourAnswersView, ConfirmationView}
+import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
 import scala.concurrent.Future
 
@@ -55,7 +56,8 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
-    private lazy val confirmationView: ConfirmationView = app.injector.instanceOf[ConfirmationView]
+    private lazy val importerConfirmationView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
+    private lazy val repConfirmationView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
 
     val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
 
@@ -69,7 +71,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       setupConnectorMock(serviceMock)
       new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
         messagesControllerComponents, mockSessionRepository, mockSubmissionService,
-        checkYourAnswersView, confirmationView, errorHandler, ec)
+        checkYourAnswersView, importerConfirmationView, repConfirmationView, errorHandler, ec)
     }
   }
 
@@ -88,7 +90,14 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   "GET onSubmit" should {
 
-    "return Redirect" in new Test {
+    "return Redirect to the importer confirmation view" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(UserTypePage, UserType.Importer).success.value)
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return Redirect to the representative confirmation view" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(UserTypePage, UserType.Representative).success.value)
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
