@@ -32,7 +32,6 @@ class UploadFileFormProviderSpec extends SpecBase {
 
     "with no data present" should {
 
-    }
       val missingOption: Map[String, String] = Map.empty
       val form = new UploadFileFormProvider()().bind(missingOption)
 
@@ -49,12 +48,14 @@ class UploadFileFormProviderSpec extends SpecBase {
       }
     }
 
-  "Binding a form with valid data" should {
+    "Binding a form with valid data" should {
 
-    val form = formBinder(formBuilder("file"))
+      val form = formBinder(formBuilder("file"))
 
-    "result in a form with no errors" in {
-      form.hasErrors mustBe false
+      "result in a form with no errors" in {
+        form.hasErrors mustBe false
+      }
+
     }
 
   }
