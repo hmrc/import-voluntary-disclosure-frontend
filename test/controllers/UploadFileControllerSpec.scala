@@ -20,6 +20,7 @@ import java.time.LocalDateTime
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
+import messages.UploadFileMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -141,6 +142,23 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       contentAsString(result).contains("govuk-back-link") mustBe false
     }
 
+    "Display error when file uploaded is Too Small" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileTooSmall) mustBe true
+    }
+
+    "Display error when file uploaded is Too Big" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooBig")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileTooBig) mustBe true
+    }
+
+    "Display error when file uploaded is Unknown" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Unknown")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileUnknown) mustBe true
+    }
   }
 
   "GET upscanResponseHandler" when {
