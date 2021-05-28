@@ -18,11 +18,12 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.UploadFileFormProvider
 import models.SelectedDutyTypes._
 import models.upscan._
 import models.{UploadAuthority, UserAnswers}
 import pages.{SplitPaymentPage, UploadAuthorityPage}
-import play.api.i18n.I18nSupport
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
@@ -44,6 +45,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           upScanService: UpScanService,
                                           view: UploadAuthorityView,
                                           progressView: UploadAuthorityProgressView,
+                                          formProvider: UploadFileFormProvider,
                                           successView: UploadAuthoritySuccessView,
                                           implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
@@ -65,8 +67,15 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
       case _ => "Underpayment Type not found"
     }
 
+    val form = request.flash.get("uploadError") match {
+      case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
+      case Some("TooBig") => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
+      case Some("Unknown") => formProvider().withError("file", Messages("uploadFile.error.unknown"))
+      case _ => formProvider()
+    }
+
     upScanService.initiateAuthorityJourney(dutyType, dan).map { response =>
-      Ok(view(response, backLink(dutyType, dan, request.dutyType, splitPayment), dan, dutyTypeKey))
+      Ok(view(form, response, backLink(dutyType, dan, request.dutyType, splitPayment), dan, dutyTypeKey))
         .removingFromSession("AuthorityUpscanReference")
         .addingToSession("AuthorityUpscanReference" -> response.reference.value)
     }
