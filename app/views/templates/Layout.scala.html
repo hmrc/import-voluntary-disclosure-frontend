@@ -28,12 +28,12 @@
         headBlock: Option[Html] = None,
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
-        customBackLinkUrl: Option[Call] = None
+        customBackLinkUrl: Option[Call] = None,
+        enableTimeoutDialog: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @scripts = {
     <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-    <script src='@routes.Assets.versioned("lib/hmrc-frontend/hmrc/all.js")'></script>
     <script>window.GOVUKFrontend.initAll();</script>
     <script>window.HMRCFrontend.initAll();</script>
     @scriptsBlock
@@ -52,7 +52,7 @@
 }) { title =>
     @govukLayout(
         pageTitle = title.map(_ + messages("page.title.suffix")),
-        headBlock = Some(head(headBlock)),
+        headBlock = Some(head(headBlock, enableTimeoutDialog)),
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
         footerItems = footerLinks.links()

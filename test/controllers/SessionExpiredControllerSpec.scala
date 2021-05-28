@@ -17,7 +17,7 @@
 package controllers
 
 import base.ControllerSpecBase
-import forms.AcceptanceDateFormProvider
+import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
@@ -25,6 +25,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.errors.SessionTimeoutView
+
 import scala.concurrent.Future
 
 class SessionExpiredControllerSpec extends ControllerSpecBase {
@@ -33,9 +34,7 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
     private lazy val timeoutPageView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-
-    val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
-    val form: AcceptanceDateFormProvider = formProvider
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
@@ -49,13 +48,21 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
 
+    MockedSessionRepository.remove(Future.successful("OK"))
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new SessionExpiredController(messagesControllerComponents, appConfig, timeoutPageView)
+    lazy val controller = new SessionExpiredController(
+      authenticatedAction,
+      dataRetrievalAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      timeoutPageView,
+      ec
+    )
   }
 
   "GET keepAlive" should {
-    "return OK" in new Test {
+    "return NO_CONTENT" in new Test {
       val result: Future[Result] = controller.keepAlive()(fakeRequest)
       status(result) mustBe Status.NO_CONTENT
     }

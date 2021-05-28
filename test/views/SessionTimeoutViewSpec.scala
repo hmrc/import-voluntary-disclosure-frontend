@@ -27,27 +27,25 @@ class SessionTimeoutViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
 
-  "Rendering the SessionTimeoutView page" when {
+  "Rendering the SessionTimeoutView page" should {
+    lazy val view: Html = injectedView()(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "it" should {
-      lazy val view: Html = injectedView()(fakeRequest, appConfig, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the correct page title of '${SessionTimeoutMessages.pageTitle}'" in {
-        elementText("h1") mustBe SessionTimeoutMessages.pageTitle
-      }
-      s"have the correct page heading of '${SessionTimeoutMessages.heading}'" in {
-        elementText("h1") mustBe SessionTimeoutMessages.heading
-      }
+    s"have the correct page title of '${SessionTimeoutMessages.pageTitle}'" in {
+      elementText("h1") mustBe SessionTimeoutMessages.pageTitle
+    }
+    s"have the correct page heading of '${SessionTimeoutMessages.heading}'" in {
+      elementText("h1") mustBe SessionTimeoutMessages.heading
+    }
 
-      s"have the correct page text of '${SessionTimeoutMessages.p}'" in {
-        elementText("#main-content p:nth-of-type(1)") mustBe SessionTimeoutMessages.p
-      }
+    s"have the correct page text of '${SessionTimeoutMessages.p}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe SessionTimeoutMessages.p
+    }
 
-      "render a sign in button with the correct URL " in {
-        elementAttributes(".govuk-button") must contain("href" -> appConfig.loginContinueUrl)
-        elementText(".govuk-button") mustBe SessionTimeoutMessages.button
-
-      }
+    "render a sign in button with the correct URL " in {
+      elementAttributes(".govuk-button") must contain("href" -> appConfig.loginContinueUrl)
+      elementText(".govuk-button") mustBe SessionTimeoutMessages.button
     }
   }
+
 }
