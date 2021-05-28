@@ -18,6 +18,8 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import forms.UploadFileFormProvider
+import messages.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -91,9 +93,12 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadAuthorityController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadAuthorityView,
-        uploadAuthorityProgressView, uploadAuthoritySuccessView, MockAppConfig)
+        uploadAuthorityProgressView, form, uploadAuthoritySuccessView, MockAppConfig)
     }
   }
+
+  val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
+  val form: UploadFileFormProvider = formProvider
 
   "GET onLoad" should {
     "return OK when called for combine duty and vat" in new Test {
@@ -119,6 +124,24 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
+
+    "Display error when file uploaded is Too Small" in new Test {
+      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadAuthorityMessages.fileTooSmall) mustBe true
+    }
+
+    "Display error when file uploaded is Too Big" in new Test {
+      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "TooBig")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadAuthorityMessages.fileTooBig) mustBe true
+    }
+
+    "Display error when file uploaded is Unknown" in new Test {
+      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "Unknown")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadAuthorityMessages.fileUnknown) mustBe true
+    }
   }
 
   "GET upscanResponseHandler" when {
@@ -126,6 +149,17 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       "redirect to error page" in new Test {
         val result = controller.upscanResponseHandler(
           dutyType, dan, Some("key"), Some("errorCode"), Some("errorMessage"), Some("errorResource"), Some("errorRequestId")
+        )(fakeRequest)
+
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadAuthorityController.onLoad(dutyType, dan).url)
+      }
+    }
+
+    "upscan returns an error on upload when only an error code is returned" should {
+      "redirect to error page" in new Test {
+        val result = controller.upscanResponseHandler(
+          dutyType, dan, Some("key"), Some("errorCode"), None, None, None
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
