@@ -43,18 +43,18 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
                                           view: MoreInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
-//  private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreInformationPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    Future.successful(Ok(view(form)))
+
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       moreInfo => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
@@ -68,14 +68,6 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
         }
       }
     )
-  }
-
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      controllers.routes.HasFurtherInformationController.onLoad()
-    }
   }
 
 }
