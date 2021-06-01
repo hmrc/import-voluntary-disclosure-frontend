@@ -40,24 +40,16 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      controllers.routes.OneCustomsProcedureCodeController.onLoad()
-    }
-  }
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    Future.successful(Ok(view(form)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))

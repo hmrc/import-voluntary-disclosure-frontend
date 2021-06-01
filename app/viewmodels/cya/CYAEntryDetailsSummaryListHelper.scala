@@ -121,7 +121,7 @@ trait CYAEntryDetailsSummaryListHelper {
         valueContent = Text(oneCustomsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
-          messages("cya.acceptanceDate.change")
+          messages("cya.cpcExists.change")
         ))
       )
     }
@@ -133,7 +133,7 @@ trait CYAEntryDetailsSummaryListHelper {
         valueContent = Text(customsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
-          messages("cya.acceptanceDate.change")
+          messages("cya.enterCpc.change")
         ))
       )
     }
