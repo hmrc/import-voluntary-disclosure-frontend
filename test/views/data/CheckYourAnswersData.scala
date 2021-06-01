@@ -384,8 +384,9 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )
           )))
         ),
@@ -399,8 +400,9 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )
           )))
         )

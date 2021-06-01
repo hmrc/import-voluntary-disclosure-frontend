@@ -119,7 +119,10 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.oneCustomsProcedureCode")),
         valueContent = Text(oneCustomsProcedureCode),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
+          messages("cya.acceptanceDate.change")
+        ))
       )
     }
 
@@ -128,7 +131,10 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.customsProcedureCode")),
         valueContent = Text(customsProcedureCode),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+          messages("cya.acceptanceDate.change")
+        ))
       )
     }
 

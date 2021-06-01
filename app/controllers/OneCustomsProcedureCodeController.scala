@@ -18,14 +18,15 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.OneCustomsProcedureCodeFormProvider
-import pages.OneCustomsProcedureCodePage
+import javax.inject.{Inject, Singleton}
+import models.requests.DataRequest
+import pages.{EnterCustomsProcedureCodePage, OneCustomsProcedureCodePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.OneCustomsProcedureCodeView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -40,7 +41,13 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                  )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.AcceptanceDateController.onLoad()
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.AcceptanceDateController.onLoad()
+    }
+  }
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(OneCustomsProcedureCodePage).fold(formProvider()) {
@@ -53,21 +60,31 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      oneCPC => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPC))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (oneCPC) {
-            Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
+      oneCPCExists => {
+        if (oneCPCExists) {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
+            _ <- sessionRepository.set(updatedAnswers)
           }
-          else {
-            Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+            yield {
+              Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
+            }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
+            updatedAnswers <- Future.fromTry(updatedAnswers.remove(EnterCustomsProcedureCodePage))
+            _ <- sessionRepository.set(updatedAnswers)
           }
+            yield {
+              if (request.checkMode) {
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+              }
+            }
         }
       }
     )
-
   }
 
 }
