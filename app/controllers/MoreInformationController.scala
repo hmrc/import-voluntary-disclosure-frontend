@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.MoreInformationFormProvider
+import models.requests.DataRequest
+
 import javax.inject.{Inject, Singleton}
 import pages.MoreInformationPage
 import play.api.i18n.I18nSupport
@@ -41,7 +43,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
                                           view: MoreInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad()
+//  private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreInformationPage).fold(formProvider()) {
@@ -66,6 +68,14 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.HasFurtherInformationController.onLoad()
+    }
   }
 
 }
