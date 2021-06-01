@@ -61,6 +61,9 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
           if (hasFurtherInfo) {
             Redirect(controllers.routes.MoreInformationController.onLoad())
           } else {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
         }

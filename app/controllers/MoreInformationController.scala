@@ -54,12 +54,16 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       moreInfo => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
+        }
       }
     )
   }
