@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
 import models.{UserAnswers, UserType}
-import pages.UserTypePage
+import pages.{KnownEoriDetails, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -59,12 +59,20 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value => {
+      newUserType => {
+        val prevUserType = userAnswers.get(UserTypePage).getOrElse(newUserType)
+
+        val cleanedUserAnswers = if (prevUserType != newUserType) {
+          userAnswers.preserve(Seq(KnownEoriDetails))
+        } else {
+          userAnswers
+        }
+
         for {
-          updatedAnswers <- Future.fromTry(userAnswers.set(UserTypePage, value))
+          updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(UserTypePage, newUserType))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          value match {
+          newUserType match {
             case UserType.Importer => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
             case UserType.Representative => Redirect(controllers.routes.ImporterNameController.onLoad())
           }

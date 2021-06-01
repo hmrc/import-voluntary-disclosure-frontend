@@ -16,6 +16,7 @@
 
 package models
 
+import pages.QuestionPage
 import play.api.libs.json._
 
 import java.time.LocalDateTime
@@ -63,6 +64,21 @@ final case class UserAnswers(id: String,
         val updatedAnswers = copy(data = d)
         page.cleanup(None, updatedAnswers)
     }
+  }
+
+  def preserve(pages: Seq[QuestionPage[_]]): UserAnswers = {
+    // TODO: This method does not handle paths that have more than one level
+    // eg in the EnterCustomsProcedureCodePage
+    val newAnswers = UserAnswers(this.id)
+    val preserveAnswers = pages.map {
+      page =>
+        (
+          page.path.toString.drop(1),
+          (this.data \ page.path.toString.drop(1)).getOrElse(JsString("NotFound"))
+        )
+    }
+    val preserveData = s"{${preserveAnswers.map(x => s""""${x._1}":${x._2}""").mkString(",")}}"
+    newAnswers.copy(data = Json.parse(preserveData).as[JsObject])
   }
 }
 
