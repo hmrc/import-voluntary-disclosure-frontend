@@ -18,6 +18,7 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.UploadFileFormProvider
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
@@ -44,6 +45,7 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      upScanService: UpScanService,
                                      view: UploadFileView,
                                      progressView: UploadProgressView,
+                                     formProvider: UploadFileFormProvider,
                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
@@ -56,13 +58,11 @@ class UploadFileController @Inject()(identify: IdentifierAction,
         case _ => None
       }
 
-    val blankForm: Form[_] = Form("fileName" -> text)
-
     val form = request.flash.get("uploadError") match {
-      case Some("TooSmall") => blankForm.withError("file", Messages("uploadFile.error.tooSmall"))
-      case Some("TooBig") => blankForm.withError("file", Messages("uploadFile.error.tooBig"))
-      case Some("Unknown") => blankForm.withError("file", Messages("uploadFile.error.unknown"))
-      case _ => blankForm
+      case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
+      case Some("TooBig") => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
+      case Some("Unknown") => formProvider().withError("file", Messages("uploadFile.error.unknown"))
+      case _ => formProvider()
     }
 
     val anyOtherDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)

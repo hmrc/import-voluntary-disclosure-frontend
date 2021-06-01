@@ -17,11 +17,13 @@
 package views
 
 import base.ViewBaseSpec
+import forms.UploadFileFormProvider
 import messages.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadAuthorityView
@@ -35,8 +37,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
   private val backLink: Call = Call("GET", "url")
 
+  val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
+
   "Rendering the UploadAuthorityFile page" when {
-    lazy val view: Html = injectedView(initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+    val form: Form[String] = formProvider.apply()
+    lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct form action" in {
@@ -53,7 +58,8 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
 
     s"have the correct text for duty only" in {
       val dutyType = "duty"
-      lazy val view: Html = injectedView(initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+      val form: Form[String] = formProvider.apply()
+      lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
@@ -61,7 +67,8 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
 
     s"have the correct text for vat only" in {
       val dutyType = "vat"
-      lazy val view: Html = injectedView(initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+      val form: Form[String] = formProvider.apply()
+      lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
@@ -69,16 +76,36 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
 
     s"have the correct text for both duty and vat" in {
       val dutyType = "both"
-      lazy val view: Html = injectedView(initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+      val form: Form[String] = formProvider.apply()
+      lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
     }
 
+    "an error exists (no file has been uploaded)" should {
+      val dutyType = "vat"
+      lazy val form: Form[String] = formProvider().withError("file", UploadAuthorityMessages.fileUnknown)
+      lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      checkPageTitle(UploadAuthorityMessages.errorPrefix + UploadAuthorityMessages.title)
+
+      "render an error summary with the correct message" in {
+        elementText("div.govuk-error-summary > div") mustBe UploadAuthorityMessages.fileUnknown
+      }
+
+      "render an error message against the field" in {
+        elementText("#file-error") mustBe UploadAuthorityMessages.errorPrefix + UploadAuthorityMessages.fileUnknown
+      }
+
+    }
+
   }
 
   it should {
-    lazy val view: Html = injectedView(initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+    val form: Form[String] = formProvider.apply()
+    lazy val view: Html = injectedView(form, initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadAuthorityMessages.title)
