@@ -53,12 +53,26 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
     "correctly redirect if the address lookup service returns success" when {
 
       "for an Individual with full address" should {
-        "redirect the user to the deferment page" in new Test {
+        "redirect the user to the deferment page if checkMode is false" in new Test {
           MockedSessionRepository.set(Future.successful(true))
           setupMockRetrieveAddress(Right(customerAddressMax))
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(controllers.routes.DefermentController.onLoad.url)
+          verifyCalls()
+        }
+
+        "redirect the user to the check your answers page if checkMode is true" in new Test {
+          override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
+            Some(UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
+            )
+          )
+          MockedSessionRepository.set(Future.successful(true))
+          setupMockRetrieveAddress(Right(customerAddressMax))
+          val result: Future[Result] = controller.callback("12345")(fakeRequest)
+          status(result) mustBe Status.SEE_OTHER
+          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad.url)
           verifyCalls()
         }
       }
