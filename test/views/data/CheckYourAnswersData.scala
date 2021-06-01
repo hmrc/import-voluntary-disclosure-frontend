@@ -386,7 +386,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
+              visuallyHiddenText = Some(CYAMessages.changeCpcExists)
             )
           )))
         ),
@@ -402,7 +402,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
+              visuallyHiddenText = Some(CYAMessages.changeEnterCpc)
             )
           )))
         )
