@@ -50,10 +50,10 @@
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
     @if(isPayByDeferment) {
-        <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2")</p>
+        @p(Html(messages("confirmation.whatHappensNext.deferment.p2")))
         @p(Html(messages("confirmation.whatHappensNext.deferment.p3")))
     } else {
-        <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2")</p>
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p2"))
         @p(Html(messages("confirmation.whatHappensNext.otherPayment.p3")))
         @p(Html(messages("confirmation.whatHappensNext.otherPayment.p4")))
     }
