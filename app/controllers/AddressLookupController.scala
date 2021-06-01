@@ -66,7 +66,11 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressPage, formatAddress(address)))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.DefermentController.onLoad())
+           if(request.checkMode){
+             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+           } else {
+             Redirect(controllers.routes.DefermentController.onLoad())
+           }
         }
 
       case Left(_) =>

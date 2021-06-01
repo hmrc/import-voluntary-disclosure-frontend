@@ -23,7 +23,7 @@
         yesNoRadio: components.yesNoRadio
 )
 
-@(form: Form[_], traderAddress: ContactAddress)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], traderAddress: ContactAddress, backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
         @h1(messages("traderAddressCorrect.h1"))
@@ -49,7 +49,7 @@
     @layout(
         pageTitle = messages("traderAddressCorrect.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = Some(controllers.routes.DeclarantContactDetailsController.onLoad)) {
+        customBackLinkUrl = Some(backLink)) {
 
         @errorSummary(form.errors)
 

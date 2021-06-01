@@ -21,16 +21,17 @@ import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
-import pages.{TraderAddressPage, KnownEoriDetails, TraderAddressCorrectPage}
+import pages.{KnownEoriDetails, TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.EoriDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TraderAddressCorrectView
-
 import javax.inject.Singleton
+import models.requests.DataRequest
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -58,7 +59,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetails, eoriDetails))
           _ <- sessionRepository.set(updatedAnswers)
-        } yield Ok(view(form, eoriDetails.address))
+        } yield Ok(view(form, eoriDetails.address, backLink()))
       case Left(error) =>
         logger.error(error.message + " " + error.status)
         Future.successful(NotFound(error.message + " " + error.status))
@@ -68,7 +69,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetails).get.address
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress, backLink()))),
       value => {
         if (value) {
           for {
@@ -76,7 +77,11 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.routes.DefermentController.onLoad())
+            if(request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.routes.DefermentController.onLoad())
+            }
           }
         } else {
           for {
@@ -88,6 +93,14 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.DeclarantContactDetailsController.onLoad()
+    }
   }
 
 }
