@@ -591,6 +591,7 @@ cya.contactDetails.change = Change contact details
 cya.email = Email address
 cya.phone = Telephone number
 cya.address = Address
+cya.address.change = Change address
 cya.importerAddress.change = Change importer address
 cya.eoriExists.change = Change importer has EORI number?
 cya.eoriNumber.change = Change importer EORI number

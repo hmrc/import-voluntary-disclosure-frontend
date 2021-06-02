@@ -27,4 +27,7 @@ object UploadAuthorityMessages extends BaseMessages {
   val legend: String = "Upload file"
   val button: String = "Upload file"
   val fileUploadId: String = "file"
+  val fileTooSmall = "Select a file to upload"
+  val fileTooBig = "The selected file must be smaller than 6MB"
+  val fileUnknown = "The selected file could not be uploaded – try again"
 }
