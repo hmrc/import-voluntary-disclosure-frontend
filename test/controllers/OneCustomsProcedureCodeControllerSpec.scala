@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.OneCustomsProcedureCodeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.OneCustomsProcedureCodePage
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, OneCustomsProcedureCodePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.OneCustomsProcedureCodeView
@@ -36,8 +37,22 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val oneCustomsProcedureCodeView: OneCustomsProcedureCodeView = app.injector.instanceOf[OneCustomsProcedureCodeView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+      .set(CheckModePage, false).success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: OneCustomsProcedureCodeFormProvider = injector.instanceOf[OneCustomsProcedureCodeFormProvider]
     val form: OneCustomsProcedureCodeFormProvider = formProvider
@@ -65,7 +80,8 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
   }
 
   "POST onSubmit" when {
-    "payload contains valid data" should {
+
+    "payload contains valid data and check mode is false" should {
 
       "return a SEE OTHER for true request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
@@ -98,12 +114,92 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       }
     }
 
+    "payload contains valid data and check mode is true" should {
+
+      "return a SEE OTHER for true request" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "return the correct location header for true request" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
+      }
+
+      "return a SEE OTHER for false request" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "return the correct location header for false request" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
     }
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.AcceptanceDateController.onLoad()
+
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
   }
 
 }
