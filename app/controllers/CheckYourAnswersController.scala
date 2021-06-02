@@ -66,26 +66,29 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     submissionService.createCase.map {
       case Right(value) =>
-        (for {
-          entryDetails <- request.userAnswers.get(EntryDetailsPage)
-          eoriDetails <- request.userAnswers.get(KnownEoriDetails)
-          importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
-          eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
-        } yield {
-          val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
-          ConfirmationViewData(
-            s"${entryDetails.epu}-${entryDetails.entryNumber}-${formattedDate}",
-            importerName,
-            eoriNumber
-          )
-        }) match {
-          case Some(confirmationData) => {
+        val confirmationData = {
+          for {
+            entryDetails <- request.userAnswers.get(EntryDetailsPage)
+            eoriDetails <- request.userAnswers.get(KnownEoriDetails)
+            importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
+            eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+          } yield {
+            val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
+            ConfirmationViewData(
+              s"${entryDetails.epu}-${entryDetails.entryNumber}-$formattedDate",
+              importerName,
+              eoriNumber
+            )
+          }
+        }
+
+        confirmationData match {
+          case Some(confirmationData) =>
             if (request.isRepFlow) {
               Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
             } else {
               Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
             }
-          }
           case _ => errorHandler.showInternalServerError
         }
       case Left(_) => errorHandler.showInternalServerError
