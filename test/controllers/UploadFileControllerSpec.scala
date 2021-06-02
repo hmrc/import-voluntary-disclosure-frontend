@@ -17,9 +17,10 @@
 package controllers
 
 import java.time.LocalDateTime
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import forms.UploadFileFormProvider
+import messages.UploadFileMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -88,9 +89,12 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     lazy val controller = {
       setupMocks()
       new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
-        mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadFileView, uploadProgressView, MockAppConfig)
+        mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadFileView, uploadProgressView, form, MockAppConfig)
     }
   }
+
+  val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
+  val form: UploadFileFormProvider = formProvider
 
   "GET onLoad" should {
     "return OK" in new Test {
@@ -138,6 +142,23 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       contentAsString(result).contains("govuk-back-link") mustBe false
     }
 
+    "Display error when file uploaded is Too Small" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileTooSmall) mustBe true
+    }
+
+    "Display error when file uploaded is Too Big" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooBig")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileTooBig) mustBe true
+    }
+
+    "Display error when file uploaded is Unknown" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Unknown")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileUnknown) mustBe true
+    }
   }
 
   "GET upscanResponseHandler" when {
