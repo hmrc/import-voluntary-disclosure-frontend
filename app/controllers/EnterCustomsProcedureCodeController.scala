@@ -17,9 +17,9 @@
 package controllers
 
 import com.google.inject.Inject
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.EnterCustomsProcedureCodeFormProvider
+import models.requests.DataRequest
 import pages.EnterCustomsProcedureCodePage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -37,27 +37,37 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                     mcc: MessagesControllerComponents,
                                                     view: EnterCustomsProcedureCodeView,
                                                     formProvider: EnterCustomsProcedureCodeFormProvider
-                                     )
+                                                   )
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.OneCustomsProcedureCodeController.onLoad()
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+    if (request.checkMode) {
+      None
+    } else {
+      Some(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+    }
+  }
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    Future.successful(Ok(view(form,backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+          }
         }
       }
     )

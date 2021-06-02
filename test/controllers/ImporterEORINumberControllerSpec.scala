@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.ImporterEORINumberFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.ImporterEORINumberPage
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, ImporterEORINumberPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.ImporterEORINumberView
@@ -57,6 +58,17 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
     )
     private lazy val ImporterEORINumberView = app.injector.instanceOf[ImporterEORINumberView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     val formProvider: ImporterEORINumberFormProvider = injector.instanceOf[ImporterEORINumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
@@ -114,6 +126,31 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "return BAD REQUEST" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to eori number exists page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.ImporterEORIExistsController.onLoad())
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe None
       }
     }
   }
