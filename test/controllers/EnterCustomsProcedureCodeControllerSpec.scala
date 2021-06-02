@@ -179,4 +179,29 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     }
   }
 
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe None
+      }
+    }
+  }
+
 }
