@@ -19,6 +19,7 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterVatRegisteredFormProvider
 import javax.inject.{Inject, Singleton}
+import models.requests.DataRequest
 import pages.ImporterVatRegisteredPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -41,19 +42,27 @@ class ImporterVatRegisteredController @Inject()(identify: IdentifierAction,
                                                 view: ImporterVatRegisteredView)
   extends FrontendController(mcc) with I18nSupport {
 
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+    if (request.checkMode) {
+      None
+    } else {
+      Some(controllers.routes.ImporterEORINumberController.onLoad())
+    }
+  }
+
   val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val form = request.userAnswers.get(ImporterVatRegisteredPage).fold(formProvider()) {
       formProvider().fill
     }
 
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(form,backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterVatRegisteredPage, value))

@@ -22,6 +22,7 @@ import messages.{BaseMessages, ImporterEORINumberMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.ImporterEORINumberView
 
@@ -35,7 +36,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterEORINumberMessages.title)
@@ -53,7 +54,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> ""))
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Some(Call("GET", controllers.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
@@ -72,7 +73,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> "345834921000"))
-        lazy val view: Html = injectedView(form)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Some(Call("GET", controllers.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
@@ -91,7 +92,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Some(Call("GET", controllers.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterEORINumberMessages.h1}'" in {
@@ -103,7 +104,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct browser back URL" in {
-      elementAttributes("#back-link") must contain("href" -> "#")
+      elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORIExistsController.onLoad().url)
     }
 
     s"the input field is rendered" in {
