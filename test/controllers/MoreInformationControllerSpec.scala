@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.MoreInformationPage
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, MoreInformationPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.MoreInformationView
@@ -36,8 +37,22 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val view: MoreInformationView = app.injector.instanceOf[MoreInformationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+      .set(CheckModePage, false).success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: MoreInformationFormProvider = injector.instanceOf[MoreInformationFormProvider]
     val form: MoreInformationFormProvider = formProvider
@@ -92,7 +107,31 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     }
   }
 
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to has further information page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.HasFurtherInformationController.onLoad())
+
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe None
+      }
+    }
+
+  }
+
 }
-
-
-
