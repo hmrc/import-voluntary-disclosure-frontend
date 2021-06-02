@@ -67,18 +67,22 @@ final case class UserAnswers(id: String,
   }
 
   def preserve(pages: Seq[QuestionPage[_]]): UserAnswers = {
-    // TODO: This method does not handle paths that have more than one level
-    // eg in the EnterCustomsProcedureCodePage
-    val newAnswers = UserAnswers(this.id)
-    val preserveAnswers = pages.map {
-      page =>
-        (
-          page.path.toString.drop(1),
-          (this.data \ page.path.toString.drop(1)).getOrElse(JsString("NotFound"))
-        )
+    val answers = UserAnswers(this.id)
+    val preservedAnswers: Seq[JsObject] = pages.map { page =>
+      val answer = Reads.jsPick[JsValue](page.path).reads(data) match {
+        case JsSuccess(value, _) => Some(value)
+        case JsError(_) => None
+      }
+      page.path -> answer
+    }.collect{
+      case (path, Some(value)) => Json.obj().setObject(path, value) match {
+        case JsSuccess(value, _) => value
+        case JsError(_) => Json.obj()
+      }
     }
-    val preserveData = s"{${preserveAnswers.map(x => s""""${x._1}":${x._2}""").mkString(",")}}"
-    newAnswers.copy(data = Json.parse(preserveData).as[JsObject])
+
+    val json = preservedAnswers.fold(Json.obj())(_ ++ _)
+    answers.copy(data = json)
   }
 }
 

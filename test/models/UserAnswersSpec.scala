@@ -17,20 +17,52 @@
 package models
 
 import base.SpecBase
-import pages.{KnownEoriDetails, QuestionPage, UserTypePage}
+import pages._
 import services.submissionService.SubmissionServiceTestData
 
 class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
-  "User Answer" when {
-    "removing answers" should {
-      "preserve known pages" in {
-        val pagesToPreserve: Seq[QuestionPage[_]] = Seq(KnownEoriDetails, UserTypePage)
-        val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
-          .set(KnownEoriDetails, completeSubmission.knownDetails).success.value
-          .set(UserTypePage, completeSubmission.userType).success.value
+  "Calling .preserve" should {
+    "preserve known pages stored as JsObjects" in {
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(KnownEoriDetails, UserTypePage)
+      val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+        .set(KnownEoriDetails, completeSubmission.knownDetails).success.value
+        .set(UserTypePage, completeSubmission.userType).success.value
 
-        completeUserAnswers.preserve(pagesToPreserve) mustBe trimmedAnswers
-      }
+      completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
+    }
+
+    "preserve known pages stored as simple JsValues e.g. Strings or Booleans" in {
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(TraderAddressCorrectPage, MoreInformationPage)
+      val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+        .set(TraderAddressCorrectPage, completeSubmission.traderAddressCorrect).success.value
+        .set(MoreInformationPage, completeSubmission.additionalInfo.getOrElse("Additional information")).success.value
+
+      completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
+    }
+
+    "preserve known pages stored at a path deeper than 1 level" in {
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(EnterCustomsProcedureCodePage)
+      val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+        .set(EnterCustomsProcedureCodePage, completeSubmission.originalCpc.getOrElse("cpcError")).success.value
+
+      completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
+    }
+
+    "preserve known pages stored as JsArrays" in {
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(UnderpaymentReasonsPage)
+      val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+        .set(UnderpaymentReasonsPage, completeSubmission.amendedItems).success.value
+
+      completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
+    }
+
+    "NOT preserve pages if they are not present in user answers" in {
+
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(UnderpaymentReasonsPage)
+      val answersWithoutExpectedAnswer = completeUserAnswers.remove(UnderpaymentReasonsPage).success.value
+      val emptyAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+
+      answersWithoutExpectedAnswer.preserve(pagesToPreserve).data mustBe emptyAnswers.data
     }
   }
 }
