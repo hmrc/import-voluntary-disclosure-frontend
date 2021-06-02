@@ -287,8 +287,10 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)))
+              controllers.routes.TraderAddressCorrectController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(CYAMessages.changeAddress)
+            ))
           )))
       )
     )

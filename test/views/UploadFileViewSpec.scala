@@ -17,6 +17,7 @@
 package views
 
 import base.ViewBaseSpec
+import forms.UploadFileFormProvider
 import messages.UploadFileMessages
 import mocks.config.MockAppConfig
 import models.OptionalDocument
@@ -38,13 +39,11 @@ class UploadFileViewSpec extends ViewBaseSpec {
   private val backLink: Call = Call("GET", "url")
   private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
-  val form: Form[_] = Form("fileName" -> text)
-
-  val formWithErrors: Form[_] = Form("Unknown" -> text).withError("file", UploadFileMessages.fileUnknown)
-
+  val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
 
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
+      val form: Form[String] = formProvider.apply()
       lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -81,7 +80,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
       }
 
       "an error exists (no file has been uploaded)" should {
-        lazy val view: Html = injectedView(formWithErrors, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+        lazy val form: Form[String] = formProvider().withError("file", UploadFileMessages.fileUnknown)
+        lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
@@ -99,6 +99,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "Optional Documents have not been selected" should {
+      val form: Form[String] = formProvider.apply()
       lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -120,6 +121,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     "In check mode and all supporting documents have been removed" should {
+      val form: Form[String] = formProvider.apply()
       lazy val view: Html = injectedView(form, initiateResponse, None, Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -131,6 +133,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
   }
 
   it should {
+    val form: Form[String] = formProvider.apply()
     lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
