@@ -73,9 +73,12 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
   private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(MoreInformationPage).map { extraInformation =>
       createRow(
-        Text(messages("cya.extraInformation")),
-        Text(extraInformation),
-        Some(ActionItem("Url", Text(messages("cya.change"))))
+        keyText = Text(messages("cya.extraInformation")),
+        valueContent = Text(extraInformation),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.MoreInformationController.onLoad().url,
+          messages("cya.extraInformation.change")
+        ))
       )
     }
   }
@@ -84,9 +87,12 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     answers.get(HasFurtherInformationPage).map { hasFurtherInformation =>
       val furtherInformation = if (hasFurtherInformation) messages("site.yes") else messages("site.no")
       createRow(
-        Text(messages("cya.hasFurtherInformation")),
-        Text(furtherInformation),
-        Some(ActionItem("Url", Text(messages("cya.change"))))
+        keyText = Text(messages("cya.hasFurtherInformation")),
+        valueContent = Text(furtherInformation),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.HasFurtherInformationController.onLoad().url,
+          messages("cya.hasFurtherInformation.change")
+        ))
       )
     }
   }

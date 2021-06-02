@@ -18,6 +18,8 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.MoreInformationFormProvider
+import models.requests.DataRequest
+
 import javax.inject.{Inject, Singleton}
 import pages.MoreInformationPage
 import play.api.i18n.I18nSupport
@@ -41,27 +43,38 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
                                           view: MoreInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.HasFurtherInformationController.onLoad()
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreInformationPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
+
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       moreInfo => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
+        }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+    if (request.checkMode) {
+      None
+    } else {
+      Some(controllers.routes.HasFurtherInformationController.onLoad())
+    }
   }
 
 }

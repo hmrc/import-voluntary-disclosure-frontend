@@ -18,6 +18,7 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.HasFurtherInformationFormProvider
+import models.requests.DataRequest
 import pages.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -41,8 +42,6 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
                                                 view: HasFurtherInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.UnderpaymentReasonSummaryController.onLoad
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(HasFurtherInformationPage).fold(formProvider()) {
       formProvider().fill
@@ -61,10 +60,21 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
           if (hasFurtherInfo) {
             Redirect(controllers.routes.MoreInformationController.onLoad())
           } else {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else
             Redirect(controllers.routes.SupportingDocController.onLoad())
           }
         }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.UnderpaymentReasonSummaryController.onLoad()
+    }
   }
 
 }

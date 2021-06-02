@@ -627,7 +627,9 @@ cya.reasonForUnderpayment = Reason for underpayment
 cya.numberOfUnderpaymentsSingle = 1 reason given
 cya.numberOfUnderpaymentsPlural = {0} reasons given
 cya.hasFurtherInformation = Tell us anything else?
+cya.hasFurtherInformation.change = Change Tell us anything else?
 cya.extraInformation = Extra information
+cya.extraInformation.change = Change Extra information
 
 # Item Number
 itemNo.pageTitle = What is the item number?
