@@ -21,12 +21,12 @@
         inputTextArea: components.inputTextArea
 )
 
-@(form: Form[_])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("moreInformation.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = None) {
+        customBackLinkUrl = backLink) {
 
         @errorSummary(form.errors)
 
