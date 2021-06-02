@@ -36,7 +36,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Call("GET", "url"))(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreInformationMessages.title)
@@ -54,7 +54,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Call("GET", "url"))(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.title)
@@ -75,7 +75,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Call("GET", "url"))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${MoreInformationMessages.h1}'" in {
