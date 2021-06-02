@@ -52,7 +52,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Ok(view(
-        buildImporterDetailsSummaryList ++
+          buildImporterDetailsSummaryList ++
           buildEntryDetailsSummaryList ++
           buildUnderpaymentDetailsSummaryList ++
           buildYourDetailsSummaryList ++
