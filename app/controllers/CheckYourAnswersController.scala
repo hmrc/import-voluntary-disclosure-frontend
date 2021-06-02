@@ -16,17 +16,19 @@
 
 package controllers
 
+import java.time.format.DateTimeFormatter
+
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
-import pages.CheckModePage
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.cya.CYASummaryListHelper
-import views.html.{CheckYourAnswersView, ConfirmationView}
+import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
+import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,7 +40,8 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                                            sessionRepository: SessionRepository,
                                            submissionService: SubmissionService,
                                            view: CheckYourAnswersView,
-                                           confirmationView: ConfirmationView,
+                                           importerConfirmationView: ImporterConfirmationView,
+                                           repConfirmationView: RepresentativeConfirmationView,
                                            errorHandler: ErrorHandler,
                                            implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
@@ -61,12 +64,35 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     submissionService.createCase.map {
-      case Right(value) => Ok(confirmationView(value.id))
+      case Right(value) =>
+        val confirmationData = {
+          for {
+            entryDetails <- request.userAnswers.get(EntryDetailsPage)
+            eoriDetails <- request.userAnswers.get(KnownEoriDetails)
+            importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
+            eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+          } yield {
+            val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
+            ConfirmationViewData(
+              s"${entryDetails.epu}-${entryDetails.entryNumber}-$formattedDate",
+              importerName,
+              eoriNumber
+            )
+          }
+        }
+
+        confirmationData match {
+          case Some(confirmationData) =>
+            if (request.isRepFlow) {
+              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+            } else {
+              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+            }
+          case _ => errorHandler.showInternalServerError
+        }
       case Left(_) => errorHandler.showInternalServerError
     }
-
   }
 
 }

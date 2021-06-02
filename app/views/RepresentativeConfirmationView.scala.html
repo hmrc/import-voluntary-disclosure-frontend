@@ -1,0 +1,82 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import viewmodels.cya.ConfirmationViewData
+
+@this(layout: templates.Layout,
+        h2: components.h2,
+        p: components.p,
+        appConfig: AppConfig
+)
+
+@(reference: String = "",
+    isPayByDeferment: Boolean,
+    isSingleEntry: Boolean,
+    data: ConfirmationViewData
+)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("confirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            <div id = "entryNumber">@messages("confirmation.caseId")</div>
+            <strong>@reference</strong>
+        </div>
+        <br>
+    </div>
+
+    @if(isSingleEntry) {
+        @p(Html(messages("confirmation.singleEntry.p1", data.entryDetails)))
+    } else {
+        @p(Html(messages("confirmation.bulkEntry.p1", data.importerName, data.eori)))
+    }
+
+    @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
+
+    @if(isPayByDeferment) {
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2") @messages("confirmation.whatHappensNext.deferment.rep.p2", data.importerName)</p>
+        @p(Html(messages("confirmation.whatHappensNext.deferment.p3")))
+    } else {
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2") @messages("confirmation.whatHappensNext.otherPayment.rep.p2", data.importerName)</p>
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p3")))
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p4")))
+    }
+
+    @h2(messages("confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
+
+    @p{
+        <a id = "printSave" class="print-this__link govuk-body" href="javascript:window.print()">@messages("confirmation.whatYouShouldDoNext.printSave")</a>
+        <a id = "printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.whatYouShouldDoNext.printSaveRestOfMessage")</a>
+    }
+
+    @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
+
+    @p{@Html(<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">{messages("confirmation.whatYouShouldDoNext.rep.link")}</a>)}
+
+    <div id="helpImproveServiceLink">
+        @p{
+            @Html(<a href={appConfig.surveyUrl} class="govuk-link">{messages("confirmation.helpImproveServiceLink")}</a>)
+            @Html(messages("confirmation.helpImproveServiceLinkTime"))
+        }
+    </div>
+}
+
+@{
+    //$COVERAGE-OFF$
+}

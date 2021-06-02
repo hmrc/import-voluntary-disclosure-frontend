@@ -32,19 +32,21 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import base.ControllerSpecBase
 import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockSubmissionService
 import models._
+import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import views.html.{CheckYourAnswersView, ConfirmationView}
+import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
 import scala.concurrent.Future
-
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
@@ -55,7 +57,8 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
-    private lazy val confirmationView: ConfirmationView = app.injector.instanceOf[ConfirmationView]
+    private lazy val importerConfirmationView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
+    private lazy val repConfirmationView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
 
     val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
 
@@ -69,7 +72,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       setupConnectorMock(serviceMock)
       new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
         messagesControllerComponents, mockSessionRepository, mockSubmissionService,
-        checkYourAnswersView, confirmationView, errorHandler, ec)
+        checkYourAnswersView, importerConfirmationView, repConfirmationView, errorHandler, ec)
     }
   }
 
@@ -88,9 +91,37 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   "GET onSubmit" should {
 
-    "return Redirect" in new Test {
+    "return Redirect to the importer confirmation view" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+        .set(KnownEoriDetails, EoriDetails("GB123456789", "Test User", ContactAddress(addressLine1 = "address one", countryCode = "GB", city = "Test city", postalCode = Some("AA00AA")))).success.value
+      )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
+    }
+
+    "return Redirect to the representative confirmation view" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+        .set(ImporterNamePage, "Test User").success.value
+        .set(ImporterEORINumberPage, "GB123456789").success.value
+        .set(KnownEoriDetails, EoriDetails("GB123456789", "Test User", ContactAddress(addressLine1 = "address one", countryCode = "GB", city = "Test city", postalCode = Some("AA00AA")))).success.value
+      )
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return Internal Server error when user answers incomplete for confirmation view" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+        .set(ImporterNamePage, "Test User").success.value
+        .set(ImporterEORINumberPage, "GB123456789").success.value
+      )
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
     "return Internal Server error is submission fails" in new Test {
