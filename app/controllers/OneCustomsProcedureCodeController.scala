@@ -41,14 +41,6 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                  )
   extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      controllers.routes.AcceptanceDateController.onLoad()
-    }
-  }
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(OneCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
@@ -87,4 +79,11 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
     )
   }
 
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.AcceptanceDateController.onLoad()
+    }
+  }
 }

@@ -103,7 +103,7 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#importerEORI-hint") mustBe ImporterEORINumberMessages.hint
     }
 
-    "render a back link with the correct browser back URL" in {
+    "render a back link with the correct back URL" in {
       elementAttributes("#back-link") must contain("href" -> controllers.routes.ImporterEORIExistsController.onLoad().url)
     }
 
