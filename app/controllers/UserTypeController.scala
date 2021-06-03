@@ -18,8 +18,9 @@ package controllers
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
+import models.requests.OptionalDataRequest
 import models.{UserAnswers, UserType}
-import pages.{KnownEoriDetails, UserTypePage}
+import pages.{CheckModePage, KnownEoriDetails, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -41,7 +42,20 @@ class UserTypeController @Inject()(identify: IdentifierAction,
                                    view: UserTypeView)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.ConfirmEORIDetailsController.onLoad()
+  private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
+    val cyaMode = {
+      for {
+        answers <- request.userAnswers
+        mode <- answers.get(CheckModePage)
+      } yield mode
+    }.getOrElse(false)
+
+    if (cyaMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.ConfirmEORIDetailsController.onLoad()
+    }
+  }
 
   val onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
 
@@ -72,9 +86,14 @@ class UserTypeController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(UserTypePage, newUserType))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          newUserType match {
-            case UserType.Importer => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
-            case UserType.Representative => Redirect(controllers.routes.ImporterNameController.onLoad())
+          val checkMode = updatedAnswers.get(CheckModePage).getOrElse(false)
+          if (prevUserType == newUserType && checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            newUserType match {
+              case UserType.Importer => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+              case UserType.Representative => Redirect(controllers.routes.ImporterNameController.onLoad())
+            }
           }
         }
       }

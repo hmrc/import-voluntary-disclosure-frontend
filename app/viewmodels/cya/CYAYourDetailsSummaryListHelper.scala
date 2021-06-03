@@ -57,7 +57,7 @@ trait CYAYourDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.userType")),
         valueContent = Text(userTypeValue),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItem(controllers.routes.UserTypeController.onLoad().url, Text(messages("cya.change"))))
       )
     }
 

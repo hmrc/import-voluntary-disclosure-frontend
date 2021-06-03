@@ -20,10 +20,11 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UserTypeFormProvider
 import mocks.repositories.MockSessionRepository
+import models.requests.{IdentifierRequest, OptionalDataRequest}
 import models.{UserAnswers, UserType}
-import pages.UserTypePage
+import pages.{CheckModePage, UserTypePage}
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContent, Result}
 import play.api.test.Helpers._
 import views.html.UserTypeView
 
@@ -61,10 +62,9 @@ class UserTypeControllerSpec extends ControllerSpecBase {
   }
 
   "POST /" when {
-    "payload contains valid data" should {
+    "submitting a valid answer in the the initial user journey" should {
 
       "return a SEE OTHER response" in new Test {
-
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -83,10 +83,91 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       }
     }
 
+    "submitting a different answer whilst in the CYA journey" should {
+
+      val answers = UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(CheckModePage, true).success.value
+
+      "return a SEE OTHER response" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "return the correct location header" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
+    "submitting the same answer whilst in the CYA journey" should {
+
+      val answers = UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(CheckModePage, true).success.value
+
+      "return a SEE OTHER response" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "return the correct location header" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "Calling backLink" when {
+    "in the the initial user journey" should {
+      "go to the confirm EORI details page" in new Test {
+        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
+          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None
+        )
+        private val backLink = controller.backLink()(request)
+
+        backLink mustBe controllers.routes.ConfirmEORIDetailsController.onLoad()
+      }
+    }
+
+    "in the the CYA user journey" should {
+      "go to the CYA page" in new Test {
+        private val answers = UserAnswers("cred-id").set(CheckModePage, true).success.value
+        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
+          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", Some(answers)
+        )
+        private val backLink = controller.backLink()(request)
+
+        backLink mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
   }
