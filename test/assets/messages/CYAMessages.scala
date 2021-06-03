@@ -81,6 +81,7 @@ object CYAMessages extends BaseMessages {
 
 
   val change = "Change"
+  val changeUserType = "Change what type of trader you are"
   val changeAcceptanceDate = "Change acceptance date"
   val changeCpcExists = "Change one customs procedure code?"
   val changeEnterCpc = "Change customs procedure code"
