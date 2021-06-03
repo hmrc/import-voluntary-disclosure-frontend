@@ -45,8 +45,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
             UnderpaymentReason(boxNumber = 33, itemNumber = 15, original = "50", amended = "60"),
             UnderpaymentReason(boxNumber = 22, original = "50", amended = "60")
           )
-        )
-        .success.value
+        ).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
