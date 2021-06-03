@@ -24,10 +24,10 @@
       linkButton: components.linkButton
       )
 
-@(backLink: Call)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(backLink: Call, displayBackLink: Boolean)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("boxGuidance.pageTitle"),
-    customBackLinkUrl = Some(backLink)) {
+    customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
 
     @h1(messages("boxGuidance.heading"))
 
