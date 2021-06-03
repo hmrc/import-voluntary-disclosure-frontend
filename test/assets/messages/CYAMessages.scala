@@ -47,6 +47,7 @@ object CYAMessages extends BaseMessages {
   val viewSummary = "View summary"
   val viewSummaryChange = "View underpayments summary"
   val reasonForUnderpayment = "Reason for underpayment"
+  val viewReasonForUnderpayment = "View Reason for underpayment"
   val tellUsAnythingElse = "Tell us anything else?"
   val extraInformation = "Extra information"
 

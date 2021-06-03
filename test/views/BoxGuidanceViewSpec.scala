@@ -20,59 +20,69 @@ import base.ViewBaseSpec
 import messages.{BaseMessages, BoxGuidanceMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.api.mvc._
 import play.twirl.api.Html
 import views.html.BoxGuidanceView
-import play.api.mvc._
 
 class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: BoxGuidanceView = app.injector.instanceOf[BoxGuidanceView]
 
-  "Rendering the Supportdoc page" when {
+  "Rendering the box guidance page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(Call("GET","backLink"))(fakeRequest, appConfig, messages)
+      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxGuidanceMessages.title)
 
-      "it" should {
-        lazy val view: Html = injectedView(Call("GET","backLink"))(fakeRequest, appConfig, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page heading of '${BoxGuidanceMessages.heading}'" in {
-          elementText("h1") mustBe BoxGuidanceMessages.heading
-        }
+    }
 
-        s"have the correct p1 page text of '${BoxGuidanceMessages.p1}'" in {
-          elementText("#main-content p:nth-of-type(1)") mustBe BoxGuidanceMessages.p1
-        }
+    "when in check mode" should {
+      lazy val view: Html = injectedView(Call("GET", "backLink"), false)(fakeRequest, appConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p2 page text of '${BoxGuidanceMessages.p2}'" in {
-          elementText("#main-content p:nth-of-type(2)") mustBe BoxGuidanceMessages.p2
-        }
+      "no back link displayed" in {
+        elementExtinct("#back-link")
+      }
+    }
 
-        s"have the correct page text of '${BoxGuidanceMessages.bullet1}'" in {
-          elementText("#main-content li:nth-of-type(1)") mustBe BoxGuidanceMessages.bullet1
-        }
+    "it" should {
+      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+      s"have the correct page heading of '${BoxGuidanceMessages.heading}'" in {
+        elementText("h1") mustBe BoxGuidanceMessages.heading
+      }
 
-        s"have the correct page text of '${BoxGuidanceMessages.bullet2}'" in {
-          elementText("#main-content li:nth-of-type(2)") mustBe BoxGuidanceMessages.bullet2
-        }
+      s"have the correct p1 page text of '${BoxGuidanceMessages.p1}'" in {
+        elementText("#main-content p:nth-of-type(1)") mustBe BoxGuidanceMessages.p1
+      }
 
-        s"have the correct page text of '${BoxGuidanceMessages.bullet3}'" in {
-          elementText("#main-content li:nth-of-type(3)") mustBe BoxGuidanceMessages.bullet3
-        }
+      s"have the correct p2 page text of '${BoxGuidanceMessages.p2}'" in {
+        elementText("#main-content p:nth-of-type(2)") mustBe BoxGuidanceMessages.p2
+      }
 
-        s"have the correct p2 page text of '${BoxGuidanceMessages.p3}'" in {
-          elementText("#main-content p:nth-of-type(3)") mustBe BoxGuidanceMessages.p3
-        }
+      s"have the correct page text of '${BoxGuidanceMessages.bullet1}'" in {
+        elementText("#main-content li:nth-of-type(1)") mustBe BoxGuidanceMessages.bullet1
+      }
 
-        "render a continue button with the correct URL " in {
-          elementAttributes(".govuk-button") must contain("href" -> controllers.routes.BoxNumberController.onLoad().url)
-        }
+      s"have the correct page text of '${BoxGuidanceMessages.bullet2}'" in {
+        elementText("#main-content li:nth-of-type(2)") mustBe BoxGuidanceMessages.bullet2
+      }
 
-        "render a back link with the correct URL" in {
-          elementAttributes("#back-link") must contain("href" -> "backLink")
-        }
+      s"have the correct page text of '${BoxGuidanceMessages.bullet3}'" in {
+        elementText("#main-content li:nth-of-type(3)") mustBe BoxGuidanceMessages.bullet3
+      }
+
+      s"have the correct p2 page text of '${BoxGuidanceMessages.p3}'" in {
+        elementText("#main-content p:nth-of-type(3)") mustBe BoxGuidanceMessages.p3
+      }
+
+      "render a continue button with the correct URL " in {
+        elementAttributes(".govuk-button") must contain("href" -> controllers.routes.BoxNumberController.onLoad().url)
+      }
+
+      "render a back link with the correct URL" in {
+        elementAttributes("#back-link") must contain("href" -> "backLink")
       }
     }
   }
