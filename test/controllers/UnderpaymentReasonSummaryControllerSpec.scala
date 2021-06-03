@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UnderpaymentReasonSummaryFormProvider
 import models.{UnderpaymentReason, UserAnswers}
-import pages.UnderpaymentReasonsPage
+import pages.{CheckModePage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -38,13 +38,15 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
+        .set(CheckModePage, false).success.value
         .set(
           UnderpaymentReasonsPage,
           Seq(
             UnderpaymentReason(boxNumber = 33, itemNumber = 15, original = "50", amended = "60"),
             UnderpaymentReason(boxNumber = 22, original = "50", amended = "60")
           )
-        ).success.value
+        )
+        .success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -69,7 +71,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
   "POST onSubmit" when {
 
-    "payload contains valid data" should {
+    "payload contains valid data when check mode is false" should {
 
       "return a SEE OTHER on yes" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
@@ -83,6 +85,30 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.HasFurtherInformationController.onLoad().url)
+      }
+
+    }
+
+    "payload contains valid data when check mode is true" should {
+
+      "return a SEE OTHER on yes" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.BoxNumberController.onLoad().url)
+      }
+
+      "return a SEE OTHER on no" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
     }
