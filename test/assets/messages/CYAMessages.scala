@@ -92,6 +92,7 @@ object CYAMessages extends BaseMessages {
   val changeSupportingDocuments = "Change supporting documents"
   val changeAddress = "Change address"
   val changeHasFurtherInformation = "Change Tell us anything else?"
+  val changePaymentMethod = "Change payment method"
   val changeMoreInformation = "Change Extra information"
 
 }

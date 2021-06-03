@@ -23,7 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper.createRow
 
 trait CYAPaymentDetailsSummaryListHelper {
@@ -63,7 +63,10 @@ trait CYAPaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.paymentMethod")),
         Text(payingByDeferment),
-        Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.DefermentController.onLoad().url,
+          messages("cya.deferment.change")
+        ))
       )
     }
 

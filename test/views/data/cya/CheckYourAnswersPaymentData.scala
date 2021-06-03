@@ -17,7 +17,7 @@
 package views.data.cya
 
 import messages.CYAMessages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 import viewmodels.cya.CYASummaryList
@@ -43,9 +43,13 @@ object CheckYourAnswersPaymentData {
       Text(payingByOther)
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
-    )))
+      ActionItem(
+        controllers.routes.DefermentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+      )
+    )
+    ))
   )
 
   val paymentMethodDefermentRow = SummaryListRow(
@@ -57,9 +61,13 @@ object CheckYourAnswersPaymentData {
       Text(payingByDeferment)
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
-    )))
+      ActionItem(
+        controllers.routes.DefermentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+      )
+    )
+    ))
   )
 
   val splitDefermentYesRow = SummaryListRow(

@@ -606,6 +606,7 @@ cya.address.change = Change address
 cya.importerAddress.change = Change importer address
 cya.eoriExists.change = Change importer has EORI number?
 cya.eoriNumber.change = Change importer EORI number
+cya.deferment.change = Change payment method
 cya.vatRegistered.change = Change importer VAT registered?
 cya.paymentInformation = Payment information
 cya.payingByDeferment = By deferment?
