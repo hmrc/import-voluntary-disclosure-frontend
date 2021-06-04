@@ -18,8 +18,8 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.SplitPaymentFormProvider
-
 import javax.inject.{Inject, Singleton}
+import models.requests.DataRequest
 import pages.{AdditionalDefermentNumberPage, DefermentAccountPage, DefermentTypePage, SplitPaymentPage, UploadAuthorityPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -41,8 +41,6 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
                                        formProvider: SplitPaymentFormProvider,
                                        view: SplitPaymentView)
   extends FrontendController(mcc) with I18nSupport {
-
-  lazy val backLink: Call = controllers.routes.DefermentController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(SplitPaymentPage).fold(formProvider()) {
@@ -90,6 +88,14 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
       Redirect(controllers.routes.RepresentativeDanDutyController.onLoad())
     } else {
       Redirect(controllers.routes.RepresentativeDanController.onLoad())
+    }
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.DefermentController.onLoad()
     }
   }
 

@@ -79,8 +79,11 @@ object CheckYourAnswersPaymentData {
       Text("Yes")
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.SplitPaymentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        Some(CYAMessages.changeSplitDeferment)
+      )
     )))
   )
 
@@ -93,8 +96,11 @@ object CheckYourAnswersPaymentData {
       Text("No")
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.SplitPaymentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        Some(CYAMessages.changeSplitDeferment)
+      )
     )))
   )
 

@@ -78,7 +78,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.splitDeferment")),
             Text(isSplitDeferment),
-            Some(ActionItem("Url", Text(messages("cya.change"))))
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.SplitPaymentController.onLoad().url,
+              messages("cya.splitDeferment.change")
+            ))
           )
         )
       case _ => None

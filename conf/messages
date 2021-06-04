@@ -624,6 +624,7 @@ cya.importerAuthority = The importer’s account and I have authority to use it
 cya.importerStandingAuthority = The importer’s account and I have standing authority to use it
 cya.payingByOther = By BACS, CHAPS, Faster Payments, cheque or banker’s draft.
 cya.splitDeferment = Split deferment payment?
+cya.splitDeferment.change = Change split deferment payment?
 cya.numberOfAmendments = Number of amendments
 cya.supportingInformation = Supporting information
 cya.newCustomsProcedure = Amended customs procedure code
