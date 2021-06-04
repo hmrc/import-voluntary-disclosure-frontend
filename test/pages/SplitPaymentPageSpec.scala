@@ -24,34 +24,34 @@ import java.time.LocalDateTime
 
 class SplitPaymentPageSpec extends WordSpec with MustMatchers {
   "SplitPayment page" when {
-    "choosing not to pay by split payment" should {
-      "remove answers relating to split payment" in {
+    "choosing not to pay by split deferment" should {
+      "remove answers relating to split deferment" in {
         val fileDetails = FileUploadInfo("file.txt", "blah", LocalDateTime.now(), "some-sum", "mime-type")
         val uploadAuthority = UploadAuthority("A1234567", SelectedDutyTypes.Both, fileDetails)
-        val splitPayment = false
+        val splitDeferment = false
         val answers: UserAnswers = UserAnswers("some-cred")
           .set(DefermentTypePage, "A").success.value
           .set(DefermentAccountPage, "1234567").success.value
           .set(AdditionalDefermentTypePage, "A").success.value
           .set(AdditionalDefermentNumberPage, "1234567").success.value
           .set(UploadAuthorityPage, Seq(uploadAuthority)).success.value
-        val answersAfterCleanUp = SplitPaymentPage.cleanup(Some(splitPayment), answers).success.value
+        val answersAfterCleanUp = SplitPaymentPage.cleanup(Some(splitDeferment), answers).success.value
         val expectedAnswers = answers.copy(data = Json.obj())
         answersAfterCleanUp mustBe expectedAnswers
       }
     }
-    "choosing to pay by deferment" should {
+    "choosing to pay by split deferment" should {
       "not remove/update the answers" in {
         val fileDetails = FileUploadInfo("file.txt", "blah", LocalDateTime.now(), "some-sum", "mime-type")
         val uploadAuthority = UploadAuthority("A1234567", SelectedDutyTypes.Both, fileDetails)
-        val splitPayment = true
+        val splitDeferment = true
         val answers: UserAnswers = UserAnswers("some-cred")
           .set(DefermentTypePage, "A").success.value
           .set(DefermentAccountPage, "1234567").success.value
           .set(AdditionalDefermentTypePage, "A").success.value
           .set(AdditionalDefermentNumberPage, "1234567").success.value
           .set(UploadAuthorityPage, Seq(uploadAuthority)).success.value
-        val answersAfterCleanUp = SplitPaymentPage.cleanup(Some(splitPayment), answers).success.value
+        val answersAfterCleanUp = SplitPaymentPage.cleanup(Some(splitDeferment), answers).success.value
         answersAfterCleanUp mustBe answers
       }
     }
