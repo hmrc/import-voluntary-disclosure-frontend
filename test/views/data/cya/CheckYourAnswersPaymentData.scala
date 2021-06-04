@@ -108,8 +108,11 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-summary-list__row"
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.ImporterDanController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
+      )
     ),
       classes = "govuk-summary-list__row"
     )),

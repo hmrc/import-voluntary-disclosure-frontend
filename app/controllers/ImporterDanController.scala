@@ -62,11 +62,11 @@ class ImporterDanController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      None
     } else {
-      controllers.routes.DefermentController.onLoad()
+      Some(controllers.routes.DefermentController.onLoad())
     }
   }
 
