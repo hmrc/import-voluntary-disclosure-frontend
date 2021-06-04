@@ -21,9 +21,10 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.ImporterDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.DefermentAccountPage
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, DefermentAccountPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.ImporterDanView
@@ -34,6 +35,7 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
 
   val userAnswersWithImporterDan: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
     .set(DefermentAccountPage, "1234567").success.value
+    .set(CheckModePage, false).success.value
   )
 
   private def fakeRequestGenerator(dan: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -57,6 +59,19 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
     val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ImporterDanFormProvider = formProvider
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
+
   }
 
   "GET onLoad" when {
@@ -111,6 +126,31 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       }
     }
 
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.DefermentController.onLoad())
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe None
+      }
+    }
   }
 
 }

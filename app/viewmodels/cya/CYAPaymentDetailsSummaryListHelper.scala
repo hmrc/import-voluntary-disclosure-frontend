@@ -94,7 +94,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.importerAccountNumber")),
             Text(accountNumber),
-            Some(ActionItem("Url", Text(messages("cya.change")))),
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.ImporterDanController.onLoad().url,
+              messages("cya.importerAccountNumber.change")
+            )),
             columnClasses = "govuk-summary-list__row",
             rowClasses = "govuk-summary-list__row"
           )

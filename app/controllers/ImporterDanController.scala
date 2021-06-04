@@ -20,6 +20,7 @@ import com.google.inject.Inject
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterDanFormProvider
+import models.requests.DataRequest
 import pages.DefermentAccountPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -39,8 +40,6 @@ class ImporterDanController @Inject()(identify: IdentifierAction,
                                       view: ImporterDanView
                                      )
   extends FrontendController(mcc) with I18nSupport {
-
-  lazy val backLink: Call = controllers.routes.DefermentController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DefermentAccountPage).fold(formProvider()) {
@@ -62,4 +61,13 @@ class ImporterDanController @Inject()(identify: IdentifierAction,
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+    if (request.checkMode) {
+      None
+    } else {
+      Some(controllers.routes.DefermentController.onLoad())
+    }
+  }
+
 }
