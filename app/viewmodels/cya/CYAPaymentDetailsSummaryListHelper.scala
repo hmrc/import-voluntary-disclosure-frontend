@@ -110,7 +110,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.repAccountNumber")),
             Text(accountNumber),
-            Some(ActionItem("Url", Text(messages("cya.change")))),
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.RepresentativeDanController.onLoad().url,
+              messages("cya.repDanDuty.change")
+            )),
             columnClasses = "govuk-!-padding-bottom-1",
             rowClasses = "govuk-summary-list__row--no-border"
           )

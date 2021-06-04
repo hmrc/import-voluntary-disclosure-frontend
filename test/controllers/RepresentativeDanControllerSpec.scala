@@ -22,9 +22,10 @@ import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Neither
 import models.UserAnswers
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage}
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanView
 
@@ -44,6 +45,18 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
     val form: RepresentativeDanFormProvider = formProvider

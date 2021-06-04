@@ -140,8 +140,11 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-padding-bottom-1"
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.DefermentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+      )
     ),
       classes = "govuk-!-padding-bottom-1"
     )),

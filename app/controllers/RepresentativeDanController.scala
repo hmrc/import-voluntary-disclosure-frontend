@@ -19,6 +19,7 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeDanFormProvider
+import models.requests.DataRequest
 import models.{RepresentativeDan, UserAnswers}
 import pages.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
 import play.api.i18n.I18nSupport
@@ -72,11 +73,17 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call =
-    if (userAnswers.get(SplitPaymentPage).isDefined) {
-      controllers.routes.SplitPaymentController.onLoad()
+  private[controllers] def backLink(userAnswers: UserAnswers)(implicit request: DataRequest[_]): Call = {
+
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.DefermentController.onLoad()
+      if (userAnswers.get(SplitPaymentPage).isDefined) {
+        controllers.routes.SplitPaymentController.onLoad()
+      } else {
+        controllers.routes.DefermentController.onLoad()
+      }
     }
+  }
 
 }
