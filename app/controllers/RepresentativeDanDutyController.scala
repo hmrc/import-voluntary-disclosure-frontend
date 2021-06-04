@@ -66,7 +66,11 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+            case "A" | "C" => if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+            }
             case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
           }
         }

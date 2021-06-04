@@ -23,7 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper.createRow
 
 trait CYAPaymentDetailsSummaryListHelper {
@@ -75,7 +75,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.splitDeferment")),
             Text(isSplitDeferment),
-            Some(ActionItem("Url", Text(messages("cya.change"))))
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.SplitPaymentController.onLoad().url,
+              messages("cya.splitDeferment.change")
+            ))
           )
         )
       case _ => None

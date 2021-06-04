@@ -17,7 +17,7 @@
 package views.data.cya
 
 import messages.CYAMessages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
 import viewmodels.cya.CYASummaryList
@@ -71,8 +71,11 @@ object CheckYourAnswersPaymentData {
       Text("Yes")
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.SplitPaymentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        Some(CYAMessages.changeSplitDeferment)
+      )
     )))
   )
 
@@ -85,8 +88,11 @@ object CheckYourAnswersPaymentData {
       Text("No")
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.SplitPaymentController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        Some(CYAMessages.changeSplitDeferment)
+      )
     )))
   )
 

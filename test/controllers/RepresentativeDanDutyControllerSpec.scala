@@ -22,7 +22,7 @@ import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Duty
 import models.UserAnswers
-import pages.{DefermentAccountPage, DefermentTypePage}
+import pages.{CheckModePage, DefermentAccountPage, DefermentTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
@@ -83,7 +83,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
   }
 
   "POST Representative Duty Dan" when {
-    "payload contains valid data" should {
+    "payload contains valid data and checkMode is false" should {
 
       "return a SEE OTHER response and redirect to correct location when dan type is A" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("A")): _*)
@@ -104,6 +104,42 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanImportVATController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
+        await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
+    "payload contains valid data and checkMode is true" should {
+
+      "return a SEE OTHER response and redirect to correct location when dan type is A" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+          .set(CheckModePage, true).success.value)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("A")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "return a SEE OTHER response and redirect to correct location when dan type is B" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+          .set(CheckModePage, true).success.value)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.UploadAuthorityController.onLoad(Duty, "1234567").url)
+      }
+
+      "return a SEE OTHER response and redirect to correct location when dan type is C" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+          .set(CheckModePage, true).success.value)
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
