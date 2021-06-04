@@ -62,7 +62,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
   }
 
   "POST /" when {
-    "submitting a valid answer in the the initial user journey" should {
+    "submitting a 'Importer' answer in the the initial user journey" should {
 
       "return a SEE OTHER response" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
@@ -70,7 +70,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "redirect to the number of entries page" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
@@ -83,29 +83,50 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       }
     }
 
-    "submitting a different answer whilst in the CYA journey" should {
-
-      val answers = UserAnswers("some-cred-id")
-        .set(UserTypePage, UserType.Representative).success.value
-        .set(CheckModePage, true).success.value
+    "submitting a 'Representative' answer in the the initial user journey" should {
 
       "return a SEE OTHER response" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(answers)
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(answers)
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+      "redirect to the importer name page" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.ImporterNameController.onLoad().url)
+      }
+
+      "update the UserAnswers in session" in new Test {
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
+        await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
+    "submitting a different answer whilst in the CYA journey" should {
+
+      val answers = UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(CheckModePage, true).success.value
+
+      "return a SEE OTHER response" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+      }
+
+      "redirect the user to next page in the initial journey" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(answers)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.ImporterNameController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(answers)
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         await(controller.onSubmit(request))
         verifyCalls()
       }
@@ -124,7 +145,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "redirect the user to the CYA page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(answers)
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
