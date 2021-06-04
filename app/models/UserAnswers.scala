@@ -16,6 +16,7 @@
 
 package models
 
+import pages.QuestionPage
 import play.api.libs.json._
 
 import java.time.LocalDateTime
@@ -63,6 +64,25 @@ final case class UserAnswers(id: String,
         val updatedAnswers = copy(data = d)
         page.cleanup(None, updatedAnswers)
     }
+  }
+
+  def preserve(pages: Seq[QuestionPage[_]]): UserAnswers = {
+    val answers = UserAnswers(this.id)
+    val preservedAnswers: Seq[JsObject] = pages.map { page =>
+      val answer = Reads.jsPick[JsValue](page.path).reads(data) match {
+        case JsSuccess(value, _) => Some(value)
+        case JsError(_) => None
+      }
+      page.path -> answer
+    }.collect{
+      case (path, Some(value)) => Json.obj().setObject(path, value) match {
+        case JsSuccess(value, _) => value
+        case JsError(_) => Json.obj()
+      }
+    }
+
+    val json = preservedAnswers.fold(Json.obj())(_ ++ _)
+    answers.copy(data = json)
   }
 }
 

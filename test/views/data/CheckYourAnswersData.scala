@@ -259,11 +259,14 @@ object CheckYourAnswersData {
           value = Value(
             Text(userType),
           ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(
-              changeUrl,
-              Text(CYAMessages.change))),
-          )),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.routes.UserTypeController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(CYAMessages.changeUserType)
+              )
+            )))
         ),
         SummaryListRow(
           key = Key(

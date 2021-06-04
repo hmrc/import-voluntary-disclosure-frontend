@@ -594,6 +594,7 @@ cya.filesUploadedPlural = {0} files uploaded
 cya.yourDetails = Your details
 cya.name = Name
 cya.userType = Importer or representative?
+cya.userType.change = Change what type of trader you are
 cya.importer = Importer
 cya.representative = Representative
 cya.contactDetails = Contact details
