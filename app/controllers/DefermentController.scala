@@ -18,10 +18,10 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.DefermentFormProvider
+import javax.inject.{Inject, Singleton}
 import models.SelectedDutyTypes._
-import models.UserAnswers
 import models.requests.DataRequest
-import pages.DefermentPage
+import pages.{CheckModePage, DefermentPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -29,7 +29,6 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.DefermentView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -43,8 +42,6 @@ class DefermentController @Inject()(identify: IdentifierAction,
                                     formProvider: DefermentFormProvider,
                                     view: DefermentView)
   extends FrontendController(mcc) with I18nSupport {
-
-  lazy val backLink: Call = controllers.routes.TraderAddressCorrectController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
@@ -66,7 +63,8 @@ class DefermentController @Inject()(identify: IdentifierAction,
       ),
       value => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentPage, value))
+          checkMode <- Future.fromTry(request.userAnswers.set(CheckModePage, false))
+          updatedAnswers <- Future.fromTry(checkMode.set(DefermentPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
@@ -96,6 +94,14 @@ class DefermentController @Inject()(identify: IdentifierAction,
       case Vat => "deferment.headingOnlyVAT"
       case Duty => "deferment.headingDutyOnly"
       case _ => "deferment.headingVATandDuty"
+    }
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.TraderAddressCorrectController.onLoad()
     }
   }
 

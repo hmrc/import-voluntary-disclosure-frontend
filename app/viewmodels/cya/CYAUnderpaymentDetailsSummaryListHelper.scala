@@ -103,7 +103,10 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.reasonForUnderpayment")),
         Text(messages(numberOfReasons, underpaymentReason.size)),
-        Some(ActionItem("Url", Text(messages("cya.viewSummary"))))
+        Some(ActionItemHelper.createViewSummaryActionItem(
+          controllers.routes.UnderpaymentReasonSummaryController.onLoad().url,
+          messages("cya.reasonForUnderpayment.change")
+        ))
       )
     }
   }

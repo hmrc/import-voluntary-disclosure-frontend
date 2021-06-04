@@ -63,7 +63,10 @@ trait CYAPaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.paymentMethod")),
         Text(payingByDeferment),
-        Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.DefermentController.onLoad().url,
+          messages("cya.deferment.change")
+        ))
       )
     }
 

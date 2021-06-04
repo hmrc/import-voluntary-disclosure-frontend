@@ -25,9 +25,9 @@ import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{DefermentPage, UserTypePage}
+import pages.{CheckModePage, DefermentPage, UserTypePage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.DefermentView
@@ -46,7 +46,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     implicit lazy val dataRequest = new DataRequest(
       new OptionalDataRequest(
-        new IdentifierRequest(fakeRequest,"credId","eori"),
+        new IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
         userAnswers
@@ -68,11 +68,6 @@ class DefermentControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("some-cred-id")
-          .set(DefermentPage, true).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
-      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
@@ -212,6 +207,31 @@ class DefermentControllerSpec extends ControllerSpecBase {
         )
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "backLink" when {
+    "not in change mode" should {
+      "point to acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.TraderAddressCorrectController.onLoad()
+
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
   }
