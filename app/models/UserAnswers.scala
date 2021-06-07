@@ -20,6 +20,7 @@ import pages.QuestionPage
 import play.api.libs.json._
 
 import java.time.LocalDateTime
+import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$Code taken from another [trusted] service
@@ -64,6 +65,19 @@ final case class UserAnswers(id: String,
         val updatedAnswers = copy(data = d)
         page.cleanup(None, updatedAnswers)
     }
+  }
+
+  def removeMany(pages: Seq[QuestionPage[_]]): UserAnswers = {
+    @tailrec
+    def removePages(userAnswers: UserAnswers, pages: Seq[QuestionPage[_]]): UserAnswers = pages match {
+      case Nil => userAnswers
+      case page :: remainingPages => userAnswers.remove(page) match {
+        case Success(answers) => removePages(answers, remainingPages)
+        case Failure(exception) => throw exception
+      }
+    }
+
+    removePages(this, pages)
   }
 
   def preserve(pages: Seq[QuestionPage[_]]): UserAnswers = {
