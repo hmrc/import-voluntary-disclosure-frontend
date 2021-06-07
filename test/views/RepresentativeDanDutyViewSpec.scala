@@ -29,7 +29,7 @@ import views.html.RepresentativeDanDutyView
 
 class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
 
-  val backLink = Call("GET", "backLinkUrl")
+  val backLink = Some(Call("GET", "backLinkUrl"))
 
   private lazy val injectedView: RepresentativeDanDutyView = app.injector.instanceOf[RepresentativeDanDutyView]
 
@@ -158,7 +158,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> backLink.url)
+      elementAttributes("#back-link") must contain("href" -> backLink)
     }
   }
 }

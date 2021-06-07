@@ -21,6 +21,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Duty
+import models.requests.DataRequest
 import pages.{DefermentAccountPage, DefermentTypePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -40,8 +41,6 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                 formProvider: RepresentativeDanFormProvider
                                                )
   extends FrontendController(mcc) with I18nSupport {
-
-  private[controllers] lazy val backLink: Call = controllers.routes.SplitPaymentController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
@@ -73,4 +72,13 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+    if (request.checkMode) {
+      None
+    } else {
+      Some(controllers.routes.SplitPaymentController.onLoad())
+    }
+  }
+
 }

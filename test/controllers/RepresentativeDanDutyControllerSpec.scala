@@ -22,9 +22,10 @@ import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Duty
 import models.UserAnswers
-import pages.{DefermentAccountPage, DefermentTypePage}
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, DefermentAccountPage, DefermentTypePage}
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanDutyView
 
@@ -44,6 +45,18 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
     val form: RepresentativeDanFormProvider = formProvider
@@ -72,14 +85,6 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "the backLink functionality is called" should {
-      "redirect to the split payments page" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id")
-        )
-        controller.backLink mustBe controllers.routes.SplitPaymentController.onLoad()
-      }
-    }
   }
 
   "POST Representative Duty Dan" when {
@@ -117,6 +122,31 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to acceptance date page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.SplitPaymentController.onLoad())
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe None
       }
     }
   }

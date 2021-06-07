@@ -25,12 +25,12 @@
         inputRadio: components.inputRadio
 )
 
-@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("repDuty.pageTitle"),
         form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+        customBackLinkUrl = backLink) {
 
         @errorSummary(form.errors)
 
