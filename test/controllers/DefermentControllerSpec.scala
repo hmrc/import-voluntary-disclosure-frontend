@@ -25,7 +25,7 @@ import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{CheckModePage, DefermentPage, UserTypePage}
+import pages.{CheckModePage, DefermentPage, SplitPaymentPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -157,6 +157,32 @@ class DefermentControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
+      }
+
+      "return the correct location header when pay by deferment is selected but data held in user answers is pay by other" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(DefermentPage, false).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.SplitPaymentController.onLoad().url)
+      }
+
+      "return the correct location header when pay by other is selected but data held in user answers is pay by deferment" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(DefermentPage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return the correct location header when user is representative only has import VAT" in new Test {

@@ -21,7 +21,9 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.SplitPaymentFormProvider
 import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages.{CheckModePage, DefermentPage, SplitPaymentPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
@@ -128,6 +130,32 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()
+      }
+
+      "return the correct location header when split payment is selected but data held in user answers is no split payment" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanDutyController.onLoad().url)
+      }
+
+      "return the correct location header when no split payment is selected but data held in user answers is split payment" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanController.onLoad().url)
       }
     }
 

@@ -20,12 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
-import models.SelectedDutyTypes.Neither
-import models.UserAnswers
+import models.SelectedDutyTypes.{Both, Neither}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import models.{UserAnswers, UserType}
 import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
@@ -132,6 +132,65 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
         await(controller.onSubmit(request))
         verifyCalls()
+      }
+
+      "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "A").success.value
+          .set(DefermentAccountPage, "1234567").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "redirect to CYA when user supplies account number 1234567 and user answers holds account number 7654321" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(DefermentAccountPage, "7654321").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "redirect to UploadAuthority page when user supplies account type B and user answers holds account type C" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(DefermentAccountPage, "1234567").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.UploadAuthorityController.onLoad(Both, "1234567").url)
+      }
+
+      "redirect to CYA page when user supplies account type B and is in checkMode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(CheckModePage, true).success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
     }
 
