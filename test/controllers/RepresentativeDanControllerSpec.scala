@@ -23,9 +23,11 @@ import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Neither
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage}
+import models.underpayments.UnderpaymentDetail
+import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages._
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, Result}
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanView
 
@@ -137,6 +139,42 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "backLink" when {
+    "not in change mode" should {
+      "point to split payment page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0), UnderpaymentDetail("B00", 1.0, 2.0))).success.value
+            .set(SplitPaymentPage, true).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.SplitPaymentController.onLoad()
+      }
+
+      "point to deferment page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.DefermentController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

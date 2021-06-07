@@ -20,7 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.SplitPaymentFormProvider
 import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.{AdditionalDefermentNumberPage, DefermentAccountPage, DefermentTypePage, SplitPaymentPage, UploadAuthorityPage}
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -58,26 +58,34 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
             backLink)
         )
       ),
-      value => {
-        request.userAnswers.get(SplitPaymentPage) match {
-          case Some(oldValue) if oldValue != value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, value))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentTypePage))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentAccountPage))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
-              updatedAnswers <- Future.fromTry(updatedAnswers.remove(UploadAuthorityPage))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield {
-              redirectTo(value)
+      splitPayment => {
+        val previousSplitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(splitPayment)
+        if (splitPayment != previousSplitPayment) {
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            DefermentTypePage,
+            DefermentAccountPage,
+            AdditionalDefermentTypePage,
+            AdditionalDefermentNumberPage,
+            UploadAuthorityPage))
+          for {
+            otherUpdatedAnswers <- Future.successful(userAnswers)
+            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(checkMode.set(SplitPaymentPage, splitPayment))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            redirectTo(splitPayment)
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, splitPayment))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (splitPayment && !request.checkMode) {
+              redirectTo(splitPayment)
+            } else {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
             }
-          case _ =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield {
-              redirectTo(value)
-            }
+          }
         }
       }
     )
