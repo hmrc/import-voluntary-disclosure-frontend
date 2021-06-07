@@ -84,7 +84,6 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
         answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails)
         answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc)
       } yield answers).getOrElse(new UserAnswers("some-cred-id"))
-
       val result = answers.removeMany(pagesToRemove)
       result.get(ImporterNamePage) mustBe None
       result.get(ImporterEORIExistsPage) mustBe None

@@ -17,10 +17,8 @@
 package models
 
 import java.time.LocalDateTime
-
 import pages.QuestionPage
 import play.api.libs.json._
-
 import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
 
