@@ -65,4 +65,28 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
       answersWithoutExpectedAnswer.preserve(pagesToPreserve).data mustBe emptyAnswers.data
     }
   }
+
+  "Calling removeMany" should {
+    "remove the pages from userAnswers" in {
+      val pagesToRemove: Seq[QuestionPage[_]] = Seq(ImporterNamePage, ImporterEORIExistsPage)
+      val result = completeUserAnswers.removeMany(pagesToRemove)
+      result.get(ImporterNamePage) mustBe None
+      result.get(ImporterEORIExistsPage) mustBe None
+    }
+    "not fail when specified pages don't exist" in {
+      val pagesToRemove: Seq[QuestionPage[_]] = Seq(ImporterNamePage, ImporterEORIExistsPage)
+      val answers = (for {
+        answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
+        answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
+        answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
+        answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
+        answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails)
+        answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc)
+      } yield answers).getOrElse(new UserAnswers("some-cred-id"))
+      val result = answers.removeMany(pagesToRemove)
+      result.get(ImporterNamePage) mustBe None
+      result.get(ImporterEORIExistsPage) mustBe None
+    }
+  }
+
 }
