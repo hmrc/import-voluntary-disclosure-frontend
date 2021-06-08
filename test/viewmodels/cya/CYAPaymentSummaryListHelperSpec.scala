@@ -296,7 +296,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
 
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(
           paymentMethodDefermentRow,
-          repAccountNumberDutyRow,
+          repAccountNumberRow,
           accountOwnerTypeBRow,
           proofOfAuthorityRow
         )))
@@ -360,7 +360,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
 
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow,
           splitDefermentNoRow,
-          repAccountNumberDutyRow,
+          repAccountNumberRow,
           accountOwnerTypeBRow,
           proofOfAuthorityRow
         )))
