@@ -119,8 +119,11 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-summary-list__row"
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.ImporterDanController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
+      )
     ),
       classes = "govuk-summary-list__row"
     )),
@@ -133,6 +136,27 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-margin-bottom-9",
       rows = rows
     )
+  )
+
+  val repAccountNumberRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.repAccountNumber),
+      classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
+    ),
+    value = Value(
+      Text(accountNumberDuty),
+      classes = "govuk-!-padding-bottom-1"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDan)
+      )
+    ),
+      classes = "govuk-!-padding-bottom-1"
+    )),
+    classes = "govuk-summary-list__row--no-border"
   )
 
   val repAccountNumberDutyRow = SummaryListRow(

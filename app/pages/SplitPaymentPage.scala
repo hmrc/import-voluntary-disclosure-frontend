@@ -16,28 +16,12 @@
 
 package pages
 
-import models.UserAnswers
 import play.api.libs.json.JsPath
-
-import scala.util.Try
 
 case object SplitPaymentPage extends QuestionPage[Boolean] {
 
   def path: JsPath = JsPath \ toString
 
   override def toString: String = "split-payment"
-
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(answer) if !answer =>
-        val removeDefermentAccountType = userAnswers.remove(DefermentTypePage).getOrElse(userAnswers)
-        val removeDefermentAccountNumber = removeDefermentAccountType.remove(DefermentAccountPage).getOrElse(userAnswers)
-        val removeAddDefermentAccountType = removeDefermentAccountNumber.remove(AdditionalDefermentTypePage).getOrElse(userAnswers)
-        val removeAddDefermentAccountNumber = removeAddDefermentAccountType.remove(AdditionalDefermentNumberPage).getOrElse(userAnswers)
-        val removeUploadAuthority = removeAddDefermentAccountNumber.remove(UploadAuthorityPage).getOrElse(userAnswers)
-        super.cleanup(value, removeUploadAuthority)
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
 
 }

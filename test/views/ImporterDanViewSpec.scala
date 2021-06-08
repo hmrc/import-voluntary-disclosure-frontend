@@ -29,7 +29,7 @@ import views.html.ImporterDanView
 class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: ImporterDanView = app.injector.instanceOf[ImporterDanView]
-  val backLink = Call("GET","backLinkUrl")
+  val backLink = Some(Call("GET","backLinkUrl"))
 
   val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
 
@@ -103,7 +103,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> backLink.url)
+      elementAttributes("#back-link") must contain("href" -> "backLinkUrl")
     }
 
     s"have the correct Continue button" in {

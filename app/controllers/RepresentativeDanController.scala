@@ -19,8 +19,9 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeDanFormProvider
+import models.requests.DataRequest
 import models.{RepresentativeDan, UserAnswers}
-import pages.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -57,26 +58,59 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
         backLink(request.userAnswers)
       ))),
       dan => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
-          updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-            case _ =>
+        val previousAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
+        val previousAccountType = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
+        if (dan.accountNumber != previousAccountNumber || dan.danType != previousAccountType) {
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            DefermentTypePage,
+            DefermentAccountPage,
+            AdditionalDefermentTypePage,
+            AdditionalDefermentNumberPage,
+            UploadAuthorityPage))
+          for {
+            otherUpdatedAnswers <- Future.successful(userAnswers)
+            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(checkMode.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+            }
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" =>
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case _ => if (request.checkMode) {
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              } else {
                 Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+              }
+            }
           }
         }
       }
     )
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call =
-    if (userAnswers.get(SplitPaymentPage).isDefined) {
-      controllers.routes.SplitPaymentController.onLoad()
+  private[controllers] def backLink(userAnswers: UserAnswers)(implicit request: DataRequest[_]): Call = {
+
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.DefermentController.onLoad()
+      if (userAnswers.get(SplitPaymentPage).isDefined) {
+        controllers.routes.SplitPaymentController.onLoad()
+      } else {
+        controllers.routes.DefermentController.onLoad()
+      }
     }
+  }
 
 }

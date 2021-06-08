@@ -28,10 +28,10 @@ case object ImporterEORIExistsPage extends QuestionPage[Boolean] {
   override def toString: String = "importer-eori-exists"
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    if (value.get) {
-      Try(userAnswers)
-    } else {
-      Try(userAnswers.remove(ImporterEORINumberPage).getOrElse(userAnswers))
+    value match {
+      case Some(true) => Try(userAnswers)
+      case Some(false) => Try(userAnswers.remove(ImporterEORINumberPage).getOrElse(userAnswers))
+      case _ => super.cleanup(value, userAnswers)
     }
   }
 }

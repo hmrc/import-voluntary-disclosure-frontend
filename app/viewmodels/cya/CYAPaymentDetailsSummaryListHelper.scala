@@ -94,7 +94,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.importerAccountNumber")),
             Text(accountNumber),
-            Some(ActionItem("Url", Text(messages("cya.change")))),
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.ImporterDanController.onLoad().url,
+              messages("cya.importerAccountNumber.change")
+            )),
             columnClasses = "govuk-summary-list__row",
             rowClasses = "govuk-summary-list__row"
           )
@@ -110,7 +113,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.repAccountNumber")),
             Text(accountNumber),
-            Some(ActionItem("Url", Text(messages("cya.change")))),
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.RepresentativeDanController.onLoad().url,
+              messages("cya.repDanDuty.change")
+            )),
             columnClasses = "govuk-!-padding-bottom-1",
             rowClasses = "govuk-summary-list__row--no-border"
           )
