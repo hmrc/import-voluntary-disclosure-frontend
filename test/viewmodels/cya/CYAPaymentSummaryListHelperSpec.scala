@@ -77,7 +77,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
             "application/pdf")),
         UploadAuthority(
           "5293747",
-          SelectedDutyTypes.Duty,
+          SelectedDutyTypes.Vat,
           FileUploadInfo(
             "VATFileExample.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",

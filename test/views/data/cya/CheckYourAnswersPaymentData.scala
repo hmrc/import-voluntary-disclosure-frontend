@@ -17,6 +17,7 @@
 package views.data.cya
 
 import messages.CYAMessages
+import models.SelectedDutyTypes.{Both, Duty, SelectedDutyType, Vat}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
@@ -33,6 +34,11 @@ object CheckYourAnswersPaymentData {
   val danTypeC = "The importer’s account and I have standing authority to use it"
   val dutyFileExample = "DutyFileExample.pdf"
   val vatFileExample = "VATFileExample.pdf"
+  val dan: String = "1284958"
+  val dutyTypeBoth: SelectedDutyType = Both
+  val dutyTypeDuty: SelectedDutyType = Duty
+  val dutyTypeVat: SelectedDutyType = Vat
+
 
   val paymentMethodOtherRow = SummaryListRow(
     key = Key(
@@ -190,8 +196,11 @@ object CheckYourAnswersPaymentData {
       Text(dutyFileExample)
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.UploadAuthorityController.onLoad(dutyTypeDuty, dan).url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+      )
     )
     ))
   )
@@ -231,8 +240,11 @@ object CheckYourAnswersPaymentData {
       Text(vatFileExample)
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.UploadAuthorityController.onLoad(dutyTypeVat, dan).url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+      )
     )
     ))
   )
