@@ -25,11 +25,11 @@ import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{CheckModePage, DefermentPage, UserTypePage}
+import pages._
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.DefermentView
 
 import scala.concurrent.Future
