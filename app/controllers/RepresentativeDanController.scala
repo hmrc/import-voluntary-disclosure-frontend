@@ -88,10 +88,10 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
             dan.danType match {
               case "A" | "C" =>
                 Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-              case _ => if (!request.checkMode) {
-                Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
-              } else {
+              case _ => if (request.checkMode) {
                 Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
               }
             }
           }

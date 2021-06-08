@@ -80,10 +80,10 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, splitPayment))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            if (splitPayment && !request.checkMode) {
-              redirectTo(splitPayment)
-            } else {
+            if (request.checkMode) {
               Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              redirectTo(splitPayment)
             }
           }
         }

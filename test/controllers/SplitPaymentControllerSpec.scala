@@ -126,6 +126,17 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanController.onLoad().url)
       }
 
+      "return a SEE OTHER split payment response when correct data is sent and in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
