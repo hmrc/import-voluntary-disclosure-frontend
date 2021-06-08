@@ -16,6 +16,8 @@
 
 package viewmodels.cya
 
+import java.time.{LocalDate, LocalDateTime}
+
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
@@ -24,8 +26,6 @@ import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.cya.CheckYourAnswersPaymentData._
-
-import java.time.{LocalDate, LocalDateTime}
 
 class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
 

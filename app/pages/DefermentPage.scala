@@ -16,29 +16,12 @@
 
 package pages
 
-import models.UserAnswers
 import play.api.libs.json.JsPath
-
-import scala.util.Try
 
 case object DefermentPage extends QuestionPage[Boolean] {
 
   def path: JsPath = JsPath \ toString
 
   override def toString: String = "deferment"
-
-  override def cleanup(payByDeferment: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    payByDeferment match {
-      case Some(false) =>
-        val removeSplitPayment = userAnswers.remove(SplitPaymentPage).getOrElse(userAnswers)
-        val removeDefermentAccountType = removeSplitPayment.remove(DefermentTypePage).getOrElse(userAnswers)
-        val removeDefermentAccountNumber = removeDefermentAccountType.remove(DefermentAccountPage).getOrElse(userAnswers)
-        val removeAddDefermentAccountType = removeDefermentAccountNumber.remove(AdditionalDefermentTypePage).getOrElse(userAnswers)
-        val removeAddDefermentAccountNumber = removeAddDefermentAccountType.remove(AdditionalDefermentNumberPage).getOrElse(userAnswers)
-        val removeUploadAuthority = removeAddDefermentAccountNumber.remove(UploadAuthorityPage).getOrElse(userAnswers)
-        super.cleanup(payByDeferment, removeUploadAuthority)
-      case _ => super.cleanup(payByDeferment, userAnswers)
-    }
-  }
 
 }

@@ -21,7 +21,7 @@ import forms.DefermentFormProvider
 import javax.inject.{Inject, Singleton}
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
-import pages.{CheckModePage, DefermentPage}
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -31,7 +31,6 @@ import views.html.DefermentView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 @Singleton
 class DefermentController @Inject()(identify: IdentifierAction,
@@ -61,16 +60,38 @@ class DefermentController @Inject()(identify: IdentifierAction,
           )
         )
       ),
-      value => {
-        for {
-          checkMode <- Future.fromTry(request.userAnswers.set(CheckModePage, false))
-          updatedAnswers <- Future.fromTry(checkMode.set(DefermentPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (value) {
-            redirectToDefermentView()
-          } else {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+      paymentByDeferment => {
+        val previousPaymentMethod = request.userAnswers.get(DefermentPage).getOrElse(paymentByDeferment)
+        if (paymentByDeferment != previousPaymentMethod) {
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            SplitPaymentPage,
+            DefermentTypePage,
+            DefermentAccountPage,
+            AdditionalDefermentTypePage,
+            AdditionalDefermentNumberPage,
+            UploadAuthorityPage))
+          for {
+            otherUpdatedAnswers <- Future.successful(userAnswers)
+            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(checkMode.set(DefermentPage, paymentByDeferment))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (paymentByDeferment) {
+              redirectToDefermentView()
+            } else {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            }
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentPage, paymentByDeferment))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (paymentByDeferment && !request.checkMode) {
+              redirectToDefermentView()
+            } else {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            }
           }
         }
       }

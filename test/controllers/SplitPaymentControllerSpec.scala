@@ -21,12 +21,14 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.SplitPaymentFormProvider
 import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
-import pages.{CheckModePage, DefermentPage, SplitPaymentPage, UserTypePage}
+import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages._
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.SplitPaymentView
 
 import scala.concurrent.Future
@@ -124,10 +126,47 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanController.onLoad().url)
       }
 
+      "return a SEE OTHER split payment response when correct data is sent and in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()
+      }
+
+      "return the correct location header when split payment is selected but data held in user answers is no split payment" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanDutyController.onLoad().url)
+      }
+
+      "return the correct location header when no split payment is selected but data held in user answers is split payment" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanController.onLoad().url)
       }
     }
 

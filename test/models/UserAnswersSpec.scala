@@ -73,6 +73,7 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
       result.get(ImporterNamePage) mustBe None
       result.get(ImporterEORIExistsPage) mustBe None
     }
+
     "not fail when specified pages don't exist" in {
       val pagesToRemove: Seq[QuestionPage[_]] = Seq(ImporterNamePage, ImporterEORIExistsPage)
       val answers = (for {
@@ -88,5 +89,4 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
       result.get(ImporterEORIExistsPage) mustBe None
     }
   }
-
 }
