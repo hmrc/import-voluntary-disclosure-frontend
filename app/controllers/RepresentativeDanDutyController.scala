@@ -22,7 +22,7 @@ import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Duty
 import models.requests.DataRequest
-import pages.{DefermentAccountPage, DefermentTypePage}
+import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage, DefermentAccountPage, DefermentTypePage, UploadAuthorityPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -59,25 +59,54 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
-          updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
-            case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+        val previousDutyAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
+        val previousDutyAccountType = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
+        if (dan.accountNumber != previousDutyAccountNumber || dan.danType != previousDutyAccountType) {
+
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            AdditionalDefermentNumberPage,
+            AdditionalDefermentTypePage,
+            UploadAuthorityPage
+          ))
+          for {
+            otherUpdatedAnswers <- Future.successful(userAnswers)
+            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(checkMode.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+            }
           }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" =>
+                Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+              case _ => if (!request.checkMode) {
+                Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+              } else {
+                Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+              }
+            }
+          }
+
         }
       }
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      None
+      controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      Some(controllers.routes.SplitPaymentController.onLoad())
+      controllers.routes.SplitPaymentController.onLoad()
     }
   }
 

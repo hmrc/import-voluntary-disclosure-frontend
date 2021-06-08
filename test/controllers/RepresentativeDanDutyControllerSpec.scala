@@ -134,8 +134,8 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.SplitPaymentController.onLoad())
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.SplitPaymentController.onLoad()
       }
     }
 
@@ -145,8 +145,8 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, true).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
-        result mustBe None
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
   }
