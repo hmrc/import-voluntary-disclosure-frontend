@@ -125,24 +125,6 @@ object CheckYourAnswersPaymentData {
     classes = "govuk-summary-list__row"
   )
 
-  val repAccountNumberRow = SummaryListRow(
-    key = Key(
-      Text(CYAMessages.repAccountNumber),
-      classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
-    ),
-    value = Value(
-      Text(accountNumberDuty),
-      classes = "govuk-!-padding-bottom-1"
-    ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
-    ),
-      classes = "govuk-!-padding-bottom-1"
-    )),
-    classes = "govuk-summary-list__row--no-border"
-  )
-
   def paymentDetailsAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
     CYAMessages.paymentDetails,
     SummaryList(

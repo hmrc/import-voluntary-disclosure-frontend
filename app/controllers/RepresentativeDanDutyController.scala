@@ -70,14 +70,14 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
           ))
           for {
             otherUpdatedAnswers <- Future.successful(userAnswers)
-            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
-            updatedAnswers <- Future.fromTry(checkMode.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentTypePage, dan.danType))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             dan.danType match {
               case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
-              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
             }
           }
         } else {
@@ -87,16 +87,14 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             dan.danType match {
-              case "A" | "C" =>
-                Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
-              case _ => if (!request.checkMode) {
-                Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
+              case "A" | "C" => if (request.checkMode) {
+                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
               } else {
                 Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
               }
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
             }
           }
-
         }
       }
     )
