@@ -16,10 +16,9 @@
 
 package models
 
+import java.time.LocalDateTime
 import pages.QuestionPage
 import play.api.libs.json._
-
-import java.time.LocalDateTime
 import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
 
@@ -88,7 +87,7 @@ final case class UserAnswers(id: String,
         case JsError(_) => None
       }
       page.path -> answer
-    }.collect{
+    }.collect {
       case (path, Some(value)) => Json.obj().setObject(path, value) match {
         case JsSuccess(value, _) => value
         case JsError(_) => Json.obj()
@@ -144,4 +143,5 @@ trait Settable[A] extends Query {
   def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] = Success(userAnswers)
 
 }
+
 // $COVERAGE-ON$

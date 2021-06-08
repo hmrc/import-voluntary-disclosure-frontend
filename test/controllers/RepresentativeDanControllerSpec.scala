@@ -20,11 +20,14 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
-import models.SelectedDutyTypes.Neither
-import models.UserAnswers
-import pages.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage}
+import models.SelectedDutyTypes.{Both, Neither}
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.underpayments.UnderpaymentDetail
+import models.{UserAnswers, UserType}
+import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanView
 
@@ -44,6 +47,18 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
     val form: RepresentativeDanFormProvider = formProvider
@@ -118,12 +133,107 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit(request))
         verifyCalls()
       }
+
+      "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "A").success.value
+          .set(DefermentAccountPage, "1234567").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "redirect to CYA when user supplies account number 1234567 and user answers holds account number 7654321" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(DefermentAccountPage, "7654321").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "redirect to UploadAuthority page when user supplies account type B and user answers holds account type C" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(DefermentAccountPage, "1234567").success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.UploadAuthorityController.onLoad(Both, "1234567").url)
+      }
+
+      "redirect to CYA page when user supplies account type B and is in checkMode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, false).success.value
+          .set(CheckModePage, true).success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
     }
 
     "payload contains invalid data" should {
       "return a BAD REQUEST" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
+      }
+    }
+  }
+
+  "backLink" when {
+    "not in change mode" should {
+      "point to split payment page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0), UnderpaymentDetail("B00", 1.0, 2.0))).success.value
+            .set(SplitPaymentPage, true).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.SplitPaymentController.onLoad()
+      }
+
+      "point to deferment page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.DefermentController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink(userAnswers.get)
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

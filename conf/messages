@@ -589,6 +589,7 @@ cya.cpcExists.change = Change one customs procedure code?
 cya.enterCpc.change = Change customs procedure code
 cya.supportingDocuments = Supporting documents
 cya.supportingDocuments.change = Change supporting documents
+cya.repDanDuty.change = Change account number and account owner
 cya.filesUploadedSingle = 1 file uploaded
 cya.filesUploadedPlural = {0} files uploaded
 cya.yourDetails = Your details
