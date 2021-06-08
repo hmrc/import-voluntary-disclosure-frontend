@@ -266,7 +266,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.UploadAuthorityController.onLoad(dutyTypeVat, accountNumberVAT).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
       )
     )
     ))

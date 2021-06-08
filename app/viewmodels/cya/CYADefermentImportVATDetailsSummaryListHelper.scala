@@ -97,7 +97,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
             Text(fileName),
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Vat, answers.get(AdditionalDefermentNumberPage).get).url,
-              messages("cya.proofOfAuth.change")
+              messages("cya.proofOfAuth.Vat.change")
             ))
           )
         )
