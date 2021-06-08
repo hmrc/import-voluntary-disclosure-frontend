@@ -143,8 +143,11 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-padding-bottom-1"
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+      )
     ),
       classes = "govuk-!-padding-bottom-1"
     )),
@@ -252,7 +255,7 @@ object CheckYourAnswersPaymentData {
 
     paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)),
     defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow)),
-    defermentVATAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow))
+    defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow))
   )
 
 }
