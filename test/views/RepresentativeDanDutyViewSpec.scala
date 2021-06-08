@@ -158,7 +158,7 @@ class RepresentativeDanDutyViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> backLink.url)
+      elementAttributes("#back-link") must contain("href" -> "backLinkUrl")
     }
   }
 }
