@@ -23,8 +23,7 @@ import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
-import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{CheckModePage, DefermentPage, SplitPaymentPage, UserTypePage}
+import pages._
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
