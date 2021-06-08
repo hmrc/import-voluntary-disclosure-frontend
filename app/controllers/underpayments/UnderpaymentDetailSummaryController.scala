@@ -112,7 +112,8 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
 
   private def removePaymentDataAndRedirect()(implicit request: DataRequest[_]): Future[Result] = {
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.remove(DefermentPage))
+      updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(SplitPaymentPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentTypePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentAccountPage))
