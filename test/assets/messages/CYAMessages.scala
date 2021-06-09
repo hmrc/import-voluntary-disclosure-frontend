@@ -99,5 +99,6 @@ object CYAMessages extends BaseMessages {
   val changeRepDan = "Change account number and account owner"
   val changeMoreInformation = "Change Extra information"
   val changeSplitDeferment = "Change split deferment payment?"
+  val changeRepDutyAccountNumber = "Change account number and account owner for duty owed"
 
 }

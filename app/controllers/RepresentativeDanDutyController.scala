@@ -21,7 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Duty
-import pages.{DefermentAccountPage, DefermentTypePage}
+import models.requests.DataRequest
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -41,8 +42,6 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                )
   extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] lazy val backLink: Call = controllers.routes.SplitPaymentController.onLoad()
-
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
       danType <- request.userAnswers.get(DefermentTypePage)
@@ -60,17 +59,52 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
-          updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
-            case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+        val previousDutyAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
+        val previousDutyAccountType = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
+        if (dan.accountNumber != previousDutyAccountNumber || dan.danType != previousDutyAccountType) {
+
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            AdditionalDefermentNumberPage,
+            AdditionalDefermentTypePage,
+            UploadAuthorityPage
+          ))
+          for {
+            updatedAnswers <- Future.successful(userAnswers)
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+            }
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield { if (request.checkMode) {
+            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          } else {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+            }
+          }
           }
         }
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.SplitPaymentController.onLoad()
+    }
+  }
+
 }
