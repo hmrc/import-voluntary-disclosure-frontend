@@ -717,6 +717,8 @@ confirmEORI.pageTitle = Confirm your EORI details
 confirmEORI.heading = Confirm your EORI details
 confirmEORI.eoriNumber = EORI number
 confirmEORI.name = Name
+confirmEORI.vatNumber = VAT number
+confirmEORI.vatNumberNotPresent = Not VAT registered
 
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?

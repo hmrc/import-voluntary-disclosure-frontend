@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.{Json, Reads, __}
 
-case class EoriDetails(eori: String, name: String, address: ContactAddress)
+case class EoriDetails(eori: String, name: String, address: ContactAddress, vatNumber: Option[String])
 
 object EoriDetails {
 
@@ -26,8 +26,9 @@ object EoriDetails {
     eori <- (__ \\ "eori").read[String]
     name <- (__ \\ "name").read[String]
     address <- __.read[ContactAddress](ContactAddress.sub09Reads)
+    vatNumber <- (__ \\ "vatNumber").readNullable[String]
   } yield {
-    EoriDetails(eori, name, address)
+    EoriDetails(eori, name, address, vatNumber)
   }
 
   implicit val format = Json.format[EoriDetails]
