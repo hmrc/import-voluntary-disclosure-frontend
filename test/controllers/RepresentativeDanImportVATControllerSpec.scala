@@ -22,9 +22,10 @@ import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Vat
 import models.UserAnswers
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage}
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage}
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanImportVATView
 
@@ -44,6 +45,18 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
     val form: RepresentativeDanFormProvider = formProvider
@@ -112,4 +125,30 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       }
     }
   }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "point to Representative DAN Duty page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.RepresentativeDanDutyController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+  }
+
 }

@@ -189,7 +189,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "point to acceptance date page" in new Test {
+      "point to Split Payment page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
