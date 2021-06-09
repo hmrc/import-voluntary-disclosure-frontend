@@ -621,6 +621,7 @@ cya.importerAccountNumber = Deferment account number
 cya.importerAccountNumber.change = Change Deferment account number
 cya.repAccountNumber = Account number
 cya.repDutyAccountNumber.change = Change account number and account owner for duty owed
+cya.repVATAccountNumber.change = Change account number and account owner for VAT owed
 cya.accountOwner = Account owner
 cya.proofOfAuth = Proof of authority
 cya.myDefermentAccount = My deferment account

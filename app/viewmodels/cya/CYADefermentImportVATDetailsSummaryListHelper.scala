@@ -23,7 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper.createRow
 
 trait CYADefermentImportVATDetailsSummaryListHelper {
@@ -62,7 +62,10 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
-        Some(ActionItem("Url", Text(messages("cya.change")))),
+        Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+          messages("cya.repVATAccountNumber.change")
+        )),
         columnClasses = "govuk-!-padding-bottom-1",
         rowClasses = "govuk-summary-list__row--no-border"
       )

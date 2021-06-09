@@ -21,6 +21,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
+import models.requests.DataRequest
 import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -40,8 +41,6 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
                                                      formProvider: RepresentativeDanFormProvider
                                                )
   extends FrontendController(mcc) with I18nSupport {
-
-  private[controllers] lazy val backLink: Call = controllers.routes.RepresentativeDanDutyController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
@@ -73,4 +72,13 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.RepresentativeDanDutyController.onLoad()
+    }
+  }
+
 }
