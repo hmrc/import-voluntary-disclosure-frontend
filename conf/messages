@@ -620,6 +620,7 @@ cya.payingByDeferment = By duty deferment
 cya.importerAccountNumber = Deferment account number
 cya.importerAccountNumber.change = Change Deferment account number
 cya.repAccountNumber = Account number
+cya.repDutyAccountNumber.change = Change account number and account owner for duty owed
 cya.accountOwner = Account owner
 cya.proofOfAuth = Proof of authority
 cya.proofOfAuth.duty.change = Change proof of authority for duty owed

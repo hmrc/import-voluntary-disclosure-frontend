@@ -61,7 +61,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
-        Some(ActionItem("Url", Text(messages("cya.change")))),
+        Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.RepresentativeDanDutyController.onLoad().url,
+          messages("cya.repDutyAccountNumber.change")
+        )),
         columnClasses = "govuk-!-padding-bottom-1",
         rowClasses = "govuk-summary-list__row--no-border"
       )
