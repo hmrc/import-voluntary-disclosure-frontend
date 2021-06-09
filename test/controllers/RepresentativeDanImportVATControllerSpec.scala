@@ -72,12 +72,6 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-    "the backLink functionality is called" should {
-      "redirect to the representative duty page" in new Test {
-        controller.backLink mustBe controllers.routes.RepresentativeDanDutyController.onLoad()
-      }
-
-    }
   }
 
   "POST Representative Dan Import VAT page" when {
