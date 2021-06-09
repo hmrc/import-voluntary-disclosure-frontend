@@ -17,7 +17,9 @@
 package controllers
 
 import com.google.inject.Inject
+import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
+
 import javax.inject.Singleton
 import models.{EoriDetails, UserAnswers}
 import pages.KnownEoriDetails
@@ -41,7 +43,8 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
                                              mcc: MessagesControllerComponents,
                                              sessionRepository: SessionRepository,
                                              eoriDetailsService: EoriDetailsService,
-                                             view: ConfirmEORIDetailsView
+                                             view: ConfirmEORIDetailsView,
+                                             implicit val appConfig: AppConfig
                                             )
   extends FrontendController(mcc) with I18nSupport {
 
