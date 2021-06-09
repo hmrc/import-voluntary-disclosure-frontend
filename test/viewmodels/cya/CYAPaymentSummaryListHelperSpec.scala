@@ -115,14 +115,14 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
     "buildDefermentDuty" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow, proofOfAuthorityRow)))
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow, proofOfAuthorityDuty)))
       }
     }
 
     "buildDefermentVAT" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow, proofOfAuthorityAdditional)))
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow, proofOfAuthorityVat)))
       }
     }
 
@@ -284,9 +284,9 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(UploadAuthorityPage, Seq(
             UploadAuthority(
               "1284958",
-              SelectedDutyTypes.Duty,
+              SelectedDutyTypes.Both,
               FileUploadInfo(
-                "DutyFileExample.pdf",
+                "FileExample.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
                 LocalDateTime.now,
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
@@ -298,7 +298,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           paymentMethodDefermentRow,
           repAccountNumberRow,
           accountOwnerTypeBRow,
-          proofOfAuthorityRow
+          proofOfAuthority
         )))
 
       }
@@ -348,9 +348,9 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(UploadAuthorityPage, Seq(
             UploadAuthority(
               "1284958",
-              SelectedDutyTypes.Duty,
+              SelectedDutyTypes.Both,
               FileUploadInfo(
-                "DutyFileExample.pdf",
+                "FileExample.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
                 LocalDateTime.now,
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
@@ -362,7 +362,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           splitDefermentNoRow,
           repAccountNumberRow,
           accountOwnerTypeBRow,
-          proofOfAuthorityRow
+          proofOfAuthority
         )))
 
       }

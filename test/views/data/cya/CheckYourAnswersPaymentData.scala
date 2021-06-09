@@ -17,7 +17,7 @@
 package views.data.cya
 
 import messages.CYAMessages
-import models.SelectedDutyTypes.{Both, Duty, SelectedDutyType, Vat}
+import models.SelectedDutyTypes.{Both, Duty, Vat}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
@@ -32,6 +32,7 @@ object CheckYourAnswersPaymentData {
   val danTypeA = "My deferment account"
   val danTypeB = "The importer’s account and I have authority to use it"
   val danTypeC = "The importer’s account and I have standing authority to use it"
+  val FileExample = "FileExample.pdf"
   val dutyFileExample = "DutyFileExample.pdf"
   val vatFileExample = "VATFileExample.pdf"
 
@@ -210,19 +211,19 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val proofOfAuthorityRow = SummaryListRow(
+  val proofOfAuthority = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(dutyFileExample)
+      Text(FileExample)
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+        controllers.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
       )
     )
     ))
@@ -254,7 +255,25 @@ object CheckYourAnswersPaymentData {
     classes = "govuk-summary-list__row--no-border"
   )
 
-  val proofOfAuthorityAdditional = SummaryListRow(
+  val proofOfAuthorityDuty = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.proofOfAuthority),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      Text(dutyFileExample)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+      )
+    )
+    ))
+  )
+
+  val proofOfAuthorityVat = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"
