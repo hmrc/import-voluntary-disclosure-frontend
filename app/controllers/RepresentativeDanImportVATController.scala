@@ -22,7 +22,7 @@ import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
 import models.requests.DataRequest
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage}
+import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage, UploadAuthorityPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -39,7 +39,7 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
                                                      mcc: MessagesControllerComponents,
                                                      view: RepresentativeDanImportVATView,
                                                      formProvider: RepresentativeDanFormProvider
-                                               )
+                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -59,14 +59,41 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
-          updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-            case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+        val previousVATAccountNumber = request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse(dan.accountNumber)
+        val previousVATAccountType = request.userAnswers.get(AdditionalDefermentTypePage).getOrElse(dan.danType)
+        if (dan.accountNumber != previousVATAccountNumber || dan.danType != previousVATAccountType) {
+
+          val userAnswers = request.userAnswers.removeMany(Seq(
+            UploadAuthorityPage
+          ))
+
+
+          for {
+            updatedAnswers <- Future.successful(userAnswers)
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+            }
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              dan.danType match {
+                case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+                case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+              }
+            }
           }
         }
       }
