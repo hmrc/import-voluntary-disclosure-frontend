@@ -136,9 +136,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
 
     val action = request.dutyType match {
-      case Both if splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
-      case _ => controllers.routes.CheckYourAnswersController.onLoad().url
-    }
+          case Both if !request.checkMode && splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
+          case _ => controllers.routes.CheckYourAnswersController.onLoad().url
+        }
 
     val filename = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty)
       .filter(_.dutyType == dutyType)

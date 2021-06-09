@@ -34,9 +34,6 @@ object CheckYourAnswersPaymentData {
   val danTypeC = "The importer’s account and I have standing authority to use it"
   val dutyFileExample = "DutyFileExample.pdf"
   val vatFileExample = "VATFileExample.pdf"
-  val dutyTypeBoth: SelectedDutyType = Both
-  val dutyTypeDuty: SelectedDutyType = Duty
-  val dutyTypeVat: SelectedDutyType = Vat
 
 
   val paymentMethodOtherRow = SummaryListRow(
@@ -223,7 +220,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(dutyTypeDuty, accountNumberDuty).url,
+        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
       )
@@ -267,7 +264,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(dutyTypeVat, accountNumberVAT).url,
+        controllers.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
       )
