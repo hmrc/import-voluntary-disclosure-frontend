@@ -20,15 +20,18 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
-import models.SelectedDutyTypes.Vat
-import models.UserAnswers
+import models.SelectedDutyTypes.{Duty, Vat}
+import models.{FileUploadInfo, UploadAuthority, UserAnswers, UserType}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage}
+import models.underpayments.UnderpaymentDetail
+import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage, DefermentAccountPage, DefermentTypePage, SplitPaymentPage, UploadAuthorityPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanImportVATView
 
+import java.time.{LocalDate, LocalDateTime}
 import scala.concurrent.Future
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
@@ -88,7 +91,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
   }
 
   "POST Representative Dan Import VAT page" when {
-    "payload contains valid data" should {
+    "payload contains valid data and check mode is false" should {
 
       "return a SEE OTHER response and redirect to correct location when dan type is A" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("A")): _*)
@@ -116,6 +119,104 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit(request))
         verifyCalls()
       }
+    }
+
+    "payload contains valid data and check mode is true" should {
+      "return a SEE OTHER response and redirect to correct location when in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "payload contains valid data and user answers are changed from CYA" should {
+        "redirect to CYA when user supplies account number 7654321 and user answers holds account number 1234567" in new Test {
+          override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(
+              UnderpaymentDetail("B00", 0.0, 1.0),
+              UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(SplitPaymentPage, true).success.value
+            .set(AdditionalDefermentTypePage, "A").success.value
+            .set(AdditionalDefermentNumberPage, "1234567").success.value
+          )
+          private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("A")): _*)
+          lazy val result: Future[Result] = controller.onSubmit(request)
+          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        }
+
+        "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {
+          override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(
+              UnderpaymentDetail("B00", 0.0, 1.0),
+              UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(SplitPaymentPage, true).success.value
+            .set(AdditionalDefermentTypePage, "A").success.value
+            .set(AdditionalDefermentNumberPage, "1234567").success.value
+          )
+          private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+          lazy val result: Future[Result] = controller.onSubmit(request)
+          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        }
+
+        "redirect to UploadAuthority page when user supplies account type B and user answers holds account type C" in new Test {
+          override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(
+              UnderpaymentDetail("B00", 0.0, 1.0),
+              UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+            .set(SplitPaymentPage, true).success.value
+            .set(AdditionalDefermentTypePage, "A").success.value
+            .set(AdditionalDefermentNumberPage, "1234567").success.value
+          )
+          private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
+          lazy val result: Future[Result] = controller.onSubmit(request)
+          redirectLocation(result) mustBe Some(controllers.routes.UploadAuthorityController.onLoad(Vat, "1234567").url)
+        }
+      }
+
+      "redirect to CYA and remove VAT proof of authority when user supplies account type C and user answers holds account type A" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(
+            UnderpaymentDetail("B00", 0.0, 1.0),
+            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(SplitPaymentPage, true).success.value
+          .set(DefermentTypePage, "B").success.value
+          .set(DefermentAccountPage, "1234567").success.value
+          .set(AdditionalDefermentTypePage, "B").success.value
+          .set(AdditionalDefermentNumberPage, "7654321").success.value
+          .set(UploadAuthorityPage, Seq(
+            UploadAuthority("1234567",
+            Duty,
+            FileUploadInfo(
+              "DutyDocument.pdf",
+              "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
+              LocalDateTime.of(2020, 1, 10, 10,31),
+              "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e5",
+              "application/pdf"
+            )),
+            UploadAuthority("7654321",
+              Vat,
+              FileUploadInfo(
+                "VATDocument.pdf",
+                "http://localhost:9570/upscan/download/5e922a0f-d5ad-4aa6-9977-45a83096f71d",
+                LocalDateTime.of(2020, 1, 10, 10,30),
+                "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e6",
+                "application/pdf"
+              ))
+          )).success.value
+        )
+        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
     }
 
     "payload contains invalid data" should {
