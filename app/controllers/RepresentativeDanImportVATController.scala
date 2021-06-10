@@ -22,7 +22,7 @@ import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
 import models.requests.DataRequest
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage, UploadAuthorityPage}
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -66,7 +66,6 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
           val userAnswers = request.userAnswers.removeMany(Seq(
             UploadAuthorityPage
           ))
-
 
           for {
             updatedAnswers <- Future.successful(userAnswers)
