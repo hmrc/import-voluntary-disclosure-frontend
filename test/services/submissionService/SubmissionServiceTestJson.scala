@@ -386,6 +386,7 @@ trait SubmissionServiceTestJson {
     """{
       |   "representative":{
       |      "eori":"GB987654321000",
+      |      "vatNumber":"987654321000",
       |      "contactDetails":{
       |         "fullName":"John Smith",
       |         "email":"test@test.com",
