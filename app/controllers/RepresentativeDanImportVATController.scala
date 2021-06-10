@@ -63,12 +63,10 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
         val previousVATAccountType = request.userAnswers.get(AdditionalDefermentTypePage).getOrElse(dan.danType)
         if (dan.accountNumber != previousVATAccountNumber || dan.danType != previousVATAccountType) {
 
-          val userAnswers = request.userAnswers.removeMany(Seq(
-            UploadAuthorityPage
-          ))
+          val authorityFiles = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == Vat)
 
           for {
-            updatedAnswers <- Future.successful(userAnswers)
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAuthorityPage, authorityFiles))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentTypePage, dan.danType))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
