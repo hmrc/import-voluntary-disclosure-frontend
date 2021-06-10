@@ -135,7 +135,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
           authorityDocuments.filter(_.dutyType == Duty).map(_.file) ++ data.supportingDocuments
         case (Some(true), _, Some("B")) =>
           authorityDocuments.filter(_.dutyType == Vat).map(_.file) ++ data.supportingDocuments
-        case (Some(false), Some("B"), _) =>
+        case (_, Some("B"), _) =>
           authorityDocuments.map(_.file) ++ data.supportingDocuments
         case _ => data.supportingDocuments
       }
@@ -147,7 +147,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       (data.splitDeferment, data.defermentType, data.additionalDefermentType) match {
         case (Some(true), Some(dt), Some(addDt)) if dt != "B" && addDt != "B" => documentsSupplied
         case (Some(true), _, _) => documentsSupplied ++ Seq(DefermentAuthorisation)
-        case (Some(false), Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
+        case (_, Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
         case _ => documentsSupplied
       }
     } else {
