@@ -83,12 +83,12 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
 
     val eoriNumberSummaryListRow: SummaryListRow = rowItem("confirmEORI.eoriNumber", eoriDetails.eori)
     val nameSummaryListRow: SummaryListRow = rowItem("confirmEORI.name", eoriDetails.name)
-    val vatNumberSummaryListRow: Seq[SummaryListRow] = eoriDetails.vatNumber match {
-      case Some(vatNumber) => Seq(rowItem("confirmEORI.vatNumber", vatNumber))
-      case None => Seq(rowItem("confirmEORI.vatNumber", messages("confirmEORI.vatNumberNotPresent")))
+    val vatNumberSummaryListRow: SummaryListRow = eoriDetails.vatNumber match {
+      case Some(vatNumber) => rowItem("confirmEORI.vatNumber", vatNumber)
+      case None => rowItem("confirmEORI.vatNumber", messages("confirmEORI.vatNumberNotPresent"))
     }
 
-    SummaryList(Seq(eoriNumberSummaryListRow, nameSummaryListRow) ++ vatNumberSummaryListRow)
+    SummaryList(Seq(eoriNumberSummaryListRow, nameSummaryListRow, vatNumberSummaryListRow))
 
   }
 
