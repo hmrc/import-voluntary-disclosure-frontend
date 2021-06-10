@@ -66,6 +66,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     MockedSessionRepository.set(Future.successful(true))
+    MockedSessionRepository.remove(Future.successful("OK"))
 
     lazy val serviceMock: Either[ErrorModel, SubmissionResponse] = Right(SubmissionResponse("123"))
     lazy val controller = {

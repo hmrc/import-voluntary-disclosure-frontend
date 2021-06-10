@@ -72,6 +72,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
             eoriDetails <- request.userAnswers.get(KnownEoriDetails)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+            _ <- Some(sessionRepository.remove(request.credId))
           } yield {
             val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
             ConfirmationViewData(
