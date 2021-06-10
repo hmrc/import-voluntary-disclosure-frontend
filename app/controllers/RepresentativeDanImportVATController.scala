@@ -21,7 +21,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.RepresentativeDanFormProvider
 import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage}
+import models.requests.DataRequest
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -38,10 +39,8 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
                                                      mcc: MessagesControllerComponents,
                                                      view: RepresentativeDanImportVATView,
                                                      formProvider: RepresentativeDanFormProvider
-                                               )
+                                                    )
   extends FrontendController(mcc) with I18nSupport {
-
-  private[controllers] lazy val backLink: Call = controllers.routes.RepresentativeDanDutyController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
@@ -60,17 +59,50 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
-          updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          dan.danType match {
-            case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-            case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+        val previousVATAccountNumber = request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse(dan.accountNumber)
+        val previousVATAccountType = request.userAnswers.get(AdditionalDefermentTypePage).getOrElse(dan.danType)
+        if (dan.accountNumber != previousVATAccountNumber || dan.danType != previousVATAccountType) {
+
+          val authorityFiles = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == Vat)
+
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAuthorityPage, authorityFiles))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            dan.danType match {
+              case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+            }
+          }
+        } else {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              dan.danType match {
+                case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+                case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+              }
+            }
           }
         }
       }
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.routes.RepresentativeDanDutyController.onLoad()
+    }
+  }
+
 }
