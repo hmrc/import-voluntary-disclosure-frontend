@@ -84,7 +84,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
   }
 
   private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    (answers.get(UploadAuthorityPage), answers.get(DefermentTypePage), answers.get(AdditionalDefermentNumberPage)) match {
+    (answers.get(UploadAuthorityPage), answers.get(AdditionalDefermentTypePage), answers.get(AdditionalDefermentNumberPage)) match {
       case (Some(files), Some("B"), Some(dan)) =>
         val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
         Some(
