@@ -29,9 +29,15 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
   private lazy val injectedView: ConfirmEORIDetailsView = app.injector.instanceOf[ConfirmEORIDetailsView]
 
 
-  "Rendering the Confirm EORI Details page" should {
+  "Rendering the Confirm EORI Details page without the vatNumber" should {
 
-    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd."))(fakeRequest, messages, appConfig)
+    lazy val view: Html = injectedView(
+      details(
+        "GB987654321000",
+        "Fast Food ltd.",
+        "Not VAT registered"
+      )
+    )(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have only 1 Summary List" in {
@@ -39,9 +45,8 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     }
 
     "have 2 Summary List Rows" in {
-      document.select(".govuk-summary-list__row").size mustBe 2
+      document.select(".govuk-summary-list__row").size mustBe 3
     }
-
 
     "have correct EORI number value" in {
       elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__value") mustBe "GB987654321000"
@@ -51,12 +56,57 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "Fast Food ltd."
     }
 
+    "have correct vatNumber name value" in {
+      elementText("#main-content > div > div > dl > div:nth-child(3) > dt") mustBe ConfirmEORIDetailsMessages.vatNumber
+    }
+
+    "have correct vatNumber value when it's not present" in {
+      elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe ConfirmEORIDetailsMessages.vatNumberNotPresent
+    }
+
+  }
+
+  "Rendering the Confirm EORI Details page with the vatNumber" should {
+
+    lazy val view: Html = injectedView(
+      details(
+        "GB987654321000",
+        "Fast Food ltd.",
+        "987654321000"
+      )
+    )(fakeRequest, messages, appConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have only 1 Summary List" in {
+      document.select(".govuk-summary-list").size mustBe 1
+    }
+
+    "have 2 Summary List Rows" in {
+      document.select(".govuk-summary-list__row").size mustBe 3
+    }
+
+    "have correct EORI number value" in {
+      elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__value") mustBe "GB987654321000"
+    }
+
+    "have correct name value" in {
+      elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "Fast Food ltd."
+    }
+
+    "have correct vatNumber name value" in {
+      elementText("#main-content > div > div > dl > div:nth-child(3) > dt") mustBe ConfirmEORIDetailsMessages.vatNumber
+    }
+
+    "have correct vatNumber value when it's not present" in {
+      elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "987654321000"
+    }
+
   }
 
 
   it should {
 
-    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd."))(fakeRequest, messages, appConfig)
+    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd.", "987654321000"))(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmEORIDetailsMessages.title)
@@ -71,6 +121,14 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     s"have correct name title of '${ConfirmEORIDetailsMessages.name}'" in {
       elementText("#main-content > div > div > dl > div:nth-child(2) > dt") mustBe ConfirmEORIDetailsMessages.name
+    }
+
+    s"have correct expandable text '${ConfirmEORIDetailsMessages.notThisEoriText}'" in {
+      elementText("#main-content > div > div > details > summary > span") mustBe ConfirmEORIDetailsMessages.notThisEoriText
+    }
+
+    s"have correct link within the expandable text '${ConfirmEORIDetailsMessages.notThisEoriExpandedLinkText}'" in {
+      elementText("#main-content > div > div > details > div > a") mustBe ConfirmEORIDetailsMessages.notThisEoriExpandedLinkText
     }
 
     s"have the correct Continue button" in {

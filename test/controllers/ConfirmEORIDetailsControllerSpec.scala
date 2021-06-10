@@ -32,7 +32,6 @@ import views.html.ConfirmEORIDetailsView
 
 import scala.concurrent.Future
 
-
 class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
 
   trait Test extends MockSessionRepository {
@@ -46,8 +45,6 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
     lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
       messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, appConfig)
-
-
   }
 
   "GET /" when {
@@ -76,7 +73,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
       "produce correct summary list" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetails)
-        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd")
+        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
         result mustBe expectedResult
       }
 
