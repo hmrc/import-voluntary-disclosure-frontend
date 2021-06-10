@@ -68,7 +68,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST oneEntry" when {
+  "POST onSubmit for oneEntry" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
@@ -98,7 +98,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST moreThanOneEntry" when {
+  "POST onSubmit for moreThanOneEntry" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
