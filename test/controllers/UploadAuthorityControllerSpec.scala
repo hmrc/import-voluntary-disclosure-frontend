@@ -28,7 +28,7 @@ import mocks.services.MockUpScanService
 import models.SelectedDutyTypes._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
+import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages.{CheckModePage, SplitPaymentPage, UploadAuthorityPage}

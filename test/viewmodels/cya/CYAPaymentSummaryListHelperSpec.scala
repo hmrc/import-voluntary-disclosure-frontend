@@ -21,7 +21,7 @@ import java.time.{LocalDate, LocalDateTime}
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, SelectedDutyTypes, UnderpaymentReason, UploadAuthority, UserAnswers, UserType}
+import models._
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
