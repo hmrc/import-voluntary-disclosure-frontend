@@ -72,6 +72,7 @@ trait ReusableValues {
 
   val cleanedDetailsJson: JsObject = Json.obj(
     "eori" -> "GB987654321000",
+    "vatNumber" -> "987654321000",
     "name" -> "Fast Food ltd",
     "streetAndNumber" -> "99 Avenue Road",
     "city" -> "Anyold Town",
