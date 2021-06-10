@@ -284,9 +284,9 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(UploadAuthorityPage, Seq(
             UploadAuthority(
               "1284958",
-              SelectedDutyTypes.Both,
+              SelectedDutyTypes.Duty,
               FileUploadInfo(
-                "FileExample.pdf",
+                "DutyFileExample.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
                 LocalDateTime.now,
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
@@ -362,7 +362,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           splitDefermentNoRow,
           repAccountNumberRow,
           accountOwnerTypeBRow,
-          proofOfAuthority
+          proofOfAuthorityBoth
         )))
 
       }

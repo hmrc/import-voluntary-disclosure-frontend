@@ -86,19 +86,15 @@ trait CYADefermentDutyDetailsSummaryListHelper {
   }
 
   private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    val fileName = (answers.get(UploadAuthorityPage), answers.get(DefermentAccountPage)) match {
-      case (Some(files), Some(dan)) => files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
-      case _ => "No authority file found"
-    }
-
-    (answers.get(UploadAuthorityPage), answers.get(DefermentTypePage)) match {
-      case (Some(_), Some("B")) =>
+    (answers.get(UploadAuthorityPage), answers.get(DefermentTypePage), answers.get(DefermentAccountPage)) match {
+      case (Some(files), Some("B"), Some(dan)) =>
+        val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
         Some(
           createRow(
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty, answers.get(DefermentAccountPage).get).url,
+              controllers.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty, dan).url,
               messages("cya.proofOfAuth.duty.change")
             ))
           )

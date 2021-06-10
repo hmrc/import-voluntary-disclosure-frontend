@@ -217,6 +217,24 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
+      Text(dutyFileExample)
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
+      )
+    )
+    ))
+  )
+
+  val proofOfAuthorityBoth = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.proofOfAuthority),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
       Text(FileExample)
     ),
     actions = Some(Actions(items = Seq(
