@@ -18,8 +18,8 @@ package utils
 
 import messages.underpayments.UnderpaymentTypeMessages
 import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
-import models.underpayments.UnderpaymentDetail
 import models._
+import models.underpayments.UnderpaymentDetail
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -51,7 +51,8 @@ trait ReusableValues {
       city = "Anyold Town",
       postalCode = Some("99JZ 1AA"),
       countryCode = "GB"
-    )
+    ),
+    Some("987654321000")
   )
 
   val errorModel: HttpResponse = HttpResponse(Status.NOT_FOUND, "Error Message")

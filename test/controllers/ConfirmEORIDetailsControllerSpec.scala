@@ -25,7 +25,6 @@ import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import uk.gov.hmrc.govukfrontend.views.Aliases
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import utils.ReusableValues
 import views.data.ConfirmEORIDetailsData
@@ -46,7 +45,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view)
+      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, appConfig)
 
 
   }
@@ -91,7 +90,8 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
             city = "Anyold Town",
             postalCode = Some("99JZ 1AA"),
             countryCode = "GB"
-          ))).success.value)
+          ),
+            Some("98765432100"))).success.value)
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }

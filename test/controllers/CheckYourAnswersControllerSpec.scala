@@ -32,8 +32,6 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.ControllerSpecBase
 import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
@@ -46,6 +44,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {
@@ -95,7 +94,16 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
         .set(UserTypePage, UserType.Importer).success.value
         .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
-        .set(KnownEoriDetails, EoriDetails("GB123456789", "Test User", ContactAddress(addressLine1 = "address one", countryCode = "GB", city = "Test city", postalCode = Some("AA00AA")))).success.value
+        .set(KnownEoriDetails, EoriDetails(
+          "GB123456789",
+          "Test User",
+          ContactAddress(
+            addressLine1 = "address one",
+            countryCode = "GB",
+            city = "Test city",
+            postalCode = Some("AA00AA")
+          ),
+          Some("123456789"))).success.value
       )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
@@ -107,7 +115,16 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
         .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
         .set(ImporterNamePage, "Test User").success.value
         .set(ImporterEORINumberPage, "GB123456789").success.value
-        .set(KnownEoriDetails, EoriDetails("GB123456789", "Test User", ContactAddress(addressLine1 = "address one", countryCode = "GB", city = "Test city", postalCode = Some("AA00AA")))).success.value
+        .set(KnownEoriDetails, EoriDetails(
+          "GB123456789",
+          "Test User",
+          ContactAddress(
+            addressLine1 = "address one",
+            countryCode = "GB",
+            city = "Test city",
+            postalCode = Some("AA00AA")
+          ),
+          Some("123456789"))).success.value
       )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK

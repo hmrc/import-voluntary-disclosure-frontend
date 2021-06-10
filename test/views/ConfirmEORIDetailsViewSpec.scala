@@ -17,12 +17,11 @@
 package views
 
 import base.ViewBaseSpec
-import messages.{ConfirmEORIDetailsMessages, ConfirmReasonDetailMessages}
+import messages.ConfirmEORIDetailsMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.data.ConfirmEORIDetailsData.details
-import views.data.ConfirmReasonData.reasons
 import views.html.ConfirmEORIDetailsView
 
 class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
@@ -32,7 +31,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
   "Rendering the Confirm EORI Details page" should {
 
-    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd."))(fakeRequest, messages)
+    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd."))(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have only 1 Summary List" in {
@@ -55,11 +54,9 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
   }
 
 
-
-
   it should {
 
-    lazy val view: Html = injectedView(details("GB987654321000","Fast Food ltd."))(fakeRequest, messages)
+    lazy val view: Html = injectedView(details("GB987654321000", "Fast Food ltd."))(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmEORIDetailsMessages.title)
@@ -81,7 +78,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     }
 
     "render a continue button with the correct URL " in {
-      elementAttributes(".govuk-button")  must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
+      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
     }
 
   }
