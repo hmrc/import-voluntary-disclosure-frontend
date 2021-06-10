@@ -73,7 +73,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
       "produce correct summary list" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetails)
-        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
+        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "987654321000")
         result mustBe expectedResult
       }
 
