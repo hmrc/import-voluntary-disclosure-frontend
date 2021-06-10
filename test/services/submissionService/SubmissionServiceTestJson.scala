@@ -359,7 +359,8 @@ trait SubmissionServiceTestJson {
       |         "email":"test@test.com",
       |         "phoneNumber":"0123456789"
       |      },
-      |      "eori":"GB987654321000"
+      |      "eori":"GB987654321000",
+      |      "vatNumber":"987654321000"
       |   }
       |}""".stripMargin
 
