@@ -17,7 +17,7 @@
 package connectors.httpParsers
 
 import base.SpecBase
-import connectors.httpParsers.IvdSubmissionHttpParser.{SubmissionResponseReads, EoriDetailsReads}
+import connectors.httpParsers.IvdSubmissionHttpParser.{EoriDetailsReads, SubmissionResponseReads}
 import models.{ContactAddress, EoriDetails, ErrorModel, SubmissionResponse}
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
@@ -35,7 +35,8 @@ class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
       city = "Anyold Town",
       postalCode = Some("99JZ 1AA"),
       countryCode = "GB"
-    )
+    ),
+    Some("987654321000")
   )
 
   val submissionResponseJson: JsObject = Json.obj(

@@ -14,13 +14,15 @@
  * limitations under the License.
  *@
 
-@this(layout: templates.Layout,
-      govukSummaryList: GovukSummaryList,
-      h1: components.h1,
-      linkButton: components.linkButton
-      )
+@this(
+    layout: templates.Layout,
+    govukSummaryList: GovukSummaryList,
+    h1: components.h1,
+    linkButton: components.linkButton,
+    govukDetails: GovukDetails
+)
 
-@(details: SummaryList)(implicit request: Request[_], messages: Messages)
+@(details: SummaryList)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @layout(
     pageTitle = messages("confirmEORI.pageTitle"),
@@ -30,11 +32,22 @@
 
     @govukSummaryList(details)
 
-@linkButton( url = controllers.routes.UserTypeController.onLoad().url, messages(("common.button.confirmAndContinue")), id = Some("value"))
+    @govukDetails(
+        Details(
+            summary = HtmlContent(messages("confirmEORI.notThisEoriText")),
+            content = HtmlContent(
+                s"""
+                    <a class="govuk-link" href=${appConfig.signOutUrl}>${messages("confirmEORI.notThisEoriExpandedLinkText")}</a>
+                """
+            )
+        )
+    )
+
+    @linkButton(url = controllers.routes.UserTypeController.onLoad().url, messages(("common.button.confirm")), id = Some("value"))
 
 
 }
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

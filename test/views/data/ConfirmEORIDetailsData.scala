@@ -25,7 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 object ConfirmEORIDetailsData {
   private final val classStyling = "govuk-summary-list__key govuk-!-width-one-half"
 
-  def details(number: String, name: String): SummaryList = SummaryList(
+  def details(number: String, name: String, vatNumber: String): SummaryList = SummaryList(
     Seq(
       SummaryListRow(
         key = Key(
@@ -43,6 +43,15 @@ object ConfirmEORIDetailsData {
         ),
         value = Value(
           content = HtmlContent(name)
+        )
+      ),
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmEORIDetailsMessages.vatNumber),
+          classes = classStyling
+        ),
+        value = Value(
+          content = HtmlContent(vatNumber)
         )
       )
     )
