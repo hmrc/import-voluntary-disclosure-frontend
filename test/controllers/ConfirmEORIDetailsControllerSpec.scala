@@ -47,7 +47,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
       messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, appConfig)
   }
 
-  "GET /" when {
+  "GET onLoad" when {
     "no userAnswers exist" should {
       "return OK" in new Test {
         setupMockRetrieveAddress(Right(eoriDetails))
@@ -80,6 +80,12 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
       "produce correct summary list" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetails)
         val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "987654321000")
+        result mustBe expectedResult
+      }
+
+      "produce correct summary list without vatNumber" in new Test {
+        val result: SummaryList = controller.summaryList(eoriDetailsWithoutVatNumber)
+        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
         result mustBe expectedResult
       }
 
