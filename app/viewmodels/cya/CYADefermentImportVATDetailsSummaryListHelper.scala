@@ -23,7 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya
+import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper.createRow
 
 trait CYADefermentImportVATDetailsSummaryListHelper {
@@ -84,18 +84,17 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
   }
 
   private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    val fileName = (answers.get(UploadAuthorityPage), answers.get(AdditionalDefermentNumberPage)) match {
-      case (Some(files), Some(dan)) => files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
-      case _ => "No authority file found"
-    }
-
-    (answers.get(UploadAuthorityPage), answers.get(AdditionalDefermentTypePage)) match {
-      case (Some(_), Some("B")) =>
+    (answers.get(UploadAuthorityPage), answers.get(AdditionalDefermentTypePage), answers.get(AdditionalDefermentNumberPage)) match {
+      case (Some(files), Some("B"), Some(dan)) =>
+        val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
         Some(
           createRow(
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
-            Some(ActionItem("Url", Text(messages("cya.change"))))
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Vat, dan).url,
+              messages("cya.proofOfAuth.Vat.change")
+            ))
           )
         )
       case _ => None

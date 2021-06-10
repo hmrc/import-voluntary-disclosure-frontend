@@ -149,11 +149,15 @@ trait CYAPaymentDetailsSummaryListHelper {
       case (Some(true), Some(true), SelectedDutyTypes.Both, _, _, _) => None
       case (Some(true), _, _, Some("B"), Some(files), Some(dan)) =>
         val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+        val dutyType = files.filter(file => file.dan == dan).map(_.dutyType).headOption.getOrElse(SelectedDutyTypes.Neither)
         Some(
           createRow(
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
-            Some(ActionItem("Url", Text(messages("cya.change"))))
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.UploadAuthorityController.onLoad(dutyType, dan).url,
+              messages("cya.proofOfAuth.change")
+            ))
           )
         )
       case _ => None

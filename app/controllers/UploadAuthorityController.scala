@@ -19,7 +19,9 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
+import javax.inject.{Inject, Singleton}
 import models.SelectedDutyTypes._
+import models.requests.DataRequest
 import models.upscan._
 import models.{UploadAuthority, UserAnswers}
 import pages.{SplitPaymentPage, UploadAuthorityPage}
@@ -30,7 +32,6 @@ import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{UploadAuthorityProgressView, UploadAuthoritySuccessView, UploadAuthorityView}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.Try
@@ -50,11 +51,15 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
-  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean): Call = {
-    selectedDutyTypes match {
-      case Both if splitPayment && currentDutyType == Duty => controllers.routes.RepresentativeDanDutyController.onLoad()
-      case Both if splitPayment && currentDutyType == Vat => controllers.routes.RepresentativeDanImportVATController.onLoad()
-      case _ => controllers.routes.RepresentativeDanController.onLoad()
+  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      selectedDutyTypes match {
+        case Both if splitPayment && currentDutyType == Duty => controllers.routes.RepresentativeDanDutyController.onLoad()
+        case Both if splitPayment && currentDutyType == Vat => controllers.routes.RepresentativeDanImportVATController.onLoad()
+        case _ => controllers.routes.RepresentativeDanController.onLoad()
+      }
     }
   }
 
@@ -131,9 +136,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
 
     val action = request.dutyType match {
-      case Both if splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
-      case _ => controllers.routes.CheckYourAnswersController.onLoad().url
-    }
+          case Both if !request.checkMode && splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
+          case _ => controllers.routes.CheckYourAnswersController.onLoad().url
+        }
 
     val filename = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty)
       .filter(_.dutyType == dutyType)
