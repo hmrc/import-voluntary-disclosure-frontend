@@ -55,6 +55,19 @@ trait ReusableValues {
     Some("987654321000")
   )
 
+  val eoriDetailsWithoutVatNumber: EoriDetails = EoriDetails(
+    "GB987654321000",
+    "Fast Food ltd",
+    ContactAddress(
+      addressLine1 = "99 Avenue Road",
+      addressLine2 = None,
+      city = "Anyold Town",
+      postalCode = Some("99JZ 1AA"),
+      countryCode = "GB"
+    ),
+    None
+  )
+
   val errorModel: HttpResponse = HttpResponse(Status.NOT_FOUND, "Error Message")
 
   val detailsJson: JsObject = Json.obj(

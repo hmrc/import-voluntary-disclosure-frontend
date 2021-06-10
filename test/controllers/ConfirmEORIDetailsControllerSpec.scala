@@ -55,6 +55,12 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
         status(result) mustBe Status.OK
       }
 
+      "return OK without vatNumber" in new Test {
+        setupMockRetrieveAddress(Right(eoriDetailsWithoutVatNumber))
+        val result: Future[Result] = controller.onLoad()(fakeRequest)
+        status(result) mustBe Status.OK
+      }
+
       "return error model" in new Test {
         setupMockRetrieveAddress(Left(ErrorModel(404, "")))
         val result: Future[Result] = controller.onLoad()(fakeRequest)
