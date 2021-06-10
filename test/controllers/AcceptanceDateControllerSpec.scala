@@ -21,12 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.NumberOfEntries._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{AcceptanceDatePage, CheckModePage}
+import pages.{AcceptanceDatePage, CheckModePage, NumberOfEntriesPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.AcceptanceDateView
 
 import scala.concurrent.Future
@@ -121,14 +122,25 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "when loading page back button should take you to Entry details page" in new Test {
+      "when loading page back button should take you to Entry details page for Single Entry" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(NumberOfEntriesPage, OneEntry).success.value
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.routes.EntryDetailsController.onLoad()
+      }
+      "when loading page back button should take you to NumberOfEntrues details page for Bulk Entry" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
       }
     }
 

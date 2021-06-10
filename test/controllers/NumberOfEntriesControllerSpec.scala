@@ -50,7 +50,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       mockSessionRepository, appConfig, messagesControllerComponents, form, numberOfEntriesPage)
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
         .set(UserTypePage, Representative).success.value
@@ -110,7 +110,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.MoreThanOneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

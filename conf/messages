@@ -113,9 +113,15 @@ numberOfEntries.moreThanOneEntry.hint = All the entries must be for the same imp
 numberOfEntries.error.required = Select if you are disclosing an underpayment for one declaration or more than one declaration
 
 #Acceptance Date Page
-acceptanceDate.pageTitle = Was the entry acceptance date before 1 January 2021?
-acceptanceDate.heading = Was the entry acceptance date before 1 January 2021?
-acceptanceDate.error.required = Select yes if the entry acceptance date was before 1 January 2021
+acceptanceDate.single.pageTitle = Was the entry acceptance date before 1 January 2021?
+acceptanceDate.single.heading = Was the entry acceptance date before 1 January 2021?
+acceptanceDate.single.error.required = Select yes if the entry acceptance date was before 1 January 2021
+acceptanceDate.bulk.pageTitle = When were the entry acceptance dates for all the entries?
+acceptanceDate.bulk.heading = When were the entry acceptance dates for all the entries?
+acceptanceDate.bulk.info = You must not include entries where some have an entry acceptance date before and some after 1 January 2021. If the entries cross this date you will need to separate them and make two disclosures.
+acceptanceDate.bulk.radio.before = On or before 31 December 2020
+acceptanceDate.bulk.radio.after = From 1 January 2021
+acceptanceDate.bulk.error.required = Select when the entry acceptance dates were for all the entries
 
 # Supporting Documentation
 SupportDoc.pageTitle = Documents you must upload

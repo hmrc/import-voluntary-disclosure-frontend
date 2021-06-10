@@ -27,11 +27,10 @@ import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.AcceptanceDateView
+import views.html.{AcceptanceDateBulkView, AcceptanceDateView}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-
 
 @Singleton
 class AcceptanceDateController @Inject()(identify: IdentifierAction,
@@ -40,22 +39,28 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
                                          sessionRepository: SessionRepository,
                                          mcc: MessagesControllerComponents,
                                          formProvider: AcceptanceDateFormProvider,
-                                         view: AcceptanceDateView)
+                                         view: AcceptanceDateView,
+                                         bulkView: AcceptanceDateBulkView)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    val form = request.userAnswers.get(AcceptanceDatePage).fold(formProvider()) {
-      formProvider().fill
+    val isOneEntry = request.isOneEntry
+    val form = request.userAnswers.get(AcceptanceDatePage).fold(formProvider(isOneEntry)) {
+      formProvider(isOneEntry).fill
     }
 
-    Future.successful(Ok(view(form, backLink())))
+    Future.successful(Ok(
+      if (request.isOneEntry) view(form, backLink()) else bulkView(form, backLink())
+    ))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+    formProvider(request.isOneEntry).bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(
+          if (request.isOneEntry) view(formWithErrors, backLink()) else bulkView(formWithErrors, backLink())
+        )),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(AcceptanceDatePage, value))
@@ -65,7 +70,11 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           }
           else {
-            Redirect(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+            if (request.isOneEntry) {
+              Redirect(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+            } else {
+              Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+            }
           }
         }
       }
@@ -76,7 +85,11 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.EntryDetailsController.onLoad()
+      if (request.isOneEntry) {
+        controllers.routes.EntryDetailsController.onLoad()
+      } else {
+        controllers.routes.NumberOfEntriesController.onLoad()
+      }
     }
   }
 
