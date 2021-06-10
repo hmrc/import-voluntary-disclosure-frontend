@@ -139,7 +139,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains valid data and user answers are changed from CYA" should {
-      "redirect to CYA when user supplies account number 7654321 and user answers holds account number 1234567" in new Test {
+      "redirect to DAN Import VAT page when user supplies account number 7654321 and user answers holds account number 1234567" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(
@@ -154,7 +154,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.RepresentativeDanImportVATController.onLoad().url)
       }
 
-      "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {
+      "redirect to DAN Import VAT page when user supplies account type C and user answers holds account type A" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(

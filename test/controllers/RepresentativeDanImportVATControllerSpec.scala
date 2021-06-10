@@ -21,17 +21,17 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Duty, Vat}
-import models.{FileUploadInfo, UploadAuthority, UserAnswers, UserType}
+import models._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
+import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, CheckModePage, DefermentAccountPage, DefermentTypePage, SplitPaymentPage, UploadAuthorityPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanImportVATView
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
@@ -193,20 +193,20 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           .set(AdditionalDefermentNumberPage, "7654321").success.value
           .set(UploadAuthorityPage, Seq(
             UploadAuthority("1234567",
-            Duty,
-            FileUploadInfo(
-              "DutyDocument.pdf",
-              "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
-              LocalDateTime.of(2020, 1, 10, 10,31),
-              "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e5",
-              "application/pdf"
-            )),
+              Duty,
+              FileUploadInfo(
+                "DutyDocument.pdf",
+                "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
+                LocalDateTime.of(2020, 1, 10, 10, 31),
+                "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e5",
+                "application/pdf"
+              )),
             UploadAuthority("7654321",
               Vat,
               FileUploadInfo(
                 "VATDocument.pdf",
                 "http://localhost:9570/upscan/download/5e922a0f-d5ad-4aa6-9977-45a83096f71d",
-                LocalDateTime.of(2020, 1, 10, 10,30),
+                LocalDateTime.of(2020, 1, 10, 10, 30),
                 "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e6",
                 "application/pdf"
               ))
