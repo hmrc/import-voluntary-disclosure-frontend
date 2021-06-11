@@ -36,7 +36,7 @@ class MoreInformationFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "moreInformation.error.required"
+        form.errors.head.message mustBe "moreInformation.single.error.required"
       }
     }
 
@@ -54,7 +54,7 @@ class MoreInformationFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "moreInformation.error.maxLength"
+        form.errors.head.message mustBe "moreInformation.single.error.maxLength"
       }
     }
   }
