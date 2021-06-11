@@ -16,48 +16,49 @@
 
 package viewmodels.cya
 
-import java.time.format.DateTimeFormatter
-import models.{NumberOfEntries, UserAnswers}
 import models.requests.DataRequest
-import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
+import models.{NumberOfEntries, UserAnswers}
+import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper._
+import viewmodels.{ActionItemHelper, cya}
+
+import java.time.format.DateTimeFormatter
 
 trait CYAEntryDetailsSummaryListHelper {
 
   def buildEntryDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     if (request.isOneEntry) {
-    val answers = request.userAnswers
-    val rows = Seq(
-      buildNumberOfEntriesSummaryListRow(answers),
-      buildEpuSummaryListRow(answers),
-      buildEntryNumberListRow(answers),
-      buildEntryDateListRow(answers),
-      buildAcceptanceDateListRow(answers),
-      buildOneCustomsProcedureCodeListRow(answers),
-      buildCustomsProcedureCodeListRow(answers)
-    ).flatten
+      val answers = request.userAnswers
+      val rows = Seq(
+        buildNumberOfEntriesSummaryListRow(answers),
+        buildEpuSummaryListRow(answers),
+        buildEntryNumberListRow(answers),
+        buildEntryDateListRow(answers),
+        buildAcceptanceDateListRow(answers),
+        buildOneCustomsProcedureCodeListRow(answers),
+        buildCustomsProcedureCodeListRow(answers)
+      ).flatten
 
-    if (rows.nonEmpty) {
-      Seq(
-        cya.CYASummaryList(
-          messages("cya.entryDetails"),
-          SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = rows
+      if (rows.nonEmpty) {
+        Seq(
+          cya.CYASummaryList(
+            messages("cya.entryDetails"),
+            SummaryList(
+              classes = "govuk-!-margin-bottom-9",
+              rows = rows
+            )
           )
         )
-      )
+      } else {
+        Seq.empty
+      }
     } else {
       Seq.empty
     }
-  } else {
-    Seq.empty
-  }
   }
 
   private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
