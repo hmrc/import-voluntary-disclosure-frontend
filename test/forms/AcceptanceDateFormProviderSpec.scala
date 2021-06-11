@@ -22,10 +22,10 @@ class AcceptanceDateFormProviderSpec extends SpecBase {
 
   "Binding a form with invalid data" when {
 
-    "the no value selected" should {
+    "the no value selected error for single entry" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new AcceptanceDateFormProvider()().bind(missingOption)
+      val form = new AcceptanceDateFormProvider()(true).bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -36,7 +36,25 @@ class AcceptanceDateFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "acceptanceDate.error.required"
+        form.errors.head.message mustBe "acceptanceDate.single.error.required"
+      }
+    }
+
+    "the no value selected error for bulk entry" should {
+
+      val missingOption: Map[String, String] = Map.empty
+      val form = new AcceptanceDateFormProvider()(false).bind(missingOption)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "acceptanceDate.bulk.error.required"
       }
     }
   }

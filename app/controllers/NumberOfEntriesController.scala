@@ -72,7 +72,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
 
   private def redirect(entries: NumberOfEntries): Result = entries match {
     case OneEntry => Redirect(controllers.routes.EntryDetailsController.onLoad())
-    case MoreThanOneEntry => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+    case MoreThanOneEntry => Redirect(controllers.routes.AcceptanceDateController.onLoad())
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call =

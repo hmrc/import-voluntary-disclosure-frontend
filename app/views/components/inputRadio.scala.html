@@ -24,25 +24,34 @@
     hint: Option[Html] = None,
     classes: String = "govuk-fieldset__legend--l",
     inline: Boolean = false,
-    errorKey: Option[String] = None
+    errorKey: Option[String] = None,
+    customLegend: Option[Legend] = None
 )(implicit messages: Messages)
 
-@govukRadios(Radios(
-    classes = s"${if(inline){"govuk-radios--inline"}}",
-    name = "value",
-    fieldset = Some(Fieldset(
-        legend = Some(Legend(
-            content = Text(messages(legend)),
-            isPageHeading = legendAsHeading,
-            classes = classes
-        ))
-    )),
-    hint = hint.map { hint => Hint(
-        content = HtmlContent(hint)
-    )},
-    items = items,
-    errorMessage = form(errorKey.getOrElse("value")).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
-))
+@defining({
+
+    val defaultLegend = Some(Legend(
+        content = Text(messages(legend)),
+        isPageHeading = legendAsHeading,
+        classes = classes
+    ))
+
+    customLegend.orElse(defaultLegend)
+
+}) { legend =>
+    @govukRadios(Radios(
+        classes = s"${if(inline) {"govuk-radios--inline"}}",
+        name = "value",
+        fieldset = Some(Fieldset(legend = legend)),
+        hint = hint.map { hint =>
+            Hint(
+                content = HtmlContent(hint)
+            )
+        },
+        items = items,
+        errorMessage = form(errorKey.getOrElse("value")).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*))))
+    ))
+}
 
 @{
     //$COVERAGE-OFF$
