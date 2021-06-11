@@ -635,6 +635,7 @@ cya.importerAccountNumber = Deferment account number
 cya.importerAccountNumber.change = Change Deferment account number
 cya.repAccountNumber = Account number
 cya.repDutyAccountNumber.change = Change account number and account owner for duty owed
+cya.repVATAccountNumber.change = Change account number and account owner for VAT owed
 cya.accountOwner = Account owner
 cya.proofOfAuth = Proof of authority
 cya.proofOfAuth.change = Change proof of authority
@@ -730,10 +731,14 @@ importerEORINumber.error.nonEmpty = Enter an EORI number
 importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
 
 # Confirm EORI Details
-confirmEORI.pageTitle = Confirm your EORI details
-confirmEORI.heading = Confirm your EORI details
+confirmEORI.pageTitle = Confirm you want to disclose an underpayment using this EORI number
+confirmEORI.heading = Confirm you want to disclose an underpayment using this EORI number
 confirmEORI.eoriNumber = EORI number
 confirmEORI.name = Name
+confirmEORI.vatNumber = VAT number
+confirmEORI.vatNumberNotPresent = Not VAT registered
+confirmEORI.notThisEoriText = Not the right EORI number?
+confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
 
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?

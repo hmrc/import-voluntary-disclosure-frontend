@@ -18,8 +18,8 @@ package utils
 
 import messages.underpayments.UnderpaymentTypeMessages
 import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
-import models.underpayments.UnderpaymentDetail
 import models._
+import models.underpayments.UnderpaymentDetail
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -51,7 +51,21 @@ trait ReusableValues {
       city = "Anyold Town",
       postalCode = Some("99JZ 1AA"),
       countryCode = "GB"
-    )
+    ),
+    Some("987654321000")
+  )
+
+  val eoriDetailsWithoutVatNumber: EoriDetails = EoriDetails(
+    "GB987654321000",
+    "Fast Food ltd",
+    ContactAddress(
+      addressLine1 = "99 Avenue Road",
+      addressLine2 = None,
+      city = "Anyold Town",
+      postalCode = Some("99JZ 1AA"),
+      countryCode = "GB"
+    ),
+    None
   )
 
   val errorModel: HttpResponse = HttpResponse(Status.NOT_FOUND, "Error Message")
@@ -71,6 +85,7 @@ trait ReusableValues {
 
   val cleanedDetailsJson: JsObject = Json.obj(
     "eori" -> "GB987654321000",
+    "vatNumber" -> "987654321000",
     "name" -> "Fast Food ltd",
     "streetAndNumber" -> "99 Avenue Road",
     "city" -> "Anyold Town",

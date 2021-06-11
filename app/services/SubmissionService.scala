@@ -20,14 +20,14 @@ import connectors.IvdSubmissionConnector
 import models.DocumentTypes.{DefermentAuthorisation, DocumentType}
 import models.OptionalDocument._
 import models.SelectedDutyTypes.{Duty, Vat}
-import models.requests.DataRequest
 import models._
-import play.api.Logger
-import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
-import uk.gov.hmrc.http.HeaderCarrier
-import javax.inject.{Inject, Singleton}
 import models.audit.CreateCaseAuditEvent
+import models.requests.DataRequest
+import play.api.Logger
+import play.api.libs.json._
+import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -43,7 +43,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case Right(submission) => {
         ivdSubmissionConnector.createCase(submission).map {
           case Right(confirmationResponse) =>
-            auditService.audit(CreateCaseAuditEvent(confirmationResponse,submission))
+            auditService.audit(CreateCaseAuditEvent(confirmationResponse, submission))
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
@@ -85,7 +85,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     val customsProcessingCode = (data.oneCpc, data.originalCpc) match {
       case (true, Some(cpc)) => cpc
       case (false, _) => "VARIOUS"
-      case _ => throw new RuntimeException (buildSubmissionErrorPrefix + "CPC missing from user answers")
+      case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
     }
 
     Json.obj(
@@ -135,7 +135,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
           authorityDocuments.filter(_.dutyType == Duty).map(_.file) ++ data.supportingDocuments
         case (Some(true), _, Some("B")) =>
           authorityDocuments.filter(_.dutyType == Vat).map(_.file) ++ data.supportingDocuments
-        case (Some(false), Some("B"), _) =>
+        case (_, Some("B"), _) =>
           authorityDocuments.map(_.file) ++ data.supportingDocuments
         case _ => data.supportingDocuments
       }
@@ -147,7 +147,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       (data.splitDeferment, data.defermentType, data.additionalDefermentType) match {
         case (Some(true), Some(dt), Some(addDt)) if dt != "B" && addDt != "B" => documentsSupplied
         case (Some(true), _, _) => documentsSupplied ++ Seq(DefermentAuthorisation)
-        case (Some(false), Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
+        case (_, Some("B"), _) => documentsSupplied ++ Seq(DefermentAuthorisation)
         case _ => documentsSupplied
       }
     } else {
@@ -195,12 +195,17 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   private[services] def buildImporterDetails(data: SubmissionData): JsObject = {
     val DEFAULT_EORI: String = "GBPR"
     if (data.userType == UserType.Importer) {
+      val vatNumber = data.knownDetails.vatNumber match {
+        case Some(value) => Json.obj("vatNumber" -> value)
+        case None => Json.obj()
+      }
       Json.obj(
-        "importer" -> Json.obj(
+        "importer" -> (
+          Json.obj(
           "eori" -> data.knownDetails.eori,
           "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
           "address" -> data.traderAddress
-        )
+        ) ++ vatNumber)
       )
     } else {
       val details = for {
@@ -233,12 +238,17 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildRepresentativeDetails(data: SubmissionData): JsObject = {
     if (data.userType == UserType.Representative) {
+      val vatNumber = data.knownDetails.vatNumber match {
+        case Some(value) => Json.obj("vatNumber" -> value)
+        case None => Json.obj()
+      }
       Json.obj(
-        "representative" -> Json.obj(
-          "eori" -> data.knownDetails.eori,
-          "contactDetails" -> data.declarantContactDetails,
-          "address" -> data.traderAddress
-        )
+        "representative" -> (
+          Json.obj(
+            "eori" -> data.knownDetails.eori,
+            "contactDetails" -> data.declarantContactDetails,
+            "address" -> data.traderAddress
+          ) ++ vatNumber)
       )
     } else {
       Json.obj()

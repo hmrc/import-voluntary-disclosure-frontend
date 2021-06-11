@@ -265,8 +265,11 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-padding-bottom-1"
     ),
     actions = Some(Actions(items = Seq(
-      ActionItem(changeUrl,
-        Text(CYAMessages.change))
+      ActionItem(
+        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+      )
     ),
       classes = "govuk-!-padding-bottom-1"
     )),
