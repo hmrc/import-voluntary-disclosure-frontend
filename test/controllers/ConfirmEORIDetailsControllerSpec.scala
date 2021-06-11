@@ -25,14 +25,12 @@ import pages._
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import uk.gov.hmrc.govukfrontend.views.Aliases
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import utils.ReusableValues
 import views.data.ConfirmEORIDetailsData
 import views.html.ConfirmEORIDetailsView
 
 import scala.concurrent.Future
-
 
 class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
 
@@ -46,15 +44,19 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view)
-
-
+      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, appConfig)
   }
 
-  "GET /" when {
+  "GET onLoad" when {
     "no userAnswers exist" should {
       "return OK" in new Test {
         setupMockRetrieveAddress(Right(eoriDetails))
+        val result: Future[Result] = controller.onLoad()(fakeRequest)
+        status(result) mustBe Status.OK
+      }
+
+      "return OK without vatNumber" in new Test {
+        setupMockRetrieveAddress(Right(eoriDetailsWithoutVatNumber))
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
@@ -77,7 +79,13 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
       "produce correct summary list" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetails)
-        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd")
+        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "987654321000")
+        result mustBe expectedResult
+      }
+
+      "produce correct summary list without vatNumber" in new Test {
+        val result: SummaryList = controller.summaryList(eoriDetailsWithoutVatNumber)
+        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
         result mustBe expectedResult
       }
 
@@ -91,7 +99,8 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
             city = "Anyold Town",
             postalCode = Some("99JZ 1AA"),
             countryCode = "GB"
-          ))).success.value)
+          ),
+            Some("98765432100"))).success.value)
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
