@@ -18,6 +18,7 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
+import models.requests.DataRequest
 import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
@@ -40,15 +41,20 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink(request.userAnswers), request.isOneEntry, !request.checkMode)))
+      Future.successful(Ok(view(backLink(), request.isOneEntry, !request.checkMode)))
     }
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call =
-    if (userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
-      controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.isOneEntry) {
+      if (request.userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
+        controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+      } else {
+        controllers.routes.OneCustomsProcedureCodeController.onLoad()
+      }
     } else {
-      controllers.routes.OneCustomsProcedureCodeController.onLoad()
+      controllers.routes.AcceptanceDateController.onLoad()
     }
+  }
 
 }

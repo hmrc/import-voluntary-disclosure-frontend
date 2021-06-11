@@ -21,13 +21,14 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.NumberOfEntries._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{AcceptanceDatePage, CheckModePage}
+import pages.{AcceptanceDatePage, CheckModePage, NumberOfEntriesPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.AcceptanceDateView
+import play.api.test.Helpers._
+import views.html.{AcceptanceDateBulkView, AcceptanceDateView}
 
 import scala.concurrent.Future
 
@@ -36,8 +37,11 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val acceptanceDateView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
+    private lazy val acceptanceDateBulkView: AcceptanceDateBulkView = app.injector.instanceOf[AcceptanceDateBulkView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId").set(NumberOfEntriesPage, OneEntry).success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
@@ -58,7 +62,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new AcceptanceDateController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView)
+      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView, acceptanceDateBulkView)
   }
 
   val acceptanceDateYes: Boolean = true
@@ -86,10 +90,20 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "return the correct location header for Single Entry" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit()(request)
         redirectLocation(result) mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad().url)
+      }
+
+      "return the correct location header for Bulk Entry" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentStartController.onLoad().url)
       }
 
       "return the correct location header in check mode" in new Test {
@@ -111,7 +125,15 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
-      "return a BAD REQUEST" in new Test {
+      "return a BAD REQUEST in Single Entry mode" in new Test {
+        val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        status(result) mustBe Status.BAD_REQUEST
+      }
+      "return a BAD REQUEST in bulk mode" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          )
         val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
@@ -121,14 +143,25 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "when loading page back button should take you to Entry details page" in new Test {
+      "when loading page back button should take you to Entry details page for Single Entry" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(NumberOfEntriesPage, OneEntry).success.value
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.routes.EntryDetailsController.onLoad()
+      }
+      "when loading page back button should take you to NumberOfEntrues details page for Bulk Entry" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(AcceptanceDatePage, acceptanceDateYes).success.value
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
       }
     }
 
