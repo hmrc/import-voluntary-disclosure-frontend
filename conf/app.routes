@@ -228,6 +228,9 @@ POST        /disclosure/deferment-account-details-duties                        
 GET         /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onLoad
 POST        /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onSubmit
 
+GET         /disclosure/upload-multiple-entry-file                                             controllers.BulkUploadFileController.onLoad
+
+
 # Underpayments
 
 GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad

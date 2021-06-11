@@ -366,6 +366,20 @@ uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
 
+# Bulk Upload File page
+bulkUploadFile.pageTitle = Upload a file containing the underpayment details for each entry
+bulkUploadFile.pageHeader = Upload a file containing the underpayment details for each entry
+bulkUploadFile.mustContain = Your file must contain a list of all the entries you are including in this underpayment disclosure. For each entry you must provide:
+bulkUploadFile.bullet1 = the EPU number, entry number and entry date
+bulkUploadFile.bullet2 = all item numbers
+bulkUploadFile.bullet3 = the type of tax or duty that was paid
+bulkUploadFile.bullet4 = the amount of tax or duty that was paid and the amount that should have been paid
+bulkUploadFile.bullet5 = the original and amended values of any information that was wrong in the original import declaration (for example, commodity codes or invoice values)
+bulkUploadFile.uploadFile = Upload chosen file
+
+
+
+
 # Upload Progress page
 uploadProgress.pageTitle = Upload progress
 uploadProgress.pageHeader = Upload progress
