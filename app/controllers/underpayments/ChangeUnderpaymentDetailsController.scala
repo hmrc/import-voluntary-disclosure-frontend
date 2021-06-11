@@ -68,7 +68,7 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
         }
     }
 
-    Future.successful(Ok(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange)))
+    Future.successful(Ok(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
   }
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -87,7 +87,7 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange)))
+          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
         },
         value => {
           for {
