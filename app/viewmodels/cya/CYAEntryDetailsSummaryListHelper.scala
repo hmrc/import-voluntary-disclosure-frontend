@@ -30,6 +30,7 @@ import viewmodels.cya.CYAHelper._
 trait CYAEntryDetailsSummaryListHelper {
 
   def buildEntryDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+    if (request.isOneEntry) {
     val answers = request.userAnswers
     val rows = Seq(
       buildNumberOfEntriesSummaryListRow(answers),
@@ -54,6 +55,9 @@ trait CYAEntryDetailsSummaryListHelper {
     } else {
       Seq.empty
     }
+  } else {
+    Seq.empty
+  }
   }
 
   private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =

@@ -16,10 +16,10 @@
 
 package viewmodels.cya
 
-import models.UserAnswers
 import models.requests.DataRequest
+import models.{NumberOfEntries, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{FileUploadPage, HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -32,13 +32,22 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
 
   def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
-    val rows = Seq(
-      buildOwedToHmrcRow(answers),
-      buildReasonForUnderpaymentRow(answers),
-      buildTellUsAnythingElseRow(answers),
-      buildExtraInformationRow(answers),
-      buildUploadedFilesRow(answers)
-    ).flatten
+    val rows = if (request.isOneEntry) {
+      Seq(
+        buildOwedToHmrcRow(answers),
+        buildReasonForUnderpaymentRow(answers),
+        buildTellUsAnythingElseRow(answers),
+        buildExtraInformationRow(answers),
+        buildUploadedFilesRow(answers)
+      ).flatten
+    } else {
+      Seq(
+        buildNumberOfEntriesSummaryListRow(answers),
+        buildAcceptanceDateListRow(answers),
+        buildOwedToHmrcRow(answers),
+        buildExtraInformationRow(answers),
+      ).flatten
+    }
 
     if (rows.nonEmpty) {
       Seq(
@@ -70,10 +79,11 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+    val keyTextMessage = if (request.isOneEntry) messages("cya.extraInformation") else messages("cya.bulk.reasonForUnderpayment")
     answers.get(MoreInformationPage).map { extraInformation =>
       createRow(
-        keyText = Text(messages("cya.extraInformation")),
+        keyText = Text(keyTextMessage),
         valueContent = Text(extraInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.MoreInformationController.onLoad().url,
@@ -124,4 +134,28 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       )
     }
   }
+
+  private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(NumberOfEntriesPage).map { numberOfEntries =>
+      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
+      createRow(
+        keyText = Text(messages("cya.numberOfEntries")),
+        valueContent = Text(numberOfEntriesValue),
+        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+      )
+    }
+
+  private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(AcceptanceDatePage).map { acceptanceDate =>
+      val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
+      createRow(
+        keyText = Text(messages("cya.bulk.acceptanceDate")),
+        valueContent = Text(acceptanceDateValue),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.AcceptanceDateController.onLoad().url,
+          messages("cya.acceptanceDate.change")
+        ))
+      )
+    }
+
 }
