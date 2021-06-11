@@ -20,9 +20,10 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
+import models.NumberOfEntries.OneEntry
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, MoreInformationPage}
+import pages.{CheckModePage, MoreInformationPage, NumberOfEntriesPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -87,6 +88,12 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
       }
 
       "return the correct location header for the response" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(MoreInformationPage, "some text").success.value
+            .set(CheckModePage, false).success.value
+            .set(NumberOfEntriesPage, OneEntry).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
@@ -151,6 +158,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
+            .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.routes.HasFurtherInformationController.onLoad())

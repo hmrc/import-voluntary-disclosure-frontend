@@ -36,7 +36,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreInformationMessages.title)
@@ -54,7 +54,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Some(Call("GET", "url")), true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.title)
@@ -75,20 +75,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Some(Call("GET", "url")), true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
-
-    s"have the correct h1 of '${MoreInformationMessages.h1}'" in {
-      elementText("h1") mustBe MoreInformationMessages.h1
-    }
-
-    "render a text area" in {
-      document.select("#value").size() mustBe 1
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
-    }
 
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue
