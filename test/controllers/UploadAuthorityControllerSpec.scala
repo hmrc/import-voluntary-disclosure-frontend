@@ -304,7 +304,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         .set(CheckModePage, false).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value)
       val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
-      println(contentAsString(result))
       contentAsString(result).contains("/disclosure/deferment-account-details-vat") mustBe true
     }
 

@@ -33,6 +33,8 @@ object MockAppConfig extends AppConfig {
   override val signOutUrl: String = "TBC"
   override val loginContinueUrl: String = "TBC"
   override val addressLookupFrontend: String = "TBC"
+  override val addressLookupCallback: String = "/disclose-import-taxes-underpayment/address-callback"
+  override val importerAddressLookupCallback: String = "/disclose-import-taxes-underpayment/importer-address-callback"
   override val addressLookupInitialise: String = "TBC"
   override val addressLookupFeedbackUrl: String = "TBC"
   override val addressLookupCallbackUrl: String = "TBC"
