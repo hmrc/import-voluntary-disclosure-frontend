@@ -23,8 +23,14 @@ import play.api.data.Form
 
 class AcceptanceDateFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(isSingle: Boolean = true): Form[Boolean] = {
+    val requiredErrorMessage = if (isSingle) {
+      "acceptanceDate.single.error.required"
+    } else {
+      "acceptanceDate.bulk.error.required"
+    }
     Form(
-      "value" -> boolean("acceptanceDate.error.required")
+      "value" -> boolean(requiredErrorMessage)
     )
+  }
 }

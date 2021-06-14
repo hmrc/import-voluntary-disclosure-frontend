@@ -19,10 +19,13 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import pages.{CheckModePage, EnterCustomsProcedureCodePage, NumberOfEntriesPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{Call, Result}
 import play.api.test.Helpers._
 import utils.ReusableValues
 import views.html.underpayments.UnderpaymentStartView
@@ -32,6 +35,18 @@ import scala.concurrent.Future
 class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockSessionRepository {
+
+    implicit lazy val dataRequest = new DataRequest(
+      new OptionalDataRequest(
+        new IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     lazy val controller = new UnderpaymentStartController(authenticatedAction, dataRetrievalAction,
       messagesControllerComponents, dataRequiredAction, view)
@@ -59,6 +74,39 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+  }
+
+  "backLink" when {
+    "in Single Entry mode" should {
+      "point to Enter CPC page if it is defined" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(NumberOfEntriesPage, OneEntry).success.value
+            .set(EnterCustomsProcedureCodePage, "cpc").success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+      }
+      "point to One CPC page if no CPC previously captured" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(NumberOfEntriesPage, OneEntry).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
+      }
+    }
+
+    "in Bulk Entry mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.AcceptanceDateController.onLoad()
+      }
     }
   }
 
