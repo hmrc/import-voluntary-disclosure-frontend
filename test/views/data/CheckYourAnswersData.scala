@@ -519,6 +519,7 @@ object CheckYourAnswersData {
     importerDetailsAnswers,
     entryDetailsAnswers,
     underpaymentDetailsSingleAnswers,
+    underpaymentDetailsBulkAnswers,
     yourDetailsAnswers
   )
 
