@@ -19,8 +19,6 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.MoreInformationFormProvider
 import models.requests.DataRequest
-
-import javax.inject.{Inject, Singleton}
 import pages.MoreInformationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -29,6 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.MoreInformationView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -44,16 +43,17 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(MoreInformationPage).fold(formProvider()) {
-      formProvider().fill
+    val isOneEntry = request.isOneEntry
+    val form = request.userAnswers.get(MoreInformationPage).fold(formProvider(isOneEntry)) {
+      formProvider(isOneEntry).fill
     }
-    Future.successful(Ok(view(form, backLink)))
-
+    Future.successful(Ok(view(form, backLink, isOneEntry)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+    val isOneEntry = request.isOneEntry
+    formProvider(isOneEntry).bindFromRequest().fold(
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, isOneEntry))),
       moreInfo => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
@@ -62,7 +62,11 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.SupportingDocController.onLoad())
+            if (request.isOneEntry){
+              Redirect(controllers.routes.SupportingDocController.onLoad())
+            } else {
+              Redirect(controllers.routes.DeclarantContactDetailsController.onLoad())
+            }
           }
         }
       }
@@ -73,7 +77,11 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      Some(controllers.routes.HasFurtherInformationController.onLoad())
+      if(request.isOneEntry) {
+        Some(controllers.routes.HasFurtherInformationController.onLoad())
+      } else {
+        Some(controllers.routes.MoreInformationController.onLoad()) // TODO - once Jakes page of confirmed file upload goes in
+      }
     }
   }
 

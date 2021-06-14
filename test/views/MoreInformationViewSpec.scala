@@ -33,13 +33,14 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: MoreInformationFormProvider = injector.instanceOf[MoreInformationFormProvider]
 
   "Rendering the More Information page" when {
-    "no errors exist" should {
+
+    "no errors exist single entry" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(MoreInformationMessages.title)
+      checkPageTitle(MoreInformationMessages.singleEntryTitle)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -48,26 +49,79 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
       "not render an error message against the field" in {
         document.select("#value-error").size mustBe 0
       }
+
+      s"have the correct h1 of '${MoreInformationMessages.singleEntryH1}'" in {
+        elementText("h1") mustBe MoreInformationMessages.singleEntryH1
+      }
+
+    }
+
+    "no errors exist bulk entry" should {
+
+      val form: Form[String] = formProvider.apply()
+      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      checkPageTitle(MoreInformationMessages.bulkEntryTitle)
+
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
+
+      s"have the correct h1 of '${MoreInformationMessages.bulkEntryH1}'" in {
+        elementText("h1") mustBe MoreInformationMessages.bulkEntryH1
+      }
+
+      s"have the correct p1 of '${MoreInformationMessages.bulkEntryH1}'" in {
+        elementText("#main-content > div > div > p:nth-child(2)") mustBe MoreInformationMessages.bulkP1
+      }
+
+      s"have the correct p2 of '${MoreInformationMessages.bulkEntryH1}'" in {
+        elementText("#main-content > div > div > p:nth-child(3)") mustBe MoreInformationMessages.bulkP2
+      }
+
     }
 
     "no data supplied" should {
 
-      "an error exists" should {
+      "an error exists single entry" should {
         lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.title)
+        checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryTitle)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe MoreInformationMessages.requiredError
+          elementText("div.govuk-error-summary > div") mustBe MoreInformationMessages.singleEntryRequiredError
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.requiredError
+          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryRequiredError
         }
 
       }
+
+      "an error exists bulk entry" should {
+        lazy val form: Form[String] = formProvider(false).bind(Map("value" -> ""))
+        lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryTitle)
+
+        "render an error summary with the correct message" in {
+          elementText("div.govuk-error-summary > div") mustBe MoreInformationMessages.bulkEntryRequiredError
+        }
+
+        "render an error message against the field" in {
+          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryRequiredError
+        }
+
+      }
+
     }
 
   }
@@ -75,24 +129,13 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
-
-    s"have the correct h1 of '${MoreInformationMessages.h1}'" in {
-      elementText("h1") mustBe MoreInformationMessages.h1
-    }
-
-    "render a text area" in {
-      document.select("#value").size() mustBe 1
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
-    }
 
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue
     }
 
   }
+
 }

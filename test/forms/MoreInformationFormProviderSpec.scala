@@ -22,7 +22,7 @@ class MoreInformationFormProviderSpec extends SpecBase {
 
   "Binding a form with invalid data" when {
 
-    "no data entered" should {
+    "no data entered single entry" should {
 
       val missingOption: Map[String, String] = Map.empty
       val form = new MoreInformationFormProvider()().bind(missingOption)
@@ -36,11 +36,29 @@ class MoreInformationFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "moreInformation.error.required"
+        form.errors.head.message mustBe "moreInformation.single.error.required"
       }
     }
 
-    "maxLength data entered" should {
+    "no data entered bulk entry" should {
+
+      val missingOption: Map[String, String] = Map.empty
+      val form = new MoreInformationFormProvider()(false).bind(missingOption)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "moreInformation.bulk.error.required"
+      }
+    }
+
+    "maxLength data entered single entry" should {
 
       val maxLengthData: Map[String, String] = Map("value" -> "c"*1501)
       val form = new MoreInformationFormProvider()().bind(maxLengthData)
@@ -54,9 +72,28 @@ class MoreInformationFormProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "moreInformation.error.maxLength"
+        form.errors.head.message mustBe "moreInformation.single.error.maxLength"
       }
     }
+
+    "maxLength data entered bulk entry" should {
+
+      val maxLengthData: Map[String, String] = Map("value" -> "c"*1501)
+      val form = new MoreInformationFormProvider()(false).bind(maxLengthData)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "moreInformation.bulk.error.maxLength"
+      }
+    }
+
   }
 
   "Binding a form with valid data" should {
