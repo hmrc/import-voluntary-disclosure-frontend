@@ -140,10 +140,9 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
 
   private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(NumberOfEntriesPage).map { numberOfEntries =>
-      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
-        valueContent = Text(numberOfEntriesValue),
+        valueContent = Text(messages("cya.bulkEntry")),
         action = Some(ActionItem("Url", Text(messages("cya.change"))))
       )
     }
