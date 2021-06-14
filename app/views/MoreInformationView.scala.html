@@ -47,8 +47,8 @@
                 form,
                 "value",
                 "value",
-                "",
-                false,
+                if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"),
+                true,
                 false,
                 classes = Some("govuk-fieldset__legend")
             )
