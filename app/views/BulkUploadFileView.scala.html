@@ -24,7 +24,8 @@
         p: components.p,
         errorSummary: components.errorSummary,
         bullets: components.bullets,
-        button: components.button
+        button: components.button,
+        govukDetails: GovukDetails
 )
 
 @(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
@@ -52,23 +53,16 @@
         Html(messages("bulkUploadFile.bullet5"))
     ))
 
-    @if(!optionalDocs.isEmpty) {
-        @p {
-            @messages("uploadFile.mayInclude")
-        }
-
-        @bullets(optionalDocs.map(doc =>
-            Html(messages(s"uploadFile.${doc}")))
+    @govukDetails(
+    Details(
+    summary = HtmlContent(messages("bulkUploadFile.typesOfFile")),
+    content = HtmlContent(
+    s"""
+    <a class="govuk-link" href=${appConfig.signOutUrl}>${messages("confirmEORI.notThisEoriExpandedLinkText")}</a><a class="govuk-link" href=${appConfig.signOutUrl}>${messages("confirmEORI.notThisEoriExpandedLinkText")}</a>
+    """
+            )
         )
-    }
-
-    @h2(messages("uploadFile.fileRequirementsHeader"))
-
-    @bullets(Seq(
-        Html(messages("uploadFile.fileFormats")),
-        Html(messages("uploadFile.fileSize")),
-        Html(messages("uploadFile.oneFileAtTime"))
-    ))
+    )
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
@@ -89,6 +83,7 @@
                     "data-min-file-size" -> appConfig.upScanMinFileSize
                 )
             )
+
        </div>
 
         @button("bulkUploadFile.uploadFile")
