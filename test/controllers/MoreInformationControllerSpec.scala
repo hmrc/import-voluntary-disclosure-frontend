@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
-import models.NumberOfEntries.OneEntry
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.{CheckModePage, MoreInformationPage, NumberOfEntriesPage}
@@ -162,6 +162,19 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.routes.HasFurtherInformationController.onLoad())
+
+      }
+    }
+
+    "not in change mode bulk entry" should {
+      "point to has further information page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.MoreInformationController.onLoad())
 
       }
     }
