@@ -17,17 +17,30 @@
 package forms
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
+
+import javax.inject.Inject
 
 
 class MoreInformationFormProvider @Inject() extends Mappings {
 
   val maxLength: Int = 1500
 
-  def apply(): Form[String] =
+  def apply(isOneEntry: Boolean = true): Form[String] = {
+    val requiredErrorMessage = if (isOneEntry) {
+      "moreInformation.single.error.required"
+    } else {
+      "moreInformation.bulk.error.required"
+    }
+    val maxCharactersErrorMessage = if (isOneEntry) {
+      "moreInformation.single.error.maxLength"
+    } else {
+      "moreInformation.bulk.error.maxLength"
+    }
     Form(
-      "value" -> text("moreInformation.error.required")
-        .verifying(maxLength(maxLength, "moreInformation.error.maxLength"))
+      "value" -> text(requiredErrorMessage)
+        .verifying(maxLength(maxLength, maxCharactersErrorMessage))
     )
+  }
+
 }
