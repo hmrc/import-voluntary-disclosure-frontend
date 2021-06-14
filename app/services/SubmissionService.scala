@@ -82,19 +82,23 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    val customsProcessingCode = (data.oneCpc, data.originalCpc) match {
-      case (true, Some(cpc)) => cpc
-      case (false, _) => "VARIOUS"
-      case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
-    }
+    if(isBulkEntry) {
+      val customsProcessingCode = (data.oneCpc.get, data.originalCpc) match {
+        case (true, Some(cpc)) => cpc
+        case (false, _) => "VARIOUS"
+        case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
+      }
 
-    Json.obj(
-      "userType" -> data.userType,
-      "isBulkEntry" -> isBulkEntry,
-      "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
-      "entryDetails" -> data.entryDetails,
-      "customsProcessingCode" -> customsProcessingCode
-    )
+      Json.obj(
+        "userType" -> data.userType,
+        "isBulkEntry" -> isBulkEntry,
+        "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
+        "entryDetails" -> data.entryDetails,
+        "customsProcessingCode" -> customsProcessingCode
+      )
+    } else {
+      Json.obj()
+    }
   }
 
   private[services] def buildUnderpaymentDetails(data: SubmissionData): JsObject = {
@@ -104,11 +108,15 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   }
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
-    val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
-    Json.obj(
-      "additionalInfo" -> additionalInfo,
-      "amendedItems" -> data.amendedItems
-    )
+    if (data.numEntries == NumberOfEntries.MoreThanOneEntry) {
+      val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
+      Json.obj(
+        "additionalInfo" -> additionalInfo,
+        "amendedItems" -> data.amendedItems
+      )
+    } else {
+      Json.obj()
+    }
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
