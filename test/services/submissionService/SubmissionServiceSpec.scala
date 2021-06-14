@@ -22,17 +22,23 @@ import mocks.services.MockAuditService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
 import pages.EnterCustomsProcedureCodePage
+import play.api.http.Status
 import play.api.libs.json.Json
+import play.api.mvc.AnyContentAsEmpty
 import services.SubmissionService
 
-class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
+class SubmissionServiceSpec extends SpecBase
+  with MockIvdSubmissionConnector
+  with MockAuditService
+  with SubmissionServiceTestData
+  with SubmissionServiceTestJson {
 
   trait Test {
-    def setupMock(response: Either[ErrorModel, SubmissionResponse]) = {
+    def setupMock(response: Either[ErrorModel, SubmissionResponse]): Unit = {
       setupMockCreateCase(response)
     }
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
@@ -44,14 +50,14 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
       userAnswers
     )
 
-    val successfulCreateCase = SubmissionResponse("case-Id")
-    val failedCreateCaseConnectorCall = ErrorModel(400, "Downstream error returned when retrieving SubmissionResponse from back end")
-    val invalidUserAnswersError = ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model")
+    val successfulCreateCase: SubmissionResponse = SubmissionResponse("case-Id")
+    val failedCreateCaseConnectorCall: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
+    val invalidUserAnswersError: ErrorModel = ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model")
 
     val submission: SubmissionData = completeSubmission
     val userAnswers: UserAnswers = completeUserAnswers
 
-    val outputJson = completeOutputJson
+    val outputJson: String = completeOutputJson
 
     stubAudit()
     val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
@@ -62,26 +68,27 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
     "called with a valid User Answers" should {
       "return successful SubmissionResponse" in new Test {
         setupMock(Right(successfulCreateCase))
-        lazy val result = service.createCase()(dataRequest, hc, ec)
+        private val result = await(service.createCase()(dataRequest, hc, ec))
 
-        await(result) mustBe Right(successfulCreateCase)
+        result mustBe Right(successfulCreateCase)
       }
 
       "return error if connector call fails" in new Test {
         setupMock(Left(failedCreateCaseConnectorCall))
-        lazy val result = service.createCase()(dataRequest, hc, ec)
+        private val result = await(service.createCase()(dataRequest, hc, ec))
 
-        await(result) mustBe Left(failedCreateCaseConnectorCall)
+        result mustBe Left(failedCreateCaseConnectorCall)
       }
     }
 
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        lazy val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase()(dataRequest, hc, ec))
 
         result.isLeft mustBe true
-        result.left.get.message.contains("user-type") mustBe true
+        val Left(error) = result
+        error.message must include("user-type")
       }
     }
   }
@@ -90,7 +97,7 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
 
     "called with a complete User Answers" should {
       "return expect json" in new Test {
-        lazy val result = service.buildSubmission(userAnswers)
+        private val result = service.buildSubmission(userAnswers)
 
         result mustBe Right(Json.parse(completeOutputJson))
       }
@@ -99,19 +106,21 @@ class SubmissionServiceSpec extends SpecBase with MockIvdSubmissionConnector wit
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        lazy val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase()(dataRequest, hc, ec))
 
         result.isLeft mustBe true
-        result.left.get.message.contains("user-type") mustBe true
+        val Left(error) = result
+        error.message must include("user-type")
       }
 
       "return error - parsed model is not valid" in new Test {
         override val userAnswers: UserAnswers =
           completeUserAnswers.remove(EnterCustomsProcedureCodePage).success.value
-        lazy val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase()(dataRequest, hc, ec))
 
         result.isLeft mustBe true
-        result.left.get.message.contains("CPC missing from user answers") mustBe true
+        val Left(error) = result
+        error.message must include("CPC missing from user answers")
       }
     }
   }

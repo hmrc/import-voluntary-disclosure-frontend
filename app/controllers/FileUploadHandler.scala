@@ -99,6 +99,7 @@ trait FileUploadHandler[T] {
       uploadDetails <- doc.uploadDetails
     } yield {
       FileUploadInfo(
+        reference = doc.reference,
         fileName = filename,
         downloadUrl = downloadUrl,
         uploadTimestamp = uploadDetails.uploadTimestamp,

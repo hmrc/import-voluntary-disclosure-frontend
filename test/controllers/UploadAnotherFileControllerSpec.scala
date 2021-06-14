@@ -37,11 +37,13 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     private lazy val uploadAnotherFileView: UploadAnotherFileView = app.injector.instanceOf[UploadAnotherFileView]
 
     val data: JsObject = Json.obj("uploaded-files" -> Json.arr(
-      Json.obj("fileName" -> "text.txt",
-      "downloadUrl" -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
-      "uploadTimestamp" -> "2021-01-26T13:22:59.388",
-      "checksum" -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-      "fileMimeType" -> "application/txt"))
+      Json.obj(
+        "reference" -> "file-ref-1",
+        "fileName" -> "text.txt",
+        "downloadUrl" -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
+        "uploadTimestamp" -> "2021-01-26T13:22:59.388",
+        "checksum" -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        "fileMimeType" -> "application/txt"))
     )
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId", data))
@@ -52,7 +54,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     val form: UploadAnotherFileFormProvider = formProvider
 
     lazy val controller = new UploadAnotherFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-       messagesControllerComponents, form, uploadAnotherFileView)
+      messagesControllerComponents, form, uploadAnotherFileView)
   }
 
   "GET onLoad" should {
@@ -78,9 +80,9 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     "redirect to supporting Doc page when no data present" in new Test {
       override val data: JsObject = Json.obj("" -> "")
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data))
-        val result: Future[Result] = controller.onLoad(fakeRequest)
-        status(result) mustBe Status.SEE_OTHER
-      }
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+    }
 
   }
 
