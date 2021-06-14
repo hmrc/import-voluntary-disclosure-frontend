@@ -46,9 +46,9 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         buildAcceptanceDateListRow(answers),
         buildOwedToHmrcRow(answers),
         buildExtraInformationRow(answers),
+        buildUploadedFilesRow(answers)
       ).flatten
     }
-
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
@@ -64,16 +64,18 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
     answers.get(FileUploadPage).map { files =>
       val fileNames = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
+      val keyTextMessage = if (request.isOneEntry) messages(numberOfFiles, fileNames.length) else messages("cya.bulk.multipleEntriesFile")
+      val changeTextMessage = if (request.isOneEntry) messages("cya.supportingDocuments.change") else messages("cya.bulk.multipleEntriesFile.change")
       createRow(
-        keyText = Text(messages(numberOfFiles, fileNames.length)),
+        keyText = Text(keyTextMessage),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.UploadAnotherFileController.onLoad().url,
-          messages("cya.supportingDocuments.change")
+          changeTextMessage
         ))
       )
     }
@@ -81,13 +83,14 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
 
   private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
     val keyTextMessage = if (request.isOneEntry) messages("cya.extraInformation") else messages("cya.bulk.reasonForUnderpayment")
+    val changeTextMessage = if (request.isOneEntry) messages("cya.extraInformation.change") else messages("cya.bulk.reasonForUnderpayment.change")
     answers.get(MoreInformationPage).map { extraInformation =>
       createRow(
         keyText = Text(keyTextMessage),
         valueContent = Text(extraInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.MoreInformationController.onLoad().url,
-          messages("cya.extraInformation.change")
+          changeTextMessage
         ))
       )
     }
@@ -153,7 +156,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         valueContent = Text(acceptanceDateValue),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.AcceptanceDateController.onLoad().url,
-          messages("cya.acceptanceDate.change")
+          messages("cya.bulk.acceptanceDate.change")
         ))
       )
     }

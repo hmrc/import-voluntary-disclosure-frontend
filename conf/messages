@@ -660,6 +660,10 @@ cya.hasFurtherInformation.change = Change Tell us anything else?
 cya.extraInformation = Extra information
 cya.bulk.reasonForUnderpayment = Reason for underpayment
 cya.extraInformation.change = Change Extra information
+cya.bulk.acceptanceDate.change = Change acceptance dates
+cya.bulk.reasonForUnderpayment.change = Change reason for underpayment
+cya.bulk.multipleEntriesFile = Multiple entries file
+cya.bulk.multipleEntriesFile.change = Change multiple entries file
 
 # Item Number
 itemNo.pageTitle = What is the item number?
