@@ -69,12 +69,13 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       val fileNames = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
       val keyTextMessage = if (request.isOneEntry) messages(numberOfFiles, fileNames.length) else messages("cya.bulk.multipleEntriesFile")
+      val changeRoute = if (request.isOneEntry) controllers.routes.UploadAnotherFileController.onLoad().url else controllers.routes.UploadFileController.onLoad().url //change to jakes page
       val changeTextMessage = if (request.isOneEntry) messages("cya.supportingDocuments.change") else messages("cya.bulk.multipleEntriesFile.change")
       createRow(
         keyText = Text(keyTextMessage),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.UploadAnotherFileController.onLoad().url,
+          changeRoute,
           changeTextMessage
         ))
       )
