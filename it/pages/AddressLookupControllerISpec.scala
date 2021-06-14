@@ -63,7 +63,6 @@ class AddressLookupControllerISpec extends IntegrationSpec {
 
         val response: WSResponse = await(request.get())
 
-        println("\n\n\n\n\n\n\n\nLocation: " + response.header(HeaderNames.LOCATION).getOrElse("UNKNOWN"))
         response.status shouldBe Status.INTERNAL_SERVER_ERROR
 
       }

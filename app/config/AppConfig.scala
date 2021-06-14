@@ -46,13 +46,16 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
   lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
   lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
+  lazy val addressLookupCallback: String = servicesConfig.getString("urls.addressCallbackUrl")
+  lazy val importerAddressLookupCallback: String = servicesConfig.getString("urls.importerAddressCallbackUrl")
+
   lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
   val addressLookupFeedbackUrl: String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
   lazy val addressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
-    controllers.routes.AddressLookupController.callback("").url
+    addressLookupCallback
   lazy val importerAddressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
-    controllers.routes.AddressLookupController.importerCallback("").url
+    importerAddressLookupCallback
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
@@ -92,6 +95,8 @@ trait AppConfig extends FixedConfig {
   val signOutUrl: String
   val loginContinueUrl: String
   val addressLookupFrontend: String
+  val addressLookupCallback: String
+  val importerAddressLookupCallback: String
   val addressLookupInitialise: String
   val addressLookupFeedbackUrl: String
   val addressLookupCallbackUrl: String
