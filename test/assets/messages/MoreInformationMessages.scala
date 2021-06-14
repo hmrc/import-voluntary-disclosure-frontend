@@ -18,9 +18,14 @@ package messages
 
 object MoreInformationMessages extends BaseMessages {
 
-  val title: String = "Tell us the extra information about the underpayment"
-  val h1: String = "Tell us the extra information about the underpayment"
-  val requiredError: String = "Enter more information"
-  val maxLengthError: String = "More information must be 1500 characters or fewer"
+  val singleEntryTitle: String = "Tell us the extra information about the underpayment"
+  val singleEntryH1: String = "Tell us the extra information about the underpayment"
+  val singleEntryRequiredError: String = "Enter more information"
+  val singleEntryMaxLengthError: String = "More information must be 1500 characters or fewer"
+
+  val bulkEntryTitle: String = "What were the reasons for the underpayment of tax or duty?"
+  val bulkEntryH1: String = "What were the reasons for the underpayment of tax or duty?"
+  val bulkEntryRequiredError: String = "Enter the reasons for the underpayment of tax of duty"
+  val bulkEntryMaxLengthError: String = "The reasons for the underpayment must be 1500 characters or fewer"
 
 }
