@@ -25,6 +25,8 @@ object MoreInformationMessages extends BaseMessages {
 
   val bulkEntryTitle: String = "What were the reasons for the underpayment of tax or duty?"
   val bulkEntryH1: String = "What were the reasons for the underpayment of tax or duty?"
+  val bulkP1 = "Tell us why the duty or tax was underpaid for all the entries included in this disclosure."
+  val bulkP2 = "You do not need to repeat anything that you have already provided in the file you have uploaded."
   val bulkEntryRequiredError: String = "Enter the reasons for the underpayment of tax of duty"
   val bulkEntryMaxLengthError: String = "The reasons for the underpayment must be 1500 characters or fewer"
 

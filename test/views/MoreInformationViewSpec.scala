@@ -76,6 +76,14 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("h1") mustBe MoreInformationMessages.bulkEntryH1
       }
 
+      s"have the correct p1 of '${MoreInformationMessages.bulkEntryH1}'" in {
+        elementText("#main-content > div > div > p:nth-child(2)") mustBe MoreInformationMessages.bulkP1
+      }
+
+      s"have the correct p2 of '${MoreInformationMessages.bulkEntryH1}'" in {
+        elementText("#main-content > div > div > p:nth-child(3)") mustBe MoreInformationMessages.bulkP2
+      }
+
     }
 
     "no data supplied" should {

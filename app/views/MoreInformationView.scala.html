@@ -18,7 +18,9 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputTextArea: components.inputTextArea
+        inputTextArea: components.inputTextArea,
+        h1: components.h1,
+        p: components.p
 )
 
 @(form: Form[_], backLink: Option[Call], isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
@@ -30,14 +32,24 @@
 
         @errorSummary(form.errors)
 
+        @h1(if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"))
+
+        @if(!isSingleEntry) {
+            @p(Html(messages("moreInformation.bulk.p1")))
+        }
+
+        @if(!isSingleEntry){
+            @p(Html(messages("moreInformation.bulk.p2")))
+        }
+
         @formHelper(action = controllers.routes.MoreInformationController.onSubmit()) {
             @inputTextArea(
                 form,
                 "value",
                 "value",
-                if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"),
+                "",
                 false,
-                true,
+                false,
                 classes = Some("govuk-fieldset__legend")
             )
             @button("common.button.continue")
