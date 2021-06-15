@@ -80,7 +80,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
       if(request.isOneEntry) {
         Some(controllers.routes.HasFurtherInformationController.onLoad())
       } else {
-        Some(controllers.routes.MoreInformationController.onLoad()) // TODO - once Jakes page of confirmed file upload goes in
+        Some(controllers.routes.BulkUploadFileController.onSuccess())
       }
     }
   }
