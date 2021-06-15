@@ -17,9 +17,9 @@
 package viewmodels
 
 import base.SpecBase
-import models.{FileUploadInfo, UserAnswers}
+import models.FileUploadInfo
 import org.scalatest.{MustMatchers, OptionValues, TryValues}
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.libs.json.{JsValue, Json}
 import play.twirl.api.Html
 
 class AddFileRowHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues {
@@ -35,21 +35,15 @@ class AddFileRowHelperSpec extends SpecBase with MustMatchers with TryValues wit
 
     "must contain one item per file" in {
       def fileUploadInfo(filename: String): JsValue = {
-        Json.obj("fileName" -> s"${filename}",
+        Json.obj(
+          "reference" -> "file-ref-1",
+          "fileName" -> filename,
           "downloadUrl" -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
           "uploadTimestamp" -> "2021-01-26T13:22:59.388",
           "checksum" -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
           "fileMimeType" -> "application/txt")
       }
 
-      val data: JsObject = Json.obj("uploaded-files" -> Json.arr(
-        fileUploadInfo("text.txt"),
-        fileUploadInfo("text2.txt"),
-        fileUploadInfo("text3.txt")
-      ))
-
-      val answers =
-        UserAnswers("id", data)
       val helper = new AddFileNameRowHelper(
         Seq(
           Json.fromJson[FileUploadInfo](fileUploadInfo("text.txt")).get,

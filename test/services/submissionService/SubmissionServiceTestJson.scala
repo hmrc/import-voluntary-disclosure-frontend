@@ -110,6 +110,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -117,6 +118,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -223,6 +225,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -242,6 +245,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -249,6 +253,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -272,6 +277,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -279,6 +285,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -302,6 +309,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -309,6 +317,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
