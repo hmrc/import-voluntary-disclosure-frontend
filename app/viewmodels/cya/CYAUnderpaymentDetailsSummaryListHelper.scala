@@ -46,7 +46,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         buildAcceptanceDateListRow(answers),
         buildOwedToHmrcRow(answers),
         buildExtraInformationRow(answers),
-        buildUploadedFilesRow(answers)
+        buildMultipleEntriesFileRow(answers)
       ).flatten
     }
     if (rows.nonEmpty) {
@@ -64,19 +64,16 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     }
   }
 
-  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(FileUploadPage).map { files =>
       val fileNames = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
-      val keyTextMessage = if (request.isOneEntry) messages(numberOfFiles, fileNames.length) else messages("cya.bulk.multipleEntriesFile")
-      val changeRoute = if (request.isOneEntry) controllers.routes.UploadAnotherFileController.onLoad().url else controllers.routes.UploadFileController.onLoad().url //change to jake's page
-      val changeTextMessage = if (request.isOneEntry) messages("cya.supportingDocuments.change") else messages("cya.bulk.multipleEntriesFile.change")
       createRow(
-        keyText = Text(keyTextMessage),
+        keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          changeRoute,
-          changeTextMessage
+          controllers.routes.UploadAnotherFileController.onLoad().url,
+          messages("cya.supportingDocuments.change")
         ))
       )
     }
@@ -160,5 +157,19 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         ))
       )
     }
+
+  private def buildMultipleEntriesFileRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(FileUploadPage).map { files =>
+      val fileNames = files map (file => file.fileName)
+      createRow(
+        keyText = Text(messages("cya.bulk.multipleEntriesFile")),
+        valueContent = HtmlContent(encodeMultilineText(fileNames)),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          "Url",
+          messages("cya.bulk.multipleEntriesFile.change")
+        ))
+      )
+    }
+  }
 
 }

@@ -328,7 +328,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.UploadAnotherFileController.onLoad().url,
+              changeUrl,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(CYAMessages.changeMultipleEntriesFile)
             )
