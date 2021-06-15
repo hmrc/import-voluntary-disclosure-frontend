@@ -36,6 +36,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
       .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
       .set(AcceptanceDatePage, true).success.value
       .set(FileUploadPage, Seq(FileUploadInfo(
+        "file-ref-1",
         "Example.pdf",
         "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
         LocalDateTime.now,
@@ -70,6 +71,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           "1284958",
           SelectedDutyTypes.Duty,
           FileUploadInfo(
+            "file-ref-1",
             "DutyFileExample.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -79,6 +81,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           "5293747",
           SelectedDutyTypes.Vat,
           FileUploadInfo(
+            "file-ref-1",
             "VATFileExample.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -153,6 +156,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
           .set(FileUploadPage, Seq(FileUploadInfo(
+            "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -203,6 +207,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
           .set(FileUploadPage, Seq(FileUploadInfo(
+            "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -253,6 +258,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
           .set(FileUploadPage, Seq(FileUploadInfo(
+            "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -286,6 +292,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
               "1284958",
               SelectedDutyTypes.Duty,
               FileUploadInfo(
+                "file-ref-1",
                 "DutyFileExample.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
                 LocalDateTime.now,
@@ -316,6 +323,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
           .set(FileUploadPage, Seq(FileUploadInfo(
+            "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,
@@ -350,6 +358,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
               "1284958",
               SelectedDutyTypes.Both,
               FileUploadInfo(
+                "file-ref-1",
                 "FileExample.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
                 LocalDateTime.now,
@@ -398,6 +407,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with MustMatchers with Tr
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
           .set(FileUploadPage, Seq(FileUploadInfo(
+            "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
             LocalDateTime.now,

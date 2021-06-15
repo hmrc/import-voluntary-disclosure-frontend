@@ -695,10 +695,17 @@ hasFurtherInformation.hint = That you have not told us about already.
 hasFurtherInformation.error.required = Select yes if you want to provide more information about the underpayment
 
 # More Information
-moreInformation.pageTitle = Tell us the extra information about the underpayment
-moreInformation.heading = Tell us the extra information about the underpayment
-moreInformation.error.required = Enter more information
-moreInformation.error.maxLength = More information must be 1500 characters or fewer
+moreInformation.single.pageTitle = Tell us the extra information about the underpayment
+moreInformation.single.heading = Tell us the extra information about the underpayment
+moreInformation.single.error.required = Enter more information
+moreInformation.single.error.maxLength = More information must be 1500 characters or fewer
+
+moreInformation.bulk.pageTitle = What were the reasons for the underpayment of tax or duty?
+moreInformation.bulk.heading = What were the reasons for the underpayment of tax or duty?
+moreInformation.bulk.p1 = Tell us why the duty or tax was underpaid for all the entries included in this disclosure.
+moreInformation.bulk.p2 = You do not need to repeat anything that you have already provided in the file you have uploaded.
+moreInformation.bulk.error.required = Enter the reasons for the underpayment of tax of duty
+moreInformation.bulk.error.maxLength = The reasons for the underpayment must be 1500 characters or fewer
 
 # Importer name
 importerName.pageTitle = What is the name of the importer?
