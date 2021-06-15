@@ -37,6 +37,7 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
       .set(AcceptanceDatePage, true).success.value
       .set(FileUploadPage, Seq(FileUploadInfo(
+        "file-ref-1",
         "Example.pdf",
         "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
         LocalDateTime.now,
