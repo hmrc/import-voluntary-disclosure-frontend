@@ -55,7 +55,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
     "redirect to the summary page when uploaded file already exists" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(FileUploadPage, Seq(FileUploadInfo("test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType"))).success.value
+          .set(FileUploadPage, Seq(FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType"))).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER

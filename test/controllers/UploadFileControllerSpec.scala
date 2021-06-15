@@ -125,6 +125,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     "return correct back link if come from Summary screen" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(FileUploadPage, Seq(FileUploadInfo(
+          reference = "file-ref-1",
           fileName = "file1",
           downloadUrl = "url",
           uploadTimestamp = LocalDateTime.now(),

@@ -76,6 +76,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
           .set(
             FileUploadPage,
             Seq(FileUploadInfo(
+              reference = "file-ref-1",
               fileName = "file.txt",
               downloadUrl = "url",
               uploadTimestamp = LocalDateTime.now,
@@ -126,6 +127,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
             .set(
               FileUploadPage,
               Seq(FileUploadInfo(
+                reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
                 uploadTimestamp = LocalDateTime.now,

@@ -115,6 +115,7 @@ trait ReusableValues {
   val cpc: String = "4000C09"
   val supportingDocuments: Seq[FileUploadInfo] = Seq(
     FileUploadInfo(
+      reference = "file-ref-1",
       fileName = "TestDocument.pdf",
       downloadUrl = "http://some/location",
       uploadTimestamp = validTimestamp,
@@ -127,6 +128,7 @@ trait ReusableValues {
       defermentAccountNumber,
       SelectedDutyTypes.Duty,
       FileUploadInfo(
+        reference = "file-ref-1",
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
         uploadTimestamp = validTimestamp,
@@ -139,6 +141,7 @@ trait ReusableValues {
       defermentAccountNumber,
       SelectedDutyTypes.Vat,
       FileUploadInfo(
+        reference = "file-ref-1",
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
         uploadTimestamp = validTimestamp,

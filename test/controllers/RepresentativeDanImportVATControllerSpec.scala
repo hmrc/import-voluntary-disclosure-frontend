@@ -195,6 +195,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
             UploadAuthority("1234567",
               Duty,
               FileUploadInfo(
+                "file-ref-1",
                 "DutyDocument.pdf",
                 "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
                 LocalDateTime.of(2020, 1, 10, 10, 31),
@@ -204,6 +205,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
             UploadAuthority("7654321",
               Vat,
               FileUploadInfo(
+                "file-ref-1",
                 "VATDocument.pdf",
                 "http://localhost:9570/upscan/download/5e922a0f-d5ad-4aa6-9977-45a83096f71d",
                 LocalDateTime.of(2020, 1, 10, 10, 30),
