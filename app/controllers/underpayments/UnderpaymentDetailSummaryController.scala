@@ -32,8 +32,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
 import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailSummaryView
-
 import javax.inject.Inject
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -83,10 +84,10 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
           if (request.isRepFlow) {
             redirectForRepFlow()
           } else {
-            if (request.checkMode) {
-              Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
-            } else {
-              Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+            (request.checkMode, request.userAnswers.get(NumberOfEntriesPage)) match {
+              case (true, _) => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+              case (_, Some(OneEntry)) => Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+              case (_, Some(MoreThanOneEntry)) => Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
             }
           }
         }
@@ -99,13 +100,15 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     val oldUnderpaymentType = request.userAnswers.get(TempUnderpaymentTypePage)
     val splitThePayment = request.userAnswers.get(SplitPaymentPage)
     val dutyOrVatOnly = Seq(Duty, Vat)
+    val numberOfEntries = request.userAnswers.get(NumberOfEntriesPage)
 
-    (oldUnderpaymentType, newUnderpaymentType, splitThePayment) match {
-      case (Some(oldType), Both, _) if dutyOrVatOnly.contains(oldType) =>
+    (oldUnderpaymentType, newUnderpaymentType, splitThePayment, numberOfEntries) match {
+      case (Some(oldType), Both, _, _) if dutyOrVatOnly.contains(oldType) =>
         removePaymentDataAndRedirect()
-      case (Some(Both), newType, Some(true)) if dutyOrVatOnly.contains(newType) =>
+      case (Some(Both), newType, Some(true), _) if dutyOrVatOnly.contains(newType) =>
         removePaymentDataAndRedirect()
-      case (None, _, _) => Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+      case (None, _, _, Some(OneEntry)) => Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+      case (None, _, _, Some(MoreThanOneEntry)) => Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
       case _ => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
     }
   }

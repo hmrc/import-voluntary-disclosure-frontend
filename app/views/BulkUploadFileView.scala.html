@@ -28,13 +28,12 @@
         govukDetails: GovukDetails
 )
 
-@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
     pageTitle = messages("bulkUploadFile.pageTitle"),
-    customBackLinkUrl = backLink,
-    form = Some(form),
-    showBackLink = backLink.isDefined
+    customBackLinkUrl = Some(backLink),
+    form = Some(form)
 ) {
 
     @errorSummary(form.errors)

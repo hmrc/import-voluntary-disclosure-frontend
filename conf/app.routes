@@ -229,7 +229,8 @@ GET         /disclosure/deferment-account-details-vat                           
 POST        /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onSubmit
 
 GET         /disclosure/upload-multiple-entry-file                                             controllers.BulkUploadFileController.onLoad
-
+GET         /disclosure/upload-multiple-entry-file-success                                     controllers.BulkUploadFileController.onSuccess
+GET         /disclosure/refresh-upload-progress                                                controllers.BulkUploadFileController.uploadProgress(key:String)
 
 # Underpayments
 
