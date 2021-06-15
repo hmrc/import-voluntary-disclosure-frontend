@@ -82,23 +82,19 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    if(isBulkEntry) {
-      val customsProcessingCode = (data.oneCpc.get, data.originalCpc) match {
-        case (true, Some(cpc)) => cpc
-        case (false, _) => "VARIOUS"
-        case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
-      }
-
-      Json.obj(
-        "userType" -> data.userType,
-        "isBulkEntry" -> isBulkEntry,
-        "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
-        "entryDetails" -> data.entryDetails,
-        "customsProcessingCode" -> customsProcessingCode
-      )
-    } else {
-      Json.obj()
+    val customsProcessingCode = (data.oneCpc.get, data.originalCpc) match {
+      case (true, Some(cpc)) => cpc
+      case (false, _) => "VARIOUS"
+      case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
     }
+
+    Json.obj(
+      "userType" -> data.userType,
+      "isBulkEntry" -> isBulkEntry,
+      "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
+      "entryDetails" -> data.entryDetails,
+      "customsProcessingCode" -> customsProcessingCode
+    )
   }
 
   private[services] def buildUnderpaymentDetails(data: SubmissionData): JsObject = {
@@ -108,15 +104,11 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   }
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
-    if (data.numEntries == NumberOfEntries.MoreThanOneEntry) {
-      val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
-      Json.obj(
-        "additionalInfo" -> additionalInfo,
-        "amendedItems" -> data.amendedItems
-      )
-    } else {
-      Json.obj()
-    }
+    val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
+    Json.obj(
+      "additionalInfo" -> additionalInfo,
+      "amendedItems" -> data.amendedItems
+    )
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
@@ -210,10 +202,10 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       Json.obj(
         "importer" -> (
           Json.obj(
-          "eori" -> data.knownDetails.eori,
-          "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
-          "address" -> data.traderAddress
-        ) ++ vatNumber)
+            "eori" -> data.knownDetails.eori,
+            "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
+            "address" -> data.traderAddress
+          ) ++ vatNumber)
       )
     } else {
       val details = for {
