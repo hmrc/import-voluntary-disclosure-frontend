@@ -114,12 +114,12 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
         .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
         .set(AcceptanceDatePage, true).success.value
         .set(FileUploadPage, Seq(FileUploadInfo(
+          "file-ref-1",
           "Example.pdf",
           "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
           LocalDateTime.now,
-          "application/pdf",
-          "mime"))).success.value
+          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "application/pdf"))).success.value
         .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
         .set(UserTypePage, UserType.Importer).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
