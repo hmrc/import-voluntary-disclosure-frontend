@@ -245,6 +245,22 @@ trait SubmissionServiceTestJson {
       |   ]
       |}""".stripMargin
 
+  val bulkSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
+      |      "Other"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
   val singleUnderpaymentDefermentSupportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[
@@ -310,6 +326,30 @@ trait SubmissionServiceTestJson {
       |      "AmendedC88",
       |      "AmendedC2",
       |      "InvoiceAirwayBillPreferenceCertificate",
+      |      "Other",
+      |      "DefermentAuthorisation"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      },
+      |      {
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val bulkSplitDefermentSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
       |      "Other",
       |      "DefermentAuthorisation"
       |   ],

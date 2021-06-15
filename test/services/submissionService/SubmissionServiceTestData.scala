@@ -56,6 +56,17 @@ trait SubmissionServiceTestData extends ReusableValues {
     isImporterVatRegistered = Some(true)
   )
 
+  val bulkCompleteSubmission: SubmissionData = completeSubmission.copy(
+    oneCpc = None,
+    numEntries = MoreThanOneEntry,
+    entryDetails = None,
+    amendedItems = None,
+    hasAdditionalInfo = None,
+    anyOtherSupportingDocs = None,
+    additionalInfo = Some("This is a bulk submission"),
+    optionalDocumentsSupplied = None
+  )
+
   val completeUserAnswers: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
     answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)

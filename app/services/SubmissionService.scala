@@ -121,10 +121,13 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
+    val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
     val authorityDocuments = data.authorityDocuments.getOrElse(Seq.empty)
-    val mandatoryDocumentsList: Seq[DocumentType] = Seq(
-      DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet
-    )
+    val mandatoryDocumentsList: Seq[DocumentType] = if (isBulkEntry) {
+      Seq(DocumentTypes.Other)
+    } else {
+      Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet)
+    }
 
     val optionalDocumentsList: Seq[DocumentType] = data.optionalDocumentsSupplied.getOrElse(Seq.empty).flatMap {
       case ImportAndEntry => Seq(DocumentTypes.AmendedC88, DocumentTypes.AmendedC2)
