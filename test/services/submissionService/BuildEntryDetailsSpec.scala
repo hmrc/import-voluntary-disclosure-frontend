@@ -30,11 +30,19 @@ class BuildEntryDetailsSpec extends SpecBase with MockIvdSubmissionConnector wit
   "buildEntryDetails" when {
 
     "called with valid User Answers" should {
+
       "return expect json" in {
         lazy val result = service.buildEntryDetails(importerSubmission)
 
         result mustBe Json.parse(importerEntryDetailsJson)
       }
+
+      "return expect json for bulk entry" in {
+        lazy val result = service.buildEntryDetails(bulkImporterSubmission)
+
+        result mustBe Json.parse(bulkImporterEntryDetailsJson)
+      }
+
     }
 
   }

@@ -139,6 +139,14 @@ trait SubmissionServiceTestJson {
       |   "userType":"importer"
       |}""".stripMargin
 
+  val bulkImporterEntryDetailsJson =
+    """{
+      |   "customsProcessingCode":"VARIOUS",
+      |   "isBulkEntry":true,
+      |   "isEuropeanUnionDuty":true,
+      |   "userType":"importer"
+      |}""".stripMargin
+
   val underpaymentDetailsJson =
     """{
       |   "underpaymentDetails":[
@@ -212,6 +220,11 @@ trait SubmissionServiceTestJson {
       |      }
       |   ],
       |   "additionalInfo":"Not Applicable"
+      |}""".stripMargin
+
+  val bulkReasonsDetailsJson =
+    """{
+      |   "additionalInfo":"This is a bulk submission"
       |}""".stripMargin
 
   val supportingDocumentationJson =

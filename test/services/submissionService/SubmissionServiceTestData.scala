@@ -16,6 +16,7 @@
 
 package services.submissionService
 
+import models.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
@@ -117,6 +118,16 @@ trait SubmissionServiceTestData extends ReusableValues {
     splitDeferment = None,
     authorityDocuments = None,
     isImporterVatRegistered = None
+  )
+
+  val bulkImporterSubmission: SubmissionData = importerSubmission.copy(
+    oneCpc = None,
+    numEntries = MoreThanOneEntry,
+    entryDetails = None,
+    amendedItems = None,
+    hasAdditionalInfo = None,
+    anyOtherSupportingDocs = None,
+    additionalInfo = Some("This is a bulk submission")
   )
 
   val importerDetailsNoEoriSubmission: SubmissionData = SubmissionData(
