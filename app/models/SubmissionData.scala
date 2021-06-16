@@ -55,12 +55,6 @@ case class SubmissionData(userType: UserType,
 
 object SubmissionData extends FixedConfig {
 
-  // entry details yup
-  // one CPC, yup
-  // has additional info, yup
-  // amended items (box numbers) yup
-  // anyOtherSupportingDocs, yup
-
   implicit val reads: Reads[SubmissionData] =
     for {
       userType <- UserTypePage.path.read[UserType]
