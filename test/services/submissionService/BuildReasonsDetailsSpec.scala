@@ -30,13 +30,13 @@ class BuildReasonsDetailsSpec extends SpecBase with MockIvdSubmissionConnector w
 
     "called with valid User Answers" should {
 
-      "return expect json" in {
+      "return expect json for single submission" in {
         lazy val result = service.buildReasonsDetails(importerSubmission)
 
         result mustBe Json.parse(reasonsDetailsJson)
       }
 
-      "return expect json in bulk submission" in {
+      "return expect json for bulk submission" in {
         lazy val result = service.buildReasonsDetails(bulkImporterSubmission)
 
         result mustBe Json.parse(bulkReasonsDetailsJson)
