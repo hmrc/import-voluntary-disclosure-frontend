@@ -16,19 +16,21 @@
 
 package services.submissionService
 
+import models.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
 import utils.ReusableValues
 
 trait SubmissionServiceTestData extends ReusableValues {
+
   val completeSubmission: SubmissionData = SubmissionData(
     userType = representative,
     knownDetails = eoriDetails,
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = true,
+    oneCpc = Some(true),
     originalCpc = Some(cpc),
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -43,10 +45,10 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = true,
+    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = true,
+    anyOtherSupportingDocs = Some(true),
     optionalDocumentsSupplied = Some(optionalSupportingDocuments),
     supportingDocuments = supportingDocuments,
     splitDeferment = Some(true),
@@ -54,13 +56,24 @@ trait SubmissionServiceTestData extends ReusableValues {
     isImporterVatRegistered = Some(true)
   )
 
+  val bulkCompleteSubmission: SubmissionData = completeSubmission.copy(
+    oneCpc = None,
+    numEntries = MoreThanOneEntry,
+    entryDetails = None,
+    amendedItems = None,
+    hasAdditionalInfo = None,
+    anyOtherSupportingDocs = None,
+    additionalInfo = Some("This is a bulk submission"),
+    optionalDocumentsSupplied = None
+  )
+
   val completeUserAnswers: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
     answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
     answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
     answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
-    answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails)
-    answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc)
+    answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails.get)
+    answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc.get)
     answers <- answers.set(EnterCustomsProcedureCodePage, completeSubmission.originalCpc.getOrElse("cpcError"))
     answers <- answers.set(DeclarantContactDetailsPage, completeSubmission.declarantContactDetails)
     answers <- answers.set(TraderAddressCorrectPage, completeSubmission.traderAddressCorrect)
@@ -74,11 +87,11 @@ trait SubmissionServiceTestData extends ReusableValues {
     answers <- answers.set(DefermentAccountPage, completeSubmission.defermentAccountNumber.getOrElse(defermentAccountNumber))
     answers <- answers.set(AdditionalDefermentTypePage, completeSubmission.additionalDefermentType.getOrElse("B"))
     answers <- answers.set(AdditionalDefermentNumberPage, completeSubmission.additionalDefermentAccountNumber.getOrElse(defermentAccountNumber))
-    answers <- answers.set(UnderpaymentReasonsPage, completeSubmission.amendedItems)
-    answers <- answers.set(HasFurtherInformationPage, completeSubmission.hasAdditionalInfo)
+    answers <- answers.set(UnderpaymentReasonsPage, completeSubmission.amendedItems.get)
+    answers <- answers.set(HasFurtherInformationPage, completeSubmission.hasAdditionalInfo.get)
     answers <- answers.set(MoreInformationPage, completeSubmission.additionalInfo.getOrElse("Additional information"))
     answers <- answers.set(UnderpaymentDetailSummaryPage, completeSubmission.underpaymentDetails)
-    answers <- answers.set(AnyOtherSupportingDocsPage, completeSubmission.anyOtherSupportingDocs)
+    answers <- answers.set(AnyOtherSupportingDocsPage, completeSubmission.anyOtherSupportingDocs.get)
     answers <- answers.set(OptionalSupportingDocsPage, completeSubmission.optionalDocumentsSupplied.getOrElse(optionalSupportingDocuments))
     answers <- answers.set(FileUploadPage, completeSubmission.supportingDocuments)
     answers <- answers.set(SplitPaymentPage, completeSubmission.splitDeferment.get)
@@ -92,7 +105,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = false,
+    oneCpc = Some(false),
     originalCpc = None,
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -107,15 +120,25 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = false,
+    hasAdditionalInfo = Some(false),
     additionalInfo = None,
     underpaymentDetails = allUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = false,
+    anyOtherSupportingDocs = Some(false),
     optionalDocumentsSupplied = None,
     supportingDocuments = supportingDocuments,
     splitDeferment = None,
     authorityDocuments = None,
     isImporterVatRegistered = None
+  )
+
+  val bulkImporterSubmission: SubmissionData = importerSubmission.copy(
+    oneCpc = None,
+    numEntries = MoreThanOneEntry,
+    entryDetails = None,
+    amendedItems = None,
+    hasAdditionalInfo = None,
+    anyOtherSupportingDocs = None,
+    additionalInfo = Some("This is a bulk submission")
   )
 
   val importerDetailsNoEoriSubmission: SubmissionData = SubmissionData(
@@ -124,7 +147,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = true,
+    oneCpc = Some(true),
     originalCpc = Some(cpc),
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -139,10 +162,10 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = true,
+    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = true,
+    anyOtherSupportingDocs = Some(true),
     optionalDocumentsSupplied = Some(optionalSupportingDocuments),
     supportingDocuments = supportingDocuments,
     splitDeferment = Some(false),
@@ -156,7 +179,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = false,
+    oneCpc = Some(false),
     originalCpc = None,
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -171,10 +194,10 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = false,
+    hasAdditionalInfo = Some(false),
     additionalInfo = None,
     underpaymentDetails = allUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = false,
+    anyOtherSupportingDocs = Some(false),
     optionalDocumentsSupplied = None,
     supportingDocuments = supportingDocuments,
     splitDeferment = None,
@@ -188,7 +211,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = true,
+    oneCpc = Some(true),
     originalCpc = Some(cpc),
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -203,10 +226,10 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = true,
+    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = true,
+    anyOtherSupportingDocs = Some(true),
     optionalDocumentsSupplied = Some(optionalSupportingDocuments),
     supportingDocuments = supportingDocuments,
     splitDeferment = Some(false),
@@ -220,7 +243,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = true,
+    oneCpc = Some(true),
     originalCpc = Some(cpc),
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -235,10 +258,10 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = true,
+    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = true,
+    anyOtherSupportingDocs = Some(true),
     optionalDocumentsSupplied = Some(Seq.empty),
     supportingDocuments = supportingDocuments,
     splitDeferment = Some(true),
@@ -252,7 +275,7 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = oneEntry,
     acceptedBeforeBrexit = true,
     entryDetails = entryDetails,
-    oneCpc = true,
+    oneCpc = Some(true),
     originalCpc = Some(cpc),
     declarantContactDetails = contactDetails,
     traderAddressCorrect = true,
@@ -267,16 +290,15 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = true,
+    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
-    anyOtherSupportingDocs = true,
+    anyOtherSupportingDocs = Some(true),
     optionalDocumentsSupplied = Some(Seq.empty),
     supportingDocuments = supportingDocuments,
     splitDeferment = Some(true),
     authorityDocuments = Some(vatAuthorityDocuments),
     isImporterVatRegistered = Some(true)
   )
-
 
 }

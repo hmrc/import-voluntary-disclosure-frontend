@@ -83,18 +83,18 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   private[services] def buildEntryDetails(data: SubmissionData): JsObject = {
     val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
     val customsProcessingCode = (data.oneCpc, data.originalCpc) match {
-      case (true, Some(cpc)) => cpc
-      case (false, _) => "VARIOUS"
-      case _ => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
+      case (Some(true), Some(cpc)) => cpc
+      case (Some(true), _) => throw new RuntimeException(buildSubmissionErrorPrefix + "CPC missing from user answers")
+      case _ => "VARIOUS"
     }
 
-    Json.obj(
+    val json = Json.obj(
       "userType" -> data.userType,
       "isBulkEntry" -> isBulkEntry,
       "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
-      "entryDetails" -> data.entryDetails,
       "customsProcessingCode" -> customsProcessingCode
     )
+    if (isBulkEntry) json else Json.obj("entryDetails" -> data.entryDetails) ++ json
   }
 
   private[services] def buildUnderpaymentDetails(data: SubmissionData): JsObject = {
@@ -105,17 +105,20 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
     val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
-    Json.obj(
-      "additionalInfo" -> additionalInfo,
-      "amendedItems" -> data.amendedItems
-    )
+    val isBulk = data.numEntries == NumberOfEntries.MoreThanOneEntry
+    val amendedItems = if (isBulk) Json.obj() else Json.obj("amendedItems" -> data.amendedItems)
+
+    Json.obj("additionalInfo" -> additionalInfo) ++ amendedItems
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
+    val isBulkEntry = data.numEntries == NumberOfEntries.MoreThanOneEntry
     val authorityDocuments = data.authorityDocuments.getOrElse(Seq.empty)
-    val mandatoryDocumentsList: Seq[DocumentType] = Seq(
-      DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet
-    )
+    val mandatoryDocumentsList: Seq[DocumentType] = if (isBulkEntry) {
+      Seq(DocumentTypes.Other)
+    } else {
+      Seq(DocumentTypes.OriginalC88, DocumentTypes.OriginalC2, DocumentTypes.AmendedSubstituteEntryWorksheet)
+    }
 
     val optionalDocumentsList: Seq[DocumentType] = data.optionalDocumentsSupplied.getOrElse(Seq.empty).flatMap {
       case ImportAndEntry => Seq(DocumentTypes.AmendedC88, DocumentTypes.AmendedC2)
@@ -202,10 +205,10 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       Json.obj(
         "importer" -> (
           Json.obj(
-          "eori" -> data.knownDetails.eori,
-          "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
-          "address" -> data.traderAddress
-        ) ++ vatNumber)
+            "eori" -> data.knownDetails.eori,
+            "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
+            "address" -> data.traderAddress
+          ) ++ vatNumber)
       )
     } else {
       val details = for {

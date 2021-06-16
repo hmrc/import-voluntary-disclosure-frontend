@@ -51,7 +51,7 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
     "preserve known pages stored as JsArrays" in {
       val pagesToPreserve: Seq[QuestionPage[_]] = Seq(UnderpaymentReasonsPage)
       val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
-        .set(UnderpaymentReasonsPage, completeSubmission.amendedItems).success.value
+        .set(UnderpaymentReasonsPage, completeSubmission.amendedItems.get).success.value
 
       completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
     }
@@ -81,8 +81,8 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
         answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
         answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
         answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
-        answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails)
-        answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc)
+        answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails.get)
+        answers <- answers.set(OneCustomsProcedureCodePage, completeSubmission.oneCpc.get)
       } yield answers).getOrElse(new UserAnswers("some-cred-id"))
       val result = answers.removeMany(pagesToRemove)
       result.get(ImporterNamePage) mustBe None

@@ -292,7 +292,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     "return HTML with correct filename" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(SplitPaymentPage, true).success.value
-        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("filename.txt", "", LocalDateTime.now(), "", "")))).success.value)
+        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", "")))).success.value)
       val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
       contentAsString(result).contains("filename.txt") mustBe true
     }
@@ -300,7 +300,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     "return HTML with RepresentativeDanImportVAT url when checkMode is false and dutyType is duty" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(SplitPaymentPage, true).success.value
-        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", LocalDateTime.now(), "", "")))).success.value
+        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", "", LocalDateTime.now(), "", "")))).success.value
         .set(CheckModePage, false).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value)
       val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
@@ -310,7 +310,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     "return HTML with CheckYourAnswers url when checkMode is true" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(SplitPaymentPage, true).success.value
-        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("filename.txt", "", LocalDateTime.now(), "", "")))).success.value
+        .set(UploadAuthorityPage, Seq(UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", "")))).success.value
         .set(CheckModePage, true).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value)
       val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)

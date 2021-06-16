@@ -110,6 +110,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -117,6 +118,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -135,6 +137,14 @@ trait SubmissionServiceTestJson {
       |      "entryNumber":"123456Q",
       |      "entryDate":"2020-12-12"
       |   },
+      |   "isEuropeanUnionDuty":true,
+      |   "userType":"importer"
+      |}""".stripMargin
+
+  val bulkImporterEntryDetailsJson =
+    """{
+      |   "customsProcessingCode":"VARIOUS",
+      |   "isBulkEntry":true,
       |   "isEuropeanUnionDuty":true,
       |   "userType":"importer"
       |}""".stripMargin
@@ -214,6 +224,11 @@ trait SubmissionServiceTestJson {
       |   "additionalInfo":"Not Applicable"
       |}""".stripMargin
 
+  val bulkReasonsDetailsJson =
+    """{
+      |   "additionalInfo":"This is a bulk submission"
+      |}""".stripMargin
+
   val supportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[
@@ -223,6 +238,24 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val bulkSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
+      |      "Other"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -242,6 +275,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -249,6 +283,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -272,6 +307,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -279,6 +315,7 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -302,6 +339,7 @@ trait SubmissionServiceTestJson {
       |   ],
       |   "supportingDocuments":[
       |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
@@ -309,6 +347,33 @@ trait SubmissionServiceTestJson {
       |         "fileMimeType":"application/pdf"
       |      },
       |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val bulkSplitDefermentSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
+      |      "Other",
+      |      "DefermentAuthorisation"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      },
+      |      {
+      |         "reference":"file-ref-1",
       |         "fileName":"TestDocument.pdf",
       |         "downloadUrl":"http://some/location",
       |         "uploadTimestamp":"2021-05-14T20:15:13.807",
