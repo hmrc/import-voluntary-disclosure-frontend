@@ -108,7 +108,7 @@ trait ReusableValues {
 
   val importer: UserType = UserType.Importer
   val representative: UserType = UserType.Representative
-  val entryDetails: EntryDetails = EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12"))
+  val entryDetails: Option[EntryDetails] = Some(EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12")))
   val oneEntry: NumberOfEntries = NumberOfEntries.OneEntry
   val bulkEntry: NumberOfEntries = NumberOfEntries.MoreThanOneEntry
   val contactDetails: ContactDetails = ContactDetails("John Smith", "test@test.com", "0123456789")
@@ -150,10 +150,10 @@ trait ReusableValues {
       )
     ))
   val defermentAccountNumber: String = "1234567"
-  val underpaymentReasons = Seq(
+  val underpaymentReasons = Some(Seq(
     UnderpaymentReason(22, 0, "GBP100", "GBP200"),
     UnderpaymentReason(33, 1, "2204109400X411", "2204109400X412")
-  )
+  ))
   val optionalSupportingDocuments: Seq[OptionalDocument] = Seq(
     ImportAndEntry, AirwayBill, OriginProof, Other
   )
