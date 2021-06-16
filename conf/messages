@@ -579,6 +579,7 @@ cya.customsProcedureCode = Customs procedure code
 cya.cpcChange = Customs procedure code changed?
 cya.entryDetails = Entry details
 cya.numberOfEntries = Number of entries
+cya.numberOfEntries.change = Change number of entries
 cya.oneEntry = One Entry
 cya.bulkEntry = Multiple entries
 cya.epu = EPU

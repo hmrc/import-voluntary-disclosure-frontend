@@ -62,7 +62,10 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.NumberOfEntriesController.onLoad().url,
+          messages("cya.numberOfEntries.change")
+        ))
       )
     }
 
