@@ -88,22 +88,13 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case _ => "VARIOUS"
     }
 
-    if (isBulkEntry) {
-      Json.obj(
-        "userType" -> data.userType,
-        "isBulkEntry" -> isBulkEntry,
-        "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
-        "customsProcessingCode" -> customsProcessingCode
-      )
-    } else {
-      Json.obj(
-        "userType" -> data.userType,
-        "isBulkEntry" -> isBulkEntry,
-        "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
-        "entryDetails" -> data.entryDetails,
-        "customsProcessingCode" -> customsProcessingCode
-      )
-    }
+    val json = Json.obj(
+      "userType" -> data.userType,
+      "isBulkEntry" -> isBulkEntry,
+      "isEuropeanUnionDuty" -> data.acceptedBeforeBrexit,
+      "customsProcessingCode" -> customsProcessingCode
+    )
+    if (isBulkEntry) json else Json.obj("entryDetails" -> data.entryDetails) ++ json
   }
 
   private[services] def buildUnderpaymentDetails(data: SubmissionData): JsObject = {
