@@ -147,7 +147,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
 
   private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(AcceptanceDatePage).map { acceptanceDate =>
-      val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
+      val acceptanceDateValue = if (acceptanceDate) messages("cya.bulk.acceptanceDate.before") else messages("cya.bulk.acceptanceDate.after")
       createRow(
         keyText = Text(messages("cya.bulk.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
