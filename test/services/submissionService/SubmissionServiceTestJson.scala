@@ -141,6 +141,14 @@ trait SubmissionServiceTestJson {
       |   "userType":"importer"
       |}""".stripMargin
 
+  val bulkImporterEntryDetailsJson =
+    """{
+      |   "customsProcessingCode":"VARIOUS",
+      |   "isBulkEntry":true,
+      |   "isEuropeanUnionDuty":true,
+      |   "userType":"importer"
+      |}""".stripMargin
+
   val underpaymentDetailsJson =
     """{
       |   "underpaymentDetails":[
@@ -216,12 +224,34 @@ trait SubmissionServiceTestJson {
       |   "additionalInfo":"Not Applicable"
       |}""".stripMargin
 
+  val bulkReasonsDetailsJson =
+    """{
+      |   "additionalInfo":"This is a bulk submission"
+      |}""".stripMargin
+
   val supportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[
       |      "OriginalC88",
       |      "OriginalC2",
       |      "AmendedSubstituteEntryWorksheet"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val bulkSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
+      |      "Other"
       |   ],
       |   "supportingDocuments":[
       |      {
@@ -304,6 +334,32 @@ trait SubmissionServiceTestJson {
       |      "AmendedC88",
       |      "AmendedC2",
       |      "InvoiceAirwayBillPreferenceCertificate",
+      |      "Other",
+      |      "DefermentAuthorisation"
+      |   ],
+      |   "supportingDocuments":[
+      |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      },
+      |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"TestDocument.pdf",
+      |         "downloadUrl":"http://some/location",
+      |         "uploadTimestamp":"2021-05-14T20:15:13.807",
+      |         "checksum":"the file checksum",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ]
+      |}""".stripMargin
+
+  val bulkSplitDefermentSupportingDocumentationJson =
+    """{
+      |   "supportingDocumentTypes":[
       |      "Other",
       |      "DefermentAuthorisation"
       |   ],
