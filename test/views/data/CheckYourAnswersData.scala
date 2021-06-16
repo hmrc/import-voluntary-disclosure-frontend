@@ -34,7 +34,7 @@ object CheckYourAnswersData {
   val phone = "1234567890"
   val traderAddress = ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")
   val importerAddress = ContactAddress("21 Street", Some("Mayfair"), "London", None, "UK")
-  val oneEntry = "One Entry"
+  val oneEntry = "One entry"
   val multipleEntries = "More than one entry"
   val epu = "123"
   val entryNumber = "123456Q"
