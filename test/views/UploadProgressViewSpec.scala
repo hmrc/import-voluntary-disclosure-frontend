@@ -31,10 +31,19 @@ class UploadProgressViewSpec extends ViewBaseSpec {
   private val backLink: Call = Call("GET", "url")
 
   "Rendering the Upload Progress page" when {
-    lazy val view: Html = injectedView(reference, backLink)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "called normally" should {
+    "called from the BulkUploadFilePage" should {
+      lazy val view: Html = injectedView(reference, backLink, bulk = true)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+      "have the correct button link" in {
+        elementAttributes("#main-content .govuk-button").get("href").get mustBe
+          controllers.routes.BulkUploadFileController.uploadProgress(reference).url
+      }
+    }
+
+    "called from the UploadFilePage" should {
+      lazy val view: Html = injectedView(reference, backLink, bulk = false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
       "have the correct button link" in {
         elementAttributes("#main-content .govuk-button").get("href").get mustBe
           controllers.routes.UploadFileController.uploadProgress(reference).url
@@ -43,7 +52,7 @@ class UploadProgressViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(reference, backLink)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reference, backLink, bulk = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadProgressMessages.title)

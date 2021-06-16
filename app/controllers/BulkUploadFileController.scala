@@ -87,7 +87,7 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val uploadCompleteRoute = Redirect(controllers.routes.BulkUploadFileController.onSuccess())
     val uploadFailedRoute = Redirect(controllers.routes.BulkUploadFileController.onLoad())
-    val uploadInProgressRoute = Ok(progressView(key, controllers.routes.BulkUploadFileController.onLoad()))
+    val uploadInProgressRoute = Ok(progressView(key, controllers.routes.BulkUploadFileController.onLoad(), true))
     val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
       val upload = extractFileDetails(file, key)
       Seq(upload)

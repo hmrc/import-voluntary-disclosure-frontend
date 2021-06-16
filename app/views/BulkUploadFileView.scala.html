@@ -53,15 +53,23 @@
     ))
 
     @govukDetails(
-    Details(
-    summary = HtmlContent(messages("bulkUploadFile.typesOfFile")),
-    content = HtmlContent(
-    s"""
-    <a class="govuk-link" href=${appConfig.signOutUrl}>${messages("confirmEORI.notThisEoriExpandedLinkText")}</a><a class="govuk-link" href=${appConfig.signOutUrl}>${messages("confirmEORI.notThisEoriExpandedLinkText")}</a>
-    """
+        Details(
+            summary = HtmlContent(messages("bulkUploadFile.typesOfFile")),
+            content = HtmlContent(
+                 bullets(Seq(
+                 Html(messages("bulkUploadFile.PDF")),
+                 Html(messages("bulkUploadFile.excel")),
+                 Html(messages("bulkUploadFile.openDocumentFormat")),
+                 Html(messages("bulkUploadFile.image")),
+                 Html(messages("bulkUploadFile.text"))
+                ))
             )
         )
     )
+
+    @p {
+        @messages("bulkUploadFile.fileSize")
+    }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 

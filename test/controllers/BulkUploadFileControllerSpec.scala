@@ -24,10 +24,12 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.UserAnswers
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
+import pages.CheckModePage
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.{BulkUploadFileView, BulkUploadSuccessView, UploadProgressView}
 
@@ -85,6 +87,18 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         ))
       )
     }
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     lazy val controller = {
       setupMocks()
@@ -235,6 +249,32 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
+  }
+
+  "backLink" when {
+
+    "not in change mode" should {
+      "when loading page back button should take you to Trader address page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+      }
+    }
+
+    "in change mode" should {
+      "when loading page back button should take you to Check your answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
   }
 
 }

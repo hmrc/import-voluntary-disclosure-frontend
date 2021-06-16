@@ -20,7 +20,7 @@
         linkButton: components.linkButton
 )
 
-@(key: String, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(key: String, backLink: Call, bulk: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("uploadProgress.pageTitle"),
@@ -37,7 +37,11 @@
         @messages("uploadProgress.request")
     }
 
-    @linkButton(url = controllers.routes.UploadFileController.uploadProgress(key).url, messages(("uploadProgress.refresh")))
+    if (bulk) {
+      @linkButton(url = controllers.routes.BulkUploadFileController.uploadProgress(key).url, messages(("uploadProgress.refresh")))
+    }  else {
+      @linkButton(url = controllers.routes.UploadFileController.uploadProgress(key).url, messages(("uploadProgress.refresh")))
+    }
 
 }
 
