@@ -174,7 +174,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
             .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.MoreInformationController.onLoad())
+        result mustBe Some(controllers.routes.BulkUploadFileController.onLoad())
 
       }
     }

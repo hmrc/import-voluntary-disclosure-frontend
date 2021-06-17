@@ -44,7 +44,9 @@ object MockAppConfig extends AppConfig {
   override val cacheTtl: Int = 500
   override val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = "TBC"
   override val upScanSuccessRedirectForUser: String = "TBC"
+  override val upScanSuccessRedirectForBulk: String = "TBC"
   override val upScanErrorRedirectForUser: String = "TBC"
+  override val upScanErrorRedirectForBulk: String = "TBC"
   override val upScanMinFileSize: Int = 1
   override val upScanMaxFileSize: Int = 10485760
   override val upScanPollingDelayMilliSeconds: Int = 10

@@ -64,6 +64,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
   lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
+  lazy val upScanSuccessRedirectForBulk: String = host + servicesConfig.getString("upscan.successRedirectForBulk")
+  lazy val upScanErrorRedirectForBulk: String = host + servicesConfig.getString("upscan.errorRedirectForBulk")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
@@ -106,7 +108,9 @@ trait AppConfig extends FixedConfig {
   val cacheTtl: Int
   val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String
   val upScanSuccessRedirectForUser: String
+  val upScanSuccessRedirectForBulk: String
   val upScanErrorRedirectForUser: String
+  val upScanErrorRedirectForBulk: String
   val upScanMinFileSize: Int
   val upScanMaxFileSize: Int
   val upScanPollingDelayMilliSeconds: Int

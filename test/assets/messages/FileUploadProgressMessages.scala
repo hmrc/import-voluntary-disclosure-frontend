@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,32 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(layout: templates.Layout,
-        h1: components.h1,
-        p: components.p,
-        linkButton: components.linkButton
-)
+package messages
 
-@(fileName: String, action: String)(implicit request: Request[_], messages: Messages)
+object FileUploadProgressMessages extends BaseMessages {
 
-@layout(
-    pageTitle = messages("uploadAuthoritySuccess.pageTitle"),
-    showBackLink = false
-) {
-
-    @h1(messages("uploadAuthoritySuccess.pageHeader"))
-
-    @p {
-        @messages("uploadAuthoritySuccess.text", fileName)
-    }
-
-    @linkButton(url = action, messages(("common.continue")))
-
-}
-
-
-@{
-    //$COVERAGE-OFF$
+  val title: String = "Upload progress"
+  val h1: String = "Upload progress"
+  val waiting: String = "Waiting for uploaded file to be scanned"
+  val request: String = "Please refresh to view latest progress"
+  val refresh: String = "Refresh"
 }

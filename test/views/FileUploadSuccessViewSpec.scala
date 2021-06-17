@@ -17,22 +17,22 @@
 package views
 
 import base.ViewBaseSpec
-import messages.UploadAuthoritySuccessMessages
+import messages.FileUploadSuccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.html.UploadAuthoritySuccessView
+import views.html.FileUploadSuccessView
 
-class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
+class FileUploadSuccessViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: UploadAuthoritySuccessView = app.injector.instanceOf[UploadAuthoritySuccessView]
-  private val filename: String = UploadAuthoritySuccessMessages.filename
+  private lazy val injectedView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
+  private val filename: String = FileUploadSuccessMessages.filename
   private val action: String = "action/url"
 
-  "Rendering the Upload Progress page" when {
+
+  "Rendering the success page" when {
     lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
-
     "called normally" should {
       "have the correct button link" in {
         elementAttributes("#main-content .govuk-button").get("href").get mustBe action
@@ -40,26 +40,27 @@ class UploadAuthoritySuccessViewSpec extends ViewBaseSpec {
     }
   }
 
+
   it should {
     lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    checkPageTitle(UploadAuthoritySuccessMessages.title)
+    checkPageTitle(FileUploadSuccessMessages.title)
 
     "not have a back link" in {
       elementExtinct("#back-link")
     }
 
-    s"have the correct h1 of '${UploadAuthoritySuccessMessages.h1}'" in {
-      elementText("h1") mustBe UploadAuthoritySuccessMessages.h1
+    s"have the correct h1 of '${FileUploadSuccessMessages.h1}'" in {
+      elementText("h1") mustBe FileUploadSuccessMessages.h1
     }
 
-    s"have the correct text of '${UploadAuthoritySuccessMessages.bodyText}'" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthoritySuccessMessages.bodyText
+    s"have the correct text of '${FileUploadSuccessMessages.bodyText}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe FileUploadSuccessMessages.bodyText
     }
 
     s"have the correct Continue button text" in {
-      elementText("#main-content .govuk-button") mustBe UploadAuthoritySuccessMessages.continue
+      elementText("#main-content .govuk-button") mustBe FileUploadSuccessMessages.continue
     }
 
   }
