@@ -43,13 +43,16 @@
         @messages("bulkUploadFile.mustContain")
     }
 
-    @bullets(Seq(
-        Html(messages("bulkUploadFile.bullet1")),
-        Html(messages("bulkUploadFile.bullet2")),
-        Html(messages("bulkUploadFile.bullet3")),
-        Html(messages("bulkUploadFile.bullet4")),
-        Html(messages("bulkUploadFile.bullet5"))
-    ))
+    @p {
+        @messages("bulkUploadFile.mustProvide")
+        @bullets(Seq(
+            Html(messages("bulkUploadFile.bullet1")),
+            Html(messages("bulkUploadFile.bullet2")),
+            Html(messages("bulkUploadFile.bullet3")),
+            Html(messages("bulkUploadFile.bullet4")),
+            Html(messages("bulkUploadFile.bullet5"))
+        ))
+    }
 
     @govukDetails(
         Details(
@@ -59,8 +62,7 @@
                  Html(messages("bulkUploadFile.PDF")),
                  Html(messages("bulkUploadFile.ms")),
                  Html(messages("bulkUploadFile.openDocumentFormat")),
-                 Html(messages("bulkUploadFile.image")),
-                 Html(messages("bulkUploadFile.text"))
+                 Html(messages("bulkUploadFile.image"))
                 ))
             )
         )

@@ -71,6 +71,10 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(1)") mustBe BulkUploadFileMessages.mustContain
     }
 
+    s"have the correct text of '${BulkUploadFileMessages.mustProvide}'" in {
+      elementText("#main-content p:nth-of-type(2)") mustBe BulkUploadFileMessages.mustProvide
+    }
+
     "have the correct text for mandatory file bullet 1" in {
       elementText("#main-content ul:nth-of-type(1) li:nth-of-type(1)") mustBe BulkUploadFileMessages.bullet1
     }
@@ -109,10 +113,6 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.image}'" in {
       elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)") mustBe BulkUploadFileMessages.image
-    }
-
-    s"have correct link within the expandable text '${BulkUploadFileMessages.text}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)") mustBe BulkUploadFileMessages.text
     }
 
     "have the correct Continue button" in {
