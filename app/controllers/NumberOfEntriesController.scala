@@ -19,17 +19,17 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.NumberOfEntriesFormProvider
-import javax.inject.{Inject, Singleton}
-import models.NumberOfEntries
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.DataRequest
-import pages.NumberOfEntriesPage
+import models.{NumberOfEntries, UserAnswers}
+import pages.{CheckModePage, ImporterAddressPage, ImporterNamePage, NumberOfEntriesPage, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -56,29 +56,49 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.isRepFlow, backLink()))),
-      value => {
+      newNumberOfEntries => {
+        val prevNumberOfEntries: Option[NumberOfEntries] = request.userAnswers.get(NumberOfEntriesPage)
+        val cleanedUserAnswers: UserAnswers = prevNumberOfEntries match {
+          case Some(oldNumberOfEntries) => if (newNumberOfEntries == oldNumberOfEntries) {
+            request.userAnswers
+          } else {
+            request.userAnswers.preserve(Seq(ImporterAddressPage, UserTypePage, ImporterNamePage))
+          }
+          case _ => request.userAnswers
+        }
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(NumberOfEntriesPage, value))
+          updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(NumberOfEntriesPage, newNumberOfEntries))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          redirect(value)
+          redirect(newNumberOfEntries, cleanedUserAnswers)
         }
       }
     )
   }
 
-  private def redirect(entries: NumberOfEntries): Result = entries match {
-    case OneEntry => Redirect(controllers.routes.EntryDetailsController.onLoad())
-    case MoreThanOneEntry => Redirect(controllers.routes.AcceptanceDateController.onLoad())
+  private def redirect(entries: NumberOfEntries, userAnswers: UserAnswers): Result = {
+    val isCheckMode = userAnswers.get(CheckModePage).getOrElse(false)
+    if (isCheckMode) {
+      Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+    } else {
+      entries match {
+        case OneEntry => Redirect(controllers.routes.EntryDetailsController.onLoad())
+        case MoreThanOneEntry => Redirect(controllers.routes.AcceptanceDateController.onLoad())
+      }
+    }
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
-    (request.isRepFlow, request.doesImporterEORIExist) match {
-      case (true, true) => controllers.routes.ImporterVatRegisteredController.onLoad()
-      case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()
-      case _ => controllers.routes.UserTypeController.onLoad()
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.routes.CheckYourAnswersController.onLoad()
+    } else {
+      (request.isRepFlow, request.doesImporterEORIExist) match {
+        case (true, true) => controllers.routes.ImporterVatRegisteredController.onLoad()
+        case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()
+        case _ => controllers.routes.UserTypeController.onLoad()
+      }
     }
+  }
 }
