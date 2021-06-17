@@ -375,8 +375,7 @@ uploadFile.error.unknown = The selected file could not be uploaded – try again
 # Bulk Upload File page
 bulkUploadFile.pageTitle = Upload a file containing the underpayment details for each entry
 bulkUploadFile.pageHeader = Upload a file containing the underpayment details for each entry
-bulkUploadFile.mustContain = Your file must contain a list of all the entries you are including in this underpayment disclosure.
-bulkUploadFile.mustProvide =  For each entry you must provide:
+bulkUploadFile.mustContain = Your file must contain a list of all the entries you are including in this underpayment disclosure. For each entry you must provide:
 bulkUploadFile.bullet1 = the EPU number, entry number and entry date
 bulkUploadFile.bullet2 = all item numbers
 bulkUploadFile.bullet3 = the type of tax or duty that was paid

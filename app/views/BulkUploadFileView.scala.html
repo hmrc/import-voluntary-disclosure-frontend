@@ -43,16 +43,13 @@
         @messages("bulkUploadFile.mustContain")
     }
 
-    @p {
-        @messages("bulkUploadFile.mustProvide")
-        @bullets(Seq(
-            Html(messages("bulkUploadFile.bullet1")),
-            Html(messages("bulkUploadFile.bullet2")),
-            Html(messages("bulkUploadFile.bullet3")),
-            Html(messages("bulkUploadFile.bullet4")),
-            Html(messages("bulkUploadFile.bullet5"))
-        ))
-    }
+    @bullets(Seq(
+        Html(messages("bulkUploadFile.bullet1")),
+        Html(messages("bulkUploadFile.bullet2")),
+        Html(messages("bulkUploadFile.bullet3")),
+        Html(messages("bulkUploadFile.bullet4")),
+        Html(messages("bulkUploadFile.bullet5"))
+    ))
 
     @govukDetails(
         Details(
