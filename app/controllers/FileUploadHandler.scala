@@ -52,8 +52,6 @@ trait FileUploadHandler[T] {
                           (implicit request: DataRequest[AnyContent],
                            ec: ExecutionContext): Future[Result] = (key, error) match {
     case (Some(key), None) =>
-      println("&&&&&&&&&&&&&&&&&&")
-      println(s"$key")
       fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
         Thread.sleep(appConfig.upScanPollingDelayMilliSeconds)
         successRoute

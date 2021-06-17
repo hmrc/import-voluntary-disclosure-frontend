@@ -390,10 +390,16 @@ bulkUploadFile.image = image (.jpg, .png or .tiff)
 bulkUploadFile.text = text (.txt)
 bulkUploadFile.fileSize = The file must be 6MB or less.
 
-# Bulk Upload success page
-bulkUpload.success.pageTitle = The file has been uploaded successfully
-bulkUpload.success.pageHeader = The file has been uploaded successfully
-bulkUpload.success.text = You have uploaded {0}
+# Success page
+success.pageTitle = The file has been uploaded successfully
+success.pageHeader = The file has been uploaded successfully
+success.text = You have uploaded {0}
+
+# Progress page
+progress.pageTitle = Upload progress
+progress.pageHeader = Upload progress
+progress.message = Waiting for uploaded file to be scanned
+progress.continue = Continue
 
 # Upload Progress page
 uploadProgress.pageTitle = Upload progress

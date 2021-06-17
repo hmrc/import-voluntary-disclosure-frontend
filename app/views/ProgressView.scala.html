@@ -20,20 +20,20 @@
         linkButton: components.linkButton
 )
 
-@(fileName: String, action: String)(implicit request: Request[_], messages: Messages)
+@(key: String, backLink: Call, action: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("bulkUpload.success.pageTitle"),
-    showBackLink = false
+    pageTitle = messages("progress.pageTitle"),
+    customBackLinkUrl = Some(backLink)
 ) {
 
-    @h1(messages("bulkUpload.success.pageHeader"))
+    @h1(messages("progress.pageHeader"))
 
     @p {
-        @messages("bulkUpload.success.text", fileName)
+        @messages("progress.message")
     }
 
-    @linkButton(url = action, messages(("common.continue")))
+    @linkButton(url = action, messages(("progress.continue")))
 
 }
 

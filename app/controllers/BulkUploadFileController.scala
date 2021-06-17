@@ -23,13 +23,13 @@ import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
+import pages.FileUploadPage
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{BulkUploadAuthoritySuccessView, BulkUploadFileView, BulkUploadSuccessView, UploadProgressView}
+import views.html.{BulkUploadFileView, BulkUploadSuccessView, ProgressView, SuccessView}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -44,9 +44,9 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
                                          val sessionRepository: SessionRepository,
                                          upScanService: UpScanService,
                                          view: BulkUploadFileView,
-                                         progressView: UploadProgressView,
+                                         progressView: ProgressView,
                                          formProvider: UploadFileFormProvider,
-                                         successView: BulkUploadSuccessView,
+                                         successView: SuccessView,
                                          implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
@@ -59,12 +59,8 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
       case _ => formProvider()
     }
 
-    val anyOtherDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
-    val otherDocs = request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
-    val docs = if (anyOtherDocs) otherDocs else Seq.empty
-
     upScanService.initiateBulkJourney().map { response =>
-      Ok(view(form, response, backLink, docs))
+      Ok(view(form, response, backLink))
         .removingFromSession("UpscanReference")
         .addingToSession("UpscanReference" -> response.reference.value)
     }
@@ -87,7 +83,13 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val uploadCompleteRoute = Redirect(controllers.routes.BulkUploadFileController.onSuccess())
     val uploadFailedRoute = Redirect(controllers.routes.BulkUploadFileController.onLoad())
-    val uploadInProgressRoute = Ok(progressView(key, controllers.routes.BulkUploadFileController.onLoad(), true))
+    val uploadInProgressRoute = Ok(
+      progressView(
+        key = key,
+        backLink = controllers.routes.BulkUploadFileController.onLoad(),
+        action = controllers.routes.BulkUploadFileController.onLoad().url
+      )
+    )
     val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
       val upload = extractFileDetails(file, key)
       Seq(upload)

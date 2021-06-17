@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,36 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(layout: templates.Layout,
-        h1: components.h1,
-        p: components.p,
-        linkButton: components.linkButton
-)
+package messages
 
-@(key: String, backLink: Call, action: String)(implicit request: Request[_], messages: Messages)
+object BulkUploadSuccessMessages extends BaseMessages {
 
-@layout(
-    pageTitle = messages("uploadProgress.pageTitle"),
-    customBackLinkUrl = Some(backLink)
-) {
+  val filename: String = "TestDocument.pdf"
 
-    @h1(messages("uploadProgress.pageHeader"))
-
-    @p {
-        @messages("uploadProgress.message")
-    }
-
-    @p {
-        @messages("uploadProgress.request")
-    }
-
-    @linkButton(url = action, messages(("uploadProgress.refresh")))
-
-}
-
-
-@{
-    //$COVERAGE-OFF$
+  val title: String = "The file has been uploaded successfully"
+  val h1: String = "The file has been uploaded successfully"
+  val bodyText: String = s"You have uploaded $filename"
 }
