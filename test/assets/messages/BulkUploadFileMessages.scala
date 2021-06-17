@@ -35,4 +35,7 @@ object BulkUploadFileMessages extends BaseMessages {
   val text: String = "text (.txt)"
   val fileSize: String = "The file must be 6MB or less."
   val fileUploadId: String = "file"
+  val fileTooSmall = "Select a file to upload"
+  val fileTooBig = "The selected file must be smaller than 6MB"
+  val fileUnknown = "The selected file could not be uploaded – try again"
 }

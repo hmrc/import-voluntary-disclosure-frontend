@@ -20,7 +20,6 @@
 @this(layout: templates.Layout,
         inputFileUpload: components.inputFileUpload,
         h1: components.h1,
-        h2: components.h2,
         p: components.p,
         errorSummary: components.errorSummary,
         bullets: components.bullets,
@@ -58,7 +57,7 @@
             content = HtmlContent(
                  bullets(Seq(
                  Html(messages("bulkUploadFile.PDF")),
-                 Html(messages("bulkUploadFile.excel")),
+                 Html(messages("bulkUploadFile.ms")),
                  Html(messages("bulkUploadFile.openDocumentFormat")),
                  Html(messages("bulkUploadFile.image")),
                  Html(messages("bulkUploadFile.text"))

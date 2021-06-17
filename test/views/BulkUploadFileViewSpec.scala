@@ -47,7 +47,7 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
     }
 
     "have the correct file upload control" in {
-      element(".govuk-file-upload").attr("id") mustBe UploadFileMessages.fileUploadId
+      element(".govuk-file-upload").attr("id") mustBe BulkUploadFileMessages.fileUploadId
     }
 
     "have the correct file upload control file types" in {

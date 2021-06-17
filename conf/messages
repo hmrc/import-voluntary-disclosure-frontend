@@ -384,29 +384,23 @@ bulkUploadFile.bullet5 = the original and amended values of any information that
 bulkUploadFile.uploadFile = Upload chosen file
 bulkUploadFile.typesOfFile = Types of file you can upload
 bulkUploadFile.PDF = PDF (.pdf)
-bulkUploadFile.excel = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+bulkUploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
 bulkUploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
 bulkUploadFile.image = image (.jpg, .png or .tiff)
 bulkUploadFile.text = text (.txt)
 bulkUploadFile.fileSize = The file must be 6MB or less.
 
-# Success page
-success.pageTitle = The file has been uploaded successfully
-success.pageHeader = The file has been uploaded successfully
-success.text = You have uploaded {0}
+# File Upload Success page
+fileUploadSuccess.pageTitle = The file has been uploaded successfully
+fileUploadSuccess.pageHeader = The file has been uploaded successfully
+fileUploadSuccess.text = You have uploaded {0}
 
-# Progress page
-progress.pageTitle = Upload progress
-progress.pageHeader = Upload progress
-progress.message = Waiting for uploaded file to be scanned
-progress.continue = Continue
-
-# Upload Progress page
-uploadProgress.pageTitle = Upload progress
-uploadProgress.pageHeader = Upload progress
-uploadProgress.message = Waiting for uploaded file to be scanned
-uploadProgress.request = Please refresh to view latest progress
-uploadProgress.refresh = Refresh
+# File Upload Progress page
+fileUploadProgress.pageTitle = Upload progress
+fileUploadProgress.pageHeader = Upload progress
+fileUploadProgress.message = Waiting for uploaded file to be scanned
+fileUploadProgress.request = Please refresh to view latest progress
+fileUploadProgress.refresh = Refresh
 
 # Deferement page
 deferment.headingOnlyVAT = How will you pay for the import VAT owed?
@@ -844,9 +838,6 @@ uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the 
 uploadAuthority.fileSizeTypeHeading = File size and type
 uploadAuthority.fileSizeTypeText = The file must be 6MB or smaller and either be a PDF (.pdf) or a text (.txt) file.
 uploadAuthority.uploadFile = Upload file
-uploadAuthoritySuccess.pageTitle = The file has been uploaded successfully
-uploadAuthoritySuccess.pageHeader = The file has been uploaded successfully
-uploadAuthoritySuccess.text = You have uploaded {0}
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?

@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
-import messages.UploadFileMessages
+import messages.{BulkUploadFileMessages, UploadFileMessages}
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -128,19 +128,19 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
     "Display error when file uploaded is Too Small" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
       status(result) mustBe Status.OK
-      contentAsString(result).contains(UploadFileMessages.fileTooSmall) mustBe true
+      contentAsString(result).contains(BulkUploadFileMessages.fileTooSmall) mustBe true
     }
 
     "Display error when file uploaded is Too Big" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooBig")))
       status(result) mustBe Status.OK
-      contentAsString(result).contains(UploadFileMessages.fileTooBig) mustBe true
+      contentAsString(result).contains(BulkUploadFileMessages.fileTooBig) mustBe true
     }
 
     "Display error when file uploaded is Unknown" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Unknown")))
       status(result) mustBe Status.OK
-      contentAsString(result).contains(UploadFileMessages.fileUnknown) mustBe true
+      contentAsString(result).contains(BulkUploadFileMessages.fileUnknown) mustBe true
     }
   }
 
@@ -331,7 +331,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "when loading page back button should take you to Trader address page" in new Test {
+      "when loading page back button should take you to UnderpaymentDetailsSummary page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value

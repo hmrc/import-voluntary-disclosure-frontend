@@ -23,17 +23,21 @@
 @(key: String, backLink: Call, action: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("progress.pageTitle"),
+    pageTitle = messages("fileUploadProgress.pageTitle"),
     customBackLinkUrl = Some(backLink)
 ) {
 
-    @h1(messages("progress.pageHeader"))
+    @h1(messages("fileUploadProgress.pageHeader"))
 
     @p {
-        @messages("progress.message")
+        @messages("fileUploadProgress.message")
     }
 
-    @linkButton(url = action, messages(("progress.continue")))
+    @p {
+        @messages("fileUploadProgress.request")
+    }
+
+    @linkButton(url = action, messages(("fileUploadProgress.refresh")))
 
 }
 

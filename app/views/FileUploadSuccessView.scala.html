@@ -23,14 +23,14 @@
 @(fileName: String, action: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("success.pageTitle"),
+    pageTitle = messages("fileUploadSuccess.pageTitle"),
     showBackLink = false
 ) {
 
-    @h1(messages("success.pageHeader"))
+    @h1(messages("fileUploadSuccess.pageHeader"))
 
     @p {
-        @messages("success.text", fileName)
+        @messages("fileUploadSuccess.text", fileName)
     }
 
     @linkButton(url = action, messages(("common.continue")))

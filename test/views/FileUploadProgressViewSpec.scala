@@ -61,8 +61,12 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(1)") mustBe FileUploadProgressMessages.waiting
     }
 
+    s"have the correct text of '${FileUploadProgressMessages.refresh}'" in {
+      elementText("#main-content p:nth-of-type(2)") mustBe FileUploadProgressMessages.request
+    }
+
     s"have the correct continue button text" in {
-      elementText("#main-content .govuk-button") mustBe FileUploadProgressMessages.continueButton
+      elementText("#main-content .govuk-button") mustBe FileUploadProgressMessages.refresh
     }
 
   }

@@ -70,8 +70,8 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
     private lazy val uploadAuthorityView: UploadAuthorityView = app.injector.instanceOf[UploadAuthorityView]
-    private lazy val ProgressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
-    private lazy val SuccessView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
+    private lazy val progressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
+    private lazy val successView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -111,7 +111,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadAuthorityController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadAuthorityView,
-        ProgressView, form, SuccessView, MockAppConfig)
+        progressView, form, successView, MockAppConfig)
     }
   }
 
