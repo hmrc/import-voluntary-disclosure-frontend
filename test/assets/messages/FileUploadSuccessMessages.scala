@@ -16,7 +16,7 @@
 
 package messages
 
-object BulkUploadSuccessMessages extends BaseMessages {
+object FileUploadSuccessMessages extends BaseMessages {
 
   val filename: String = "TestDocument.pdf"
 

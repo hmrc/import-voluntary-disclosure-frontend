@@ -17,6 +17,7 @@
 package controllers
 
 import java.time.LocalDateTime
+
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
@@ -31,7 +32,7 @@ import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.{UploadFileView, UploadProgressView}
+import views.html.{FileUploadProgressView, UploadFileView}
 
 import scala.concurrent.Future
 
@@ -65,7 +66,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
     private lazy val uploadFileView: UploadFileView = app.injector.instanceOf[UploadFileView]
-    private lazy val uploadProgressView: UploadProgressView = app.injector.instanceOf[UploadProgressView]
+    private lazy val uploadProgressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

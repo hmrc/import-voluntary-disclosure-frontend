@@ -20,8 +20,6 @@ import base.ViewBaseSpec
 import forms.UploadFileFormProvider
 import messages.{BulkUploadFileMessages, UploadFileMessages}
 import mocks.config.MockAppConfig
-import models.OptionalDocument
-import models.OptionalDocument._
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -36,13 +34,12 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
   private lazy val initiateResponse: UpScanInitiateResponse =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
   private val backLink: Call = Call("GET", "url")
-  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
 
   "Rendering the UploadFile page" should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, Seq.empty)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct form action" in {
@@ -61,7 +58,7 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
   it should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, maxOptDocs)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(BulkUploadFileMessages.title)

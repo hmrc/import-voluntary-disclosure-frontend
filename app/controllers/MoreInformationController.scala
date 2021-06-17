@@ -80,7 +80,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
       if(request.isOneEntry) {
         Some(controllers.routes.HasFurtherInformationController.onLoad())
       } else {
-        Some(controllers.routes.BulkUploadFileController.onSuccess())
+        Some(controllers.routes.BulkUploadFileController.onLoad())
       }
     }
   }

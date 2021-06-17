@@ -17,26 +17,27 @@
 package views
 
 import base.ViewBaseSpec
-import messages.UploadAuthorityProgressMessages
+import messages.FileUploadProgressMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.UploadAuthorityProgressView
+import views.html.FileUploadProgressView
 
-class UploadAuthorityProgressViewSpec extends ViewBaseSpec {
+class FileUploadProgressViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: UploadAuthorityProgressView = app.injector.instanceOf[UploadAuthorityProgressView]
+  private lazy val injectedView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
   private val reference: String = "11370e18-6e24-453e-b45a-76d3e32ea33d"
   private val backLink: Call = Call("GET", "url")
   private val action: String = "action/url"
 
-  "Rendering the Upload Progress page" when {
-    lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+  "Rendering the Progress page" when {
 
     "called normally" should {
       "have the correct button link" in {
+        lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
         elementAttributes("#main-content .govuk-button").get("href").get mustBe action
       }
     }
@@ -46,26 +47,22 @@ class UploadAuthorityProgressViewSpec extends ViewBaseSpec {
     lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    checkPageTitle(UploadAuthorityProgressMessages.title)
+    checkPageTitle(FileUploadProgressMessages.title)
 
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
 
-    s"have the correct h1 of '${UploadAuthorityProgressMessages.h1}'" in {
-      elementText("h1") mustBe UploadAuthorityProgressMessages.h1
+    s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
+      elementText("h1") mustBe FileUploadProgressMessages.h1
     }
 
-    s"have the correct text of '${UploadAuthorityProgressMessages.waiting}'" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityProgressMessages.waiting
+    s"have the correct text of '${FileUploadProgressMessages.waiting}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe FileUploadProgressMessages.waiting
     }
 
-    s"have the correct text of '${UploadAuthorityProgressMessages.request}'" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe UploadAuthorityProgressMessages.request
-    }
-
-    s"have the correct Refresh button text" in {
-      elementText("#main-content .govuk-button") mustBe UploadAuthorityProgressMessages.refresh
+    s"have the correct continue button text" in {
+      elementText("#main-content .govuk-button") mustBe FileUploadProgressMessages.continueButton
     }
 
   }

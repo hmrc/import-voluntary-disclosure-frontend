@@ -36,7 +36,7 @@ import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
-import views.html.{UploadAuthorityProgressView, UploadAuthoritySuccessView, UploadAuthorityView}
+import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
 
 import scala.concurrent.Future
 
@@ -70,8 +70,8 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
     private lazy val uploadAuthorityView: UploadAuthorityView = app.injector.instanceOf[UploadAuthorityView]
-    private lazy val uploadAuthorityProgressView: UploadAuthorityProgressView = app.injector.instanceOf[UploadAuthorityProgressView]
-    private lazy val uploadAuthoritySuccessView: UploadAuthoritySuccessView = app.injector.instanceOf[UploadAuthoritySuccessView]
+    private lazy val ProgressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
+    private lazy val SuccessView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -111,7 +111,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadAuthorityController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadAuthorityView,
-        uploadAuthorityProgressView, form, uploadAuthoritySuccessView, MockAppConfig)
+        ProgressView, form, SuccessView, MockAppConfig)
     }
   }
 

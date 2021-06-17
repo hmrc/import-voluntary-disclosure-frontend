@@ -16,6 +16,8 @@
 
 package controllers
 
+import java.time.LocalDateTime
+
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
@@ -23,15 +25,15 @@ import messages.UploadFileMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
-import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.upscan.{FileUpload, Reference, UpScanInitiateResponse, UploadFormTemplate}
-import pages.CheckModePage
+import models.{FileUploadInfo, UserAnswers}
+import pages.{CheckModePage, FileUploadPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
-import views.html.{BulkUploadFileView, BulkUploadSuccessView, UploadProgressView}
+import views.html.{BulkUploadFileView, FileUploadProgressView, FileUploadSuccessView}
 
 import scala.concurrent.Future
 
@@ -65,8 +67,8 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
     private lazy val bulkUploadFileView: BulkUploadFileView = app.injector.instanceOf[BulkUploadFileView]
-    private lazy val uploadProgressView: UploadProgressView = app.injector.instanceOf[UploadProgressView]
-    private lazy val bulkUploadSuccessView: BulkUploadSuccessView = app.injector.instanceOf[BulkUploadSuccessView]
+    private lazy val uploadProgressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
+    private lazy val bulkUploadSuccessView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
 
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -249,6 +251,81 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
+  }
+
+
+  "GET onSuccess" should {
+
+    "return OK" in new Test {
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+    "return HTML with Continue action" in new Test {
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
+    "return HTML with Continue action to Representative VAT Dan" in new Test {
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      contentType(result) mustBe Some("text/html")
+      charset(result) mustBe Some("utf-8")
+    }
+    "return HTML with correct filename" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(
+          FileUploadPage,
+          Seq(FileUploadInfo(
+            reference = "file-ref-1",
+            fileName = "filename.txt",
+            downloadUrl = "url",
+            uploadTimestamp = LocalDateTime.now,
+            checksum = "checksum",
+            fileMimeType = "filename/txt"
+          ))
+        ).success.value
+      )
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      contentAsString(result).contains("filename.txt") mustBe true
+    }
+
+    "return HTML with MoreInformation url when checkMode is false " in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(
+          FileUploadPage,
+          Seq(FileUploadInfo(
+            reference = "file-ref-1",
+            fileName = "file.txt",
+            downloadUrl = "url",
+            uploadTimestamp = LocalDateTime.now,
+            checksum = "checksum",
+            fileMimeType = "application/txt"
+          ))
+        ).success.value
+        .set(CheckModePage, false).success.value
+      )
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      contentAsString(result).contains("/disclosure/more-information") mustBe true
+    }
+
+    "return HTML with CheckYourAnswers url when checkMode is true" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+        .set(
+          FileUploadPage,
+          Seq(FileUploadInfo(
+            reference = "file-ref-1",
+            fileName = "file.txt",
+            downloadUrl = "url",
+            uploadTimestamp = LocalDateTime.now,
+            checksum = "checksum",
+            fileMimeType = "application/txt"
+          ))
+        ).success.value
+        .set(CheckModePage, true).success.value
+      )
+      val result: Future[Result] = controller.onSuccess()(fakeRequest)
+      contentAsString(result).contains("/disclosure/check-your-answers") mustBe true
+    }
+
   }
 
   "backLink" when {

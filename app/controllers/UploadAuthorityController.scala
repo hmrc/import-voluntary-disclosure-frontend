@@ -30,7 +30,7 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{ProgressView, SuccessView, UploadAuthorityView}
+import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,9 +45,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           val sessionRepository: SessionRepository,
                                           upScanService: UpScanService,
                                           view: UploadAuthorityView,
-                                          progressView: ProgressView,
+                                          progressView: FileUploadProgressView,
                                           formProvider: UploadFileFormProvider,
-                                          successView: SuccessView,
+                                          successView: FileUploadSuccessView,
                                           implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
