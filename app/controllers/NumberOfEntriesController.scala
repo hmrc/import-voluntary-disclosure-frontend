@@ -22,7 +22,7 @@ import forms.NumberOfEntriesFormProvider
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.DataRequest
 import models.{NumberOfEntries, UserAnswers}
-import pages.{CheckModePage, ImporterAddressPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, KnownEoriDetailsPage, NumberOfEntriesPage, UserTypePage}
+import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -66,9 +66,9 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
           } else {
             request.userAnswers.preserve(
               Seq(
-              ImporterAddressPage, UserTypePage, ImporterNamePage, KnownEoriDetailsPage, ImporterVatRegisteredPage,
+                ImporterAddressPage, UserTypePage, ImporterNamePage, KnownEoriDetailsPage, ImporterVatRegisteredPage,
                 ImporterEORINumberPage, ImporterEORIExistsPage
-            )
+              )
             )
           }
           case _ => request.userAnswers
