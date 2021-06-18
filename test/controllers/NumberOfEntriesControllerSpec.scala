@@ -20,11 +20,13 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.NumberOfEntriesFormProvider
 import mocks.repositories.MockSessionRepository
-import models.UserType.Representative
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.UserType.{Importer, Representative}
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{NumberOfEntries, UserAnswers}
-import pages.{ImporterEORIExistsPage, ImporterEORINumberPage, NumberOfEntriesPage, UserTypePage}
+import pages._
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.NumberOfEntriesView
@@ -40,6 +42,18 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       .set(UserTypePage, Representative).success.value
       .set(ImporterEORIExistsPage, false).success.value)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     val formProvider: NumberOfEntriesFormProvider = injector.instanceOf[NumberOfEntriesFormProvider]
     val form: NumberOfEntriesFormProvider = formProvider
@@ -77,6 +91,69 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
+      "return a SEE OTHER response when the existing value is equal to the submitted one" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+      }
+
+      "return a SEE OTHER response when the existing value is not equal to the submitted one" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+      }
+
+      "return a SEE OTHER response when the existing value is equal to the submitted one in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      }
+
+      "return a SEE OTHER response when the existing value is not equal to the submitted one in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+      }
+
+      "return a SEE OTHER response when the existing OneEntry is not equal to the submitted MoreThanOne in check mode" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.MoreThanOneEntry.toString)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
+      }
+
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -88,6 +165,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit(request))
         verifyCalls()
       }
+
     }
 
     "payload contains invalid data" should {
@@ -127,6 +205,62 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.BAD_REQUEST
       }
     }
+  }
+
+  "backlink" when {
+
+    "in check mode" should {
+
+      "return SEE OTHER CYA" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, true).success.value
+        )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+      }
+
+    }
+
+    "not in check mode" should {
+
+      "return SEE OTHER ImporterVatRegisteredController" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, true).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, false).success.value
+        )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.ImporterVatRegisteredController.onLoad()
+      }
+
+      "return SEE OTHER ImporterEORIExistsController" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, false).success.value
+        )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.ImporterEORIExistsController.onLoad()
+      }
+
+      "return SEE OTHER UserTypeController" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(UserTypePage, Importer).success.value
+          .set(ImporterEORIExistsPage, false).success.value
+          .set(NumberOfEntriesPage, OneEntry).success.value
+          .set(CheckModePage, false).success.value
+        )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.UserTypeController.onLoad()
+      }
+
+    }
+
   }
 
 }
