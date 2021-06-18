@@ -21,7 +21,7 @@ import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
-import pages.{KnownEoriDetails, TraderAddressCorrectPage, TraderAddressPage}
+import pages.{KnownEoriDetailsPage, TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -57,7 +57,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
     eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
       case Right(eoriDetails) =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetails, eoriDetails))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetailsPage, eoriDetails))
           _ <- sessionRepository.set(updatedAnswers)
         } yield Ok(view(form, eoriDetails.address, backLink()))
       case Left(error) =>
@@ -67,7 +67,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetails).get.address
+    val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetailsPage).get.address
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress, backLink()))),
       value => {

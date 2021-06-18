@@ -141,7 +141,10 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(messages("cya.bulkEntry")),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.NumberOfEntriesController.onLoad().url,
+          messages("cya.numberOfEntries.change")
+        ))
       )
     }
 

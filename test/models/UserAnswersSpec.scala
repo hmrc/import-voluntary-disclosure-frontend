@@ -23,9 +23,9 @@ import services.submissionService.SubmissionServiceTestData
 class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
   "Calling .preserve" should {
     "preserve known pages stored as JsObjects" in {
-      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(KnownEoriDetails, UserTypePage)
+      val pagesToPreserve: Seq[QuestionPage[_]] = Seq(KnownEoriDetailsPage, UserTypePage)
       val trimmedAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
-        .set(KnownEoriDetails, completeSubmission.knownDetails).success.value
+        .set(KnownEoriDetailsPage, completeSubmission.knownDetails).success.value
         .set(UserTypePage, completeSubmission.userType).success.value
 
       completeUserAnswers.preserve(pagesToPreserve).data mustBe trimmedAnswers.data
@@ -78,7 +78,7 @@ class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
       val pagesToRemove: Seq[QuestionPage[_]] = Seq(ImporterNamePage, ImporterEORIExistsPage)
       val answers = (for {
         answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
-        answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
+        answers <- answers.set(KnownEoriDetailsPage, completeSubmission.knownDetails)
         answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
         answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
         answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails.get)
