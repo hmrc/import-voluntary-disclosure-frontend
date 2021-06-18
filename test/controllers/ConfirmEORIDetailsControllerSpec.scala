@@ -93,7 +93,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     "userAnswers exist" should {
       "return OK" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(KnownEoriDetails, EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress(
+          .set(KnownEoriDetailsPage, EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress(
             addressLine1 = "99 Avenue Road",
             addressLine2 = None,
             city = "Anyold Town",

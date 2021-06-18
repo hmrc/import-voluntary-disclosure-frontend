@@ -58,7 +58,7 @@ object SubmissionData extends FixedConfig {
   implicit val reads: Reads[SubmissionData] =
     for {
       userType <- UserTypePage.path.read[UserType]
-      knownDetails <- KnownEoriDetails.path.read[EoriDetails]
+      knownDetails <- KnownEoriDetailsPage.path.read[EoriDetails]
       numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
       acceptanceDate <- AcceptanceDatePage.path.read[Boolean]
       entryDetails <- EntryDetailsPage.path.readNullable[EntryDetails]

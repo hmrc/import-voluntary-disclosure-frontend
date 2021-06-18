@@ -19,7 +19,7 @@ package pages
 import models.EoriDetails
 import play.api.libs.json.JsPath
 
-case object KnownEoriDetails extends QuestionPage[EoriDetails] {
+case object KnownEoriDetailsPage extends QuestionPage[EoriDetails] {
 
   def path: JsPath = JsPath \ toString
 
