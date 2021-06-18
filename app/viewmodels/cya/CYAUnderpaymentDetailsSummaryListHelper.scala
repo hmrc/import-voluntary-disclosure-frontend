@@ -165,7 +165,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.bulk.multipleEntriesFile")),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          "Url",
+          controllers.routes.BulkUploadFileController.onLoad().url,
           messages("cya.bulk.multipleEntriesFile.change")
         ))
       )
