@@ -23,7 +23,7 @@ import scala.util.Try
 
 case object OneCustomsProcedureCodePage extends QuestionPage[Boolean] {
 
-  def path: JsPath = JsPath \ "cpc" \ toString
+  def path: JsPath = JsPath \ toString
 
   override def toString: String = "one-customs-procedure-code"
 

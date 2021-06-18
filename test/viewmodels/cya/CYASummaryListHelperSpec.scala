@@ -90,17 +90,41 @@ class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues
       buildEntryDetailsSummaryList mustBe List.empty
     }
 
+    "not produce Entry Details list when Number of Entries is Bulk" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("")
+        .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+      buildEntryDetailsSummaryList mustBe List.empty
+    }
+
   }
 
   "buildUnderpaymentDetails" should {
 
-    "produce a valid model when all answers are provided" in new Test {
-      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsAnswers)
+    "produce a valid model when all answers are provided for one entry" in new Test {
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsSingleAnswers)
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
       buildUnderpaymentDetailsSummaryList mustBe List.empty
+    }
+
+    "produce a valid model when all answers are provided for multiple entries" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("")
+        .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+        .set(AcceptanceDatePage, true).success.value
+        .set(FileUploadPage, Seq(FileUploadInfo(
+          "file-ref-1",
+          "Example.pdf",
+          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+          LocalDateTime.now,
+          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "application/pdf"))).success.value
+        .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+        .set(DefermentPage, false).success.value
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
     }
 
   }

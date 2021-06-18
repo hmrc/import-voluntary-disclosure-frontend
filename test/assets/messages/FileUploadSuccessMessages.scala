@@ -16,11 +16,11 @@
 
 package messages
 
-object UploadProgressMessages extends BaseMessages {
+object FileUploadSuccessMessages extends BaseMessages {
 
-  val title: String = "Upload progress"
-  val h1: String = "Upload progress"
-  val waiting: String = "Waiting for uploaded file to be scanned"
-  val request: String = "Please refresh to view latest progress"
-  val refresh: String = "Refresh"
+  val filename: String = "TestDocument.pdf"
+
+  val title: String = "The file has been uploaded successfully"
+  val h1: String = "The file has been uploaded successfully"
+  val bodyText: String = s"You have uploaded $filename"
 }

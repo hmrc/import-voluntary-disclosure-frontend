@@ -18,6 +18,7 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
+import javax.inject.Inject
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
@@ -33,7 +34,6 @@ import viewmodels.ActionItemHelper
 import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -80,14 +80,15 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         if (addAnother) {
           Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad()))
         } else {
-          if (request.isRepFlow) {
-            redirectForRepFlow()
-          } else {
-            if (request.checkMode) {
-              Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
-            } else {
-              Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
-            }
+          (request.isRepFlow, request.checkMode) match {
+            case (true, _) => redirectForRepFlow()
+            case (_, true) => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+            case _ =>
+              if (request.isOneEntry) {
+                Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+              } else {
+                Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
+              }
           }
         }
       }
@@ -105,7 +106,12 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         removePaymentDataAndRedirect()
       case (Some(Both), newType, Some(true)) if dutyOrVatOnly.contains(newType) =>
         removePaymentDataAndRedirect()
-      case (None, _, _) => Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+      case (None, _, _) =>
+        if (request.isOneEntry) {
+          Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+        } else {
+          Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
+        }
       case _ => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
     }
   }

@@ -372,12 +372,34 @@ uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
 
-# Upload Progress page
-uploadProgress.pageTitle = Upload progress
-uploadProgress.pageHeader = Upload progress
-uploadProgress.message = Waiting for uploaded file to be scanned
-uploadProgress.request = Please refresh to view latest progress
-uploadProgress.refresh = Refresh
+# Bulk Upload File page
+bulkUploadFile.pageTitle = Upload a file containing the underpayment details for each entry
+bulkUploadFile.pageHeader = Upload a file containing the underpayment details for each entry
+bulkUploadFile.mustContain = Your file must contain a list of all the entries you are including in this underpayment disclosure. For each entry you must provide:
+bulkUploadFile.bullet1 = the EPU number, entry number and entry date
+bulkUploadFile.bullet2 = all item numbers
+bulkUploadFile.bullet3 = the type of tax or duty that was paid
+bulkUploadFile.bullet4 = the amount of tax or duty that was paid and the amount that should have been paid
+bulkUploadFile.bullet5 = the original and amended values of any information that was wrong in the original import declaration (for example, commodity codes or invoice values)
+bulkUploadFile.uploadFile = Upload chosen file
+bulkUploadFile.typesOfFile = Types of file you can upload
+bulkUploadFile.PDF = PDF (.pdf)
+bulkUploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+bulkUploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+bulkUploadFile.image = image (.jpg, .png or .tiff)
+bulkUploadFile.fileSize = The file must be 6MB or less.
+
+# File Upload Success page
+fileUploadSuccess.pageTitle = The file has been uploaded successfully
+fileUploadSuccess.pageHeader = The file has been uploaded successfully
+fileUploadSuccess.text = You have uploaded {0}
+
+# File Upload Progress page
+fileUploadProgress.pageTitle = Upload progress
+fileUploadProgress.pageHeader = Upload progress
+fileUploadProgress.message = Waiting for uploaded file to be scanned
+fileUploadProgress.request = Please refresh to view latest progress
+fileUploadProgress.refresh = Refresh
 
 # Deferement page
 deferment.headingOnlyVAT = How will you pay for the import VAT owed?
@@ -580,15 +602,18 @@ cya.cpcChange = Customs procedure code changed?
 cya.entryDetails = Entry details
 cya.numberOfEntries = Number of entries
 cya.numberOfEntries.change = Change number of entries
-cya.oneEntry = One Entry
-cya.bulkEntry = Multiple entries
+cya.oneEntry = One entry
+cya.bulkEntry = More than one entry
 cya.epu = EPU
 cya.epu.change = Change entry details
 cya.entryNumber = Entry number
 cya.entryDate = Entry date
 cya.acceptanceDate = Acceptance date
-cya.acceptanceDate.before = Before 1 January 2021
-cya.acceptanceDate.after = On or after 1 January 2021
+cya.bulk.acceptanceDate = Acceptance dates
+cya.single.acceptanceDate.before = Before 1 January 2021
+cya.single.acceptanceDate.after = On or after 1 January 2021
+cya.bulk.acceptanceDate.before = On or before 31 December 2020
+cya.bulk.acceptanceDate.after = From 1 January 2021
 cya.oneCustomsProcedureCode = One customs procedure code?
 cya.customsProcedureCode = Customs procedure code
 cya.acceptanceDate.change = Change acceptance date
@@ -658,7 +683,12 @@ cya.numberOfUnderpaymentsPlural = {0} reasons given
 cya.hasFurtherInformation = Tell us anything else?
 cya.hasFurtherInformation.change = Change Tell us anything else?
 cya.extraInformation = Extra information
+cya.bulk.reasonForUnderpayment = Reason for underpayment
 cya.extraInformation.change = Change Extra information
+cya.bulk.acceptanceDate.change = Change acceptance dates
+cya.bulk.reasonForUnderpayment.change = Change reason for underpayment
+cya.bulk.multipleEntriesFile = Multiple entries file
+cya.bulk.multipleEntriesFile.change = Change multiple entries file
 
 # Item Number
 itemNo.pageTitle = What is the item number?
@@ -816,9 +846,6 @@ uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the 
 uploadAuthority.fileSizeTypeHeading = File size and type
 uploadAuthority.fileSizeTypeText = The file must be 6MB or smaller and either be a PDF (.pdf) or a text (.txt) file.
 uploadAuthority.uploadFile = Upload file
-uploadAuthoritySuccess.pageTitle = The file has been uploaded successfully
-uploadAuthoritySuccess.pageHeader = The file has been uploaded successfully
-uploadAuthoritySuccess.text = You have uploaded {0}
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
