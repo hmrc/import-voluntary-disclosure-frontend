@@ -164,19 +164,19 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > details > summary > span") mustBe UploadFileMessages.typesOfFile
     }
 
-    s"have correct link within the expandable text '${UploadFileMessages.PDF}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.PDF}'" in {
       elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)") mustBe UploadFileMessages.PDF
     }
 
-    s"have correct link within the expandable text '${UploadFileMessages.ms}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.ms}'" in {
       elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)") mustBe UploadFileMessages.ms
     }
 
-    s"have correct link within the expandable text '${UploadFileMessages.openDocumentFormat}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.openDocumentFormat}'" in {
       elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)") mustBe UploadFileMessages.openDocumentFormat
     }
 
-    s"have correct link within the expandable text '${UploadFileMessages.image}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.image}'" in {
       elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)") mustBe UploadFileMessages.image
     }
 
