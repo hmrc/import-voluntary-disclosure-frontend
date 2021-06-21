@@ -24,7 +24,8 @@
         p: components.p,
         errorSummary: components.errorSummary,
         bullets: components.bullets,
-        button: components.button
+        button: components.button,
+        govukDetails: GovukDetails
 )
 
 @(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
@@ -60,13 +61,23 @@
         )
     }
 
-    @h2(messages("uploadFile.fileRequirementsHeader"))
+    @govukDetails(
+        Details(
+            summary = HtmlContent(messages("uploadFile.typesOfFile")),
+            content = HtmlContent(
+                bullets(Seq(
+                Html(messages("uploadFile.PDF")),
+                Html(messages("uploadFile.ms")),
+                Html(messages("uploadFile.openDocumentFormat")),
+                Html(messages("uploadFile.image"))
+                ))
+            )
+        )
+    )
 
-    @bullets(Seq(
-        Html(messages("uploadFile.fileFormats")),
-        Html(messages("uploadFile.fileSize")),
-        Html(messages("uploadFile.oneFileAtTime"))
-    ))
+    @p {
+        @messages("uploadFile.fileSize")
+    }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
@@ -89,7 +100,7 @@
             )
        </div>
 
-        @button("uploadFile.uploadFile")
+        @button("uploadFile.uploadChosenFile")
     </form>
 }
 
