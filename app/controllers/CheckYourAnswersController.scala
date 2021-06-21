@@ -68,7 +68,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Right(value) =>
         val confirmationData = {
           for {
-            eoriDetails <- request.userAnswers.get(KnownEoriDetails)
+            eoriDetails <- request.userAnswers.get(KnownEoriDetailsPage)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             _ <- Some(sessionRepository.remove(request.credId))

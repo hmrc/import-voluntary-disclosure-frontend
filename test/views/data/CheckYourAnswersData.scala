@@ -264,8 +264,9 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.NumberOfEntriesController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
           )))
         ),
@@ -329,7 +330,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
+              controllers.routes.BulkUploadFileController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(CYAMessages.changeMultipleEntriesFile)
             )
@@ -415,8 +416,9 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.NumberOfEntriesController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
           )))
         ),

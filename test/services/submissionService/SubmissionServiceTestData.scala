@@ -69,7 +69,7 @@ trait SubmissionServiceTestData extends ReusableValues {
 
   val completeUserAnswers: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(UserTypePage, completeSubmission.userType)
-    answers <- answers.set(KnownEoriDetails, completeSubmission.knownDetails)
+    answers <- answers.set(KnownEoriDetailsPage, completeSubmission.knownDetails)
     answers <- answers.set(NumberOfEntriesPage, completeSubmission.numEntries)
     answers <- answers.set(AcceptanceDatePage, completeSubmission.acceptedBeforeBrexit)
     answers <- answers.set(EntryDetailsPage, completeSubmission.entryDetails.get)
