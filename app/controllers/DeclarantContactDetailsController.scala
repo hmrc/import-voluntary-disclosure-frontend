@@ -68,7 +68,11 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.UploadAnotherFileController.onLoad()
+      if (request.isOneEntry) {
+        controllers.routes.UploadAnotherFileController.onLoad()
+      } else {
+        controllers.routes.MoreInformationController.onLoad()
+      }
     }
   }
 
