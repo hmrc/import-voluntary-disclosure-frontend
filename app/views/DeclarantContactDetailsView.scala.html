@@ -40,7 +40,8 @@
             name = "fullName",
             label = "Name",
             isPageHeading = false,
-            classes = Some("govuk-input")
+            classes = Some("govuk-input"),
+            attributes = Map("autocomplete" -> "name")
         )
         @inputText(
             form = form,
@@ -48,7 +49,8 @@
             name = "email",
             label = "Email address",
             isPageHeading = false,
-            classes = Some("govuk-input")
+            classes = Some("govuk-input"),
+            attributes = Map("autocomplete" -> "email")
         )
         @inputText(
             form = form,
@@ -56,7 +58,8 @@
             name = "phoneNumber",
             label = "UK telephone number",
             isPageHeading = false,
-            classes = Some("govuk-input govuk-input--width-20")
+            classes = Some("govuk-input govuk-input--width-20"),
+            attributes = Map("autocomplete" -> "tel")
         )
         @button("common.button.continue")
     }
