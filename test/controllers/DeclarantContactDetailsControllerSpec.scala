@@ -20,9 +20,10 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.DeclarantContactDetailsFormProvider
 import mocks.repositories.MockSessionRepository
+import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ContactDetails, UserAnswers}
-import pages.{CheckModePage, DeclarantContactDetailsPage}
+import pages.{CheckModePage, DeclarantContactDetailsPage, NumberOfEntriesPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -156,14 +157,27 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
 
   "backLink" when {
 
-    "not in change mode" should {
+    "one entry and not in change mode" should {
       "when loading page back button should take you to Trader address page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
+            .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.routes.UploadAnotherFileController.onLoad()
+      }
+    }
+
+    "bulk entry and not in change mode" should {
+      "when loading page back button should take you to Trader address page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.routes.MoreInformationController.onLoad()
       }
     }
 
