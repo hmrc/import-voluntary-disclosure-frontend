@@ -56,14 +56,16 @@ class BoxNumberController @Inject()(identify: IdentifierAction,
     }
 
     val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber.toInt))
-    Future.successful(Ok(view(form, backLink, createRadioButton(form, filteredBoxNumbers))))
+    val isFirstBox = filteredBoxNumbers.length == 18
+    Future.successful(Ok(view(form, backLink, createRadioButton(form, filteredBoxNumbers), isFirstBox)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber.toInt))
-        Future.successful(BadRequest(view(formWithErrors, backLink, createRadioButton(formWithErrors, filteredBoxNumbers))))
+        val isFirstBox = filteredBoxNumbers.length == 18
+        Future.successful(BadRequest(view(formWithErrors, backLink, createRadioButton(formWithErrors, filteredBoxNumbers), isFirstBox)))
       },
       value => {
         request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
