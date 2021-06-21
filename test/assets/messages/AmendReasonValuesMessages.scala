@@ -57,7 +57,7 @@ object AmendReasonValuesMessages extends BaseMessages {
     33 -> ExpectedContent(
       "Box 33 commodity code amendment for item 1",
       "Box 33 commodity code amendment for item 1",
-      Some("Must be 10 numbers, sometimes followed by a code of 4 characters, for example 1806321000 or 2204109400X411.")),
+      Some("Must be 10 numbers, sometimes followed by a code of 4 number or letters, for example 1806321000 or 2204109400X411.")),
     34 -> ExpectedContent(
       "Box 34 country of origin code amendment for item 1",
       "Box 34 country of origin code amendment for item 1",
