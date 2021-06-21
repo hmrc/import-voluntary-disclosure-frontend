@@ -23,7 +23,7 @@ import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, UserAnswers}
-import pages.{CheckModePage, KnownEoriDetails, TraderAddressCorrectPage}
+import pages.{CheckModePage, KnownEoriDetailsPage, TraderAddressCorrectPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -101,7 +101,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
       "redirect to the deferment page if choosing to use the known address and checkMode is false" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetails, eoriDetails).success.value
+          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -112,7 +112,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       "redirect to the check your answers page if choosing to use the known address and checkMode is true" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
-            .set(KnownEoriDetails, eoriDetails).success.value
+            .set(KnownEoriDetailsPage, eoriDetails).success.value
             .set(CheckModePage, true).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
@@ -123,7 +123,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
       "handoff to the address lookup frontend if choosing to use a different address" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetails, eoriDetails).success.value
+          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -133,7 +133,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
       "update the UserAnswers in session when Trader Address is correct" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetails, eoriDetails).success.value
+          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
@@ -142,7 +142,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
       "update the UserAnswers in session Trader Address is incorrect" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetails, eoriDetails).success.value
+          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         await(controller.onSubmit(request))
@@ -152,7 +152,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       "payload contains invalid data" should {
         "return a BAD REQUEST" in new Test {
           override val userAnswers: Option[UserAnswers] = Some(
-            UserAnswers("some-cred-id").set(KnownEoriDetails, eoriDetails).success.value
+            UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
           )
           val result: Future[Result] = controller.onSubmit(fakeRequest)
           status(result) mustBe Status.BAD_REQUEST

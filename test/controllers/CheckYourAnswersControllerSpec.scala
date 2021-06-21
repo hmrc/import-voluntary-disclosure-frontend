@@ -95,7 +95,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
         .set(UserTypePage, UserType.Importer).success.value
         .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
-        .set(KnownEoriDetails, EoriDetails(
+        .set(KnownEoriDetailsPage, EoriDetails(
           "GB123456789",
           "Test User",
           ContactAddress(
@@ -116,7 +116,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
         .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
         .set(ImporterNamePage, "Test User").success.value
         .set(ImporterEORINumberPage, "GB123456789").success.value
-        .set(KnownEoriDetails, EoriDetails(
+        .set(KnownEoriDetailsPage, EoriDetails(
           "GB123456789",
           "Test User",
           ContactAddress(

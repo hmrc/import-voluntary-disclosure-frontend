@@ -68,18 +68,26 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Right(value) =>
         val confirmationData = {
           for {
-            entryDetails <- request.userAnswers.get(EntryDetailsPage)
-            eoriDetails <- request.userAnswers.get(KnownEoriDetails)
+            eoriDetails <- request.userAnswers.get(KnownEoriDetailsPage)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             _ <- Some(sessionRepository.remove(request.credId))
           } yield {
-            val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
-            ConfirmationViewData(
-              s"${entryDetails.epu}-${entryDetails.entryNumber}-$formattedDate",
-              importerName,
-              eoriNumber
-            )
+            request.userAnswers.get(EntryDetailsPage) match {
+              case Some(entryDetails) =>
+                val formattedDate = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"))
+                ConfirmationViewData(
+                  s"${entryDetails.epu}-${entryDetails.entryNumber}-$formattedDate",
+                  importerName,
+                  eoriNumber
+                )
+              case _ =>
+                ConfirmationViewData(
+                  "VARIOUS - Bulk Entry",
+                  importerName,
+                  eoriNumber
+                )
+            }
           }
         }
 

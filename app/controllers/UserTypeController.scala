@@ -20,7 +20,7 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
 import models.requests.OptionalDataRequest
 import models.{UserAnswers, UserType}
-import pages.{CheckModePage, KnownEoriDetails, UserTypePage}
+import pages.{CheckModePage, KnownEoriDetailsPage, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -77,7 +77,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
         val prevUserType = userAnswers.get(UserTypePage).getOrElse(newUserType)
 
         val cleanedUserAnswers = if (prevUserType != newUserType) {
-          userAnswers.preserve(Seq(KnownEoriDetails))
+          userAnswers.preserve(Seq(KnownEoriDetailsPage))
         } else {
           userAnswers
         }

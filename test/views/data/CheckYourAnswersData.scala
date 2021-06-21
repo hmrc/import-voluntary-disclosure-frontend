@@ -34,16 +34,19 @@ object CheckYourAnswersData {
   val phone = "1234567890"
   val traderAddress = ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")
   val importerAddress = ContactAddress("21 Street", Some("Mayfair"), "London", None, "UK")
-  val numberOfEntries = "One Entry"
+  val oneEntry = "One entry"
+  val multipleEntries = "More than one entry"
   val epu = "123"
   val entryNumber = "123456Q"
   val entryDate = "01 December 2020"
   val yes = "Yes"
   val acceptanceDate = "Before 1 January 2021"
+  val acceptanceDateBulk = "On or before 31 December 2020"
   val eoriNumber = "GB345834921000"
   val amount = "£1.00"
   val reason = "1 reason given"
   val extraInformation = "Stock losses in warehouse."
+  val reasonForUnderpaymentBulk = "Stock losses in warehouse across multiple entries."
   val userType = "Representative"
   val contactDetails = ContactDetails("First Second", "email@email.com", "1234567890")
 
@@ -153,7 +156,7 @@ object CheckYourAnswersData {
     )
   )
 
-  val underpaymentDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
+  val underpaymentDetailsSingleAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.underpaymentDetails,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -246,6 +249,98 @@ object CheckYourAnswersData {
       )
     ))
 
+  val underpaymentDetailsBulkAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
+    CYAMessages.underpaymentDetails,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.numberOfEntries),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(multipleEntries)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.NumberOfEntriesController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.acceptanceDateBulk),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(acceptanceDateBulk)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.AcceptanceDateController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeAcceptanceDateBulk)
+            )
+          )))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.totalOwed),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(amount)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
+              HtmlContent("""<span aria-hidden="true">View summary</span>"""),
+              Some(CYAMessages.viewSummaryChange)
+            )
+          )
+          )),
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.reasonForUnderpaymentBulk),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(reasonForUnderpaymentBulk)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.MoreInformationController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeReasonForUnderpayment)
+            )
+          )
+          ))
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.multipleEntriesFile),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            HtmlContent(file)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.BulkUploadFileController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              Some(CYAMessages.changeMultipleEntriesFile)
+            )
+          ))
+          )
+        )
+      )
+    ))
+
+
   val yourDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     CYAMessages.yourDetails,
     SummaryList(
@@ -317,12 +412,13 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(numberOfEntries)
+            Text(oneEntry)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              changeUrl,
-              Text(CYAMessages.change)
+              controllers.routes.NumberOfEntriesController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
           )))
         ),
@@ -425,7 +521,8 @@ object CheckYourAnswersData {
   val answers: Seq[CYASummaryList] = Seq(
     importerDetailsAnswers,
     entryDetailsAnswers,
-    underpaymentDetailsAnswers,
+    underpaymentDetailsSingleAnswers,
+    underpaymentDetailsBulkAnswers,
     yourDetailsAnswers
   )
 

@@ -36,6 +36,14 @@ class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionCo
       }
     }
 
+    "called with valid User Answers for Importer deferment for bulk entry" should {
+      "return expect json" in {
+        lazy val result = service.buildSupportingDocumentation(bulkImporterSubmission)
+
+        result mustBe Json.parse(bulkSupportingDocumentationJson)
+      }
+    }
+
     "called with valid User Answers for Duty only deferment" should {
       "return expect json" in {
         lazy val result = service.buildSupportingDocumentation(dutyOnlyDefermentSubmission)
@@ -65,6 +73,14 @@ class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionCo
         lazy val result = service.buildSupportingDocumentation(completeSubmission)
 
         result mustBe Json.parse(splitDefermentSupportingDocumentationJson)
+      }
+    }
+
+    "called with valid User Answers for split deferment for bulk entry" should {
+      "return expect json" in {
+        lazy val result = service.buildSupportingDocumentation(bulkCompleteSubmission)
+
+        result mustBe Json.parse(bulkSplitDefermentSupportingDocumentationJson)
       }
     }
 

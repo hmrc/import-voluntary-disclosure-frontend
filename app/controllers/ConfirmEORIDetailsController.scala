@@ -22,7 +22,7 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 
 import javax.inject.Singleton
 import models.{EoriDetails, UserAnswers}
-import pages.KnownEoriDetails
+import pages.KnownEoriDetailsPage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -54,13 +54,13 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
 
-    userAnswers.get(KnownEoriDetails) match {
+    userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) => Future.successful(Ok(view(summaryList(eoriDetails))))
       case _ =>
         eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
           case Right(eoriDetails) =>
             for {
-              updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetails, eoriDetails))
+              updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetailsPage, eoriDetails))
               _ <- sessionRepository.set(updatedAnswers)
             } yield {
               Ok(view(summaryList(eoriDetails)))

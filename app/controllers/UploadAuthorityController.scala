@@ -30,7 +30,7 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{UploadAuthorityProgressView, UploadAuthoritySuccessView, UploadAuthorityView}
+import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -45,9 +45,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           val sessionRepository: SessionRepository,
                                           upScanService: UpScanService,
                                           view: UploadAuthorityView,
-                                          progressView: UploadAuthorityProgressView,
+                                          progressView: FileUploadProgressView,
                                           formProvider: UploadFileFormProvider,
-                                          successView: UploadAuthoritySuccessView,
+                                          successView: FileUploadSuccessView,
                                           implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
@@ -136,9 +136,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
 
     val action = request.dutyType match {
-          case Both if !request.checkMode && splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
-          case _ => controllers.routes.CheckYourAnswersController.onLoad().url
-        }
+      case Both if !request.checkMode && splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
+      case _ => controllers.routes.CheckYourAnswersController.onLoad().url
+    }
 
     val filename = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty)
       .filter(_.dutyType == dutyType)

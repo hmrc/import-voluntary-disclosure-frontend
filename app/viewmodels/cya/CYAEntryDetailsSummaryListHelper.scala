@@ -16,41 +16,46 @@
 
 package viewmodels.cya
 
-import java.time.format.DateTimeFormatter
-import models.{NumberOfEntries, UserAnswers}
 import models.requests.DataRequest
-import pages.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
+import models.{NumberOfEntries, UserAnswers}
+import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.{ActionItemHelper, cya}
 import viewmodels.cya.CYAHelper._
+import viewmodels.{ActionItemHelper, cya}
+
+import java.time.format.DateTimeFormatter
 
 trait CYAEntryDetailsSummaryListHelper {
 
   def buildEntryDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
-    val answers = request.userAnswers
-    val rows = Seq(
-      buildNumberOfEntriesSummaryListRow(answers),
-      buildEpuSummaryListRow(answers),
-      buildEntryNumberListRow(answers),
-      buildEntryDateListRow(answers),
-      buildAcceptanceDateListRow(answers),
-      buildOneCustomsProcedureCodeListRow(answers),
-      buildCustomsProcedureCodeListRow(answers)
-    ).flatten
+    if (request.isOneEntry) {
+      val answers = request.userAnswers
+      val rows = Seq(
+        buildNumberOfEntriesSummaryListRow(answers),
+        buildEpuSummaryListRow(answers),
+        buildEntryNumberListRow(answers),
+        buildEntryDateListRow(answers),
+        buildAcceptanceDateListRow(answers),
+        buildOneCustomsProcedureCodeListRow(answers),
+        buildCustomsProcedureCodeListRow(answers)
+      ).flatten
 
-    if (rows.nonEmpty) {
-      Seq(
-        cya.CYASummaryList(
-          messages("cya.entryDetails"),
-          SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = rows
+      if (rows.nonEmpty) {
+        Seq(
+          cya.CYASummaryList(
+            messages("cya.entryDetails"),
+            SummaryList(
+              classes = "govuk-!-margin-bottom-9",
+              rows = rows
+            )
           )
         )
-      )
+      } else {
+        Seq.empty
+      }
     } else {
       Seq.empty
     }
@@ -62,7 +67,10 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
-        action = Some(ActionItem("Url", Text(messages("cya.change"))))
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.NumberOfEntriesController.onLoad().url,
+          messages("cya.numberOfEntries.change")
+        ))
       )
     }
 
@@ -102,7 +110,7 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(AcceptanceDatePage).map { acceptanceDate =>
-      val acceptanceDateValue = if (acceptanceDate) messages("cya.acceptanceDate.before") else messages("cya.acceptanceDate.after")
+      val acceptanceDateValue = if (acceptanceDate) messages("cya.single.acceptanceDate.before") else messages("cya.single.acceptanceDate.after")
       createRow(
         keyText = Text(messages("cya.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),

@@ -26,10 +26,10 @@ case class SubmissionData(userType: UserType,
                           knownDetails: EoriDetails,
                           numEntries: NumberOfEntries,
                           acceptedBeforeBrexit: Boolean,
-                          hasAdditionalInfo: Boolean,
+                          hasAdditionalInfo: Option[Boolean],
                           additionalInfo: Option[String],
-                          entryDetails: EntryDetails,
-                          oneCpc: Boolean,
+                          entryDetails: Option[EntryDetails],
+                          oneCpc: Option[Boolean],
                           originalCpc: Option[String],
                           declarantContactDetails: ContactDetails,
                           traderAddressCorrect: Boolean,
@@ -43,9 +43,9 @@ case class SubmissionData(userType: UserType,
                           defermentAccountNumber: Option[String],
                           additionalDefermentAccountNumber: Option[String],
                           additionalDefermentType: Option[String],
-                          amendedItems: Seq[UnderpaymentReason],
+                          amendedItems: Option[Seq[UnderpaymentReason]],
                           underpaymentDetails: Seq[UnderpaymentDetail],
-                          anyOtherSupportingDocs: Boolean,
+                          anyOtherSupportingDocs: Option[Boolean],
                           optionalDocumentsSupplied: Option[Seq[OptionalDocument]],
                           supportingDocuments: Seq[FileUploadInfo],
                           splitDeferment: Option[Boolean],
@@ -58,11 +58,11 @@ object SubmissionData extends FixedConfig {
   implicit val reads: Reads[SubmissionData] =
     for {
       userType <- UserTypePage.path.read[UserType]
-      knownDetails <- KnownEoriDetails.path.read[EoriDetails]
+      knownDetails <- KnownEoriDetailsPage.path.read[EoriDetails]
       numEntries <- NumberOfEntriesPage.path.read[NumberOfEntries]
       acceptanceDate <- AcceptanceDatePage.path.read[Boolean]
-      entryDetails <- EntryDetailsPage.path.read[EntryDetails]
-      oneCpc <- OneCustomsProcedureCodePage.path.read[Boolean]
+      entryDetails <- EntryDetailsPage.path.readNullable[EntryDetails]
+      oneCpc <- OneCustomsProcedureCodePage.path.readNullable[Boolean]
       originalCpc <- EnterCustomsProcedureCodePage.path.readNullable[String]
       declarantContactDetails <- DeclarantContactDetailsPage.path.read[ContactDetails]
       traderAddressCorrect <- TraderAddressCorrectPage.path.read[Boolean]
@@ -78,12 +78,12 @@ object SubmissionData extends FixedConfig {
       defermentAccountNumber <- DefermentAccountPage.path.readNullable[String]
       additionalDefermentNumber <- AdditionalDefermentNumberPage.path.readNullable[String]
       additionalDefermentType <- AdditionalDefermentTypePage.path.readNullable[String]
-      hasAdditionalInfo <- HasFurtherInformationPage.path.read[Boolean]
+      hasAdditionalInfo <- HasFurtherInformationPage.path.readNullable[Boolean]
       additionalInfo <- MoreInformationPage.path.readNullable[String]
-      amendedItems <- UnderpaymentReasonsPage.path.read[Seq[UnderpaymentReason]]
+      amendedItems <- UnderpaymentReasonsPage.path.readNullable[Seq[UnderpaymentReason]]
       splitDeferment <- SplitPaymentPage.path.readNullable[Boolean]
       authorityDocuments <- UploadAuthorityPage.path.readNullable[Seq[UploadAuthority]]
-      anyOtherSupportingDocs <- AnyOtherSupportingDocsPage.path.read[Boolean]
+      anyOtherSupportingDocs <- AnyOtherSupportingDocsPage.path.readNullable[Boolean]
       optionalDocumentsSupplied <- OptionalSupportingDocsPage.path.readNullable[Seq[OptionalDocument]]
       isImporterVatRegistered <- ImporterVatRegisteredPage.path.readNullable[Boolean]
     } yield {
