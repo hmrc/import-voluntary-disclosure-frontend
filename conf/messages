@@ -371,6 +371,13 @@ uploadFile.error.retry = Retry
 uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
+uploadFile.uploadChosenFile = Upload chosen file
+uploadFile.typesOfFile = Types of file you can upload
+uploadFile.PDF = PDF (.pdf)
+uploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+uploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadFile.image = image (.jpg, .png or .tiff)
+uploadFile.fileSize = Each file must be 6MB or less and you can only upload one file at a time.
 
 # Bulk Upload File page
 bulkUploadFile.pageTitle = Upload a file containing the underpayment details for each entry

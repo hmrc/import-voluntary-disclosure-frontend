@@ -115,9 +115,6 @@ class UploadFileViewSpec extends ViewBaseSpec {
         element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
       }
 
-      "have heading for optional docs" in {
-        elementExtinct("#main-content p:nth-of-type(2)")
-      }
     }
 
     "In check mode and all supporting documents have been removed" should {
@@ -163,24 +160,33 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content ul:nth-of-type(1) li:nth-of-type(3)") mustBe UploadFileMessages.mustIncludeFile3
     }
 
-    s"have the correct fileRequirementsHeader of '${UploadFileMessages.fileRequirementsHeader}'" in {
-      elementText("h2") mustBe UploadFileMessages.fileRequirementsHeader
+    s"have correct expandable text '${UploadFileMessages.typesOfFile}'" in {
+      elementText("#main-content > div > div > details > summary > span") mustBe UploadFileMessages.typesOfFile
     }
 
-    "have the correct text for file requirements bullet 1" in {
-      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(1)") mustBe UploadFileMessages.fileFormats
+    s"have correct bullet points within the expandable text '${UploadFileMessages.PDF}'" in {
+      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)") mustBe UploadFileMessages.PDF
     }
 
-    "have the correct text for file requirements bullet 2" in {
-      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(2)") mustBe UploadFileMessages.fileSize
+    s"have correct bullet points within the expandable text '${UploadFileMessages.ms}'" in {
+      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)") mustBe UploadFileMessages.ms
     }
 
-    "have the correct text for file requirements bullet 3" in {
-      elementText("#main-content ul:nth-of-type(3) li:nth-of-type(3)") mustBe UploadFileMessages.oneFileAtTime
+    s"have correct bullet points within the expandable text '${UploadFileMessages.openDocumentFormat}'" in {
+      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)") mustBe UploadFileMessages.openDocumentFormat
     }
+
+    s"have correct bullet points within the expandable text '${UploadFileMessages.image}'" in {
+      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)") mustBe UploadFileMessages.image
+    }
+
+    s"have the correct text of '${UploadFileMessages.fileSize}'" in {
+      elementText("#main-content p:nth-of-type(3)") mustBe UploadFileMessages.fileSize
+    }
+
 
     "have the correct Continue button" in {
-      elementText(".govuk-button") mustBe UploadFileMessages.uploadFile
+      elementText(".govuk-button") mustBe UploadFileMessages.uploadChosenFile
     }
 
   }
