@@ -176,7 +176,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe ConfirmReasonDetailMessages.continue
+      elementText(".govuk-button") mustBe ConfirmReasonDetailMessages.confirm
     }
 
   }
