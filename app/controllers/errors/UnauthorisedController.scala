@@ -20,13 +20,14 @@ import config.AppConfig
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.errors.{UnauthorisedAgentAccessView, UnauthorisedView}
+import views.html.errors.{UnauthorisedAgentAccessView, UnauthorisedPrivateBetaAccessView, UnauthorisedView}
 
 import javax.inject.Inject
 
 class UnauthorisedController @Inject()(mcc: MessagesControllerComponents,
                                        view: UnauthorisedView,
                                        unauthorisedAgentAccessView: UnauthorisedAgentAccessView,
+                                       unauthorisedPrivateBetaView: UnauthorisedPrivateBetaAccessView,
                                        implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
@@ -36,5 +37,9 @@ class UnauthorisedController @Inject()(mcc: MessagesControllerComponents,
 
   def unauthorisedAgentAccess: Action[AnyContent] = Action { implicit request =>
     Ok(unauthorisedAgentAccessView())
+  }
+
+  def unauthorisedPrivateBetaAccess: Action[AnyContent] = Action { implicit request =>
+    Ok(unauthorisedPrivateBetaView())
   }
 }
