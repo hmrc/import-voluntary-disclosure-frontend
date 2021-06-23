@@ -24,7 +24,7 @@ import views.html.StartPageView
 import javax.inject.Inject
 
 class StartPageController @Inject()(view: StartPageView,
-                                    mcc: MessagesControllerComponents,
+                                    mcc: MessagesControllerComponents
                                    ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action { implicit request =>
