@@ -37,6 +37,8 @@ object UploadFileMessages extends BaseMessages {
   val fileTooSmall = "Select a file to upload"
   val fileTooBig = "The selected file must be smaller than 6MB"
   val fileUnknown = "The selected file could not be uploaded – try again"
+  val fileRejected = "The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP,  PNG, TIFF or TXT"
+  val fileQuarantined = "The selected file contains a virus"
   val uploadChosenFile = "Upload chosen file"
   val typesOfFile = "Types of file you can upload"
   val PDF = "PDF (.pdf)"
