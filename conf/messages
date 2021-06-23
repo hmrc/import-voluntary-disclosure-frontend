@@ -709,8 +709,8 @@ itemNo.error.nonNumeric = Item number must be a number
 itemNo.error.notTheSameNumber = You have already entered this item number for this box number, enter a different item number or change the existing reason for underpayment
 
 # Confirm Reason Details
-confirmReason.pageTitle = Confirm the details of the reason for underpayment
-confirmReason.heading = Confirm the details of the reason for underpayment
+confirmReason.pageTitle = Confirm the reason for underpayment
+confirmReason.heading = Confirm the reason for underpayment
 confirmReason.boxNumber = Box number
 confirmReason.itemNumber = Item number
 confirmReason.change = Change
