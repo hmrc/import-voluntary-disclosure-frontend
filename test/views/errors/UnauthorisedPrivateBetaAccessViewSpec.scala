@@ -16,9 +16,9 @@
 
 package views.errors
 
-import assets.messages.errors.UnauthorisedPrivateBetaAccessMessages
 import base.ViewBaseSpec
 import messages.BaseMessages
+import messages.errors.UnauthorisedPrivateBetaAccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

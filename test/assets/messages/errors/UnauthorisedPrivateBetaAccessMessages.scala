@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package assets.messages.errors
+package messages.errors
 
 import messages.BaseMessages
 
