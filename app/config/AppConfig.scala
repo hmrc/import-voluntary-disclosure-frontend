@@ -87,8 +87,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
     val decodedAllowList = new String(Base64.getDecoder.decode(encodedAllowList))
     decodedAllowList.split(",").toList
   }
-
-  val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowList")
+  val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 }
 
 trait AppConfig extends FixedConfig {
