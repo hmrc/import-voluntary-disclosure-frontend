@@ -81,6 +81,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
+  lazy val betaFeedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=Hello"
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -89,9 +91,7 @@ trait AppConfig extends FixedConfig {
   val contactUrl: String
   val surveyUrl: String
   val host: String
-
   def feedbackUrl(implicit request: RequestHeader): String
-
   val appName: String
   val loginUrl: String
   val signOutUrl: String
@@ -118,11 +118,10 @@ trait AppConfig extends FixedConfig {
   val upScanAcceptedFileTypes: String
   val upScanAuthoritySuccessRedirectForUser: String
   val upScanAuthorityErrorRedirectForUser: String
-
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
-
   val eccSubscribeUrl: String
+  val betaFeedbackUrl: String
 }
 
 trait FixedConfig {
