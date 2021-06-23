@@ -24,6 +24,7 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 import java.time.LocalDate
 import java.util.Base64
 import javax.inject.{Inject, Singleton}
+import scala.util.Try
 
 @Singleton
 class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
@@ -82,15 +83,14 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
-  
-  val privateBetaAllowList: Seq[String] = {
-    val encodedAllowList = servicesConfig.getConfString("privateBetaAllowList", "")
-    if (encodedAllowList.isEmpty) List.empty
-    else {
-      val decodedAllowList = new String(Base64.getDecoder.decode(encodedAllowList))
-      decodedAllowList.split(",").toList
-    }
-  }
+
+  val privateBetaAllowList: Seq[String] =
+    Try(servicesConfig.getString("privateBetaAllowList"))
+      .map { str =>
+        val decodedAllowList = new String(Base64.getDecoder.decode(str))
+        decodedAllowList.split(",").toList
+      }.getOrElse(List.empty)
+
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 }
 
