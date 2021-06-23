@@ -73,7 +73,7 @@ object AmendReasonValuesMessages extends BaseMessages {
     37 -> ExpectedContent(
       "Box 37 customs procedure code amendment for item 1",
       "Box 37 customs procedure code amendment for item 1",
-      Some("Must be 7 numbers, sometimes including a letter, for example 4000000 or 4000C10.")),
+      Some("Must be 7 numbers, or a mix of numbers and letters, for example 4000000 or 4000C10.")),
     38 -> ExpectedContent(
       "Box 38 net mass amendment for item 1",
       "Box 38 net mass amendment for item 1",
