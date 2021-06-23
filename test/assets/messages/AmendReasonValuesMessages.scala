@@ -23,7 +23,7 @@ object AmendReasonValuesMessages extends BaseMessages {
   val box22PageTitle: String = "Box 22 invoice currency and total amount invoiced amendment"
   val box22P1: String = "You must include the currency code followed by the invoice price or the customs value, for example GBP871.12 or EUR2908946."
   val box35PageTitle: String = "Box 35 gross mass amendment for item 1"
-  val box35P1: String = "Must be in kilograms and can be up to 3 decimal places."
+  val box35P1: String = "Must be in kilograms and can be up to 3 decimal places, for example 162.2 or 0.783"
   val box46PageTitle: String = "Box 46 statistical value amendment for item 1"
   val originalAmount: String = "Original value"
   val amendedAmount: String = "Amended value"
@@ -57,7 +57,7 @@ object AmendReasonValuesMessages extends BaseMessages {
     33 -> ExpectedContent(
       "Box 33 commodity code amendment for item 1",
       "Box 33 commodity code amendment for item 1",
-      Some("Must be 10 numbers, sometimes followed by a code of 4 characters, for example 1806321000 or 2204109400X411.")),
+      Some("Must be 10 numbers, sometimes followed by a code of 4 number or letters, for example 1806321000 or 2204109400X411.")),
     34 -> ExpectedContent(
       "Box 34 country of origin code amendment for item 1",
       "Box 34 country of origin code amendment for item 1",
@@ -65,7 +65,7 @@ object AmendReasonValuesMessages extends BaseMessages {
     35 -> ExpectedContent(
       "Box 35 gross mass amendment for item 1",
       "Box 35 gross mass amendment for item 1",
-      Some("Must be in kilograms and can be up to 3 decimal places.")),
+      Some("Must be in kilograms and can be up to 3 decimal places, for example 162.2 or 0.783")),
     36 -> ExpectedContent(
       "Box 36 preference amendment for item 1",
       "Box 36 preference amendment for item 1",
