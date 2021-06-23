@@ -82,10 +82,14 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
+  
   val privateBetaAllowList: Seq[String] = {
-    val encodedAllowList = servicesConfig.getString("privateBetaAllowList")
-    val decodedAllowList = new String(Base64.getDecoder.decode(encodedAllowList))
-    decodedAllowList.split(",").toList
+    val encodedAllowList = servicesConfig.getConfString("privateBetaAllowList", "")
+    if (encodedAllowList.isEmpty) List.empty
+    else {
+      val decodedAllowList = new String(Base64.getDecoder.decode(encodedAllowList))
+      decodedAllowList.split(",").toList
+    }
   }
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 }
