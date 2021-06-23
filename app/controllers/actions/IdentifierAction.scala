@@ -62,8 +62,12 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           } yield {
             identifier.value
           }
-        val req = IdentifierRequest(request, userId, eori)
-        block(req)
+        if (config.privateBetaAllowListEnabled && !config.privateBetaAllowList.contains(eori)) {
+          Future.successful(Redirect(controllers.errors.routes.UnauthorisedController.unauthorisedPrivateBetaAccess()))
+        } else {
+          val req = IdentifierRequest(request, userId, eori)
+          block(req)
+        }
       case Some(userId) ~ enrolments ~ _ if !isValidUser(enrolments) =>
         Future.successful(Redirect(config.eccSubscribeUrl))
       case _ =>
