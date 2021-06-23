@@ -33,6 +33,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ConfirmEORIDetailsView
+import views.html.errors.ConfirmEoriDetailsErrorView
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -44,6 +45,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
                                              sessionRepository: SessionRepository,
                                              eoriDetailsService: EoriDetailsService,
                                              view: ConfirmEORIDetailsView,
+                                             errorView: ConfirmEoriDetailsErrorView,
                                              implicit val appConfig: AppConfig
                                             )
   extends FrontendController(mcc) with I18nSupport {
@@ -67,7 +69,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
             }
           case Left(error) =>
             logger.error(error.message + " " + error.status)
-            Future.successful(NotFound(error.message + " " + error.status))
+            Future.successful(InternalServerError(errorView()))
         }
     }
 
