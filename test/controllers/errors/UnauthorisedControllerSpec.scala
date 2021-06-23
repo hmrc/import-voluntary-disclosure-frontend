@@ -26,8 +26,9 @@ class UnauthorisedControllerSpec extends ControllerSpecBase {
 
   lazy val view: UnauthorisedView = app.injector.instanceOf[UnauthorisedView]
   lazy val unauthorisedAgentAccessView: UnauthorisedAgentAccessView = app.injector.instanceOf[UnauthorisedAgentAccessView]
+  lazy val unauthorisedPrivateBetaAccessView: UnauthorisedPrivateBetaAccessView = app.injector.instanceOf[UnauthorisedPrivateBetaAccessView]
 
-  private lazy val controller = new UnauthorisedController(messagesControllerComponents, view, unauthorisedAgentAccessView, MockAppConfig)
+  private lazy val controller = new UnauthorisedController(messagesControllerComponents, view, unauthorisedAgentAccessView, unauthorisedPrivateBetaAccessView, MockAppConfig)
 
   "onPageLoad" should {
     "return 200" in {
