@@ -304,6 +304,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#main-content > div > div > form > div:nth-child(4) > label") mustBe "Telephone number"
     }
 
+    s"have the correct value for the Phone number hint" in {
+      elementText("#main-content > div > div > form > div:nth-child(4) > .govuk-hint") mustBe TraderContactDetailsMessages.phoneNumberHint
+    }
+
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
