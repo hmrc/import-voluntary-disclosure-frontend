@@ -433,12 +433,12 @@ declarantContactDetails.phoneNumber = Telephone number
 declarantContactDetails.phoneNumberHint = For international numbers include the country code.
 declarantContactDetails.error.nameNonEmpty = Enter a name
 declarantContactDetails.error.emailNonEmpty = Enter an email address
-declarantContactDetails.error.phoneNumberNonEmpty = Enter a UK telephone number
+declarantContactDetails.error.phoneNumberNonEmpty = Enter a telephone number
 declarantContactDetails.error.nameMinLength = Name must be 2 characters or more
 declarantContactDetails.error.nameMaxLength = Name must be 50 characters or fewer
 declarantContactDetails.error.nameAllowableCharacters = Name must only include letters a to z, hyphens, spaces and apostrophes
 declarantContactDetails.error.emailInvalidFormat = Enter an email address in the correct format, like name@example.com
-declarantContactDetails.error.phoneNumberInvalidFormat = Enter a UK telephone number, like 01632 960 001 or 07700 900 982
+declarantContactDetails.error.phoneNumberInvalidFormat = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
 # Trader Address
 traderAddressCorrect.pageTitle = Is this the correct address to send the demand for payment to?
