@@ -18,8 +18,8 @@ package messages
 
 object ConfirmReasonDetailMessages extends BaseMessages {
 
-  val title = "Confirm the details of the reason for underpayment"
-  val h1 = "Confirm the details of the reason for underpayment"
+  val title = "Confirm the reason for underpayment"
+  val h1 = "Confirm the reason for underpayment"
   val boxNumber = "Box number"
   val itemNumber = "Item number"
   val originalValue = "Original value"

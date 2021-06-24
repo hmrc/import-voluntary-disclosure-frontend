@@ -23,6 +23,7 @@ POST        /one-or-more-entries                                                
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess
+GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess
 
 GET         /disclosure/entry-details                                                          controllers.EntryDetailsController.onLoad
 POST        /disclosure/entry-details                                                          controllers.EntryDetailsController.onSubmit

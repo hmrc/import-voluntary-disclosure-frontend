@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package messages
+package messages.errors
 
-object SupportingDocMessages  extends BaseMessages {
+import messages.BaseMessages
 
-  val pageTitle: String = "Documents you must upload"
-  val heading: String = "Documents you must upload"
-  val disclosure: String = "We will ask you for the following documents to support your disclosure:"
-  val bullet1: String = "the import declaration also known as the C88 or SAD"
-  val bullet2: String = "the entry acceptance also known as the E2"
-  val bullet3: String = "a document or scanned image showing how you calculated the tax or duty that should have been paid"
+object UnauthorisedPrivateBetaAccessMessages extends BaseMessages {
 
+  val title = "Sorry, the service is unavailable"
+  val para1 = "We are working on updating this service."
+  val para2_1 = "In the meantime you can "
+  val para2_2 = "tell us about an underpayment of customs duty or import VAT using the existing C2001 form"
 }

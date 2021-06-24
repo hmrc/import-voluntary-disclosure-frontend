@@ -14,28 +14,29 @@
  * limitations under the License.
  *@
 
-@this(layout: templates.Layout,
-        govukSummaryList: GovukSummaryList,
+@import templates.Layout
+
+@this(layout: Layout,
         h1: components.h1,
-        formHelper: FormWithCSRF,
-        button: components.button
+        p: components.p
 )
 
-@(reasons: Seq[SummaryList], backLink: Call)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @layout(
-    pageTitle = messages("confirmReason.pageTitle"),
-    customBackLinkUrl = Some(backLink)
+    pageTitle = messages("unauthorised.privateBeta.title"),
+    showBackLink = false
 ) {
 
-    @h1(messages("confirmReason.heading"))
+    @h1(messages("unauthorised.privateBeta.title"))
 
-    @reasons.map { reason =>
-        @govukSummaryList(reason)
+    @p {
+       @messages("unauthorised.privateBeta.para1")
     }
 
-    @formHelper(action = controllers.routes.ConfirmReasonDetailController.onSubmit()) {
-        @button("common.button.confirm")
+    @p {
+       @messages("unauthorised.privateBeta.para2.1")
+       <a href="@appConfig.c2001Url">@messages("unauthorised.privateBeta.para2.2")</a>.
     }
 
 }

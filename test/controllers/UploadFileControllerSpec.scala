@@ -161,6 +161,18 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadFileMessages.fileUnknown) mustBe true
     }
+
+    "Display error when file uploaded is Rejected" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Rejected")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileRejected) mustBe true
+    }
+
+    "Display error when file uploaded is Quarantined" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Quarantined")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(UploadFileMessages.fileQuarantined) mustBe true
+    }
   }
 
   "GET upscanResponseHandler" when {

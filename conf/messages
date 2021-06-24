@@ -36,6 +36,10 @@ unauthorised.agent.para1 = You have signed in with an agent Government user ID t
 unauthorised.agent.para2.1 = 'If you are an importer or an importer’s representative you need to '
 unauthorised.agent.para2.2 = ' with the Government Gateway user ID you use for your business.'
 unauthorised.agent.signInAgain = sign in again
+unauthorised.privateBeta.title = Sorry, the service is unavailable
+unauthorised.privateBeta.para1 = We are working on updating this service.
+unauthorised.privateBeta.para2.1 = 'In the meantime you can '
+unauthorised.privateBeta.para2.2 = 'tell us about an underpayment of customs duty or import VAT using the existing C2001 form'
 
 #Feedback
 feedback.title = Give feedback
@@ -127,8 +131,8 @@ acceptanceDate.bulk.error.required = Select when the entry acceptance dates were
 SupportDoc.pageTitle = Documents you must upload
 SupportDoc.heading = Documents you must upload
 SupportDoc.disclosure = We will ask you for the following documents to support your disclosure:
-SupportDoc.bullet1 = the import declaration, also known as the C88 or SAD
-SupportDoc.bullet2 = the entry acceptance, also known as the E2
+SupportDoc.bullet1 = the import declaration also known as the C88 or SAD
+SupportDoc.bullet2 = the entry acceptance also known as the E2
 SupportDoc.bullet3 = a document or scanned image showing how you calculated the tax or duty that should have been paid
 
 # Error Summary
@@ -371,6 +375,8 @@ uploadFile.error.retry = Retry
 uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
+uploadFile.error.rejected = The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF
+uploadFile.error.quarantined = The selected file contains a virus
 uploadFile.uploadChosenFile = Upload chosen file
 uploadFile.typesOfFile = Types of file you can upload
 uploadFile.PDF = PDF (.pdf)
@@ -563,7 +569,7 @@ box36.pageHeader = Box 36 preference amendment for item {0}
 box36.pageBody = Must be 3 numbers, for example 100 or 350.
 box37.pageTitle = Box 37 customs procedure code amendment for item {0}
 box37.pageHeader = Box 37 customs procedure code amendment for item {0}
-box37.pageBody = Must be 7 numbers, sometimes including a letter, for example 4000000 or 4000C10.
+box37.pageBody = Must be 7 numbers, or a mix of numbers and letters, for example 4000000 or 4000C10.
 box38.pageTitle = Box 38 net mass amendment for item {0}
 box38.pageHeader = Box 38 net mass amendment for item {0}
 box38.pageBody = Must be in kilograms and can be up to 3 decimal places.
@@ -709,8 +715,8 @@ itemNo.error.nonNumeric = Item number must be a number
 itemNo.error.notTheSameNumber = You have already entered this item number for this box number, enter a different item number or change the existing reason for underpayment
 
 # Confirm Reason Details
-confirmReason.pageTitle = Confirm the details of the reason for underpayment
-confirmReason.heading = Confirm the details of the reason for underpayment
+confirmReason.pageTitle = Confirm the reason for underpayment
+confirmReason.heading = Confirm the reason for underpayment
 confirmReason.boxNumber = Box number
 confirmReason.itemNumber = Item number
 confirmReason.change = Change
@@ -778,6 +784,11 @@ confirmEORI.vatNumber = VAT number
 confirmEORI.vatNumberNotPresent = Not VAT registered
 confirmEORI.notThisEoriText = Not the right EORI number?
 confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
+
+# Confirm EORI Details Error
+confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
+confirmEoriDetailsError.heading = Sorry, there is a problem with the service
+confirmEoriDetailsError.message = Try again later.
 
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?
