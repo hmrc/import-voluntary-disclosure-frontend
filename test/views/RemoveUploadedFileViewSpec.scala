@@ -84,7 +84,7 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct filename in the body" in {
-      elementText("p") mustBe filename
+      elementText("p:nth-child(2)") mustBe filename
     }
 
     s"have the correct value for the first radio button of '${RemoveUploadedFileMessages.siteYes}'" in {
