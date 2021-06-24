@@ -29,6 +29,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import utils.ReusableValues
 import views.data.ConfirmEORIDetailsData
 import views.html.ConfirmEORIDetailsView
+import views.html.errors.ConfirmEoriDetailsErrorView
 
 import scala.concurrent.Future
 
@@ -36,6 +37,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
   trait Test extends MockSessionRepository {
     private lazy val view: ConfirmEORIDetailsView = app.injector.instanceOf[ConfirmEORIDetailsView]
+    private lazy val errorView: ConfirmEoriDetailsErrorView = app.injector.instanceOf[ConfirmEoriDetailsErrorView]
 
     MockedSessionRepository.set(Future.successful(true))
 
@@ -44,7 +46,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, appConfig)
+      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, errorView, appConfig)
   }
 
   "GET onLoad" when {
@@ -61,10 +63,10 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
         status(result) mustBe Status.OK
       }
 
-      "return error model" in new Test {
-        setupMockRetrieveAddress(Left(ErrorModel(404, "")))
+      "return error view when an error occurs whilst retrieving EORI details" in new Test {
+        setupMockRetrieveAddress(Left(ErrorModel(Status.NOT_FOUND, "")))
         val result: Future[Result] = controller.onLoad()(fakeRequest)
-        status(result) mustBe Status.NOT_FOUND
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return HTML" in new Test {

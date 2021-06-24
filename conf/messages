@@ -375,6 +375,8 @@ uploadFile.error.retry = Retry
 uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
+uploadFile.error.rejected = The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF
+uploadFile.error.quarantined = The selected file contains a virus
 uploadFile.uploadChosenFile = Upload chosen file
 uploadFile.typesOfFile = Types of file you can upload
 uploadFile.PDF = PDF (.pdf)
@@ -783,6 +785,11 @@ confirmEORI.vatNumberNotPresent = Not VAT registered
 confirmEORI.notThisEoriText = Not the right EORI number?
 confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
 
+# Confirm EORI Details Error
+confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
+confirmEoriDetailsError.heading = Sorry, there is a problem with the service
+confirmEoriDetailsError.message = Try again later.
+
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?
 importerDan.pageHeader = What is the deferment account number?
@@ -863,7 +870,7 @@ uploadAuthority.uploadFile = Upload file
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
 anyOtherSupportingDocs.heading = Do you have any of these documents?
-anyOtherSupportingDocs.p1 = You will be asked to upload the following documents if they apply:
+anyOtherSupportingDocs.p1 = You must upload the following documents if they apply:
 anyOtherSupportingDocs.bullet1 = the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry
 anyOtherSupportingDocs.bullet2 = the airway bill, if the goods were transported by air
 anyOtherSupportingDocs.bullet3 = a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences
