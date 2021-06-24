@@ -18,6 +18,7 @@ package views.components
 
 import base.ViewBaseSpec
 import messages.BaseMessages
+import mocks.config.MockAppConfig.betaFeedbackUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -30,11 +31,10 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the phase banner" should {
     s"have the feedback url" in {
 
-      val url: String = "/contact/beta-feedback?service=import-voluntary-disclosure"
       lazy val markup: Html = target()
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
-      element("a").attr("href").contains(url) mustBe true
+      element("a").attr("href").contains(betaFeedbackUrl) mustBe true
       }
     }
 
