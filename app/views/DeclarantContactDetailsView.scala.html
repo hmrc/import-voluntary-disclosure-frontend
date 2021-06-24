@@ -19,6 +19,7 @@
         errorSummary: components.errorSummary,
         button: components.button,
         h1: components.h1,
+        p: components.p,
         inputText: components.inputText
 )
 
@@ -31,7 +32,9 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages("declarantContactDetails.h1"))
+    @h1(messages("declarantContactDetails.heading"))
+
+    @p(Html(messages("declarantContactDetails.text")))
 
     @formHelper(action = controllers.routes.DeclarantContactDetailsController.onSubmit()) {
         @inputText(
@@ -56,7 +59,8 @@
             form = form,
             id = "phoneNumber",
             name = "phoneNumber",
-            label = "UK telephone number",
+            label = "Telephone number",
+            hint = Some(Html(messages("declarantContactDetails.phoneNumberHint"))),
             isPageHeading = false,
             classes = Some("govuk-input govuk-input--width-20"),
             attributes = Map("autocomplete" -> "tel")

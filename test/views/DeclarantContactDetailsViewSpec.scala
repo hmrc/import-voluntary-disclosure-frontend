@@ -284,8 +284,12 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${TraderContactDetailsMessages.h1}'" in {
-      elementText("h1") mustBe TraderContactDetailsMessages.h1
+    s"have the correct h1 of '${TraderContactDetailsMessages.heading}'" in {
+      elementText("h1") mustBe TraderContactDetailsMessages.heading
+    }
+
+    s"have the correct paragraph of '${TraderContactDetailsMessages.text}'" in {
+      elementText("p") mustBe TraderContactDetailsMessages.text
     }
 
     s"have the correct value for the text field of Name" in {
@@ -297,7 +301,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the text field of Phone number" in {
-      elementText("#main-content > div > div > form > div:nth-child(4) > label") mustBe "UK telephone number"
+      elementText("#main-content > div > div > form > div:nth-child(4) > label") mustBe "Telephone number"
     }
 
     "render a back link with the correct URL" in {

@@ -424,8 +424,10 @@ deferment.payingByOther = Another payment method
 deferment.error.required = Select how you will pay for the underpayment
 
 # Declarant Contact Details
-declarantContactDetails.pageTitle = Who should we contact if we have questions about this disclosure?
-declarantContactDetails.h1 = Who should we contact if we have questions about this disclosure?
+declarantContactDetails.pageTitle = What are your contact details?
+declarantContactDetails.heading = What are your contact details?
+declarantContactDetails.text = We will only use these details if we have questions about this underpayment disclosure.
+declarantContactDetails.phoneNumberHint = For international numbers include the country code.
 declarantContactDetails.error.nameNonEmpty = Enter a name
 declarantContactDetails.error.emailNonEmpty = Enter an email address
 declarantContactDetails.error.phoneNumberNonEmpty = Enter a UK telephone number
