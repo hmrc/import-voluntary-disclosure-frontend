@@ -60,6 +60,8 @@ class UploadFileController @Inject()(identify: IdentifierAction,
       case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
       case Some("TooBig") => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
       case Some("Unknown") => formProvider().withError("file", Messages("uploadFile.error.unknown"))
+      case Some("Rejected") => formProvider().withError("file", Messages("uploadFile.error.rejected"))
+      case Some("Quarantined") => formProvider().withError("file", Messages("uploadFile.error.quarantined"))
       case _ => formProvider()
     }
 

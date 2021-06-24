@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 
-package messages
+package controllers
 
-object ConfirmReasonDetailMessages extends BaseMessages {
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.GuidanceView
 
-  val title = "Confirm the reason for underpayment"
-  val h1 = "Confirm the reason for underpayment"
-  val boxNumber = "Box number"
-  val itemNumber = "Item number"
-  val originalValue = "Original value"
-  val amendedValue = "Amended value"
-  val change = "Change"
-  val boxChange = "Change box number"
-  val itemChange = "Change item number"
-  val itemValuesChange = "Change values"
+import javax.inject.Inject
+
+class GuidanceController @Inject()(view: GuidanceView,
+                                   mcc: MessagesControllerComponents
+                                  ) extends FrontendController(mcc) with I18nSupport {
+
+  def onLoad(): Action[AnyContent] = Action { implicit request =>
+    Ok(view())
+  }
 
 }

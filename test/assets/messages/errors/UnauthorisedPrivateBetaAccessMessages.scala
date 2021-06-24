@@ -14,19 +14,14 @@
  * limitations under the License.
  */
 
-package messages
+package messages.errors
 
-object ConfirmReasonDetailMessages extends BaseMessages {
+import messages.BaseMessages
 
-  val title = "Confirm the reason for underpayment"
-  val h1 = "Confirm the reason for underpayment"
-  val boxNumber = "Box number"
-  val itemNumber = "Item number"
-  val originalValue = "Original value"
-  val amendedValue = "Amended value"
-  val change = "Change"
-  val boxChange = "Change box number"
-  val itemChange = "Change item number"
-  val itemValuesChange = "Change values"
+object UnauthorisedPrivateBetaAccessMessages extends BaseMessages {
 
+  val title = "Sorry, the service is unavailable"
+  val para1 = "We are working on updating this service."
+  val para2_1 = "In the meantime you can "
+  val para2_2 = "tell us about an underpayment of customs duty or import VAT using the existing C2001 form"
 }

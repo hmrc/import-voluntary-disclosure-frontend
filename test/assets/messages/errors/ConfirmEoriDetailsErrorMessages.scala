@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package messages
+package messages.errors
 
-object ConfirmReasonDetailMessages extends BaseMessages {
+import messages.BaseMessages
 
-  val title = "Confirm the reason for underpayment"
-  val h1 = "Confirm the reason for underpayment"
-  val boxNumber = "Box number"
-  val itemNumber = "Item number"
-  val originalValue = "Original value"
-  val amendedValue = "Amended value"
-  val change = "Change"
-  val boxChange = "Change box number"
-  val itemChange = "Change item number"
-  val itemValuesChange = "Change values"
-
+object ConfirmEoriDetailsErrorMessages extends BaseMessages {
+  val title = "Sorry, there is a problem with the service"
+  val heading = "Sorry, there is a problem with the service"
+  val message = "Try again later."
 }

@@ -22,7 +22,9 @@ import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
+import java.util.Base64
 import javax.inject.{Inject, Singleton}
+import scala.util.Try
 
 @Singleton
 class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
@@ -48,6 +50,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
   lazy val addressLookupCallback: String = servicesConfig.getString("urls.addressCallbackUrl")
   lazy val importerAddressLookupCallback: String = servicesConfig.getString("urls.importerAddressCallbackUrl")
+  lazy val c2001Url: String = servicesConfig.getString("urls.c2001Url")
 
   lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
   val addressLookupFeedbackUrl: String =
@@ -81,6 +84,14 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
+  val privateBetaAllowList: Seq[String] =
+    Try(servicesConfig.getString("privateBetaAllowList"))
+      .map { str =>
+        val decodedAllowList = new String(Base64.getDecoder.decode(str))
+        decodedAllowList.split(",").toList
+      }.getOrElse(List.empty)
+
+  val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 }
 
 trait AppConfig extends FixedConfig {
@@ -103,6 +114,7 @@ trait AppConfig extends FixedConfig {
   val addressLookupFeedbackUrl: String
   val addressLookupCallbackUrl: String
   val importerAddressLookupCallbackUrl: String
+  val c2001Url: String
   val timeoutPeriod: Int
   val countdown: Int
   val cacheTtl: Int
@@ -118,11 +130,14 @@ trait AppConfig extends FixedConfig {
   val upScanAcceptedFileTypes: String
   val upScanAuthoritySuccessRedirectForUser: String
   val upScanAuthorityErrorRedirectForUser: String
+  val privateBetaAllowList: Seq[String]
 
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
 
   val eccSubscribeUrl: String
+
+  val privateBetaAllowListEnabled: Boolean
 }
 
 trait FixedConfig {

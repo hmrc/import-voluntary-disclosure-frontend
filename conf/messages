@@ -36,6 +36,10 @@ unauthorised.agent.para1 = You have signed in with an agent Government user ID t
 unauthorised.agent.para2.1 = 'If you are an importer or an importer’s representative you need to '
 unauthorised.agent.para2.2 = ' with the Government Gateway user ID you use for your business.'
 unauthorised.agent.signInAgain = sign in again
+unauthorised.privateBeta.title = Sorry, the service is unavailable
+unauthorised.privateBeta.para1 = We are working on updating this service.
+unauthorised.privateBeta.para2.1 = 'In the meantime you can '
+unauthorised.privateBeta.para2.2 = 'tell us about an underpayment of customs duty or import VAT using the existing C2001 form'
 
 #Feedback
 feedback.title = Give feedback
@@ -371,6 +375,8 @@ uploadFile.error.retry = Retry
 uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
+uploadFile.error.rejected = The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF
+uploadFile.error.quarantined = The selected file contains a virus
 uploadFile.uploadChosenFile = Upload chosen file
 uploadFile.typesOfFile = Types of file you can upload
 uploadFile.PDF = PDF (.pdf)
@@ -418,16 +424,21 @@ deferment.payingByOther = Another payment method
 deferment.error.required = Select how you will pay for the underpayment
 
 # Declarant Contact Details
-declarantContactDetails.pageTitle = Who should we contact if we have questions about this disclosure?
-declarantContactDetails.h1 = Who should we contact if we have questions about this disclosure?
+declarantContactDetails.pageTitle = What are your contact details?
+declarantContactDetails.heading = What are your contact details?
+declarantContactDetails.text = We will only use these details if we have questions about this underpayment disclosure.
+declarantContactDetails.name = Name
+declarantContactDetails.emailAddress = Email address
+declarantContactDetails.phoneNumber = Telephone number
+declarantContactDetails.phoneNumberHint = For international numbers include the country code.
 declarantContactDetails.error.nameNonEmpty = Enter a name
 declarantContactDetails.error.emailNonEmpty = Enter an email address
-declarantContactDetails.error.phoneNumberNonEmpty = Enter a UK telephone number
+declarantContactDetails.error.phoneNumberNonEmpty = Enter a telephone number
 declarantContactDetails.error.nameMinLength = Name must be 2 characters or more
 declarantContactDetails.error.nameMaxLength = Name must be 50 characters or fewer
 declarantContactDetails.error.nameAllowableCharacters = Name must only include letters a to z, hyphens, spaces and apostrophes
 declarantContactDetails.error.emailInvalidFormat = Enter an email address in the correct format, like name@example.com
-declarantContactDetails.error.phoneNumberInvalidFormat = Enter a UK telephone number, like 01632 960 001 or 07700 900 982
+declarantContactDetails.error.phoneNumberInvalidFormat = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
 # Trader Address
 traderAddressCorrect.pageTitle = Is this the correct address to send the demand for payment to?
@@ -563,7 +574,7 @@ box36.pageHeader = Box 36 preference amendment for item {0}
 box36.pageBody = Must be 3 numbers, for example 100 or 350.
 box37.pageTitle = Box 37 customs procedure code amendment for item {0}
 box37.pageHeader = Box 37 customs procedure code amendment for item {0}
-box37.pageBody = Must be 7 numbers, sometimes including a letter, for example 4000000 or 4000C10.
+box37.pageBody = Must be 7 numbers, or a mix of numbers and letters, for example 4000000 or 4000C10.
 box38.pageTitle = Box 38 net mass amendment for item {0}
 box38.pageHeader = Box 38 net mass amendment for item {0}
 box38.pageBody = Must be in kilograms and can be up to 3 decimal places.
@@ -709,8 +720,8 @@ itemNo.error.nonNumeric = Item number must be a number
 itemNo.error.notTheSameNumber = You have already entered this item number for this box number, enter a different item number or change the existing reason for underpayment
 
 # Confirm Reason Details
-confirmReason.pageTitle = Confirm the details of the reason for underpayment
-confirmReason.heading = Confirm the details of the reason for underpayment
+confirmReason.pageTitle = Confirm the reason for underpayment
+confirmReason.heading = Confirm the reason for underpayment
 confirmReason.boxNumber = Box number
 confirmReason.itemNumber = Item number
 confirmReason.change = Change
@@ -778,6 +789,11 @@ confirmEORI.vatNumber = VAT number
 confirmEORI.vatNumberNotPresent = Not VAT registered
 confirmEORI.notThisEoriText = Not the right EORI number?
 confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
+
+# Confirm EORI Details Error
+confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
+confirmEoriDetailsError.heading = Sorry, there is a problem with the service
+confirmEoriDetailsError.message = Try again later.
 
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?
@@ -859,7 +875,7 @@ uploadAuthority.uploadFile = Upload file
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
 anyOtherSupportingDocs.heading = Do you have any of these documents?
-anyOtherSupportingDocs.p1 = You will be asked to upload the following documents if they apply:
+anyOtherSupportingDocs.p1 = You must upload the following documents if they apply:
 anyOtherSupportingDocs.bullet1 = the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry
 anyOtherSupportingDocs.bullet2 = the airway bill, if the goods were transported by air
 anyOtherSupportingDocs.bullet3 = a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences

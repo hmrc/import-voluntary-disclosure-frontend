@@ -19,7 +19,11 @@ package mocks.config
 import config.AppConfig
 import play.api.mvc.RequestHeader
 
-object MockAppConfig extends AppConfig {
+object MockAppConfig extends MockAppConfig(List.empty, false)
+
+class MockAppConfig(override val privateBetaAllowList: List[String],
+                    override val privateBetaAllowListEnabled: Boolean
+                   ) extends AppConfig {
   override val footerLinkItems: Seq[String] = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"
   override val contactUrl: String = "TBC"
@@ -59,4 +63,5 @@ object MockAppConfig extends AppConfig {
   override val importVoluntaryDisclosureSubmission: String = "TBC"
 
   override val eccSubscribeUrl: String = "TBC"
+  override val c2001Url: String = "TBC"
 }
