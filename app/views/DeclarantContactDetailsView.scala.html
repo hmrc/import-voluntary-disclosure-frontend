@@ -41,7 +41,7 @@
             form = form,
             id = "fullName",
             name = "fullName",
-            label = "Name",
+            label = messages("declarantContactDetails.name"),
             isPageHeading = false,
             classes = Some("govuk-input"),
             attributes = Map("autocomplete" -> "name")
@@ -50,7 +50,7 @@
             form = form,
             id = "email",
             name = "email",
-            label = "Email address",
+            label = messages("declarantContactDetails.emailAddress"),
             isPageHeading = false,
             classes = Some("govuk-input"),
             attributes = Map("autocomplete" -> "email")
@@ -59,7 +59,7 @@
             form = form,
             id = "phoneNumber",
             name = "phoneNumber",
-            label = "Telephone number",
+            label = messages("declarantContactDetails.phoneNumber"),
             hint = Some(Html(messages("declarantContactDetails.phoneNumberHint"))),
             isPageHeading = false,
             classes = Some("govuk-input govuk-input--width-20"),
