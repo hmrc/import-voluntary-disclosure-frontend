@@ -30,4 +30,6 @@ object UploadAuthorityMessages extends BaseMessages {
   val fileTooSmall = "Select a file to upload"
   val fileTooBig = "The selected file must be smaller than 6MB"
   val fileUnknown = "The selected file could not be uploaded – try again"
+  val fileRejected = "The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF"
+  val fileQuarantined = "The selected file contains a virus"
 }
