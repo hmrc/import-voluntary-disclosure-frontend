@@ -783,6 +783,11 @@ confirmEORI.vatNumberNotPresent = Not VAT registered
 confirmEORI.notThisEoriText = Not the right EORI number?
 confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
 
+# Confirm EORI Details Error
+confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
+confirmEoriDetailsError.heading = Sorry, there is a problem with the service
+confirmEoriDetailsError.message = Try again later.
+
 # Importer Dan page
 importerDan.pageTitle = What is the deferment account number?
 importerDan.pageHeader = What is the deferment account number?
