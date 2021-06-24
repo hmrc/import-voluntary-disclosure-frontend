@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
-import messages.{BulkUploadFileMessages, UploadFileMessages}
+import messages.BulkUploadFileMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
@@ -141,6 +141,19 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Unknown")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileUnknown) mustBe true
+    }
+
+
+    "Display error when file uploaded is Rejected" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Rejected")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(BulkUploadFileMessages.fileRejected) mustBe true
+    }
+
+    "Display error when file uploaded is Quarantined" in new Test {
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Quarantined")))
+      status(result) mustBe Status.OK
+      contentAsString(result).contains(BulkUploadFileMessages.fileQuarantined) mustBe true
     }
   }
 
