@@ -61,22 +61,6 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#main-content p:nth-of-type(2)") mustBe BoxGuidanceMessages.p2
       }
 
-      s"have the correct page text of '${BoxGuidanceMessages.bullet1}'" in {
-        elementText("#main-content li:nth-of-type(1)") mustBe BoxGuidanceMessages.bullet1
-      }
-
-      s"have the correct page text of '${BoxGuidanceMessages.bullet2}'" in {
-        elementText("#main-content li:nth-of-type(2)") mustBe BoxGuidanceMessages.bullet2
-      }
-
-      s"have the correct page text of '${BoxGuidanceMessages.bullet3}'" in {
-        elementText("#main-content li:nth-of-type(3)") mustBe BoxGuidanceMessages.bullet3
-      }
-
-      s"have the correct p2 page text of '${BoxGuidanceMessages.p3}'" in {
-        elementText("#main-content p:nth-of-type(3)") mustBe BoxGuidanceMessages.p3
-      }
-
       "render a continue button with the correct URL " in {
         elementAttributes(".govuk-button") must contain("href" -> controllers.routes.BoxNumberController.onLoad().url)
       }
