@@ -15,6 +15,7 @@
  *@
 
 @import views.helpers.FooterLinks
+@import views.html.components.phaseBanner
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 
 @this(govukLayout: GovukLayout,
@@ -22,8 +23,8 @@
         footerLinks: FooterLinks,
         head: partials.Head,
         backLink: components.back_link,
-        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
-
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        govukBetaBanner : phaseBanner
 )
 
 @(pageTitle: String,
@@ -43,6 +44,7 @@
 }
 
 @beforeContentBlock = {
+    @govukBetaBanner()
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
     }

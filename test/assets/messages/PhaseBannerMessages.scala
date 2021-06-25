@@ -16,11 +16,9 @@
 
 package messages
 
-object BoxGuidanceMessages extends BaseMessages {
+object PhaseBannerMessages extends BaseMessages {
 
-  val title: String = "Next, tell us the reason for the underpayment"
-  val heading: String = "Next, tell us the reason for the underpayment"
-  val p1: String = "We need to know what information on the original declaration caused the underpayment of duty or import VAT."
-  val p2: String = "If there was more than one reason for the underpayment you will be able to add it later."
+  val p1: String = "BETA This is a new service – your feedback will help us to improve it."
+  val hrefText: String = "feedback"
 
 }

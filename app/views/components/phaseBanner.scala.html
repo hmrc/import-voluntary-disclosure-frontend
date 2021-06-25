@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,15 +12,26 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package messages
+@import uk.gov.hmrc.govukfrontend.views.html.components._
 
-object BoxGuidanceMessages extends BaseMessages {
+@this(govukPhaseBanner: GovukPhaseBanner, appConfig: AppConfig)
 
-  val title: String = "Next, tell us the reason for the underpayment"
-  val heading: String = "Next, tell us the reason for the underpayment"
-  val p1: String = "We need to know what information on the original declaration caused the underpayment of duty or import VAT."
-  val p2: String = "If there was more than one reason for the underpayment you will be able to add it later."
+@()(implicit messages: Messages)
 
+
+@govukPhaseBanner(PhaseBanner(
+    tag = Some(Tag(
+        content = Text(messages("banner.phaseName"))
+    )),
+    content = HtmlContent(
+        s"""${messages("feedback.before")} """ +
+        <a class="govuk-link" href={appConfig.betaFeedbackUrl}>{messages("feedback.link")}</a> +
+        s""" ${messages("feedback.after")}"""
+    )
+))
+
+@{
+//$COVERAGE-OFF$
 }
