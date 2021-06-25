@@ -17,7 +17,7 @@
 package views.components
 
 import base.ViewBaseSpec
-import messages.BaseMessages
+import messages.{BaseMessages, PhaseBannerMessages}
 import mocks.config.MockAppConfig.betaFeedbackUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -43,8 +43,8 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
     "render the correct banner text" in {
-      elementText("p") mustBe "BETA This is a new service – your feedback will help us to improve it."
-      elementText("a") mustBe "feedback"
+      elementText("p") mustBe PhaseBannerMessages.p1
+      elementText("a") mustBe PhaseBannerMessages.hrefText
     }
 
     "have the correct GDS CSS class" in {
