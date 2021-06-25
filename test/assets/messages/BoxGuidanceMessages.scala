@@ -18,13 +18,9 @@ package messages
 
 object BoxGuidanceMessages extends BaseMessages {
 
-  val title: String = "You must tell us the reason for the underpayment"
-  val heading: String = "You must tell us the reason for the underpayment"
-  val p1: String = "We will ask you about the information supplied in the declaration that resulted in the underpayment."
-  val p2: String = "You will need to provide:"
-  val bullet1: String = "the box number"
-  val bullet2: String = "the item number (if applicable)"
-  val bullet3: String = "the original value and the amended value"
-  val p3: String = "You will be able to provide more than one reason for the underpayment."
+  val title: String = "Next, tell us the reason for the underpayment"
+  val heading: String = "Next, tell us the reason for the underpayment"
+  val p1: String = "We need to know what information on the original declaration caused the underpayment of duty or import VAT."
+  val p2: String = "If there was more than one reason for the underpayment you will be able to add it later."
 
 }

@@ -424,16 +424,21 @@ deferment.payingByOther = Another payment method
 deferment.error.required = Select how you will pay for the underpayment
 
 # Declarant Contact Details
-declarantContactDetails.pageTitle = Who should we contact if we have questions about this disclosure?
-declarantContactDetails.h1 = Who should we contact if we have questions about this disclosure?
+declarantContactDetails.pageTitle = What are your contact details?
+declarantContactDetails.heading = What are your contact details?
+declarantContactDetails.text = We will only use these details if we have questions about this underpayment disclosure.
+declarantContactDetails.name = Name
+declarantContactDetails.emailAddress = Email address
+declarantContactDetails.phoneNumber = Telephone number
+declarantContactDetails.phoneNumberHint = For international numbers include the country code.
 declarantContactDetails.error.nameNonEmpty = Enter a name
 declarantContactDetails.error.emailNonEmpty = Enter an email address
-declarantContactDetails.error.phoneNumberNonEmpty = Enter a UK telephone number
+declarantContactDetails.error.phoneNumberNonEmpty = Enter a telephone number
 declarantContactDetails.error.nameMinLength = Name must be 2 characters or more
 declarantContactDetails.error.nameMaxLength = Name must be 50 characters or fewer
 declarantContactDetails.error.nameAllowableCharacters = Name must only include letters a to z, hyphens, spaces and apostrophes
 declarantContactDetails.error.emailInvalidFormat = Enter an email address in the correct format, like name@example.com
-declarantContactDetails.error.phoneNumberInvalidFormat = Enter a UK telephone number, like 01632 960 001 or 07700 900 982
+declarantContactDetails.error.phoneNumberInvalidFormat = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
 # Trader Address
 traderAddressCorrect.pageTitle = Is this the correct address to send the demand for payment to?
@@ -477,14 +482,10 @@ confirmation.helpImproveServiceLinkTime = ' (takes 30 seconds)'
 
 
 # Box Guidance page
-boxGuidance.pageTitle = You must tell us the reason for the underpayment
-boxGuidance.heading = You must tell us the reason for the underpayment
-boxGuidance.p1 = We will ask you about the information supplied in the declaration that resulted in the underpayment.
-boxGuidance.p2 = You will need to provide:
-boxGuidance.bullet1 = the box number
-boxGuidance.bullet2 = the item number (if applicable)
-boxGuidance.bullet3 = the original value and the amended value
-boxGuidance.p3 = You will be able to provide more than one reason for the underpayment.
+boxGuidance.pageTitle = Next, tell us the reason for the underpayment
+boxGuidance.heading = Next, tell us the reason for the underpayment
+boxGuidance.p1 = We need to know what information on the original declaration caused the underpayment of duty or import VAT.
+boxGuidance.p2 = If there was more than one reason for the underpayment you will be able to add it later.
 
 # Box Number page
 boxNumber.pageTitle = What was the reason for the underpayment?
