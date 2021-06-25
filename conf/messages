@@ -482,14 +482,10 @@ confirmation.helpImproveServiceLinkTime = ' (takes 30 seconds)'
 
 
 # Box Guidance page
-boxGuidance.pageTitle = You must tell us the reason for the underpayment
-boxGuidance.heading = You must tell us the reason for the underpayment
-boxGuidance.p1 = We will ask you about the information supplied in the declaration that resulted in the underpayment.
-boxGuidance.p2 = You will need to provide:
-boxGuidance.bullet1 = the box number
-boxGuidance.bullet2 = the item number (if applicable)
-boxGuidance.bullet3 = the original value and the amended value
-boxGuidance.p3 = You will be able to provide more than one reason for the underpayment.
+boxGuidance.pageTitle = Next, tell us the reason for the underpayment
+boxGuidance.heading = Next, tell us the reason for the underpayment
+boxGuidance.p1 = We need to know what information on the original declaration caused the underpayment of duty or import VAT.
+boxGuidance.p2 = If there was more than one reason for the underpayment you will be able to add it later.
 
 # Box Number page
 boxNumber.pageTitle = What was the reason for the underpayment?
