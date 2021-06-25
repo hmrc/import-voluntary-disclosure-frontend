@@ -45,8 +45,8 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         buildNumberOfEntriesSummaryListRow(answers),
         buildAcceptanceDateListRow(answers),
         buildOwedToHmrcRow(answers),
-        buildExtraInformationRow(answers),
-        buildMultipleEntriesFileRow(answers)
+        buildMultipleEntriesFileRow(answers),
+        buildExtraInformationRow(answers)
       ).flatten
     }
     if (rows.nonEmpty) {

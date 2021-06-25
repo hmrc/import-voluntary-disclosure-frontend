@@ -305,23 +305,6 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.reasonForUnderpaymentBulk),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text(reasonForUnderpaymentBulk)
-          ),
-          actions = Some(Actions(items = Seq(
-            ActionItem(
-              controllers.routes.MoreInformationController.onLoad().url,
-              HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              visuallyHiddenText = Some(CYAMessages.changeReasonForUnderpayment)
-            )
-          )
-          ))
-        ),
-        SummaryListRow(
-          key = Key(
             Text(CYAMessages.multipleEntriesFile),
             classes = "govuk-!-width-one-third"
           ),
@@ -336,6 +319,23 @@ object CheckYourAnswersData {
             )
           ))
           )
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(CYAMessages.reasonForUnderpaymentBulk),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text(reasonForUnderpaymentBulk)
+          ),
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.routes.MoreInformationController.onLoad().url,
+              HtmlContent("""<span aria-hidden="true">Change</span>"""),
+              visuallyHiddenText = Some(CYAMessages.changeReasonForUnderpayment)
+            )
+          )
+          ))
         )
       )
     ))
