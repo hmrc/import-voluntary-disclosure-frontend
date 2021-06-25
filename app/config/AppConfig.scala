@@ -36,7 +36,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
-  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.service-identifier")
+  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
   lazy val contactUrl = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
   lazy val host = servicesConfig.getString("urls.host")
 

@@ -16,12 +16,14 @@
 
 @import views.helpers.FooterLinks
 @import views.html.components.phaseBanner
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 
 @this(govukLayout: GovukLayout,
         appConfig: AppConfig,
         footerLinks: FooterLinks,
         head: partials.Head,
         backLink: components.back_link,
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         govukBetaBanner : phaseBanner
 )
 
@@ -48,6 +50,15 @@
     }
 }
 
+@content = {
+
+    @contentBlock
+
+  <div class="govuk-!-margin-top-6">
+    @hmrcReportTechnicalIssueHelper()
+  </div>
+}
+
 @defining({
     form.collect[String] {
         case f if f.errors.nonEmpty => messages("common.errorPrefix") + pageTitle
@@ -59,7 +70,7 @@
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
         footerItems = footerLinks.links()
-    )(contentBlock)
+    )(content)
 }
 @{
     //$COVERAGE-OFF$
