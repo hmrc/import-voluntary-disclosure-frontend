@@ -865,8 +865,14 @@ uploadAuthority.duty = duty
 uploadAuthority.both = import VAT and duty
 uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the deferment account. The date must be after the date of the original import declaration.
 uploadAuthority.fileSizeTypeHeading = File size and type
-uploadAuthority.fileSizeTypeText = The file must be 6MB or smaller and either be a PDF (.pdf) or a text (.txt) file.
+uploadAuthority.typesOfFile = Types of file you can upload
+uploadAuthority.PDF = PDF (.pdf)
+uploadAuthority.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt .or pptx)
+uploadAuthority.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadAuthority.image = image (.jpg, .png or .tiff)
+uploadAuthority.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadAuthority.uploadFile = Upload file
+uploadAuthority.uploadChosenFile = Upload chosen file
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
