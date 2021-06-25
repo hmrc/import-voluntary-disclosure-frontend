@@ -34,12 +34,6 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
       case _ => false
     }
 
-  def isImporterFlow: Boolean =
-    userAnswers.get(UserTypePage) match {
-      case Some(userType) => userType == UserType.Importer
-      case _ => false
-    }
-
   def isPayByDeferment: Boolean =
     userAnswers.get(DefermentPage) match {
       case Some(value) => value

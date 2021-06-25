@@ -44,12 +44,12 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(EntryDetailsPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink(), request.isImporterFlow)))
+    Future.successful(Ok(view(form, backLink(), request.isRepFlow)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(), request.isImporterFlow))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(), request.isRepFlow))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EntryDetailsPage, value))

@@ -96,7 +96,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
       description should {
         lazy val form: Form[EntryDetails] = formProvider().bind(formData)
-        lazy val view: Html = injectedView(form, backLink, isImporter = false)(fakeRequest, messages)
+        lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
@@ -115,7 +115,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "multiple errors" should {
 
       lazy val form: Form[EntryDetails] = formProvider().bind(Map("entryNumber" -> "123456Q"))
-      lazy val view: Html = injectedView(form, backLink, isImporter = false)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
@@ -129,7 +129,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "page for the importer" should {
       lazy val form: Form[EntryDetails] = formProvider()
-      lazy val view: Html = injectedView(form, backLink, isImporter = true)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink, isRepFlow = false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "contain the expected top paragraph" in {
@@ -139,7 +139,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "page for the representative" should {
       lazy val form: Form[EntryDetails] = formProvider()
-      lazy val view: Html = injectedView(form, backLink, isImporter = false)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "contain the expected top paragraph" in {
@@ -150,7 +150,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[EntryDetails] = formProvider()
-    lazy val view: Html = injectedView(form, backLink, isImporter = false)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(EntryDetailsMessages.title)

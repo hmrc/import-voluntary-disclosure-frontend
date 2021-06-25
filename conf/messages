@@ -84,8 +84,8 @@ error.year.length = Year must be 4 numbers
 
 entryDetails.pageTitle = Entry details
 entryDetails.title = Entry details
-entryDetails.paragraph = These can be found on the E2.
-entryDetails.paragraphWhenImporter = These can be found on the E2 or by asking your shipping agent or courier.
+entryDetails.representativeParagraph = These can be found on the E2.
+entryDetails.importerParagraph = These can be found on the E2 or by asking your shipping agent or courier.
 entryDetails.epu.label = Entry Processing Unit (EPU) number
 entryDetails.epu.hint = This is 3 numbers, for example 121.
 entryDetails.epu.error.missing = Enter an EPU number
