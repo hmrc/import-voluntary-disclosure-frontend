@@ -25,7 +25,7 @@ object UploadAuthorityMessages extends BaseMessages {
   val fileSizeText: String = "Each file must be 6MB or less and you can only upload one file at a time."
   val typesOfFile = "Types of file you can upload"
   val filePdf = "PDF (.pdf)"
-  val fileMs = "Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt .or pptx)"
+  val fileMs = "Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)"
   val fileOd = "Open Document Format (.odt, .ods or .odp)"
   val fileImage = "image (.jpg, .png or .tiff)"
   val uploadFile: String = "Upload file"
