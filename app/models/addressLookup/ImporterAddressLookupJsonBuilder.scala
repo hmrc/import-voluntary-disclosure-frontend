@@ -28,7 +28,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit reques
   val showPhaseBanner: Boolean = true
   val ukMode: Boolean = false
   val conf: AppConfig = config
-  val deskproServiceName: String = "TBC" //TODO: Needs to contain name if we need it
+  val deskproServiceName: String = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = "TBC" //TODO: Needs to point somewhere
 
   object Version2 {

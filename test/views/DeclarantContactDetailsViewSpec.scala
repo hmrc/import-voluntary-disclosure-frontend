@@ -289,7 +289,7 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct paragraph of '${TraderContactDetailsMessages.text}'" in {
-      elementText("p") mustBe TraderContactDetailsMessages.text
+      elementText("p:nth-child(2)") mustBe TraderContactDetailsMessages.text
     }
 
     s"have the correct value for the text field of Name" in {

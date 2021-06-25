@@ -36,7 +36,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
-  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.service-identifier")
+  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
   lazy val contactUrl = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
   lazy val host = servicesConfig.getString("urls.host")
 
@@ -84,6 +84,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
+  lazy val betaFeedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
+
   val privateBetaAllowList: Seq[String] =
     Try(servicesConfig.getString("privateBetaAllowList"))
       .map { str =>
@@ -100,9 +102,7 @@ trait AppConfig extends FixedConfig {
   val contactUrl: String
   val surveyUrl: String
   val host: String
-
   def feedbackUrl(implicit request: RequestHeader): String
-
   val appName: String
   val loginUrl: String
   val signOutUrl: String
@@ -131,13 +131,11 @@ trait AppConfig extends FixedConfig {
   val upScanAuthoritySuccessRedirectForUser: String
   val upScanAuthorityErrorRedirectForUser: String
   val privateBetaAllowList: Seq[String]
-
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
-
   val eccSubscribeUrl: String
-
   val privateBetaAllowListEnabled: Boolean
+  val betaFeedbackUrl: String
 }
 
 trait FixedConfig {

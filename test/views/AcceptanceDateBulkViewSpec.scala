@@ -81,7 +81,7 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct page info" in {
-      elementText("p") mustBe AcceptanceDateBulkMessages.info
+      elementText("p:nth-child(2)") mustBe AcceptanceDateBulkMessages.info
     }
 
     "have the correct value for the first radio button" in {

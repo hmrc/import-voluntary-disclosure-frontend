@@ -15,12 +15,16 @@
  *@
 
 @import views.helpers.FooterLinks
+@import views.html.components.phaseBanner
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 
 @this(govukLayout: GovukLayout,
         appConfig: AppConfig,
         footerLinks: FooterLinks,
         head: partials.Head,
-        backLink: components.back_link
+        backLink: components.back_link,
+        hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        govukBetaBanner : phaseBanner
 )
 
 @(pageTitle: String,
@@ -40,9 +44,19 @@
 }
 
 @beforeContentBlock = {
+    @govukBetaBanner()
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
     }
+}
+
+@content = {
+
+    @contentBlock
+
+  <div class="govuk-!-margin-top-6">
+    @hmrcReportTechnicalIssueHelper()
+  </div>
 }
 
 @defining({
@@ -56,7 +70,7 @@
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
         footerItems = footerLinks.links()
-    )(contentBlock)
+    )(content)
 }
 @{
     //$COVERAGE-OFF$
