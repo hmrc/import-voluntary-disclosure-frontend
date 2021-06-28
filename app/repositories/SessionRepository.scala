@@ -57,21 +57,21 @@ class UserAnswersRepository @Inject()(mongoComponent: MongoComponent, appConfig:
     val update = BsonDocument("$set" -> modifier.toDocument())
     collection
       .updateOne(equal("_id", userAnswers.id), update, UpdateOptions().upsert(true))
-      .toFutureOption()
-      .map(_.exists(_.wasAcknowledged()))
+      .toFuture()
+      .map(_.wasAcknowledged())
   }
 
   override def delete(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
     collection
       .deleteOne(equal("_id", userAnswers.id))
-      .toFutureOption()
-      .map(_.exists(_.wasAcknowledged()))
+      .toFuture()
+      .map(_.wasAcknowledged())
   }
 
   override def remove(id: String)(implicit ec: ExecutionContext): Future[String] = {
     collection
       .deleteOne(equal("_id", id))
-      .toFutureOption()
+      .toFuture()
       .map(_ => id)
   }
 }

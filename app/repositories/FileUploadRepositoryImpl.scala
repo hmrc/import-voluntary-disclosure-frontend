@@ -53,16 +53,16 @@ class FileUploadRepositoryImpl @Inject()(mongoComponent: MongoComponent, appConf
 
   override def insertRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     collection.insertOne(updateLastUpdatedTimestamp(fileUpload))
-      .toFutureOption()
-      .map(_.exists(_.wasAcknowledged()))
+      .toFuture()
+      .map(_.wasAcknowledged())
   }
 
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())
     collection
       .updateOne(equal("reference", fileUpload.reference), update, UpdateOptions().upsert(true))
-      .toFutureOption()
-      .map(_.exists(_.wasAcknowledged()))
+      .toFuture()
+      .map(_.wasAcknowledged())
   }
 
   override def getRecord(reference: String)(implicit ec: ExecutionContext): Future[Option[FileUpload]] = {
@@ -73,8 +73,8 @@ class FileUploadRepositoryImpl @Inject()(mongoComponent: MongoComponent, appConf
 
   override def deleteRecord(reference: String)(implicit ec: ExecutionContext): Future[Boolean] = {
     collection.deleteOne(equal("reference", reference))
-      .toFutureOption()
-      .map(_.exists(_.wasAcknowledged()))
+      .toFuture()
+      .map(_.wasAcknowledged())
   }
 
   override def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]] =
