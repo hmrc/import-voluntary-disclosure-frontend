@@ -29,7 +29,7 @@ class ImporterEORINumberFormProvider @Inject() extends Mappings with FormHelpers
     Form(
       "importerEORI" -> text("importerEORINumber.error.nonEmpty")
         .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-        .verifying(regexp("^(?i)GB[0-9]{12,15}$", "importerEORINumber.error.incorrectFormat"))
+        .verifying(regexp("\\{*^(?i)GB([0-9]{12}|[0-9]{15})$\\}*", "importerEORINumber.error.incorrectFormat"))
     )
 
 }
