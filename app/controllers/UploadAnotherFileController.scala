@@ -73,7 +73,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.UploadFileController.onLoad().url))) { files =>
       val helper = new AddFileNameRowHelper(files)
 
-      Future.successful(BadRequest(view(formWithErrors, helper.rows)))
+      Future.successful(BadRequest(view(formWithErrors, helper.rows, getOptionalDocs(request.userAnswers))))
     }
   }
 
