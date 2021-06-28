@@ -19,8 +19,9 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadAnotherFileFormProvider
-import models.UserAnswers
-import pages.{AnyOtherSupportingDocsPage, CheckModePage}
+import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
+import models.{FileUploadInfo, UserAnswers}
+import pages.{AnyOtherSupportingDocsPage, CheckModePage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -28,6 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UploadAnotherFileView
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 
@@ -71,17 +73,26 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.SEE_OTHER
     }
 
+    "return OK when FileUploadPage is there with AnyOtherSupportingDocsPage" in new Test {
+      override val data: JsObject = Json.obj("data" -> "")
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
+        .set(AnyOtherSupportingDocsPage, true).success.value
+        .set(FileUploadPage, Seq(FileUploadInfo("", "", "", LocalDateTime.now(), "", ""))).success.value)
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return OK when FileUploadPage is not there" in new Test {
+      override val data: JsObject = Json.obj("data" -> "")
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+    }
+
     "return HTML" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
-    }
-
-    "redirect to supporting Doc page when no data present" in new Test {
-      override val data: JsObject = Json.obj("" -> "")
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data))
-      val result: Future[Result] = controller.onLoad(fakeRequest)
-      status(result) mustBe Status.SEE_OTHER
     }
 
   }
@@ -132,6 +143,15 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+      }
+
+      "return a page with errors when no data is submitted and there are other files to upload" in new Test {
+        override val data: JsObject = Json.obj("data" -> "")
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data)
+          .set(AnyOtherSupportingDocsPage, true).success.value
+          .set(OptionalSupportingDocsPage, Seq(ImportAndEntry, AirwayBill, OriginProof, Other)).success.value)
+        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
       }
 
       "return a BAD REQUEST" in new Test {
