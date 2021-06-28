@@ -65,4 +65,5 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
   override val betaFeedbackUrl: String = "/contact/beta-feedback?service=import-voluntary-disclosure"
+  override val updateCaseEnabled: Boolean = true
 }
