@@ -84,12 +84,14 @@ error.year.length = Year must be 4 numbers
 
 entryDetails.pageTitle = Entry details
 entryDetails.title = Entry details
-entryDetails.epu.label = EPU number
-entryDetails.epu.hint = This is 3 numbers, for example ‘121’
+entryDetails.representativeParagraph = These can be found on the E2.
+entryDetails.importerParagraph = These can be found on the E2 or by asking your shipping agent or courier.
+entryDetails.epu.label = Entry Processing Unit (EPU) number
+entryDetails.epu.hint = This is 3 numbers, for example 121.
 entryDetails.epu.error.missing = Enter an EPU number
 entryDetails.epu.error.format = Enter an EPU number in the correct format
 entryDetails.entryNumber.label = Entry number
-entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example ‘123456Q’
+entryDetails.entryNumber.hint = This is 6 numbers and a letter, for example 123456Q.
 entryDetails.entryNumber.error.missing = Enter an entry number
 entryDetails.entryNumber.error.format = Enter an entry number in the correct format
 entryDetails.entryDate.label = Entry date
@@ -865,8 +867,14 @@ uploadAuthority.duty = duty
 uploadAuthority.both = import VAT and duty
 uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the deferment account. The date must be after the date of the original import declaration.
 uploadAuthority.fileSizeTypeHeading = File size and type
-uploadAuthority.fileSizeTypeText = The file must be 6MB or smaller and either be a PDF (.pdf) or a text (.txt) file.
+uploadAuthority.typesOfFile = Types of file you can upload
+uploadAuthority.PDF = PDF (.pdf)
+uploadAuthority.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+uploadAuthority.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadAuthority.image = image (.jpg, .png or .tiff)
+uploadAuthority.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadAuthority.uploadFile = Upload file
+uploadAuthority.uploadChosenFile = Upload chosen file
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?

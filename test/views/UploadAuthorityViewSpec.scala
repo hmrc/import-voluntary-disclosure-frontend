@@ -122,12 +122,20 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(2)") mustBe UploadAuthorityMessages.para2
     }
 
-    s"have the correct h1 of '${UploadAuthorityMessages.h2}'" in {
-      elementText("h2") mustBe UploadAuthorityMessages.h2
+    s"have the correct text of '${UploadAuthorityMessages.fileSizeText}'" in {
+      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.fileSizeText
     }
 
-    s"have the correct text of '${UploadAuthorityMessages.para3}'" in {
-      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.para3
+    s"have the correct list of allowed file types" in {
+      elementText("details > summary > span") mustBe UploadAuthorityMessages.typesOfFile
+      elementText("details li:nth-of-type(1)") mustBe UploadAuthorityMessages.filePdf
+      elementText("details li:nth-of-type(2)") mustBe UploadAuthorityMessages.fileMs
+      elementText("details li:nth-of-type(3)") mustBe UploadAuthorityMessages.fileOd
+      elementText("details li:nth-of-type(4)") mustBe UploadAuthorityMessages.fileImage
+    }
+
+    s"have the '${UploadAuthorityMessages.uploadFile}' upload label" in {
+      elementText(".govuk-form-group > label") mustBe UploadAuthorityMessages.uploadFile
     }
 
     s"have the correct Continue button" in {

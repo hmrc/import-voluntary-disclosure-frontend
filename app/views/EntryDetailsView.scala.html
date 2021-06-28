@@ -17,13 +17,14 @@
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         h1: components.h1,
+        p: components.p,
         errorSummary: components.errorSummary,
         inputNumber: components.inputNumber,
         inputText: components.inputText,
         inputDate: components.inputDate,
         button: components.button)
 
-@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, isRepFlow: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("entryDetails.pageTitle"),
@@ -33,6 +34,13 @@
     @errorSummary(form.errors)
 
     @h1(messages("entryDetails.title"))
+
+    @{
+        if (isRepFlow)
+            p(Html(messages("entryDetails.representativeParagraph")))
+        else
+            p(Html(messages("entryDetails.importerParagraph")))
+    }
 
     @formHelper(action = controllers.routes.EntryDetailsController.onSubmit()) {
         @inputNumber(
