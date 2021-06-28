@@ -94,6 +94,9 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
       }.getOrElse(List.empty)
 
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
+
+  val updateCaseEnabled: Boolean  = servicesConfig.getBoolean("features.updateCaseEnabled")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -135,6 +138,7 @@ trait AppConfig extends FixedConfig {
   val importVoluntaryDisclosureSubmission: String
   val eccSubscribeUrl: String
   val privateBetaAllowListEnabled: Boolean
+  val updateCaseEnabled: Boolean
   val betaFeedbackUrl: String
 }
 
