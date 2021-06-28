@@ -44,7 +44,7 @@ class UserAnswersRepository @Inject()(mongoComponent: MongoComponent, appConfig:
         ascending("lastUpdated"),
         IndexOptions().name("user-answers-last-updated-index").expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
       )
-    ),
+    )
   ) with SessionRepository {
 
   override def get(id: String)(implicit ec: ExecutionContext): Future[Option[UserAnswers]] =
