@@ -23,26 +23,26 @@ import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.libs.json.{JsResult, JsValue, Json}
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
-import play.modules.reactivemongo.ReactiveMongoComponent
+import uk.gov.hmrc.mongo.MongoComponent
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with FutureAwaits with DefaultAwaitTimeout {
 
-  val mongo: ReactiveMongoComponent = app.injector.instanceOf[ReactiveMongoComponent]
+  val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   val fakeNow: LocalDateTime = LocalDateTime.now()
 
-  val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: ReactiveMongoComponent, appConfig)
+  val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
-  private def count = await(repo.count)
+  private def count() = await(repo.collection.countDocuments().toFuture())
 
   val mongoDate: JsValue = Json.toJson(fakeNow)(MongoDateTimeFormats.localDateTimeWrite)
 
   trait Test {
-    await(repo.drop)
+    await(repo.collection.drop().head())
   }
 
   val fileUploadModel: FileUpload = FileUpload(
@@ -73,7 +73,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
   "repository domainFormatImplicit reads" should {
 
     "read in json as per format of mongo reads" in new Test {
-      val fileUpload: JsResult[FileUpload] = Json.fromJson[FileUpload](jsonInRepo)(repo.domainFormatImplicit)
+      val fileUpload: JsResult[FileUpload] = Json.fromJson[FileUpload](jsonInRepo)(repo.domainFormat)
       fileUpload.get mustBe fileUploadModel
     }
   }
@@ -81,7 +81,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
   "repository domainFormatImplicit writes" should {
 
     "write json as per format of mongo writes" in new Test {
-      val fileUploadJson: JsValue = Json.toJson[FileUpload](fileUploadModel)(repo.domainFormatImplicit)
+      val fileUploadJson: JsValue = Json.toJson[FileUpload](fileUploadModel)(repo.domainFormat)
       fileUploadJson mustBe jsonInRepo
     }
   }
@@ -89,12 +89,12 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
   "insertRecord" should {
     "insert the document, including setting the new timestamp value" in new Test {
 
-      await(repo.count) mustBe 0
+      count() mustBe 0
 
       val insertedResult = await(repo.insertRecord(fileUploadModel))
 
       insertedResult mustBe true
-      await(repo.count) mustBe 1
+      count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate.isDefined mustBe true
     }
   }
@@ -102,25 +102,25 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
   "updateRecord" should {
     "upsert the document, including setting the new timestamp value" in new Test {
 
-      await(repo.count) mustBe 0
+      count() mustBe 0
       val updatedResult = await(repo.updateRecord(fileUploadModel))
 
       updatedResult mustBe true
-      await(repo.count) mustBe 1
+      count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate.isDefined mustBe true
     }
 
     "update the document, including setting the new timestamp value" in new Test {
 
-      await(repo.count) mustBe 0
+      count() mustBe 0
       await(repo.insertRecord(fileUploadModel))
 
-      await(repo.count) mustBe 1
+      count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("cred Id")
       val updatedResult = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
       updatedResult mustBe true
 
-      await(repo.count) mustBe 1
+      count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("Another cred Id")
     }
   }

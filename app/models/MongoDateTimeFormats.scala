@@ -17,6 +17,7 @@
 package models
 
 import play.api.libs.json._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.{Instant, LocalDateTime, ZoneOffset}
 
@@ -26,7 +27,7 @@ trait MongoDateTimeFormats {
     (__ \ "$date").read[Long].map {
       millis =>
         LocalDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneOffset.UTC)
-    }
+    }.orElse(MongoJavatimeFormats.localDateTimeReads)
 
   implicit val localDateTimeWrite: Writes[LocalDateTime] = new Writes[LocalDateTime] {
     def writes(dateTime: LocalDateTime): JsValue = Json.obj(

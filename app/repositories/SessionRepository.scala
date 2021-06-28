@@ -18,56 +18,61 @@ package repositories
 
 import config.AppConfig
 import models.UserAnswers
-import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoComponent
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
-import uk.gov.hmrc.mongo.ReactiveRepository
+import org.mongodb.scala._
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.model.Filters._
+import org.mongodb.scala.model.Indexes.ascending
+import org.mongodb.scala.model.{IndexModel, IndexOptions, UpdateOptions}
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs._
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserAnswersRepository @Inject()(mongoComponent: ReactiveMongoComponent, appConfig: AppConfig)
-  extends ReactiveRepository[UserAnswers, String](
+class UserAnswersRepository @Inject()(mongoComponent: MongoComponent, appConfig: AppConfig)
+                                     (implicit ec: ExecutionContext)
+  extends PlayMongoRepository[UserAnswers](
     collectionName = "user-answers",
-    mongo = mongoComponent.mongoConnector.db,
+    mongoComponent = mongoComponent,
     domainFormat = UserAnswers.format,
-    idFormat = implicitly[Format[String]]
+    indexes = Seq(
+      IndexModel(
+        ascending("lastUpdated"),
+        IndexOptions().name("user-answers-last-updated-index").expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+      )
+    ),
   ) with SessionRepository {
-
-  override def indexes: Seq[Index] = Seq(Index(
-    key = Seq("lastUpdated" -> IndexType.Ascending),
-    name = Some("user-answers-last-updated-index"),
-    options = BSONDocument("expireAfterSeconds" -> appConfig.cacheTtl)
-  ))
 
   override def get(id: String)(implicit ec: ExecutionContext): Future[Option[UserAnswers]] =
     collection
-      .find(_id(id), None)
-      .one[UserAnswers]
+      .find(equal("_id", id))
+      .headOption()
 
   override def set(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
-    val modifier = Json.obj("$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now())))
+    val modifier = userAnswers copy (lastUpdated = LocalDateTime.now())
+    val update = BsonDocument("$set" -> modifier.toDocument())
     collection
-      .update(ordered = false)
-      .one(_id(userAnswers.id), modifier, upsert = true)
-      .map(_.ok)
+      .updateOne(equal("_id", userAnswers.id), update, UpdateOptions().upsert(true))
+      .toFutureOption()
+      .map(_.exists(_.wasAcknowledged()))
   }
 
   override def delete(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
     collection
-      .delete(ordered = false)
-      .one(_id(userAnswers.id))
-      .map(_.ok)
+      .deleteOne(equal("_id", userAnswers.id))
+      .toFutureOption()
+      .map(_.exists(_.wasAcknowledged()))
   }
 
   override def remove(id: String)(implicit ec: ExecutionContext): Future[String] = {
-    val selector = Json.obj("_id" -> id)
-
-    collection.delete().one(selector).map(_ => id)
+    collection
+      .deleteOne(equal("_id", id))
+      .toFutureOption()
+      .map(_ => id)
   }
 }
 
