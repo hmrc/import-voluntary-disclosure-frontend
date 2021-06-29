@@ -32,7 +32,7 @@ object RepresentativeConfirmationMessages extends BaseMessages {
   val p3OtherPayment = "The demand note will tell you how to pay. Payment must be made within 10 days of receiving the demand note."
   val p4OtherPayment = "If we find that the amount owed differs from what you have told us we will contact you before sending the demand note."
   val whatYouShouldDoNext = "What you should do next"
-  val p5 = "If either you have not received the demand or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk."
+  val p5 = "If you have not received the demand note or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk."
   val discloseAnotherUnderpayment = "Disclose another underpayment"
   val printSave = "Print or save this page"
   val printSaveRestOfMessage = "as we will not send you an email confirmation."
