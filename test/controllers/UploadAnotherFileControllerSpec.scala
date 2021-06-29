@@ -19,14 +19,14 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadAnotherFileFormProvider
-import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
+import models.OptionalDocument._
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, CheckModePage, FileUploadPage, OptionalSupportingDocsPage}
+import pages._
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.UploadAnotherFileView
 
 import java.time.LocalDateTime
