@@ -17,7 +17,7 @@
 package forms.mappings
 
 import forms.mappings.filters.InputFilter
-import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
+import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints extends InputFilter {
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
@@ -94,9 +94,9 @@ trait Constraints extends InputFilter {
         Invalid(errorKey, maximum)
     }
 
-  protected def uniqueEntry(values: Seq[String], idx: Int,  errorKey: String): Constraint[String] = {
+  protected def uniqueEntry(values: Seq[String], idx: Int, errorKey: String): Constraint[String] = {
 
-    val filteredValues = values.zipWithIndex.filterNot(_._2 == idx -1).map(_._1)
+    val filteredValues = values.zipWithIndex.filterNot(_._2 == idx - 1).map(_._1)
 
     Constraint {
       case str if filteredValues.contains(str) =>
@@ -122,18 +122,18 @@ trait Constraints extends InputFilter {
         Invalid(errorMessage)
     }
 
+  protected def emojiConstraint(errorKey: String): Constraint[String] =
+    Constraint {
+      text =>
+      if (containsEmoji(text)) Invalid(errorKey)
+      else Valid
+    }
+
   def containsEmoji(valueToCheck: String): Boolean = {
 
     val regex: String = "[\\u00a9|\\u00ae|[\\u2000-\\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff]]"
     val replaced: String = valueToCheck.replaceAll(regex, "")
     if (replaced == valueToCheck) false else true
-
-  }
-
-  def emojiConstraint(name: String, error: String) = Constraint[String](name) { o =>
-
-    if (containsEmoji(o)) Invalid(error)
-    else Valid
 
   }
 
