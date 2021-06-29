@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
 import models.requests.OptionalDataRequest
@@ -39,7 +40,8 @@ class UserTypeController @Inject()(identify: IdentifierAction,
                                    sessionRepository: SessionRepository,
                                    mcc: MessagesControllerComponents,
                                    formProvider: UserTypeFormProvider,
-                                   view: UserTypeView)
+                                   view: UserTypeView,
+                                   appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
   private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
@@ -53,7 +55,11 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     if (cyaMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.ConfirmEORIDetailsController.onLoad()
+      if(appConfig.updateCaseEnabled){
+        controllers.routes.NewOrUpdateCaseController.onLoad()
+      } else {
+        controllers.routes.ConfirmEORIDetailsController.onLoad()
+      }
     }
   }
 
