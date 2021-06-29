@@ -94,6 +94,43 @@ class MoreInformationFormProviderSpec extends SpecBase {
       }
     }
 
+
+    "emoji entered for single entry" should {
+
+      val emoji: Map[String, String] = Map("value" -> "😀")
+      val form = new MoreInformationFormProvider()().bind(emoji)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "moreInformation.single.error.noEmoji"
+      }
+    }
+
+    "emoji entered for bulk entry" should {
+
+      val emoji: Map[String, String] = Map("value" -> "😀")
+      val form = new MoreInformationFormProvider()(false).bind(emoji)
+
+      "result in a form with errors" in {
+        form.hasErrors mustBe true
+      }
+
+      "throw one error" in {
+        form.errors.size mustBe 1
+      }
+
+      "have an error with the correct message" in {
+        form.errors.head.message mustBe "moreInformation.bulk.error.noEmoji"
+      }
+    }
+
   }
 
   "Binding a form with valid data" should {
