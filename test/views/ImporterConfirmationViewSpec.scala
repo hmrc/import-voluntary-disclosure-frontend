@@ -115,7 +115,11 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         s"have the p5 message of '${ImporterConfirmationMessages.p5}'" in {
           elementText("#main-content > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.p5
         }
+
+      s"have a link message of '${ImporterConfirmationMessages.discloseAnotherUnderpayment}'" in {
+        elementText("#discloseAnotherUnderpayment") mustBe ImporterConfirmationMessages.discloseAnotherUnderpayment
       }
+    }
 
       s"have the '${ImporterConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
         elementText("#helpImproveServiceLink") mustBe ImporterConfirmationMessages.helpImproveServiceLink
