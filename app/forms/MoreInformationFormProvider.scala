@@ -40,6 +40,7 @@ class MoreInformationFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text(requiredErrorMessage)
         .verifying(maxLength(maxLength, maxCharactersErrorMessage))
+        .verifying(emojiConstraint("value", "error.emoji"))
     )
   }
 

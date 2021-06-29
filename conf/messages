@@ -81,6 +81,7 @@ importerAddress_lookupPage.editPage.country = Country
 
 error.date.length = You have entered too many numbers for {0}
 error.year.length = Year must be 4 numbers
+error.emoji = The reasons for the underpayment must not include emojis
 
 entryDetails.pageTitle = Entry details
 entryDetails.title = Entry details
