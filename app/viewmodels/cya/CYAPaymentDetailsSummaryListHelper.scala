@@ -98,7 +98,6 @@ trait CYAPaymentDetailsSummaryListHelper {
               controllers.routes.ImporterDanController.onLoad().url,
               messages("cya.importerAccountNumber.change")
             )),
-            columnClasses = "govuk-summary-list__row",
             rowClasses = "govuk-summary-list__row"
           )
         )

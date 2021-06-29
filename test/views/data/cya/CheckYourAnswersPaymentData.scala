@@ -110,11 +110,10 @@ object CheckYourAnswersPaymentData {
   val importerAccountNumberRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.importerAccountNumber),
-      classes = s"govuk-!-width-one-third govuk-summary-list__row"
+      classes = s"govuk-!-width-one-third"
     ),
     value = Value(
-      Text(accountNumberDuty),
-      classes = "govuk-summary-list__row"
+      Text(accountNumberDuty)
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
@@ -122,8 +121,7 @@ object CheckYourAnswersPaymentData {
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
       )
-    ),
-      classes = "govuk-summary-list__row"
+    )
     )),
     classes = "govuk-summary-list__row"
   )
