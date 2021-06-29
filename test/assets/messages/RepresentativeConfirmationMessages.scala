@@ -20,7 +20,7 @@ object RepresentativeConfirmationMessages extends BaseMessages {
 
   val pageTitle = "Confirmation screen"
   val heading = "Disclosure sent"
-  val referenceNumber = "Your reference number:"
+  val referenceNumber = "Disclosure reference number:"
   val p1SingleEntry = "We have received your disclosure of underpaid customs duty or import VAT for the import declaration 123-123456Q-01/01/2021."
   val p1BulkEntry = "We have received your disclosure of underpaid customs duty or import VAT on multiple entries. All of these entries were for goods imported by Test User, EORI number GB123456789."
   val whatHappensNext = "What happens next"
