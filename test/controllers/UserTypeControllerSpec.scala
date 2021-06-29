@@ -43,7 +43,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
-      mockSessionRepository, messagesControllerComponents, form, userTypePage)
+      mockSessionRepository, messagesControllerComponents, form, userTypePage, appConfig)
   }
 
   "GET /" should {
