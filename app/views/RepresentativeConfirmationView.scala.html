@@ -67,11 +67,11 @@
 
     @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
 
-    @p{@Html(<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">{messages("confirmation.whatYouShouldDoNext.link")}</a>)}
+    @p{<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.link")}</a>}
 
     <div id="helpImproveServiceLink">
         @p{
-            @Html(<a href={appConfig.surveyUrl} class="govuk-link">{messages("confirmation.helpImproveServiceLink")}</a>)
+            <a href={appConfig.surveyUrl} class="govuk-link">@{messages("confirmation.helpImproveServiceLink")}</a>
             @Html(messages("confirmation.helpImproveServiceLinkTime"))
         }
     </div>

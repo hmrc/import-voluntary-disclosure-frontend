@@ -377,3 +377,6 @@ POST        /disclosure/which-documents-upload                                  
 
 GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
 POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
+
+GET         /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onLoad()
+POST        /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onSubmit()

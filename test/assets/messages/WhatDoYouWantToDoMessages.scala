@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package messages
 
-@this(govukBackLink : GovukBackLink)
+object WhatDoYouWantToDoMessages extends BaseMessages {
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+  val title: String = "What do you want to do?"
+  val h1: String = "What do you want to do?"
+  val leftOptionMsg: String = "Start a new underpayment disclosure"
+  val rightOptionMsg: String = "Add more information to an existing underpayment disclosure"
+  val leftOptionHint: String = "Tell us about an underpayment of Customs Duty or import VAT."
+  val rightOptionHint: String = "You will need the disclosure reference number."
+  val error: String = "User must select an option"
 
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
-
-@{
- //$COVERAGE-OFF$
 }
