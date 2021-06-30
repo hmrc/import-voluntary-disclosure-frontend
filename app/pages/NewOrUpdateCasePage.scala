@@ -22,6 +22,6 @@ case object NewOrUpdateCasePage extends QuestionPage[Boolean] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "is-new-case"
+  override def toString: String = "is-create-case"
 
 }
