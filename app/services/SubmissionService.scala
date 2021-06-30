@@ -75,7 +75,7 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
         }
       case JsError(err) => {
         logger.error(s"Invalid User Answers data. Failed to parse into SubmissionData model. Error: ${err}")
-        Left(ErrorModel(-1, err))
+        Left(ErrorModel(-1, err.toString()))
       }
     }
   }
