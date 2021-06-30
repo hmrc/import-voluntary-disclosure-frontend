@@ -32,8 +32,8 @@
         @formHelper(action = controllers.routes.DisclosureReferenceNumberController.onSubmit()) {
             @inputText(
                 form = form,
-                id = "referenceNumber",
-                name = "referenceNumber",
+                id = "value",
+                name = "value",
                 label = messages("disclosureReference.label"),
                 isPageHeading = true,
                 hint = Some(Html(messages("disclosureReference.hint"))),
