@@ -20,12 +20,14 @@ object EntryDetailsMessages extends BaseMessages {
 
   val title: String = "Entry details"
   val h1: String = "Entry details"
+  val paragraph = "These can be found on the E2."
+  val paragraphWhenImporter = "These can be found on the E2 or by asking your shipping agent or courier."
 
-  val epuLabel: String = "EPU number"
-  val epuHint: String = "This is 3 numbers, for example ‘121’"
+  val epuLabel: String = "Entry Processing Unit (EPU) number"
+  val epuHint: String = "This is 3 numbers, for example 121."
 
   val entryNumberLabel: String = "Entry number"
-  val entryNumberHint: String = "This is 6 numbers and a letter, for example ‘123456Q’"
+  val entryNumberHint: String = "This is 6 numbers and a letter, for example 123456Q."
 
   val entryDateLabel: String = "Entry date"
   val entryDateHint: String = "For example, 27 3 2020"

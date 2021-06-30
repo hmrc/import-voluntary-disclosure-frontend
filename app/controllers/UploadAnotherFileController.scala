@@ -18,9 +18,8 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadAnotherFileFormProvider
-
-import javax.inject.Inject
 import models.requests.DataRequest
+import models.{OptionalDocument, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
@@ -29,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.AddFileNameRowHelper
 import views.html.UploadAnotherFileView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class UploadAnotherFileController @Inject()(identify: IdentifierAction,
@@ -41,20 +41,14 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
-      implicit request =>
-        val anyOptionalDocs = request.userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
-        val optionalDocs = if (anyOptionalDocs) {
-          request.userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+    implicit request =>
+      request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
+        val helper = new AddFileNameRowHelper(files)
+        if (files.isEmpty) {
+          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
         } else {
-          Seq.empty
+          Future.successful(Ok(view(formProvider(), helper.rows, getOptionalDocs(request.userAnswers))))
         }
-        request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
-            val helper = new AddFileNameRowHelper(files)
-            if(files.isEmpty) {
-              Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
-            } else {
-              Future.successful(Ok(view(formProvider(), helper.rows, optionalDocs)))
-            }
       }
   }
 
@@ -79,7 +73,17 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.UploadFileController.onLoad().url))) { files =>
       val helper = new AddFileNameRowHelper(files)
 
-      Future.successful(BadRequest(view(formWithErrors, helper.rows)))
+      Future.successful(BadRequest(view(formWithErrors, helper.rows, getOptionalDocs(request.userAnswers))))
     }
   }
+
+  private def getOptionalDocs(userAnswers: UserAnswers): Seq[OptionalDocument] = {
+    val anyOptionalDocs = userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
+    if (anyOptionalDocs) {
+      userAnswers.get(OptionalSupportingDocsPage).getOrElse(Seq.empty)
+    } else {
+      Seq.empty
+    }
+  }
+
 }

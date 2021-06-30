@@ -39,8 +39,8 @@
     }
 
     @formHelper(action = controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onSubmit(underpaymentType)) {
-        @currencyInput(form, "original", messages("changeUnderpaymentDetails.originalAmount"), 10, false, classes = "govuk-input--width-20")
-        @currencyInput(form, "amended", messages("changeUnderpaymentDetails.amendedAmount"), 10, false, classes = "govuk-input--width-20")
+        @currencyInput(form, "original", messages("changeUnderpaymentDetails.originalAmount"), "10", false, classes = "govuk-input--width-20")
+        @currencyInput(form, "amended", messages("changeUnderpaymentDetails.amendedAmount"), "10", false, classes = "govuk-input--width-20")
         @if(summaryPageChange) {
         <p><a href=@controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onLoad(underpaymentType).url id="remove-link" class="govuk-link">@messages(s"changeUnderpaymentDetails.$underpaymentType.removeLink")</a></p>
         }

@@ -84,8 +84,8 @@
                 isPageHeading = false,
                 attributes = Map(
                     "accept" -> appConfig.upScanAcceptedFileTypes,
-                    "data-max-file-size" -> appConfig.upScanMaxFileSize,
-                    "data-min-file-size" -> appConfig.upScanMinFileSize
+                    "data-max-file-size" -> appConfig.upScanMaxFileSize.toString,
+                    "data-min-file-size" -> appConfig.upScanMinFileSize.toString
                 )
             )
 
