@@ -377,3 +377,6 @@ POST        /disclosure/which-documents-upload                                  
 
 GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
 POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
+
+GET         /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onLoad
+POST        /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onSubmit

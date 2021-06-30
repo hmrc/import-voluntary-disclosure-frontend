@@ -904,6 +904,14 @@ importerVatRegistered.pageTitle = Is the importer VAT registered?
 importerVatRegistered.heading = Is the importer VAT registered?
 importerVatRegistered.error.required = Select yes if the importer is VAT registered
 
+# Update Additional Information Page
+updateAdditionalInformation.pageTitle = Tell us any additional information
+updateAdditionalInformation.heading = Tell us any additional information
+updateAdditionalInformation.p1 = You may have been asked to provide more information to help us progress the disclosure.
+updateAdditionalInformation.error.required = Enter the additional information about the underpayment
+updateAdditionalInformation.error.maxLength = The additional information must be 1500 characters or fewer
+updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
+
 # Session Timeout Page
 timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
