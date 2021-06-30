@@ -19,7 +19,7 @@ import scala.language.implicitConversions
 
 package object models {
 
-  implicit def withNameToString[A >: WithName](x: A): String = x.toString
+  implicit def withNameToString[A <: WithName](x: A): String = x.toString
 
   implicit class RichJsObject(jsObject: JsObject) {
 
