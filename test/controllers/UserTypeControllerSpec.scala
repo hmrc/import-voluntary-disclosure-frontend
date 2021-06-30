@@ -19,6 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UserTypeFormProvider
+import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.requests.{IdentifierRequest, OptionalDataRequest}
 import models.{UserAnswers, UserType}
@@ -39,6 +40,9 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
     val form: UserTypeFormProvider = formProvider
+    lazy val appConfig = new MockAppConfig(
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false
+    )
 
     MockedSessionRepository.set(Future.successful(true))
 
@@ -178,6 +182,19 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
         backLink mustBe controllers.routes.ConfirmEORIDetailsController.onLoad()
       }
+
+      "go to the confirm New Or Update Case page" in new Test {
+        override lazy val appConfig = new MockAppConfig(
+          privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = true
+        )
+        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
+          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None
+        )
+        private val backLink = controller.backLink()(request)
+
+        backLink mustBe controllers.routes.NewOrUpdateCaseController.onLoad()
+      }
+
     }
 
     "in the the CYA user journey" should {

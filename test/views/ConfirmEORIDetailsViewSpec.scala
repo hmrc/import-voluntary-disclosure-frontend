@@ -18,6 +18,7 @@ package views
 
 import base.ViewBaseSpec
 import messages.ConfirmEORIDetailsMessages
+import mocks.config.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -30,6 +31,10 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
 
   "Rendering the Confirm EORI Details page without the vatNumber" should {
+
+    lazy val appConfig = new MockAppConfig(
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false
+    )
 
     lazy val view: Html = injectedView(
       details(
@@ -64,9 +69,17 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe ConfirmEORIDetailsMessages.vatNumberNotPresent
     }
 
+    "render a continue button with the correct URL " in {
+      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
+    }
+
   }
 
   "Rendering the Confirm EORI Details page with the vatNumber" should {
+
+    lazy val appConfig = new MockAppConfig(
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = true
+    )
 
     lazy val view: Html = injectedView(
       details(
@@ -101,6 +114,10 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "987654321000"
     }
 
+    "render a continue button with the correct URL " in {
+      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.NewOrUpdateCaseController.onLoad().url)
+    }
+
   }
 
 
@@ -133,10 +150,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     s"have the correct Continue button" in {
       elementText(".govuk-button") mustBe ConfirmEORIDetailsMessages.continue
-    }
-
-    "render a continue button with the correct URL " in {
-      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
     }
 
   }
