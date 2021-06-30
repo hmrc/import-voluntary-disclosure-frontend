@@ -141,13 +141,13 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "point to upload more documentation page" in new Test {
+      "point to What Do You Want To Do page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.DisclosureReferenceNumberController.onLoad()
+        result mustBe controllers.routes.WhatDoYouWantToDoController.onLoad()
       }
     }
 

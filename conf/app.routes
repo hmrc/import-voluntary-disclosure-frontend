@@ -240,9 +240,6 @@ POST        /disclosure/deferment-account-details-duties                        
 GET         /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onLoad
 POST        /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onSubmit
 
-GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
-POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit
-
 # Underpayments
 
 GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad
@@ -382,3 +379,6 @@ POST        /disclosure/importer-vat-registered                                 
 
 GET         /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onLoad()
 POST        /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onSubmit()
+
+GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
+POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit

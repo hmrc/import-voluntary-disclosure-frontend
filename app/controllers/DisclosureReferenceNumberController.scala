@@ -69,7 +69,7 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.DisclosureReferenceNumberController.onLoad()
+      controllers.routes.WhatDoYouWantToDoController.onLoad()
     }
   }
 
