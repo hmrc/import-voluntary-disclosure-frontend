@@ -54,14 +54,10 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       additionalInfo => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, additionalInfo))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-          } else {
             Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
-          }
         }
       }
     )

@@ -37,8 +37,6 @@
         @p(Html(messages("updateAdditionalInformation.p1")))
 
 
-
-
         @formHelper(action = controllers.routes.UpdateAdditionalInformationController.onSubmit()) {
             @inputTextArea(
                 form,
@@ -50,7 +48,6 @@
                 classes = Some("govuk-fieldset__legend")
             )
             @button("common.button.continue")
-
         }
     }
 
