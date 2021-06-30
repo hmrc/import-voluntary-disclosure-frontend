@@ -22,6 +22,7 @@ import forms.DisclosureReferenceNumberFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.scalamock.handlers.CallHandler
 import pages.{CheckModePage, DisclosureReferenceNumberPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
@@ -29,7 +30,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.DisclosureReferenceNumberView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
@@ -58,7 +59,10 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
     val formProvider: DisclosureReferenceNumberFormProvider = injector.instanceOf[DisclosureReferenceNumberFormProvider]
     val form: DisclosureReferenceNumberFormProvider = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    def expectSessionSet(): CallHandler[Future[Boolean]] =
+      MockedSessionRepository.set(Future.successful(true))
+
+    expectSessionSet()
 
     lazy val controller = new DisclosureReferenceNumberController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
       mockSessionRepository, messagesControllerComponents, form, view)
@@ -126,6 +130,21 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
         await(controller.onSubmit(request))
+        verifyCalls()
+      }
+    }
+
+    "payload contains lowercase reference number" should {
+      "update the UserAnswers in session with upper case reference number" in new Test {
+        override def expectSessionSet(): CallHandler[Future[Boolean]] =
+          (mockSessionRepository.set(_: UserAnswers)(_: ExecutionContext))
+            .expects(where((answers: UserAnswers, _: ExecutionContext) => answers.get(DisclosureReferenceNumberPage).contains(disclosureReference)))
+            .returning(Future.successful(true))
+
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference.toLowerCase)
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        status(result) mustBe Status.SEE_OTHER
+
         verifyCalls()
       }
     }

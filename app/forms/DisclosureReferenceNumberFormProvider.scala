@@ -27,6 +27,6 @@ class DisclosureReferenceNumberFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("disclosureReference.error.required")
-        .verifying(regexp("^C18[a-zA-Z0-9]{19}$", "disclosureReference.error.format"))
+        .verifying(regexp("^[cC]18[a-zA-Z0-9]{19}$", "disclosureReference.error.format"))
     )
 }

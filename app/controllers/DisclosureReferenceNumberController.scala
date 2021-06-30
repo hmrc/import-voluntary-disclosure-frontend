@@ -53,7 +53,7 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       reference =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
