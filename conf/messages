@@ -909,3 +909,8 @@ timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
 timeout.p = We did not save your answers.
 timeout.button = Sign in
+
+# Update Case - More Documentation Page
+moreDocumentation.pageTitle = Do you need to send us more documentation?
+moreDocumentation.heading = Do you need to send us more documentation?
+moreDocumentation.error.required = Error message
