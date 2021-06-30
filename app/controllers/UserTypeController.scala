@@ -52,14 +52,10 @@ class UserTypeController @Inject()(identify: IdentifierAction,
       } yield mode
     }.getOrElse(false)
 
-    if (cyaMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      if (appConfig.updateCaseEnabled) {
-        controllers.routes.WhatDoYouWantToDoController.onLoad()
-      } else {
-        controllers.routes.ConfirmEORIDetailsController.onLoad()
-      }
+    (cyaMode, appConfig.updateCaseEnabled) match {
+      case (true, _) => controllers.routes.CheckYourAnswersController.onLoad()
+      case (false, true) => controllers.routes.WhatDoYouWantToDoController.onLoad()
+      case (false, false) => controllers.routes.ConfirmEORIDetailsController.onLoad()
     }
   }
 
