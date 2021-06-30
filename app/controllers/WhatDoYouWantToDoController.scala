@@ -17,30 +17,30 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.NewOrUpdateCaseFormProvider
+import forms.WhatDoYouWantToDoFormProvider
 import models.UserAnswers
 import models.requests.DataRequest
-import pages.{KnownEoriDetailsPage, NewOrUpdateCasePage}
+import pages.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.NewOrUpdateCaseView
+import views.html.WhatDoYouWantToDoView
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class NewOrUpdateCaseController @Inject()(identify: IdentifierAction,
-                                          getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          sessionRepository: SessionRepository,
-                                          mcc: MessagesControllerComponents,
-                                          formProvider: NewOrUpdateCaseFormProvider,
-                                          view: NewOrUpdateCaseView) extends FrontendController(mcc) with I18nSupport {
+class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            sessionRepository: SessionRepository,
+                                            mcc: MessagesControllerComponents,
+                                            formProvider: WhatDoYouWantToDoFormProvider,
+                                            view: WhatDoYouWantToDoView) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(NewOrUpdateCasePage).fold(formProvider()) {
+    val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
@@ -49,22 +49,22 @@ class NewOrUpdateCaseController @Inject()(identify: IdentifierAction,
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      submittedValue => {
-        val currentValue = request.userAnswers.get(NewOrUpdateCasePage).getOrElse(false)
-        if (currentValue == submittedValue) {
+      isCreateCase => {
+        val currentValue = request.userAnswers.get(WhatDoYouWantToDoPage).getOrElse(false)
+        if (currentValue == isCreateCase) {
           for {
-            userAnswers <- Future.fromTry(request.userAnswers.set(NewOrUpdateCasePage, submittedValue))
+            userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, isCreateCase))
             _ <- sessionRepository.set(userAnswers)
           } yield {
-            submitRedirect(submittedValue)
+            submitRedirect(isCreateCase)
           }
         } else {
-          val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage, NewOrUpdateCasePage))
+          val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))
           for {
-            userAnswers <- Future.fromTry(cleanedUserAnswers.set(NewOrUpdateCasePage, submittedValue))
+            userAnswers <- Future.fromTry(cleanedUserAnswers.set(WhatDoYouWantToDoPage, isCreateCase))
             _ <- sessionRepository.set(userAnswers)
           } yield {
-            submitRedirect(submittedValue)
+            submitRedirect(isCreateCase)
           }
         }
       }
@@ -75,7 +75,7 @@ class NewOrUpdateCaseController @Inject()(identify: IdentifierAction,
     if (submittedValue) {
       Redirect(controllers.routes.UserTypeController.onLoad())
     } else {
-      Redirect(controllers.routes.NewOrUpdateCaseController.onLoad()) // TODO - change once next page is in the flow
+      Redirect(controllers.routes.WhatDoYouWantToDoController.onLoad()) // TODO - change once next page is in the flow
     }
   }
 

@@ -55,8 +55,8 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     if (cyaMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      if(appConfig.updateCaseEnabled){
-        controllers.routes.NewOrUpdateCaseController.onLoad()
+      if (appConfig.updateCaseEnabled) {
+        controllers.routes.WhatDoYouWantToDoController.onLoad()
       } else {
         controllers.routes.ConfirmEORIDetailsController.onLoad()
       }

@@ -17,31 +17,31 @@
 package views
 
 import base.ViewBaseSpec
-import forms.NewOrUpdateCaseFormProvider
-import messages.NewOrUpdateCaseMessages
+import forms.WhatDoYouWantToDoFormProvider
+import messages.WhatDoYouWantToDoMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.NewOrUpdateCaseView
+import views.html.WhatDoYouWantToDoView
 
-class NewOrUpdateCaseViewSpec extends ViewBaseSpec {
+class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
   lazy val backLink: Call = Call("GET", "url")
 
-  private lazy val injectedView: NewOrUpdateCaseView = app.injector.instanceOf[NewOrUpdateCaseView]
+  private lazy val injectedView: WhatDoYouWantToDoView = app.injector.instanceOf[WhatDoYouWantToDoView]
 
-  val formProvider: NewOrUpdateCaseFormProvider = injector.instanceOf[NewOrUpdateCaseFormProvider]
+  val formProvider: WhatDoYouWantToDoFormProvider = injector.instanceOf[WhatDoYouWantToDoFormProvider]
 
-  "Rendering the NewOrUpdateCase page" when {
+  "Rendering the WhatDoYouWantToDo page" when {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(NewOrUpdateCaseMessages.title)
+      checkPageTitle(WhatDoYouWantToDoMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -57,14 +57,14 @@ class NewOrUpdateCaseViewSpec extends ViewBaseSpec {
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(NewOrUpdateCaseMessages.errorPrefix + NewOrUpdateCaseMessages.title)
+      checkPageTitle(WhatDoYouWantToDoMessages.errorPrefix + WhatDoYouWantToDoMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe NewOrUpdateCaseMessages.error
+        elementText("div.govuk-error-summary > div") mustBe WhatDoYouWantToDoMessages.error
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe NewOrUpdateCaseMessages.errorPrefix + NewOrUpdateCaseMessages.error
+        elementText("#value-error") mustBe WhatDoYouWantToDoMessages.errorPrefix + WhatDoYouWantToDoMessages.error
       }
 
     }
@@ -77,24 +77,24 @@ class NewOrUpdateCaseViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe NewOrUpdateCaseMessages.h1
+      elementText("h1") mustBe WhatDoYouWantToDoMessages.h1
     }
 
 
     "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe NewOrUpdateCaseMessages.leftOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.leftOptionMsg
     }
 
     "have the correct value for the first radio button hint" in {
-      elementText("#value-item-hint") mustBe NewOrUpdateCaseMessages.leftOptionHint
+      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.leftOptionHint
     }
 
     "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe NewOrUpdateCaseMessages.rightOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.rightOptionMsg
     }
 
     "have the correct value for the second radio button hint" in {
-      elementText("#value-no-item-hint") mustBe NewOrUpdateCaseMessages.rightOptionHint
+      elementText("#value-no-item-hint") mustBe WhatDoYouWantToDoMessages.rightOptionHint
     }
 
     "render a back link with the correct URL" in {
@@ -102,7 +102,7 @@ class NewOrUpdateCaseViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe NewOrUpdateCaseMessages.continue
+      elementText(".govuk-button") mustBe WhatDoYouWantToDoMessages.continue
     }
 
   }

@@ -14,19 +14,16 @@
  * limitations under the License.
  */
 
-package forms
+package messages
 
-import forms.mappings.Mappings
-import play.api.data.Form
+object WhatDoYouWantToDoMessages extends BaseMessages {
 
-import javax.inject.Inject
+  val title: String = "What do you want to do?"
+  val h1: String = "What do you want to do?"
+  val leftOptionMsg: String = "Start a new underpayment disclosure"
+  val rightOptionMsg: String = "Add more information to an existing underpayment disclosure"
+  val leftOptionHint: String = "Tell us about an underpayment of Customs Duty or import VAT."
+  val rightOptionHint: String = "You will need the disclosure reference number."
+  val error: String = "User must select an option"
 
-
-class NewOrUpdateCaseFormProvider @Inject() extends Mappings {
-
-  def apply(): Form[Boolean] = {
-    Form(
-      "value" -> boolean("newOrUpdate.error")
-    )
-  }
 }

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-package messages
+package pages
 
-object NewOrUpdateCaseMessages extends BaseMessages {
+import play.api.libs.json.JsPath
 
-  val title: String = "What do you want to do?"
-  val h1: String = "What do you want to do?"
-  val leftOptionMsg: String  = "Start a new underpayment disclosure"
-  val rightOptionMsg: String  = "Add more information to an existing underpayment disclosure"
-  val leftOptionHint: String  = "Tell us about an underpayment of Customs Duty or import VAT."
-  val rightOptionHint: String  = "You will need the disclosure reference number."
-  val error: String  = "User must select an option"
+case object WhatDoYouWantToDoPage extends QuestionPage[Boolean] {
+
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "is-create-case"
 
 }

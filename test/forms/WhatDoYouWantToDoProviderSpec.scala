@@ -18,14 +18,14 @@ package forms
 
 import base.SpecBase
 
-class NewOrUpdateCaseProviderSpec extends SpecBase {
+class WhatDoYouWantToDoProviderSpec extends SpecBase {
 
   "Binding a form with invalid data" when {
 
     "no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new NewOrUpdateCaseFormProvider()().bind(missingOption)
+      val form = new WhatDoYouWantToDoFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -36,7 +36,7 @@ class NewOrUpdateCaseProviderSpec extends SpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "newOrUpdate.error"
+        form.errors.head.message mustBe "whatDoYouWantToDo.error.required"
       }
     }
 
@@ -45,7 +45,7 @@ class NewOrUpdateCaseProviderSpec extends SpecBase {
   "Binding a form with valid data" should {
 
     val data = Map("value" -> "true")
-    val form = new NewOrUpdateCaseFormProvider()().bind(data)
+    val form = new WhatDoYouWantToDoFormProvider()().bind(data)
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
