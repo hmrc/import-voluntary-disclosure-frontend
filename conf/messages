@@ -913,4 +913,4 @@ timeout.button = Sign in
 # Update Case - More Documentation Page
 moreDocumentation.pageTitle = Do you need to send us more documentation?
 moreDocumentation.heading = Do you need to send us more documentation?
-moreDocumentation.error.required = Error message
+moreDocumentation.error.required = Select yes to send us more documentation
