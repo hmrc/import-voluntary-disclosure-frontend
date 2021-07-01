@@ -59,7 +59,7 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
+            Redirect(controllers.routes.MoreDocumentationController.onLoad())
           }
         }
     )

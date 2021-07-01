@@ -161,7 +161,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.MoreDocumentationController.onLoad()
+        result mustBe controllers.routes.DisclosureReferenceNumberController.onLoad()
       }
     }
 
@@ -172,7 +172,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.MoreDocumentationController.onLoad()
+        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
       }
     }
 

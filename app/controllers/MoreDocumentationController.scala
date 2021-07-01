@@ -60,16 +60,16 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
           if (moreDocuments) {
             Redirect(controllers.routes.MoreDocumentationController.onLoad()) // upload document page
           } else
-            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // more information free text page
+            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // more information page
         }
     )
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.MoreDocumentationController.onLoad() // CYA
+      controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.MoreDocumentationController.onLoad() // reference page
+      controllers.routes.DisclosureReferenceNumberController.onLoad()
     }
   }
 
