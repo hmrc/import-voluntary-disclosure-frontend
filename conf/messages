@@ -4,6 +4,11 @@ common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
 
+common.error.title = Sorry, there is a problem with the service
+common.error.header = Sorry, there is a problem with the service
+common.error.p1 = Try again later.
+common.error.p2 = We have not saved your answers. When the service is available, you will have to start again.
+
 service.name = Disclose an underpayment of Customs Duty or import VAT
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
@@ -909,6 +914,23 @@ timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
 timeout.p = We did not save your answers.
 timeout.button = Sign in
+
+# What do you want to do Page
+whatDoYouWantToDo.title = What do you want to do?
+whatDoYouWantToDo.heading = What do you want to do?
+whatDoYouWantToDo.leftOptionMsg = Start a new underpayment disclosure
+whatDoYouWantToDo.rightOptionMsg = Add more information to an existing underpayment disclosure
+whatDoYouWantToDo.leftOptionHint = Tell us about an underpayment of Customs Duty or import VAT.
+whatDoYouWantToDo.rightOptionHint = You will need the disclosure reference number.
+whatDoYouWantToDo.error.required = User must select an option
+
+# Disclosure Reference Number Page
+disclosureReference.pageTitle = What is the disclosure reference number?
+disclosureReference.label = What is the disclosure reference number?
+disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
+disclosureReference.error.required = Enter the disclosure reference number
+disclosureReference.error.format = Enter the disclosure reference number in the correct format
+
 
 # Update Case - More Documentation Page
 moreDocumentation.pageTitle = Do you need to send us more documentation?

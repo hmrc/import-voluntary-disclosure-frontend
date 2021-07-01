@@ -15,11 +15,11 @@
  *@
 
 @this(
-    layout: templates.Layout,
-    govukSummaryList: GovukSummaryList,
-    h1: components.h1,
-    linkButton: components.linkButton,
-    govukDetails: GovukDetails
+        layout: templates.Layout,
+        govukSummaryList: GovukSummaryList,
+        h1: components.h1,
+        linkButton: components.linkButton,
+        govukDetails: GovukDetails
 )
 
 @(details: SummaryList)(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -43,7 +43,7 @@
         )
     )
 
-    @linkButton(url = controllers.routes.UserTypeController.onLoad().url, messages(("common.button.confirm")), id = Some("value"))
+    @linkButton(url = if(appConfig.updateCaseEnabled) controllers.routes.WhatDoYouWantToDoController.onLoad().url else controllers.routes.UserTypeController.onLoad().url, messages(("common.button.confirm")), id = Some("value"))
 
 
 }

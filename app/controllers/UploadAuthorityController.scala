@@ -81,7 +81,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
       case _ => formProvider()
     }
 
-    upScanService.initiateAuthorityJourney(dutyType, dan).map { response =>
+    upScanService.initiateAuthorityJourney(dutyType.toString, dan).map { response =>
       Ok(view(form, response, backLink(dutyType, dan, request.dutyType, splitPayment), dan, dutyTypeKey))
         .removingFromSession("AuthorityUpscanReference")
         .addingToSession("AuthorityUpscanReference" -> response.reference.value)

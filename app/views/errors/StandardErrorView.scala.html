@@ -14,14 +14,25 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+@this(layout: templates.Layout,
+        p: components.p,
+        h1: components.h1)
 
-@this(govukBackLink : GovukBackLink)
+@()(implicit request: Request[_], messages: Messages)
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+@layout(
+    pageTitle = messages("common.error.title"),
+    form = None,
+    showBackLink = false) {
 
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
+    @h1(messages("common.error.header"))
+
+    @p(Html(messages("common.error.p1")))
+
+    @p(Html(messages("common.error.p2")))
+
+}
 
 @{
- //$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

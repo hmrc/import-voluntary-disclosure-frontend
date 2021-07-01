@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,21 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package forms
 
-@this(govukBackLink : GovukBackLink)
+import forms.mappings.Mappings
+import play.api.data.Form
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+import javax.inject.Inject
 
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
 
-@{
- //$COVERAGE-OFF$
+class DisclosureReferenceNumberFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("disclosureReference.error.required")
+        .verifying(regexp("^[cC]18[a-zA-Z0-9]{19}$", "disclosureReference.error.format"))
+    )
 }

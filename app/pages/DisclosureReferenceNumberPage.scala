@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package pages
 
-@this(govukBackLink : GovukBackLink)
+import play.api.libs.json.JsPath
 
-@(url: Option[Call] = None)(implicit messages: Messages)
+case object DisclosureReferenceNumberPage extends QuestionPage[String] {
 
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
+  def path: JsPath = JsPath \ toString
 
-@{
- //$COVERAGE-OFF$
+  override def toString: String = "disclosure-reference"
+
 }

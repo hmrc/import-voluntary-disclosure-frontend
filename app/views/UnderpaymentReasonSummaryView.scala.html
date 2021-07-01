@@ -37,13 +37,13 @@
 
 @layout(
     form = Some(form),
-    pageTitle = titleAndHeader,
+    pageTitle = titleAndHeader.toString,
     showBackLink = false
 ) {
 
     @errorSummary(form.errors)
 
-    @h1(titleAndHeader)
+    @h1(titleAndHeader.toString)
 
     @if(summaryList.isDefined) {
         @govukSummaryList(summaryList.get)

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import uk.gov.hmrc.govukfrontend.views.html.components._
+package messages.errors
 
-@this(govukBackLink : GovukBackLink)
+import messages.BaseMessages
 
-@(url: Option[Call] = None)(implicit messages: Messages)
-
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
-
-@{
- //$COVERAGE-OFF$
+object StandardErrorViewMessages extends BaseMessages {
+  val title = "Sorry, there is a problem with the service"
+  val heading = "Sorry, there is a problem with the service"
+  val p1 = "Try again later."
+  val p2 = "We have not saved your answers. When the service is available, you will have to start again."
 }
