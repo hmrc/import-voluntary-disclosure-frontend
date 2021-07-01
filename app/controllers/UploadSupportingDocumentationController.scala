@@ -54,7 +54,7 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.UploadSupportingDocumentationController.onLoad()
+      controllers.routes.MoreDocumentationController.onLoad()
     }
   }
 

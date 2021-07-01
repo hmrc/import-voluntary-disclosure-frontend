@@ -54,7 +54,7 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   lazy val buildSupportingDocInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
     appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
     appConfig.upScanSupportingDocSuccessRedirectForUser,
-    appConfig.upscanSupportingDocErrorRedirectForUser,
+    appConfig.upScanSupportingDocErrorRedirectForUser,
     appConfig.upScanMinFileSize,
     appConfig.upScanMaxFileSize
   )
