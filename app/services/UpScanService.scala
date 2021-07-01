@@ -51,6 +51,14 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
     appConfig.upScanMaxFileSize
   )
 
+  lazy val buildSupportingDocInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
+    appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
+    appConfig.upScanSupportingDocSuccessRedirectForUser,
+    appConfig.upscanSupportingDocErrorRedirectForUser,
+    appConfig.upScanMinFileSize,
+    appConfig.upScanMaxFileSize
+  )
+
   def initiateNewJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
     upScanConnector.postToInitiate(buildInitiateRequest).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
@@ -72,4 +80,10 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
     }
   }
 
+  def initiateSupportingDocJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
+    upScanConnector.postToInitiate(buildSupportingDocInitiateRequest).map {
+      case Right(upScanInitiateResponse) => upScanInitiateResponse
+      case Left(error) => throw new InternalServerException(error.message)
+    }
+  }
 }
