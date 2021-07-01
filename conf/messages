@@ -770,9 +770,9 @@ importerName.pageTitle = What is the name of the importer?
 importerName.pageHeader = What is the name of the importer?
 importerName.hint = This should match the name as it appears on the import declaration (also known as the C88 or SAD). If you are representing an individual then enter their full name.
 importerName.error.nameNonEmpty = Enter the company name of the importer
-importerName.error.nameMinLength = Company name of the importer must be 2 characters or more
-importerName.error.nameMaxLength = Company name of the importer must be 50 characters or fewer
-importerName.error.nameAllowableCharacters = Company name of the importer must only include letters a to z, hyphens, spaces and apostrophes
+importerName.error.nameMinLength = Name of the importer must be 2 characters or more
+importerName.error.nameMaxLength = Name of the importer must be 50 characters or fewer
+importerName.error.nameAllowableCharacters = Name of the importer must only include letters a to z, hyphens, spaces and apostrophes
 
 # Importer EORI Exists
 importerEORIExists.pageTitle = Does the importer have an EORI number?
