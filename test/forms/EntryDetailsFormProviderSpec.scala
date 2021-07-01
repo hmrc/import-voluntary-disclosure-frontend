@@ -136,12 +136,12 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
-      "result in a form with Year length error" in {
+      "result in a form with Year too short" in {
         val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = Some("20")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.year"
-        form.errors.head.message mustBe "entryDetails.entryDate.error.year.length"
+        form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Date in Past error" in {
         val tomorrow: LocalDate = LocalDate.now().plusDays(1)
