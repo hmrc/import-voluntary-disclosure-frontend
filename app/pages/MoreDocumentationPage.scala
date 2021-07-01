@@ -27,12 +27,4 @@ case object MoreDocumentationPage extends QuestionPage[Boolean] {
 
   override def toString: String = "more-documentation"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
-    value match {
-      case Some(answer) if !answer => Try(userAnswers.remove(MoreDocumentationPage).getOrElse(userAnswers))
-      case _ => super.cleanup(value, userAnswers)
-    }
-  }
-
 }
-
