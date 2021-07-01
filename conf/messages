@@ -931,3 +931,9 @@ disclosureReference.label = What is the disclosure reference number?
 disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
 disclosureReference.error.required = Enter the disclosure reference number
 disclosureReference.error.format = Enter the disclosure reference number in the correct format
+
+
+# Update Case - More Documentation Page
+moreDocumentation.pageTitle = Do you need to send us more documentation?
+moreDocumentation.heading = Do you need to send us more documentation?
+moreDocumentation.error.required = Select yes to send us more documentation
