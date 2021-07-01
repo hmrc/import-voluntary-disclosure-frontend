@@ -164,6 +164,21 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
 
+      "result in a form with Date after 1 1 1900 error" in {
+        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(
+          buildFormData(
+            epu = Some("123"),
+            entryNumber = Some("123456a"),
+            day = Some("1"),
+            month = Some("1"),
+            year = Some("1900")
+          )
+        )
+
+        form.errors.size mustBe 1
+        form.errors.head.message mustBe "entryDetails.entryDate.error.after"
+      }
+
     }
 
   }
