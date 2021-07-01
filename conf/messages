@@ -107,6 +107,7 @@ entryDetails.entryDate.error.required.two = Entry date must include a {0} and {1
 entryDetails.entryDate.error.required = Entry date must include a {0}
 entryDetails.entryDate.error.year.length = Entry date year must be 4 numbers
 entryDetails.entryDate.error.past = Entry date must be today or in the past
+entryDetails.entryDate.error.after = Entry date must be after 1 January 1900
 
 # User Type Page
 userType.pageTitle = Importer or representative?
@@ -923,3 +924,16 @@ whatDoYouWantToDo.rightOptionMsg = Add more information to an existing underpaym
 whatDoYouWantToDo.leftOptionHint = Tell us about an underpayment of Customs Duty or import VAT.
 whatDoYouWantToDo.rightOptionHint = You will need the disclosure reference number.
 whatDoYouWantToDo.error.required = User must select an option
+
+# Disclosure Reference Number Page
+disclosureReference.pageTitle = What is the disclosure reference number?
+disclosureReference.label = What is the disclosure reference number?
+disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
+disclosureReference.error.required = Enter the disclosure reference number
+disclosureReference.error.format = Enter the disclosure reference number in the correct format
+
+
+# Update Case - More Documentation Page
+moreDocumentation.pageTitle = Do you need to send us more documentation?
+moreDocumentation.heading = Do you need to send us more documentation?
+moreDocumentation.error.required = Select yes to send us more documentation

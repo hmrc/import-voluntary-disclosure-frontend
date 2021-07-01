@@ -75,7 +75,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     if (submittedValue) {
       Redirect(controllers.routes.UserTypeController.onLoad())
     } else {
-      Redirect(controllers.routes.WhatDoYouWantToDoController.onLoad()) // TODO - change once next page is in the flow
+      Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
     }
   }
 
