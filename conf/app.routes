@@ -382,3 +382,6 @@ POST        /start-new-or-update                                                
 
 GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
 POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit
+
+GET         /update-disclosure/need-to-upload                                                  controllers.MoreDocumentationController.onLoad
+POST        /update-disclosure/need-to-upload                                                  controllers.MoreDocumentationController.onSubmit

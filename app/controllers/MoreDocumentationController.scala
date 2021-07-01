@@ -17,32 +17,33 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.DisclosureReferenceNumberFormProvider
+import forms.MoreDocumentationFormProvider
 import models.requests.DataRequest
-import pages.DisclosureReferenceNumberPage
+import pages.MoreDocumentationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.DisclosureReferenceNumberView
+import views.html.MoreDocumentationView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
+
 @Singleton
-class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: DisclosureReferenceNumberFormProvider,
-                                                    view: DisclosureReferenceNumberView)
+class MoreDocumentationController @Inject()(identify: IdentifierAction,
+                                            getData: DataRetrievalAction,
+                                            requireData: DataRequiredAction,
+                                            sessionRepository: SessionRepository,
+                                            mcc: MessagesControllerComponents,
+                                            formProvider: MoreDocumentationFormProvider,
+                                            view: MoreDocumentationView)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(DisclosureReferenceNumberPage).fold(formProvider()) {
+    val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
@@ -51,16 +52,15 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      reference =>
+      moreDocuments =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-          } else {
-            Redirect(controllers.routes.MoreDocumentationController.onLoad())
-          }
+          if (moreDocuments) {
+            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // upload document page
+          } else
+            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // more information page
         }
     )
   }
@@ -69,8 +69,9 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.WhatDoYouWantToDoController.onLoad()
+      controllers.routes.DisclosureReferenceNumberController.onLoad()
     }
   }
 
 }
+
