@@ -32,6 +32,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
                                            dayMonthLengthKey: String,
                                            yearLengthKey: String,
                                            validatePastKey: Option[String],
+                                           validateAfterKey: Option[String],
                                            args: Seq[String] = Seq.empty)(implicit messages: Messages)
   extends Formatter[LocalDate] with Formatters with Constraints {
 
@@ -67,7 +68,13 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
     if (validatePastKey.isDefined) {
       date.fold(
         err => Left(err),
-        dt => if(dt.isAfter(LocalDate.now)) Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys))) else Right(dt)
+        dt =>
+          if(dt.isAfter(LocalDate.now))
+            Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys)))
+          else if(LocalDate.of(1900, 1, 2).isAfter(dt))
+            Left(List(FormError(s"$key.day", validateAfterKey.get, fieldKeys)))
+          else
+            Right(dt)
       )
     } else {
       date
