@@ -17,28 +17,29 @@
 package repositories
 
 import config.AppConfig
-import models.{MongoDateTimeFormats, UserAnswers}
+import models.UserAnswers
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.libs.json.{JsResult, JsValue, Json}
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
-import play.modules.reactivemongo.ReactiveMongoComponent
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with FutureAwaits with DefaultAwaitTimeout {
 
-  val mongo: ReactiveMongoComponent = app.injector.instanceOf[ReactiveMongoComponent]
+  val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   val fakeNow: LocalDateTime = LocalDateTime.now()
 
-  val repo: UserAnswersRepository = new UserAnswersRepository(mongo: ReactiveMongoComponent, appConfig)
+  val repo: UserAnswersRepository = new UserAnswersRepository(mongo: MongoComponent, appConfig)
 
-  private def count = await(repo.count)
+  private def count() = await(repo.collection.countDocuments().toFuture())
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoDateTimeFormats.localDateTimeWrite)
+  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
 
   val userAnswersJson: JsValue = Json.parse(
     s"""{
@@ -67,20 +68,20 @@ class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with F
   )
 
   trait Test {
-    await(repo.drop)
+    await(repo.collection.drop().head())
   }
 
   "repository domainFormatImplicit reads" should {
 
     "read in json as per format of mongo reads" in {
-      val answers: JsResult[UserAnswers] = Json.fromJson[UserAnswers](userAnswersJson)(repo.domainFormatImplicit)
+      val answers: JsResult[UserAnswers] = Json.fromJson[UserAnswers](userAnswersJson)(repo.domainFormat)
       answers.get.data mustBe userAnswers.data
     }
   }
   "repository domainFormatImplicit writes" should {
 
     "write json as per format of mongo writes" in {
-      val answersJson: JsValue = Json.toJson[UserAnswers](userAnswers)(repo.domainFormatImplicit)
+      val answersJson: JsValue = Json.toJson[UserAnswers](userAnswers)(repo.domainFormat)
       answersJson mustBe userAnswersJson
     }
   }

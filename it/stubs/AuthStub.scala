@@ -42,7 +42,7 @@ object AuthStub extends WireMockMethods {
             "state" -> "Activated"
           )
         ),
-        "affinityGroup" -> AffinityGroup.Organisation
+        "affinityGroup" -> Json.toJson[AffinityGroup](AffinityGroup.Organisation)
       ))
 
   def unauthorised(): StubMapping =

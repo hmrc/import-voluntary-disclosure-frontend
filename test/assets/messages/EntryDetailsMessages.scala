@@ -48,7 +48,6 @@ object EntryDetailsMessages extends BaseMessages {
   val epuFormatError: String = "Enter an EPU number in the correct format"
   val entryNumberFormatError: String = "Enter an entry number in the correct format"
 
-  val entryDateTwoDigitYearError: String = "Entry date year must be 4 numbers"
   val entryDatePastError: String = "Entry date must be today or in the past"
   val entryDateRealError: String = "Entry date must be a real date"
 

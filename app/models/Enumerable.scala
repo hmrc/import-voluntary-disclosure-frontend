@@ -31,9 +31,9 @@ object Enumerable {
         entries.toMap.get(str)
     }
 
-  trait Implicits {
+  trait Implicits[A] {
 
-    implicit def reads[A](implicit ev: Enumerable[A]): Reads[A] = {
+    implicit def reads(implicit ev: Enumerable[A]): Reads[A] = {
       Reads {
         case JsString(str) =>
           ev.withName(str).map {
@@ -44,7 +44,7 @@ object Enumerable {
       }
     }
 
-    implicit def writes[A : Enumerable]: Writes[A] = {
+    implicit def writes(implicit ev: Enumerable[A]): Writes[A] = {
       Writes(value => JsString(value.toString))
     }
   }

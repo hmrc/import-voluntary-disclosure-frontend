@@ -28,7 +28,9 @@
     form = Some(form),
     customBackLinkUrl = Some(backLink)) {
 
-    @errorSummary(form.errors)
+    @if(form.errors.nonEmpty) {
+        @errorSummary(Seq(form.errors.head))
+        }
 
     @formHelper(action = controllers.routes.ImporterNameController.onSubmit()) {
         @inputText(
