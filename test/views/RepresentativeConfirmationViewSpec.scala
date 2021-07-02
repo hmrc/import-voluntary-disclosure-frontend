@@ -29,7 +29,8 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
   private lazy val injectedView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
   private val referenceNumber: String = "C18-101"
 
-  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789")
+  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "GB123456789")
+  val dataNoEori: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "")
 
   "Rendering the Confirmation page" when {
 
@@ -61,10 +62,16 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > p:nth-child(2)") mustBe RepresentativeConfirmationMessages.p1SingleEntry
       }
 
-      s"have the p1 message for bulk entry of '${RepresentativeConfirmationMessages.p1BulkEntry}'" in {
+      s"have the p1 message for bulk entry and importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryEoriExists}'" in {
         lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#main-content > div > div > p:nth-child(2)") mustBe RepresentativeConfirmationMessages.p1BulkEntry
+        elementText("#main-content > div > div > p:nth-child(2)") mustBe RepresentativeConfirmationMessages.p1BulkEntryEoriExists
+      }
+
+      s"have the p1 message for bulk entry and no importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryNoEori}'" in {
+        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, dataNoEori)(fakeRequest, messages)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+        elementText("#main-content > div > div > p:nth-child(2)") mustBe RepresentativeConfirmationMessages.p1BulkEntryNoEori
       }
 
       "The what happens next section - Deferment selected" should {

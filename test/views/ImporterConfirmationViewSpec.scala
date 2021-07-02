@@ -28,7 +28,7 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
   private val referenceNumber: String = "C18-101"
-  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789")
+  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "")
 
   "Rendering the Confirmation page" when {
 
