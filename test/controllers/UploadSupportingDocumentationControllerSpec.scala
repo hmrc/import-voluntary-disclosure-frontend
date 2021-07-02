@@ -104,7 +104,7 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadSupportingDocumentationController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadDocumentationView,
-        progressView, form, successView, MockAppConfig)
+        progressView, form, MockAppConfig)
     }
   }
 
@@ -198,7 +198,7 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
   "GET uploadProgress" when {
     "called following a successful file upload callback" should {
-      "update UserAnswers and redirect to the Success Page" in new Test {
+      "update UserAnswers and redirect to the Summary Page" in new Test {
         override def setupMocks(): Unit = {
           MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
           MockedSessionRepository.set(Future.successful(true))
@@ -207,7 +207,7 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress(key = "key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadSupportingDocumentationController.onSuccess().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url)
 
         verifyCalls()
       }
@@ -250,35 +250,6 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
       }
     }
   }
-
-  "GET onSuccess" should {
-
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onSuccess()(fakeRequest)
-      status(result) mustBe Status.OK
-    }
-    "return HTML with Continue action to CYA" in new Test {
-      val result: Future[Result] = controller.onSuccess()(fakeRequest)
-      contentType(result) mustBe Some("text/html")
-      charset(result) mustBe Some("utf-8")
-    }
-    "return HTML with correct filename" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(UploadSupportingDocumentationPage, Seq(FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))).success.value)
-      val result: Future[Result] = controller.onSuccess()(fakeRequest)
-      contentAsString(result).contains("filename.txt") mustBe true
-    }
-
-    "return HTML with CheckYourAnswers url when checkMode is true" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(UploadSupportingDocumentationPage, Seq(FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))).success.value
-        .set(CheckModePage, true).success.value)
-      val result: Future[Result] = controller.onSuccess()(fakeRequest)
-      contentAsString(result).contains("/disclose-import-taxes-underpayment/disclosure/check-your-answers") mustBe true
-    }
-
-  }
-
 
   "backLink" when {
     "checkMode is false" should {

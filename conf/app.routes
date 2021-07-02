@@ -389,4 +389,7 @@ POST        /update-disclosure/need-to-upload                                   
 GET         /update-disclosure/upload-file                                                     controllers.UploadSupportingDocumentationController.onLoad
 GET         /update-disclosure/upload-file/upscan-response                                     controllers.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 GET         /update-disclosure/upload-file/polling                                             controllers.UploadSupportingDocumentationController.uploadProgress(key: String)
-GET         /update-disclosure/upload-file/success                                             controllers.UploadSupportingDocumentationController.onSuccess
+GET         /update-disclosure/upload-another-file                                             controllers.UploadSupportingDocumentationSummaryController.onLoad
+POST        /update-disclosure/upload-another-file                                             controllers.UploadSupportingDocumentationSummaryController.onSubmit
+GET         /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onLoad(index: models.Index)
+POST        /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onSubmit(index: models.Index)

@@ -28,11 +28,10 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadSupportingDocumentationView}
+import views.html.{FileUploadProgressView, UploadSupportingDocumentationView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.Try
 
 @Singleton
@@ -46,7 +45,6 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
                                                         view: UploadSupportingDocumentationView,
                                                         progressView: FileUploadProgressView,
                                                         formProvider: UploadFileFormProvider,
-                                                        successView: FileUploadSuccessView,
                                                         implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
@@ -90,7 +88,7 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
   }
 
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val uploadCompleteRoute = Redirect(controllers.routes.UploadSupportingDocumentationController.onSuccess())
+    val uploadCompleteRoute = Redirect(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad())
     val uploadFailedRoute = Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad())
     val uploadInProgressRoute = Ok(
       progressView(
@@ -113,28 +111,6 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
       uploadFailedRoute,
       updateFilesList,
       saveFilesList
-    )
-  }
-
-  def onSuccess(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val action = if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad().url
-    } else {
-      controllers.routes.UploadSupportingDocumentationController.onLoad().url
-    }
-
-    val filename = request.userAnswers.get(UploadSupportingDocumentationPage)
-      .flatMap(_.headOption)
-      .map(_.fileName)
-      .getOrElse("No filename")
-
-    Future.successful(
-      Ok(
-        successView(
-          fileName = filename,
-          action = action
-        )
-      )
     )
   }
 }
