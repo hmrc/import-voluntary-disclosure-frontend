@@ -18,5 +18,6 @@ package viewmodels.cya
 
 case class ConfirmationViewData(entryDetails: String,
                                 importerName: String,
-                                eori: String
+                                eori: String,
+                                eoriExists: String
                                )
