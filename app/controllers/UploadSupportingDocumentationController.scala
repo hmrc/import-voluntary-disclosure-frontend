@@ -49,10 +49,9 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
-    } else {
-      controllers.routes.MoreDocumentationController.onLoad()
+    request.userAnswers.get(UploadSupportingDocumentationPage) match {
+      case Some(files) if files.nonEmpty => controllers.routes.UploadSupportingDocumentationSummaryController.onLoad()
+      case _ => controllers.routes.MoreDocumentationController.onLoad()
     }
   }
 

@@ -23,17 +23,15 @@ import messages.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
+import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.upscan._
-import models.{FileUploadInfo, UserAnswers}
-import pages.{CheckModePage, SplitPaymentPage, UploadSupportingDocumentationPage}
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadSupportingDocumentationView}
+import views.html.{FileUploadProgressView, UploadSupportingDocumentationView}
 
-import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
@@ -67,7 +65,6 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
     private lazy val uploadDocumentationView: UploadSupportingDocumentationView = app.injector.instanceOf[UploadSupportingDocumentationView]
     private lazy val progressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
-    private lazy val successView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -251,22 +248,11 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "backLink" when {
-    "checkMode is false" should {
-      "return link to Do You Need To Send Us More Documentation" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
-        val result: Call = controller.backLink()(dataRequest)
-        result mustBe controllers.routes.MoreDocumentationController.onLoad()
-      }
-    }
-
-    "checkMode is true" should {
-      "return link to check your answers" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(CheckModePage, true).success.value)
-        val result: Call = controller.backLink()(dataRequest)
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
-      }
+  "backLink" should {
+    "return link to Do You Need To Send Us More Documentation" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+      val result: Call = controller.backLink()(dataRequest)
+      result mustBe controllers.routes.MoreDocumentationController.onLoad()
     }
   }
-
 }
