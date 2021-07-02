@@ -91,7 +91,7 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       "Entry number format is incorrect" -> (formatEntryNumber -> EntryDetailsMessages.entryNumberFormatError),
       "Entry date is not a real date" -> (realEntryDateError -> EntryDetailsMessages.entryDateRealError),
       "Entry date is in the future" -> (pastEntryDateError -> EntryDetailsMessages.entryDatePastError),
-      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError -> EntryDetailsMessages.entryDateTwoDigitYearError),
+      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError -> EntryDetailsMessages.entryDateRealError),
       "Entry date must be after 1 January 1900" -> (afterDateYearError -> EntryDetailsMessages.afterDateYearError)
     )
 
