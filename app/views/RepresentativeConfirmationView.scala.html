@@ -44,7 +44,7 @@
     @if(isSingleEntry) {
         @p(Html(messages("confirmation.singleEntry.p1", data.entryDetails)))
     } else {
-        @if(data.eoriExists.isEmpty) {
+        @if(data.eori.isEmpty) {
             @p(Html(messages("confirmation.bulkEntryNoEori.p1", data.importerName)))
         } else {
             @p(Html(messages("confirmation.bulkEntryEoriExists.p1", data.importerName, data.eori)))

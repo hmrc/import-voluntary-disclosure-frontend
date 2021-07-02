@@ -29,7 +29,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
   private lazy val injectedView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
   private val referenceNumber: String = "C18-101"
 
-  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "")
+  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789")
 
   "Rendering the Confirmation page" when {
 
