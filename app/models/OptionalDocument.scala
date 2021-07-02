@@ -18,7 +18,7 @@ package models
 
 sealed trait OptionalDocument
 
-object OptionalDocument extends Enumerable.Implicits {
+object OptionalDocument extends Enumerable.Implicits[OptionalDocument] {
 
   case object ImportAndEntry extends WithName("importAndEntry") with OptionalDocument
 
