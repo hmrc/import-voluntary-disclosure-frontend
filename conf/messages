@@ -4,6 +4,11 @@ common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
 
+common.error.title = Sorry, there is a problem with the service
+common.error.header = Sorry, there is a problem with the service
+common.error.p1 = Try again later.
+common.error.p2 = We have not saved your answers. When the service is available, you will have to start again.
+
 service.name = Disclose an underpayment of Customs Duty or import VAT
 service.homePageUrl = /disclose-import-taxes-underpayment
 service.text = This is your new service
@@ -102,6 +107,7 @@ entryDetails.entryDate.error.required.two = Entry date must include a {0} and {1
 entryDetails.entryDate.error.required = Entry date must include a {0}
 entryDetails.entryDate.error.year.length = Entry date year must be 4 numbers
 entryDetails.entryDate.error.past = Entry date must be today or in the past
+entryDetails.entryDate.error.after = Entry date must be after 1 January 1900
 
 # User Type Page
 userType.pageTitle = Importer or representative?
@@ -463,7 +469,8 @@ confirmation.pageTitle = Confirmation screen
 confirmation.heading = Disclosure sent
 confirmation.caseId = Disclosure reference number:
 confirmation.singleEntry.p1 = We have received your disclosure of underpaid Customs Duty or import VAT for the import declaration {0}.
-confirmation.bulkEntry.p1 = We have received your disclosure of underpaid Customs Duty or import VAT on multiple entries. All of these entries were for goods imported by {0}, EORI number {1}.
+confirmation.bulkEntryEoriExists.p1 = We have received your disclosure of underpaid Customs Duty or import VAT on multiple entries. All of these entries were for goods imported by {0}, EORI number {1}.
+confirmation.bulkEntryNoEori.p1 = We have received your disclosure of underpaid Customs Duty or import VAT on multiple entries. All of these entries were for goods imported by {0}.
 confirmation.whatHappensNext = What happens next
 confirmation.whatHappensNext.deferment.p2 = We will check the information you have provided and process the payment using the deferment account details you have provided. We will then send you a C18 Post Clearance Demand Note in the post, usually within 10 days.
 confirmation.whatHappensNext.deferment.rep.p2 = We will also send a copy to {0} using the address you have provided.
@@ -748,6 +755,7 @@ moreInformation.single.pageTitle = Tell us the extra information about the under
 moreInformation.single.heading = Tell us the extra information about the underpayment
 moreInformation.single.error.required = Enter more information
 moreInformation.single.error.maxLength = More information must be 1500 characters or fewer
+moreInformation.single.error.noEmoji = The extra information must not include emojis
 
 moreInformation.bulk.pageTitle = What were the reasons for the underpayment of tax or duty?
 moreInformation.bulk.heading = What were the reasons for the underpayment of tax or duty?
@@ -755,6 +763,8 @@ moreInformation.bulk.p1 = Tell us why the duty or tax was underpaid for all the 
 moreInformation.bulk.p2 = You do not need to repeat anything that you have already provided in the file you have uploaded.
 moreInformation.bulk.error.required = Enter the reasons for the underpayment of tax of duty
 moreInformation.bulk.error.maxLength = The reasons for the underpayment must be 1500 characters or fewer
+moreInformation.bulk.error.noEmoji = The reasons for the underpayment must not include emojis
+
 
 # Importer name
 importerName.pageTitle = What is the name of the importer?
@@ -906,3 +916,25 @@ timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
 timeout.p = We did not save your answers.
 timeout.button = Sign in
+
+# What do you want to do Page
+whatDoYouWantToDo.title = What do you want to do?
+whatDoYouWantToDo.heading = What do you want to do?
+whatDoYouWantToDo.leftOptionMsg = Start a new underpayment disclosure
+whatDoYouWantToDo.rightOptionMsg = Add more information to an existing underpayment disclosure
+whatDoYouWantToDo.leftOptionHint = Tell us about an underpayment of Customs Duty or import VAT.
+whatDoYouWantToDo.rightOptionHint = You will need the disclosure reference number.
+whatDoYouWantToDo.error.required = User must select an option
+
+# Disclosure Reference Number Page
+disclosureReference.pageTitle = What is the disclosure reference number?
+disclosureReference.label = What is the disclosure reference number?
+disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
+disclosureReference.error.required = Enter the disclosure reference number
+disclosureReference.error.format = Enter the disclosure reference number in the correct format
+
+
+# Update Case - More Documentation Page
+moreDocumentation.pageTitle = Do you need to send us more documentation?
+moreDocumentation.heading = Do you need to send us more documentation?
+moreDocumentation.error.required = Select yes to send us more documentation

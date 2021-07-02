@@ -52,4 +52,6 @@ object EntryDetailsMessages extends BaseMessages {
   val entryDatePastError: String = "Entry date must be today or in the past"
   val entryDateRealError: String = "Entry date must be a real date"
 
+  val afterDateYearError: String = "Entry date must be after 1 January 1900"
+
 }

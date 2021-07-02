@@ -71,6 +71,7 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
             eoriDetails <- request.userAnswers.get(KnownEoriDetailsPage)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+            importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
             _ <- Some(sessionRepository.remove(request.credId))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
@@ -79,13 +80,15 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
                 ConfirmationViewData(
                   s"${entryDetails.epu}-${entryDetails.entryNumber}-$formattedDate",
                   importerName,
-                  eoriNumber
+                  eoriNumber,
+                  importerEORI
                 )
               case _ =>
                 ConfirmationViewData(
                   "VARIOUS - Bulk Entry",
                   importerName,
-                  eoriNumber
+                  eoriNumber,
+                  importerEORI
                 )
             }
           }

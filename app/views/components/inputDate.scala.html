@@ -71,7 +71,7 @@
 }
 
 @componentHasError(subId: String) = @{
-    form.errors.map(err => !err.args.filter(arg => arg.contains(subId)).isEmpty).filter(_.equals(true)).headOption.getOrElse(false)
+    form.errors.map(err => !err.args.filter(arg => arg.toString.contains(subId)).isEmpty).filter(_.equals(true)).headOption.getOrElse(false)
 }
 
 @{

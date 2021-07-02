@@ -72,6 +72,9 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       year = Some(s"${tomorrow.getYear}")
     )
     val twoDigitEntryDateYearError = formDataSetup(year = Some("20"))
+    val afterDateYearError = formDataSetup(
+      epu = Some("123"), entryNumber = Some("123456a"), day = Some("1"), month = Some("1"), year = Some("1900")
+    )
 
     // represents error scenario description, data and expected error message
     val testScenarios: Map[String, (Map[String, String], String)] = Map(
@@ -88,7 +91,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       "Entry number format is incorrect" -> (formatEntryNumber -> EntryDetailsMessages.entryNumberFormatError),
       "Entry date is not a real date" -> (realEntryDateError -> EntryDetailsMessages.entryDateRealError),
       "Entry date is in the future" -> (pastEntryDateError -> EntryDetailsMessages.entryDatePastError),
-      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError -> EntryDetailsMessages.entryDateTwoDigitYearError)
+      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError -> EntryDetailsMessages.entryDateTwoDigitYearError),
+      "Entry date must be after 1 January 1900" -> (afterDateYearError -> EntryDetailsMessages.afterDateYearError)
     )
 
     testScenarios.foreach { scenario =>
