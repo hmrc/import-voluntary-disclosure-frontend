@@ -44,8 +44,13 @@
     @if(isSingleEntry) {
         @p(Html(messages("confirmation.singleEntry.p1", data.entryDetails)))
     } else {
-        @p(Html(messages("confirmation.bulkEntry.p1", data.importerName, data.eori)))
+        @if(data.importerEORI.isEmpty) {
+            @p(Html(messages("confirmation.bulkEntryNoEori.p1", data.importerName)))
+        } else {
+            @p(Html(messages("confirmation.bulkEntryEoriExists.p1", data.importerName, data.eori)))
+        }
     }
+
 
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
@@ -67,11 +72,11 @@
 
     @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
 
-    @p{<a href={controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.rep.link")}</a>}
+    @p{<a href=@{controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.link")}</a>}
 
     <div id="helpImproveServiceLink">
         @p{
-            <a href={appConfig.surveyUrl} class="govuk-link">@{messages("confirmation.helpImproveServiceLink")}</a>
+            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("confirmation.helpImproveServiceLink")}</a>
             @Html(messages("confirmation.helpImproveServiceLinkTime"))
         }
     </div>
