@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package messages
+package forms
 
-object EnterCustomsProcedureCodeMessages extends BaseMessages {
+import forms.mappings.Mappings
+import play.api.data.Form
 
-  val title: String = "What is the customs procedure code?"
-  val h1: String = "What is the customs procedure code?"
-  val hint: String = "This can be 7 numbers, or 6 numbers and a letter, for example 4000000 or 4000C10. It is box 37 on the C88 and it may be called ‘procedure’."
-  val requiredError: String = "Enter the customs procedure code"
-  val formatError: String = "Enter the customs procedure code in the correct format"
+import javax.inject.Inject
 
+
+class MoreDocumentationFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("moreDocumentation.error.required")
+    )
 }

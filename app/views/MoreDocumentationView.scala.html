@@ -17,34 +17,30 @@
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
-        button: components.button,
-        inputText: components.inputText
-)
+        yesNoRadio: components.yesNoRadio,
+        button: components.button)
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("importerName.pageTitle"),
+    pageTitle = messages("moreDocumentation.pageTitle"),
     form = Some(form),
     customBackLinkUrl = Some(backLink)) {
 
-    @if(form.errors.nonEmpty) {
-        @errorSummary(Seq(form.errors.head))
-        }
+    @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.ImporterNameController.onSubmit()) {
-        @inputText(
-            form = form,
-            id = "fullName",
-            name = "fullName",
-            label = "importerName.pageHeader",
-            isPageHeading = true,
-            hint = Some(Html(messages("importerName.hint")))
+    @formHelper(action = controllers.routes.MoreDocumentationController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "moreDocumentation.heading",
         )
+
         @button("common.button.continue")
     }
+
 }
 
 @{
     //$COVERAGE-OFF$
 }
+

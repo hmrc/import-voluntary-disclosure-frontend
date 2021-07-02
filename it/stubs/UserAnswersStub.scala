@@ -17,12 +17,13 @@
 package stubs
 
 import config.AppConfig
-import models.{MongoDateTimeFormats, UserAnswers}
+import models.UserAnswers
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.libs.json.{JsValue, Json}
-import play.modules.reactivemongo.ReactiveMongoComponent
 import repositories.UserAnswersRepository
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -30,14 +31,14 @@ import scala.concurrent.Future
 
 object UserAnswersStub extends PlaySpec with GuiceOneServerPerSuite {
 
-  lazy val mongo: ReactiveMongoComponent = app.injector.instanceOf[ReactiveMongoComponent]
+  lazy val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   lazy val fakeNow: LocalDateTime = LocalDateTime.now()
 
-  lazy val repo: UserAnswersRepository = new UserAnswersRepository(mongo: ReactiveMongoComponent, appConfig)
+  lazy val repo: UserAnswersRepository = new UserAnswersRepository(mongo: MongoComponent, appConfig)
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoDateTimeFormats.localDateTimeWrite)
+  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
 
   def createUserAnswers(credId: String): Future[Boolean] = {
     val userAnswers: UserAnswers = UserAnswers(

@@ -25,7 +25,7 @@ import views.ViewUtils.hint
 
 sealed trait NumberOfEntries
 
-object NumberOfEntries extends Enumerable.Implicits {
+object NumberOfEntries extends Enumerable.Implicits[NumberOfEntries] {
 
   case object OneEntry extends WithName("oneEntry") with NumberOfEntries
   case object MoreThanOneEntry extends WithName("moreThanOneEntry") with NumberOfEntries

@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-package messages
+package pages
 
-object EnterCustomsProcedureCodeMessages extends BaseMessages {
+import models.UserAnswers
+import play.api.libs.json.JsPath
 
-  val title: String = "What is the customs procedure code?"
-  val h1: String = "What is the customs procedure code?"
-  val hint: String = "This can be 7 numbers, or 6 numbers and a letter, for example 4000000 or 4000C10. It is box 37 on the C88 and it may be called ‘procedure’."
-  val requiredError: String = "Enter the customs procedure code"
-  val formatError: String = "Enter the customs procedure code in the correct format"
+import scala.util.Try
+
+case object MoreDocumentationPage extends QuestionPage[Boolean] {
+
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "more-documentation"
 
 }
