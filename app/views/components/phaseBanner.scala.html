@@ -18,7 +18,7 @@
 
 @this(govukPhaseBanner: GovukPhaseBanner, appConfig: AppConfig)
 
-@()(implicit messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 
 @govukPhaseBanner(PhaseBanner(
@@ -27,7 +27,7 @@
     )),
     content = HtmlContent(
         s"""${messages("feedback.before")} """ +
-        <a class="govuk-link" href={appConfig.betaFeedbackUrl}>{messages("feedback.link")}</a> +
+        <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
         s""" ${messages("feedback.after")}"""
     )
 ))

@@ -18,10 +18,11 @@ package views.components
 
 import base.ViewBaseSpec
 import messages.{BaseMessages, PhaseBannerMessages}
-import mocks.config.MockAppConfig.betaFeedbackUrl
+import mocks.config.MockAppConfig.feedbackUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
+import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import views.html.components.phaseBanner
 
 class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
@@ -31,15 +32,15 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the phase banner" should {
     s"have the feedback url" in {
 
-      lazy val markup: Html = target()
+      lazy val markup: Html = target()(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
-      element("a").attr("href").contains(betaFeedbackUrl) mustBe true
+      element("a").attr("href").contains(feedbackUrl(fakeRequest) + s"&backUrl=${SafeRedirectUrl(appConfig.host + fakeRequest.uri).encodedUrl}") mustBe true
       }
     }
 
   it should {
-    lazy val markup: Html = target()
+    lazy val markup: Html = target()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
     "render the correct banner text" in {

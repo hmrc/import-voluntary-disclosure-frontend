@@ -31,7 +31,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
   override val surveyUrl: String = "TBC"
   override val host: String = "TBC"
 
-  override def feedbackUrl(implicit request: RequestHeader): String = "TBC"
+  override def feedbackUrl(implicit request: RequestHeader): String = "/contact/beta-feedback?service=import-voluntary-disclosure"
 
   override val appName: String = "import-voluntary-disclosure-frontend"
   override val loginUrl: String = "TBC"
@@ -65,5 +65,4 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
 
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
-  override val betaFeedbackUrl: String = "/contact/beta-feedback?service=import-voluntary-disclosure"
 }

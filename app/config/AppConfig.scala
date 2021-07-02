@@ -16,14 +16,15 @@
 
 package config
 
+import java.time.LocalDate
+import java.util.Base64
+
+import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-import java.time.LocalDate
-import java.util.Base64
-import javax.inject.{Inject, Singleton}
 import scala.util.Try
 
 @Singleton
@@ -41,7 +42,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val host = servicesConfig.getString("urls.host")
 
   def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=$requestUri"
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
 
   lazy val appName: String = servicesConfig.getString("appName")
   lazy val loginUrl: String = servicesConfig.getString("urls.login")
@@ -84,8 +85,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
-  lazy val betaFeedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier"
-
   val privateBetaAllowList: Seq[String] =
     Try(servicesConfig.getString("privateBetaAllowList"))
       .map { str =>
@@ -95,7 +94,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 
-  val updateCaseEnabled: Boolean  = servicesConfig.getBoolean("features.updateCaseEnabled")
+  val updateCaseEnabled: Boolean = servicesConfig.getBoolean("features.updateCaseEnabled")
 
 }
 
@@ -105,7 +104,9 @@ trait AppConfig extends FixedConfig {
   val contactUrl: String
   val surveyUrl: String
   val host: String
+
   def feedbackUrl(implicit request: RequestHeader): String
+
   val appName: String
   val loginUrl: String
   val signOutUrl: String
@@ -139,7 +140,6 @@ trait AppConfig extends FixedConfig {
   val eccSubscribeUrl: String
   val privateBetaAllowListEnabled: Boolean
   val updateCaseEnabled: Boolean
-  val betaFeedbackUrl: String
 }
 
 trait FixedConfig {
