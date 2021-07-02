@@ -20,7 +20,6 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.underpayments.RemoveUnderpaymentDetailsFormProvider
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController

@@ -23,7 +23,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 sealed trait UserType
 
-object UserType extends Enumerable.Implicits {
+object UserType extends Enumerable.Implicits[UserType] {
 
   case object Importer extends WithName("importer") with UserType
 

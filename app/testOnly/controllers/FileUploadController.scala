@@ -31,7 +31,7 @@ class FileUploadController @Inject()(val mcc: MessagesControllerComponents,
   extends FrontendController(mcc) with I18nSupport {
 
   def deleteAll(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    repository.testOnlyRemoveAllRecords() map { result => Ok(Json.obj("count" -> result.n)) }
+    repository.testOnlyRemoveAllRecords() map { result => Ok(Json.obj("count" -> result.getDeletedCount)) }
   }
 
   def delete(reference: String): Action[JsValue] = Action.async(parse.json) { implicit request =>

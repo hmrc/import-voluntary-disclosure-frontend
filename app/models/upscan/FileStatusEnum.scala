@@ -22,7 +22,7 @@ sealed trait FileStatusEnum
 sealed trait FileStatusError extends FileStatusEnum
 sealed trait FileStatusSuccess extends FileStatusEnum
 
-object FileStatusEnum extends Enumerable.Implicits {
+object FileStatusEnum extends Enumerable.Implicits[FileStatusEnum] {
 
   case object READY extends FileStatusSuccess
   case object FAILED extends FileStatusError
