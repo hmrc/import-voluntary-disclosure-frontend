@@ -753,8 +753,8 @@ hasFurtherInformation.error.required = Select yes if you want to provide more in
 # More Information
 moreInformation.single.pageTitle = Tell us the extra information about the underpayment
 moreInformation.single.heading = Tell us the extra information about the underpayment
-moreInformation.single.error.required = Enter more information
-moreInformation.single.error.maxLength = More information must be 1500 characters or fewer
+moreInformation.single.error.required = Enter the extra information about the underpayment
+moreInformation.single.error.maxLength = The extra information must be 1500 characters or fewer
 moreInformation.single.error.noEmoji = The extra information must not include emojis
 
 moreInformation.bulk.pageTitle = What were the reasons for the underpayment of tax or duty?

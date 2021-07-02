@@ -20,8 +20,8 @@ object MoreInformationMessages extends BaseMessages {
 
   val singleEntryTitle: String = "Tell us the extra information about the underpayment"
   val singleEntryH1: String = "Tell us the extra information about the underpayment"
-  val singleEntryRequiredError: String = "Enter more information"
-  val singleEntryMaxLengthError: String = "More information must be 1500 characters or fewer"
+  val singleEntryRequiredError: String = "Enter the extra information about the underpayment"
+  val singleEntryMaxLengthError: String = "The extra information must be 1500 characters or fewer"
 
   val bulkEntryTitle: String = "What were the reasons for the underpayment of tax or duty?"
   val bulkEntryH1: String = "What were the reasons for the underpayment of tax or duty?"
