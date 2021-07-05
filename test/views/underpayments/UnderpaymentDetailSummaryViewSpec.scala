@@ -40,10 +40,11 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
 
   "Rendering the Underpayment Summary page" when {
-    "no errors exist" should {
+
+    "no errors exist single entry" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailSummaryMessages.pageTitle)
@@ -55,11 +56,38 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
       "not render an error message against the field" in {
         document.select("#value-error").size mustBe 0
       }
+
+      s"have the correct radio hint of '${UnderpaymentDetailSummaryMessages.radioMessageHintSingleEntry}'" in {
+        elementText("#value-hint") mustBe UnderpaymentDetailSummaryMessages.radioMessageHintSingleEntry
+      }
+
+    }
+
+    "no errors exist bulk entry" should {
+
+      val form: Form[Boolean] = formProvider.apply()
+      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1, false)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      checkPageTitle(UnderpaymentDetailSummaryMessages.pageTitle)
+
+      "not render an error summary" in {
+        document.select("div.govuk-error-summary").size mustBe 0
+      }
+
+      "not render an error message against the field" in {
+        document.select("#value-error").size mustBe 0
+      }
+
+      s"have the correct radio hint of '${UnderpaymentDetailSummaryMessages.radioMessageHintSingleEntry}'" in {
+        elementText("#value-hint") mustBe UnderpaymentDetailSummaryMessages.radioMessageHintBulkEntry
+      }
+
     }
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailSummaryMessages.errorPrefix + UnderpaymentDetailSummaryMessages.pageTitle)
@@ -76,15 +104,11 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
     "there is less than 10 Underpayments in the Summary List" should {
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct radio header of '${UnderpaymentDetailSummaryMessages.radioMessage}'" in {
         elementText("#main-content > div > div > form > div > fieldset > legend") mustBe UnderpaymentDetailSummaryMessages.radioMessage
-      }
-
-      s"have the correct radio hint of '${UnderpaymentDetailSummaryMessages.radioMessageHint}'" in {
-        elementText("#value-hint") mustBe UnderpaymentDetailSummaryMessages.radioMessageHint
       }
 
       s"have the correct value for the first radio button of '${UnderpaymentDetailSummaryMessages.siteYes}'" in {
@@ -99,7 +123,7 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
     "there is 10 Underpayments in the Summary List" should {
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 10)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 10, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct message of '${UnderpaymentDetailSummaryMessages.fullList}'" in {
@@ -113,7 +137,7 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, summaryList, amountOwedSummaryList, 1, true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${UnderpaymentDetailSummaryMessages.pageHeader}'" in {
