@@ -24,7 +24,7 @@
         button: components.button
 )
 
-@(form: Form[_], index: Index, filename: String, backlink: Call, onSubmit: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], index: Index, filename: String, backlink: Call, action: Call)(implicit request: Request[_], messages: Messages)
 
 @legendContent = {
     @h1("removeUploadedFile.heading")
@@ -35,7 +35,7 @@
 
     @errorSummary(form.errors)
 
-    @formHelper(action = onSubmit) {
+    @formHelper(action = action) {
 
         @defining({
             Some(Legend(
