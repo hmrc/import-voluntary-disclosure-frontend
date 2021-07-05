@@ -108,7 +108,7 @@ class UploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecB
       "return the correct location header when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad().url)
       }
 
       "return to check your answers when in check mode and false" in new Test {

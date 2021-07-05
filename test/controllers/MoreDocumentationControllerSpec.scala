@@ -95,7 +95,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
       "return the correct location header for No response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.MoreDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -131,7 +131,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.MoreDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

@@ -62,8 +62,7 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
           if (request.checkMode) {
             Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
           } else {
-            // TODO: go to the additional information page
-            Future.successful(Redirect(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad()))
+            Future.successful(Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad()))
           }
         }
       }

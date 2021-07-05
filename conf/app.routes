@@ -393,3 +393,6 @@ GET         /update-disclosure/upload-another-file                              
 POST        /update-disclosure/upload-another-file                                             controllers.UploadSupportingDocumentationSummaryController.onSubmit
 GET         /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onLoad(index: models.Index)
 POST        /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
+
+GET         /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onLoad
+POST        /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onSubmit
