@@ -130,7 +130,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
             .set(MoreDocumentationPage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.CheckYourAnswersController.onLoad()) // TODO link to upload summary page or Do you need to send us more documentation page
+        result mustBe Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad())
 
       }
     }

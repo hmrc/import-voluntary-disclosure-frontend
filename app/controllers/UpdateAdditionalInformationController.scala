@@ -68,7 +68,7 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
       Some(controllers.routes.CheckYourAnswersController.onLoad())
     } else {
       request.userAnswers.get(MoreDocumentationPage) match {
-        case Some(true) => Some(controllers.routes.CheckYourAnswersController.onLoad()) // replace with upload summary page
+        case Some(true) => Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad())
         case _ => Some(controllers.routes.MoreDocumentationController.onLoad())
       }
     }
