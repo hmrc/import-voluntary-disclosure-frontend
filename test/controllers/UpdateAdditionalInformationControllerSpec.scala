@@ -22,7 +22,7 @@ import forms.UpdateAdditionalInformationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, UpdateAdditionalInformationPage}
+import pages.{CheckModePage, MoreDocumentationPage, UpdateAdditionalInformationPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -94,7 +94,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -122,28 +122,42 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
 
   "backLink" when {
 
-    "not in change mode" should {
+    "not in change mode and user selected yes on More Documentation page" should {
       "point to upload summary page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id")
             .set(CheckModePage, false).success.value
+            .set(MoreDocumentationPage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad()) // TODO link to upload summary page or Do you need to send us more documentation page
+        result mustBe Some(controllers.routes.CheckYourAnswersController.onLoad()) // TODO link to upload summary page or Do you need to send us more documentation page
 
       }
     }
 
-    //    "in change mode" should {
-    //      "point to Check Your Answers page" in new Test {
-    //        override val userAnswers: Option[UserAnswers] =
-    //          Some(UserAnswers("some-cred-id")
-    //            .set(CheckModePage, true).success.value
-    //          )
-    //        lazy val result: Option[Call] = controller.backLink()
-    //        result mustBe Some(controllers.routes.CheckYourAnswersController.onLoad())
-    //      }
-    //    }
+    "not in change mode and user selected no on More Documentation page" should {
+      "point to upload summary page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+            .set(MoreDocumentationPage, false).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.MoreDocumentationController.onLoad())
+
+      }
+    }
+
+    "in change mode" should {
+      "point to Check Your Answers page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+          )
+        lazy val result: Option[Call] = controller.backLink()
+        result mustBe Some(controllers.routes.CheckYourAnswersController.onLoad())
+      }
+    }
 
   }
 

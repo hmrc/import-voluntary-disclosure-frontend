@@ -20,7 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.UpdateAdditionalInformationFormProvider
 import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.{MoreInformationPage, UpdateAdditionalInformationPage}
+import pages.{MoreDocumentationPage, UpdateAdditionalInformationPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -57,15 +57,22 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-            Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
+          Redirect(controllers.routes.CheckYourAnswersController.onLoad())
         }
       }
     )
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
-      Some(controllers.routes.UpdateAdditionalInformationController.onLoad()) // TODO - link to Upload Summary or Do you need to send us more documentation page
-
+    if (request.checkMode) {
+      Some(controllers.routes.CheckYourAnswersController.onLoad())
+    } else {
+      request.userAnswers.get(MoreDocumentationPage) match {
+        case Some(true) => Some(controllers.routes.CheckYourAnswersController.onLoad()) // replace with upload summary page
+        case _ => Some(controllers.routes.MoreDocumentationController.onLoad())
+      }
     }
+
+  }
 
 }
