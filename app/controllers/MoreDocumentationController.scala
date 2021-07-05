@@ -58,9 +58,9 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (moreDocuments) {
-            Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad()) // upload document page
+            Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad())
           } else
-            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // more information page
+            Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
         }
     )
   }

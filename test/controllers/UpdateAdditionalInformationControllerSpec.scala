@@ -113,13 +113,6 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
   }
 
 
-  "payload contains invalid data" should {
-    "return a BAD REQUEST" in new Test {
-      val result: Future[Result] = controller.onSubmit(fakeRequest)
-      status(result) mustBe Status.BAD_REQUEST
-    }
-  }
-
   "backLink" when {
 
     "not in change mode and user selected yes on More Documentation page" should {
