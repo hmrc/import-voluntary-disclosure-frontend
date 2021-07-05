@@ -418,8 +418,8 @@ fileUploadSuccess.text = You have uploaded {0}
 # File Upload Progress page
 fileUploadProgress.pageTitle = Upload progress
 fileUploadProgress.pageHeader = Upload progress
-fileUploadProgress.message = Waiting for uploaded file to be scanned
-fileUploadProgress.request = Please refresh to view latest progress
+fileUploadProgress.message = Waiting for uploaded file to be scanned.
+fileUploadProgress.request = Please refresh to view latest progress.
 fileUploadProgress.refresh = Refresh
 
 # Deferement page
