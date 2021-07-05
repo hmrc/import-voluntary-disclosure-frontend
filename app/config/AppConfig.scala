@@ -70,6 +70,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanSuccessRedirectForBulk: String = host + servicesConfig.getString("upscan.successRedirectForBulk")
   lazy val upScanErrorRedirectForBulk: String = host + servicesConfig.getString("upscan.errorRedirectForBulk")
+  lazy val upScanSupportingDocSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocSuccessRedirectForUser")
+  lazy val upScanSupportingDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocErrorRedirectForUser")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
@@ -134,6 +136,8 @@ trait AppConfig extends FixedConfig {
   val upScanAcceptedFileTypes: String
   val upScanAuthoritySuccessRedirectForUser: String
   val upScanAuthorityErrorRedirectForUser: String
+  val upScanSupportingDocSuccessRedirectForUser: String
+  val upScanSupportingDocErrorRedirectForUser: String
   val privateBetaAllowList: Seq[String]
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
