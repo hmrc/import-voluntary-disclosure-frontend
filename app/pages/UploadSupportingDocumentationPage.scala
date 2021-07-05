@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels.cya
+package pages
 
-case class ConfirmationViewData(entryDetails: String,
-                                importerName: String,
-                                eori: String,
-                                importerEORI: String
-                               )
+import models.FileUploadInfo
+import play.api.libs.json._
+
+object UploadSupportingDocumentationPage extends QuestionPage[Seq[FileUploadInfo]] {
+
+  override def path: JsPath = JsPath \ "uploaded-supporting-documentation"
+}

@@ -31,7 +31,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
   override val surveyUrl: String = "TBC"
   override val host: String = "TBC"
 
-  override def feedbackUrl(implicit request: RequestHeader): String = "TBC"
+  override def feedbackUrl(implicit request: RequestHeader): String = "/contact/beta-feedback?service=import-voluntary-disclosure"
 
   override val appName: String = "import-voluntary-disclosure-frontend"
   override val loginUrl: String = "TBC"
@@ -60,10 +60,11 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
   override val fileRepositoryTtl: Int = 86400
   override val upScanAuthoritySuccessRedirectForUser: String = "TBC"
   override val upScanAuthorityErrorRedirectForUser: String = "TBC"
+  override val upScanSupportingDocSuccessRedirectForUser: String = "TBC"
+  override val upScanSupportingDocErrorRedirectForUser: String = "TBC"
 
   override val importVoluntaryDisclosureSubmission: String = "TBC"
 
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
-  override val betaFeedbackUrl: String = "/contact/beta-feedback?service=import-voluntary-disclosure"
 }

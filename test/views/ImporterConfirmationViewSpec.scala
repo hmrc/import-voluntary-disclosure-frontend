@@ -28,7 +28,7 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
   private val referenceNumber: String = "C18-101"
-  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789")
+  val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "")
 
   "Rendering the Confirmation page" when {
 
@@ -115,7 +115,11 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         s"have the p5 message of '${ImporterConfirmationMessages.p5}'" in {
           elementText("#main-content > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.p5
         }
+
+      s"have a link message of '${ImporterConfirmationMessages.discloseAnotherUnderpayment}'" in {
+        elementText("#discloseAnotherUnderpayment") mustBe ImporterConfirmationMessages.discloseAnotherUnderpayment
       }
+    }
 
       s"have the '${ImporterConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
         elementText("#helpImproveServiceLink") mustBe ImporterConfirmationMessages.helpImproveServiceLink

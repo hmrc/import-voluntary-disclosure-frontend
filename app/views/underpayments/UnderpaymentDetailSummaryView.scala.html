@@ -29,7 +29,8 @@
         form: Form[_],
         underpaymentDetailsSummaryList: SummaryList,
         amountOwedSummaryList: SummaryList,
-        underpaymentDetailsLength: Int
+        underpaymentDetailsLength: Int,
+        isOneEntry: Boolean
 )(implicit request: Request[_], messages: Messages)
 
 @layout(
@@ -59,7 +60,11 @@
                 inline = true,
                 isPageHeading = false,
                 classes = "govuk-fieldset__legend govuk-fieldset__legend--m",
-                hint = Some(messages("underpaymentDetailsSummary.radioMessage.hint"))
+                hint = if(isOneEntry){
+                    Some(messages("underpaymentDetailsSummary.radioMessage.hint.oneEntry"))}
+                else {
+                    Some(messages("underpaymentDetailsSummary.radioMessage.hint.bulkEntry"))
+                }
             )
         }
         @button("common.button.continue")

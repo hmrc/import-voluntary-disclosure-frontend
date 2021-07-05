@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels.cya
+package pages
 
-case class ConfirmationViewData(entryDetails: String,
-                                importerName: String,
-                                eori: String,
-                                importerEORI: String
-                               )
+import models.Index
+import play.api.libs.json.{JsObject, JsPath}
+
+final case class RemoveSupportingDocumentationPage(index: Index) extends QuestionPage[JsObject] {
+
+  override def path: JsPath = JsPath \ "uploaded-supporting-documentation" \ index.position
+}

@@ -43,7 +43,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
-        val helper = new AddFileNameRowHelper(files)
+        val helper = new AddFileNameRowHelper(files, controllers.routes.RemoveUploadedFileController.onLoad)
         if (files.isEmpty) {
           Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
         } else {
@@ -71,7 +71,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
 
   private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.UploadFileController.onLoad().url))) { files =>
-      val helper = new AddFileNameRowHelper(files)
+      val helper = new AddFileNameRowHelper(files, controllers.routes.RemoveUploadedFileController.onLoad)
 
       Future.successful(BadRequest(view(formWithErrors, helper.rows, getOptionalDocs(request.userAnswers))))
     }
