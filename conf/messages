@@ -912,6 +912,14 @@ importerVatRegistered.pageTitle = Is the importer VAT registered?
 importerVatRegistered.heading = Is the importer VAT registered?
 importerVatRegistered.error.required = Select yes if the importer is VAT registered
 
+# Update Additional Information Page
+updateAdditionalInformation.pageTitle = Tell us any additional information
+updateAdditionalInformation.heading = Tell us any additional information
+updateAdditionalInformation.p1 = You may have been asked to provide more information to help us progress the disclosure.
+updateAdditionalInformation.error.required = Enter the additional information about the underpayment
+updateAdditionalInformation.error.maxLength = The additional information must be 1500 characters or fewer
+updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
+
 # Session Timeout Page
 timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
@@ -934,8 +942,19 @@ disclosureReference.hint = This is 22 characters and starts with C18, it was iss
 disclosureReference.error.required = Enter the disclosure reference number
 disclosureReference.error.format = Enter the disclosure reference number in the correct format
 
-
 # Update Case - More Documentation Page
 moreDocumentation.pageTitle = Do you need to send us more documentation?
 moreDocumentation.heading = Do you need to send us more documentation?
 moreDocumentation.error.required = Select yes to send us more documentation
+
+# Upload Supporting Documentation page
+uploadSupportingDocumentation.pageTitle = Upload documentation
+uploadSupportingDocumentation.pageHeader = Upload documentation
+uploadSupportingDocumentation.typesOfFile = Types of file you can upload
+uploadSupportingDocumentation.PDF = PDF (.pdf)
+uploadSupportingDocumentation.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+uploadSupportingDocumentation.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadSupportingDocumentation.image = image (.jpg, .png or .tiff)
+uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
+uploadSupportingDocumentation.uploadFile = Upload a file
+uploadSupportingDocumentation.uploadChosenFile = Upload chosen file

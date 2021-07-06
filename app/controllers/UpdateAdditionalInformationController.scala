@@ -17,33 +17,33 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.MoreDocumentationFormProvider
+import forms.UpdateAdditionalInformationFormProvider
+import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.MoreDocumentationPage
+import pages.{MoreDocumentationPage, UpdateAdditionalInformationPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.MoreDocumentationView
+import views.html.UpdateAdditionalInformationView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
 @Singleton
-class MoreDocumentationController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            mcc: MessagesControllerComponents,
-                                            formProvider: MoreDocumentationFormProvider,
-                                            view: MoreDocumentationView)
+class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction,
+                                                      getData: DataRetrievalAction,
+                                                      requireData: DataRequiredAction,
+                                                      sessionRepository: SessionRepository,
+                                                      mcc: MessagesControllerComponents,
+                                                      formProvider: UpdateAdditionalInformationFormProvider,
+                                                      view: UpdateAdditionalInformationView)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
+    val form = request.userAnswers.get(UpdateAdditionalInformationPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
@@ -52,26 +52,27 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      moreDocuments =>
+      additionalInfo => {
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          if (moreDocuments) {
-            Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad())
-          } else
-            Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
+          Redirect(controllers.routes.CheckYourAnswersController.onLoad())
         }
+      }
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      Some(controllers.routes.CheckYourAnswersController.onLoad())
     } else {
-      controllers.routes.DisclosureReferenceNumberController.onLoad()
+      request.userAnswers.get(MoreDocumentationPage) match {
+        case Some(true) => Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad())
+        case _ => Some(controllers.routes.MoreDocumentationController.onLoad())
+      }
     }
+
   }
 
 }
-

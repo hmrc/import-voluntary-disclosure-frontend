@@ -60,6 +60,8 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
   override val fileRepositoryTtl: Int = 86400
   override val upScanAuthoritySuccessRedirectForUser: String = "TBC"
   override val upScanAuthorityErrorRedirectForUser: String = "TBC"
+  override val upScanSupportingDocSuccessRedirectForUser: String = "TBC"
+  override val upScanSupportingDocErrorRedirectForUser: String = "TBC"
 
   override val importVoluntaryDisclosureSubmission: String = "TBC"
 
