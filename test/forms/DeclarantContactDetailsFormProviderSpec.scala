@@ -37,7 +37,7 @@ class DeclarantContactDetailsFormProviderSpec extends SpecBase {
   private final val fullNameInvalidCharactersKey = "declarantContactDetails.error.nameAllowableCharacters"
   private final val emailInvalidFormatKey = "declarantContactDetails.error.emailInvalidFormat"
   private final val phoneNumberInvalidFormatKey = "declarantContactDetails.error.phoneNumberInvalidFormat"
-  private final val emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+  private final val emailRegex = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
   private final val phoneRegex = "^(\\+)?[0-9 ]{9,16}$"
   private final val nameRegex = "^[a-zA-Z '-]+$"
 
