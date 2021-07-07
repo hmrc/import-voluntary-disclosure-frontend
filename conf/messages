@@ -965,4 +965,7 @@ updateCase.cya.heading = Check your information before adding it to the disclosu
 updateCase.cya.sendDisclosure = Now add your information
 updateCase.cya.disclosureConfirmation = By adding this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
 updateCase.cya.addToTheDisclosure = Add to the disclosure
+cya.updateCase.referenceNumber = Reference number
+cya.updateCase.moreDocumentation = Add more documentation?
+cya.updateCase.moreInformation = Additional information
 

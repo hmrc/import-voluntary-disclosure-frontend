@@ -16,18 +16,15 @@
 
 package controllers
 
-import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
-import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView, UpdateCaseCheckYourAnswersView}
+import viewmodels.cya.CYASummaryListHelper
+import views.html.UpdateCaseCheckYourAnswersView
 
-import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -47,7 +44,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
       Ok(view(
-          buildImporterDetailsSummaryList
+        buildUpdateCaseSummaryList
       ))
     }
   }
