@@ -144,6 +144,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.ImporterDanController.onLoad().url)
       }
 
       "return the correct location header when user is representative and has import VAT and excise duty" in new Test {

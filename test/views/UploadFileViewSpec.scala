@@ -26,7 +26,6 @@ import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import play.api.data.Forms.text
 import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.UploadFileView

@@ -211,7 +211,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           MockedFileUploadRepository.updateRecord(Future.successful(true))
         }
 
-        val result = await(controller.upscanResponseHandler(
+        await(controller.upscanResponseHandler(
           dutyType, dan, Some("key"), None, None, None, None
         )(fakeRequest))
 

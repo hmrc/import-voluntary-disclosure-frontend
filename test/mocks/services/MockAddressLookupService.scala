@@ -19,7 +19,6 @@ package mocks.services
 import models.ErrorModel
 import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
 import org.scalamock.scalatest.MockFactory
-import play.api.mvc.{AnyContent, Request}
 import services.AddressLookupService
 import uk.gov.hmrc.http.HeaderCarrier
 

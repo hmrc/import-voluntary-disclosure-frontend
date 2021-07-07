@@ -16,12 +16,11 @@
 
 package forms
 
-import java.time.LocalDate
-
 import base.SpecBase
-import mocks.config.MockAppConfig
 import models.EntryDetails
 import play.api.data.FormError
+
+import java.time.LocalDate
 
 class EntryDetailsFormProviderSpec extends SpecBase {
 

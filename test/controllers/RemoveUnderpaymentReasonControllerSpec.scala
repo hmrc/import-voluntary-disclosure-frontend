@@ -34,9 +34,7 @@ import scala.concurrent.Future
 class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
   private def fakeRequestGenerator(value: String): FakeRequest[AnyContentAsFormUrlEncoded] =
-    fakeRequest.withFormUrlEncodedBody(
-      "value" -> value
-    )
+    fakeRequest.withFormUrlEncodedBody("value" -> value)
 
   def underpaymentReason(boxNumber: Int, itemNumber: Int = 0, original: String = "50", amended: String = "60") = {
     UnderpaymentReason(boxNumber, itemNumber, original, amended)
@@ -84,7 +82,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad().url)
@@ -99,7 +97,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
             original = underpaymentReason(boxNumber = 35, itemNumber = 1),
             changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.UnderpaymentReasonSummaryController.onLoad().url)
       }
@@ -112,7 +110,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
             original = underpaymentReason(boxNumber = 35, itemNumber = 1),
             changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.BoxGuidanceController.onLoad().url)
       }
@@ -121,7 +119,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
@@ -134,7 +132,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
             original = underpaymentReason(boxNumber = 35, itemNumber = 1),
             changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
         )
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        private val request = fakeRequestGenerator("true")
         await(controller.onSubmit(request))
         verifyCalls()
       }

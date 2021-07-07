@@ -16,19 +16,20 @@
 
 package viewmodels.cya
 
-import java.time.{LocalDate, LocalDateTime}
-
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UnderpaymentReason, UserAnswers, UserType}
-import org.scalatest.{MustMatchers, OptionValues, TryValues}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.{OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.CheckYourAnswersData._
 
+import java.time.{LocalDate, LocalDateTime}
 
-class CYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
+
+class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
 
   trait Test {
 

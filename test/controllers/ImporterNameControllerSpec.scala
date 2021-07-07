@@ -20,16 +20,15 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.ImporterNameFormProvider
 import mocks.repositories.MockSessionRepository
+import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{EntryDetails, UserAnswers}
-import pages.{CheckModePage, EntryDetailsPage, ImporterNamePage}
+import pages.{CheckModePage, ImporterNamePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.ImporterNameView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class ImporterNameControllerSpec extends ControllerSpecBase {

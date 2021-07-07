@@ -17,7 +17,6 @@
 package forms
 
 import base.SpecBase
-import mocks.config.MockAppConfig
 import models.RepresentativeDan
 import play.api.data.FormError
 

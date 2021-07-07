@@ -19,7 +19,6 @@ package services.submissionService
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
-import models.SubmissionData
 import play.api.libs.json.Json
 import services.SubmissionService
 
