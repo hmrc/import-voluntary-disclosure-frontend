@@ -88,7 +88,6 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
     val uploadInProgressRoute = Ok(
       progressView(
         key = key,
-        backLink = controllers.routes.BulkUploadFileController.onLoad(),
         action = controllers.routes.BulkUploadFileController.uploadProgress(key).url
       )
     )

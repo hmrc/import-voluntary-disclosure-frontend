@@ -112,7 +112,6 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     val uploadInProgressRoute = Ok(
       progressView(
         key = key,
-        backLink = controllers.routes.UploadAuthorityController.onLoad(dutyType, dan),
         action = controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url
       )
     )
