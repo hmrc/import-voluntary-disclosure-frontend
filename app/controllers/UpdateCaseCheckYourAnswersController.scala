@@ -49,8 +49,4 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     }
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-???
-  }
-
 }
