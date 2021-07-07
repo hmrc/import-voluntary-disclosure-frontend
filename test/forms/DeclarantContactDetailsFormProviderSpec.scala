@@ -48,7 +48,7 @@ class DeclarantContactDetailsFormProviderSpec extends SpecBase {
   )
 
   def formBinder(formValues: Map[String, String] = Map(fullName -> "", email -> "", phoneNumber -> "")): Form[ContactDetails] =
-    new DeclarantContactDetailsFormProvider()(MockAppConfig).apply().bind(formValues)
+    new DeclarantContactDetailsFormProvider().apply().bind(formValues)
 
   "Binding a form with invalid data" when {
     "no values provided" should {
@@ -141,7 +141,7 @@ class DeclarantContactDetailsFormProviderSpec extends SpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = ContactDetails(exampleName, exampleEmail, examplePhoneNumber)
-      val form = new DeclarantContactDetailsFormProvider()(MockAppConfig).apply().fill(model)
+      val form = new DeclarantContactDetailsFormProvider().apply().fill(model)
       form.data mustBe formBuilder("First Second", "email@email.com", "0123456789")
     }
   }
