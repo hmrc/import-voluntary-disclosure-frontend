@@ -31,15 +31,8 @@
     showBackLink = false
 ) {
     @h1(messages("updateCase.cya.heading"))
+
     @answers.map { answer =>
-
-        @if(answer.heading.startsWith("Deferment")) {
-            @h3(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
-        } else {
-            @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
-        }
-
-
         @govukSummaryList(answer.summaryList)
     }
 
@@ -47,7 +40,7 @@
     @p(Html(messages("updateCase.cya.disclosureConfirmation")))
 
     @linkButton(
-        "url",
+        url = controllers.routes.UpdateCaseCheckYourAnswersController.onSubmit().url,
         value = messages("updateCase.cya.addToTheDisclosure")
     )
 }
