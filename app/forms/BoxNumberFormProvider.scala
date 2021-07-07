@@ -18,14 +18,13 @@ package forms
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 
 class BoxNumberFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[Int] =
+  def apply(): Form[Int] =
     Form(
       "value" -> int(
         requiredKey = "boxNumber.error.required"

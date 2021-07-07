@@ -30,11 +30,11 @@ class FileUploadController @Inject()(val mcc: MessagesControllerComponents,
                                      repository: FileUploadRepository)
   extends FrontendController(mcc) with I18nSupport {
 
-  def deleteAll(): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def deleteAll(): Action[JsValue] = Action.async(parse.json) { _ =>
     repository.testOnlyRemoveAllRecords() map { result => Ok(Json.obj("count" -> result.getDeletedCount)) }
   }
 
-  def delete(reference: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+  def delete(reference: String): Action[JsValue] = Action.async(parse.json) { _ =>
     repository.deleteRecord(reference) map { result => Ok(Json.obj("success" -> result)) }
   }
 

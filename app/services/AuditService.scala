@@ -17,7 +17,6 @@
 package services
 
 import config.AppConfig
-import play.api.Logger
 import play.api.libs.json.JsValue
 import play.api.mvc.Request
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,8 +29,6 @@ import scala.concurrent.ExecutionContext
 
 class AuditService @Inject()(appConfig: AppConfig,
                              auditConnector: AuditConnector) {
-
-  private val logger = Logger("application." + getClass.getCanonicalName)
 
   def audit(dataSource: JsonAuditModel)(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[_]): Unit =
     auditConnector.sendExtendedEvent(toExtendedDataEvent(dataSource, request.path))

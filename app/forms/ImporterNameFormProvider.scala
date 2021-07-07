@@ -18,13 +18,12 @@ package forms
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 class ImporterNameFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[String] =
+  def apply(): Form[String] =
     Form(
       "fullName" -> text("importerName.error.nameNonEmpty")
         .verifying("importerName.error.nameMinLength", value => value.length >= 2)

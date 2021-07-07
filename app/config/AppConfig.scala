@@ -33,8 +33,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   private val feedbackHost = servicesConfig.getString("feedback-frontend.host")
   lazy val surveyUrl = feedbackHost + servicesConfig.getString("feedback-frontend.url")
 
-  private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
-
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
   val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
