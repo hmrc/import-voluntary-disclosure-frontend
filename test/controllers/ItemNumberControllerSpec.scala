@@ -63,7 +63,7 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
     )
   }
 
-  "GET /" when {
+  "GET onLoad" when {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
@@ -81,7 +81,7 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
 
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
 
     "payload contains valid data" should {
 

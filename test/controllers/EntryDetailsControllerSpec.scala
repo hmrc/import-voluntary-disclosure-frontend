@@ -86,7 +86,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response and redirect to correct location for date BEFORE EU exit" in new Test {

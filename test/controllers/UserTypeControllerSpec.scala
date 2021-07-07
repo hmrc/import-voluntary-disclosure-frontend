@@ -50,7 +50,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       mockSessionRepository, messagesControllerComponents, form, userTypePage, appConfig)
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       private val previousAnswers = UserAnswers("some cred ID").set(UserTypePage, UserType.Importer).success.value
       override val userAnswers: Option[UserAnswers] = Some(previousAnswers)
@@ -65,7 +65,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "submitting a 'Importer' answer in the the initial user journey" should {
 
       "return a SEE OTHER response" in new Test {

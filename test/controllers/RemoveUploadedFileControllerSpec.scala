@@ -52,7 +52,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
   }
 
 
-  "GET /" should {
+  "GET onLoad" should {
     "redirect to SupportingDoc page if no uploaded-files in user answers" in new Test {
       val result: Future[Result] = controller.onLoad(index)(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
@@ -92,7 +92,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when false" in new Test {
