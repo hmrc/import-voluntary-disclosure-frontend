@@ -70,8 +70,7 @@ trait FileUploadHandler[T] {
                                  uploadFailedRoute: Result,
                                  updateFilesList: FileUpload => Seq[T],
                                  saveFilesList: Seq[T] => Try[UserAnswers])
-                                (implicit request: DataRequest[AnyContent],
-                                 ec: ExecutionContext): Future[Result] = {
+                                (implicit ec: ExecutionContext): Future[Result] = {
     fileUploadRepository.getRecord(key).flatMap {
       case Some(upload@FileUpload(_, _, _, Some(FileStatusEnum.READY), _, _, _)) =>
         val updatedListFiles = updateFilesList(upload)

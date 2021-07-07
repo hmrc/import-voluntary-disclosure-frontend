@@ -18,12 +18,13 @@ package viewmodels
 
 import base.SpecBase
 import models.FileUploadInfo
-import org.scalatest.{MustMatchers, OptionValues, TryValues}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.{OptionValues, TryValues}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.twirl.api.Html
 
-class AddFileRowHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues {
+class AddFileRowHelperSpec extends SpecBase with Matchers with TryValues with OptionValues {
 
   "rows" should {
 

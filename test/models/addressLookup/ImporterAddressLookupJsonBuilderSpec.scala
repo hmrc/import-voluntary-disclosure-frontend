@@ -29,7 +29,7 @@ class ImporterAddressLookupJsonBuilderSpec extends SpecBase {
 
       "the continueUrl is given to the user" in {
 
-        Json.toJson(ImporterAddressLookupJsonBuilder("/lookup-address/confirmed")(fakeRequest, messagesApi, MockAppConfig)) mustBe importerAddressLookupV2Json
+        Json.toJson(ImporterAddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe importerAddressLookupV2Json
       }
     }
   }

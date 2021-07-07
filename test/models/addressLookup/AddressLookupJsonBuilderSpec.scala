@@ -29,7 +29,7 @@ class AddressLookupJsonBuilderSpec extends SpecBase {
 
       "the continueUrl is given to the user" in {
 
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(fakeRequest, messagesApi, MockAppConfig)) mustBe addressLookupV2Json
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe addressLookupV2Json
       }
     }
   }

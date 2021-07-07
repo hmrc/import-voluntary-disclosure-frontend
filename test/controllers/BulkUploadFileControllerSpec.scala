@@ -194,7 +194,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
           MockedFileUploadRepository.updateRecord(Future.successful(true))
         }
 
-        val result = await(controller.upscanResponseHandler(
+        await(controller.upscanResponseHandler(
           Some("key"), None, None, None, None
         )(fakeRequest))
 

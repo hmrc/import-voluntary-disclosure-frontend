@@ -22,7 +22,6 @@ import messages.{BaseMessages, ReasonSummary}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import play.api.mvc.Call
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import views.data.UnderpaymentReasonSummaryData

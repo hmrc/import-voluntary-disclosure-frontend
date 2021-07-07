@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.CYAMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.data.CheckYourAnswersData._
 import views.html.CheckYourAnswersView

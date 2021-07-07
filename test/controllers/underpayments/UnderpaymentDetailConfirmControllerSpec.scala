@@ -23,7 +23,7 @@ import models.UserAnswers
 import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage, UnderpaymentTypePage}
 import play.api.http.Status
-import play.api.mvc.{Call, Result}
+import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.data.underpayments.UnderpaymentDetailConfirmData
 import views.html.underpayments.UnderpaymentDetailConfirmView

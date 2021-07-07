@@ -17,7 +17,6 @@
 package forms
 
 import base.SpecBase
-import mocks.config.MockAppConfig
 import models.RepresentativeDan
 import play.api.data.FormError
 
@@ -33,7 +32,7 @@ class RepresentativeDanFormProviderSpec extends SpecBase {
 
     "no values provided" should {
       val missingOption: Map[String, String] = Map.empty
-      val form = new RepresentativeDanFormProvider()(MockAppConfig).apply().bind(missingOption)
+      val form = new RepresentativeDanFormProvider().apply().bind(missingOption)
 
       "result in a form with errors" in {
         form.errors mustBe Seq(
@@ -44,7 +43,7 @@ class RepresentativeDanFormProviderSpec extends SpecBase {
     }
 
     "invalid data for account number" should {
-      val form = new RepresentativeDanFormProvider()(MockAppConfig).apply().bind(buildFormData(accountNumber = Some("!*&£%!")))
+      val form = new RepresentativeDanFormProvider().apply().bind(buildFormData(accountNumber = Some("!*&£%!")))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -54,7 +53,7 @@ class RepresentativeDanFormProviderSpec extends SpecBase {
   }
 
   "Binding a form with valid data" should {
-    val form = new RepresentativeDanFormProvider()(MockAppConfig).apply().bind(buildFormData())
+    val form = new RepresentativeDanFormProvider().apply().bind(buildFormData())
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
@@ -68,7 +67,7 @@ class RepresentativeDanFormProviderSpec extends SpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = RepresentativeDan("1234567", "A")
-      val form = new RepresentativeDanFormProvider()(MockAppConfig).apply().fill(model)
+      val form = new RepresentativeDanFormProvider().apply().fill(model)
       form.data mustBe buildFormData()
     }
   }

@@ -16,17 +16,16 @@
 
 package forms
 
-import models.UnderpaymentReasonValue
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
+import models.UnderpaymentReasonValue
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.data.validation.{Constraint, Invalid, Valid}
-import play.api.i18n.Messages
 
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
-  def apply(boxNumber: Int)(implicit messages: Messages): Form[UnderpaymentReasonValue] = {
+  def apply(boxNumber: Int): Form[UnderpaymentReasonValue] = {
     boxNumber match {
       case 22 | 62 | 63 | 66 | 67 | 68 => foreignCurrencyFormMapping
       case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
@@ -115,8 +114,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
                                   invalidDecimalPlacesKey: String,
                                   outOfRangeKey: String,
                                   numDecimalPlaces: Int,
-                                  rangeMin: Option[BigDecimal] = None,
-                                  rangeMax: Option[BigDecimal] = None
+                                  rangeMin: Option[BigDecimal],
+                                  rangeMax: Option[BigDecimal]
                                 ): Form[UnderpaymentReasonValue] = {
     Form(
       mapping(
@@ -136,7 +135,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.amended." + outOfRangeKey))
       )
       ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
-      (value => Some(BigDecimal(value.original), BigDecimal(value.amended)))
+      (value => Some((BigDecimal(value.original), BigDecimal(value.amended))))
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
@@ -158,6 +157,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       case (Some(min), Some(max)) => inRange(min, max, errorKey)
       case (Some(min), None) => minimumValue(min, errorKey)
       case (None, Some(max)) => maximumValue(max, errorKey)
+      case _ => Constraint(_ => Valid)
     }
   }
 }
