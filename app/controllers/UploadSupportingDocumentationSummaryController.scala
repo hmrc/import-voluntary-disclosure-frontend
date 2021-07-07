@@ -60,7 +60,7 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
           Future.successful(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad()))
         } else {
           if (request.checkMode) {
-            Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+            Future.successful(Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad()))
           }

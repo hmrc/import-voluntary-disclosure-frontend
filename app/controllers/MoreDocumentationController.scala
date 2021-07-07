@@ -67,7 +67,7 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.routes.DisclosureReferenceNumberController.onLoad()
     }
