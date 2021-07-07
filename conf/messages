@@ -958,3 +958,11 @@ uploadSupportingDocumentation.image = image (.jpg, .png or .tiff)
 uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadSupportingDocumentation.uploadFile = Upload a file
 uploadSupportingDocumentation.uploadChosenFile = Upload chosen file
+
+# Update Case - Check Your Answers Page
+updateCase.cya.pageTitle = Check your information before adding it to the disclosure
+updateCase.cya.heading = Check your information before adding it to the disclosure
+updateCase.cya.sendDisclosure = Now add your information
+updateCase.cya.disclosureConfirmation = By adding this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
+updateCase.cya.addToTheDisclosure = Add to the disclosure
+
