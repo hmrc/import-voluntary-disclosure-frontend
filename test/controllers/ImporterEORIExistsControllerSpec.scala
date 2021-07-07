@@ -64,7 +64,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
 
   val importerEORIExistsYes: Boolean = true
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -78,7 +78,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data and check mode is false" should {
 
       "return a SEE OTHER for true request" in new Test {

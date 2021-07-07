@@ -72,7 +72,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
   }
 
-  "GET /" should {
+  "GET onLoad" should {
     "return OK" in new Test {
       setupMockRetrieveAddress(Right(eoriDetails))
       val result: Future[Result] = controller.onLoad(fakeRequest)
@@ -96,7 +96,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
     }
   }
 
-  "POST /" when {
+  "POST onSubmit" when {
     "payload contains valid data" should {
 
       "redirect to the deferment page if choosing to use the known address and checkMode is false" in new Test {
