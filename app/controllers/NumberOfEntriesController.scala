@@ -46,7 +46,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
 
   implicit val config: AppConfig = appConfig
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val form = request.userAnswers.get(NumberOfEntriesPage).fold(formProvider()) {
       formProvider().fill
