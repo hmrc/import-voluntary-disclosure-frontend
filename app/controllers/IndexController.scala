@@ -29,7 +29,7 @@ class IndexController  @Inject()(appConfig: AppConfig,
 
   implicit val config: AppConfig = appConfig
 
-  val onPageLoad: Action[AnyContent] = Action.async { _ =>
+  def onPageLoad: Action[AnyContent] = Action.async { _ =>
     Future.successful(Redirect(controllers.routes.ConfirmEORIDetailsController.onLoad()))
   }
 

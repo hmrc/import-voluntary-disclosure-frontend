@@ -42,7 +42,7 @@ class ImporterVatRegisteredController @Inject()(identify: IdentifierAction,
                                                 view: ImporterVatRegisteredView)
   extends FrontendController(mcc) with I18nSupport {
 
-  val onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val form = request.userAnswers.get(ImporterVatRegisteredPage).fold(formProvider()) {
       formProvider().fill
