@@ -58,8 +58,8 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages("updateCase.cya.referenceNumber")),
         valueContent = Text(reference),
         action = Some(ActionItemHelper.createChangeActionItem(
-          "url",
-          ""
+          controllers.routes.DisclosureReferenceNumberController.onLoad().url,
+          messages("updateCase.cya.referenceNumber.change")
         ))
       )
     }
