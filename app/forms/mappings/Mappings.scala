@@ -49,6 +49,7 @@ trait Mappings extends Formatters with Constraints {
                         invalidKey: String = "error.boolean"): FieldMapping[Boolean] =
     of(booleanFormatter(requiredKey, invalidKey))
 
+  // scalastyle:off
   protected def localDate(invalidKey: String,
                           allRequiredKey: String,
                           twoRequiredKey: String,
@@ -59,6 +60,7 @@ trait Mappings extends Formatters with Constraints {
                           validateAfterKey: Option[String] = None,
                           args: Seq[String] = Seq.empty)(implicit messages: Messages): FieldMapping[LocalDate] =
     of(new LocalDateFormatter(invalidKey, allRequiredKey, twoRequiredKey, requiredKey, dayMonthLengthKey, yearLengthKey, validatePastKey, validateAfterKey, args))
+  // scalastyle:on
 
   protected def enumerable[A](requiredKey: String = "error.required",
                               invalidKey: String = "error.invalid")(implicit ev: Enumerable[A]): FieldMapping[A] =

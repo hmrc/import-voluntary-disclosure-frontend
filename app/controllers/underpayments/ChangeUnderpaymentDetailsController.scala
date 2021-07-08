@@ -43,10 +43,11 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   private def backLink(underpaymentType: String, summaryPageChange: Boolean) = {
-    if (summaryPageChange)
+    if (summaryPageChange) {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-    else
+    } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
+    }
   }
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -86,7 +87,8 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
+          val form = formWithErrors.copy(errors = newErrors)
+          Future.successful(BadRequest(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
         },
         value => {
           for {
