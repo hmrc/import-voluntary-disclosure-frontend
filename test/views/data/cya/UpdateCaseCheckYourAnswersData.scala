@@ -24,9 +24,10 @@ import viewmodels.cya.CYASummaryList
 
 object UpdateCaseCheckYourAnswersData {
 
-  val changeUrl = "Url"
+  val changeUrl = "url"
   val referenceNumber = "C184567898765333333333"
   val yes = "Yes"
+  val no = "No"
   val file = "Example.pdf"
   val additionalInformation = "Hello World"
 
@@ -41,7 +42,8 @@ object UpdateCaseCheckYourAnswersData {
 
   val referenceNumberRow = SummaryListRow(
     key = Key(
-      Text(UpdateCaseCYAMessages.referenceNumber)
+      Text(UpdateCaseCYAMessages.referenceNumber),
+      classes = "govuk-!-width-one-third"
     ),
     value = Value(
       Text(referenceNumber)
@@ -56,12 +58,13 @@ object UpdateCaseCheckYourAnswersData {
     ))
   )
 
-  val moreDocumentationRow = SummaryListRow(
+  def moreDocumentationRow(moreDocuments: Boolean) = SummaryListRow(
     key = Key(
-      Text(UpdateCaseCYAMessages.moreDocumentation)
+      Text(UpdateCaseCYAMessages.moreDocumentation),
+      classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(yes)
+      Text(if(moreDocuments) yes else no)
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
@@ -75,10 +78,11 @@ object UpdateCaseCheckYourAnswersData {
 
   val fileUploadRow = SummaryListRow(
     key = Key(
-      Text(UpdateCaseCYAMessages.filesUploaded(1))
+      Text(UpdateCaseCYAMessages.filesUploaded(1)),
+      classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(file)
+      HtmlContent(file)
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
@@ -92,7 +96,8 @@ object UpdateCaseCheckYourAnswersData {
 
   val additionalInformationRow = SummaryListRow(
     key = Key(
-      Text(UpdateCaseCYAMessages.additionalInformation)
+      Text(UpdateCaseCYAMessages.additionalInformation),
+      classes = "govuk-!-width-one-third"
     ),
     value = Value(
       Text(additionalInformation)
@@ -112,7 +117,7 @@ object UpdateCaseCheckYourAnswersData {
 
     updateCaseAnswers(Seq(
       referenceNumberRow,
-      moreDocumentationRow,
+      moreDocumentationRow(true),
       fileUploadRow,
       additionalInformationRow
     )),
