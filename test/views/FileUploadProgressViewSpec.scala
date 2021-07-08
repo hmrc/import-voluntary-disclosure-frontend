@@ -36,7 +36,7 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
 
     "called normally" should {
       "have the correct button link" in {
-        lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
+        lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementAttributes("#main-content .govuk-button").get("href").get mustBe action
       }
@@ -44,14 +44,10 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(FileUploadProgressMessages.title)
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
-    }
 
     s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
       elementText("h1") mustBe FileUploadProgressMessages.h1
