@@ -968,4 +968,5 @@ updateCase.cya.addToTheDisclosure = Add to the disclosure
 updateCase.cya.referenceNumber = Reference number
 updateCase.cya.moreDocumentation = Add more documentation?
 updateCase.cya.moreInformation = Additional information
+updateCase.cya.moreInformation.change = Change additional information
 
