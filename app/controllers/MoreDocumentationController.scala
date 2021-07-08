@@ -58,7 +58,7 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
           answersWithUpdatedFiles <-
             if (!moreDocuments) Future.fromTry(answersWithMoreDocumentation.remove(UploadSupportingDocumentationPage))
             else Future.successful(answersWithMoreDocumentation)
-          existingAnswers = request.request.userAnswers.flatMap(_.get(MoreDocumentationPage))
+          existingAnswers = request.userAnswers.get(MoreDocumentationPage)
           _ <- sessionRepository.set(answersWithUpdatedFiles)
         } yield {
           val hasNotChanged = existingAnswers.contains(moreDocuments)

@@ -70,7 +70,7 @@ object UpdateCaseCheckYourAnswersData {
       ActionItem(
         controllers.routes.MoreDocumentationController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(UpdateCaseCYAMessages.moreDocumentation)
+        visuallyHiddenText = Some(UpdateCaseCYAMessages.changeMoreDocumentation)
       )
     )))
   )

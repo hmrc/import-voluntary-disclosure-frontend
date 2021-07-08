@@ -72,7 +72,7 @@ trait CYAUpdateCaseSummaryListHelper {
         valueContent = Text(anyMoreDocumentation),
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.MoreDocumentationController.onLoad().url,
-          messages("updateCase.cya.moreDocumentation")
+          messages("updateCase.cya.moreDocumentation.change")
         ))
       )
     }
