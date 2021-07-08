@@ -92,7 +92,7 @@ trait CYAUpdateCaseSummaryListHelper {
     }
   }
 
-  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(UpdateAdditionalInformationPage).map { moreInformation =>
       createRow(
         keyText = Text(messages("updateCase.cya.moreInformation")),

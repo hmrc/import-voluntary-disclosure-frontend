@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.FileUploadProgressMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.FileUploadProgressView
 
@@ -28,7 +27,6 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
   private val reference: String = "11370e18-6e24-453e-b45a-76d3e32ea33d"
-  private val backLink: Call = Call("GET", "url")
   private val action: String = "action/url"
 
 

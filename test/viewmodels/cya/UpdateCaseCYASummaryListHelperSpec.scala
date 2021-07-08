@@ -19,13 +19,14 @@ package viewmodels.cya
 import base.SpecBase
 import models._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import org.scalatest.{MustMatchers, OptionValues, TryValues}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.{OptionValues, TryValues}
 import pages._
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime
 
-class UpdateCaseCYASummaryListHelperSpec extends SpecBase with MustMatchers with TryValues with OptionValues with CYASummaryListHelper {
+class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
 
   trait Test {
 
