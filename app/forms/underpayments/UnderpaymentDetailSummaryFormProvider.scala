@@ -18,11 +18,10 @@ package forms.underpayments
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.i18n.Messages
 
 class UnderpaymentDetailSummaryFormProvider extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[Boolean] =
+  def apply(): Form[Boolean] =
     Form(
       "value" -> boolean(
         requiredKey = "underpaymentDetailsSummary.error.required"

@@ -50,7 +50,7 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
     "connector call is successful" when {
 
       lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = service.initialiseJourney(hc, ec, fakeRequest)
+      lazy val result = service.initialiseJourney(hc, ec)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) mustBe Right(AddressLookupOnRampModel("redirect-url"))
@@ -68,7 +68,7 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
     "connector call is successful" when {
 
       lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = service.initialiseImporterJourney(hc, ec, fakeRequest)
+      lazy val result = service.initialiseImporterJourney(hc, ec)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) mustBe Right(AddressLookupOnRampModel("redirect-url"))

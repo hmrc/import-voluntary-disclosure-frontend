@@ -16,12 +16,11 @@
 
 package forms
 
-import java.time.LocalDate
-
 import base.SpecBase
-import mocks.config.MockAppConfig
 import models.EntryDetails
 import play.api.data.FormError
+
+import java.time.LocalDate
 
 class EntryDetailsFormProviderSpec extends SpecBase {
 
@@ -42,7 +41,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
     "no values provided" should {
       val missingOption: Map[String, String] = Map.empty
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(missingOption)
+      val form = new EntryDetailsFormProvider().apply().bind(missingOption)
 
       "result in a form with errors" in {
         form.errors mustBe Seq(
@@ -54,7 +53,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "missing entry date day" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = None))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -64,7 +63,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing entry date month" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(month = None))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(month = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -74,7 +73,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing entry date year" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = None))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(year = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -84,7 +83,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
     }
     "missing multiple entry date fields" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = None, year = None))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = None, year = None))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -95,7 +94,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "epu invalid" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(epu = Some("aaa")))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(epu = Some("aaa")))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -105,7 +104,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "entryNumber invalid" should {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(entryNumber = Some("12345Q")))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(entryNumber = Some("12345Q")))
 
       "result in a form with errors" in {
         form.errors.size mustBe 1
@@ -116,28 +115,28 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
     "entryDate invalid" should {
       "result in a form with Day format error" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = Some("32")))
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("32")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Month format error" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(month = Some("13")))
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(month = Some("13")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year format error" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = Some("202A")))
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(year = Some("202A")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
       "result in a form with Year too short" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(year = Some("20")))
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(year = Some("20")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.year"
@@ -145,7 +144,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
       "result in a form with Date in Past error" in {
         val tomorrow: LocalDate = LocalDate.now().plusDays(1)
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(
+        val form = new EntryDetailsFormProvider().apply().bind(
           buildFormData(
             day = Some(s"${tomorrow.getDayOfMonth}"),
             month = Some(s"${tomorrow.getMonthValue}"),
@@ -157,7 +156,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors.head.message mustBe "entryDetails.entryDate.error.past"
       }
       "result in a form with Not A Date error" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(day = Some("43")))
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("43")))
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
@@ -165,7 +164,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
       }
 
       "result in a form with Date after 1 1 1900 error" in {
-        val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(
+        val form = new EntryDetailsFormProvider().apply().bind(
           buildFormData(
             epu = Some("123"),
             entryNumber = Some("123456a"),
@@ -184,7 +183,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
   }
 
   "Binding a form with valid data" should {
-    val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData())
+    val form = new EntryDetailsFormProvider().apply().bind(buildFormData())
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
@@ -195,7 +194,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
 
     "generate the correct model if space are in input" in {
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().bind(buildFormData(entryNumber = Some("123 456q")))
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(entryNumber = Some("123 456q")))
       form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
     }
   }
@@ -203,7 +202,7 @@ class EntryDetailsFormProviderSpec extends SpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31))
-      val form = new EntryDetailsFormProvider()(MockAppConfig).apply().fill(model)
+      val form = new EntryDetailsFormProvider().apply().fill(model)
       form.data mustBe buildFormData()
     }
   }

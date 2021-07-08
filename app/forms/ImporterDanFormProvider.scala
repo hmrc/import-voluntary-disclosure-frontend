@@ -18,14 +18,13 @@ package forms
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 
 class ImporterDanFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[String] =
+  def apply(): Form[String] =
     Form(
         "value" -> text("importerDan.error.required")
           .verifying(regexp("^[0-9]{7}$","importerDan.error.format"))

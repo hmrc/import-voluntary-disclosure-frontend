@@ -24,7 +24,7 @@ class IndexControllerSpec extends ControllerSpecBase {
 
   private lazy val controller = new IndexController(appConfig, messagesControllerComponents)
 
-  "GET /" should {
+  "GET onPageLoad" should {
     "return 303" in {
       val result = controller.onPageLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER

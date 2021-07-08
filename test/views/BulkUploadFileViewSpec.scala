@@ -18,7 +18,7 @@ package views
 
 import base.ViewBaseSpec
 import forms.UploadFileFormProvider
-import messages.{BulkUploadFileMessages, UploadFileMessages}
+import messages.BulkUploadFileMessages
 import mocks.config.MockAppConfig
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup

@@ -19,10 +19,9 @@ package models.addressLookup
 import config.AppConfig
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
-import play.api.mvc.{AnyContent, Request}
 
 
-case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit request: Request[AnyContent], messagesApi: MessagesApi, config: AppConfig) {
+case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: MessagesApi, config: AppConfig) {
 
   // general journey overrides
   val showPhaseBanner: Boolean = true

@@ -18,15 +18,13 @@ package services
 
 import config.AppConfig
 import connectors.AddressLookupConnector
-
-import javax.inject.{Inject, Singleton}
 import models.ErrorModel
 import models.addressLookup._
 import play.api.i18n.MessagesApi
 import play.api.libs.json.Json
-import play.api.mvc.{AnyContent, Request}
 import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -34,13 +32,13 @@ class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnec
                                      implicit val messagesApi: MessagesApi,
                                      implicit val appConfig: AppConfig) {
 
-  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[AnyContent]):
+  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext):
     Future[Either[ErrorModel, AddressLookupOnRampModel]] =
       addressLookupConnector.initialiseJourney(
         Json.toJson(AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl))
       )
 
-  def initialiseImporterJourney(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[AnyContent]):
+  def initialiseImporterJourney(implicit hc: HeaderCarrier, ec: ExecutionContext):
     Future[Either[ErrorModel, AddressLookupOnRampModel]] =
       addressLookupConnector.initialiseJourney(
         Json.toJson(ImporterAddressLookupJsonBuilder(appConfig.importerAddressLookupCallbackUrl))

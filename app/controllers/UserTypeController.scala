@@ -59,7 +59,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     }
   }
 
-  val onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
 
     val form = for {
       userAnswers <- request.userAnswers

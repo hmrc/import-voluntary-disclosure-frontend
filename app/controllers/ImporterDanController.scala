@@ -17,7 +17,6 @@
 package controllers
 
 import com.google.inject.Inject
-import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterDanFormProvider
 import models.requests.DataRequest

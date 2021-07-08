@@ -21,8 +21,6 @@ import models.UnderpaymentReasonValue
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import play.api.data.{Form, FormError}
 
-import scala.collection.mutable
-
 class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
   val originalKey = "original"
   val amendedKey = "amended"

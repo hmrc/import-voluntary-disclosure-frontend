@@ -19,7 +19,6 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.WhatDoYouWantToDoFormProvider
 import models.UserAnswers
-import models.requests.DataRequest
 import pages.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -79,7 +78,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink(): Call = {
     controllers.routes.ConfirmEORIDetailsController.onLoad()
   }
 
