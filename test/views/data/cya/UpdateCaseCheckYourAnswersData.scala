@@ -58,22 +58,21 @@ object UpdateCaseCheckYourAnswersData {
     ))
   )
 
-  def moreDocumentationRow(moreDocuments: Boolean) = SummaryListRow(
+  def moreDocumentationRow(moreDocuments: Boolean): SummaryListRow = SummaryListRow(
     key = Key(
       Text(UpdateCaseCYAMessages.moreDocumentation),
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(if(moreDocuments) yes else no)
+      Text(if (moreDocuments) yes else no)
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        changeUrl,
+        controllers.routes.MoreDocumentationController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some("")
+        visuallyHiddenText = Some(UpdateCaseCYAMessages.moreDocumentation)
       )
-    )
-    ))
+    )))
   )
 
   val fileUploadRow = SummaryListRow(
