@@ -96,7 +96,6 @@ class UploadFileController @Inject()(identify: IdentifierAction,
     val uploadInProgressRoute = Ok(
       progressView(
         key,
-        backLink = controllers.routes.UploadFileController.onLoad(),
         action = controllers.routes.UploadFileController.uploadProgress(key).url
       )
     )

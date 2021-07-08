@@ -20,11 +20,12 @@
         linkButton: components.linkButton
 )
 
-@(key: String, backLink: Call, action: String)(implicit request: Request[_], messages: Messages)
+@(key: String, action: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("fileUploadProgress.pageTitle"),
-    customBackLinkUrl = Some(backLink)
+    customBackLinkUrl = None,
+    showBackLink = false
 ) {
 
     @h1(messages("fileUploadProgress.pageHeader"))
