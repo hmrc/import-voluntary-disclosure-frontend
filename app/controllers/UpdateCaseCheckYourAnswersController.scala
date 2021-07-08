@@ -22,7 +22,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.cya.CYASummaryListHelper
+import viewmodels.cya.CYAUpdateCaseSummaryListHelper
 import views.html.UpdateCaseCheckYourAnswersView
 
 import javax.inject.{Inject, Singleton}
@@ -36,7 +36,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      sessionRepository: SessionRepository,
                                                      view: UpdateCaseCheckYourAnswersView,
                                                      implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
+  extends FrontendController(mcc) with I18nSupport with CYAUpdateCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {

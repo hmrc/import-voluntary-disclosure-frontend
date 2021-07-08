@@ -26,7 +26,7 @@ import views.data.cya.UpdateCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime
 
-class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
+class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYAUpdateCaseSummaryListHelper {
 
   trait Test {
 
