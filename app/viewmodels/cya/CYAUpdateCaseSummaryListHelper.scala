@@ -55,7 +55,7 @@ trait CYAUpdateCaseSummaryListHelper {
   private def buildReferenceNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DisclosureReferenceNumberPage).map { reference =>
       createRow(
-        keyText = Text(messages("cya.updateCase.referenceNumber")),
+        keyText = Text(messages("updateCase.cya.referenceNumber")),
         valueContent = Text(reference),
         action = Some(ActionItemHelper.createChangeActionItem(
           "url",
@@ -68,7 +68,7 @@ trait CYAUpdateCaseSummaryListHelper {
     answers.get(MoreDocumentationPage).map { moreDocumentation =>
       val anyMoreDocumentation = if (moreDocumentation) messages("site.yes") else messages("site.no")
       createRow(
-        keyText = Text(messages("cya.updateCase.moreDocumentation")),
+        keyText = Text(messages("updateCase.cya.moreDocumentation")),
         valueContent = Text(anyMoreDocumentation),
         action = Some(ActionItemHelper.createChangeActionItem(
           "url",
@@ -95,7 +95,7 @@ trait CYAUpdateCaseSummaryListHelper {
   private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
     answers.get(UpdateAdditionalInformationPage).map { moreInformation =>
       createRow(
-        keyText = Text(messages("cya.updateCase.moreInformation")),
+        keyText = Text(messages("updateCase.cya.moreInformation")),
         valueContent = Text(moreInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
           "url",

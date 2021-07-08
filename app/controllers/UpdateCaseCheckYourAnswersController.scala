@@ -43,9 +43,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Ok(view(
-        buildUpdateCaseSummaryList
-      ))
+      Ok(view(buildUpdateCaseSummaryList))
     }
   }
 
