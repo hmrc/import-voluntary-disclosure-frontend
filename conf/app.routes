@@ -396,3 +396,5 @@ POST        /update-disclosure/confirm-file-removal/:index                      
 
 GET         /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onLoad
 POST        /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onSubmit
+
+GET         /update-disclosure/check-your-answers                                              controllers.UpdateCaseCheckYourAnswersController.onLoad()

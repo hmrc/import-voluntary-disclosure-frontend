@@ -57,7 +57,7 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
         }
       }
     )
@@ -65,7 +65,7 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
-      Some(controllers.routes.CheckYourAnswersController.onLoad())
+      Some(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
     } else {
       request.userAnswers.get(MoreDocumentationPage) match {
         case Some(true) => Some(controllers.routes.UploadSupportingDocumentationSummaryController.onLoad())

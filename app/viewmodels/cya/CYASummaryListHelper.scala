@@ -24,3 +24,4 @@ trait CYASummaryListHelper
     with CYAPaymentDetailsSummaryListHelper
     with CYADefermentDutyDetailsSummaryListHelper
     with CYADefermentImportVATDetailsSummaryListHelper
+    with CYAUpdateCaseSummaryListHelper
