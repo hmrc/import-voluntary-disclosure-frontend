@@ -59,8 +59,9 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
         } yield {
           if (moreDocuments) {
             Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad())
-          } else
+          } else {
             Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
+          }
         }
     )
   }
