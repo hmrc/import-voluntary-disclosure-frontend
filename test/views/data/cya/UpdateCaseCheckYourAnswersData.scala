@@ -50,9 +50,9 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        changeUrl,
+        controllers.routes.DisclosureReferenceNumberController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some("")
+        visuallyHiddenText = Some(UpdateCaseCYAMessages.changeReferenceNumber)
       )
     )
     ))
