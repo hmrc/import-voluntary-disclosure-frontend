@@ -17,6 +17,7 @@
 @import views.helpers.FooterLinks
 @import views.html.components.phaseBanner
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 
 @this(govukLayout: GovukLayout,
         appConfig: AppConfig,
@@ -24,6 +25,7 @@
         head: partials.Head,
         backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
+        hmrcHeader : HmrcHeader,
         govukBetaBanner : phaseBanner
 )
 
@@ -41,6 +43,14 @@
     <script>window.GOVUKFrontend.initAll();</script>
     <script>window.HMRCFrontend.initAll();</script>
     @scriptsBlock
+}
+
+@header = @{
+        hmrcHeader(Header(
+            serviceName = Some(messages("service.name")),
+            serviceUrl = messages("service.homePageUrl"),
+            signOutHref = Some(controllers.routes.SignOutController.signOut().url)
+            ))
 }
 
 @beforeContentBlock = {
@@ -67,6 +77,7 @@
     @govukLayout(
         pageTitle = title.map(_ + messages("page.title.suffix")),
         headBlock = Some(head(headBlock, enableTimeoutDialog)),
+        headerBlock = Some(header),
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
         footerItems = footerLinks.links()

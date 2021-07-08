@@ -240,6 +240,8 @@ POST        /disclosure/deferment-account-details-duties                        
 GET         /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onLoad
 POST        /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onSubmit
 
+GET         /sign-out                                                                          controllers.SignOutController.signOut()
+
 # Underpayments
 
 GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad
