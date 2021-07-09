@@ -18,7 +18,7 @@ package messages
 
 object UpdateCaseConfirmationMessages extends BaseMessages {
 
-  val pageTitle = "Information added"
+  val pageTitle = "Confirmation"
   val heading = "Information added"
   def paragraph(caseId: String): String =
     s"We have received the additional information for disclosure reference number: $caseId."

@@ -973,7 +973,7 @@ updateCase.cya.moreDocumentation.change = Change add more documentation?
 updateCase.cya.moreInformation.change = Change additional information
 
 # Update Case - Confirmation Page
-updateCase.confirmation.pageTitle = Information added
+updateCase.confirmation.pageTitle = Confirmation
 updateCase.confirmation.heading = Information added
 updateCase.confirmation.p = We have received the additional information for disclosure reference number: {0}.
 updateCase.confirmation.whatHappensNext = What happens next
