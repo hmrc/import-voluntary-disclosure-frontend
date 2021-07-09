@@ -47,11 +47,8 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the layout" should {
     s"have the sign out url" in {
-
       lazy val markup: Html = target("")(Html(""))
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
-
-
       element("body > header > div > div > div.govuk-header__content > nav > a")
         .attr("href")
         .contains(MockAppConfig.signOutUrl) mustBe true
