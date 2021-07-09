@@ -18,7 +18,6 @@ package views.templates
 
 import base.ViewBaseSpec
 import messages.BaseMessages
-import mocks.config.MockAppConfig
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import org.jsoup.Jsoup
@@ -51,7 +50,7 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
       element("body > header > div > div > div.govuk-header__content > nav > a")
         .attr("href")
-        .contains(MockAppConfig.signOutUrl) mustBe true
+        .contains(controllers.routes.SignOutController.signOut().url) mustBe true
     }
 
   }

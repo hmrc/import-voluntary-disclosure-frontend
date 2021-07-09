@@ -35,7 +35,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
 
   override val appName: String = "import-voluntary-disclosure-frontend"
   override val loginUrl: String = "TBC"
-  override val signOutUrl: String = "/disclose-import-taxes-underpayment/sign-out"
+  override val signOutUrl: String = "TBC"
   override val loginContinueUrl: String = "TBC"
   override val addressLookupFrontend: String = "TBC"
   override val addressLookupCallback: String = "/disclose-import-taxes-underpayment/address-callback"
