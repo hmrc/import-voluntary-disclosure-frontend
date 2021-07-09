@@ -63,7 +63,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     val result = request.userAnswers.get(UnderpaymentDetailSummaryPage).map {
       case Nil => fallbackResponse
       case underpayments => Ok(
-        view(formProvider(), summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length)
+        view(formProvider(), summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length, request.isOneEntry)
       )
     }.getOrElse(fallbackResponse)
 
@@ -74,7 +74,8 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val underpayments = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
-        Future.successful(BadRequest(view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length)))
+        val content = view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length, request.isOneEntry)
+        Future.successful(BadRequest(content))
       },
       addAnother => {
         if (addAnother) {

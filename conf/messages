@@ -276,9 +276,10 @@ underpaymentDetailsSummary.pageHeader = Underpayment summary
 underpaymentDetailsSummary.pageHeaderSmall = Amount owed for each type of duty or tax
 underpaymentDetailsSummary.owedToHMRC = Total owed to HMRC
 underpaymentDetailsSummary.radioMessage = Add another underpayment?
-underpaymentDetailsSummary.radioMessage.hint = You must tell us about all the types of duty or tax that were underpaid on the original import declaration.
+underpaymentDetailsSummary.radioMessage.hint.oneEntry = You must tell us about all the types of duty or tax that were underpaid on the original import declaration.
+underpaymentDetailsSummary.radioMessage.hint.bulkEntry = You must tell us about all the types of duty or tax that were underpaid on the original import declarations.
 underpaymentDetailsSummary.fullList = You cannot add any more underpayment details as you have selected all the possible types of tax or duty that can apply to an import declaration.
-underpaymentDetailsSummary.error.required = Select yes if you want to add another type of tax or duty underpayment
+underpaymentDetailsSummary.error.required = Select yes if you want to add another type of duty or tax underpayment
 underpaymentDetailsSummary.B00 = Import VAT
 underpaymentDetailsSummary.A00 = Customs Duty
 underpaymentDetailsSummary.E00 = Excise duty
@@ -462,7 +463,7 @@ uploadAnotherFile.error.required = Select yes to upload another file
 # Remove Uploaded File page
 removeUploadedFile.pageTitle = Are you sure you want to remove this file?
 removeUploadedFile.heading = Are you sure you want to remove this file?
-removeUploadedFile.error.required = Select yes to remove file
+removeUploadedFile.error.required = Select yes if you want to remove this file
 
 # Confirmation page
 confirmation.pageTitle = Confirmation screen
@@ -761,7 +762,7 @@ moreInformation.bulk.pageTitle = What were the reasons for the underpayment of t
 moreInformation.bulk.heading = What were the reasons for the underpayment of tax or duty?
 moreInformation.bulk.p1 = Tell us why the duty or tax was underpaid for all the entries included in this disclosure.
 moreInformation.bulk.p2 = You do not need to repeat anything that you have already provided in the file you have uploaded.
-moreInformation.bulk.error.required = Enter the reasons for the underpayment of tax of duty
+moreInformation.bulk.error.required = Enter the reasons for the underpayment of tax or duty
 moreInformation.bulk.error.maxLength = The reasons for the underpayment must be 1500 characters or fewer
 moreInformation.bulk.error.noEmoji = The reasons for the underpayment must not include emojis
 
@@ -911,6 +912,14 @@ importerVatRegistered.pageTitle = Is the importer VAT registered?
 importerVatRegistered.heading = Is the importer VAT registered?
 importerVatRegistered.error.required = Select yes if the importer is VAT registered
 
+# Update Additional Information Page
+updateAdditionalInformation.pageTitle = Tell us any additional information
+updateAdditionalInformation.heading = Tell us any additional information
+updateAdditionalInformation.p1 = You may have been asked to provide more information to help us progress the disclosure.
+updateAdditionalInformation.error.required = Enter the additional information about the underpayment
+updateAdditionalInformation.error.maxLength = The additional information must be 1500 characters or fewer
+updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
+
 # Session Timeout Page
 timeout.pageTitle = For your security, we signed you out
 timeout.heading = For your security, we signed you out
@@ -933,8 +942,32 @@ disclosureReference.hint = This is 22 characters and starts with C18, it was iss
 disclosureReference.error.required = Enter the disclosure reference number
 disclosureReference.error.format = Enter the disclosure reference number in the correct format
 
-
 # Update Case - More Documentation Page
 moreDocumentation.pageTitle = Do you need to send us more documentation?
 moreDocumentation.heading = Do you need to send us more documentation?
 moreDocumentation.error.required = Select yes to send us more documentation
+
+# Upload Supporting Documentation page
+uploadSupportingDocumentation.pageTitle = Upload documentation
+uploadSupportingDocumentation.pageHeader = Upload documentation
+uploadSupportingDocumentation.typesOfFile = Types of file you can upload
+uploadSupportingDocumentation.PDF = PDF (.pdf)
+uploadSupportingDocumentation.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+uploadSupportingDocumentation.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadSupportingDocumentation.image = image (.jpg, .png or .tiff)
+uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
+uploadSupportingDocumentation.uploadFile = Upload a file
+uploadSupportingDocumentation.uploadChosenFile = Upload chosen file
+
+# Update Case - Check Your Answers Page
+updateCase.cya.pageTitle = Check your information before adding it to the disclosure
+updateCase.cya.heading = Check your information before adding it to the disclosure
+updateCase.cya.sendDisclosure = Now add your information
+updateCase.cya.disclosureConfirmation = By adding this information you are confirming that, to the best of your knowledge, the details you are providing are correct.
+updateCase.cya.addToTheDisclosure = Add to the disclosure
+updateCase.cya.referenceNumber = Reference number
+updateCase.cya.moreDocumentation = Add more documentation?
+updateCase.cya.moreInformation = Additional information
+updateCase.cya.referenceNumber.change = Change reference number
+updateCase.cya.moreDocumentation.change = Change add more documentation?
+

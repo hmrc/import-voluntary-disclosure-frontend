@@ -17,7 +17,6 @@
 package controllers.actions
 
 import base.SpecBase
-import config.AppConfig
 import mocks.MockHttp
 import mocks.config.MockAppConfig
 import mocks.connectors.MockAuthConnector

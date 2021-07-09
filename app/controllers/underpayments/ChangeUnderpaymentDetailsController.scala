@@ -18,12 +18,11 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailsFormProvider
-import models.requests.DataRequest
 import models.underpayments.UnderpaymentAmount
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
 import play.api.data.FormError
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.ChangeUnderpaymentDetailsView
@@ -43,11 +42,12 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
   extends FrontendController(mcc) with I18nSupport {
 
-  private def backLink(underpaymentType: String, summaryPageChange: Boolean)(implicit request: DataRequest[_]) = {
-    if (summaryPageChange)
+  private def backLink(underpaymentType: String, summaryPageChange: Boolean) = {
+    if (summaryPageChange) {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-    else
+    } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
+    }
   }
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -87,7 +87,8 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
+          val form = formWithErrors.copy(errors = newErrors)
+          Future.successful(BadRequest(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
         },
         value => {
           for {

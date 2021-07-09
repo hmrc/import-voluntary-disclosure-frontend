@@ -33,8 +33,6 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   private val feedbackHost = servicesConfig.getString("feedback-frontend.host")
   lazy val surveyUrl = feedbackHost + servicesConfig.getString("feedback-frontend.url")
 
-  private def requestUri(implicit request: RequestHeader): String = SafeRedirectUrl(host + request.uri).encodedUrl
-
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
   val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
@@ -70,6 +68,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanSuccessRedirectForBulk: String = host + servicesConfig.getString("upscan.successRedirectForBulk")
   lazy val upScanErrorRedirectForBulk: String = host + servicesConfig.getString("upscan.errorRedirectForBulk")
+  lazy val upScanSupportingDocSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocSuccessRedirectForUser")
+  lazy val upScanSupportingDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocErrorRedirectForUser")
   lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
   lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
@@ -134,6 +134,8 @@ trait AppConfig extends FixedConfig {
   val upScanAcceptedFileTypes: String
   val upScanAuthoritySuccessRedirectForUser: String
   val upScanAuthorityErrorRedirectForUser: String
+  val upScanSupportingDocSuccessRedirectForUser: String
+  val upScanSupportingDocErrorRedirectForUser: String
   val privateBetaAllowList: Seq[String]
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String

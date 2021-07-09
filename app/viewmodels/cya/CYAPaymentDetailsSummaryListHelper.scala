@@ -144,7 +144,12 @@ trait CYAPaymentDetailsSummaryListHelper {
   }
 
   private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
-    (answers.get(DefermentPage), answers.get(SplitPaymentPage), request.dutyType, answers.get(DefermentTypePage), answers.get(UploadAuthorityPage), answers.get(DefermentAccountPage)) match {
+    (answers.get(DefermentPage),
+      answers.get(SplitPaymentPage),
+      request.dutyType,
+      answers.get(DefermentTypePage),
+      answers.get(UploadAuthorityPage),
+      answers.get(DefermentAccountPage)) match {
       case (Some(true), Some(true), SelectedDutyTypes.Both, _, _, _) => None
       case (Some(true), _, _, Some("B"), Some(files), Some(dan)) =>
         val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")

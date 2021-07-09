@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.FileUploadProgressMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.FileUploadProgressView
 
@@ -28,7 +27,6 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
   private val reference: String = "11370e18-6e24-453e-b45a-76d3e32ea33d"
-  private val backLink: Call = Call("GET", "url")
   private val action: String = "action/url"
 
 
@@ -36,7 +34,7 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
 
     "called normally" should {
       "have the correct button link" in {
-        lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
+        lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementAttributes("#main-content .govuk-button").get("href").get mustBe action
       }
@@ -44,14 +42,10 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(reference, backLink, action)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(FileUploadProgressMessages.title)
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
-    }
 
     s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
       elementText("h1") mustBe FileUploadProgressMessages.h1

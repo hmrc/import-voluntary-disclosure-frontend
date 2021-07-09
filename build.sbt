@@ -5,6 +5,8 @@ val appName = "import-voluntary-disclosure-frontend"
 
 val silencerVersion = "1.7.5"
 
+lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
+
 lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
   .settings(
@@ -23,6 +25,13 @@ lazy val microservice = Project(appName, file("."))
     // Use the silencer plugin to suppress warnings
     // You may turn it on for `views` too to suppress warnings from unused imports in compiled twirl templates, but this will hide other warnings.
     scalacOptions += "-P:silencer:pathFilters=routes,silencer:pathFilters=twirl",
+    // turn any warnings into errors
+    scalacOptions += "-Xfatal-warnings",
+    scalastyleFailOnWarning := true,
+    // run scalastyle on compile
+    compileScalastyle := scalastyle.in(Compile).toTask("").value,
+    (compile in Compile) := ((compile in Compile) dependsOn compileScalastyle).value,
+
     libraryDependencies ++= Seq(
       compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
       "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
@@ -38,7 +47,7 @@ lazy val microservice = Project(appName, file("."))
         ))
     ),
     // prevent removal of unused code which generates warning errors due to use of third-party libs
-    uglifyCompressOptions := Seq("unused=false", "dead_code=false"),
+    uglifyCompressOptions := Seq("unused=false", "dead_code=false", "warnings=false"),
     pipelineStages := Seq(digest),
     // below line required to force asset pipeline to operate in dev rather than only prod
     pipelineStages in Assets := Seq(concat, uglify),

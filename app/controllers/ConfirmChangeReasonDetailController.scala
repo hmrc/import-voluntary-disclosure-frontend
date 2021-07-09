@@ -57,7 +57,8 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
       case Some(oldReasonList) => {
         request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
           case Some(reason) =>
-            val newReasonList = oldReasonList.filterNot(x => x.boxNumber == reason.original.boxNumber && x.itemNumber == reason.original.itemNumber) ++ Seq(reason.changed)
+            val newReasonList =
+              oldReasonList.filterNot(x => x.boxNumber == reason.original.boxNumber && x.itemNumber == reason.original.itemNumber) ++ Seq(reason.changed)
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, newReasonList))
               _ <- sessionRepository.set(updatedAnswers)

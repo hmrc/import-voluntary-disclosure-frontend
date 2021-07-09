@@ -16,17 +16,16 @@
 
 package forms
 
-import config.AppConfig
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
-
-import javax.inject.Inject
 import models.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.Messages
 
-class EntryDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings with FormHelpers {
+import javax.inject.Inject
+
+class EntryDetailsFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply()(implicit messages: Messages): Form[EntryDetails] = {
 

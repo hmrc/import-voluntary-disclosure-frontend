@@ -51,7 +51,8 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
-  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
+                                   (implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
@@ -112,7 +113,6 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     val uploadInProgressRoute = Ok(
       progressView(
         key = key,
-        backLink = controllers.routes.UploadAuthorityController.onLoad(dutyType, dan),
         action = controllers.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url
       )
     )

@@ -19,7 +19,6 @@ package mocks.services
 import models.ErrorModel
 import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
 import org.scalamock.scalatest.MockFactory
-import play.api.mvc.{AnyContent, Request}
 import services.AddressLookupService
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -39,14 +38,14 @@ trait MockAddressLookupService extends MockFactory {
   }
 
   def setupMockInitialiseJourney(response: InitialiseJourneyResponse): Unit = {
-    (mockAddressLookupService.initialiseJourney(_: HeaderCarrier, _: ExecutionContext, _: Request[AnyContent]))
-      .expects(*, *, *)
+    (mockAddressLookupService.initialiseJourney(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
       .returns(Future.successful(response))
   }
 
   def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit = {
-    (mockAddressLookupService.initialiseImporterJourney(_: HeaderCarrier, _: ExecutionContext, _: Request[AnyContent]))
-      .expects(*, *, *)
+    (mockAddressLookupService.initialiseImporterJourney(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *)
       .returns(Future.successful(response))
   }
 }

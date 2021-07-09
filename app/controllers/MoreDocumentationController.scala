@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.MoreDocumentationFormProvider
 import models.requests.DataRequest
-import pages.MoreDocumentationPage
+import pages.{MoreDocumentationPage, UploadSupportingDocumentationPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -54,20 +54,28 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       moreDocuments =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
-          _ <- sessionRepository.set(updatedAnswers)
+          answersWithMoreDocumentation <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
+          answersWithUpdatedFiles <-
+            if (!moreDocuments) Future.fromTry(answersWithMoreDocumentation.remove(UploadSupportingDocumentationPage))
+            else Future.successful(answersWithMoreDocumentation)
+          existingAnswers = request.userAnswers.get(MoreDocumentationPage)
+          _ <- sessionRepository.set(answersWithUpdatedFiles)
         } yield {
-          if (moreDocuments) {
-            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // upload document page
-          } else
-            Redirect(controllers.routes.MoreDocumentationController.onLoad()) // more information page
+          val hasNotChanged = existingAnswers.contains(moreDocuments)
+          if (request.checkMode && (!moreDocuments || hasNotChanged)) {
+            Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
+          } else if (moreDocuments) {
+            Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad())
+          } else {
+            Redirect(controllers.routes.UpdateAdditionalInformationController.onLoad())
+          }
         }
     )
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.routes.DisclosureReferenceNumberController.onLoad()
     }

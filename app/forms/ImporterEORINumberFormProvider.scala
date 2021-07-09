@@ -18,14 +18,13 @@ package forms
 
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
+import play.api.data.Form
 
 import javax.inject.Inject
-import play.api.data.Form
-import play.api.i18n.Messages
 
 class ImporterEORINumberFormProvider @Inject() extends Mappings with FormHelpers {
 
-  def apply()(implicit messages: Messages): Form[String] =
+  def apply(): Form[String] =
     Form(
       "importerEORI" -> text("importerEORINumber.error.nonEmpty")
         .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))

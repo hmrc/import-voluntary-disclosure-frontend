@@ -18,11 +18,13 @@ package viewmodels
 
 import models.{FileUploadInfo, Index}
 import play.api.i18n.Messages
+import play.api.mvc.Call
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.ActionItem
 
-class AddFileNameRowHelper(val files: Seq[FileUploadInfo])
+class AddFileNameRowHelper(val files: Seq[FileUploadInfo],
+                           call: Index => Call)
                           (implicit val messages: Messages) extends AddToListRowHelper {
 
   def rows: Seq[AddToListRow] = {
@@ -31,12 +33,12 @@ class AddFileNameRowHelper(val files: Seq[FileUploadInfo])
         addToListRow(
           value = HtmlFormat.escape(file.fileName).toString,
           removeAction = Some(ActionItem(
-            href = controllers.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
+            href = call(Index(index)).url,
             content = Text(messages("common.remove")),
             visuallyHiddenText = Some(messages("common.remove") + " " + file.fileName)
           )
+          )
         )
-      )
     }
   }
 }

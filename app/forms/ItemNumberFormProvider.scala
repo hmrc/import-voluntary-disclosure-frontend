@@ -17,14 +17,14 @@
 package forms
 
 import forms.mappings.Mappings
-import javax.inject.Inject
 import play.api.data.Form
-import play.api.i18n.Messages
+
+import javax.inject.Inject
 
 
 class ItemNumberFormProvider @Inject() extends Mappings {
 
-  def apply()(implicit messages: Messages): Form[Int] =
+  def apply(): Form[Int] =
     Form(
       "itemNumber" -> int(
         "itemNo.error.required",

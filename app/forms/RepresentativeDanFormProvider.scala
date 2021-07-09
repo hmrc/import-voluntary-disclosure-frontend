@@ -16,17 +16,16 @@
 
 package forms
 
-import config.AppConfig
 import forms.mappings.Mappings
-import javax.inject.Inject
-import models.{EntryDetails, RepresentativeDan}
+import models.RepresentativeDan
 import play.api.data.Form
 import play.api.data.Forms.mapping
-import play.api.i18n.Messages
 
-class RepresentativeDanFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+import javax.inject.Inject
 
-  def apply()(implicit messages: Messages): Form[RepresentativeDan] = {
+class RepresentativeDanFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[RepresentativeDan] = {
 
     Form( mapping(
       "accountNumber" -> text("repDan.error.input.required")

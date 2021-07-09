@@ -16,23 +16,21 @@
 
 package forms
 
-import config.AppConfig
 import forms.mappings.Mappings
 import models.ContactDetails
 import play.api.data.Form
 import play.api.data.Forms.mapping
-import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 
-class DeclarantContactDetailsFormProvider @Inject()(implicit appConfig: AppConfig) extends Mappings {
+class DeclarantContactDetailsFormProvider @Inject() extends Mappings {
 
   val fullNameRegex = "^[a-zA-Z '-]+$"
   val phoneNumberRegex = "^(\\+)?[0-9 ]{9,16}$"
-  val emailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+  val emailRegex = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
 
-  def apply()(implicit messages: Messages): Form[ContactDetails] =
+  def apply(): Form[ContactDetails] =
     Form(
       mapping(
         "fullName" -> text("declarantContactDetails.error.nameNonEmpty")

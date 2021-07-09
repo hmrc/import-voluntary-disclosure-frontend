@@ -17,7 +17,6 @@
 package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UserAnswers
 import models.requests.DataRequest
 import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
