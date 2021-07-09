@@ -970,4 +970,5 @@ updateCase.cya.moreDocumentation = Add more documentation?
 updateCase.cya.moreInformation = Additional information
 updateCase.cya.referenceNumber.change = Change reference number
 updateCase.cya.moreDocumentation.change = Change add more documentation?
+updateCase.cya.moreInformation.change = Change additional information
 

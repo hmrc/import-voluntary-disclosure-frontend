@@ -93,7 +93,7 @@ object UpdateCaseCheckYourAnswersData {
     ))
   )
 
-  val additionalInformationRow = SummaryListRow(
+  val additionalInformationRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(UpdateCaseCYAMessages.additionalInformation),
       classes = "govuk-!-width-one-third"
@@ -103,9 +103,9 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        changeUrl,
+        controllers.routes.UpdateAdditionalInformationController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some("")
+        visuallyHiddenText = Some(UpdateCaseCYAMessages.changeAdditionalInformation)
       )
     )
     ))
