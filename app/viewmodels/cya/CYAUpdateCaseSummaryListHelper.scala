@@ -85,8 +85,8 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          "url",
-          ""
+          controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
+          messages("updateCase.cya.uploadedFiles.change")
         ))
       )
     }
