@@ -26,12 +26,13 @@
         bullets: components.bullets,
 )
 
-@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, numberOfFilesUploaded: Int)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
     pageTitle = messages("uploadSupportingDocumentation.pageTitle"),
     customBackLinkUrl = Some(backLink),
     form = Some(form),
+    showBackLink = if(numberOfFilesUploaded == 0) false else true
 ) {
 
     @errorSummary(form.errors)
@@ -73,10 +74,10 @@
         )
        </div>
 
-        @button("uploadSupportingDocumentation.uploadChosenFile")
+            @button("uploadSupportingDocumentation.uploadChosenFile")
 
-    </form>
-}
+        </form>
+    }
 
 @{
     //$COVERAGE-OFF$
