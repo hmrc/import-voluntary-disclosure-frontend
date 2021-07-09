@@ -398,3 +398,4 @@ GET         /update-disclosure/additional-information                           
 POST        /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onSubmit
 
 GET         /update-disclosure/check-your-answers                                              controllers.UpdateCaseCheckYourAnswersController.onLoad()
+GET         /update-disclosure/confirmation                                                    controllers.UpdateCaseCheckYourAnswersController.onSubmit()

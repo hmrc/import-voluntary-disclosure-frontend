@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import pages._
 import play.api.i18n.I18nSupport
@@ -23,7 +24,7 @@ import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
-import views.html.UpdateCaseCheckYourAnswersView
+import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,6 +36,8 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      mcc: MessagesControllerComponents,
                                                      sessionRepository: SessionRepository,
                                                      view: UpdateCaseCheckYourAnswersView,
+                                                     confirmationView: UpdateCaseConfirmationView,
+                                                     errorHandler: ErrorHandler,
                                                      implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYAUpdateCaseSummaryListHelper {
 
@@ -47,4 +50,17 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     }
   }
 
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val maybeCaseId = request.userAnswers.get(DisclosureReferenceNumberPage)
+    maybeCaseId match {
+      case Some(caseId) =>
+        for {
+          // TODO: submit the update case request
+          _ <- sessionRepository.remove(request.credId)
+        } yield {
+          Ok(confirmationView(caseId))
+        }
+      case _ => Future.successful(errorHandler.showInternalServerError)
+    }
+  }
 }
