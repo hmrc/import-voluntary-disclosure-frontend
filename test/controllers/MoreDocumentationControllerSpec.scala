@@ -116,22 +116,40 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header for Yes response" in new Test {
+      "return the correct location header for Yes response (changed from No)" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
+          .set(CheckModePage, true).success.value.set(MoreDocumentationPage, false).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.routes.UploadSupportingDocumentationController.onLoad().url)
       }
 
-      "return the correct location header for No response" in new Test {
+      "return the correct location header for Yes response (unchanged)" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
+          .set(CheckModePage, true).success.value.set(MoreDocumentationPage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad().url)
+      }
+
+      "return the correct location header for No response (changed from Yes)" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value.set(MoreDocumentationPage, true).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UpdateAdditionalInformationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad().url)
+      }
+
+      "return the correct location header for No response (unchanged)" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value.set(MoreDocumentationPage, false).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
