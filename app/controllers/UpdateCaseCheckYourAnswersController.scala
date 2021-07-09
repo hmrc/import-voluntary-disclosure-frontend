@@ -16,14 +16,16 @@
 
 package controllers
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
+import services.UpdateCaseService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
-import views.html.UpdateCaseCheckYourAnswersView
+import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,7 +36,10 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      requireData: DataRequiredAction,
                                                      mcc: MessagesControllerComponents,
                                                      sessionRepository: SessionRepository,
+                                                     updateCaseService: UpdateCaseService,
                                                      view: UpdateCaseCheckYourAnswersView,
+                                                     confirmationView: UpdateCaseConfirmationView,
+                                                     errorHandler: ErrorHandler,
                                                      implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYAUpdateCaseSummaryListHelper {
 
@@ -47,4 +52,19 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     }
   }
 
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    request.userAnswers.get(DisclosureReferenceNumberPage) match {
+      case Some(caseId) =>
+        updateCaseService.updateCase().flatMap {
+          case Left(_) =>
+            Future.successful(errorHandler.showInternalServerError)
+          case Right(_) =>
+            sessionRepository
+              .remove(request.credId)
+              .map(_ => Ok(confirmationView(caseId)))
+        }
+      case None =>
+        Future.successful(errorHandler.showInternalServerError)
+    }
+  }
 }
