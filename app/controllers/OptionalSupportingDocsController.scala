@@ -26,8 +26,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.OptionalSupportingDocsView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
@@ -36,7 +35,8 @@ class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  sessionRepository: SessionRepository,
                                                  mcc: MessagesControllerComponents,
                                                  view: OptionalSupportingDocsView,
-                                                 formProvider: OptionalSupportingDocsFormProvider)
+                                                 formProvider: OptionalSupportingDocsFormProvider,
+                                                 implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink = controllers.routes.AnyOtherSupportingDocsController.onLoad()
