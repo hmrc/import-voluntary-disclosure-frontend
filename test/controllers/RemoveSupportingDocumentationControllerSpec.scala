@@ -48,7 +48,7 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RemoveSupportingDocumentationController(messagesApi, mockSessionRepository, authenticatedAction,
-      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, RemoveUploadedFileView)
+      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, RemoveUploadedFileView, ec)
   }
 
 

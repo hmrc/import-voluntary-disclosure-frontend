@@ -36,8 +36,9 @@ class RemoveSupportingDocumentationController @Inject()(override val messagesApi
                                                         requireData: DataRequiredAction,
                                                         formProvider: RemoveUploadedFileFormProvider,
                                                         mcc: MessagesControllerComponents,
-                                                        view: RemoveUploadedFileView
-                                                       )(implicit ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+                                                        view: RemoveUploadedFileView,
+                                                        implicit val ec: ExecutionContext
+                                                       ) extends FrontendController(mcc) with I18nSupport {
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(UploadSupportingDocumentationPage) match {
