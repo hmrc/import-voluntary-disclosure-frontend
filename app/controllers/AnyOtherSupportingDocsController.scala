@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.AnyOtherSupportingDocsFormProvider
-import javax.inject.{Inject, Singleton}
 import pages.AnyOtherSupportingDocsPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -26,8 +25,9 @@ import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.AnyOtherSupportingDocsView
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
@@ -36,7 +36,8 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  sessionRepository: SessionRepository,
                                                  mcc: MessagesControllerComponents,
                                                  formProvider: AnyOtherSupportingDocsFormProvider,
-                                                 view: AnyOtherSupportingDocsView)
+                                                 view: AnyOtherSupportingDocsView,
+                                                 implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.SupportingDocController.onLoad()

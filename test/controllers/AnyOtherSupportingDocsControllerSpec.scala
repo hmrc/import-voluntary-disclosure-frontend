@@ -45,7 +45,7 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new AnyOtherSupportingDocsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, anyOtherSupportingDocsView)
+      mockSessionRepository, messagesControllerComponents, form, anyOtherSupportingDocsView, ec)
   }
 
   "GET AnyOtherSupportingDocs Page" should {
