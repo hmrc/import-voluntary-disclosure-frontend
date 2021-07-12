@@ -61,7 +61,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new NumberOfEntriesController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, appConfig, messagesControllerComponents, form, numberOfEntriesPage)
+      mockSessionRepository, appConfig, messagesControllerComponents, form, numberOfEntriesPage, ec)
   }
 
   "GET onLoad" should {
