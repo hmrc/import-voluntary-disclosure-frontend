@@ -28,8 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{CurrencyAmendmentView, TextAmendmentView, WeightAmendmentView}
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ChangeUnderpaymentReasonDetailsController @Inject()(identify: IdentifierAction,
@@ -40,7 +39,8 @@ class ChangeUnderpaymentReasonDetailsController @Inject()(identify: IdentifierAc
                                                           formProvider: UnderpaymentReasonAmendmentFormProvider,
                                                           textAmendmentView: TextAmendmentView,
                                                           weightAmendmentView: WeightAmendmentView,
-                                                          currencyAmendmentView: CurrencyAmendmentView
+                                                          currencyAmendmentView: CurrencyAmendmentView,
+                                                          implicit val ec: ExecutionContext
                                                          )
   extends FrontendController(mcc) with I18nSupport {
 
