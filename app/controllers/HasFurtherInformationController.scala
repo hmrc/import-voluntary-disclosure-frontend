@@ -28,8 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.HasFurtherInformationView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
@@ -39,7 +38,8 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
                                                 sessionRepository: SessionRepository,
                                                 mcc: MessagesControllerComponents,
                                                 formProvider: HasFurtherInformationFormProvider,
-                                                view: HasFurtherInformationView)
+                                                view: HasFurtherInformationView,
+                                                implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
