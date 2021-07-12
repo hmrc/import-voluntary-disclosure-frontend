@@ -33,7 +33,7 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
 
     lazy val controller = new BoxGuidanceController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig)
+      messagesControllerComponents, dataRequiredAction, view, appConfig, ec)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view = injector.instanceOf[BoxGuidanceView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
