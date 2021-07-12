@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
@@ -35,6 +33,7 @@ import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.{BulkUploadFileView, FileUploadProgressView, FileUploadSuccessView}
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class BulkUploadFileControllerSpec extends ControllerSpecBase {
@@ -106,7 +105,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
       setupMocks()
       new BulkUploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, bulkUploadFileView, uploadProgressView, form, bulkUploadSuccessView,
-        MockAppConfig)
+        MockAppConfig, ec)
     }
   }
 
