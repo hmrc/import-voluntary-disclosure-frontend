@@ -49,7 +49,7 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RemoveUnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, removeUnderpaymentDetailsView)
+      mockSessionRepository, messagesControllerComponents, form, removeUnderpaymentDetailsView, ec)
   }
 
   "GET onLoad" should {
