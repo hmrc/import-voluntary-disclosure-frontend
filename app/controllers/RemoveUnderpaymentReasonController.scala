@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RemoveUnderpaymentReasonFormProvider
-import javax.inject.{Inject, Singleton}
 import models.{UnderpaymentReason, UserAnswers}
 import pages.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.I18nSupport
@@ -28,8 +27,8 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.RemoveUnderpaymentReasonView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
@@ -39,7 +38,8 @@ class RemoveUnderpaymentReasonController @Inject()(identify: IdentifierAction,
                                                    sessionRepository: SessionRepository,
                                                    mcc: MessagesControllerComponents,
                                                    formProvider: RemoveUnderpaymentReasonFormProvider,
-                                                   view: RemoveUnderpaymentReasonView)
+                                                   view: RemoveUnderpaymentReasonView,
+                                                   implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   lazy val backLink: Call = controllers.routes.ChangeUnderpaymentReasonController.onLoad()
