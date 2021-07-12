@@ -31,8 +31,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
                                            getData: DataRetrievalAction,
@@ -40,7 +39,8 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
                                            sessionRepository: SessionRepository,
                                            mcc: MessagesControllerComponents,
                                            underpaymentTypeView: UnderpaymentTypeView,
-                                           formProvider: UnderpaymentTypeFormProvider)
+                                           formProvider: UnderpaymentTypeFormProvider,
+                                           implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")

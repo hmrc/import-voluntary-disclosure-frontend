@@ -44,7 +44,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UnderpaymentTypeController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentTypeView, form)
+      mockSessionRepository, messagesControllerComponents, underpaymentTypeView, form, ec)
   }
 
   "GET onLoad" should {
