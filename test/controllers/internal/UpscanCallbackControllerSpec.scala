@@ -28,28 +28,30 @@ import scala.concurrent.Future
 
 class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse("""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "READY",
-    |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-    |   "uploadDetails": {
-    |     "uploadTimestamp": "2018-04-24T09:30:00Z",
-    |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-    |     "fileName": "test.pdf",
-    |     "fileMimeType": "application/pdf"
-    |   }
-    | }""".stripMargin)
+  private val callbackReadyJson: JsValue = Json.parse(
+    """
+      | {
+      |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+      |   "fileStatus" : "READY",
+      |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+      |   "uploadDetails": {
+      |     "uploadTimestamp": "2018-04-24T09:30:00Z",
+      |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+      |     "fileName": "test.pdf",
+      |     "fileMimeType": "application/pdf"
+      |   }
+      | }""".stripMargin)
 
-  private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(s"""
-    | {
-    |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    |   "fileStatus" : "READY",
-    |    "failureDetails": {
-    |        "failureReason": "$reason",
-    |        "message": "$message"
-    |    }
-    | }""".stripMargin)
+  private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(
+    s"""
+       | {
+       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+       |   "fileStatus" : "READY",
+       |    "failureDetails": {
+       |        "failureReason": "$reason",
+       |        "message": "$message"
+       |    }
+       | }""".stripMargin)
 
   private val callbackFailedQuarentineJson: JsValue = callbackFailedBuilder(
     reason = "QUARANTINE",
@@ -68,13 +70,13 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockFileUploadRepository {
 
-    def setupMocks():Unit = {
+    def setupMocks(): Unit = {
       MockedFileUploadRepository.updateRecord(Future.successful(true))
     }
 
     lazy val controller = {
       setupMocks()
-      new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, MockAppConfig)
+      new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, MockAppConfig, ec)
     }
   }
 
@@ -90,6 +92,7 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
         override def setupMocks(): Unit = {
           MockedFileUploadRepository.updateRecord(Future.successful(false))
         }
+
         val result = controller.callbackHandler()(fakeRequest.withBody(callbackReadyJson))
 
         status(result) mustBe Status.INTERNAL_SERVER_ERROR

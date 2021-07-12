@@ -23,12 +23,14 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.errors.{UnauthorisedAgentAccessView, UnauthorisedPrivateBetaAccessView, UnauthorisedView}
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
 
 class UnauthorisedController @Inject()(mcc: MessagesControllerComponents,
                                        view: UnauthorisedView,
                                        unauthorisedAgentAccessView: UnauthorisedAgentAccessView,
                                        unauthorisedPrivateBetaView: UnauthorisedPrivateBetaAccessView,
-                                       implicit val appConfig: AppConfig)
+                                       implicit val appConfig: AppConfig,
+                                       implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
