@@ -47,7 +47,7 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new ChangeUnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, changeUnderpaymentDetailsView)
+      mockSessionRepository, messagesControllerComponents, form, changeUnderpaymentDetailsView, ec)
   }
 
   "GET onLoad" when {
