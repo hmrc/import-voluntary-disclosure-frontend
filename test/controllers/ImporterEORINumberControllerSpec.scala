@@ -54,7 +54,8 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      ImporterEORINumberView
+      ImporterEORINumberView,
+      ec
     )
     private lazy val ImporterEORINumberView = app.injector.instanceOf[ImporterEORINumberView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
