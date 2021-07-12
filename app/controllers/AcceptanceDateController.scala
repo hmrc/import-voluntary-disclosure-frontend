@@ -19,8 +19,6 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.AcceptanceDateFormProvider
 import models.requests.DataRequest
-
-import javax.inject.{Inject, Singleton}
 import pages.AcceptanceDatePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -29,8 +27,8 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{AcceptanceDateBulkView, AcceptanceDateView}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AcceptanceDateController @Inject()(identify: IdentifierAction,
@@ -40,7 +38,8 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
                                          mcc: MessagesControllerComponents,
                                          formProvider: AcceptanceDateFormProvider,
                                          view: AcceptanceDateView,
-                                         bulkView: AcceptanceDateBulkView)
+                                         bulkView: AcceptanceDateBulkView,
+                                         implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -59,8 +58,8 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
 
     formProvider(request.isOneEntry).bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(
-          if (request.isOneEntry) view(formWithErrors, backLink()) else bulkView(formWithErrors, backLink())
-        )),
+        if (request.isOneEntry) view(formWithErrors, backLink()) else bulkView(formWithErrors, backLink())
+      )),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(AcceptanceDatePage, value))

@@ -20,8 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
 import models.NumberOfEntries._
+import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.{AcceptanceDatePage, CheckModePage, NumberOfEntriesPage}
 import play.api.http.Status
@@ -62,7 +62,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new AcceptanceDateController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView, acceptanceDateBulkView)
+      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView, acceptanceDateBulkView, ec)
   }
 
   val acceptanceDateYes: Boolean = true
