@@ -46,7 +46,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, underpaymentDetailsView)
+      mockSessionRepository, messagesControllerComponents, form, underpaymentDetailsView, ec)
   }
 
   "GET onLoad" should {
@@ -76,7 +76,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType,false).url)
+          Some(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, false).url)
       }
 
       "update the UserAnswers in session" in new Test {

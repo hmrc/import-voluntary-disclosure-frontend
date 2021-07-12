@@ -27,8 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentDetailsView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
                                               sessionRepository: SessionRepository,
                                               mcc: MessagesControllerComponents,
                                               formProvider: UnderpaymentDetailsFormProvider,
-                                              view: UnderpaymentDetailsView)
+                                              view: UnderpaymentDetailsView,
+                                              implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentTypeController.onLoad()
