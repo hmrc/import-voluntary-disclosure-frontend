@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.EnterCustomsProcedureCodeFormProvider
@@ -31,6 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.EnterCustomsProcedureCodeView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
@@ -56,7 +55,8 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       EnterCustomsProcedureCodeView,
-      form
+      form,
+      ec
     )
     private lazy val EnterCustomsProcedureCodeView = app.injector.instanceOf[EnterCustomsProcedureCodeView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
