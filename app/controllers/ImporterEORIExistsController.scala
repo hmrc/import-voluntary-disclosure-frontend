@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.ImporterEORIExistsFormProvider
-import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
 import pages.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterVatRegisteredPage}
 import play.api.i18n.I18nSupport
@@ -27,8 +26,8 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterEORIExistsView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
                                              sessionRepository: SessionRepository,
                                              mcc: MessagesControllerComponents,
                                              formProvider: ImporterEORIExistsFormProvider,
-                                             view: ImporterEORIExistsView
+                                             view: ImporterEORIExistsView,
+                                             implicit val ec: ExecutionContext
                                             )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -59,9 +59,9 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
             _ <- sessionRepository.set(updatedAnswers)
           }
-            yield {
-              Redirect(controllers.routes.ImporterEORINumberController.onLoad())
-            }
+          yield {
+            Redirect(controllers.routes.ImporterEORINumberController.onLoad())
+          }
         } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
@@ -69,14 +69,14 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
             _ <- sessionRepository.set(updatedAnswers)
           }
-            yield {
-              if (request.checkMode) {
-                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-              } else {
-                Redirect(controllers.routes.NumberOfEntriesController.onLoad())
+          yield {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.routes.NumberOfEntriesController.onLoad())
 
-              }
             }
+          }
         }
       }
     )

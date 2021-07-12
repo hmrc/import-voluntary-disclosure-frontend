@@ -59,7 +59,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new ImporterEORIExistsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, importerEORIExistsView)
+      mockSessionRepository, messagesControllerComponents, form, importerEORIExistsView, ec)
   }
 
   val importerEORIExistsYes: Boolean = true
