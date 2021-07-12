@@ -49,7 +49,8 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      declarantContactDetailsView
+      declarantContactDetailsView,
+      ec
     )
     private lazy val declarantContactDetailsView = app.injector.instanceOf[DeclarantContactDetailsView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
