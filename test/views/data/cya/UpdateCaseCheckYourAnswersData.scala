@@ -75,7 +75,7 @@ object UpdateCaseCheckYourAnswersData {
     )))
   )
 
-  val fileUploadRow = SummaryListRow(
+  val fileUploadRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(UpdateCaseCYAMessages.filesUploaded(1)),
       classes = "govuk-!-width-one-third"
@@ -85,9 +85,9 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        changeUrl,
+        controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some("")
+        visuallyHiddenText = Some(UpdateCaseCYAMessages.changeUploadedFiles)
       )
     )
     ))

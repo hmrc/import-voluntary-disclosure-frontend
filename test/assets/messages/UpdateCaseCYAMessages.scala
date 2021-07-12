@@ -30,6 +30,7 @@ object UpdateCaseCYAMessages extends BaseMessages {
   val changeReferenceNumber: String = "Change reference number"
   val changeMoreDocumentation: String = "Change add more documentation?"
   val changeAdditionalInformation: String = "Change additional information"
+  val changeUploadedFiles: String = "Change uploaded files"
 
   def filesUploaded(numberOfFiles: Int): String = {
     if (numberOfFiles == 1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
