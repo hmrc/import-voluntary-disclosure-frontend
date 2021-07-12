@@ -49,7 +49,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form)
+      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form, ec)
   }
 
   "GET onLoad" should {
