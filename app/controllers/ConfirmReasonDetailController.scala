@@ -30,15 +30,15 @@ import viewmodels.ActionItemHelper
 import views.html.ConfirmReasonDetailView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                                               getData: DataRetrievalAction,
                                               requireData: DataRequiredAction,
                                               sessionRepository: SessionRepository,
                                               mcc: MessagesControllerComponents,
-                                              view: ConfirmReasonDetailView)
+                                              view: ConfirmReasonDetailView,
+                                              implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
 
