@@ -28,8 +28,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ItemNumberView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class ItemNumberController @Inject()(identify: IdentifierAction,
                                      getData: DataRetrievalAction,
@@ -37,7 +36,8 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
                                      sessionRepository: SessionRepository,
                                      mcc: MessagesControllerComponents,
                                      view: ItemNumberView,
-                                     formProvider: ItemNumberFormProvider
+                                     formProvider: ItemNumberFormProvider,
+                                     implicit val ec: ExecutionContext
                                     )
   extends FrontendController(mcc) with I18nSupport {
 
