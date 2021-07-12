@@ -68,7 +68,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new EntryDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, entryDetailsView)
+      mockSessionRepository, messagesControllerComponents, form, entryDetailsView, ec)
   }
 
   "GET onLoad" should {
