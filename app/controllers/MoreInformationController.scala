@@ -28,8 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.MoreInformationView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
@@ -39,7 +38,8 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
                                           sessionRepository: SessionRepository,
                                           mcc: MessagesControllerComponents,
                                           formProvider: MoreInformationFormProvider,
-                                          view: MoreInformationView)
+                                          view: MoreInformationView,
+                                          implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -62,7 +62,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           } else {
-            if (request.isOneEntry){
+            if (request.isOneEntry) {
               Redirect(controllers.routes.SupportingDocController.onLoad())
             } else {
               Redirect(controllers.routes.DeclarantContactDetailsController.onLoad())
@@ -77,7 +77,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      if(request.isOneEntry) {
+      if (request.isOneEntry) {
         Some(controllers.routes.HasFurtherInformationController.onLoad())
       } else {
         Some(controllers.routes.BulkUploadFileController.onLoad())
