@@ -52,7 +52,8 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       itemNumberView,
-      form
+      form,
+      ec
     )
     private lazy val itemNumberView = app.injector.instanceOf[ItemNumberView]
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
