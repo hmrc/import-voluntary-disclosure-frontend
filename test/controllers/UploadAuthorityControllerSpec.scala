@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.LocalDateTime
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.UploadFileFormProvider
@@ -38,6 +36,7 @@ import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadAuthorityControllerSpec extends ControllerSpecBase {
@@ -111,7 +110,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadAuthorityController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadAuthorityView,
-        progressView, form, successView, MockAppConfig)
+        progressView, form, successView, MockAppConfig, ec)
     }
   }
 

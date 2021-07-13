@@ -19,7 +19,6 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
-import javax.inject.{Inject, Singleton}
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import models.upscan._
@@ -32,8 +31,8 @@ import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 @Singleton
@@ -48,7 +47,9 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                           progressView: FileUploadProgressView,
                                           formProvider: UploadFileFormProvider,
                                           successView: FileUploadSuccessView,
-                                          implicit val appConfig: AppConfig)
+                                          implicit val appConfig: AppConfig,
+                                          implicit val ec: ExecutionContext
+                                         )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
   private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
