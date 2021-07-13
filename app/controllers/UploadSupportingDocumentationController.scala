@@ -65,8 +65,10 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
       case _ => formProvider()
     }
 
+    val numberOfFilesUploaded: Int = request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty).length
+
     upScanService.initiateSupportingDocJourney().map { response =>
-      Ok(view(form, response, backLink()))
+      Ok(view(form, response, backLink(), numberOfFilesUploaded, request.checkMode))
         .removingFromSession("SupportingDocumentationUpscanReference")
         .addingToSession("SupportingDocumentationUpscanReference" -> response.reference.value)
     }
