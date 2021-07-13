@@ -21,6 +21,7 @@ import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
+import models.requests.DataRequest
 import pages.{KnownEoriDetailsPage, TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -29,11 +30,9 @@ import repositories.SessionRepository
 import services.EoriDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TraderAddressCorrectView
-import javax.inject.Singleton
-import models.requests.DataRequest
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.Singleton
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
@@ -44,8 +43,9 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
                                                val errorHandler: ErrorHandler,
                                                mcc: MessagesControllerComponents,
                                                formProvider: TraderAddressCorrectFormProvider,
-                                               view: TraderAddressCorrectView
-                                         )
+                                               view: TraderAddressCorrectView,
+                                               implicit val ec: ExecutionContext
+                                              )
   extends FrontendController(mcc) with I18nSupport {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
@@ -77,7 +77,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            if(request.checkMode) {
+            if (request.checkMode) {
               Redirect(controllers.routes.CheckYourAnswersController.onLoad())
             } else {
               Redirect(controllers.routes.DefermentController.onLoad())
