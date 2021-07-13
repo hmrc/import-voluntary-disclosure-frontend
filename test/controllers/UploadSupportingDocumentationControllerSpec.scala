@@ -101,7 +101,7 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
       setupMocks()
       new UploadSupportingDocumentationController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
         mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadDocumentationView,
-        progressView, form, MockAppConfig)
+        progressView, form, MockAppConfig, ec)
     }
   }
 
