@@ -46,7 +46,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
 
     val timeoutConfig: JsObject = Json.obj(
       "timeoutAmount" -> conf.timeoutPeriod,
-      "timeoutUrl" -> "TBC" //TODO: Needs to point somewhere
+      "timeoutUrl" -> s"${config.host}/disclose-import-taxes-underpayment/timeout-signed-out"
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("address_lookupPage.selectPage.heading"),

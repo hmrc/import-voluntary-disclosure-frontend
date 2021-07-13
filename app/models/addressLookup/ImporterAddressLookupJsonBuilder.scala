@@ -20,7 +20,6 @@ import config.AppConfig
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
 
-
 case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: MessagesApi, config: AppConfig) {
 
   // general journey overrides
@@ -46,7 +45,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val timeoutConfig: JsObject = Json.obj(
       "timeoutAmount" -> conf.timeoutPeriod,
-      "timeoutUrl" -> "TBC" //TODO: Needs to point somewhere
+      "timeoutUrl" -> s"${config.host}/disclose-import-taxes-underpayment/timeout-signed-out"
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("importerAddress_lookupPage.selectPage.heading"),

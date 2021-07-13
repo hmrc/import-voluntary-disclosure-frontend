@@ -28,8 +28,9 @@ class AddressLookupJsonBuilderSpec extends SpecBase {
     "Serialize to new address lookup Json when using addressLookup v2" when {
 
       "the continueUrl is given to the user" in {
+        val timeoutUrl = "TBC/disclose-import-taxes-underpayment/timeout-signed-out"
 
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe addressLookupV2Json
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe addressLookupV2Json(timeoutUrl)
       }
     }
   }
