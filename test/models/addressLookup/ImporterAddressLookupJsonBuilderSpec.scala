@@ -28,9 +28,7 @@ class ImporterAddressLookupJsonBuilderSpec extends SpecBase {
     "Serialize to new address lookup Json when using importerAddressLookup v2" when {
 
       "the continueUrl is given to the user" in {
-        val timeoutUrl = "TBC/disclose-import-taxes-underpayment/timeout-signed-out"
-
-        Json.toJson(ImporterAddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe importerAddressLookupV2Json(timeoutUrl)
+        Json.toJson(ImporterAddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe importerAddressLookupV2Json
       }
     }
   }

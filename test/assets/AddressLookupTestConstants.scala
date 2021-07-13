@@ -102,7 +102,7 @@ object AddressLookupTestConstants extends BaseMessages {
     )
   )
 
-  def addressLookupV2Json(timeoutUrl: String): JsObject = Json.obj(fields =
+  val addressLookupV2Json: JsObject = Json.obj(fields =
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
@@ -112,7 +112,7 @@ object AddressLookupTestConstants extends BaseMessages {
       "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> timeoutUrl
+        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,
@@ -183,7 +183,7 @@ object AddressLookupTestConstants extends BaseMessages {
     )
   )
 
-  def importerAddressLookupV2Json(timeoutUrl: String): JsObject = Json.obj(fields =
+  val importerAddressLookupV2Json: JsObject = Json.obj(fields =
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
@@ -193,7 +193,7 @@ object AddressLookupTestConstants extends BaseMessages {
       "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> timeoutUrl
+        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,
