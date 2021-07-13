@@ -27,8 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.WhatDoYouWantToDoView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
                                             getData: DataRetrievalAction,
@@ -36,7 +35,9 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
                                             sessionRepository: SessionRepository,
                                             mcc: MessagesControllerComponents,
                                             formProvider: WhatDoYouWantToDoFormProvider,
-                                            view: WhatDoYouWantToDoView) extends FrontendController(mcc) with I18nSupport {
+                                            view: WhatDoYouWantToDoView,
+                                            implicit val ec: ExecutionContext)
+  extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
