@@ -18,7 +18,6 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import javax.inject.{Inject, Singleton}
 import models.UserAnswers
 import pages.{FileUploadPage, HasFurtherInformationPage}
 import play.api.i18n.I18nSupport
@@ -26,15 +25,17 @@ import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.SupportingDocView
 
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SupportingDocController @Inject()(identify: IdentifierAction,
-                                     getData: DataRetrievalAction,
-                                     mcc: MessagesControllerComponents,
-                                     requireData: DataRequiredAction,
-                                     view: SupportingDocView,
-                                     implicit val appConfig: AppConfig)
+                                        getData: DataRetrievalAction,
+                                        mcc: MessagesControllerComponents,
+                                        requireData: DataRequiredAction,
+                                        view: SupportingDocView,
+                                        implicit val appConfig: AppConfig,
+                                        implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private[controllers] def backLink(userAnswers: UserAnswers): Call = {
