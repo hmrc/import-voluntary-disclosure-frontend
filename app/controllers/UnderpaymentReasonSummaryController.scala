@@ -29,14 +29,15 @@ import viewmodels.ActionItemHelper
 import views.html.UnderpaymentReasonSummaryView
 
 import javax.inject.Inject
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentReasonSummaryView,
-                                                    formProvider: UnderpaymentReasonSummaryFormProvider
+                                                    formProvider: UnderpaymentReasonSummaryFormProvider,
+                                                    implicit val ec: ExecutionContext
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -74,6 +75,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
   private[controllers] def summaryList(underpaymentReason: Option[Seq[UnderpaymentReason]]
                                       )(implicit messages: Messages): Option[SummaryList] = {
     def changeAction(boxNumber: Int, itemNumber: Int): Call = controllers.routes.ChangeUnderpaymentReasonController.change(boxNumber, itemNumber)
+
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
@@ -95,7 +97,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                   ActionItemHelper.createChangeActionItem(
                     changeAction(underpayment.boxNumber, underpayment.itemNumber).url,
                     underpayment.boxNumber match {
-                      case 33|34|35|36|37|38|39|41|42|43|45|46 => messages(
+                      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
                         "changeUnderpaymentReason.itemLevel.change",
                         underpayment.boxNumber,
                         underpayment.itemNumber
