@@ -66,7 +66,7 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RepresentativeDanController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, representativeDanView, form)
+      mockSessionRepository, messagesControllerComponents, representativeDanView, form, ec)
   }
 
   "GET Representative Dan page" should {
