@@ -29,8 +29,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.RepresentativeDanDutyView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                 getData: DataRetrievalAction,
@@ -38,7 +37,8 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
                                                 sessionRepository: SessionRepository,
                                                 mcc: MessagesControllerComponents,
                                                 view: RepresentativeDanDutyView,
-                                                formProvider: RepresentativeDanFormProvider
+                                                formProvider: RepresentativeDanFormProvider,
+                                                implicit val ec: ExecutionContext
                                                )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -85,14 +85,15 @@ class RepresentativeDanDutyController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
             _ <- sessionRepository.set(updatedAnswers)
-          } yield { if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-          } else {
-            dan.danType match {
-              case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
-              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              dan.danType match {
+                case "A" | "C" => Redirect(controllers.routes.RepresentativeDanImportVATController.onLoad())
+                case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+              }
             }
-          }
           }
         }
       }

@@ -24,8 +24,8 @@ import models.SelectedDutyTypes.Duty
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
-import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
@@ -37,8 +37,8 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
 
   def buildForm(accountNumber: Option[String] = Some("1234567"),
                 danType: Option[String] = Some("A")): Seq[(String, String)] =
-      (accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
-        danType.map(_ => "value" -> danType.get)).toSeq
+    (accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
+      danType.map(_ => "value" -> danType.get)).toSeq
 
   trait Test extends MockSessionRepository {
     private lazy val representativeDanDutyView: RepresentativeDanDutyView = app.injector.instanceOf[RepresentativeDanDutyView]
@@ -64,7 +64,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RepresentativeDanDutyController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, representativeDanDutyView, form)
+      mockSessionRepository, messagesControllerComponents, representativeDanDutyView, form, ec)
   }
 
   "GET Representative Dan Duty page" should {
