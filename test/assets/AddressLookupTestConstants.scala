@@ -112,7 +112,7 @@ object AddressLookupTestConstants extends BaseMessages {
       "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out-view"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,
@@ -193,7 +193,7 @@ object AddressLookupTestConstants extends BaseMessages {
       "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out-view"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,

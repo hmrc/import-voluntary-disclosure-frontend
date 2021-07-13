@@ -45,7 +45,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val timeoutConfig: JsObject = Json.obj(
       "timeoutAmount" -> conf.timeoutPeriod,
-      "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+      "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out-view"
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("importerAddress_lookupPage.selectPage.heading"),

@@ -12,6 +12,7 @@ GET         /importer-address-callback                                          
 
 GET         /keep-alive                                                                        controllers.SessionExpiredController.keepAlive
 GET         /timeout-signed-out                                                                controllers.SessionExpiredController.timeout
+GET         /timeout-signed-out-view                                                           controllers.SessionExpiredController.timeoutView
 
 GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
 
