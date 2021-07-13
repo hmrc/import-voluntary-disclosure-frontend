@@ -69,13 +69,26 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
   }
 
   "GET timeout" should {
-    "return OK" in new Test {
+    "return SEE_OTHER" in new Test {
       val result: Future[Result] = controller.timeout()(fakeRequest)
-      status(result) mustBe Status.OK
+      status(result) mustBe Status.SEE_OTHER
     }
 
     "return HTML" in new Test {
       val result: Future[Result] = controller.timeout()(fakeRequest)
+      contentType(result) mustBe None
+      charset(result) mustBe None
+    }
+  }
+
+  "GET showView" should {
+    "return OK" in new Test {
+      val result: Future[Result] = controller.showView()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return HTML" in new Test {
+      val result: Future[Result] = controller.showView()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }

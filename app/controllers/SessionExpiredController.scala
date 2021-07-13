@@ -40,11 +40,11 @@ class SessionExpiredController @Inject()(identify: IdentifierAction,
   }
 
   def timeout: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    sessionRepository.remove(request.credId).map(_ => Ok(view()).withNewSession)
+    sessionRepository.remove(request.credId).map(_ => Redirect(controllers.routes.SessionExpiredController.showView()))
   }
 
-  def timeoutView: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(view()))
+  def showView: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(view()).withNewSession)
   }
 
   private def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {
