@@ -19,7 +19,7 @@ package connectors
 import config.AppConfig
 import connectors.httpParsers.IvdSubmissionHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
-import models.{EoriDetails, SubmissionResponse}
+import models.{EoriDetails, SubmissionResponse, UpdateResponse}
 import play.api.libs.json.JsValue
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
@@ -34,12 +34,18 @@ class IvdSubmissionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def createCaseUrl = s"${config.importVoluntaryDisclosureSubmission}/api/case"
 
+  private[connectors] def updateCaseUrl = s"${config.importVoluntaryDisclosureSubmission}/api/update-case"
+
   def getEoriDetails(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[EoriDetails]] = {
     http.GET[HttpGetResult[EoriDetails]](getEoriDetailsUrl(id))
   }
 
   def createCase(submission: JsValue)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] = {
     http.POST[JsValue, HttpPostResult[SubmissionResponse]](createCaseUrl, submission)
+  }
+
+  def updateCase(update: JsValue)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[UpdateResponse]] = {
+    http.POST[JsValue, HttpPostResult[UpdateResponse]](updateCaseUrl, update)
   }
 
 }
