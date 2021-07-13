@@ -36,7 +36,6 @@ class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
   extends FrontendController(mcc) with I18nSupport {
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    Thread.sleep(5000)
     withJsonBody[FileUpload] { fileUploadResponse =>
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
         if (isOk) NoContent else InternalServerError

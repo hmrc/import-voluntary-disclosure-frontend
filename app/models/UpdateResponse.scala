@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package models.addressLookup
+package models
 
-import assets.AddressLookupTestConstants.importerAddressLookupV2Json
-import base.SpecBase
-import mocks.config.MockAppConfig
-import play.api.libs.json.Json
+import play.api.libs.json.{Format, Json}
 
-class ImporterAddressLookupJsonBuilderSpec extends SpecBase {
+case class UpdateResponse(id: String)
 
-  "ImporterAddressLookupJsonBuilder" must {
-
-    "Serialize to new address lookup Json when using importerAddressLookup v2" when {
-
-      "the continueUrl is given to the user" in {
-        Json.toJson(ImporterAddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe importerAddressLookupV2Json
-      }
-    }
-  }
-
+object UpdateResponse {
+  implicit val format: Format[UpdateResponse] = Json.format[UpdateResponse]
 }
-

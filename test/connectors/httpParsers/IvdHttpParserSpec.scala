@@ -17,14 +17,14 @@
 package connectors.httpParsers
 
 import base.SpecBase
-import connectors.httpParsers.IvdSubmissionHttpParser.{EoriDetailsReads, SubmissionResponseReads}
-import models.{ContactAddress, EoriDetails, ErrorModel, SubmissionResponse}
+import connectors.httpParsers.IvdHttpParser.{EoriDetailsReads, SubmissionResponseReads, UpdateResponseReads}
+import models._
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.ReusableValues
 
-class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
+class IvdHttpParserSpec extends SpecBase with ReusableValues {
 
   val eoriDetailsJson: EoriDetails = EoriDetails(
     "GB987654321000",
@@ -44,6 +44,12 @@ class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
   )
 
   val submissionResponseModel = SubmissionResponse("1234567890")
+
+  val updateResponseJson: JsObject = Json.obj(
+    "id" -> "1234567890"
+  )
+
+  val updateResponseModel = UpdateResponse("1234567890")
 
   "IVD Submission HttpParser" when {
 
@@ -90,6 +96,27 @@ class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
           HttpResponse(Status.NOT_FOUND, "")) mustBe
           Left(ErrorModel(Status.NOT_FOUND,
             "Downstream error returned when retrieving SubmissionResponse from back end"))
+      }
+    }
+
+    "called to parse an Update Response" should {
+      "the http response status is OK with valid Json" in {
+        UpdateResponseReads.read("", "",
+          HttpResponse(Status.OK, updateResponseJson, Map.empty[String, Seq[String]])) mustBe Right(updateResponseModel)
+      }
+
+      "return an ErrorModel when invalid Json is returned" in {
+        UpdateResponseReads.read("", "",
+          HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,
+            "Invalid Json returned from IVD Update Case"))
+      }
+
+      "return an ErrorModel when NOT_FOUND is returned" in {
+        UpdateResponseReads.read("", "",
+          HttpResponse(Status.NOT_FOUND, "")) mustBe
+          Left(ErrorModel(Status.NOT_FOUND,
+            "Downstream error returned when retrieving UpdateResponse from back end"))
       }
     }
 
