@@ -50,7 +50,8 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      boxNumberView
+      boxNumberView,
+      ec
     )
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
     private lazy val boxNumberView = app.injector.instanceOf[BoxNumberView]

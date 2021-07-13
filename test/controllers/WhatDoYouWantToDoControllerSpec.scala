@@ -58,7 +58,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new WhatDoYouWantToDoController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view)
+      mockSessionRepository, messagesControllerComponents, form, view, ec)
   }
 
   "GET onLoad" should {

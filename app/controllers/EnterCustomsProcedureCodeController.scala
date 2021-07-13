@@ -27,8 +27,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.EnterCustomsProcedureCodeView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
@@ -36,7 +35,8 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     view: EnterCustomsProcedureCodeView,
-                                                    formProvider: EnterCustomsProcedureCodeFormProvider
+                                                    formProvider: EnterCustomsProcedureCodeFormProvider,
+                                                    implicit val ec: ExecutionContext
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -52,12 +52,12 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form,backLink)))
+    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors,backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))

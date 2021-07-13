@@ -31,7 +31,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{FileUploadProgressView, UploadSupportingDocumentationView}
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 import scala.util.Try
 
 @Singleton
@@ -45,7 +45,9 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
                                                         view: UploadSupportingDocumentationView,
                                                         progressView: FileUploadProgressView,
                                                         formProvider: UploadFileFormProvider,
-                                                        implicit val appConfig: AppConfig)
+                                                        implicit val appConfig: AppConfig,
+                                                        implicit val ec: ExecutionContext
+                                                       )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {

@@ -21,14 +21,13 @@ import forms.UnderpaymentReasonAmendmentFormProvider
 import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.data.{Form, FormError}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents, Request}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{CurrencyAmendmentView, TextAmendmentView, WeightAmendmentView}
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction,
@@ -39,13 +38,14 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                       formProvider: UnderpaymentReasonAmendmentFormProvider,
                                                       textAmendmentView: TextAmendmentView,
                                                       weightAmendmentView: WeightAmendmentView,
-                                                      currencyAmendmentView: CurrencyAmendmentView
-                                   )
+                                                      currencyAmendmentView: CurrencyAmendmentView,
+                                                      implicit val ec: ExecutionContext
+                                                     )
   extends FrontendController(mcc) with I18nSupport {
 
   private[controllers] def backLink(boxNumber: Int): Option[Call] = {
     boxNumber match {
-      case 33|34|35|36|37|38|39|41|42|43|45|46 => Some(controllers.routes.ItemNumberController.onLoad())
+      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => Some(controllers.routes.ItemNumberController.onLoad())
       case _ => Some(controllers.routes.BoxNumberController.onLoad())
     }
   }
@@ -67,7 +67,11 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
     formProvider(boxNumber).bindFromRequest().fold(
       formWithErrors => {
         val newErrors = formWithErrors.errors.map { error =>
-          if (error.key.isEmpty) {FormError("amended", error.message)} else {error}
+          if (error.key.isEmpty) {
+            FormError("amended", error.message)
+          } else {
+            error
+          }
         }
         Future.successful(BadRequest(routeToView(boxNumber, itemNumber, formWithErrors.copy(errors = newErrors))))
       },

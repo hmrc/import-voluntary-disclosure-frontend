@@ -46,7 +46,7 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, errorView, appConfig)
+      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, errorView, appConfig, ec)
   }
 
   "GET onLoad" when {

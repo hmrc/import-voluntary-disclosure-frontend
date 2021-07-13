@@ -30,8 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.UserTypeView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
@@ -41,8 +40,9 @@ class UserTypeController @Inject()(identify: IdentifierAction,
                                    mcc: MessagesControllerComponents,
                                    formProvider: UserTypeFormProvider,
                                    view: UserTypeView,
-                                   appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+                                   appConfig: AppConfig,
+                                   implicit val ec: ExecutionContext
+                                  ) extends FrontendController(mcc) with I18nSupport {
 
   private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
     val cyaMode = {

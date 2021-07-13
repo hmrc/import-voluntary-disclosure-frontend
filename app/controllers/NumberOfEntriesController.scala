@@ -30,8 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class NumberOfEntriesController @Inject()(identify: IdentifierAction,
@@ -41,7 +40,8 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
                                           appConfig: AppConfig,
                                           mcc: MessagesControllerComponents,
                                           formProvider: NumberOfEntriesFormProvider,
-                                          view: NumberOfEntriesView)
+                                          view: NumberOfEntriesView,
+                                          implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   implicit val config: AppConfig = appConfig

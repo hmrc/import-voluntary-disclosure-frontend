@@ -59,7 +59,8 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       ItemNumberView,
-      form
+      form,
+      ec
     )
   }
 

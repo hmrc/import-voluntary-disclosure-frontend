@@ -40,7 +40,7 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
 
   private def fakeRequestGenerator(dan: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
-     "value" -> dan
+      "value" -> dan
     )
 
   trait Test extends MockSessionRepository {
@@ -51,7 +51,8 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      view
+      view,
+      ec
     )
     private lazy val view = app.injector.instanceOf[ImporterDanView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

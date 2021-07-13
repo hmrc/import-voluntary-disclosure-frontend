@@ -43,12 +43,12 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
     val formProvider: RemoveUploadedFileFormProvider = injector.instanceOf[RemoveUploadedFileFormProvider]
     val form: RemoveUploadedFileFormProvider = formProvider
 
-    val index:Index = Index.apply(0)
+    val index: Index = Index.apply(0)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new RemoveUploadedFileController(messagesApi,mockSessionRepository,authenticatedAction, dataRetrievalAction, dataRequiredAction,
-       form,messagesControllerComponents, RemoveUploadedFileView)
+    lazy val controller = new RemoveUploadedFileController(messagesApi, mockSessionRepository, authenticatedAction, dataRetrievalAction, dataRequiredAction,
+      form, messagesControllerComponents, RemoveUploadedFileView, ec)
   }
 
 

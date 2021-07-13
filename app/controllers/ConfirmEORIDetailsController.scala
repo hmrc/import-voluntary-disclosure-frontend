@@ -19,8 +19,6 @@ package controllers
 import com.google.inject.Inject
 import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-
-import javax.inject.Singleton
 import models.{EoriDetails, UserAnswers}
 import pages.KnownEoriDetailsPage
 import play.api.Logger
@@ -35,8 +33,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ConfirmEORIDetailsView
 import views.html.errors.ConfirmEoriDetailsErrorView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.Singleton
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
@@ -46,7 +44,8 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
                                              eoriDetailsService: EoriDetailsService,
                                              view: ConfirmEORIDetailsView,
                                              errorView: ConfirmEoriDetailsErrorView,
-                                             implicit val appConfig: AppConfig
+                                             implicit val appConfig: AppConfig,
+                                             implicit val ec: ExecutionContext
                                             )
   extends FrontendController(mcc) with I18nSupport {
 

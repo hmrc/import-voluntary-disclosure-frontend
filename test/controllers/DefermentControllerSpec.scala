@@ -24,8 +24,8 @@ import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
-import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -61,7 +61,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new DefermentController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, defermentView)
+      mockSessionRepository, messagesControllerComponents, form, defermentView, ec)
   }
 
   val acceptanceDateYes: Boolean = true

@@ -36,9 +36,9 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
                                             requireData: DataRequiredAction,
                                             mcc: MessagesControllerComponents,
                                             formProvider: UploadAnotherFileFormProvider,
-                                            view: UploadAnotherFileView)(implicit ec: ExecutionContext)
-
-  extends FrontendController(mcc) with I18nSupport {
+                                            view: UploadAnotherFileView,
+                                            implicit val ec: ExecutionContext
+                                           ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>

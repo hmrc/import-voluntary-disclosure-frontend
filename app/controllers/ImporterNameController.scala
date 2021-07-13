@@ -27,8 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ImporterNameView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ImporterNameController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class ImporterNameController @Inject()(identify: IdentifierAction,
                                        sessionRepository: SessionRepository,
                                        mcc: MessagesControllerComponents,
                                        formProvider: ImporterNameFormProvider,
-                                       view: ImporterNameView
+                                       view: ImporterNameView,
+                                       implicit val ec: ExecutionContext
                                       ) extends FrontendController(mcc) with I18nSupport {
 
 

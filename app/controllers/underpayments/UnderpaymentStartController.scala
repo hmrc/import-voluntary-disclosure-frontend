@@ -26,14 +26,15 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentStartView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class UnderpaymentStartController @Inject()(identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             mcc: MessagesControllerComponents,
                                             requireData: DataRequiredAction,
-                                            view: UnderpaymentStartView)
+                                            view: UnderpaymentStartView,
+                                            implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

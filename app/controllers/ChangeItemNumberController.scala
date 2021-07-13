@@ -27,8 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.ItemNumberView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ChangeItemNumberController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class ChangeItemNumberController @Inject()(identify: IdentifierAction,
                                            sessionRepository: SessionRepository,
                                            mcc: MessagesControllerComponents,
                                            view: ItemNumberView,
-                                           formProvider: ItemNumberFormProvider)
+                                           formProvider: ItemNumberFormProvider,
+                                           implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.ChangeUnderpaymentReasonController.onLoad()

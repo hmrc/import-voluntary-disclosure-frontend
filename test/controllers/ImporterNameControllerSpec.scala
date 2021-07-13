@@ -52,7 +52,8 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       form,
-      ImporterNameView
+      ImporterNameView,
+      ec
     )
     private lazy val ImporterNameView = app.injector.instanceOf[ImporterNameView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -110,7 +111,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
       }
-      
+
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithImporterName
         await(controller.onSubmit()(fakeRequestGenerator("test")))

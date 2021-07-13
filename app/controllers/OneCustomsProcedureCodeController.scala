@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.OneCustomsProcedureCodeFormProvider
-import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
 import pages.{EnterCustomsProcedureCodePage, OneCustomsProcedureCodePage}
 import play.api.i18n.I18nSupport
@@ -27,8 +26,8 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.OneCustomsProcedureCodeView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
                                                   sessionRepository: SessionRepository,
                                                   mcc: MessagesControllerComponents,
                                                   formProvider: OneCustomsProcedureCodeFormProvider,
-                                                  view: OneCustomsProcedureCodeView
+                                                  view: OneCustomsProcedureCodeView,
+                                                  implicit val ec: ExecutionContext
                                                  )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -58,22 +58,22 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
             _ <- sessionRepository.set(updatedAnswers)
           }
-            yield {
-              Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
-            }
+          yield {
+            Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
+          }
         } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
             updatedAnswers <- Future.fromTry(updatedAnswers.remove(EnterCustomsProcedureCodePage))
             _ <- sessionRepository.set(updatedAnswers)
           }
-            yield {
-              if (request.checkMode) {
-                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
-              } else {
-                Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
-              }
+          yield {
+            if (request.checkMode) {
+              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
             }
+          }
         }
       }
     )

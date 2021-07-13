@@ -60,7 +60,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UpdateAdditionalInformationController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view)
+      mockSessionRepository, messagesControllerComponents, form, view, ec)
   }
 
   "GET onLoad" should {

@@ -53,7 +53,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ChangeUnderpaymentReasonController(authenticatedAction, dataRetrievalAction, dataRequiredAction, mockSessionRepository,
-      messagesControllerComponents, view)
+      messagesControllerComponents, view, ec)
   }
 
   "GET onLoad" when {

@@ -56,7 +56,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     val form: UploadAnotherFileFormProvider = formProvider
 
     lazy val controller = new UploadAnotherFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, form, uploadAnotherFileView)
+      messagesControllerComponents, form, uploadAnotherFileView, ec)
   }
 
   "GET onLoad" should {

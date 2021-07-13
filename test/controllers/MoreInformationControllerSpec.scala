@@ -61,7 +61,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new MoreInformationController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view)
+      mockSessionRepository, messagesControllerComponents, form, view, ec)
   }
 
   "GET onLoad" should {
@@ -116,40 +116,40 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
 
   "payload contains valid data when check mode is true" should {
 
-      "return a SEE OTHER response" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
-        )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        status(result) mustBe Status.SEE_OTHER
-      }
-
-      "return the correct location header for the response" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
-        )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
-      }
-
-      "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
-        )
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
-        await(controller.onSubmit(request))
-        verifyCalls()
-      }
+    "return a SEE OTHER response" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(CheckModePage, true).success.value
+      )
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+      lazy val result: Future[Result] = controller.onSubmit(request)
+      status(result) mustBe Status.SEE_OTHER
     }
 
-    "payload contains invalid data" should {
-      "return a BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
-        status(result) mustBe Status.BAD_REQUEST
-      }
+    "return the correct location header for the response" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(CheckModePage, true).success.value
+      )
+      val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+      lazy val result: Future[Result] = controller.onSubmit(request)
+      redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
     }
+
+    "update the UserAnswers in session" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(CheckModePage, true).success.value
+      )
+      private val request = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+      await(controller.onSubmit(request))
+      verifyCalls()
+    }
+  }
+
+  "payload contains invalid data" should {
+    "return a BAD REQUEST" in new Test {
+      val result: Future[Result] = controller.onSubmit(fakeRequest)
+      status(result) mustBe Status.BAD_REQUEST
+    }
+  }
 
   "backLink" when {
 

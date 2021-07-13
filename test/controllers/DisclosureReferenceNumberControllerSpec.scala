@@ -65,7 +65,7 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
     expectSessionSet()
 
     lazy val controller = new DisclosureReferenceNumberController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view)
+      mockSessionRepository, messagesControllerComponents, form, view, ec)
   }
 
   "GET onLoad" should {

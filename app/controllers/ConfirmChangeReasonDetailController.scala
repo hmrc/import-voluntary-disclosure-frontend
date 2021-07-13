@@ -17,8 +17,6 @@
 package controllers
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-
-import javax.inject.{Inject, Singleton}
 import models.UserAnswers
 import pages.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.{I18nSupport, Messages}
@@ -31,8 +29,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
 import views.html.ConfirmChangeReasonDetailView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
@@ -40,7 +38,8 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
                                                     requireData: DataRequiredAction,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
-                                                    view: ConfirmChangeReasonDetailView)
+                                                    view: ConfirmChangeReasonDetailView,
+                                                    implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
 

@@ -19,8 +19,6 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.BoxNumberFormProvider
 import models.UserAnswers
-
-import javax.inject.{Inject, Singleton}
 import pages.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
@@ -31,8 +29,8 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.BoxNumberView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BoxNumberController @Inject()(identify: IdentifierAction,
@@ -41,8 +39,8 @@ class BoxNumberController @Inject()(identify: IdentifierAction,
                                     sessionRepository: SessionRepository,
                                     mcc: MessagesControllerComponents,
                                     formProvider: BoxNumberFormProvider,
-                                    view: BoxNumberView
-                                   )
+                                    view: BoxNumberView,
+                                    implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink: Call = controllers.routes.BoxGuidanceController.onLoad()

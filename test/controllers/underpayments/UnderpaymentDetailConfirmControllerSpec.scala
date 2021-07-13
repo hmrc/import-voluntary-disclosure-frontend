@@ -47,7 +47,7 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailConfirmController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailConfirmView)
+      mockSessionRepository, messagesControllerComponents, underpaymentDetailConfirmView, ec)
 
 
   }
@@ -130,7 +130,7 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
           UserAnswers("credId")
             .set(UnderpaymentTypePage, "B00").success.value
         )
-        lazy val result: Future[Result] = controller.onSubmit("B00", change= false)(fakeRequest)
+        lazy val result: Future[Result] = controller.onSubmit("B00", change = false)(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }

@@ -28,8 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.DisclosureReferenceNumberView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
@@ -38,7 +37,8 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     formProvider: DisclosureReferenceNumberFormProvider,
-                                                    view: DisclosureReferenceNumberView)
+                                                    view: DisclosureReferenceNumberView,
+                                                    implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

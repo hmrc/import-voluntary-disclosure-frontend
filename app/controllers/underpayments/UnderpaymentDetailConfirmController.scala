@@ -30,15 +30,15 @@ import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailConfirmView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
-                                                    view: UnderpaymentDetailConfirmView
+                                                    view: UnderpaymentDetailConfirmView,
+                                                    implicit val ec: ExecutionContext
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 
@@ -81,7 +81,7 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
   }
 
   private def submitCall(underpaymentType: String, change: Boolean): Call = {
-    if (change){
+    if (change) {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = true)
     } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = false)

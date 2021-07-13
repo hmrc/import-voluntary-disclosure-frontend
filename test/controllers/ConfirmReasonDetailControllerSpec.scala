@@ -44,7 +44,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmReasonDetailController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, view)
+      mockSessionRepository, messagesControllerComponents, view, ec)
   }
 
   "GET onLoad " should {

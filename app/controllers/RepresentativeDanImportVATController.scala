@@ -29,8 +29,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.RepresentativeDanImportVATView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
                                                      getData: DataRetrievalAction,
@@ -38,7 +37,8 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
                                                      sessionRepository: SessionRepository,
                                                      mcc: MessagesControllerComponents,
                                                      view: RepresentativeDanImportVATView,
-                                                     formProvider: RepresentativeDanFormProvider
+                                                     formProvider: RepresentativeDanFormProvider,
+                                                     implicit val ec: ExecutionContext
                                                     )
   extends FrontendController(mcc) with I18nSupport {
 

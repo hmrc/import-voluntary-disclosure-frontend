@@ -55,7 +55,8 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       form,
       textAmendmentView,
       weightAmendmentView,
-      currencyAmendmentView
+      currencyAmendmentView,
+      ec
     )
     lazy val textAmendmentView = app.injector.instanceOf[TextAmendmentView]
     lazy val weightAmendmentView = app.injector.instanceOf[WeightAmendmentView]
@@ -159,28 +160,54 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       }
     }
 
-    "called with entry level box 22" should {checkRoute(22, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-    "called with entry level box 62" should {checkRoute(62, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-    "called with entry level box 63" should {checkRoute(63, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-    "called with entry level box 66" should {checkRoute(66, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-    "called with entry level box 67" should {checkRoute(67, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-    "called with entry level box 68" should {checkRoute(68, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))}
-//
-    "called with item level box 33" should {checkRoute(33, 1, None, Some("govuk-input--width-20"))}
-    "called with item level box 34" should {checkRoute(34, 1, None, Some("govuk-input--width-3"))}
-    "called with item level box 36" should {checkRoute(36, 1, None, Some("govuk-input--width-3"))}
-    "called with item level box 37" should {checkRoute(37, 1, None)}
-    "called with item level box 39" should {checkRoute(39, 1, None)}
-    "called with item level box 41" should {checkRoute(41, 1, None)}
-    "called with item level box 45" should {checkRoute(45, 1, None, Some("govuk-input--width-4"))}
+    "called with entry level box 22" should {
+      checkRoute(22, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    "called with entry level box 62" should {
+      checkRoute(62, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    "called with entry level box 63" should {
+      checkRoute(63, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    "called with entry level box 66" should {
+      checkRoute(66, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    "called with entry level box 67" should {
+      checkRoute(67, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    "called with entry level box 68" should {
+      checkRoute(68, 0, Some(controllers.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+    //
+    "called with item level box 33" should {
+      checkRoute(33, 1, None, Some("govuk-input--width-20"))
+    }
+    "called with item level box 34" should {
+      checkRoute(34, 1, None, Some("govuk-input--width-3"))
+    }
+    "called with item level box 36" should {
+      checkRoute(36, 1, None, Some("govuk-input--width-3"))
+    }
+    "called with item level box 37" should {
+      checkRoute(37, 1, None)
+    }
+    "called with item level box 39" should {
+      checkRoute(39, 1, None)
+    }
+    "called with item level box 41" should {
+      checkRoute(41, 1, None)
+    }
+    "called with item level box 45" should {
+      checkRoute(45, 1, None, Some("govuk-input--width-4"))
+    }
 
     "called with an invalid box number" should {
-        s"route for box 0" in new Test {
-          val result = intercept[RuntimeException](
-            controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-          )
-          assert(result.getMessage.contains("Invalid Box Number"))
-        }
+      s"route for box 0" in new Test {
+        val result = intercept[RuntimeException](
+          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
+        )
+        assert(result.getMessage.contains("Invalid Box Number"))
+      }
     }
   }
 
@@ -193,8 +220,12 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       }
     }
 
-    "called with item level box 35" should {checkRoute(35, 1, None)}
-    "called with item level box 38" should {checkRoute(38, 1, None)}
+    "called with item level box 35" should {
+      checkRoute(35, 1, None)
+    }
+    "called with item level box 38" should {
+      checkRoute(38, 1, None)
+    }
 
     "called with an invalid box number" should {
       s"route for box 0" in new Test {
@@ -215,7 +246,9 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       }
     }
 
-    "called with item level box 46" should {checkRoute(46, 1, None)}
+    "called with item level box 46" should {
+      checkRoute(46, 1, None)
+    }
 
     "called with an invalid box number" should {
       s"route for box 0" in new Test {

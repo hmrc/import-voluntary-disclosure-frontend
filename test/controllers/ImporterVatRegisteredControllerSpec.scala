@@ -58,7 +58,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new ImporterVatRegisteredController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, ImporterVATRegisteredView)
+      mockSessionRepository, messagesControllerComponents, form, ImporterVATRegisteredView, ec)
   }
 
 

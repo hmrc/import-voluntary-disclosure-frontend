@@ -18,7 +18,6 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
-import javax.inject.Inject
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
@@ -34,8 +33,8 @@ import viewmodels.ActionItemHelper
 import views.ViewUtils.displayMoney
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
 class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
@@ -43,7 +42,8 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
                                                     sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentDetailSummaryView,
-                                                    formProvider: UnderpaymentDetailSummaryFormProvider
+                                                    formProvider: UnderpaymentDetailSummaryFormProvider,
+                                                    implicit val ec: ExecutionContext
                                                    )
   extends FrontendController(mcc) with I18nSupport {
 

@@ -45,7 +45,7 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new OptionalSupportingDocsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, optionalSupportingDocsView, form)
+      mockSessionRepository, messagesControllerComponents, optionalSupportingDocsView, form, ec)
   }
 
   "GET onLoad" should {

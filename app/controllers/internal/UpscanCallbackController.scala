@@ -25,13 +25,14 @@ import repositories.FileUploadRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.ExecutionContext
 
 
 @Singleton
 class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
                                          fileUploadRepository: FileUploadRepository,
-                                         implicit val appConfig: AppConfig)
+                                         implicit val appConfig: AppConfig,
+                                         implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>

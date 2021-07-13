@@ -16,7 +16,6 @@
 
 package controllers
 
-import java.time.LocalDateTime
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
@@ -27,6 +26,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.SupportingDocView
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class SupportingDocControllerSpec extends ControllerSpecBase {
@@ -34,7 +34,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
 
     lazy val controller = new SupportingDocController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig)
+      messagesControllerComponents, dataRequiredAction, view, appConfig, ec)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view = injector.instanceOf[SupportingDocView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))

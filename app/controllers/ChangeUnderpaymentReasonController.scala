@@ -30,8 +30,7 @@ import viewmodels.ActionItemHelper
 import views.html.ChangeUnderpaymentReasonView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
@@ -39,7 +38,8 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
                                                    requireData: DataRequiredAction,
                                                    sessionRepository: SessionRepository,
                                                    mcc: MessagesControllerComponents,
-                                                   view: ChangeUnderpaymentReasonView
+                                                   view: ChangeUnderpaymentReasonView,
+                                                   implicit val ec: ExecutionContext
                                                   )
   extends FrontendController(mcc) with I18nSupport {
 

@@ -25,7 +25,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.BoxGuidanceView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BoxGuidanceController @Inject()(identify: IdentifierAction,
@@ -33,7 +33,8 @@ class BoxGuidanceController @Inject()(identify: IdentifierAction,
                                       mcc: MessagesControllerComponents,
                                       requireData: DataRequiredAction,
                                       view: BoxGuidanceView,
-                                      implicit val appConfig: AppConfig)
+                                      implicit val appConfig: AppConfig,
+                                      implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()

@@ -45,7 +45,9 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       errorHandler,
       messagesControllerComponents,
       form,
-      traderAddressCorrectView)
+      traderAddressCorrectView,
+      ec
+    )
 
     private lazy val traderAddressCorrectView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

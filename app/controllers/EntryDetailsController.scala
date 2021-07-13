@@ -27,8 +27,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.EntryDetailsView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class EntryDetailsController @Inject()(identify: IdentifierAction,
@@ -37,7 +36,8 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
                                        sessionRepository: SessionRepository,
                                        mcc: MessagesControllerComponents,
                                        formProvider: EntryDetailsFormProvider,
-                                       view: EntryDetailsView)
+                                       view: EntryDetailsView,
+                                       implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
