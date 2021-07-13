@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import connectors.httpParsers.IvdSubmissionHttpParser._
+import connectors.httpParsers.IvdHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import models.{EoriDetails, SubmissionResponse, UpdateResponse}
 import play.api.libs.json.JsValue

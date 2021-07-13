@@ -17,14 +17,14 @@
 package connectors.httpParsers
 
 import base.SpecBase
-import connectors.httpParsers.IvdSubmissionHttpParser.{EoriDetailsReads, SubmissionResponseReads}
+import connectors.httpParsers.IvdHttpParser.{EoriDetailsReads, SubmissionResponseReads}
 import models.{ContactAddress, EoriDetails, ErrorModel, SubmissionResponse}
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.ReusableValues
 
-class IvdSubmissionHttpParserSpec extends SpecBase with ReusableValues {
+class IvdHttpParserSpec extends SpecBase with ReusableValues {
 
   val eoriDetailsJson: EoriDetails = EoriDetails(
     "GB987654321000",

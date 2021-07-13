@@ -17,7 +17,7 @@
 package mocks.connectors
 
 import connectors.IvdSubmissionConnector
-import models.{EoriDetails, ErrorModel, SubmissionResponse, UpdateResponse}
+import models._
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.JsObject
 import uk.gov.hmrc.http.HeaderCarrier
