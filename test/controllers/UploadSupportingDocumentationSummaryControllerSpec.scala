@@ -54,7 +54,7 @@ class UploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecB
     val form: UploadAnotherFileFormProvider = formProvider
 
     lazy val controller = new UploadSupportingDocumentationSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, form, view)
+      messagesControllerComponents, form, view, ec)
   }
 
   "GET onLoad" should {

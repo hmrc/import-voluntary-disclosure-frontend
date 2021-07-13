@@ -35,8 +35,8 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
                                                                requireData: DataRequiredAction,
                                                                mcc: MessagesControllerComponents,
                                                                formProvider: UploadAnotherFileFormProvider,
-                                                               view: UploadSupportingDocumentationSummaryView)(implicit ec: ExecutionContext)
-
+                                                               view: UploadSupportingDocumentationSummaryView,
+                                                               implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
