@@ -19,7 +19,6 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
-import javax.inject.{Inject, Singleton}
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
 import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
@@ -30,7 +29,8 @@ import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{FileUploadProgressView, UploadFileView}
 
-import scala.concurrent.ExecutionContext.Implicits.global
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.ExecutionContext
 import scala.util.Try
 
 @Singleton
@@ -44,7 +44,9 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                                      view: UploadFileView,
                                      progressView: FileUploadProgressView,
                                      formProvider: UploadFileFormProvider,
-                                     implicit val appConfig: AppConfig)
+                                     implicit val appConfig: AppConfig,
+                                     implicit val ec: ExecutionContext
+                                    )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
