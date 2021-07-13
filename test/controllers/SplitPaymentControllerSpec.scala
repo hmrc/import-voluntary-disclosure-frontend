@@ -23,8 +23,8 @@ import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import models.{UserAnswers, UserType}
-import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
@@ -74,7 +74,7 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new SplitPaymentController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, splitPaymentView)
+      mockSessionRepository, messagesControllerComponents, form, splitPaymentView, ec)
   }
 
   "GET onLoad" should {
