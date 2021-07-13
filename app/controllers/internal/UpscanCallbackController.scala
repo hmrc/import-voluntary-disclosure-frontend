@@ -35,7 +35,6 @@ class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
   extends FrontendController(mcc) with I18nSupport {
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    Thread.sleep(5000)
     withJsonBody[FileUpload] { fileUploadResponse =>
       fileUploadRepository.updateRecord(deriveFileStatus(fileUploadResponse)).map { isOk =>
         if (isOk) NoContent else InternalServerError
@@ -45,9 +44,9 @@ class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
 
   private[controllers] def deriveFileStatus(fileUpload: FileUpload): FileUpload = {
     fileUpload.failureDetails match {
-      case Some(details) if(details.failureReason=="QUARANTINE") =>
+      case Some(details) if (details.failureReason == "QUARANTINE") =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_QUARANTINE))
-      case Some(details) if(details.failureReason=="REJECTED") =>
+      case Some(details) if (details.failureReason == "REJECTED") =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_REJECTED))
       case Some(details) =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_UNKNOWN))
