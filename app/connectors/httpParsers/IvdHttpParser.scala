@@ -68,21 +68,14 @@ object IvdHttpParser {
     }
   }
 
-  implicit object UpdateResponseReads extends HttpReads[HttpPostResult[UpdateResponse]] {
+  implicit object UpdateResponseReads extends HttpReads[HttpPostResult[UpdateCaseResponse]] {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[UpdateResponse] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[UpdateCaseResponse] = {
 
       response.status match {
-        case Status.OK =>
-          response.json.validate[UpdateResponse].fold(
-            invalid => {
-              logger.error("Failed to validate JSON with errors: " + invalid)
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from IVD Update Case"))
-            },
-            valid => Right(valid)
-          )
+        case Status.OK => Right(UpdateCaseResponse())
         case status =>
           logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
           Left(ErrorModel(status, "Downstream error returned when retrieving UpdateResponse from back end"))

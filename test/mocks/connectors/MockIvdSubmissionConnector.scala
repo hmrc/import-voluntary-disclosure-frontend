@@ -42,7 +42,7 @@ trait MockIvdSubmissionConnector extends MockFactory {
       .returns(Future.successful(response))
   }
 
-  def setupMockUpdateCase(response: Either[ErrorModel, UpdateResponse]): Unit = {
+  def setupMockUpdateCase(response: Either[ErrorModel, UpdateCaseResponse]): Unit = {
     (mockIVDSubmissionConnector.updateCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))

@@ -16,15 +16,44 @@
 
 package services
 
+import connectors.IvdSubmissionConnector
 import models._
+import models.requests.DataRequest
+import play.api.Logger
+import play.api.libs.json._
+import uk.gov.hmrc.http.HeaderCarrier
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UpdateCaseService @Inject()() {
-  def updateCase(): Future[Either[ErrorModel, UpdateCaseResponse]] = {
-    // TODO: actually implement this
-    Future.successful(Right(UpdateCaseResponse()))
+class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector) {
+  private val logger = Logger("application." + getClass.getCanonicalName)
+
+  def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, UpdateCaseResponse]] = {
+    buildUpdate(request.userAnswers) match {
+      case Right(submission) =>
+        ivdSubmissionConnector.updateCase(submission).map {
+          case Right(confirmationResponse) =>
+            Right(confirmationResponse)
+          case Left(errorResponse) => Left(errorResponse)
+        }
+      case Left(err) => Future.successful(Left(err))
+    }
+  }
+
+  private[services] def buildUpdate(answers: UserAnswers): Either[ErrorModel, JsValue] = {
+    Json.fromJson[UpdateCaseData](answers.data) match {
+      case JsSuccess(data, _) =>
+        val json = Json.obj(
+          "caseId" -> data.caseId,
+          "additionalInfo" -> data.additionalInfo,
+          "supportingDocuments" -> data.supportingDocuments
+        )
+        Right(json)
+      case JsError(err) =>
+        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
+        Left(ErrorModel(-1, err.toString()))
+    }
   }
 }

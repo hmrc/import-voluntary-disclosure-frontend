@@ -49,7 +49,7 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
     "id" -> "1234567890"
   )
 
-  val updateResponseModel = UpdateResponse("1234567890")
+  val updateResponseModel = UpdateCaseResponse()
 
   "IVD Submission HttpParser" when {
 
@@ -103,13 +103,6 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
       "the http response status is OK with valid Json" in {
         UpdateResponseReads.read("", "",
           HttpResponse(Status.OK, updateResponseJson, Map.empty[String, Seq[String]])) mustBe Right(updateResponseModel)
-      }
-
-      "return an ErrorModel when invalid Json is returned" in {
-        UpdateResponseReads.read("", "",
-          HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,
-            "Invalid Json returned from IVD Update Case"))
       }
 
       "return an ErrorModel when NOT_FOUND is returned" in {
