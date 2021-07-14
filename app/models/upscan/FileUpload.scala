@@ -21,6 +21,8 @@ import play.api.libs.json.Reads._
 import play.api.libs.json._
 
 import java.time.{Instant, LocalDateTime}
+import javax.mail.internet.MimeUtility
+import scala.util.Try
 
 case class FileUpload(reference: String,
                       credId: Option[String] = None,
@@ -55,7 +57,19 @@ case class UploadDetails(uploadTimestamp: LocalDateTime,
 
 object UploadDetails {
 
-  implicit val format: OFormat[UploadDetails] = Json.format[UploadDetails]
+  implicit val formats: Format[UploadDetails] = Format(
+    ((JsPath \ "uploadTimestamp").read[LocalDateTime] and
+      (JsPath \ "checksum").read[String] and
+      (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
+      (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
+    ((JsPath \ "uploadTimestamp").write[LocalDateTime] and
+      (JsPath \ "checksum").write[String] and
+      (JsPath \ "fileName").write[String] and
+      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))
+    )
+
+  def decodeMimeEncodedWord(word: String): String =
+    Try(MimeUtility.decodeText(word)).getOrElse(word)
 }
 
 case class FailureDetails(failureReason: String,
