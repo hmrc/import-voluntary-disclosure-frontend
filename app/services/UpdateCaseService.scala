@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector) {
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, UpdateCaseResponse]] = {
+  def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
     buildUpdate(request.userAnswers) match {
       case Right(submission) =>
         ivdSubmissionConnector.updateCase(submission).map {
@@ -42,7 +42,7 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     }
   }
 
-  private[services] def buildUpdate(answers: UserAnswers): Either[ErrorModel, JsValue] = {
+  private[services] def buildUpdate(answers: UserAnswers): Either[UpdateCaseError, JsValue] = {
     Json.fromJson[UpdateCaseData](answers.data) match {
       case JsSuccess(data, _) =>
         val json = Json.obj(
@@ -53,7 +53,7 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
         Right(json)
       case JsError(err) =>
         logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
-        Left(ErrorModel(-1, err.toString()))
+        Left(UpdateCaseError.UnexpectedError(-1, err.toString()))
     }
   }
 }

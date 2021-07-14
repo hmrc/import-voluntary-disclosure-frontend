@@ -17,7 +17,7 @@
 package mocks.services
 
 import models.requests.DataRequest
-import models.{ErrorModel, UpdateCaseResponse}
+import models.{UpdateCaseError, UpdateCaseResponse}
 import org.scalamock.scalatest.MockFactory
 import services.UpdateCaseService
 import uk.gov.hmrc.http.HeaderCarrier
@@ -28,7 +28,7 @@ trait MockUpdateCaseService extends MockFactory {
 
   val mockUpdateCaseService: UpdateCaseService = mock[UpdateCaseService]
 
-  def setupMockUpdateCase(response: Either[ErrorModel, UpdateCaseResponse]): Unit = {
+  def setupMockUpdateCase(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
     (mockUpdateCaseService.updateCase()(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))

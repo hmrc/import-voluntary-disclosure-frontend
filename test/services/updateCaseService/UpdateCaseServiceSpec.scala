@@ -19,7 +19,7 @@ package services.updateCaseService
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{ErrorModel, UpdateCaseResponse, UserAnswers}
+import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
 import pages.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
@@ -28,7 +28,7 @@ import services.UpdateCaseService
 class UpdateCaseServiceSpec extends SpecBase {
 
   trait Test extends MockIvdSubmissionConnector with UpdateCaseServiceTestData {
-    def setupMock(response: Either[ErrorModel, UpdateCaseResponse]): Unit = {
+    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
       setupMockUpdateCase(response)
     }
 
@@ -46,7 +46,8 @@ class UpdateCaseServiceSpec extends SpecBase {
       userAnswers
     )
 
-    val failedCreateCaseConnectorCall: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
+    val failedCreateCaseConnectorCall: UpdateCaseError =
+      UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
 
     val service = new UpdateCaseService(mockIVDSubmissionConnector)
   }
@@ -73,9 +74,9 @@ class UpdateCaseServiceSpec extends SpecBase {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
         private val result = await(service.updateCase()(dataRequest, hc, ec))
 
-        result.isLeft mustBe true
-        val Left(error) = result
-        error.message must include("disclosure-reference")
+        result must matchPattern {
+          case Left(UpdateCaseError.UnexpectedError(_, _)) =>
+        }
       }
     }
   }
