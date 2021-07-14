@@ -51,7 +51,7 @@ class IvdSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableVal
 
   "called to update case" should {
 
-    val updateResponse = UpdateResponse("1234")
+    val updateResponse = UpdateCaseResponse()
 
     "return the Right response" in {
       setupMockHttpPost(target.updateCaseUrl)(Right(updateResponse))

@@ -20,6 +20,7 @@ import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import models._
 import play.api.Logger
 import play.api.http.Status
+import play.api.libs.json.{JsError, JsSuccess}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object IvdHttpParser {
@@ -68,24 +69,24 @@ object IvdHttpParser {
     }
   }
 
-  implicit object UpdateResponseReads extends HttpReads[HttpPostResult[UpdateResponse]] {
+  implicit object UpdateResponseReads extends HttpReads[Either[UpdateCaseError, UpdateCaseResponse]] {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[UpdateResponse] = {
+    override def read(method: String, url: String, response: HttpResponse): Either[UpdateCaseError, UpdateCaseResponse] = {
 
       response.status match {
-        case Status.OK =>
-          response.json.validate[UpdateResponse].fold(
-            invalid => {
-              logger.error("Failed to validate JSON with errors: " + invalid)
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from IVD Update Case"))
-            },
-            valid => Right(valid)
-          )
+        case Status.OK => Right(UpdateCaseResponse())
+        case Status.BAD_REQUEST =>
+          response.json.validate[UpdateCaseError] match {
+            case JsSuccess(value, _) => Left(value)
+            case JsError(err) =>
+              logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err")
+              Left(UpdateCaseError.UnexpectedError(response.status, "Received an unexpected error response"))
+          }
         case status =>
-          logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
-          Left(ErrorModel(status, "Downstream error returned when retrieving UpdateResponse from back end"))
+          logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}")
+          Left(UpdateCaseError.UnexpectedError(status, "Downstream error returned when retrieving UpdateResponse from back end"))
       }
     }
   }
