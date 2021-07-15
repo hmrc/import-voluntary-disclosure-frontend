@@ -82,11 +82,11 @@ object IvdHttpParser {
             case JsSuccess(value, _) => Left(value)
             case JsError(err) =>
               logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err")
-              Left(UpdateCaseError.UnexpectedError(response.status, "Received an unexpected error response"))
+              Left(UpdateCaseError.UnexpectedError(response.status, Some("Received an unexpected error response")))
           }
         case status =>
           logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}")
-          Left(UpdateCaseError.UnexpectedError(status, "Downstream error returned when retrieving UpdateResponse from back end"))
+          Left(UpdateCaseError.UnexpectedError(status, Some("Downstream error returned when retrieving UpdateResponse from back end")))
       }
     }
   }

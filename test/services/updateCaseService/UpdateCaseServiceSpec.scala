@@ -47,7 +47,7 @@ class UpdateCaseServiceSpec extends SpecBase {
     )
 
     val failedCreateCaseConnectorCall: UpdateCaseError =
-      UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
+      UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, Some("Downstream error returned when retrieving SubmissionResponse from back end"))
 
     val service = new UpdateCaseService(mockIVDSubmissionConnector)
   }

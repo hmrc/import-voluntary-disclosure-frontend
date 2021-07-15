@@ -53,7 +53,7 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
         Right(json)
       case JsError(err) =>
         logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
-        Left(UpdateCaseError.UnexpectedError(-1, err.toString()))
+        Left(UpdateCaseError.UnexpectedError(-1, Some(err.toString())))
     }
   }
 }

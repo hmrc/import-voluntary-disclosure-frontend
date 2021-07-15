@@ -119,7 +119,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server error is update fails" in new Test {
-      override lazy val serviceMock = Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, "Not Working"))
+      override lazy val serviceMock = Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }

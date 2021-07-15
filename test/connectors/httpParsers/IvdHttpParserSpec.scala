@@ -118,8 +118,7 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
       "return an error when NOT_FOUND is returned" in {
         UpdateResponseReads.read("", "",
           HttpResponse(Status.NOT_FOUND, "")) mustBe
-          Left(UpdateCaseError.UnexpectedError(Status.NOT_FOUND,
-            "Downstream error returned when retrieving UpdateResponse from back end"))
+          Left(UpdateCaseError.UnexpectedError(Status.NOT_FOUND, Some("Downstream error returned when retrieving UpdateResponse from back end")))
       }
     }
 
