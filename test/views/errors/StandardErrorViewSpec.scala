@@ -22,7 +22,7 @@ import messages.errors.StandardErrorViewMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.html.errors.StandardErrorView
+import views.html.serviceEntry.StandardErrorView
 
 class StandardErrorViewSpec extends ViewBaseSpec with BaseMessages {
 

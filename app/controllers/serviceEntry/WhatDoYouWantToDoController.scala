@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.serviceEntry
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.WhatDoYouWantToDoFormProvider
+import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import models.UserAnswers
-import pages.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
+import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.WhatDoYouWantToDoView
+import views.html.serviceEntry.WhatDoYouWantToDoView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -71,7 +71,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def submitRedirect(submittedValue: Boolean): Result = {
+  private[serviceEntry] def submitRedirect(submittedValue: Boolean): Result = {
     if (submittedValue) {
       Redirect(controllers.routes.UserTypeController.onLoad())
     } else {
@@ -79,8 +79,8 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private[controllers] def backLink(): Call = {
-    controllers.routes.ConfirmEORIDetailsController.onLoad()
+  private[serviceEntry] def backLink(): Call = {
+    controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
   }
 
 }

@@ -29,7 +29,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.WhatDoYouWantToDoController.onSubmit()) {
+        @formHelper(action = controllers.serviceEntry.routes.WhatDoYouWantToDoController.onSubmit()) {
             @inputRadio(
                 form,
                 "whatDoYouWantToDo.heading",

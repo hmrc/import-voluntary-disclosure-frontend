@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.serviceEntry
 
 import models.EoriDetails
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object KnownEoriDetailsPage extends QuestionPage[EoriDetails] {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.serviceEntry
 
 import base.ViewBaseSpec
 import messages.ConfirmEORIDetailsMessages
@@ -23,7 +23,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.data.ConfirmEORIDetailsData.details
-import views.html.ConfirmEORIDetailsView
+import views.html.serviceEntry.ConfirmEORIDetailsView
 
 class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
@@ -115,7 +115,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     }
 
     "render a continue button with the correct URL " in {
-      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.WhatDoYouWantToDoController.onLoad().url)
+      elementAttributes(".govuk-button") must contain("href" -> controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url)
     }
 
   }

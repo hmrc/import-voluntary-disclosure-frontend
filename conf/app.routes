@@ -10,9 +10,9 @@ GET         /address-initialise                                                 
 GET         /address-callback                                                                  controllers.AddressLookupController.callback(id: String)
 GET         /importer-address-callback                                                         controllers.AddressLookupController.importerCallback(id: String)
 
-GET         /keep-alive                                                                        controllers.SessionExpiredController.keepAlive
-GET         /timeout-remove-answers                                                            controllers.SessionExpiredController.timeout
-GET         /timeout-signed-out                                                                controllers.SessionExpiredController.showView
+GET         /keep-alive                                                                        controllers.serviceEntry.SessionExpiredController.keepAlive
+GET         /timeout-remove-answers                                                            controllers.serviceEntry.SessionExpiredController.timeout
+GET         /timeout-signed-out                                                                controllers.serviceEntry.SessionExpiredController.showView
 
 GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
 
@@ -224,7 +224,7 @@ POST        /disclosure/importer-eori-number-exists                             
 GET         /disclosure/importer-eori-number                                                   controllers.ImporterEORINumberController.onLoad
 POST        /disclosure/importer-eori-number                                                   controllers.ImporterEORINumberController.onSubmit
 
-GET         /confirm-eori                                                                      controllers.ConfirmEORIDetailsController.onLoad
+GET         /confirm-eori                                                                      controllers.serviceEntry.ConfirmEORIDetailsController.onLoad
 
 GET         /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onLoad
 POST        /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onSubmit
@@ -380,8 +380,8 @@ POST        /disclosure/which-documents-upload                                  
 GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
 POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
 
-GET         /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onLoad()
-POST        /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onSubmit()
+GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
+POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
 
 GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
 POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit

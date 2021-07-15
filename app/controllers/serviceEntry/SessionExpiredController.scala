@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.serviceEntry
 
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
@@ -40,7 +40,7 @@ class SessionExpiredController @Inject()(identify: IdentifierAction,
   }
 
   def timeout: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    sessionRepository.remove(request.credId).map(_ => Redirect(controllers.routes.SessionExpiredController.showView()))
+    sessionRepository.remove(request.credId).map(_ => Redirect(controllers.serviceEntry.routes.SessionExpiredController.showView()))
   }
 
   def showView: Action[AnyContent] = Action.async { implicit request =>

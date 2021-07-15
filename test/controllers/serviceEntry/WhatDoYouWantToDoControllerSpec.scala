@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.serviceEntry
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.WhatDoYouWantToDoFormProvider
+import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.WhatDoYouWantToDoPage
+import pages.serviceEntry.WhatDoYouWantToDoPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.WhatDoYouWantToDoView
+import views.html.serviceEntry.WhatDoYouWantToDoView
 
 import scala.concurrent.Future
 
