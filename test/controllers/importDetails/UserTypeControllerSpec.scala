@@ -155,7 +155,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(answers)
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -207,7 +207,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         )
         private val backLink = controller.backLink()(request)
 
-        backLink mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        backLink mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

@@ -47,7 +47,7 @@
     @p(Html(messages("cya.disclosureConfirmation")))
 
     @linkButton(
-        url = controllers.routes.CheckYourAnswersController.onSubmit().url,
+        url = controllers.cya.routes.CheckYourAnswersController.onSubmit().url,
         value = messages("common.button.acceptAndSend")
     )
 }

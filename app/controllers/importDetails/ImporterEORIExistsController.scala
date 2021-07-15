@@ -71,7 +71,7 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
           }
           yield {
             if (request.checkMode) {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
               Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
 
@@ -84,7 +84,7 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.importDetails.routes.ImporterNameController.onLoad()
     }

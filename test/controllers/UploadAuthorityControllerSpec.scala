@@ -354,7 +354,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       "return link to check your answers" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(CheckModePage, true).success.value)
         val result: Call = controller.backLink(Duty, dan, Both, splitPayment = true)(dataRequest)
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

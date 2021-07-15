@@ -206,8 +206,8 @@ POST        /disclosure/change/box-68-adjustment-vat-value-amendment            
 GET         /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onLoad
 POST        /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onSubmit
 
-GET         /disclosure/check-your-answers                                                     controllers.CheckYourAnswersController.onLoad
-GET         /disclosure/confirmation                                                           controllers.CheckYourAnswersController.onSubmit
+GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad
+GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit
 
 GET         /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onLoad
 POST        /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onSubmit

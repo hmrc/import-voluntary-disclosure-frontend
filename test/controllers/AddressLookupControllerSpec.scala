@@ -74,7 +74,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           setupMockRetrieveAddress(Right(customerAddressMax))
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad.url)
           verifyCalls()
         }
       }
@@ -120,7 +120,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           setupMockRetrieveAddress(Right(customerAddressMissingLine3))
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad.url)
           verifyCalls()
         }
       }

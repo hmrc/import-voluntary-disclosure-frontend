@@ -81,7 +81,7 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
               redirectTo(splitPayment)
             }
@@ -101,7 +101,7 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.DefermentController.onLoad()
     }

@@ -73,7 +73,7 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             dan.danType match {
-              case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
               case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
             }
           }
@@ -84,10 +84,10 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
               dan.danType match {
-                case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+                case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
                 case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
               }
             }
@@ -99,7 +99,7 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.RepresentativeDanDutyController.onLoad()
     }

@@ -111,7 +111,7 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
   def onSuccess(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val action = if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad().url
+      controllers.cya.routes.CheckYourAnswersController.onLoad().url
     } else {
       controllers.routes.MoreInformationController.onLoad().url
     }
@@ -130,7 +130,7 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
     }

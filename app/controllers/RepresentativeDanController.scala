@@ -75,7 +75,7 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             dan.danType match {
-              case "A" | "C" => Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
               case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
             }
           }
@@ -87,9 +87,9 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
           } yield {
             dan.danType match {
               case "A" | "C" =>
-                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
               case _ => if (request.checkMode) {
-                Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
               } else {
                 Redirect(controllers.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
               }
@@ -103,7 +103,7 @@ class RepresentativeDanController @Inject()(identify: IdentifierAction,
   private[controllers] def backLink(userAnswers: UserAnswers)(implicit request: DataRequest[_]): Call = {
 
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       if (userAnswers.get(SplitPaymentPage).isDefined) {
         controllers.routes.SplitPaymentController.onLoad()

@@ -56,7 +56,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     }.getOrElse(false)
 
     (cyaMode, appConfig.updateCaseEnabled) match {
-      case (true, _) => controllers.routes.CheckYourAnswersController.onLoad()
+      case (true, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
       case (false, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       case (false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
     }
@@ -93,7 +93,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
         } yield {
           val checkMode = updatedAnswers.get(CheckModePage).getOrElse(false)
           if (prevUserType == newUserType && checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             newUserType match {
               case UserType.Importer => Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())

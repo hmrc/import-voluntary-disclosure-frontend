@@ -128,7 +128,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234567"))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
       "return a SEE OTHER response when correct data with an alphanumeric value" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")

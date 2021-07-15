@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.cya
 
 import base.ViewBaseSpec
 import messages.RepresentativeConfirmationMessages
@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import viewmodels.cya.ConfirmationViewData
-import views.html.RepresentativeConfirmationView
+import views.html.cya.RepresentativeConfirmationView
 
 class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
