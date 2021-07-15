@@ -31,7 +31,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.EnterCustomsProcedureCodeController.onSubmit()) {
+        @formHelper(action = controllers.importDetails.routes.EnterCustomsProcedureCodeController.onSubmit()) {
             @inputText(form, "cpc", "cpc", messages("enterCustomsProcedureCode.pageHeader"), true, classes = Some("govuk-fieldset__legend govuk-input--width-10"),
                 hint = Some(Html(messages("enterCustomsProcedureCode.hint")))
             )

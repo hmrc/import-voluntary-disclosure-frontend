@@ -23,8 +23,7 @@ import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.EnterCustomsProcedureCodePage
-import pages.importDetails.NumberOfEntriesPage
+import pages.importDetails.{EnterCustomsProcedureCodePage, NumberOfEntriesPage}
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
 import play.api.test.Helpers._
@@ -87,7 +86,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
             .set(EnterCustomsProcedureCodePage, "cpc").success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+        result mustBe controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad()
       }
       "point to One CPC page if no CPC previously captured" in new Test {
         override val userAnswers: Option[UserAnswers] =

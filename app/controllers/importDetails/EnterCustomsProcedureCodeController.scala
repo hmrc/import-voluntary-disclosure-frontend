@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import com.google.inject.Inject
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.EnterCustomsProcedureCodeFormProvider
+import controllers.actions._
+import forms.importDetails.EnterCustomsProcedureCodeFormProvider
 import models.requests.DataRequest
-import pages.EnterCustomsProcedureCodePage
+import pages.importDetails.EnterCustomsProcedureCodePage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.EnterCustomsProcedureCodeView
+import views.html.importDetails.EnterCustomsProcedureCodeView
 
 import scala.concurrent.{ExecutionContext, Future}
 

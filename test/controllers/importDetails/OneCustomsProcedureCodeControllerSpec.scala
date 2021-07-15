@@ -93,7 +93,7 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "return the correct location header for true request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url)
       }
 
       "return a SEE OTHER for false request" in new Test {
@@ -134,7 +134,7 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.EnterCustomsProcedureCodeController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url)
       }
 
       "return a SEE OTHER for false request" in new Test {

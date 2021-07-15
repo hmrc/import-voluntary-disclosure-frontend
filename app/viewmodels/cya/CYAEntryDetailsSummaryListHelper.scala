@@ -18,7 +18,6 @@ package viewmodels.cya
 
 import models.requests.DataRequest
 import models.UserAnswers
-import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -28,7 +27,7 @@ import viewmodels.{ActionItemHelper, cya}
 import java.time.format.DateTimeFormatter
 
 import models.importDetails.NumberOfEntries
-import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
+import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -142,7 +141,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.customsProcedureCode")),
         valueContent = Text(customsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+          controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
           messages("cya.enterCpc.change")
         ))
       )

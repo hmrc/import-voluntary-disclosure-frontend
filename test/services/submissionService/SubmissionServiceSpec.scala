@@ -21,7 +21,7 @@ import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
-import pages.EnterCustomsProcedureCodePage
+import pages.importDetails.EnterCustomsProcedureCodePage
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty

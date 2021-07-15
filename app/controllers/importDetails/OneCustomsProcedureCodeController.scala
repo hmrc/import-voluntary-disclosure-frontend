@@ -20,8 +20,7 @@ import controllers.actions._
 import forms.importDetails.OneCustomsProcedureCodeFormProvider
 import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.EnterCustomsProcedureCodePage
-import pages.importDetails.OneCustomsProcedureCodePage
+import pages.importDetails.{EnterCustomsProcedureCodePage, OneCustomsProcedureCodePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -60,7 +59,7 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           }
           yield {
-            Redirect(controllers.routes.EnterCustomsProcedureCodeController.onLoad())
+            Redirect(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad())
           }
         } else {
           for {

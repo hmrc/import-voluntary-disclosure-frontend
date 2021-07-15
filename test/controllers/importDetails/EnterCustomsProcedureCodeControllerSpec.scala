@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
+
+import java.time.LocalDate
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.EnterCustomsProcedureCodeFormProvider
+import forms.importDetails.EnterCustomsProcedureCodeFormProvider
 import mocks.repositories.MockSessionRepository
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.UserAnswers
-import pages.{CheckModePage, EnterCustomsProcedureCodePage}
+import models.importDetails.EntryDetails
+import models.requests._
+import pages.CheckModePage
+import pages.importDetails.{EnterCustomsProcedureCodePage, EntryDetailsPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.EnterCustomsProcedureCodeView
-import java.time.LocalDate
-
-import models.importDetails.EntryDetails
-import pages.importDetails.EntryDetailsPage
+import views.html.importDetails.EnterCustomsProcedureCodeView
 
 import scala.concurrent.Future
 

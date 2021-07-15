@@ -507,7 +507,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+              controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeEnterCpc)
             )
