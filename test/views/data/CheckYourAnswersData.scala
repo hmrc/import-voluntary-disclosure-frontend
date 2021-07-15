@@ -264,7 +264,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.NumberOfEntriesController.onLoad().url,
+              controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
@@ -416,7 +416,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.NumberOfEntriesController.onLoad().url,
+              controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )

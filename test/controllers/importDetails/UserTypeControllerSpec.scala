@@ -79,7 +79,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       "redirect to the number of entries page" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.NumberOfEntriesController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.NumberOfEntriesController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

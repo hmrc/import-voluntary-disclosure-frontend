@@ -23,7 +23,8 @@ import mocks.repositories.MockSessionRepository
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, MoreInformationPage, NumberOfEntriesPage}
+import pages.importDetails.NumberOfEntriesPage
+import pages.{CheckModePage, MoreInformationPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest

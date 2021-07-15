@@ -23,7 +23,8 @@ import mocks.repositories.MockSessionRepository
 import models.NumberOfEntries._
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{AcceptanceDatePage, CheckModePage, NumberOfEntriesPage}
+import pages.importDetails.NumberOfEntriesPage
+import pages.{AcceptanceDatePage, CheckModePage}
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
@@ -161,7 +162,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
+        result mustBe controllers.importDetails.routes.NumberOfEntriesController.onLoad()
       }
     }
 

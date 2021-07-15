@@ -23,7 +23,8 @@ import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{EnterCustomsProcedureCodePage, NumberOfEntriesPage}
+import pages.EnterCustomsProcedureCodePage
+import pages.importDetails.NumberOfEntriesPage
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
 import play.api.test.Helpers._

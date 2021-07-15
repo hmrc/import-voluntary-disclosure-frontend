@@ -32,7 +32,7 @@
 
     @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.NumberOfEntriesController.onSubmit()) {
+    @formHelper(action = controllers.importDetails.routes.NumberOfEntriesController.onSubmit()) {
         @inputRadio(
             form = form,
             legend = messages("numberOfEntries.title"),

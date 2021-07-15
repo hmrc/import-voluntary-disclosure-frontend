@@ -87,7 +87,7 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
       if (request.isOneEntry) {
         controllers.routes.EntryDetailsController.onLoad()
       } else {
-        controllers.routes.NumberOfEntriesController.onLoad()
+        controllers.importDetails.routes.NumberOfEntriesController.onLoad()
       }
     }
   }

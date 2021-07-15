@@ -19,8 +19,8 @@ GET         /importer-address-initialise                                        
 GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad
 POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit
 
-GET         /one-or-more-entries                                                               controllers.NumberOfEntriesController.onLoad
-POST        /one-or-more-entries                                                               controllers.NumberOfEntriesController.onSubmit
+GET         /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onLoad
+POST        /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onSubmit
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess

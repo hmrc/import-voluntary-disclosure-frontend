@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.NumberOfEntriesFormProvider
+import forms.importDetails.NumberOfEntriesFormProvider
 import messages.{BaseMessages, NumberOfEntriesMessages}
 import models.NumberOfEntries
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
-import views.html.NumberOfEntriesView
+import views.html.importDetails.NumberOfEntriesView
 
 class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
 

@@ -25,8 +25,9 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
-
 import java.time.format.DateTimeFormatter
+
+import pages.importDetails.NumberOfEntriesPage
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -68,7 +69,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.NumberOfEntriesController.onLoad().url,
+          controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
           messages("cya.numberOfEntries.change")
         ))
       )

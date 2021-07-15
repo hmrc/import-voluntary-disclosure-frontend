@@ -19,6 +19,7 @@ package viewmodels.cya
 import models.UserAnswers
 import models.requests.DataRequest
 import pages._
+import pages.importDetails.NumberOfEntriesPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -142,7 +143,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(messages("cya.bulkEntry")),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.NumberOfEntriesController.onLoad().url,
+          controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
           messages("cya.numberOfEntries.change")
         ))
       )

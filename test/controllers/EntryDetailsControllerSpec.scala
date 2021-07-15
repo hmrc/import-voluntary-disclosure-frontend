@@ -140,7 +140,7 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.NumberOfEntriesController.onLoad()
+        result mustBe controllers.importDetails.routes.NumberOfEntriesController.onLoad()
       }
     }
 

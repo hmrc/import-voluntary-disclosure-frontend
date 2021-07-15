@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.NumberOfEntriesFormProvider
+import forms.importDetails.NumberOfEntriesFormProvider
 import mocks.repositories.MockSessionRepository
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{NumberOfEntries, UserAnswers}
 import pages._
-import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, UserTypePage}
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, NumberOfEntriesPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.NumberOfEntriesView
+import views.html.importDetails.NumberOfEntriesView
 
 import scala.concurrent.Future
 

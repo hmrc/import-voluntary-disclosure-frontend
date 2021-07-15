@@ -69,7 +69,7 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.NumberOfEntriesController.onLoad()
+      controllers.importDetails.routes.NumberOfEntriesController.onLoad()
     }
   }
 
