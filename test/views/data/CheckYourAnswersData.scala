@@ -144,7 +144,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.ImporterVatRegisteredController.onLoad().url,
+                controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeImporterVatRegistered)
               )

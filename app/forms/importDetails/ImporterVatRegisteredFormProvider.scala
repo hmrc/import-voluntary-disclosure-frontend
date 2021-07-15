@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package forms.importDetails
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object ImporterEORINumberPage extends QuestionPage[String] {
 
-  def path: JsPath = JsPath \ toString
+class ImporterVatRegisteredFormProvider extends Mappings {
 
-  override def toString: String = "importer-eori-number"
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("importerVatRegistered.error.required")
+    )
 }

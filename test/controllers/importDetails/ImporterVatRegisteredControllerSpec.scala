@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.ImporterVatRegisteredFormProvider
+import forms.importDetails.ImporterVatRegisteredFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, ImporterVatRegisteredPage}
+import pages.CheckModePage
+import pages.importDetails.ImporterVatRegisteredPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.ImporterVatRegisteredView
+import views.html.importDetails.ImporterVatRegisteredView
 
 import scala.concurrent.Future
 

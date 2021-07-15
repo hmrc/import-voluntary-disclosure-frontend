@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.ImporterVatRegisteredFormProvider
+import forms.importDetails.ImporterVatRegisteredFormProvider
+import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.ImporterVatRegisteredPage
+import pages.importDetails.ImporterVatRegisteredPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.ImporterVatRegisteredView
+import views.html.importDetails.ImporterVatRegisteredView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 

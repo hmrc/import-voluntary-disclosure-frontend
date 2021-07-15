@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.ImporterVatRegisteredFormProvider
+import forms.importDetails.ImporterVatRegisteredFormProvider
 import messages.{BaseMessages, ImporterVatRegisteredMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.ImporterVatRegisteredView
+import views.html.importDetails.ImporterVatRegisteredView
 
 class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
 

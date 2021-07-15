@@ -377,8 +377,8 @@ POST        /disclosure/remove-compensatory-duty-underpayment-confirm           
 GET         /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onLoad
 POST        /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onSubmit
 
-GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
-POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
+GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad
+POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit
 
 GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
 POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()

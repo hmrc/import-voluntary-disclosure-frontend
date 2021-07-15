@@ -20,8 +20,7 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.importDetails.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage}
-import pages.ImporterVatRegisteredPage
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterVatRegisteredPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository

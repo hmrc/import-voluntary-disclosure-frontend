@@ -30,7 +30,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
 import javax.inject.{Inject, Singleton}
-import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, UserTypePage}
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, UserTypePage}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -102,7 +102,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
       (request.isRepFlow, request.doesImporterEORIExist) match {
-        case (true, true) => controllers.routes.ImporterVatRegisteredController.onLoad()
+        case (true, true) => controllers.importDetails.routes.ImporterVatRegisteredController.onLoad()
         case (true, false) => controllers.importDetails.routes.ImporterEORIExistsController.onLoad()
         case _ => controllers.importDetails.routes.UserTypeController.onLoad()
       }

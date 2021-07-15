@@ -29,7 +29,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.ImporterVatRegisteredController.onSubmit()) {
+        @formHelper(action = controllers.importDetails.routes.ImporterVatRegisteredController.onSubmit()) {
             @yesNoRadio(
                 form,
                 headingKey = "importerVatRegistered.heading",
