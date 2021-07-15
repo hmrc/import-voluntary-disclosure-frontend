@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.serviceEntry
 
 import base.ViewBaseSpec
 import messages.{BaseMessages, SessionTimeoutMessages}
