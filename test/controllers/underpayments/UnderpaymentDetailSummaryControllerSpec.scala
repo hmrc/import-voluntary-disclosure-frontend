@@ -23,7 +23,8 @@ import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Both, Vat}
 import models.importDetails.UserType.Representative
 import models.underpayments.UnderpaymentDetail
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
+import models.importDetails.NumberOfEntries
 import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
 import pages.{CheckModePage, SplitPaymentPage}

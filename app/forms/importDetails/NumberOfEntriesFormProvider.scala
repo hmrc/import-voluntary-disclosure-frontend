@@ -18,7 +18,7 @@ package forms.importDetails
 
 import forms.mappings.Mappings
 import javax.inject.Inject
-import models.NumberOfEntries
+import models.importDetails.NumberOfEntries
 import play.api.data.Form
 
 

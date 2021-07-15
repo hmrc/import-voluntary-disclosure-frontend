@@ -18,7 +18,7 @@ package models.requests
 
 import models._
 import models.SelectedDutyTypes._
-import models.importDetails.UserType
+import models.importDetails.{NumberOfEntries, UserType}
 import pages._
 import pages.importDetails.{ImporterEORIExistsPage, NumberOfEntriesPage, UserTypePage}
 import pages.underpayments._

@@ -26,8 +26,8 @@ GET         /unauthorised                                                       
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess
 GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess
 
-GET         /disclosure/entry-details                                                          controllers.EntryDetailsController.onLoad
-POST        /disclosure/entry-details                                                          controllers.EntryDetailsController.onSubmit
+GET         /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onLoad
+POST        /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onSubmit
 
 GET         /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onLoad
 POST        /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onSubmit

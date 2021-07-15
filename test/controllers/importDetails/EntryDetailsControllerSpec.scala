@@ -14,21 +14,24 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
+
+import java.time.LocalDate
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.EntryDetailsFormProvider
+import forms.importDetails.EntryDetailsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{EntryDetails, UserAnswers}
-import pages.{CheckModePage, EntryDetailsPage}
+import models.UserAnswers
+import models.importDetails.EntryDetails
+import pages.CheckModePage
+import pages.importDetails.EntryDetailsPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
-import views.html.EntryDetailsView
+import views.html.importDetails.EntryDetailsView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends ControllerSpecBase {

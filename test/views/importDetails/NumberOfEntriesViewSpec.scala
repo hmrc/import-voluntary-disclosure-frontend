@@ -19,7 +19,7 @@ package views.importDetails
 import base.ViewBaseSpec
 import forms.importDetails.NumberOfEntriesFormProvider
 import messages.{BaseMessages, NumberOfEntriesMessages}
-import models.NumberOfEntries
+import models.importDetails.NumberOfEntries
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

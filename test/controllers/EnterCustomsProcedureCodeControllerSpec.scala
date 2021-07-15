@@ -21,15 +21,18 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.EnterCustomsProcedureCodeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{EntryDetails, UserAnswers}
-import pages.{CheckModePage, EnterCustomsProcedureCodePage, EntryDetailsPage}
+import models.UserAnswers
+import pages.{CheckModePage, EnterCustomsProcedureCodePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.EnterCustomsProcedureCodeView
-
 import java.time.LocalDate
+
+import models.importDetails.EntryDetails
+import pages.importDetails.EntryDetailsPage
+
 import scala.concurrent.Future
 
 class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {

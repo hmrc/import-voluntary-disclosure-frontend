@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package pages.importDetails
 
-import java.time.LocalDate
+import models.importDetails.NumberOfEntries
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import play.api.libs.json.Json
+case object NumberOfEntriesPage extends QuestionPage[NumberOfEntries] {
 
-case class EntryDetails(epu: String, entryNumber: String, entryDate: LocalDate)
+  def path: JsPath = JsPath \ toString
 
-object EntryDetails {
-  implicit val format = Json.format[EntryDetails]
+  override def toString: String = "number-of-entries"
+
 }
-

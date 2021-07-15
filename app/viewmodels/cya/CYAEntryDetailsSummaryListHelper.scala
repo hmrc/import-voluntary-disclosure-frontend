@@ -17,7 +17,7 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -27,7 +27,8 @@ import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
 import java.time.format.DateTimeFormatter
 
-import pages.importDetails.NumberOfEntriesPage
+import models.importDetails.NumberOfEntries
+import pages.importDetails.{EntryDetailsPage, NumberOfEntriesPage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -81,7 +82,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.epu")),
         valueContent = Text(entryDetails.epu),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.EntryDetailsController.onLoad().url,
+          controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.epu.change")
         )),
         columnClasses = "govuk-!-padding-bottom-1",

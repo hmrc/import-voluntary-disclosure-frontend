@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package forms.importDetails
 
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
-import models.EntryDetails
+import javax.inject.Inject
+import models.importDetails.EntryDetails
 import play.api.data.Form
 import play.api.data.Forms.mapping
 import play.api.i18n.Messages
-
-import javax.inject.Inject
 
 class EntryDetailsFormProvider @Inject() extends Mappings with FormHelpers {
 

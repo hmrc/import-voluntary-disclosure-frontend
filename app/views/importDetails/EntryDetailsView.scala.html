@@ -42,7 +42,7 @@
             p(Html(messages("entryDetails.importerParagraph")))
     }
 
-    @formHelper(action = controllers.routes.EntryDetailsController.onSubmit()) {
+    @formHelper(action = controllers.importDetails.routes.EntryDetailsController.onSubmit()) {
         @inputNumber(
             form = form,
             id = "epu",

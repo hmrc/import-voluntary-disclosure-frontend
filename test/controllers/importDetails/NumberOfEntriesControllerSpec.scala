@@ -20,10 +20,11 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.NumberOfEntriesFormProvider
 import mocks.repositories.MockSessionRepository
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
+import models.importDetails.NumberOfEntries
 import pages._
 import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, NumberOfEntriesPage, UserTypePage}
 import play.api.http.Status
@@ -101,7 +102,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EntryDetailsController.onLoad().url)
       }
 
       "return a SEE OTHER response when the existing value is not equal to the submitted one" in new Test {
@@ -113,7 +114,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EntryDetailsController.onLoad().url)
       }
 
       "return a SEE OTHER response when the existing value is equal to the submitted one in check mode" in new Test {
@@ -139,7 +140,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EntryDetailsController.onLoad().url)
       }
 
       "return a SEE OTHER response when the existing OneEntry is not equal to the submitted MoreThanOne in check mode" in new Test {
@@ -158,7 +159,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.EntryDetailsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EntryDetailsController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

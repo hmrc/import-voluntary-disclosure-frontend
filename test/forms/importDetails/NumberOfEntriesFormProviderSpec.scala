@@ -17,7 +17,7 @@
 package forms.importDetails
 
 import base.SpecBase
-import models.NumberOfEntries
+import models.importDetails.NumberOfEntries
 
 class NumberOfEntriesFormProviderSpec extends SpecBase {
 

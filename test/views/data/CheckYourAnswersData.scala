@@ -433,7 +433,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.EntryDetailsController.onLoad().url,
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.epuChange)
             )

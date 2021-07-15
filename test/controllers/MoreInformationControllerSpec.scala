@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.importDetails.NumberOfEntriesPage

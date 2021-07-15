@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
-import models.NumberOfEntries._
+import models.importDetails.NumberOfEntries._
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.importDetails.NumberOfEntriesPage
@@ -152,7 +152,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.EntryDetailsController.onLoad()
+        result mustBe controllers.importDetails.routes.EntryDetailsController.onLoad()
       }
       "when loading page back button should take you to NumberOfEntrues details page for Bulk Entry" in new Test {
         override val userAnswers: Option[UserAnswers] =

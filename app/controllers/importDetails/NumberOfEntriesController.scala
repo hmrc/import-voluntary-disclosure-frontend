@@ -20,9 +20,10 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.NumberOfEntriesFormProvider
 import javax.inject.{Inject, Singleton}
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.DataRequest
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
+import models.importDetails.NumberOfEntries
 import pages._
 import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
@@ -91,7 +92,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       Redirect(controllers.routes.CheckYourAnswersController.onLoad())
     } else {
       entries match {
-        case OneEntry => Redirect(controllers.routes.EntryDetailsController.onLoad())
+        case OneEntry => Redirect(controllers.importDetails.routes.EntryDetailsController.onLoad())
         case MoreThanOneEntry => Redirect(controllers.routes.AcceptanceDateController.onLoad())
       }
     }

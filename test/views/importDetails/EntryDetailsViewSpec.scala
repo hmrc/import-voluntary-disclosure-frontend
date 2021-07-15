@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
+
+import java.time.LocalDate
 
 import base.ViewBaseSpec
-import forms.EntryDetailsFormProvider
+import forms.importDetails.EntryDetailsFormProvider
 import messages.{BaseMessages, EntryDetailsMessages}
-import models.EntryDetails
+import models.importDetails.EntryDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.EntryDetailsView
-
-import java.time.LocalDate
+import views.html.importDetails.EntryDetailsView
 
 class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   val today: LocalDate = LocalDate.now()

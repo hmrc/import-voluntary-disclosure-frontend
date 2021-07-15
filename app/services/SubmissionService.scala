@@ -27,7 +27,7 @@ import play.api.Logger
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 import javax.inject.{Inject, Singleton}
-import models.importDetails.UserType
+import models.importDetails.{NumberOfEntries, UserType}
 
 import scala.concurrent.{ExecutionContext, Future}
 

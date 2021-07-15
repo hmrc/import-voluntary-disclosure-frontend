@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package forms
-
-import base.SpecBase
-import models.EntryDetails
-import play.api.data.FormError
+package forms.importDetails
 
 import java.time.LocalDate
+
+import base.SpecBase
+import models.importDetails.EntryDetails
+import play.api.data.FormError
 
 class EntryDetailsFormProviderSpec extends SpecBase {
 
