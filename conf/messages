@@ -982,3 +982,10 @@ updateCase.confirmation.whatHappensNext.p = We will check the information you ha
 updateCase.confirmation.whatYouShouldDoNext = What you should do next
 updateCase.confirmation.whatYouShouldDoNext.p = If you have not received the demand note or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk.
 updateCase.confirmation.helpImproveServiceLink = What did you think of this service?
+
+# Information Cannot Be Added Page
+cannotBeAdded.pageTitle = The information cannot be added to the disclosure
+cannotBeAdded.heading = The information cannot be added to the disclosure
+cannotBeAdded.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.
+cannotBeAdded.p2 = You can email us at customsaccountingrepayments@hmrc.gov.uk with the additional information and the disclosure reference number {0}.
+
