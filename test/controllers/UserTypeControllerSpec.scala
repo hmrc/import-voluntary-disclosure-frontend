@@ -192,7 +192,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         )
         private val backLink = controller.backLink()(request)
 
-        backLink mustBe controllers.routes.WhatDoYouWantToDoController.onLoad()
+        backLink mustBe controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       }
 
     }

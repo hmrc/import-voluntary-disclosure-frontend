@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.serviceEntry
 
 import base.ViewBaseSpec
-import forms.WhatDoYouWantToDoFormProvider
+import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import messages.WhatDoYouWantToDoMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.WhatDoYouWantToDoView
+import views.html.serviceEntry.WhatDoYouWantToDoView
 
 class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 

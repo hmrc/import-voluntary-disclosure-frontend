@@ -166,7 +166,7 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.WhatDoYouWantToDoController.onLoad()
+        result mustBe controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       }
     }
 

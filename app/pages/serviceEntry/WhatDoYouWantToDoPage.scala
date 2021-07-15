@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package pages.serviceEntry
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+case object WhatDoYouWantToDoPage extends QuestionPage[Boolean] {
 
+  def path: JsPath = JsPath \ toString
 
-class WhatDoYouWantToDoFormProvider @Inject() extends Mappings {
+  override def toString: String = "is-create-case"
 
-  def apply(): Form[Boolean] = {
-    Form(
-      "value" -> boolean("whatDoYouWantToDo.error.required")
-    )
-  }
 }
