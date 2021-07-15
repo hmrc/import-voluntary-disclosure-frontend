@@ -86,7 +86,7 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.ImporterNameController.onLoad()
+      controllers.importDetails.routes.ImporterNameController.onLoad()
     }
   }
 

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.ImporterNameFormProvider
+import forms.importDetails.ImporterNameFormProvider
 import messages.{BaseMessages, ImporterNameMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.ImporterNameView
+import views.html.importDetails.ImporterNameView
 
 class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
 

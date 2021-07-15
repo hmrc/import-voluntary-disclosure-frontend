@@ -19,6 +19,7 @@ package viewmodels.cya
 import models.UserAnswers
 import models.requests.DataRequest
 import pages._
+import pages.importDetails.ImporterNamePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -61,7 +62,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.name")),
         valueContent = Text(importerName),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterNameController.onLoad().url,
+          controllers.importDetails.routes.ImporterNameController.onLoad().url,
           messages("cya.importerName.change")
         ))
       )

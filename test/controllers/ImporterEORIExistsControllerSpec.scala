@@ -174,7 +174,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.ImporterNameController.onLoad()
+        result mustBe controllers.importDetails.routes.ImporterNameController.onLoad()
 
       }
     }

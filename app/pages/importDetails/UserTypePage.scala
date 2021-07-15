@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.importDetails
 
-import models.UserType
+import models.importDetails.UserType
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object UserTypePage extends QuestionPage[UserType] {

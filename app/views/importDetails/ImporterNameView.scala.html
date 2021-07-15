@@ -32,7 +32,7 @@
         @errorSummary(Seq(form.errors.head))
         }
 
-    @formHelper(action = controllers.routes.ImporterNameController.onSubmit()) {
+    @formHelper(action = controllers.importDetails.routes.ImporterNameController.onSubmit()) {
         @inputText(
             form = form,
             id = "fullName",

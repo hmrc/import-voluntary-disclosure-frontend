@@ -67,7 +67,7 @@ object CheckYourAnswersData {
             Actions(
               items = Seq(
                 ActionItem(
-                  controllers.routes.ImporterNameController.onLoad().url,
+                  controllers.importDetails.routes.ImporterNameController.onLoad().url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(CYAMessages.changeImporterName)
                 )

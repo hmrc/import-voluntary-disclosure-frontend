@@ -47,7 +47,7 @@ import views.html.{CheckYourAnswersView, ImporterConfirmationView, Representativ
 import java.time.LocalDate
 
 import models.importDetails.UserType
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 
 import scala.concurrent.Future
 

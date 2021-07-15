@@ -30,7 +30,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
 import javax.inject.{Inject, Singleton}
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 
 import scala.concurrent.{ExecutionContext, Future}
 

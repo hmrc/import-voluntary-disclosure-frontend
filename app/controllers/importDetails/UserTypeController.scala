@@ -97,7 +97,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
           } else {
             newUserType match {
               case UserType.Importer => Redirect(controllers.routes.NumberOfEntriesController.onLoad())
-              case UserType.Representative => Redirect(controllers.routes.ImporterNameController.onLoad())
+              case UserType.Representative => Redirect(controllers.importDetails.routes.ImporterNameController.onLoad())
             }
           }
         }

@@ -100,7 +100,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       "redirect to the importer name page" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterNameController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterNameController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -127,7 +127,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(answers)
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterNameController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterNameController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

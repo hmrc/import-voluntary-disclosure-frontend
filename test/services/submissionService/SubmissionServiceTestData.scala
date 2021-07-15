@@ -20,7 +20,7 @@ import models.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import utils.ReusableValues
 

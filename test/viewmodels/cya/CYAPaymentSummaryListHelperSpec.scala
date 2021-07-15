@@ -28,7 +28,7 @@ import views.data.cya.CheckYourAnswersPaymentData._
 import java.time.{LocalDate, LocalDateTime}
 
 import models.importDetails.UserType
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 
 class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
 

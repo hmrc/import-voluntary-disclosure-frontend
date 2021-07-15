@@ -215,8 +215,8 @@ POST        /disclosure/provide-information-option                              
 GET         /disclosure/more-information                                                       controllers.MoreInformationController.onLoad
 POST        /disclosure/more-information                                                       controllers.MoreInformationController.onSubmit
 
-GET         /disclosure/importer-name                                                          controllers.ImporterNameController.onLoad
-POST        /disclosure/importer-name                                                          controllers.ImporterNameController.onSubmit
+GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad
+POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit
 
 GET         /disclosure/importer-eori-number-exists                                            controllers.ImporterEORIExistsController.onLoad
 POST        /disclosure/importer-eori-number-exists                                            controllers.ImporterEORIExistsController.onSubmit
