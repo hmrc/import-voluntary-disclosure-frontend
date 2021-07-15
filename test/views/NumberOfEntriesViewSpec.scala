@@ -37,7 +37,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist and representative flow is selected" should {
 
       val form: Form[NumberOfEntries] = formProvider.apply()
-      lazy val view: Html = injectedView(form, isRepFlow = true, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, isRepFlow = true, controllers.importDetails.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(NumberOfEntriesMessages.title)
@@ -63,7 +63,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist and importer flow is selected" should {
 
       val form: Form[NumberOfEntries] = formProvider.apply()
-      lazy val view: Html = injectedView(form, isRepFlow = false, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, isRepFlow = false, controllers.importDetails.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(NumberOfEntriesMessages.title)
@@ -88,7 +88,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[NumberOfEntries] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, isRepFlow = true, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, isRepFlow = true, controllers.importDetails.routes.UserTypeController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(NumberOfEntriesMessages.errorPrefix + NumberOfEntriesMessages.title)
@@ -107,7 +107,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[NumberOfEntries] = formProvider.apply()
-    lazy val view: Html = injectedView(form, isRepFlow = true, controllers.routes.UserTypeController.onLoad())(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, isRepFlow = true, controllers.importDetails.routes.UserTypeController.onLoad())(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${NumberOfEntriesMessages.h1}'" in {

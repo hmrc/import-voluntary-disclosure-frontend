@@ -357,7 +357,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.UserTypeController.onLoad().url,
+                controllers.importDetails.routes.UserTypeController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeUserType)
               )

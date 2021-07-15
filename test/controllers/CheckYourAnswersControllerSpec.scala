@@ -44,8 +44,11 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
-
 import java.time.LocalDate
+
+import models.importDetails.UserType
+import pages.importDetails.UserTypePage
+
 import scala.concurrent.Future
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {

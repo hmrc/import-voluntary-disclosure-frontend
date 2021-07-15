@@ -17,9 +17,11 @@
 package models
 
 import config.FixedConfig
+import models.importDetails.UserType
 import models.underpayments.UnderpaymentDetail
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.importDetails.UserTypePage
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.libs.json.Reads
 

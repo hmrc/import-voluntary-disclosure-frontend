@@ -29,8 +29,9 @@ import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NumberOfEntriesView
-
 import javax.inject.{Inject, Singleton}
+import pages.importDetails.UserTypePage
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -103,7 +104,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       (request.isRepFlow, request.doesImporterEORIExist) match {
         case (true, true) => controllers.routes.ImporterVatRegisteredController.onLoad()
         case (true, false) => controllers.routes.ImporterEORIExistsController.onLoad()
-        case _ => controllers.routes.UserTypeController.onLoad()
+        case _ => controllers.importDetails.routes.UserTypeController.onLoad()
       }
     }
   }

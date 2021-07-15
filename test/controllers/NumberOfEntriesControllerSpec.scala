@@ -21,10 +21,11 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.NumberOfEntriesFormProvider
 import mocks.repositories.MockSessionRepository
 import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
-import models.UserType.{Importer, Representative}
+import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{NumberOfEntries, UserAnswers}
 import pages._
+import pages.importDetails.UserTypePage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -256,7 +257,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
           .set(CheckModePage, false).success.value
         )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.UserTypeController.onLoad()
+        result mustBe controllers.importDetails.routes.UserTypeController.onLoad()
       }
 
     }

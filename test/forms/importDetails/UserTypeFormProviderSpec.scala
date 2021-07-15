@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package forms
+package forms.importDetails
 
 import base.SpecBase
-import models.UserType
+import models.importDetails.UserType
 
 class UserTypeFormProviderSpec extends SpecBase {
 

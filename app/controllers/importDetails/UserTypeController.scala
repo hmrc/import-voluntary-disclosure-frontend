@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
-import forms.UserTypeFormProvider
+import forms.importDetails.UserTypeFormProvider
+import javax.inject.{Inject, Singleton}
 import models.requests.OptionalDataRequest
-import models.{UserAnswers, UserType}
+import models.UserAnswers
+import models.importDetails.UserType
 import pages.serviceEntry.KnownEoriDetailsPage
-import pages.{CheckModePage, UserTypePage}
+import pages.CheckModePage
+import pages.importDetails.UserTypePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.UserTypeView
+import views.html.importDetails.UserTypeView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 

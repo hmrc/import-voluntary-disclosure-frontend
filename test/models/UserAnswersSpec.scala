@@ -18,6 +18,7 @@ package models
 
 import base.SpecBase
 import pages._
+import pages.importDetails.UserTypePage
 import pages.serviceEntry.KnownEoriDetailsPage
 import services.submissionService.SubmissionServiceTestData
 

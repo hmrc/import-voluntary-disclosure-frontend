@@ -158,7 +158,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.UserTypeController.onLoad()
+        result mustBe controllers.importDetails.routes.UserTypeController.onLoad()
 
       }
     }

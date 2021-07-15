@@ -70,7 +70,7 @@ class ImporterNameController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.UserTypeController.onLoad()
+      controllers.importDetails.routes.UserTypeController.onLoad()
     }
   }
 

@@ -22,9 +22,11 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockAddressLookupService
-import models.{UserAnswers, UserType}
+import models.UserAnswers
 import models.addressLookup.AddressLookupOnRampModel
-import pages.{CheckModePage, UserTypePage}
+import models.importDetails.UserType
+import pages.CheckModePage
+import pages.importDetails.UserTypePage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}

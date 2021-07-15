@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.UserTypeFormProvider
+import forms.importDetails.UserTypeFormProvider
 import messages.{BaseMessages, UserTypeMessages}
-import models.UserType
+import models.importDetails.UserType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
-import views.html.UserTypeView
+import views.html.importDetails.UserTypeView
 
 class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
 

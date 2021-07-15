@@ -16,8 +16,8 @@ GET         /timeout-signed-out                                                 
 
 GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
 
-GET         /who-is-disclosing                                                                 controllers.UserTypeController.onLoad
-POST        /who-is-disclosing                                                                 controllers.UserTypeController.onSubmit
+GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad
+POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit
 
 GET         /one-or-more-entries                                                               controllers.NumberOfEntriesController.onLoad
 POST        /one-or-more-entries                                                               controllers.NumberOfEntriesController.onSubmit

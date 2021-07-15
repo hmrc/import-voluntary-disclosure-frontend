@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.UserTypeFormProvider
+import forms.importDetails.UserTypeFormProvider
 import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
+import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import models.{UserAnswers, UserType}
-import pages.{CheckModePage, UserTypePage}
+import pages.CheckModePage
+import pages.importDetails.UserTypePage
 import play.api.http.Status
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.Helpers._
-import views.html.UserTypeView
+import views.html.importDetails.UserTypeView
 
 import scala.concurrent.Future
 

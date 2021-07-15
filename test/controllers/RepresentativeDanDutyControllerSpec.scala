@@ -23,8 +23,10 @@ import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Duty
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.{UserAnswers, UserType}
+import models.UserAnswers
+import models.importDetails.UserType
 import pages._
+import pages.importDetails.UserTypePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}

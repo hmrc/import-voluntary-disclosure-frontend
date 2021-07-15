@@ -21,11 +21,12 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Both, Vat}
-import models.UserType.Representative
+import models.importDetails.UserType.Representative
 import models.underpayments.UnderpaymentDetail
 import models.{NumberOfEntries, UserAnswers}
+import pages.importDetails.UserTypePage
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
-import pages.{CheckModePage, NumberOfEntriesPage, SplitPaymentPage, UserTypePage}
+import pages.{CheckModePage, NumberOfEntriesPage, SplitPaymentPage}
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}

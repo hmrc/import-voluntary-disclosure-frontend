@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.UserType
+@import models.importDetails.UserType
 
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -28,7 +28,7 @@
 
     @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.UserTypeController.onSubmit()) {
+    @formHelper(action = controllers.importDetails.routes.UserTypeController.onSubmit()) {
         @inputRadio(
             form = form,
             legend = messages("userType.heading"),
