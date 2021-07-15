@@ -17,16 +17,17 @@
 package viewmodels.cya
 
 import models.requests.DataRequest
-import models.{NumberOfEntries, UserAnswers}
-import pages._
+import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
-
 import java.time.format.DateTimeFormatter
+
+import models.importDetails.NumberOfEntries
+import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -68,7 +69,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.NumberOfEntriesController.onLoad().url,
+          controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
           messages("cya.numberOfEntries.change")
         ))
       )
@@ -80,7 +81,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.epu")),
         valueContent = Text(entryDetails.epu),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.EntryDetailsController.onLoad().url,
+          controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.epu.change")
         )),
         columnClasses = "govuk-!-padding-bottom-1",
@@ -115,7 +116,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.AcceptanceDateController.onLoad().url,
+          controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
           messages("cya.acceptanceDate.change")
         ))
       )
@@ -128,7 +129,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.oneCustomsProcedureCode")),
         valueContent = Text(oneCustomsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
+          controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url,
           messages("cya.cpcExists.change")
         ))
       )
@@ -140,7 +141,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.customsProcedureCode")),
         valueContent = Text(customsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+          controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
           messages("cya.enterCpc.change")
         ))
       )

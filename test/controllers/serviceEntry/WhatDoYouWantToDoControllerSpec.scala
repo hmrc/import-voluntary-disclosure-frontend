@@ -88,7 +88,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UserTypeController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
 
       "return a SEE OTHER when there's no current saved value and submitted is false" in new Test {

@@ -19,6 +19,7 @@ package viewmodels.cya
 import models.UserAnswers
 import models.requests.DataRequest
 import pages._
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -61,7 +62,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.name")),
         valueContent = Text(importerName),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterNameController.onLoad().url,
+          controllers.importDetails.routes.ImporterNameController.onLoad().url,
           messages("cya.importerName.change")
         ))
       )
@@ -102,7 +103,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.eoriNumberExists")),
         valueContent = Text(eoriNumberExists),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterEORIExistsController.onLoad().url,
+          controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url,
           messages("cya.eoriExists.change")
         ))
       )
@@ -114,7 +115,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.eoriNumber")),
         valueContent = Text(eoriNumber),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterEORINumberController.onLoad().url,
+          controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
           messages("cya.eoriNumber.change")
         ))
       )
@@ -127,7 +128,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.vatRegistered")),
         valueContent = Text(isVatRegistered),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterVatRegisteredController.onLoad().url,
+          controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url,
           messages("cya.vatRegistered.change")
         ))
       )

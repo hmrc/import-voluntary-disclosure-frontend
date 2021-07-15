@@ -67,7 +67,7 @@ object CheckYourAnswersData {
             Actions(
               items = Seq(
                 ActionItem(
-                  controllers.routes.ImporterNameController.onLoad().url,
+                  controllers.importDetails.routes.ImporterNameController.onLoad().url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(CYAMessages.changeImporterName)
                 )
@@ -106,7 +106,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.ImporterEORIExistsController.onLoad().url,
+                controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeImporterEoriExists)
               )
@@ -125,7 +125,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.ImporterEORINumberController.onLoad().url,
+                controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeImporterEoriNumber)
               )
@@ -144,7 +144,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.ImporterVatRegisteredController.onLoad().url,
+                controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeImporterVatRegistered)
               )
@@ -264,7 +264,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.NumberOfEntriesController.onLoad().url,
+              controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
@@ -280,7 +280,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.AcceptanceDateController.onLoad().url,
+              controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeAcceptanceDateBulk)
             )
@@ -357,7 +357,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.UserTypeController.onLoad().url,
+                controllers.importDetails.routes.UserTypeController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeUserType)
               )
@@ -416,7 +416,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.NumberOfEntriesController.onLoad().url,
+              controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.numberOfEntriesChange)
             )
@@ -433,7 +433,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.EntryDetailsController.onLoad().url,
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.epuChange)
             )
@@ -475,7 +475,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.AcceptanceDateController.onLoad().url,
+              controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )
@@ -491,7 +491,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
+              controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeCpcExists)
             )
@@ -507,7 +507,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.EnterCustomsProcedureCodeController.onLoad().url,
+              controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeEnterCpc)
             )

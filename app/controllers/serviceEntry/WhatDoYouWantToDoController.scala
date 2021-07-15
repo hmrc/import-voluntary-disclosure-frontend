@@ -73,7 +73,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
 
   private[serviceEntry] def submitRedirect(submittedValue: Boolean): Result = {
     if (submittedValue) {
-      Redirect(controllers.routes.UserTypeController.onLoad())
+      Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
     } else {
       Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
     }

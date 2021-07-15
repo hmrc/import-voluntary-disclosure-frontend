@@ -30,8 +30,11 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanImportVATView
-
 import java.time.LocalDateTime
+
+import models.importDetails.UserType
+import pages.importDetails.UserTypePage
+
 import scala.concurrent.Future
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {

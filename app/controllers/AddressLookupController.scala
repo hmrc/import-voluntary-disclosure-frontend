@@ -88,7 +88,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+            Redirect(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
           }
         }
 

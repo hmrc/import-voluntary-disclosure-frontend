@@ -38,14 +38,16 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockSubmissionService
 import models._
-import pages._
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers._
 import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
-
 import java.time.LocalDate
+
+import models.importDetails.{EntryDetails, UserType}
+import pages.importDetails._
+
 import scala.concurrent.Future
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {

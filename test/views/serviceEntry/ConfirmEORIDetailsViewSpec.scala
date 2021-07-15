@@ -70,7 +70,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     }
 
     "render a continue button with the correct URL " in {
-      elementAttributes(".govuk-button") must contain("href" -> controllers.routes.UserTypeController.onLoad().url)
+      elementAttributes(".govuk-button") must contain("href" -> controllers.importDetails.routes.UserTypeController.onLoad().url)
     }
 
   }
