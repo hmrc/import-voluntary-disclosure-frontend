@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.serviceEntry
 
 import com.google.inject.Inject
 import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.{EoriDetails, UserAnswers}
-import pages.KnownEoriDetailsPage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,8 +30,8 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.ConfirmEORIDetailsView
 import views.html.errors.ConfirmEoriDetailsErrorView
+import views.html.serviceEntry.ConfirmEORIDetailsView
 
 import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
@@ -75,7 +75,7 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   }
 
 
-  private[controllers] def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
+  private[serviceEntry] def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
 
     def rowItem(message: String, value: String) = SummaryListRow(
       key = Key(content = Text(messages(message)), classes = "govuk-summary-list__key govuk-!-width-one-half"),

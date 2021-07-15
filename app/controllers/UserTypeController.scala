@@ -21,7 +21,8 @@ import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.UserTypeFormProvider
 import models.requests.OptionalDataRequest
 import models.{UserAnswers, UserType}
-import pages.{CheckModePage, KnownEoriDetailsPage, UserTypePage}
+import pages.serviceEntry.KnownEoriDetailsPage
+import pages.{CheckModePage, UserTypePage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -55,7 +56,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     (cyaMode, appConfig.updateCaseEnabled) match {
       case (true, _) => controllers.routes.CheckYourAnswersController.onLoad()
       case (false, true) => controllers.routes.WhatDoYouWantToDoController.onLoad()
-      case (false, false) => controllers.routes.ConfirmEORIDetailsController.onLoad()
+      case (false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
     }
   }
 

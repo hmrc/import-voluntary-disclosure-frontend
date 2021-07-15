@@ -23,6 +23,7 @@ import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.DataRequest
 import models.{NumberOfEntries, UserAnswers}
 import pages._
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.serviceEntry
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
@@ -22,14 +22,15 @@ import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
 import models.{ContactAddress, EoriDetails, ErrorModel, UserAnswers}
 import pages._
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import utils.ReusableValues
 import views.data.ConfirmEORIDetailsData
-import views.html.ConfirmEORIDetailsView
 import views.html.errors.ConfirmEoriDetailsErrorView
+import views.html.serviceEntry.ConfirmEORIDetailsView
 
 import scala.concurrent.Future
 

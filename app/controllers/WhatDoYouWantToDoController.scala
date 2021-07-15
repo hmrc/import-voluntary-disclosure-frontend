@@ -19,7 +19,8 @@ package controllers
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.WhatDoYouWantToDoFormProvider
 import models.UserAnswers
-import pages.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
+import pages.WhatDoYouWantToDoPage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -80,7 +81,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def backLink(): Call = {
-    controllers.routes.ConfirmEORIDetailsController.onLoad()
+    controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
   }
 
 }

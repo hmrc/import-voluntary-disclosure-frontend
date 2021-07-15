@@ -180,7 +180,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         )
         private val backLink = controller.backLink()(request)
 
-        backLink mustBe controllers.routes.ConfirmEORIDetailsController.onLoad()
+        backLink mustBe controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
       }
 
       "go to the confirm New Or Update Case page" in new Test {

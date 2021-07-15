@@ -22,7 +22,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
 import models.requests.DataRequest
-import pages.{KnownEoriDetailsPage, TraderAddressCorrectPage, TraderAddressPage}
+import pages.serviceEntry.KnownEoriDetailsPage
+import pages.{TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}

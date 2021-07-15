@@ -20,6 +20,7 @@ import config.FixedConfig
 import models.underpayments.UnderpaymentDetail
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.libs.json.Reads
 
 case class SubmissionData(userType: UserType,

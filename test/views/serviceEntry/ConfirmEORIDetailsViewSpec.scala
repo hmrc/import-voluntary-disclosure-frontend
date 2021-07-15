@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.serviceEntry
 
 import base.ViewBaseSpec
 import messages.ConfirmEORIDetailsMessages
@@ -23,7 +23,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.data.ConfirmEORIDetailsData.details
-import views.html.ConfirmEORIDetailsView
+import views.html.serviceEntry.ConfirmEORIDetailsView
 
 class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 

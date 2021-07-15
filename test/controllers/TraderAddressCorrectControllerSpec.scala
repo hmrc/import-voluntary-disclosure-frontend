@@ -23,7 +23,8 @@ import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ErrorModel, UserAnswers}
-import pages.{CheckModePage, KnownEoriDetailsPage, TraderAddressCorrectPage}
+import pages.serviceEntry.KnownEoriDetailsPage
+import pages.{CheckModePage, TraderAddressCorrectPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
