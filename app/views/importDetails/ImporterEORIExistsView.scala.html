@@ -29,7 +29,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.ImporterEORIExistsController.onSubmit()) {
+        @formHelper(action = controllers.importDetails.routes.ImporterEORIExistsController.onSubmit()) {
             @yesNoRadio(
                 form,
                 headingKey = "importerEORIExists.heading",

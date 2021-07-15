@@ -65,7 +65,7 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      Some(controllers.routes.ImporterEORIExistsController.onLoad())
+      Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
     }
   }
 }

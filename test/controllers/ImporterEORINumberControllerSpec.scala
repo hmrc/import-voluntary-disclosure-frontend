@@ -140,7 +140,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.ImporterEORIExistsController.onLoad())
+        result mustBe Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
       }
     }
 

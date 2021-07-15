@@ -25,7 +25,7 @@ import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{NumberOfEntries, UserAnswers}
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterEORIExistsPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -246,7 +246,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
           .set(CheckModePage, false).success.value
         )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.ImporterEORIExistsController.onLoad()
+        result mustBe controllers.importDetails.routes.ImporterEORIExistsController.onLoad()
       }
 
       "return SEE OTHER UserTypeController" in new Test {

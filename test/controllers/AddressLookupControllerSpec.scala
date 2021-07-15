@@ -105,7 +105,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           setupMockRetrieveAddress(Right(customerAddressMissingLine3))
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.routes.ImporterEORIExistsController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad.url)
           verifyCalls()
         }
 

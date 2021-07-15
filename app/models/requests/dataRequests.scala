@@ -20,7 +20,7 @@ import models._
 import models.SelectedDutyTypes._
 import models.importDetails.UserType
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterEORIExistsPage, UserTypePage}
 import pages.underpayments._
 import play.api.mvc.WrappedRequest
 

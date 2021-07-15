@@ -19,7 +19,7 @@ package viewmodels.cya
 import models.UserAnswers
 import models.requests.DataRequest
 import pages._
-import pages.importDetails.ImporterNamePage
+import pages.importDetails.{ImporterEORIExistsPage, ImporterNamePage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -103,7 +103,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.eoriNumberExists")),
         valueContent = Text(eoriNumberExists),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterEORIExistsController.onLoad().url,
+          controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url,
           messages("cya.eoriExists.change")
         ))
       )

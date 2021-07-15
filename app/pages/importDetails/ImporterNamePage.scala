@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package forms
+package pages.importDetails
 
-import forms.mappings.Mappings
-import javax.inject.Inject
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-class ImporterEORIExistsFormProvider @Inject() extends Mappings {
+case object ImporterNamePage extends QuestionPage[String] {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("importerEORIExists.error.required")
-    )
+  def path: JsPath = JsPath \ toString
+
+  override def toString: String = "importer-name"
+
 }
