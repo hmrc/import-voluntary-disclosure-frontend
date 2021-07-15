@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package pages
+package pages.importDetails
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object EnterCustomsProcedureCodePage extends QuestionPage[String] {
