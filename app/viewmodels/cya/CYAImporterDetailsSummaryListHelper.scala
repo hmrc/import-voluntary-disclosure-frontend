@@ -19,7 +19,7 @@ package viewmodels.cya
 import models.UserAnswers
 import models.requests.DataRequest
 import pages._
-import pages.importDetails.{ImporterEORIExistsPage, ImporterNamePage}
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -115,7 +115,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.eoriNumber")),
         valueContent = Text(eoriNumber),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.ImporterEORINumberController.onLoad().url,
+          controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
           messages("cya.eoriNumber.change")
         ))
       )

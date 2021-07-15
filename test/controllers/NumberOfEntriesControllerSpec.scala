@@ -25,7 +25,7 @@ import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{NumberOfEntries, UserAnswers}
 import pages._
-import pages.importDetails.{ImporterEORIExistsPage, UserTypePage}
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest

@@ -22,7 +22,7 @@ import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import javax.inject.{Inject, Singleton}
 import pages._
-import pages.importDetails.ImporterNamePage
+import pages.importDetails.{ImporterEORINumberPage, ImporterNamePage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._

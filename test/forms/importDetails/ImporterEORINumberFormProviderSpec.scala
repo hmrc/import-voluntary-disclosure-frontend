@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.importDetails
 
 import base.SpecBase
 import play.api.data.Form

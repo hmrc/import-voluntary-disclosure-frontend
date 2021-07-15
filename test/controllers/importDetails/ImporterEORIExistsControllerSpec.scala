@@ -91,7 +91,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
       "return the correct location header for true request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterEORINumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterEORINumberController.onLoad().url)
       }
 
       "return a SEE OTHER for false request" in new Test {
@@ -130,7 +130,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.ImporterEORINumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterEORINumberController.onLoad().url)
       }
 
       "return a SEE OTHER for false request" in new Test {

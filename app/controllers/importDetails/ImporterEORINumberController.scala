@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.ImporterEORINumberFormProvider
+import forms.importDetails.ImporterEORINumberFormProvider
+import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.ImporterEORINumberPage
+import pages.importDetails.ImporterEORINumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.ImporterEORINumberView
+import views.html.importDetails.ImporterEORINumberView
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

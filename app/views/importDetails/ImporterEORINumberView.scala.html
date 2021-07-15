@@ -30,7 +30,7 @@
 
     @errorSummary(form.errors)
 
-    @formHelper(action = controllers.routes.ImporterEORINumberController.onSubmit()) {
+    @formHelper(action = controllers.importDetails.routes.ImporterEORINumberController.onSubmit()) {
         @inputText(
             form = form,
             id = "importerEORI",

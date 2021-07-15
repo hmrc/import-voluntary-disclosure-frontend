@@ -20,8 +20,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.importDetails.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.importDetails.ImporterEORIExistsPage
-import pages.{ImporterEORINumberPage, ImporterVatRegisteredPage}
+import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage}
+import pages.ImporterVatRegisteredPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -61,7 +61,7 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           }
           yield {
-            Redirect(controllers.routes.ImporterEORINumberController.onLoad())
+            Redirect(controllers.importDetails.routes.ImporterEORINumberController.onLoad())
           }
         } else {
           for {

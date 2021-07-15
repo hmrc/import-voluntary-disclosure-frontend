@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.ImporterEORINumberFormProvider
+import forms.importDetails.ImporterEORINumberFormProvider
 import messages.{BaseMessages, ImporterEORINumberMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.ImporterEORINumberView
+import views.html.importDetails.ImporterEORINumberView
 
 class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 

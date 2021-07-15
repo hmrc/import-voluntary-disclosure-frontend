@@ -125,7 +125,7 @@ object CheckYourAnswersData {
           actions = Some(Actions(
             items = Seq(
               ActionItem(
-                controllers.routes.ImporterEORINumberController.onLoad().url,
+                controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(CYAMessages.changeImporterEoriNumber)
               )

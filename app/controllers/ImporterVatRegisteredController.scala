@@ -74,7 +74,7 @@ class ImporterVatRegisteredController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      Some(controllers.routes.ImporterEORINumberController.onLoad())
+      Some(controllers.importDetails.routes.ImporterEORINumberController.onLoad())
     }
   }
 }

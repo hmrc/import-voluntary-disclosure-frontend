@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.importDetails
 
 import models.UserAnswers
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import scala.util.Try
