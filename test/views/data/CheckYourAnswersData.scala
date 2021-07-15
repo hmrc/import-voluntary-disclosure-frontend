@@ -280,7 +280,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.AcceptanceDateController.onLoad().url,
+              controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeAcceptanceDateBulk)
             )
@@ -475,7 +475,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.AcceptanceDateController.onLoad().url,
+              controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeAcceptanceDate)
             )

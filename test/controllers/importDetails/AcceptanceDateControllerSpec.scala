@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.AcceptanceDateFormProvider
+import forms.importDetails.AcceptanceDateFormProvider
 import mocks.repositories.MockSessionRepository
-import models.importDetails.NumberOfEntries._
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.importDetails.NumberOfEntriesPage
-import pages.{AcceptanceDatePage, CheckModePage}
+import models.importDetails.NumberOfEntries._
+import models.requests._
+import pages.CheckModePage
+import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.{AcceptanceDateBulkView, AcceptanceDateView}
+import views.html.importDetails.{AcceptanceDateBulkView, AcceptanceDateView}
 
 import scala.concurrent.Future
 

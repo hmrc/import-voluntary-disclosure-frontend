@@ -29,8 +29,8 @@ GET         /not-eligible/no-access-to-private-beta                             
 GET         /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onLoad
 POST        /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onSubmit
 
-GET         /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onLoad
-POST        /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onSubmit
+GET         /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onLoad
+POST        /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onSubmit
 
 GET         /disclosure/mandatory-documents                                                    controllers.SupportingDocController.onLoad
 

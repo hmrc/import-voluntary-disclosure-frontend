@@ -28,7 +28,7 @@ import viewmodels.{ActionItemHelper, cya}
 import java.time.format.DateTimeFormatter
 
 import models.importDetails.NumberOfEntries
-import pages.importDetails.{EntryDetailsPage, NumberOfEntriesPage}
+import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -117,7 +117,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.AcceptanceDateController.onLoad().url,
+          controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
           messages("cya.acceptanceDate.change")
         ))
       )

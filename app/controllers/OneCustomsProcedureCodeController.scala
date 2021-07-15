@@ -83,7 +83,7 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.AcceptanceDateController.onLoad()
+      controllers.importDetails.routes.AcceptanceDateController.onLoad()
     }
   }
 }

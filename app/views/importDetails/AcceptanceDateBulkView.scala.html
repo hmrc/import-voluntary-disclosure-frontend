@@ -34,7 +34,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.AcceptanceDateController.onSubmit()) {
+        @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
             @defining({
                 Some(Legend(
                     content = HtmlContent(legendContent.toString()),

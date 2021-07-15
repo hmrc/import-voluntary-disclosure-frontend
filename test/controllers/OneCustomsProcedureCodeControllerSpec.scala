@@ -184,7 +184,7 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.AcceptanceDateController.onLoad()
+        result mustBe controllers.importDetails.routes.AcceptanceDateController.onLoad()
 
       }
     }

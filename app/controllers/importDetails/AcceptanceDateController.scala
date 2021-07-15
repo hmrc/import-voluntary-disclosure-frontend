@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.AcceptanceDateFormProvider
+import controllers.actions._
+import forms.importDetails.AcceptanceDateFormProvider
+import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
-import pages.AcceptanceDatePage
+import pages.importDetails.AcceptanceDatePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{AcceptanceDateBulkView, AcceptanceDateView}
+import views.html.importDetails.{AcceptanceDateBulkView, AcceptanceDateView}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

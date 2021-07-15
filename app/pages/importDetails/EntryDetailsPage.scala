@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.importDetails
 
-import models.EntryDetails
+import models.importDetails.EntryDetails
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object EntryDetailsPage extends QuestionPage[EntryDetails] {

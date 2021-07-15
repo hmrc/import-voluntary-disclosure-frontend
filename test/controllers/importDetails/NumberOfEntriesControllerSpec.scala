@@ -153,7 +153,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.MoreThanOneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.AcceptanceDateController.onLoad().url)
       }
 
       "return the correct location header" in new Test {
@@ -190,7 +190,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.MoreThanOneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.AcceptanceDateController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.AcceptanceDateController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

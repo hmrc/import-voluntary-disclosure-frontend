@@ -58,7 +58,7 @@ class EntryDetailsController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.AcceptanceDateController.onLoad())
+            Redirect(controllers.importDetails.routes.AcceptanceDateController.onLoad())
           }
         }
       }

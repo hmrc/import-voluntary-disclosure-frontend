@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.AcceptanceDateFormProvider
-import messages.{AcceptanceDateBulkMessages, BaseMessages}
+import forms.importDetails.AcceptanceDateFormProvider
+import messages.{AcceptanceDateMessages, BaseMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.AcceptanceDateBulkView
+import views.html.importDetails.AcceptanceDateView
 
-class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
+class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
   lazy val backLink = Call("GET","url")
 
-  private lazy val injectedView: AcceptanceDateBulkView = app.injector.instanceOf[AcceptanceDateBulkView]
+  private lazy val injectedView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
 
   val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
 
-  "Rendering the AcceptanceDateBulk page" when {
+  "Rendering the AcceptanceDate page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply(false)
+      val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(AcceptanceDateBulkMessages.title)
+      checkPageTitle(AcceptanceDateMessages.title)
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -53,18 +53,18 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider(false).bind(Map("value" -> ""))
+      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.title)
+      checkPageTitle(AcceptanceDateMessages.errorPrefix + AcceptanceDateMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe AcceptanceDateBulkMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe AcceptanceDateMessages.requiredError
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.requiredError
+        elementText("#value-error") mustBe AcceptanceDateMessages.errorPrefix + AcceptanceDateMessages.requiredError
       }
 
     }
@@ -76,20 +76,16 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "have the correct page heading" in {
-      elementText("h1") mustBe AcceptanceDateBulkMessages.h1
+    s"have the correct h1 of '${AcceptanceDateMessages.h1}'" in {
+      elementText("h1") mustBe AcceptanceDateMessages.h1
     }
 
-    "have the correct page info" in {
-      elementText("p:nth-child(2)") mustBe AcceptanceDateBulkMessages.info
+    s"have the correct value for the first radio button of '${AcceptanceDateMessages.siteYes}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe AcceptanceDateMessages.siteYes
     }
 
-    "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe AcceptanceDateBulkMessages.beforeRadio
-    }
-
-    "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateBulkMessages.afterRadio
+    s"have the correct value for the second radio button of '${AcceptanceDateMessages.siteNo}'" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateMessages.siteNo
     }
 
     "render a back link with the correct URL" in {

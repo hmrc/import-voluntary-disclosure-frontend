@@ -29,7 +29,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.AcceptanceDateController.onSubmit()) {
+        @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
             @yesNoRadio(
                 form,
                 headingKey = "acceptanceDate.single.heading",

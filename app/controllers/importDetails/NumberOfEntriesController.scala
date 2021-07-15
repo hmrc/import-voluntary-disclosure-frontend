@@ -93,7 +93,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
     } else {
       entries match {
         case OneEntry => Redirect(controllers.importDetails.routes.EntryDetailsController.onLoad())
-        case MoreThanOneEntry => Redirect(controllers.routes.AcceptanceDateController.onLoad())
+        case MoreThanOneEntry => Redirect(controllers.importDetails.routes.AcceptanceDateController.onLoad())
       }
     }
   }

@@ -106,7 +106,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
             .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.AcceptanceDateController.onLoad()
+        result mustBe controllers.importDetails.routes.AcceptanceDateController.onLoad()
       }
     }
   }
