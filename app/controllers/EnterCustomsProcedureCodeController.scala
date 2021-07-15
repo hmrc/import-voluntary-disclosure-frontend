@@ -44,7 +44,7 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      Some(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+      Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad())
     }
   }
 

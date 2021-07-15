@@ -14,14 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package forms.importDetails
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import javax.inject.Inject
+import play.api.data.Form
 
-case object AcceptanceDatePage extends QuestionPage[Boolean] {
+class OneCustomsProcedureCodeFormProvider @Inject() extends Mappings {
 
-  def path: JsPath = JsPath \ toString
-
-  override def toString: String = "acceptance-date"
-
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("oneCustomsProcedureCode.error.required")
+    )
 }

@@ -70,7 +70,7 @@ class AcceptanceDateController @Inject()(identify: IdentifierAction,
           }
           else {
             if (request.isOneEntry) {
-              Redirect(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+              Redirect(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad())
             } else {
               Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
             }

@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.importDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.OneCustomsProcedureCodeFormProvider
+import forms.importDetails.OneCustomsProcedureCodeFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, OneCustomsProcedureCodePage}
+import models.requests._
+import pages.CheckModePage
+import pages.importDetails.OneCustomsProcedureCodePage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.OneCustomsProcedureCodeView
+import views.html.importDetails.OneCustomsProcedureCodeView
 
 import scala.concurrent.Future
 

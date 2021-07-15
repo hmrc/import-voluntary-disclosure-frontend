@@ -50,7 +50,7 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
       if (request.userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
         controllers.routes.EnterCustomsProcedureCodeController.onLoad()
       } else {
-        controllers.routes.OneCustomsProcedureCodeController.onLoad()
+        controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad()
       }
     } else {
       controllers.importDetails.routes.AcceptanceDateController.onLoad()

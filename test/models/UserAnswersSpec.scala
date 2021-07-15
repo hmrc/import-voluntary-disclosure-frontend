@@ -18,7 +18,7 @@ package models
 
 import base.SpecBase
 import pages._
-import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterNamePage, NumberOfEntriesPage, UserTypePage}
+import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterNamePage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import services.submissionService.SubmissionServiceTestData
 

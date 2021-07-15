@@ -94,7 +94,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
       "return the correct location header for Single Entry" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit()(request)
-        redirectLocation(result) mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url)
       }
 
       "return the correct location header for Bulk Entry" in new Test {

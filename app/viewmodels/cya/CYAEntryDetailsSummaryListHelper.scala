@@ -28,7 +28,7 @@ import viewmodels.{ActionItemHelper, cya}
 import java.time.format.DateTimeFormatter
 
 import models.importDetails.NumberOfEntries
-import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage}
+import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -130,7 +130,7 @@ trait CYAEntryDetailsSummaryListHelper {
         keyText = Text(messages("cya.oneCustomsProcedureCode")),
         valueContent = Text(oneCustomsProcedureCode),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.OneCustomsProcedureCodeController.onLoad().url,
+          controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url,
           messages("cya.cpcExists.change")
         ))
       )

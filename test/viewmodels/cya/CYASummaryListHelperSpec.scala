@@ -28,7 +28,7 @@ import views.data.CheckYourAnswersData._
 import java.time.{LocalDate, LocalDateTime}
 
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, UserTypePage}
+import pages.importDetails.{AcceptanceDatePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 
 
 class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {

@@ -191,7 +191,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.OneCustomsProcedureCodeController.onLoad())
+        result mustBe Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad())
       }
     }
 

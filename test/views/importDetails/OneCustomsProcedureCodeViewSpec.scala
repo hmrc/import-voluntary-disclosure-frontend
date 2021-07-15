@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package views
+package views.importDetails
 
 import base.ViewBaseSpec
-import forms.OneCustomsProcedureCodeFormProvider
+import forms.importDetails.OneCustomsProcedureCodeFormProvider
 import messages.{BaseMessages, OneCustomsProcedureCodeMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.OneCustomsProcedureCodeView
+import views.html.importDetails.OneCustomsProcedureCodeView
 
 class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
 

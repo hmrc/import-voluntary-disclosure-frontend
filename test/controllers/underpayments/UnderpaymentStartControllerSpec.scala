@@ -95,7 +95,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
             .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.OneCustomsProcedureCodeController.onLoad()
+        result mustBe controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad()
       }
     }
 
