@@ -49,7 +49,7 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
     "id" -> "1234567890"
   )
 
-  val updateResponseModel = UpdateCaseResponse()
+  val updateResponseModel = UpdateCaseResponse("1234567890")
 
   "IVD Submission HttpParser" when {
 

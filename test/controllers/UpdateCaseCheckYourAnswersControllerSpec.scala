@@ -58,7 +58,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = {
-      Right(UpdateCaseResponse())
+      Right(UpdateCaseResponse("1234"))
     }
 
     def repositoryExpectation(): Unit = {

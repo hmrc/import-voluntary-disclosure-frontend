@@ -55,10 +55,11 @@ class UpdateCaseServiceSpec extends SpecBase {
   "UpdateCaseService" when {
     "called with valid user answers" should {
       "return successful UpdateCaseResponse" in new Test {
-        setupMock(Right(UpdateCaseResponse()))
+        private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
+        setupMock(Right(response))
         private val result = await(service.updateCase()(dataRequest, hc, ec))
 
-        result mustBe Right(UpdateCaseResponse())
+        result mustBe Right(response)
       }
 
       "return error if connector call fails" in new Test {

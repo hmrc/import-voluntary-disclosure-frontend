@@ -76,7 +76,13 @@ object IvdHttpParser {
     override def read(method: String, url: String, response: HttpResponse): Either[UpdateCaseError, UpdateCaseResponse] = {
 
       response.status match {
-        case Status.OK => Right(UpdateCaseResponse())
+        case Status.OK =>
+          response.json.validate[UpdateCaseResponse] match {
+            case JsSuccess(value, _) => Right(value)
+            case JsError(errors) =>
+              logger.error("Failed to validate JSON with errors: " + errors)
+              Left(UpdateCaseError.UnexpectedError(response.status, Some("Invalid JSON returned from IVD Update Case")))
+          }
         case Status.BAD_REQUEST =>
           response.json.validate[UpdateCaseError] match {
             case JsSuccess(value, _) => Left(value)
