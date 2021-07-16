@@ -14,28 +14,27 @@
 * limitations under the License.
 *@
 
-@import config.AppConfig
 
 @this(layout: templates.Layout,
-h1: components.h1,
-p: components.p,
-bullets: components.bullets,
-linkButton: components.linkButton
-)
+      h1: components.h1,
+      p: components.p,
+      bullets: components.bullets,
+      linkButton: components.linkButton
+      )
 
 @(caseId: String)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("cannotBeAdded.pageTitle")) {
+    @layout(pageTitle = messages("cannotBeAdded.pageTitle")) {
 
-    @h1(messages("cannotBeAdded.pageTitle"))
+        @h1(messages("cannotBeAdded.pageTitle"))
 
-    @p{ @messages("cannotBeAdded.p1") }
+        @p{ @messages("cannotBeAdded.p1") }
 
-    @p{ @messages("cannotBeAdded.p2") }
+        @p{ @messages("cannotBeAdded.p2", caseId) }
 
-}
+    }
 
 
-@{
-//$COVERAGE-OFF$
-}
+    @{
+    //$COVERAGE-OFF$
+    }
