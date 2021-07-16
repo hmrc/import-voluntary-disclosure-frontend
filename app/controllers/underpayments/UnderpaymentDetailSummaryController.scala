@@ -86,7 +86,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
             case (_, true) => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
             case _ =>
               if (request.isOneEntry) {
-                Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+                Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
               } else {
                 Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
               }
@@ -109,7 +109,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         removePaymentDataAndRedirect()
       case (None, _, _) =>
         if (request.isOneEntry) {
-          Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
+          Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
         } else {
           Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
         }

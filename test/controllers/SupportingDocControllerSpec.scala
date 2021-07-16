@@ -20,7 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, UserAnswers}
-import pages.{FileUploadPage, HasFurtherInformationPage}
+import pages.FileUploadPage
+import pages.reasons.HasFurtherInformationPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
@@ -71,7 +72,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
           .set(HasFurtherInformationPage, false).success.value
       )
 
-      controller.backLink(userAnswers.get) mustBe controllers.routes.HasFurtherInformationController.onLoad()
+      controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.HasFurtherInformationController.onLoad()
     }
 
     "return to More information page if further information is required" in new Test {
@@ -80,7 +81,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
           .set(HasFurtherInformationPage, true).success.value
       )
 
-      controller.backLink(userAnswers.get) mustBe controllers.routes.MoreInformationController.onLoad()
+      controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.MoreInformationController.onLoad()
     }
   }
 }

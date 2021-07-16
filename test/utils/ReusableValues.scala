@@ -25,9 +25,10 @@ import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.http.HttpResponse
-import java.time.{LocalDate, LocalDateTime}
 
+import java.time.{LocalDate, LocalDateTime}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import models.reasons.UnderpaymentReason
 
 trait ReusableValues {
 

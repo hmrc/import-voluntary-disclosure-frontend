@@ -188,7 +188,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.UnderpaymentReasonSummaryController.onLoad().url,
+              controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">View summary</span>"""),
               Some(CYAMessages.viewReasonForUnderpayment)
             )
@@ -205,7 +205,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.HasFurtherInformationController.onLoad().url,
+              controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeHasFurtherInformation)
             )
@@ -222,7 +222,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.MoreInformationController.onLoad().url,
+              controllers.reasons.routes.MoreInformationController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeMoreInformation)
             )
@@ -330,7 +330,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.MoreInformationController.onLoad().url,
+              controllers.reasons.routes.MoreInformationController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               visuallyHiddenText = Some(CYAMessages.changeReasonForUnderpayment)
             )

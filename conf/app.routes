@@ -72,148 +72,148 @@ POST        /disclosure/confirm-file-removal/:index                             
 GET         /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onLoad
 POST        /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onSubmit
 
-GET         /disclosure/reason-introduction                                                    controllers.BoxGuidanceController.onLoad
+GET         /disclosure/reason-introduction                                                    controllers.reasons.BoxGuidanceController.onLoad
 
-GET         /disclosure/box-number                                                             controllers.BoxNumberController.onLoad
-POST        /disclosure/box-number                                                             controllers.BoxNumberController.onSubmit
+GET         /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onLoad
+POST        /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onSubmit
 
-GET         /disclosure/item-number                                                            controllers.ItemNumberController.onLoad
-POST        /disclosure/item-number                                                            controllers.ItemNumberController.onSubmit
+GET         /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onLoad
+POST        /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onSubmit
 
-GET         /disclosure/box-22-currency-total-invoice-amendment                                controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 22)
-POST        /disclosure/box-22-currency-total-invoice-amendment                                controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 22)
+GET         /disclosure/box-22-currency-total-invoice-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 22)
+POST        /disclosure/box-22-currency-total-invoice-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 22)
 
-GET         /disclosure/box-33-commodity-code-amendment                                        controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 33)
-POST        /disclosure/box-33-commodity-code-amendment                                        controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 33)
+GET         /disclosure/box-33-commodity-code-amendment                                        controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 33)
+POST        /disclosure/box-33-commodity-code-amendment                                        controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 33)
 
-GET         /disclosure/box-34-origin-country-code-amendment                                   controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 34)
-POST        /disclosure/box-34-origin-country-code-amendment                                   controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 34)
+GET         /disclosure/box-34-origin-country-code-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 34)
+POST        /disclosure/box-34-origin-country-code-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 34)
 
-GET         /disclosure/box-35-gross-mass-amendment                                            controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 35)
-POST        /disclosure/box-35-gross-mass-amendment                                            controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 35)
+GET         /disclosure/box-35-gross-mass-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 35)
+POST        /disclosure/box-35-gross-mass-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 35)
 
-GET         /disclosure/box-36-preference-amendment                                            controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 36)
-POST        /disclosure/box-36-preference-amendment                                            controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 36)
+GET         /disclosure/box-36-preference-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 36)
+POST        /disclosure/box-36-preference-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 36)
 
-GET         /disclosure/box-37-customs-procedure-code-amendment                                controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 37)
-POST        /disclosure/box-37-customs-procedure-code-amendment                                controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 37)
+GET         /disclosure/box-37-customs-procedure-code-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 37)
+POST        /disclosure/box-37-customs-procedure-code-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 37)
 
-GET         /disclosure/box-38-net-mass-amendment                                              controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 38)
-POST        /disclosure/box-38-net-mass-amendment                                              controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 38)
+GET         /disclosure/box-38-net-mass-amendment                                              controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 38)
+POST        /disclosure/box-38-net-mass-amendment                                              controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 38)
 
-GET         /disclosure/box-39-quota-amendment                                                 controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 39)
-POST        /disclosure/box-39-quota-amendment                                                 controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 39)
+GET         /disclosure/box-39-quota-amendment                                                 controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 39)
+POST        /disclosure/box-39-quota-amendment                                                 controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 39)
 
-GET         /disclosure/box-41-supplementary-units-amendment                                   controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 41)
-POST        /disclosure/box-41-supplementary-units-amendment                                   controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 41)
+GET         /disclosure/box-41-supplementary-units-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 41)
+POST        /disclosure/box-41-supplementary-units-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 41)
 
-GET         /disclosure/box-42-item-price-amendment                                            controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 42)
-POST        /disclosure/box-42-item-price-amendment                                            controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 42)
+GET         /disclosure/box-42-item-price-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 42)
+POST        /disclosure/box-42-item-price-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 42)
 
-GET         /disclosure/box-43-valuation-method-amendment                                      controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 43)
-POST        /disclosure/box-43-valuation-method-amendment                                      controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 43)
+GET         /disclosure/box-43-valuation-method-amendment                                      controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 43)
+POST        /disclosure/box-43-valuation-method-amendment                                      controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 43)
 
-GET         /disclosure/box-45-adjustment-amendment                                            controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 45)
-POST        /disclosure/box-45-adjustment-amendment                                            controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 45)
+GET         /disclosure/box-45-adjustment-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 45)
+POST        /disclosure/box-45-adjustment-amendment                                            controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 45)
 
-GET         /disclosure/box-46-statistical-value-amendment                                     controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 46)
-POST        /disclosure/box-46-statistical-value-amendment                                     controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 46)
+GET         /disclosure/box-46-statistical-value-amendment                                     controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 46)
+POST        /disclosure/box-46-statistical-value-amendment                                     controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 46)
 
-GET         /disclosure/box-62-air-transport-costs-amendment                                   controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 62)
-POST        /disclosure/box-62-air-transport-costs-amendment                                   controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 62)
+GET         /disclosure/box-62-air-transport-costs-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 62)
+POST        /disclosure/box-62-air-transport-costs-amendment                                   controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 62)
 
-GET         /disclosure/box-63-awb-freight-costs-amendment                                     controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 63)
-POST        /disclosure/box-63-awb-freight-costs-amendment                                     controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 63)
+GET         /disclosure/box-63-awb-freight-costs-amendment                                     controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 63)
+POST        /disclosure/box-63-awb-freight-costs-amendment                                     controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 63)
 
-GET         /disclosure/box-66-insurance-amendment                                             controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 66)
-POST        /disclosure/box-66-insurance-amendment                                             controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 66)
+GET         /disclosure/box-66-insurance-amendment                                             controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 66)
+POST        /disclosure/box-66-insurance-amendment                                             controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 66)
 
-GET         /disclosure/box-67-other-charges-deductions-amendment                              controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 67)
-POST        /disclosure/box-67-other-charges-deductions-amendment                              controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 67)
+GET         /disclosure/box-67-other-charges-deductions-amendment                              controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 67)
+POST        /disclosure/box-67-other-charges-deductions-amendment                              controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 67)
 
-GET         /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 68)
-POST        /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
+GET         /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 68)
+POST        /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
 
-GET         /disclosure/confirm-reason-details                                                 controllers.ConfirmReasonDetailController.onLoad
-POST        /disclosure/confirm-reason-details                                                 controllers.ConfirmReasonDetailController.onSubmit
+GET         /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onLoad
+POST        /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onSubmit
 
-GET         /disclosure/underpayment-reason-summary                                            controllers.UnderpaymentReasonSummaryController.onLoad
-POST        /disclosure/underpayment-reason-summary                                            controllers.UnderpaymentReasonSummaryController.onSubmit
+GET         /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onLoad
+POST        /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onSubmit
 
-GET         /disclosure/change/change-reason-details                                           controllers.ChangeUnderpaymentReasonController.onLoad
-GET         /disclosure/change/change-reason-details/:boxNumber/:itemNumber                    controllers.ChangeUnderpaymentReasonController.change(boxNumber: Int, itemNumber: Int)
+GET         /disclosure/change/change-reason-details                                           controllers.reasons.ChangeUnderpaymentReasonController.onLoad
+GET         /disclosure/change/change-reason-details/:boxNumber/:itemNumber                    controllers.reasons.ChangeUnderpaymentReasonController.change(boxNumber: Int, itemNumber: Int)
 
-GET         /disclosure/remove-reason-confirm                                                  controllers.RemoveUnderpaymentReasonController.onLoad
-POST        /disclosure/remove-reason-confirm                                                  controllers.RemoveUnderpaymentReasonController.onSubmit
+GET         /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onLoad
+POST        /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onSubmit
 
-GET         /disclosure/change/item-number                                                     controllers.ChangeItemNumberController.onLoad
-POST        /disclosure/change/item-number                                                     controllers.ChangeItemNumberController.onSubmit
+GET         /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onLoad
+POST        /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onSubmit
 
-GET         /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 22)
-POST        /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 22)
+GET         /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 22)
+POST        /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 22)
 
-GET         /disclosure/change/box-33-commodity-code-amendment                                 controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 33)
-POST        /disclosure/change/box-33-commodity-code-amendment                                 controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 33)
+GET         /disclosure/change/box-33-commodity-code-amendment                                 controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 33)
+POST        /disclosure/change/box-33-commodity-code-amendment                                 controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 33)
 
-GET         /disclosure/change/box-34-origin-country-code-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 34)
-POST        /disclosure/change/box-34-origin-country-code-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 34)
+GET         /disclosure/change/box-34-origin-country-code-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 34)
+POST        /disclosure/change/box-34-origin-country-code-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 34)
 
-GET         /disclosure/change/box-35-gross-mass-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 35)
-POST        /disclosure/change/box-35-gross-mass-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 35)
+GET         /disclosure/change/box-35-gross-mass-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 35)
+POST        /disclosure/change/box-35-gross-mass-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 35)
 
-GET         /disclosure/change/box-36-preference-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 36)
-POST        /disclosure/change/box-36-preference-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 36)
+GET         /disclosure/change/box-36-preference-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 36)
+POST        /disclosure/change/box-36-preference-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 36)
 
-GET         /disclosure/change/box-37-customs-procedure-code-amendment                         controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 37)
-POST        /disclosure/change/box-37-customs-procedure-code-amendment                         controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 37)
+GET         /disclosure/change/box-37-customs-procedure-code-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 37)
+POST        /disclosure/change/box-37-customs-procedure-code-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 37)
 
-GET         /disclosure/change/box-38-net-mass-amendment                                       controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 38)
-POST        /disclosure/change/box-38-net-mass-amendment                                       controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 38)
+GET         /disclosure/change/box-38-net-mass-amendment                                       controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 38)
+POST        /disclosure/change/box-38-net-mass-amendment                                       controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 38)
 
-GET         /disclosure/change/box-39-quota-amendment                                          controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 39)
-POST        /disclosure/change/box-39-quota-amendment                                          controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 39)
+GET         /disclosure/change/box-39-quota-amendment                                          controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 39)
+POST        /disclosure/change/box-39-quota-amendment                                          controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 39)
 
-GET         /disclosure/change/box-41-supplementary-units-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 41)
-POST        /disclosure/change/box-41-supplementary-units-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 41)
+GET         /disclosure/change/box-41-supplementary-units-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 41)
+POST        /disclosure/change/box-41-supplementary-units-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 41)
 
-GET         /disclosure/change/box-42-item-price-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 42)
-POST        /disclosure/change/box-42-item-price-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 42)
+GET         /disclosure/change/box-42-item-price-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 42)
+POST        /disclosure/change/box-42-item-price-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 42)
 
-GET         /disclosure/change/box-43-valuation-method-amendment                               controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 43)
-POST        /disclosure/change/box-43-valuation-method-amendment                               controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 43)
+GET         /disclosure/change/box-43-valuation-method-amendment                               controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 43)
+POST        /disclosure/change/box-43-valuation-method-amendment                               controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 43)
 
-GET         /disclosure/change/box-45-adjustment-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 45)
-POST        /disclosure/change/box-45-adjustment-amendment                                     controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 45)
+GET         /disclosure/change/box-45-adjustment-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 45)
+POST        /disclosure/change/box-45-adjustment-amendment                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 45)
 
-GET         /disclosure/change/box-46-statistical-value-amendment                              controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 46)
-POST        /disclosure/change/box-46-statistical-value-amendment                              controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 46)
+GET         /disclosure/change/box-46-statistical-value-amendment                              controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 46)
+POST        /disclosure/change/box-46-statistical-value-amendment                              controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 46)
 
-GET         /disclosure/change/box-62-air-transport-costs-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 62)
-POST        /disclosure/change/box-62-air-transport-costs-amendment                            controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 62)
+GET         /disclosure/change/box-62-air-transport-costs-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 62)
+POST        /disclosure/change/box-62-air-transport-costs-amendment                            controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 62)
 
-GET         /disclosure/change/box-63-awb-freight-costs-amendment                              controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 63)
-POST        /disclosure/change/box-63-awb-freight-costs-amendment                              controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 63)
+GET         /disclosure/change/box-63-awb-freight-costs-amendment                              controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 63)
+POST        /disclosure/change/box-63-awb-freight-costs-amendment                              controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 63)
 
-GET         /disclosure/change/box-66-insurance-amendment                                      controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 66)
-POST        /disclosure/change/box-66-insurance-amendment                                      controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 66)
+GET         /disclosure/change/box-66-insurance-amendment                                      controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 66)
+POST        /disclosure/change/box-66-insurance-amendment                                      controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 66)
 
-GET         /disclosure/change/box-67-other-charges-deductions-amendment                       controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 67)
-POST        /disclosure/change/box-67-other-charges-deductions-amendment                       controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 67)
+GET         /disclosure/change/box-67-other-charges-deductions-amendment                       controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 67)
+POST        /disclosure/change/box-67-other-charges-deductions-amendment                       controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 67)
 
-GET         /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 68)
-POST        /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 68)
+GET         /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 68)
+POST        /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 68)
 
-GET         /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onLoad
-POST        /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onSubmit
+GET         /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onLoad
+POST        /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onSubmit
 
 GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad
 GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit
 
-GET         /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onLoad
-POST        /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onSubmit
+GET         /disclosure/provide-information-option                                             controllers.reasons.HasFurtherInformationController.onLoad
+POST        /disclosure/provide-information-option                                             controllers.reasons.HasFurtherInformationController.onSubmit
 
-GET         /disclosure/more-information                                                       controllers.MoreInformationController.onLoad
-POST        /disclosure/more-information                                                       controllers.MoreInformationController.onSubmit
+GET         /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onLoad
+POST        /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onSubmit
 
 GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad
 POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit
