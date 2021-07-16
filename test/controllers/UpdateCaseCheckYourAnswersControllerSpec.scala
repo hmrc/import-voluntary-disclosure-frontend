@@ -119,7 +119,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
-      redirectLocation(result) mustBe Some(controllers.routes.DisclosureNotFoundController.onLoad(caseId).url)
+      redirectLocation(result) mustBe Some(controllers.routes.DisclosureNotFoundController.onLoad().url)
     }
 
 

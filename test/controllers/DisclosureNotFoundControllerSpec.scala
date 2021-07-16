@@ -17,22 +17,29 @@
 package controllers
 
 import base.ControllerSpecBase
+import controllers.actions.FakeDataRetrievalAction
+import models.UserAnswers
+import pages.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.test.Helpers._
 import views.html.DisclosureNotFoundView
 
 class DisclosureNotFoundControllerSpec extends ControllerSpecBase {
-  lazy val view: DisclosureNotFoundView = app.injector.instanceOf[DisclosureNotFoundView]
-  private lazy val controller = new DisclosureNotFoundController(messagesControllerComponents, view)
+  val view: DisclosureNotFoundView = app.injector.instanceOf[DisclosureNotFoundView]
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(DisclosureReferenceNumberPage, "C18").success.value)
+  val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
+  val controller =
+    new DisclosureNotFoundController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents, view, errorHandler)
 
   "onLoad" should {
     "return 200" in {
-      val result = controller.onLoad("C18")(fakeRequest)
+      val result = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in {
-      val result = controller.onLoad("C18")(fakeRequest)
+      val result = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }

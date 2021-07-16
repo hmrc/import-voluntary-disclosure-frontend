@@ -16,6 +16,9 @@
 
 package controllers
 
+import config.ErrorHandler
+import controllers.actions._
+import pages.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -23,10 +26,18 @@ import views.html.DisclosureNotFoundView
 
 import javax.inject.Inject
 
-class DisclosureNotFoundController @Inject()(mcc: MessagesControllerComponents,
-                                             view: DisclosureNotFoundView)
+class DisclosureNotFoundController @Inject()(identify: IdentifierAction,
+                                             getData: DataRetrievalAction,
+                                             requireData: DataRequiredAction,
+                                             mcc: MessagesControllerComponents,
+                                             view: DisclosureNotFoundView,
+                                             errorHandler: ErrorHandler)
   extends FrontendController(mcc) with I18nSupport {
-  def onLoad(caseId: String): Action[AnyContent] = Action { implicit request =>
-    Ok(view(caseId))
+
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    request.userAnswers.get(DisclosureReferenceNumberPage) match {
+      case Some(caseId) => Ok(view(caseId))
+      case None => errorHandler.showInternalServerError
+    }
   }
 }

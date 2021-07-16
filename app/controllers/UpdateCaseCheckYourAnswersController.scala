@@ -58,7 +58,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
-            Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad(caseId)))
+            Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>
