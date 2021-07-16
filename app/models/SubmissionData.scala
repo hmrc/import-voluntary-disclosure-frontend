@@ -18,10 +18,12 @@ package models
 
 import config.FixedConfig
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import models.reasons.UnderpaymentReason
 import models.underpayments.UnderpaymentDetail
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
 import pages.importDetails._
+import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.libs.json.Reads
 

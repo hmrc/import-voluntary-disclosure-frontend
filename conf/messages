@@ -983,7 +983,17 @@ updateCase.confirmation.whatYouShouldDoNext = What you should do next
 updateCase.confirmation.whatYouShouldDoNext.p = If you have not received the demand note or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk.
 updateCase.confirmation.helpImproveServiceLink = What did you think of this service?
 
-# Information Cannot Be Added Page
+# Update Case - Disclosure Not Found
+updateCase.disclosureNotFound.pageTitle = No disclosure found
+updateCase.disclosureNotFound.heading = No disclosure found
+updateCase.disclosureNotFound.p1 = We cannot find a disclosure with the reference number {0}.
+updateCase.disclosureNotFound.p2 = You can:
+updateCase.disclosureNotFound.li1 = 'check and '
+updateCase.disclosureNotFound.link = enter the disclosure reference number again
+updateCase.disclosureNotFound.li2.part1 = 'email us at '
+updateCase.disclosureNotFound.li2.part2 = with the additional information, the entry details and the EORI number and name of the importer
+
+# Update Case - Information Cannot Be Added
 cannotBeAdded.pageTitle = The information cannot be added to the disclosure
 cannotBeAdded.heading = The information cannot be added to the disclosure
 cannotBeAdded.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.

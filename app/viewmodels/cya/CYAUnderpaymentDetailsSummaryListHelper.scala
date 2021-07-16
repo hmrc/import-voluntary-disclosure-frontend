@@ -20,6 +20,7 @@ import models.UserAnswers
 import models.requests.DataRequest
 import pages._
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
+import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -88,7 +89,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(keyTextMessage),
         valueContent = Text(extraInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.MoreInformationController.onLoad().url,
+          controllers.reasons.routes.MoreInformationController.onLoad().url,
           changeTextMessage
         ))
       )
@@ -102,7 +103,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.hasFurtherInformation")),
         valueContent = Text(furtherInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.HasFurtherInformationController.onLoad().url,
+          controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
           messages("cya.hasFurtherInformation.change")
         ))
       )
@@ -116,7 +117,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         Text(messages("cya.reasonForUnderpayment")),
         Text(messages(numberOfReasons, underpaymentReason.size)),
         Some(ActionItemHelper.createViewSummaryActionItem(
-          controllers.routes.UnderpaymentReasonSummaryController.onLoad().url,
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url,
           messages("cya.reasonForUnderpayment.change")
         ))
       )

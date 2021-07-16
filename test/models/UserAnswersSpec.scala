@@ -19,6 +19,7 @@ package models
 import base.SpecBase
 import pages._
 import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterNamePage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
+import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import services.submissionService.SubmissionServiceTestData
 

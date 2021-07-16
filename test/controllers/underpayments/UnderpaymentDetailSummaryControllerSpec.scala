@@ -108,7 +108,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BoxGuidanceController.onLoad().url)
+          Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
 
 
@@ -152,7 +152,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BoxGuidanceController.onLoad().url)
+          Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
 
       "return a SEE OTHER Box Guidance page when in Representative flow in first pass and Bulk entry" in new Test {

@@ -19,7 +19,8 @@ package controllers
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
-import pages.{FileUploadPage, HasFurtherInformationPage}
+import pages.FileUploadPage
+import pages.reasons.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -40,8 +41,8 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink(userAnswers: UserAnswers): Call = {
     userAnswers.get(HasFurtherInformationPage) match {
-      case Some(value) if value => controllers.routes.MoreInformationController.onLoad()
-      case _ => controllers.routes.HasFurtherInformationController.onLoad()
+      case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
+      case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
     }
   }
 
