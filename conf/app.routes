@@ -10,38 +10,38 @@ GET         /address-initialise                                                 
 GET         /address-callback                                                                  controllers.AddressLookupController.callback(id: String)
 GET         /importer-address-callback                                                         controllers.AddressLookupController.importerCallback(id: String)
 
-GET         /keep-alive                                                                        controllers.SessionExpiredController.keepAlive
-GET         /timeout-remove-answers                                                            controllers.SessionExpiredController.timeout
-GET         /timeout-signed-out                                                                controllers.SessionExpiredController.showView
+GET         /keep-alive                                                                        controllers.serviceEntry.SessionExpiredController.keepAlive
+GET         /timeout-remove-answers                                                            controllers.serviceEntry.SessionExpiredController.timeout
+GET         /timeout-signed-out                                                                controllers.serviceEntry.SessionExpiredController.showView
 
 GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
 
-GET         /who-is-disclosing                                                                 controllers.UserTypeController.onLoad
-POST        /who-is-disclosing                                                                 controllers.UserTypeController.onSubmit
+GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad
+POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit
 
-GET         /one-or-more-entries                                                               controllers.NumberOfEntriesController.onLoad
-POST        /one-or-more-entries                                                               controllers.NumberOfEntriesController.onSubmit
+GET         /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onLoad
+POST        /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onSubmit
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess
 GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess
 
-GET         /disclosure/entry-details                                                          controllers.EntryDetailsController.onLoad
-POST        /disclosure/entry-details                                                          controllers.EntryDetailsController.onSubmit
+GET         /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onLoad
+POST        /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onSubmit
 
-GET         /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onLoad
-POST        /disclosure/when-entry-acceptance-date                                             controllers.AcceptanceDateController.onSubmit
+GET         /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onLoad
+POST        /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onSubmit
 
 GET         /disclosure/mandatory-documents                                                    controllers.SupportingDocController.onLoad
 
 GET         /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onLoad
 POST        /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onSubmit
 
-GET         /disclosure/only-one-cpc                                                           controllers.OneCustomsProcedureCodeController.onLoad
-POST        /disclosure/only-one-cpc                                                           controllers.OneCustomsProcedureCodeController.onSubmit
+GET         /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onLoad
+POST        /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onSubmit
 
-GET         /disclosure/enter-cpc                                                              controllers.EnterCustomsProcedureCodeController.onLoad
-POST        /disclosure/enter-cpc                                                              controllers.EnterCustomsProcedureCodeController.onSubmit
+GET         /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onLoad
+POST        /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onSubmit
 
 GET         /disclosure/upload-file                                                            controllers.UploadFileController.onLoad
 GET         /disclosure/upload-file/upscan-response                                            controllers.UploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
@@ -206,8 +206,8 @@ POST        /disclosure/change/box-68-adjustment-vat-value-amendment            
 GET         /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onLoad
 POST        /disclosure/change/confirm-reason-details                                          controllers.ConfirmChangeReasonDetailController.onSubmit
 
-GET         /disclosure/check-your-answers                                                     controllers.CheckYourAnswersController.onLoad
-GET         /disclosure/confirmation                                                           controllers.CheckYourAnswersController.onSubmit
+GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad
+GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit
 
 GET         /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onLoad
 POST        /disclosure/provide-information-option                                             controllers.HasFurtherInformationController.onSubmit
@@ -215,16 +215,16 @@ POST        /disclosure/provide-information-option                              
 GET         /disclosure/more-information                                                       controllers.MoreInformationController.onLoad
 POST        /disclosure/more-information                                                       controllers.MoreInformationController.onSubmit
 
-GET         /disclosure/importer-name                                                          controllers.ImporterNameController.onLoad
-POST        /disclosure/importer-name                                                          controllers.ImporterNameController.onSubmit
+GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad
+POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit
 
-GET         /disclosure/importer-eori-number-exists                                            controllers.ImporterEORIExistsController.onLoad
-POST        /disclosure/importer-eori-number-exists                                            controllers.ImporterEORIExistsController.onSubmit
+GET         /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onLoad
+POST        /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onSubmit
 
-GET         /disclosure/importer-eori-number                                                   controllers.ImporterEORINumberController.onLoad
-POST        /disclosure/importer-eori-number                                                   controllers.ImporterEORINumberController.onSubmit
+GET         /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onLoad
+POST        /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onSubmit
 
-GET         /confirm-eori                                                                      controllers.ConfirmEORIDetailsController.onLoad
+GET         /confirm-eori                                                                      controllers.serviceEntry.ConfirmEORIDetailsController.onLoad
 
 GET         /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onLoad
 POST        /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onSubmit
@@ -377,11 +377,11 @@ POST        /disclosure/remove-compensatory-duty-underpayment-confirm           
 GET         /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onLoad
 POST        /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onSubmit
 
-GET         /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onLoad
-POST        /disclosure/importer-vat-registered                                                controllers.ImporterVatRegisteredController.onSubmit
+GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad
+POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit
 
-GET         /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onLoad()
-POST        /start-new-or-update                                                               controllers.WhatDoYouWantToDoController.onSubmit()
+GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
+POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
 
 GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
 POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit

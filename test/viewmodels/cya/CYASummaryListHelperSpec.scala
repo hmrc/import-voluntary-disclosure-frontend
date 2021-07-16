@@ -19,14 +19,16 @@ package viewmodels.cya
 import base.SpecBase
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.{ContactAddress, ContactDetails, EntryDetails, FileUploadInfo, NumberOfEntries, UnderpaymentReason, UserAnswers, UserType}
+import models.{ContactAddress, ContactDetails, FileUploadInfo, UnderpaymentReason, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.CheckYourAnswersData._
-
 import java.time.{LocalDate, LocalDateTime}
+
+import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 
 
 class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {

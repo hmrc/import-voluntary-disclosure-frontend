@@ -22,7 +22,8 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
 import models.requests.DataRequest
-import pages.{KnownEoriDetailsPage, TraderAddressCorrectPage, TraderAddressPage}
+import pages.serviceEntry.KnownEoriDetailsPage
+import pages.{TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -78,7 +79,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
               Redirect(controllers.routes.DefermentController.onLoad())
             }
@@ -97,7 +98,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.DeclarantContactDetailsController.onLoad()
     }

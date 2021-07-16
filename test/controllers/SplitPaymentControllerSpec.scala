@@ -22,8 +22,10 @@ import forms.SplitPaymentFormProvider
 import mocks.repositories.MockSessionRepository
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
-import models.{UserAnswers, UserType}
+import models.UserAnswers
+import models.importDetails.UserType
 import pages._
+import pages.importDetails.UserTypePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc._
@@ -134,7 +136,7 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
           fakeRequestGenerator("false")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -198,7 +200,7 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

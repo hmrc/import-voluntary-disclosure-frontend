@@ -21,11 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Both, Vat}
-import models.UserType.Representative
+import models.importDetails.UserType.Representative
 import models.underpayments.UnderpaymentDetail
-import models.{NumberOfEntries, UserAnswers}
+import models.UserAnswers
+import models.importDetails.NumberOfEntries
+import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
-import pages.{CheckModePage, NumberOfEntriesPage, SplitPaymentPage, UserTypePage}
+import pages.{CheckModePage, SplitPaymentPage}
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -135,7 +137,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+          Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return a SEE OTHER Box Guidance page when in Representative flow in first pass and not Bulk entry" in new Test {
@@ -183,7 +185,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+          Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return a SEE OTHER Deferment page when in Representative flow VatOrDuty and Both" in new Test {

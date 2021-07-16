@@ -20,10 +20,11 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
-import models.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, MoreInformationPage, NumberOfEntriesPage}
+import pages.importDetails.NumberOfEntriesPage
+import pages.{CheckModePage, MoreInformationPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -131,7 +132,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
       )
       val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
       lazy val result: Future[Result] = controller.onSubmit(request)
-      redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
     }
 
     "update the UserAnswers in session" in new Test {

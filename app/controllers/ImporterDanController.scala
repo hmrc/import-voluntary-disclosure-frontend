@@ -55,7 +55,7 @@ class ImporterDanController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+          Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
         }
       }
     )

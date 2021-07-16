@@ -18,6 +18,8 @@ package models
 
 import base.SpecBase
 import pages._
+import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterNamePage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import services.submissionService.SubmissionServiceTestData
 
 class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {

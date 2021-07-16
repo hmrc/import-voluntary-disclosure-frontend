@@ -83,7 +83,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         } else {
           (request.isRepFlow, request.checkMode) match {
             case (true, _) => redirectForRepFlow()
-            case (_, true) => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+            case (_, true) => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
             case _ =>
               if (request.isOneEntry) {
                 Future.successful(Redirect(controllers.routes.BoxGuidanceController.onLoad()))
@@ -113,7 +113,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         } else {
           Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
         }
-      case _ => Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+      case _ => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
     }
   }
 

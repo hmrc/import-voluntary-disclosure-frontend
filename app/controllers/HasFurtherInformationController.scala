@@ -61,7 +61,7 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
             Redirect(controllers.routes.MoreInformationController.onLoad())
           } else {
             if (request.checkMode) {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
               Redirect(controllers.routes.SupportingDocController.onLoad())
             }
@@ -72,7 +72,7 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.UnderpaymentReasonSummaryController.onLoad()
     }

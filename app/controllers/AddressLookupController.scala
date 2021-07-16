@@ -67,7 +67,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
            if(request.checkMode){
-             Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
            } else {
              Redirect(controllers.routes.DefermentController.onLoad())
            }
@@ -86,9 +86,9 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.ImporterEORIExistsController.onLoad())
+            Redirect(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
           }
         }
 

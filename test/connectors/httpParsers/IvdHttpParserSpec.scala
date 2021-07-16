@@ -49,7 +49,7 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
     "id" -> "1234567890"
   )
 
-  val updateResponseModel = UpdateResponse("1234567890")
+  val updateResponseModel = UpdateCaseResponse("1234567890")
 
   "IVD Submission HttpParser" when {
 
@@ -105,18 +105,20 @@ class IvdHttpParserSpec extends SpecBase with ReusableValues {
           HttpResponse(Status.OK, updateResponseJson, Map.empty[String, Seq[String]])) mustBe Right(updateResponseModel)
       }
 
-      "return an ErrorModel when invalid Json is returned" in {
-        UpdateResponseReads.read("", "",
-          HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,
-            "Invalid Json returned from IVD Update Case"))
+      "return the correct error when received BAD_REQUEST for InvalidCaseId" in {
+        val response = HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 1, "errorMessage" -> "Invalid case ID").toString())
+        UpdateResponseReads.read("", "", response) mustBe Left(UpdateCaseError.InvalidCaseId)
       }
 
-      "return an ErrorModel when NOT_FOUND is returned" in {
+      "return the correct error when received BAD_REQUEST for CaseAlreadyClosed" in {
+        val response = HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 2, "errorMessage" -> "Case is already closed").toString())
+        UpdateResponseReads.read("", "", response) mustBe Left(UpdateCaseError.CaseAlreadyClosed)
+      }
+
+      "return an error when NOT_FOUND is returned" in {
         UpdateResponseReads.read("", "",
           HttpResponse(Status.NOT_FOUND, "")) mustBe
-          Left(ErrorModel(Status.NOT_FOUND,
-            "Downstream error returned when retrieving UpdateResponse from back end"))
+          Left(UpdateCaseError.UnexpectedError(Status.NOT_FOUND, Some("Downstream error returned when retrieving UpdateResponse from back end")))
       }
     }
 

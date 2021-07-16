@@ -79,7 +79,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
             if (paymentByDeferment) {
               redirectToDefermentView()
             } else {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             }
           }
         } else {
@@ -90,7 +90,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
             if (paymentByDeferment && !request.checkMode) {
               redirectToDefermentView()
             } else {
-              Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             }
           }
         }
@@ -120,7 +120,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.routes.TraderAddressCorrectController.onLoad()
     }

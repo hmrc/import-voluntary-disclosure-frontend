@@ -18,14 +18,14 @@ package controllers.underpayments
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.requests.DataRequest
-import pages.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentStartView
-
 import javax.inject.{Inject, Singleton}
+import pages.importDetails.EnterCustomsProcedureCodePage
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -48,12 +48,12 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.isOneEntry) {
       if (request.userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
-        controllers.routes.EnterCustomsProcedureCodeController.onLoad()
+        controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad()
       } else {
-        controllers.routes.OneCustomsProcedureCodeController.onLoad()
+        controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad()
       }
     } else {
-      controllers.routes.AcceptanceDateController.onLoad()
+      controllers.importDetails.routes.AcceptanceDateController.onLoad()
     }
   }
 

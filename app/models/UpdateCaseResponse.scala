@@ -16,10 +16,10 @@
 
 package models
 
-import play.api.libs.json.Reads
+import play.api.libs.json.{Format, Json}
 
-final case class UpdateCaseResponse()
+case class UpdateCaseResponse(id: String)
 
 object UpdateCaseResponse {
-  implicit val format: Reads[UpdateCaseResponse] = Reads.pure(UpdateCaseResponse())
+  implicit val format: Format[UpdateCaseResponse] = Json.format[UpdateCaseResponse]
 }

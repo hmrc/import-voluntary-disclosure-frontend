@@ -25,8 +25,10 @@ import org.scalatest.{OptionValues, TryValues}
 import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.cya.CheckYourAnswersPaymentData._
-
 import java.time.{LocalDate, LocalDateTime}
+
+import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 
 class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
 

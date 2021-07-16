@@ -60,7 +60,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             if (request.isOneEntry) {
               Redirect(controllers.routes.SupportingDocController.onLoad())
