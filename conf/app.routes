@@ -402,3 +402,4 @@ POST        /update-disclosure/additional-information                           
 
 GET         /update-disclosure/check-your-answers                                              controllers.UpdateCaseCheckYourAnswersController.onLoad()
 GET         /update-disclosure/confirmation                                                    controllers.UpdateCaseCheckYourAnswersController.onSubmit()
+GET         /update-disclosure/disclosure-not-found                                            controllers.DisclosureNotFoundController.onLoad(caseId: String)
