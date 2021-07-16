@@ -71,7 +71,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
       if (request.isOneEntry) {
         controllers.routes.UploadAnotherFileController.onLoad()
       } else {
-        controllers.routes.MoreInformationController.onLoad()
+        controllers.reasons.routes.MoreInformationController.onLoad()
       }
     }
   }

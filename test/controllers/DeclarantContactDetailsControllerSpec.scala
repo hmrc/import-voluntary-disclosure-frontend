@@ -179,7 +179,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
             .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.MoreInformationController.onLoad()
+        result mustBe controllers.reasons.routes.MoreInformationController.onLoad()
       }
     }
 

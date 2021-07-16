@@ -113,7 +113,7 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
     val action = if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad().url
     } else {
-      controllers.routes.MoreInformationController.onLoad().url
+      controllers.reasons.routes.MoreInformationController.onLoad().url
     }
 
     val filename = request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty)
