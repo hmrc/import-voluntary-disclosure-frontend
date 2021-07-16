@@ -989,6 +989,6 @@ updateCase.disclosureNotFound.heading = No disclosure found
 updateCase.disclosureNotFound.p1 = We cannot find a disclosure with the reference number {0}.
 updateCase.disclosureNotFound.p2 = You can:
 updateCase.disclosureNotFound.li1 = 'check and '
-updateCase.disclosureNotFound.a = enter the disclosure reference number again
+updateCase.disclosureNotFound.link = enter the disclosure reference number again
 updateCase.disclosureNotFound.li2.part1 = 'email us at '
 updateCase.disclosureNotFound.li2.part2 = with the additional information, the entry details and the EORI number and name of the importer
