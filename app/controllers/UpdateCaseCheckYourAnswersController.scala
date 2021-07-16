@@ -26,8 +26,10 @@ import services.UpdateCaseService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
 import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
-
 import javax.inject.{Inject, Singleton}
+import models.UpdateCaseError
+import views.html.errors.InformationCannotBeAddedView
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -38,6 +40,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      sessionRepository: SessionRepository,
                                                      updateCaseService: UpdateCaseService,
                                                      view: UpdateCaseCheckYourAnswersView,
+                                                     informationCannotBeAddedView: InformationCannotBeAddedView,
                                                      confirmationView: UpdateCaseConfirmationView,
                                                      errorHandler: ErrorHandler,
                                                      implicit val ec: ExecutionContext)
@@ -56,6 +59,8 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
+          case Left(UpdateCaseError.CaseAlreadyClosed) =>
+            Future.successful(InternalServerError(informationCannotBeAddedView(caseId)))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>
