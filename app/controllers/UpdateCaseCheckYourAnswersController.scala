@@ -18,6 +18,7 @@ package controllers
 
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.UpdateCaseError
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -56,6 +57,8 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
+          case Left(UpdateCaseError.InvalidCaseId) =>
+            Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

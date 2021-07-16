@@ -41,7 +41,7 @@ import models._
 import pages.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
 import scala.concurrent.Future
@@ -107,6 +107,21 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
+
+    "return Redirect to DisclosureNotFound on InvalidCaseId error" in new Test {
+      private val caseId = "C181234567890123456789"
+
+      override def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = Left(UpdateCaseError.InvalidCaseId)
+
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(DisclosureReferenceNumberPage, caseId).success.value
+      )
+
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(controllers.routes.DisclosureNotFoundController.onLoad().url)
+    }
+
 
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
