@@ -118,14 +118,14 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return the correct location header when false" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

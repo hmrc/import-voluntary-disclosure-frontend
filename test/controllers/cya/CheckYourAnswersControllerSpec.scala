@@ -30,7 +30,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.cya
 
 import base.ControllerSpecBase
 import config.ErrorHandler
@@ -38,16 +38,15 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockSubmissionService
 import models._
+import models.importDetails.{EntryDetails, UserType}
+import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
+import views.html.cya.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
+
 import java.time.LocalDate
-
-import models.importDetails.{EntryDetails, UserType}
-import pages.importDetails._
-
 import scala.concurrent.Future
 
 class CheckYourAnswersControllerSpec extends ControllerSpecBase {

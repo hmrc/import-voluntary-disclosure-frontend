@@ -132,7 +132,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
       )
       val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
       lazy val result: Future[Result] = controller.onSubmit(request)
-      redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+      redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
     }
 
     "update the UserAnswers in session" in new Test {

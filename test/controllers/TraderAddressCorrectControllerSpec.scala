@@ -121,7 +121,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "handoff to the address lookup frontend if choosing to use a different address" in new Test {
@@ -184,7 +184,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
 

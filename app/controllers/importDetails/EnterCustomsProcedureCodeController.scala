@@ -64,7 +64,7 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
           }

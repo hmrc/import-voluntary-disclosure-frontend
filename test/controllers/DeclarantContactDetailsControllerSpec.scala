@@ -119,7 +119,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
           )
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -190,7 +190,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
 

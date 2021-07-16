@@ -100,7 +100,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("A")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return a SEE OTHER response and redirect to correct location when dan type is B" in new Test {
@@ -114,7 +114,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -133,7 +133,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "payload contains valid data and user answers are changed from CYA" should {
@@ -149,7 +149,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           )
           private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("A")): _*)
           lazy val result: Future[Result] = controller.onSubmit(request)
-          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
         }
 
         "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {
@@ -164,7 +164,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           )
           private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
           lazy val result: Future[Result] = controller.onSubmit(request)
-          redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
         }
 
         "redirect to UploadAuthority page when user supplies account type B and user answers holds account type C" in new Test {
@@ -219,7 +219,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         )
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
     }
@@ -252,7 +252,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
   }

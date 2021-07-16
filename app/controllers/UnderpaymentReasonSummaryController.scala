@@ -63,7 +63,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
           Future.successful(Redirect(controllers.routes.BoxNumberController.onLoad()))
         } else {
           if (request.checkMode) {
-            Future.successful(Redirect(controllers.routes.CheckYourAnswersController.onLoad()))
+            Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.routes.HasFurtherInformationController.onLoad()))
           }

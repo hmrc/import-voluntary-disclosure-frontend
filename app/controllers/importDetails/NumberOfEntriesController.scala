@@ -89,7 +89,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
   private def redirect(entries: NumberOfEntries, userAnswers: UserAnswers): Result = {
     val isCheckMode = userAnswers.get(CheckModePage).getOrElse(false)
     if (isCheckMode) {
-      Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+      Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
     } else {
       entries match {
         case OneEntry => Redirect(controllers.importDetails.routes.EntryDetailsController.onLoad())
@@ -100,7 +100,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       (request.isRepFlow, request.doesImporterEORIExist) match {
         case (true, true) => controllers.importDetails.routes.ImporterVatRegisteredController.onLoad()

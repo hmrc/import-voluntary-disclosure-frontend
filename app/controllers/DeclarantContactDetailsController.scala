@@ -55,7 +55,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.CheckYourAnswersController.onLoad())
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             Redirect(controllers.routes.TraderAddressCorrectController.onLoad())
           }
@@ -66,7 +66,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       if (request.isOneEntry) {
         controllers.routes.UploadAnotherFileController.onLoad()

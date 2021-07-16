@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views
+package views.cya
 
 import base.ViewBaseSpec
 import messages.CYAMessages
@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.data.CheckYourAnswersData._
-import views.html.CheckYourAnswersView
+import views.html.cya.CheckYourAnswersView
 
 class CheckYourAnswersViewSpec extends ViewBaseSpec {
 

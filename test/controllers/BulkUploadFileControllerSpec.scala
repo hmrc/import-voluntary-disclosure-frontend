@@ -360,7 +360,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
 

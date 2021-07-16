@@ -55,7 +55,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
   private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
                                    (implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.CheckYourAnswersController.onLoad()
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       selectedDutyTypes match {
         case Both if splitPayment && currentDutyType == Duty => controllers.routes.RepresentativeDanDutyController.onLoad()
@@ -140,7 +140,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
 
     val action = request.dutyType match {
       case Both if !request.checkMode && splitPayment && dutyType == Duty => controllers.routes.RepresentativeDanImportVATController.onLoad().url
-      case _ => controllers.routes.CheckYourAnswersController.onLoad().url
+      case _ => controllers.cya.routes.CheckYourAnswersController.onLoad().url
     }
 
     val filename = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty)

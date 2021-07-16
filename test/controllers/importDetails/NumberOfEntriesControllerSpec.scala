@@ -127,7 +127,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.CheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return a SEE OTHER response when the existing value is not equal to the submitted one in check mode" in new Test {
@@ -221,7 +221,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
           .set(CheckModePage, true).success.value
         )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.CheckYourAnswersController.onLoad()
+        result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
 
     }

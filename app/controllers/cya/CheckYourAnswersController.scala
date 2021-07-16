@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
-
-import java.time.format.DateTimeFormatter
+package controllers.cya
 
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import javax.inject.{Inject, Singleton}
 import pages._
 import pages.importDetails.{EntryDetailsPage, ImporterEORINumberPage, ImporterNamePage}
 import pages.serviceEntry.KnownEoriDetailsPage
@@ -30,8 +27,10 @@ import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
-import views.html.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
+import views.html.cya.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
+import java.time.format.DateTimeFormatter
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
