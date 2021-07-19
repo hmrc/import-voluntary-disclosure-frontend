@@ -29,6 +29,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = "TBC" //TODO: Needs to point somewhere
+  val serviceHref: String = "/disclose-import-taxes-underpayment"
 
   object Version2 {
 
@@ -93,6 +94,7 @@ object AddressLookupJsonBuilder {
         "version" -> 2,
         "options" -> Json.obj(
           "continueUrl" -> data.continueUrl,
+          "serviceHref" -> data.serviceHref,
           "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
           "deskProServiceName" -> data.deskproServiceName,
           "showPhaseBanner" -> data.showPhaseBanner,
