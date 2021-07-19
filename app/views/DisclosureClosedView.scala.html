@@ -17,13 +17,14 @@
 
 @this(layout: templates.Layout,
       h1: components.h1,
-      p: components.p,
-      bullets: components.bullets
+      p: components.p
       )
 
 @(caseId: String)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = messages("updateCase.disclosureClosed.pageTitle")) {
+    @layout(
+        pageTitle = messages("updateCase.disclosureClosed.pageTitle"),
+        showBackLink = false) {
 
         @h1(messages("updateCase.disclosureClosed.pageTitle"))
 
