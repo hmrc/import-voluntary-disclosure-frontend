@@ -106,6 +106,7 @@ object AddressLookupTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "serviceHref" -> "/disclose-import-taxes-underpayment",
       "accessibilityFooterUrl" -> "TBC",
       "deskProServiceName" -> "TBC",
       "showPhaseBanner" -> true,
@@ -187,6 +188,7 @@ object AddressLookupTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "serviceHref" -> "/disclose-import-taxes-underpayment",
       "accessibilityFooterUrl" -> "TBC",
       "deskProServiceName" -> "TBC",
       "showPhaseBanner" -> true,
