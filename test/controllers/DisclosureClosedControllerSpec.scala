@@ -14,46 +14,47 @@
  * limitations under the License.
  */
 
-package controllers.errors
+package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import pages.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.errors.InformationCannotBeAddedView
+import views.html.DisclosureClosedView
 
 import scala.concurrent.Future
 
-class InformationCannotBeAddedControllerSpec extends ControllerSpecBase {
+class DisclosureClosedControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
     MockedSessionRepository.remove(Future.successful("OK"))
 
-    val view = injector.instanceOf[InformationCannotBeAddedView]
+    val view = injector.instanceOf[DisclosureClosedView]
 
-    lazy val controller = new InformationCannotBeAddedController(authenticatedAction, dataRetrievalAction,
-      dataRequiredAction, messagesControllerComponents, mockSessionRepository, view, appConfig, ec)
+    lazy val controller = new DisclosureClosedController(authenticatedAction, dataRetrievalAction,
+      dataRequiredAction, messagesControllerComponents, mockSessionRepository, view, errorHandler, ec)
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set
+    (DisclosureReferenceNumberPage, "C182107152124AQYVM6E34").success.value)
 
-    val caseId: String = "C181234567891234567891"
 
   }
 
   "GET onLoad" should {
     "return 200" in new Test {
-      val result: Future[Result] = controller.onLoad(caseId)(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad(caseId)(fakeRequest)
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }

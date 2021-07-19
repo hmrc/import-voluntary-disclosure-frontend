@@ -18,10 +18,10 @@ package messages.errors
 
 import messages.BaseMessages
 
-object InformationCannotBeAddedMessages extends BaseMessages {
+object DisclosureClosedMessages extends BaseMessages {
 
   val pageTitle = "The information cannot be added to the disclosure"
   val heading = "The information cannot be added to the disclosure"
   val p1 = "We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued."
-  val p2 = "You can email us at customsaccountingrepayments@hmrc.gov.uk with the additional information and the disclosure reference number C182107152124AQYVM6E34."
+  val p2 = "You can email us at customsaccountingrepayments@hmrc.gov.uk , including the additional information and the disclosure reference number C182107152124AQYVM6E34."
 }

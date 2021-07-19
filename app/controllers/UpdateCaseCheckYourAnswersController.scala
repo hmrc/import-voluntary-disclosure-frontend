@@ -20,8 +20,6 @@ import config.ErrorHandler
 import controllers.actions._
 import javax.inject.{Inject, Singleton}
 import models.UpdateCaseError
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.UpdateCaseError
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -31,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
 import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -63,7 +60,7 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
           case Left(UpdateCaseError.InvalidCaseId) =>
             Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
-            Future.successful(Redirect(controllers.errors.routes.InformationCannotBeAddedController.onLoad(caseId)))
+            Future.successful(Redirect(controllers.routes.DisclosureClosedController.onLoad()))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

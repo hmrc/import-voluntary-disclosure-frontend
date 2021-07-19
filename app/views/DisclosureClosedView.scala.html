@@ -18,19 +18,26 @@
 @this(layout: templates.Layout,
       h1: components.h1,
       p: components.p,
-      bullets: components.bullets,
-      linkButton: components.linkButton
+      bullets: components.bullets
       )
 
 @(caseId: String)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = messages("cannotBeAdded.pageTitle")) {
+    @layout(pageTitle = messages("updateCase.disclosureClosed.pageTitle")) {
 
-        @h1(messages("cannotBeAdded.pageTitle"))
+        @h1(messages("updateCase.disclosureClosed.pageTitle"))
 
-        @p{ @messages("cannotBeAdded.p1") }
+        @p{ @messages("updateCase.disclosureClosed.p1") }
 
-        @p{ @messages("cannotBeAdded.p2", caseId) }
+        @p(
+            Html(
+             <span>
+              {messages("updateCase.disclosureClosed.p2.part1")}
+              <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+              {messages("updateCase.disclosureClosed.p2.part2", caseId)}
+             </span>.toString()
+            )
+         )
 
     }
 

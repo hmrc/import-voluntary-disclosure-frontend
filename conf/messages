@@ -994,8 +994,9 @@ updateCase.disclosureNotFound.li2.part1 = 'email us at '
 updateCase.disclosureNotFound.li2.part2 = with the additional information, the entry details and the EORI number and name of the importer
 
 # Update Case - Information Cannot Be Added
-cannotBeAdded.pageTitle = The information cannot be added to the disclosure
-cannotBeAdded.heading = The information cannot be added to the disclosure
-cannotBeAdded.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.
-cannotBeAdded.p2 = You can email us at customsaccountingrepayments@hmrc.gov.uk with the additional information and the disclosure reference number {0}.
+updateCase.disclosureClosed.pageTitle = The information cannot be added to the disclosure
+updateCase.disclosureClosed.heading = The information cannot be added to the disclosure
+updateCase.disclosureClosed.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.
+updateCase.disclosureClosed.p2.part1 = 'You can email us at '
+updateCase.disclosureClosed.p2.part2 = , including the additional information and the disclosure reference number {0}.
 

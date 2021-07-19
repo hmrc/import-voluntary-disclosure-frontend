@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 
-package views.errors
+package views
 
 import base.ViewBaseSpec
 import messages.BaseMessages
-import messages.errors.InformationCannotBeAddedMessages
+import messages.errors.DisclosureClosedMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.html.errors.InformationCannotBeAddedView
+import views.html.DisclosureClosedView
 
-class InformationCannotBeAddedViewSpec extends ViewBaseSpec with BaseMessages {
+class DisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: InformationCannotBeAddedView = app.injector.instanceOf[InformationCannotBeAddedView]
+  private lazy val injectedView: DisclosureClosedView = app.injector.instanceOf[DisclosureClosedView]
 
   val caseId: String = "C182107152124AQYVM6E34"
 
 
-  "Rendering the InformationCannotBeAdded page" when {
+  "Rendering the Disclosure Closed page" when {
     "no errors exist" should {
       lazy val view: Html = injectedView(caseId)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(InformationCannotBeAddedMessages.pageTitle)
+      checkPageTitle(DisclosureClosedMessages.pageTitle)
 
       "it" should {
         lazy val view: Html = injectedView(caseId)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page title of '${InformationCannotBeAddedMessages.heading}'" in {
-          elementText("h1") mustBe InformationCannotBeAddedMessages.heading
+        s"have the correct page title of '${DisclosureClosedMessages.heading}'" in {
+          elementText("h1") mustBe DisclosureClosedMessages.heading
         }
 
-        s"have the correct page text of '${InformationCannotBeAddedMessages.p1}'" in {
-          elementText("#main-content p:nth-of-type(1)") mustBe InformationCannotBeAddedMessages.p1
+        s"have the correct page text of '${DisclosureClosedMessages.p1}'" in {
+          elementText("#main-content p:nth-of-type(1)") mustBe DisclosureClosedMessages.p1
         }
 
-        s"have the correct page text of '${InformationCannotBeAddedMessages.p2}'" in {
-          elementText("#main-content p:nth-of-type(2)") mustBe InformationCannotBeAddedMessages.p2
+        s"have the correct page text of '${DisclosureClosedMessages.p2}'" in {
+          elementText("#main-content p:nth-of-type(2)") mustBe DisclosureClosedMessages.p2
         }
 
 
