@@ -17,7 +17,8 @@
 package controllers
 
 import config.ErrorHandler
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
+import javax.inject.{Inject, Singleton}
 import models.UpdateCaseError
 import pages._
 import play.api.i18n.I18nSupport
@@ -28,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
 import views.html.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -59,6 +59,8 @@ class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
         updateCaseService.updateCase().flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
             Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
+          case Left(UpdateCaseError.CaseAlreadyClosed) =>
+            Future.successful(Redirect(controllers.routes.DisclosureClosedController.onLoad()))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

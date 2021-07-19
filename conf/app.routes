@@ -243,6 +243,8 @@ POST        /disclosure/deferment-account-details-vat                           
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
 
+GET         /update-disclosure/cannot-add-information                                          controllers.DisclosureClosedController.onLoad()
+
 # Underpayments
 
 GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad
