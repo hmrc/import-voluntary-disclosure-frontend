@@ -55,7 +55,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
       formProvider().fill
     }
-    eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
+    eoriDetailsService.retrieveEoriDetails(request.eori)(request.request, hc, ec).flatMap {
       case Right(eoriDetails) =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetailsPage, eoriDetails))

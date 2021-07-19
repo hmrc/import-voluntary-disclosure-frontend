@@ -16,6 +16,7 @@
 
 package mocks.services
 
+import models.requests.OptionalDataRequest
 import models.{EoriDetails, ErrorModel}
 import org.scalamock.scalatest.MockFactory
 import services.EoriDetailsService
@@ -30,8 +31,8 @@ trait MockEoriDetailsService extends MockFactory {
   type RetrieveEoriDetailsResponse = Either[ErrorModel, EoriDetails]
 
   def setupMockRetrieveAddress(response: RetrieveEoriDetailsResponse): Unit = {
-    (mockEoriDetailsService.retrieveEoriDetails(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
+    (mockEoriDetailsService.retrieveEoriDetails(_: String)(_: OptionalDataRequest[_], _: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *, *)
       .returns(Future.successful(response))
   }
 
