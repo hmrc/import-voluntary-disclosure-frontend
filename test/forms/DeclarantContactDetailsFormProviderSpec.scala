@@ -37,7 +37,7 @@ class DeclarantContactDetailsFormProviderSpec extends SpecBase {
   private final val emailInvalidFormatKey = "declarantContactDetails.error.emailInvalidFormat"
   private final val phoneNumberInvalidFormatKey = "declarantContactDetails.error.phoneNumberInvalidFormat"
   private final val emailRegex = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
-  private final val phoneRegex = "^(\\+)?[0-9 ]{9,16}$"
+  private final val phoneRegex = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
   private final val nameRegex = "^[a-zA-Z '-]+$"
 
   def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
@@ -121,6 +121,17 @@ class DeclarantContactDetailsFormProviderSpec extends SpecBase {
       }
     }
 
+    "phone number has brackets around the country code" should {
+      "result in a form without errors" in {
+        formBinder(
+          formBuilder(
+            fullName = exampleName,
+            email = exampleEmail,
+            phoneNumber = "(0123) 456789"
+          )
+        ).hasErrors mustBe false
+      }
+    }
   }
 
 
