@@ -18,7 +18,7 @@ package controllers
 
 import com.google.inject.Inject
 import config.ErrorHandler
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.TraderAddressCorrectFormProvider
 import models.ContactAddress
 import models.requests.DataRequest
@@ -26,9 +26,8 @@ import pages.serviceEntry.KnownEoriDetailsPage
 import pages.{TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
-import services.EoriDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.TraderAddressCorrectView
 
@@ -40,7 +39,6 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
                                                getData: DataRetrievalAction,
                                                requireData: DataRequiredAction,
                                                sessionRepository: SessionRepository,
-                                               eoriDetailsService: EoriDetailsService,
                                                val errorHandler: ErrorHandler,
                                                mcc: MessagesControllerComponents,
                                                formProvider: TraderAddressCorrectFormProvider,
@@ -55,15 +53,12 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
       formProvider().fill
     }
-    eoriDetailsService.retrieveEoriDetails(request.eori)(request.request, hc, ec).flatMap {
-      case Right(eoriDetails) =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(KnownEoriDetailsPage, eoriDetails))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield Ok(view(form, eoriDetails.address, backLink()))
-      case Left(error) =>
-        logger.error(error.message + " " + error.status)
-        Future.successful(NotFound(error.message + " " + error.status))
+    request.userAnswers.get(KnownEoriDetailsPage) match {
+      case Some(eoriDetails) =>
+        Future.successful(Ok(view(form, eoriDetails.address, backLink())))
+      case None =>
+        logger.warn("Requested the trader address page without EORI details")
+        Future.successful(errorHandler.showInternalServerError)
     }
   }
 
