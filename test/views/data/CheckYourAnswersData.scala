@@ -435,7 +435,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
-              Some(CYAMessages.epuChange)
+              Some(CYAMessages.entryDetailsChange)
             )
           ),
             classes = "govuk-!-padding-bottom-1")
@@ -451,7 +451,15 @@ object CheckYourAnswersData {
             Text(entryNumber),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
           ),
-          actions = None,
+           actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.entryDetailsChange)
+            )
+          ),
+            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1")
+          ),
           classes = "govuk-summary-list__row--no-border"
         ),
         SummaryListRow(
@@ -463,7 +471,15 @@ object CheckYourAnswersData {
             Text(entryDate),
             classes = "govuk-!-padding-top-0"
           ),
-          actions = None
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.entryDetailsChange)
+            )
+          ),
+            classes = "govuk-!-padding-top-0")
+          ),
         ),
         SummaryListRow(
           key = Key(

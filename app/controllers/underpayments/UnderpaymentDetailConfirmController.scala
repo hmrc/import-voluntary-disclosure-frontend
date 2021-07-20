@@ -120,6 +120,15 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
           value = Value(
             content = HtmlContent(displayMoney(underpaymentAmount.amended)),
             classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItemHelper.createChangeActionItem(
+                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                messages(s"underpaymentDetailsConfirm.$underpaymentType.change")
+              )
+            ),
+            classes = "govuk-!-padding-bottom-1")
           )
         ),
         SummaryListRow(

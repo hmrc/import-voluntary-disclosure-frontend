@@ -91,7 +91,7 @@ object ConfirmReasonData {
     )
     )
 
-  def amendedAmount(amendedValue: String): Seq[SummaryListRow] =
+  def amendedAmount(amendedValue: String, boxNumber: Int): Seq[SummaryListRow] =
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.amendedValue),
@@ -100,13 +100,23 @@ object ConfirmReasonData {
       value = Value(
         content = HtmlContent(amendedValue),
         classes = "govuk-!-padding-top-0"
-      )
+      ),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItem(
+            controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(ConfirmReasonDetailMessages.itemValuesChange)
+          )
+        ),
+        classes = "govuk-!-padding-bottom-1")
+      ),
     )
     )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
-      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue)
+      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue, box)
     )
   )
 }

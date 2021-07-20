@@ -55,7 +55,17 @@ object UnderpaymentDetailConfirmData {
           value = Value(
             content = HtmlContent(displayMoney(1)),
             classes = "govuk-!-padding-top-0"
-          )
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(changeLinkMessage)
+              )
+            ),
+            classes = "govuk-!-padding-bottom-1")
+          ),
         ),
         SummaryListRow(
           key = Key(

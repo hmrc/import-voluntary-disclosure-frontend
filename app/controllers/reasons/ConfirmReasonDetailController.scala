@@ -141,6 +141,15 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
           value = Value(
             content = HtmlContent(underPaymentReasonValue.amended),
             classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItemHelper.createChangeActionItem(
+                controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+                messages("confirmReason.values.change")
+              )
+            ),
+            classes = "govuk-!-padding-bottom-1")
           )
         )
       )
