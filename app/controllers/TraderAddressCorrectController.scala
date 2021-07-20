@@ -57,7 +57,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
       case Some(eoriDetails) =>
         Future.successful(Ok(view(form, eoriDetails.address, backLink())))
       case None =>
-        logger.warn("Requested the trader address page without EORI details")
+        logger.error("Requested the trader address page without EORI details")
         Future.successful(errorHandler.showInternalServerError)
     }
   }
