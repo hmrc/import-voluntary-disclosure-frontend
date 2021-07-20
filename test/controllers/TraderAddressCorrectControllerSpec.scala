@@ -20,13 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.TraderAddressCorrectFormProvider
 import mocks.repositories.MockSessionRepository
-import mocks.services.MockEoriDetailsService
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{ErrorModel, UserAnswers}
+import models.UserAnswers
+import models.requests._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.{CheckModePage, TraderAddressCorrectPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.ReusableValues
@@ -34,7 +33,7 @@ import views.html.TraderAddressCorrectView
 
 import scala.concurrent.Future
 
-class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
+class TraderAddressCorrectControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockSessionRepository {
     lazy val controller = new TraderAddressCorrectController(
@@ -42,7 +41,6 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,
-      mockEoriDetailsService,
       errorHandler,
       messagesControllerComponents,
       form,
@@ -51,9 +49,10 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
     )
 
     private lazy val traderAddressCorrectView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: UserAnswers =
+      UserAnswers("credId").set(KnownEoriDetailsPage, eoriDetails).success.value
     val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
     val form: TraderAddressCorrectFormProvider = formProvider
 
@@ -64,11 +63,11 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
-        userAnswers
+        Some(userAnswers)
       ),
       "credId",
       "eori",
-      userAnswers.get
+      userAnswers
     )
 
     val importerAddressYes: Boolean = true
@@ -77,22 +76,20 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
   "GET onLoad" should {
     "return OK" in new Test {
-      setupMockRetrieveAddress(Right(eoriDetails))
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return error model" in new Test {
-      setupMockRetrieveAddress(Left(ErrorModel(404, "")))
+      override val userAnswers: UserAnswers =
+        UserAnswers("some-cred-id").remove(KnownEoriDetailsPage).success.value
       val result: Future[Result] = controller.onLoad(fakeRequest)
-      status(result) mustBe Status.NOT_FOUND
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
     "return HTML" in new Test {
-      setupMockRetrieveAddress(Right(eoriDetails))
-      override val userAnswers: Option[UserAnswers] = Some(
+      override val userAnswers: UserAnswers =
         UserAnswers("some-cred-id").set(TraderAddressCorrectPage, importerAddressYes).success.value
-      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -103,9 +100,6 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
     "payload contains valid data" should {
 
       "redirect to the deferment page if choosing to use the known address and checkMode is false" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
-        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -113,11 +107,10 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       }
 
       "redirect to the check your answers page if choosing to use the known address and checkMode is true" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
+        override val userAnswers: UserAnswers =
           UserAnswers("some-cred-id")
             .set(KnownEoriDetailsPage, eoriDetails).success.value
             .set(CheckModePage, true).success.value
-        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -125,9 +118,6 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       }
 
       "handoff to the address lookup frontend if choosing to use a different address" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
-        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -135,18 +125,12 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
       }
 
       "update the UserAnswers in session when Trader Address is correct" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
-        )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()
       }
 
       "update the UserAnswers in session Trader Address is incorrect" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
-        )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         await(controller.onSubmit(request))
         verifyCalls()
@@ -154,9 +138,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
       "payload contains invalid data" should {
         "return a BAD REQUEST" in new Test {
-          override val userAnswers: Option[UserAnswers] = Some(
+          override val userAnswers: UserAnswers =
             UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
-          )
           val result: Future[Result] = controller.onSubmit(fakeRequest)
           status(result) mustBe Status.BAD_REQUEST
         }
@@ -168,10 +151,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
     "not in change mode" should {
       "when loading page back button should take you to declarant contact details page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-          )
+        override val userAnswers: UserAnswers =
+          UserAnswers("some-cred-id").set(CheckModePage, false).success.value
         lazy val result: Call = controller.backLink()
         result mustBe controllers.routes.DeclarantContactDetailsController.onLoad()
       }
@@ -179,10 +160,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with MockEor
 
     "in change mode" should {
       "when loading page back button should take you to Check your answers page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
-          )
+        override val userAnswers: UserAnswers =
+          UserAnswers("some-cred-id").set(CheckModePage, true).success.value
         lazy val result: Call = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }

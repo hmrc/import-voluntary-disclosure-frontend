@@ -18,6 +18,8 @@ package services
 
 import config.AppConfig
 import connectors.IvdSubmissionConnector
+import models.audit.EoriDetailsAuditEvent
+import models.requests.OptionalDataRequest
 import models.{EoriDetails, ErrorModel}
 import play.api.i18n.MessagesApi
 import uk.gov.hmrc.http.HeaderCarrier
@@ -27,11 +29,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class EoriDetailsService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector,
-                                       implicit val messagesApi: MessagesApi,
-                                       implicit val appConfig: AppConfig) {
+                                   auditService: AuditService,
+                                   implicit val messagesApi: MessagesApi,
+                                   implicit val appConfig: AppConfig) {
 
-  def retrieveEoriDetails(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, EoriDetails]] = {
-    ivdSubmissionConnector.getEoriDetails(id)
+  def retrieveEoriDetails(eori: String)
+                         (implicit req: OptionalDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, EoriDetails]] = {
+    ivdSubmissionConnector.getEoriDetails(eori).map {
+      case Left(err) => Left(err)
+      case Right(value) =>
+        auditService.audit(EoriDetailsAuditEvent(eori, req.credId))
+        Right(value)
+    }
   }
 
 }
