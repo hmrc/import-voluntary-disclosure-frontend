@@ -64,6 +64,18 @@ class RepresentativeDanFormProviderSpec extends SpecBase {
     }
   }
 
+  "Binding a form with valid data with spaces" should {
+    val form = new RepresentativeDanFormProvider().apply().bind(buildFormData(Some("123 4567")))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
+      form.value mustBe Some(RepresentativeDan("1234567", "A"))
+    }
+  }
+
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = RepresentativeDan("1234567", "A")

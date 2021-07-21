@@ -27,9 +27,10 @@ class RepresentativeDanFormProvider @Inject() extends Mappings {
 
   def apply(): Form[RepresentativeDan] = {
 
-    Form( mapping(
+    Form(mapping(
       "accountNumber" -> text("repDan.error.input.required")
-        .verifying(regexp("[0-9]{7}","repDan.error.input.format")),
+        .transform(_.replace(" ", ""), identity[String])
+        .verifying(regexp("[0-9]{7}", "repDan.error.input.format")),
       "value" -> text("repDan.error.radio.required")
     )(RepresentativeDan.apply)(RepresentativeDan.unapply)
     )

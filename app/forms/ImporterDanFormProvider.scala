@@ -26,7 +26,8 @@ class ImporterDanFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-        "value" -> text("importerDan.error.required")
-          .verifying(regexp("^[0-9]{7}$","importerDan.error.format"))
-      )
+      "value" -> text("importerDan.error.required")
+        .transform(_.replace(" ", ""), identity[String])
+        .verifying(regexp("^[0-9]{7}$", "importerDan.error.format"))
+    )
 }
