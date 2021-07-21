@@ -78,5 +78,17 @@ class ImporterDanFormProviderSpec extends SpecBase {
 
   }
 
+  "Binding a form with valid data with spaces" should {
+
+    val form = formBinder(formBuilder("123 4567"))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
+      form.value mustBe Some("1234567")
+    }
+  }
 }
 
