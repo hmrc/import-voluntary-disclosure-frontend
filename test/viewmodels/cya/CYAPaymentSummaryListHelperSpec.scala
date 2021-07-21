@@ -123,14 +123,14 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
     "buildDefermentDuty" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow, proofOfAuthorityDuty)))
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBDutyRow, proofOfAuthorityDuty)))
       }
     }
 
     "buildDefermentVAT" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow, proofOfAuthorityVat)))
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBVATRow, proofOfAuthorityVat)))
       }
     }
 
@@ -195,8 +195,8 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(AdditionalDefermentTypePage, "C").success.value
 
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeARow)))
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCRow)))
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeADutyRow)))
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCVATRow)))
       }
     }
 
@@ -246,8 +246,8 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(AdditionalDefermentTypePage, "A").success.value
 
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeCRow)))
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeARow)))
+        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeCDutyRow)))
+        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeAVATRow)))
       }
     }
 
@@ -309,7 +309,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(
           paymentMethodDefermentRow,
           repAccountNumberRow,
-          accountOwnerTypeBRow,
+          accountOwnerRow,
           proofOfAuthority
         )))
 
@@ -375,7 +375,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
         buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow,
           splitDefermentNoRow,
           repAccountNumberRow,
-          accountOwnerTypeBRow,
+          accountOwnerRow,
           proofOfAuthorityBoth
         )))
 

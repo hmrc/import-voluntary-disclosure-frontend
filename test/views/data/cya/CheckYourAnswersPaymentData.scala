@@ -176,7 +176,7 @@ object CheckYourAnswersPaymentData {
     classes = "govuk-summary-list__row--no-border"
   )
 
-  val accountOwnerTypeARow = SummaryListRow(
+  val accountOwnerTypeAVATRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third govuk-!-padding-top-0"
@@ -184,10 +184,39 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeA),
       classes = "govuk-!-padding-top-0"
-    )
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    )),
   )
 
-  val accountOwnerTypeBRow = SummaryListRow(
+  val accountOwnerTypeADutyRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeA),
+      classes = "govuk-!-padding-top-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    )),
+  )
+
+  val accountOwnerRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third govuk-!-padding-top-0"
@@ -198,7 +227,67 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeCRow = SummaryListRow(
+  val accountOwnerTypeBVATRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeB),
+      classes = "govuk-!-padding-top-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
+  )
+
+  val accountOwnerTypeBDutyRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeB),
+      classes = "govuk-!-padding-top-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
+  )
+
+  val accountOwnerTypeBRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeB),
+      classes = "govuk-!-padding-top-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
+  )
+
+  val accountOwnerTypeCVATRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third govuk-!-padding-top-0"
@@ -206,9 +295,37 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeC),
       classes = "govuk-!-padding-top-0"
-    )
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
   )
 
+  val accountOwnerTypeCDutyRow = SummaryListRow(
+    key = Key(
+      Text(CYAMessages.accountOwner),
+      classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+    ),
+    value = Value(
+      Text(danTypeC),
+      classes = "govuk-!-padding-top-0"
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
+  )
   val proofOfAuthority = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
@@ -321,8 +438,8 @@ object CheckYourAnswersPaymentData {
   val answers: Seq[CYASummaryList] = Seq(
 
     paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)),
-    defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBRow)),
-    defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBRow))
+    defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBDutyRow)),
+    defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBVATRow))
   )
 
 }

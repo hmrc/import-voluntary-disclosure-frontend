@@ -80,6 +80,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
+        Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.RepresentativeDanDutyController.onLoad().url,
+          messages("cya.repDutyAccountNumber.change")
+        )),
         columnClasses = "govuk-!-padding-top-0"
       )
     }
