@@ -90,9 +90,9 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
 
     List(day, month, year).count(_.isDefined) match {
       case 3 =>
-        val validDay = day.filter(_.length <= dayMonthLengthMax).toRight(FormError(s"$key.day", dayMonthLengthKey, Seq("day")))
-        val validMonth = month.filter(_.length <= dayMonthLengthMax).toRight(FormError(s"$key.month", dayMonthLengthKey, Seq("month")))
-        val validYear = year.filter(_.length == yearLength).toRight(FormError(s"$key.year", yearLengthKey, Seq("year")))
+        val validDay = day.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.day", dayMonthLengthKey, Seq("day")))
+        val validMonth = month.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.month", dayMonthLengthKey, Seq("month")))
+        val validYear = year.filter(_.trim.length == yearLength).toRight(FormError(s"$key.year", yearLengthKey, Seq("year")))
 
         List(validDay, validMonth, validYear).collect { case Left(err) => err } match {
           case Nil => formatDate(key, data)

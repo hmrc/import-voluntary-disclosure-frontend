@@ -209,6 +209,18 @@ class EntryDetailsFormProviderSpec extends SpecBase {
     }
   }
 
+  "Binding a form with valid data with whitespace in date fields" should {
+    val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some(" 31"), month = Some("  12"), year = Some("2020 ")))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
+      form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
+    }
+  }
+
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31))
