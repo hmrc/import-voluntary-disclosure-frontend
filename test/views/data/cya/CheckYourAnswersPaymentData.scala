@@ -224,7 +224,16 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB),
       classes = "govuk-!-padding-top-0"
-    )
+    ),
+    actions = Some(Actions(items = Seq(
+      ActionItem(
+        controllers.routes.RepresentativeDanController.onLoad().url,
+        HtmlContent("""<span aria-hidden="true">Change</span>"""),
+        visuallyHiddenText = Some(CYAMessages.changeRepDan)
+      )
+    ),
+      classes = "govuk-!-padding-top-0"
+    ))
   )
 
   val accountOwnerTypeBVATRow = SummaryListRow(

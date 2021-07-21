@@ -136,6 +136,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.accountOwner")),
             Text(accountOwnerContent),
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.RepresentativeDanController.onLoad().url,
+              messages("cya.repDanDuty.change")
+            )),
             columnClasses = "govuk-!-padding-top-0"
           )
         )
