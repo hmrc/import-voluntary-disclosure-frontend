@@ -31,11 +31,11 @@ class EntryDetailsFormProviderSpec extends SpecBase {
                     year: Option[String] = Some("2020")): Map[String, String] =
     (
       epu.map(_ => "epu" -> epu.get) ++
-      entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
-      day.map(_ => "entryDate.day" -> day.get) ++
-      month.map(_ => "entryDate.month" -> month.get) ++
-      year.map(_ => "entryDate.year" -> year.get)
-    ).toMap
+        entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
+        day.map(_ => "entryDate.day" -> day.get) ++
+        month.map(_ => "entryDate.month" -> month.get) ++
+        year.map(_ => "entryDate.year" -> year.get)
+      ).toMap
 
   "Binding a form with invalid data" when {
 
@@ -80,6 +80,16 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors.head.key mustBe "entryDate.year"
         form.errors.head.message mustBe "entryDetails.entryDate.error.required"
         form.errors.head.args mustBe List("year")
+      }
+    }
+    "multiple date fields have invalid format" should {
+      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("a31"), month = Some("a12"), year = Some("a2020")))
+
+      "result in a form with one error, but multiple fields highlighted" in {
+        form.errors.size mustBe 1
+        form.errors.head.key mustBe "entryDate.day"
+        form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
+        form.errors.head.args mustBe List("day", "month", "year")
       }
     }
     "missing multiple entry date fields" should {
@@ -195,6 +205,18 @@ class EntryDetailsFormProviderSpec extends SpecBase {
 
     "generate the correct model if space are in input" in {
       val form = new EntryDetailsFormProvider().apply().bind(buildFormData(entryNumber = Some("123 456q")))
+      form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
+    }
+  }
+
+  "Binding a form with valid data with whitespace in date fields" should {
+    val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some(" 31"), month = Some("  12"), year = Some("2020 ")))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
       form.value mustBe Some(EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31)))
     }
   }

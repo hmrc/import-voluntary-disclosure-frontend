@@ -16,12 +16,10 @@
 
 package forms.mappings
 
-import java.time.LocalDate
-
 import play.api.data.FormError
 import play.api.data.format.Formatter
-import play.api.i18n.Messages
 
+import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
 
@@ -33,7 +31,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
                                            yearLengthKey: String,
                                            validatePastKey: Option[String],
                                            validateAfterKey: Option[String],
-                                           args: Seq[String] = Seq.empty)(implicit messages: Messages)
+                                           args: Seq[String] = Seq.empty)
   extends Formatter[LocalDate] with Formatters with Constraints {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
@@ -69,9 +67,9 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
       date.fold(
         err => Left(err),
         dt =>
-          if(dt.isAfter(LocalDate.now)) {
+          if (dt.isAfter(LocalDate.now)) {
             Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys)))
-          } else if(LocalDate.of(1900, 1, 2).isAfter(dt)) {
+          } else if (LocalDate.of(1900, 1, 2).isAfter(dt)) {
             Left(List(FormError(s"$key.day", validateAfterKey.get, fieldKeys)))
           } else {
             Right(dt)
@@ -83,43 +81,30 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
   }
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
+    val sanitizedFields = data.mapValues(filter).filter(_._2.nonEmpty)
+    val missingKeys = fieldKeys.toSet -- sanitizedFields.keys.map(_.stripPrefix(s"$key."))
 
-    val fields = fieldKeys.map {
-      field =>
-        field -> data.get(s"$key.$field").filter(_.nonEmpty).map(f => filter(f))
-    }.toMap
+    val day = sanitizedFields.get(s"$key.day")
+    val month = sanitizedFields.get(s"$key.month")
+    val year = sanitizedFields.get(s"$key.year")
 
-    lazy val missingFields = fields
-      .withFilter(_._2.isEmpty)
-      .map(_._1)
-      .toList
-
-
-    fields.count(_._2.isDefined) match {
+    List(day, month, year).count(_.isDefined) match {
       case 3 =>
-        val lengthErrors = fields.collect {
-          case (id, value) if !id.contains("year") && value.exists(_.length > dayMonthLengthMax) => id
-        }
+        val validDay = day.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.day", dayMonthLengthKey, Seq("day")))
+        val validMonth = month.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.month", dayMonthLengthKey, Seq("month")))
+        val validYear = year.filter(_.trim.length == yearLength).toRight(FormError(s"$key.year", yearLengthKey, Seq("year")))
 
-        val yearLengthError = fields.collect {
-          case (id, value) if id.contains("year") && value.exists(_.length != yearLength) => id
-        }
-
-        (lengthErrors.nonEmpty, yearLengthError.nonEmpty) match {
-          case (true, true) => Left(List(FormError(s"$key.${lengthErrors.head}", dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and")))),
-                                          FormError(s"$key.year", yearLengthKey, Seq(yearLengthError))))
-          case (true, false) => Left(List(FormError(s"$key.${lengthErrors.head}", dayMonthLengthKey, Seq(lengthErrors.mkString(messages("site.and"))))))
-          case (false, true) => Left(List(FormError(s"$key.year", yearLengthKey, Seq(yearLengthError))))
-          case _ => formatDate(key, data)
+        List(validDay, validMonth, validYear).collect { case Left(err) => err } match {
+          case Nil => formatDate(key, data)
+          case error :: rem => Left(List(error.copy(args = error.args ++ rem.flatMap(_.args))))
         }
       case 2 =>
-        Left(List(FormError(s"$key.${missingFields.head}", requiredKey, missingFields ++ args)))
+        Left(List(FormError(s"$key.${missingKeys.head}", requiredKey, missingKeys.toSeq ++ args)))
       case 1 =>
-        Left(List(FormError(s"$key.${missingFields.head}", twoRequiredKey, missingFields ++ args)))
+        Left(List(FormError(s"$key.${missingKeys.head}", twoRequiredKey, missingKeys.toSeq ++ args)))
       case _ =>
         Left(List(FormError(s"$key.day", allRequiredKey, fieldKeys ++ args)))
     }
-
   }
 
   override def unbind(key: String, value: LocalDate): Map[String, String] =

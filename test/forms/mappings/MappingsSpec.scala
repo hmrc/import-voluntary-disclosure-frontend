@@ -137,6 +137,11 @@ class MappingsSpec extends AnyWordSpec with Matchers with OptionValues with Mapp
       result.get mustEqual 1
     }
 
+    "bind a valid integer with leading whitespace" in {
+      val result = testForm.bind(Map("value" -> "  1"))
+      result.get mustEqual 1
+    }
+
     "not bind an empty value" in {
       val result = testForm.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "error.required"))
