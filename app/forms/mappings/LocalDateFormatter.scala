@@ -47,36 +47,17 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
         Left(Seq(FormError(s"$key.day", invalidKey, fieldKeys ++ args)))
     }
 
-  private def formatDate(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
-
-    val int = intFormatter(
-      requiredKey = invalidKey,
-      wholeNumberKey = invalidKey,
-      nonNumericKey = invalidKey,
-      args
-    )
-
-    val date = for {
-      day <- int.bind(s"$key.day", data).right
-      month <- int.bind(s"$key.month", data).right
-      year <- int.bind(s"$key.year", data).right
-      date <- toDate(key, day, month, year).right
-    } yield date
-
+  private def validateDate(key: String, date: LocalDate): Either[Seq[FormError], LocalDate] = {
     if (validatePastKey.isDefined) {
-      date.fold(
-        err => Left(err),
-        dt =>
-          if (dt.isAfter(LocalDate.now)) {
-            Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys)))
-          } else if (LocalDate.of(1900, 1, 2).isAfter(dt)) {
-            Left(List(FormError(s"$key.day", validateAfterKey.get, fieldKeys)))
-          } else {
-            Right(dt)
-          }
-      )
+      if (date.isAfter(LocalDate.now)) {
+        Left(List(FormError(s"$key.day", validatePastKey.get, fieldKeys)))
+      } else if (LocalDate.of(1900, 1, 2).isAfter(date)) {
+        Left(List(FormError(s"$key.day", validateAfterKey.get, fieldKeys)))
+      } else {
+        Right(date)
+      }
     } else {
-      date
+      Right(date)
     }
   }
 
@@ -84,23 +65,34 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
     val sanitizedFields = data.mapValues(filter).filter(_._2.nonEmpty)
     val missingKeys = fieldKeys.toSet -- sanitizedFields.keys.map(_.stripPrefix(s"$key."))
 
-    val day = sanitizedFields.get(s"$key.day")
-    val month = sanitizedFields.get(s"$key.month")
-    val year = sanitizedFields.get(s"$key.year")
+    def int(field: String, validate: Int => Boolean, errorKey: String) = {
+      val formatter = intFormatter(
+        requiredKey = invalidKey,
+        wholeNumberKey = invalidKey,
+        nonNumericKey = invalidKey,
+        args :+ field
+      )
+      formatter
+        .bind(s"$key.$field", sanitizedFields)
+        .filterOrElse(validate, Seq(FormError(s"$key.$field", errorKey, Seq(field))))
+    }
 
-    List(day, month, year).count(_.isDefined) match {
-      case 3 =>
-        val validDay = day.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.day", dayMonthLengthKey, Seq("day")))
-        val validMonth = month.filter(_.trim.length <= dayMonthLengthMax).toRight(FormError(s"$key.month", dayMonthLengthKey, Seq("month")))
-        val validYear = year.filter(_.trim.length == yearLength).toRight(FormError(s"$key.year", yearLengthKey, Seq("year")))
+    val day = int("day", d => d > 0 && d.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
+    val month = int("month", m => m > 0 && m.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
+    val year = int("year", y => y > 0 && y.toString.length == yearLength, yearLengthKey)
 
-        List(validDay, validMonth, validYear).collect { case Left(err) => err } match {
-          case Nil => formatDate(key, data)
-          case error :: rem => Left(List(error.copy(args = error.args ++ rem.flatMap(_.args))))
+    missingKeys.size match {
+      case 0 =>
+        (day, month, year) match {
+          case (Right(d), Right(m), Right(y)) =>
+            toDate(key, d, m, y).flatMap(validateDate(key, _))
+          case (d, m, y) =>
+            val errors = List(d, m, y).flatMap(_.left.toSeq.flatten)
+            Left(List(errors.head.copy(args = errors.flatMap(_.args))))
         }
-      case 2 =>
-        Left(List(FormError(s"$key.${missingKeys.head}", requiredKey, missingKeys.toSeq ++ args)))
       case 1 =>
+        Left(List(FormError(s"$key.${missingKeys.head}", requiredKey, missingKeys.toSeq ++ args)))
+      case 2 =>
         Left(List(FormError(s"$key.${missingKeys.head}", twoRequiredKey, missingKeys.toSeq ++ args)))
       case _ =>
         Left(List(FormError(s"$key.day", allRequiredKey, fieldKeys ++ args)))
