@@ -124,6 +124,11 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
           elementText("#main-content > div > div > p:nth-child(8)") mustBe RepresentativeConfirmationMessages.p5
         }
 
+        s"have the correct email link" in {
+          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
+            .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+        }
+
         s"have a link message of '${RepresentativeConfirmationMessages.discloseAnotherUnderpayment}'" in {
           elementText("#discloseAnotherUnderpayment") mustBe RepresentativeConfirmationMessages.discloseAnotherUnderpayment
         }
