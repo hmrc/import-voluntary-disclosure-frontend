@@ -34,6 +34,8 @@ footer.termsConditions.text = Terms and conditions
 footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
+footer.accessibility.text = Accessibility
+footer.accessibility.url = /accessibility-statement/import-voluntary-disclosure
 
 #Unauthorised
 unauthorised.agent.title = You cannot access this service to disclose a Customs Duty or import VAT underpayment
