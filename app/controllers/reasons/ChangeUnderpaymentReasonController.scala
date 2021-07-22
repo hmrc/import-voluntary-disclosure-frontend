@@ -101,8 +101,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
             )
           ),
           classes = "govuk-!-padding-bottom-1")
-        ),
-        classes = "govuk-summary-list__row--no-border"
+        )
       ),
       SummaryListRow(
         key = Key(content = Text(messages("changeUnderpaymentReason.amended")), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),

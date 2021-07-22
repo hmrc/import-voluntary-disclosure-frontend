@@ -116,8 +116,7 @@ trait CYAPaymentDetailsSummaryListHelper {
               controllers.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.change")
             )),
-            columnClasses = "govuk-!-padding-bottom-1",
-            rowClasses = "govuk-summary-list__row--no-border"
+            columnClasses = "govuk-!-padding-bottom-1"
           )
         )
       case _ => None

@@ -116,8 +116,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
                 )
               ),
               classes = "govuk-!-padding-bottom-1")
-            ),
-            classes = "govuk-summary-list__row--no-border"
+            )
           ),
           SummaryListRow(
             key = Key(

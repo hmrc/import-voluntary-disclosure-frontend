@@ -86,8 +86,7 @@ object ConfirmReasonData {
           )
         ),
         classes = "govuk-!-padding-bottom-1")
-      ),
-      classes = "govuk-summary-list__row--no-border"
+      )
     )
     )
 

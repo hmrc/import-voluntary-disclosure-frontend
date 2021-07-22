@@ -84,8 +84,7 @@ trait CYAEntryDetailsSummaryListHelper {
           controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.epu.change")
         )),
-        columnClasses = "govuk-!-padding-bottom-1",
-        rowClasses = "govuk-summary-list__row--no-border"
+        columnClasses = "govuk-!-padding-bottom-1"
       )
     }
 
@@ -98,8 +97,7 @@ trait CYAEntryDetailsSummaryListHelper {
           controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.entryNumber.change")
         )),
-        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-1",
-        rowClasses = "govuk-summary-list__row--no-border"
+        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
       )
     }
 

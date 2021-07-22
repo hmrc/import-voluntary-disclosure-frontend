@@ -439,8 +439,7 @@ object CheckYourAnswersData {
             )
           ),
             classes = "govuk-!-padding-bottom-1")
-          ),
-          classes = "govuk-summary-list__row--no-border"
+          )
         ),
         SummaryListRow(
           key = Key(
@@ -459,8 +458,7 @@ object CheckYourAnswersData {
             )
           ),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1")
-          ),
-          classes = "govuk-summary-list__row--no-border"
+          )
         ),
         SummaryListRow(
           key = Key(
