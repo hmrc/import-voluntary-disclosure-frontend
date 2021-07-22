@@ -435,7 +435,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
-              Some(CYAMessages.entryDetailsChange)
+              Some(CYAMessages.epuChange)
             )
           ),
             classes = "govuk-!-padding-bottom-1")
@@ -455,7 +455,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
-              Some(CYAMessages.entryDetailsChange)
+              Some(CYAMessages.entryNumberChange)
             )
           ),
             classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1")
@@ -475,7 +475,7 @@ object CheckYourAnswersData {
             ActionItem(
               controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
-              Some(CYAMessages.entryDetailsChange)
+              Some(CYAMessages.entryDateChange)
             )
           ),
             classes = "govuk-!-padding-top-0")

@@ -76,12 +76,18 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
           ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.itemNumberChange
 
         document.select(".govuk-summary-list__actions").eachText.get(1).trim mustBe
-          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.valuesChange
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.originalValueChange
+
+        document.select(".govuk-summary-list__actions").eachText.get(2).trim mustBe
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.amendedValueChange
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
           controllers.reasons.routes.ChangeItemNumberController.onLoad().url
 
         document.select(".govuk-summary-list__actions > a").eachAttr("href").get(1) mustBe
+          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(22).url
+
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(2) mustBe
           controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(22).url
       }
     }

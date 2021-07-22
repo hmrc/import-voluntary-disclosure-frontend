@@ -43,7 +43,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
         UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
           underpaymentType,
           UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
-          messages("underpaymentDetailsConfirm.B00.change")
+          messages("underpaymentDetailsConfirm.B00.original.change"),
+          messages("underpaymentDetailsConfirm.B00.amended.change")
         ),
         submitCall
       )(fakeRequest, messages)
@@ -73,7 +74,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
           UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
             underpaymentType,
             UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
-            messages("underpaymentDetailsConfirm.B00.change")
+            messages("underpaymentDetailsConfirm.B00.original.change"),
+            messages("underpaymentDetailsConfirm.B00.amended.change")
           ),
           submitCall
         )(fakeRequest, messages)
@@ -101,7 +103,8 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
       UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
         underpaymentType,
         UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get,
-        messages("underpaymentDetailsConfirm.B00.change")
+        messages("underpaymentDetailsConfirm.B00.original.change"),
+        messages("underpaymentDetailsConfirm.B00.amended.change")
       ),
       submitCall
     )(fakeRequest, messages)

@@ -126,7 +126,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItemHelper.createChangeActionItem(
                 controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-                messages("confirmReason.values.change")
+                messages("confirmReason.values.original.change")
               )
             ),
             classes = "govuk-!-padding-bottom-1")
@@ -146,7 +146,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItemHelper.createChangeActionItem(
                 controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-                messages("confirmReason.values.change")
+                messages("confirmReason.values.amended.change")
               )
             ),
             classes = "govuk-!-padding-bottom-1")

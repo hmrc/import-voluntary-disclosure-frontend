@@ -97,7 +97,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
           items = Seq(
             ActionItemHelper.createChangeActionItem(
               controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
-              messages("changeUnderpaymentReason.values.change")
+              messages("changeUnderpaymentReason.values.original.change")
             )
           ),
           classes = "govuk-!-padding-bottom-1")
@@ -106,7 +106,16 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
       ),
       SummaryListRow(
         key = Key(content = Text(messages("changeUnderpaymentReason.amended")), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
-        value = Value(content = HtmlContent(underpaymentReason.amended), classes = "govuk-!-padding-top-0")
+        value = Value(content = HtmlContent(underpaymentReason.amended), classes = "govuk-!-padding-top-0"),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItemHelper.createChangeActionItem(
+              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
+              messages("changeUnderpaymentReason.values.amended.change")
+            )
+          ),
+          classes = "govuk-!-padding-bottom-1")
+        )
       )
     )
 

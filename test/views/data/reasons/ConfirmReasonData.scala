@@ -82,7 +82,7 @@ object ConfirmReasonData {
           ActionItem(
             controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.itemValuesChange)
+            Some(ConfirmReasonDetailMessages.originalAmountChange)
           )
         ),
         classes = "govuk-!-padding-bottom-1")
@@ -106,7 +106,7 @@ object ConfirmReasonData {
           ActionItem(
             controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.itemValuesChange)
+            Some(ConfirmReasonDetailMessages.amendedAmountChange)
           )
         ),
         classes = "govuk-!-padding-bottom-1")

@@ -76,7 +76,7 @@ object ChangeUnderpaymentReasonData {
                 ActionItem(
                   changeDetailsAction(boxNumber).url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  Some("Change values")
+                  Some("Change original value")
                 )
               ),
               classes = "govuk-!-padding-bottom-1"
@@ -92,6 +92,18 @@ object ChangeUnderpaymentReasonData {
           value = Value(
             HtmlContent("60"),
             classes = "govuk-!-padding-top-0"
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  changeDetailsAction(boxNumber).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change amended value")
+                )
+              ),
+              classes = "govuk-!-padding-bottom-1"
+            )
           )
         )
       )
