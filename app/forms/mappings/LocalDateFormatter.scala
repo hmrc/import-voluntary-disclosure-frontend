@@ -77,9 +77,9 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
         .filterOrElse(validate, Seq(FormError(s"$key.$field", errorKey, Seq(field))))
     }
 
-    val day = int("day", d => d.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
-    val month = int("month", m => m.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
-    val year = int("year", y => y.toString.length == yearLength, yearLengthKey)
+    val day = int("day", d => d > 0 && d.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
+    val month = int("month", m => m > 0 && m.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
+    val year = int("year", y => y > 0 && y.toString.length == yearLength, yearLengthKey)
 
     missingKeys.size match {
       case 0 =>
