@@ -129,9 +129,10 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
     s"have the correct list of allowed file types" in {
       elementText("details > summary > span") mustBe UploadAuthorityMessages.typesOfFile
       elementText("details li:nth-of-type(1)") mustBe UploadAuthorityMessages.filePdf
-      elementText("details li:nth-of-type(2)") mustBe UploadAuthorityMessages.fileMs
-      elementText("details li:nth-of-type(3)") mustBe UploadAuthorityMessages.fileOd
-      elementText("details li:nth-of-type(4)") mustBe UploadAuthorityMessages.fileImage
+      elementText("details li:nth-of-type(2)") mustBe UploadAuthorityMessages.fileCsv
+      elementText("details li:nth-of-type(3)") mustBe UploadAuthorityMessages.fileMs
+      elementText("details li:nth-of-type(4)") mustBe UploadAuthorityMessages.fileOd
+      elementText("details li:nth-of-type(5)") mustBe UploadAuthorityMessages.fileImage
     }
 
     s"have the '${UploadAuthorityMessages.uploadFile}' upload label" in {

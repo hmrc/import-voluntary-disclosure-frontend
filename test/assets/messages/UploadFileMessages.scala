@@ -42,8 +42,9 @@ object UploadFileMessages extends BaseMessages {
   val uploadChosenFile = "Upload chosen file"
   val typesOfFile = "Types of file you can upload"
   val PDF = "PDF (.pdf)"
+  val CSV = "CSV (.csv)"
   val ms = "Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)"
   val openDocumentFormat = "Open Document Format (.odt, .ods or .odp)"
-  val image = "image (.jpg, .png or .tiff)"
+  val image = "image (.jpeg, .jpg, .png or .tiff)"
   val fileSize = "Each file must be 6MB or less and you can only upload one file at a time."
 }

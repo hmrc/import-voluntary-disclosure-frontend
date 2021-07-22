@@ -389,9 +389,10 @@ uploadFile.error.quarantined = The selected file contains a virus
 uploadFile.uploadChosenFile = Upload chosen file
 uploadFile.typesOfFile = Types of file you can upload
 uploadFile.PDF = PDF (.pdf)
+uploadFile.CSV = CSV (.csv)
 uploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
 uploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadFile.image = image (.jpg, .png or .tiff)
+uploadFile.image = image (.jpeg, .jpg, .png or .tiff)
 uploadFile.fileSize = Each file must be 6MB or less and you can only upload one file at a time.
 
 # Bulk Upload File page
@@ -406,9 +407,10 @@ bulkUploadFile.bullet5 = the original and amended values of any information that
 bulkUploadFile.uploadFile = Upload chosen file
 bulkUploadFile.typesOfFile = Types of file you can upload
 bulkUploadFile.PDF = PDF (.pdf)
+bulkUploadFile.CSV = CSV (.csv)
 bulkUploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
 bulkUploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-bulkUploadFile.image = image (.jpg, .png or .tiff)
+bulkUploadFile.image = image (.jpeg, .jpg, .png or .tiff)
 bulkUploadFile.fileSize = The file must be 6MB or less.
 
 # File Upload Success page
@@ -880,9 +882,10 @@ uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the 
 uploadAuthority.fileSizeTypeHeading = File size and type
 uploadAuthority.typesOfFile = Types of file you can upload
 uploadAuthority.PDF = PDF (.pdf)
+uploadAuthority.CSV = CSV (.csv)
 uploadAuthority.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
 uploadAuthority.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadAuthority.image = image (.jpg, .png or .tiff)
+uploadAuthority.image = image (.jpeg, .jpg, .png or .tiff)
 uploadAuthority.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadAuthority.uploadFile = Upload file
 uploadAuthority.uploadChosenFile = Upload chosen file
@@ -952,9 +955,10 @@ uploadSupportingDocumentation.pageTitle = Upload documentation
 uploadSupportingDocumentation.pageHeader = Upload documentation
 uploadSupportingDocumentation.typesOfFile = Types of file you can upload
 uploadSupportingDocumentation.PDF = PDF (.pdf)
+uploadSupportingDocumentation.CSV = CSV (.csv)
 uploadSupportingDocumentation.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
 uploadSupportingDocumentation.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadSupportingDocumentation.image = image (.jpg, .png or .tiff)
+uploadSupportingDocumentation.image = image (.jpeg, .jpg, .png or .tiff)
 uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadSupportingDocumentation.uploadFile = Upload a file
 uploadSupportingDocumentation.uploadChosenFile = Upload chosen file
