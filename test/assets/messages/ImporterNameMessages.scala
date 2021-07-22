@@ -24,6 +24,6 @@ object ImporterNameMessages extends BaseMessages {
   val nonEmpty: String = "Enter the name of the importer"
   val nameMinLength: String = "Name of the importer must be 2 characters or more"
   val nameMaxLength: String = "Name of the importer must be 50 characters or fewer"
-  val nameAllowableCharacters: String = "Name of the importer must only include letters a to z, hyphens, spaces and apostrophes"
+  val emojiNotAllowed: String = "Name of the importer must not include emojis"
 
 }

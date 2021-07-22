@@ -774,7 +774,7 @@ importerName.hint = This should match the name as it appears on the import decla
 importerName.error.nameNonEmpty = Enter the name of the importer
 importerName.error.nameMinLength = Name of the importer must be 2 characters or more
 importerName.error.nameMaxLength = Name of the importer must be 50 characters or fewer
-importerName.error.nameAllowableCharacters = Name of the importer must only include letters a to z, hyphens, spaces and apostrophes
+importerName.error.noEmoji = Name of the importer must not include emojis
 
 # Importer EORI Exists
 importerEORIExists.pageTitle = Does the importer have an EORI number?

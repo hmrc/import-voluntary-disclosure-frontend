@@ -139,7 +139,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       }
 
       "return BAD REQUEST when incorrect data is sent" in new Test {
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("123!"))
+        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("123\uD83D\uDE0E"))
         status(result) mustBe Status.BAD_REQUEST
       }
 
