@@ -41,7 +41,10 @@
 
     @h2(messages("updateCase.confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
 
-    @p(Html(messages("updateCase.confirmation.whatYouShouldDoNext.p")))
+    @p {
+        @Html(messages("updateCase.confirmation.whatYouShouldDoNext.p"))
+        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+    }
 
     <div id="helpImproveServiceLink">
         @p{

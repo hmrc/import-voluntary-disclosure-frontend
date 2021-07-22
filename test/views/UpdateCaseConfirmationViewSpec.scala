@@ -68,6 +68,11 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
         s"have the paragraph of '${UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph}'" in {
           elementText("#main-content > div > div > p:nth-child(6)") mustBe UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph
         }
+
+        s"have the correct email link" in {
+          elementAttributes("#main-content > div > div > p:nth-child(6) > a")
+            .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+        }
       }
 
       s"have the '${UpdateCaseConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
