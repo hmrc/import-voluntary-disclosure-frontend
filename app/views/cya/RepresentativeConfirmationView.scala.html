@@ -70,7 +70,10 @@
         <a id = "printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.whatYouShouldDoNext.printSaveRestOfMessage")</a>
     }
 
-    @p(Html(messages("confirmation.whatYouShouldDoNext.p5")))
+    @p {
+        @Html(messages("confirmation.whatYouShouldDoNext.p5"))
+        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+    }
 
     @p{<a href=@{controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.link")}</a>}
 
