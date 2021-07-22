@@ -98,9 +98,10 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
     s"have the correct list of allowed file types" in {
       elementText(".govuk-heading-s") mustBe UploadSupportingDocumentationMessages.typesOfFile
       elementText(".govuk-list > li:nth-of-type(1)") mustBe UploadSupportingDocumentationMessages.filePdf
-      elementText(".govuk-list > li:nth-of-type(2)") mustBe UploadSupportingDocumentationMessages.fileMs
-      elementText(".govuk-list > li:nth-of-type(3)") mustBe UploadSupportingDocumentationMessages.fileOd
-      elementText(".govuk-list > li:nth-of-type(4)") mustBe UploadSupportingDocumentationMessages.fileImage
+      elementText(".govuk-list > li:nth-of-type(2)") mustBe UploadSupportingDocumentationMessages.fileCsv
+      elementText(".govuk-list > li:nth-of-type(3)") mustBe UploadSupportingDocumentationMessages.fileMs
+      elementText(".govuk-list > li:nth-of-type(4)") mustBe UploadSupportingDocumentationMessages.fileOd
+      elementText(".govuk-list > li:nth-of-type(5)") mustBe UploadSupportingDocumentationMessages.fileImage
     }
 
     s"have the '${UploadSupportingDocumentationMessages.uploadFile}' upload label" in {
