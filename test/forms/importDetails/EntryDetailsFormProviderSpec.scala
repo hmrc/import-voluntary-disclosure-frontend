@@ -172,6 +172,14 @@ class EntryDetailsFormProviderSpec extends SpecBase {
         form.errors.head.key mustBe "entryDate.day"
         form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
       }
+      "result in a form with Not A Date error when one field is not an integer and another field is too long" in {
+        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("100"), month = Some("a2")))
+
+        form.errors.size mustBe 1
+        form.errors.head.key mustBe "entryDate.day"
+        form.errors.head.message mustBe "entryDetails.entryDate.error.invalid"
+        form.errors.head.args mustBe Seq("day", "month")
+      }
 
       "result in a form with Date after 1 1 1900 error" in {
         val form = new EntryDetailsFormProvider().apply().bind(
