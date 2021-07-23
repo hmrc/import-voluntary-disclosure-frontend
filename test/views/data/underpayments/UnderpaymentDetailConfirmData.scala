@@ -45,8 +45,8 @@ object UnderpaymentDetailConfirmData {
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(changeLinkMessageOriginal)
               )
-            ),
-            classes = "govuk-!-padding-bottom-1")
+            )
+          )
           )
         ),
         SummaryListRow(

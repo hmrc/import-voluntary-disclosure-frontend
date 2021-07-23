@@ -99,8 +99,8 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
               controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
               messages("changeUnderpaymentReason.values.original.change")
             )
-          ),
-          classes = "govuk-!-padding-bottom-1")
+          )
+        )
         )
       ),
       SummaryListRow(

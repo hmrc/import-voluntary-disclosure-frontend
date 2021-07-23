@@ -115,8 +115,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.change")
-            )),
-            columnClasses = "govuk-!-padding-bottom-1"
+            ))
           )
         )
       case _ => None
@@ -138,8 +137,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.change")
-            )),
-            columnClasses = "govuk-!-padding-top-0"
+            ))
           )
         )
       case _ => None

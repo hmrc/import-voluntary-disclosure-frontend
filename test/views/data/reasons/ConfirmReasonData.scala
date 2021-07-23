@@ -84,8 +84,8 @@ object ConfirmReasonData {
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             Some(ConfirmReasonDetailMessages.originalAmountChange)
           )
-        ),
-        classes = "govuk-!-padding-bottom-1")
+        )
+      )
       )
     )
     )

@@ -78,8 +78,7 @@ object ChangeUnderpaymentReasonData {
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some("Change original value")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-1"
+              )
             )
           )
         ),

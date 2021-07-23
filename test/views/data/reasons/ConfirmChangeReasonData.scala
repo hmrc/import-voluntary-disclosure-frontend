@@ -39,7 +39,7 @@ object ConfirmChangeReasonData {
             ActionItem(
               controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              Some(ConfirmReasonDetailMessages.change)
+              Some(ConfirmReasonDetailMessages.itemChange)
             )
           )
         ))
@@ -61,29 +61,36 @@ object ConfirmChangeReasonData {
           ActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.change)
+            Some(ConfirmReasonDetailMessages.originalAmountChange)
           )
-        ),
-        classes = "govuk-!-padding-bottom-1")
+        ))
       )
     )
     )
 
-  def amendedAmount(amendedValue: String): Seq[SummaryListRow] =
+  def amendedAmount(amendedValue: String, boxNumber: Int): Seq[SummaryListRow] =
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.amendedValue),
         classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
       ),
       value = Value(
-        content = HtmlContent(amendedValue),
-        classes = "govuk-!-padding-top-0"
+        content = HtmlContent(amendedValue)
+      ),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItem(
+            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(ConfirmReasonDetailMessages.amendedAmountChange)
+          )
+        ))
       )
     )
     )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): SummaryList =
     SummaryList(
-      itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue)
+      itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue, box)
     )
 }

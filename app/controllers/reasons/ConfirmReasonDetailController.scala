@@ -128,8 +128,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                 controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
                 messages("confirmReason.values.original.change")
               )
-            ),
-            classes = "govuk-!-padding-bottom-1")
+            ))
           )
         ),
         SummaryListRow(

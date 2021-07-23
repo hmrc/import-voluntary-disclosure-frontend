@@ -83,8 +83,7 @@ trait CYAEntryDetailsSummaryListHelper {
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.epu.change")
-        )),
-        columnClasses = "govuk-!-padding-bottom-1"
+        ))
       )
     }
 
@@ -96,8 +95,7 @@ trait CYAEntryDetailsSummaryListHelper {
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.entryNumber.change")
-        )),
-        columnClasses = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
+        ))
       )
     }
 
@@ -110,8 +108,7 @@ trait CYAEntryDetailsSummaryListHelper {
         action = Some(ActionItemHelper.createChangeActionItem(
           controllers.importDetails.routes.EntryDetailsController.onLoad().url,
           messages("cya.entryDate.change")
-        )),
-        columnClasses = "govuk-!-padding-top-0"
+        ))
       )
     }
 

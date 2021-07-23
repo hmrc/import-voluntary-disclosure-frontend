@@ -64,8 +64,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanDutyController.onLoad().url,
           messages("cya.repDutyAccountNumber.change")
-        )),
-        columnClasses = "govuk-!-padding-bottom-1"
+        ))
       )
     }
 
@@ -82,8 +81,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanDutyController.onLoad().url,
           messages("cya.repDutyAccountNumber.change")
-        )),
-        columnClasses = "govuk-!-padding-top-0"
+        ))
       )
     }
   }

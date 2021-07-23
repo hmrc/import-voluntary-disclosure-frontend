@@ -425,11 +425,10 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.epu),
-            classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(epu),
-            classes = "govuk-!-padding-bottom-1"
+            Text(epu)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -437,18 +436,16 @@ object CheckYourAnswersData {
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.epuChange)
             )
-          ),
-            classes = "govuk-!-padding-bottom-1")
+          ))
           )
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryNumber),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryNumber),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
+            Text(entryNumber)
           ),
            actions = Some(Actions(items = Seq(
             ActionItem(
@@ -456,18 +453,16 @@ object CheckYourAnswersData {
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.entryNumberChange)
             )
-          ),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1")
+          ))
           )
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryDate),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryDate),
-            classes = "govuk-!-padding-top-0"
+            Text(entryDate)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -475,8 +470,7 @@ object CheckYourAnswersData {
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.entryDateChange)
             )
-          ),
-            classes = "govuk-!-padding-top-0")
+          ))
           ),
         ),
         SummaryListRow(

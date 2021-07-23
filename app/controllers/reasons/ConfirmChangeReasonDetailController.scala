@@ -87,7 +87,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItemHelper.createChangeActionItem(
                 controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
-                messages("confirmReason.change")
+                messages("confirmReason.item.change")
               )
             )
           ))
@@ -112,10 +112,9 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
               items = Seq(
                 ActionItemHelper.createChangeActionItem(
                   controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-                  messages("confirmReason.change")
+                  messages("confirmReason.values.original.change")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-1")
+              ))
             )
           ),
           SummaryListRow(
@@ -124,8 +123,15 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
               classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.amended),
-              classes = "govuk-!-padding-top-0"
+              content = HtmlContent(reason.changed.amended)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                  messages("confirmReason.values.amended.change")
+                )
+              ))
             )
           )
         )
