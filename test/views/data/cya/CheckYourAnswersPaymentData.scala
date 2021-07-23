@@ -171,8 +171,7 @@ object CheckYourAnswersPaymentData {
       )
     ),
       classes = "govuk-!-padding-bottom-1"
-    )),
-    classes = "govuk-summary-list__row--no-border"
+    ))
   )
 
   val accountOwnerTypeAVATRow = SummaryListRow(
@@ -395,8 +394,7 @@ object CheckYourAnswersPaymentData {
       )
     ),
       classes = "govuk-!-padding-bottom-1"
-    )),
-    classes = "govuk-summary-list__row--no-border"
+    ))
   )
 
   val proofOfAuthorityDuty = SummaryListRow(
