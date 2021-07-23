@@ -116,11 +116,10 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages("confirmReason.original")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(underPaymentReasonValue.original),
-            classes = "govuk-!-padding-bottom-1"
+            content = HtmlContent(underPaymentReasonValue.original)
           ),
           actions = Some(Actions(
             items = Seq(
@@ -134,11 +133,10 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages("confirmReason.amended")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(underPaymentReasonValue.amended),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(underPaymentReasonValue.amended)
           ),
           actions = Some(Actions(
             items = Seq(
@@ -146,8 +144,7 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
                 controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
                 messages("confirmReason.values.amended.change")
               )
-            ),
-            classes = "govuk-!-padding-bottom-1")
+            ))
           )
         )
       )

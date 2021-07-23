@@ -50,11 +50,10 @@ object ConfirmChangeReasonData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.originalValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
-        content = HtmlContent(originalValue),
-        classes = "govuk-!-padding-bottom-1"
+        content = HtmlContent(originalValue)
       ),
       actions = Some(Actions(
         items = Seq(
@@ -72,7 +71,7 @@ object ConfirmChangeReasonData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.amendedValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
         content = HtmlContent(amendedValue)

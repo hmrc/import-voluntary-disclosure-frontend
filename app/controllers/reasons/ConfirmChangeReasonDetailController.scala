@@ -102,11 +102,10 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
           SummaryListRow(
             key = Key(
               content = Text(messages("confirmReason.original")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.original),
-              classes = "govuk-!-padding-bottom-1"
+              content = HtmlContent(reason.changed.original)
             ),
             actions = Some(Actions(
               items = Seq(
@@ -120,7 +119,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
           SummaryListRow(
             key = Key(
               content = Text(messages("confirmReason.amended")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
               content = HtmlContent(reason.changed.amended)

@@ -32,11 +32,10 @@ object UnderpaymentDetailConfirmData {
         SummaryListRow(
           key = Key(
             content = Text("Amount that was paid"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(0)),
-            classes = "govuk-!-padding-bottom-1"
+            content = HtmlContent(displayMoney(0))
           ),
           actions = Some(Actions(
             items = Seq(
@@ -52,11 +51,10 @@ object UnderpaymentDetailConfirmData {
         SummaryListRow(
           key = Key(
             content = Text("Amount that should have been paid"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(1)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(displayMoney(1))
           ),
           actions = Some(Actions(
             items = Seq(
@@ -65,8 +63,7 @@ object UnderpaymentDetailConfirmData {
                 HtmlContent("""<span aria-hidden="true">Change</span>"""),
                 Some(changeLinkMessageAmended)
               )
-            ),
-            classes = "govuk-!-padding-bottom-1")
+            ))
           ),
         ),
         SummaryListRow(

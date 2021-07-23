@@ -71,11 +71,10 @@ object ConfirmReasonData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.originalValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
-        content = HtmlContent(originalValue),
-        classes = "govuk-!-padding-bottom-1"
+        content = HtmlContent(originalValue)
       ),
       actions = Some(Actions(
         items = Seq(
@@ -94,11 +93,10 @@ object ConfirmReasonData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.amendedValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
-        content = HtmlContent(amendedValue),
-        classes = "govuk-!-padding-top-0"
+        content = HtmlContent(amendedValue)
       ),
       actions = Some(Actions(
         items = Seq(
@@ -107,8 +105,7 @@ object ConfirmReasonData {
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             Some(ConfirmReasonDetailMessages.amendedAmountChange)
           )
-        ),
-        classes = "govuk-!-padding-bottom-1")
+        ))
       ),
     )
     )

@@ -91,8 +91,8 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
 
     val originalAmountSummaryListRow: Seq[SummaryListRow] = Seq(
       SummaryListRow(
-        key = Key(content = Text(messages("changeUnderpaymentReason.original")), classes = "govuk-!-padding-bottom-1"),
-        value = Value(content = HtmlContent(underpaymentReason.original), classes = "govuk-!-padding-bottom-1"),
+        key = Key(content = Text(messages("changeUnderpaymentReason.original"))),
+        value = Value(content = HtmlContent(underpaymentReason.original)),
         actions = Some(Actions(
           items = Seq(
             ActionItemHelper.createChangeActionItem(
@@ -104,16 +104,15 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
         )
       ),
       SummaryListRow(
-        key = Key(content = Text(messages("changeUnderpaymentReason.amended")), classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"),
-        value = Value(content = HtmlContent(underpaymentReason.amended), classes = "govuk-!-padding-top-0"),
+        key = Key(content = Text(messages("changeUnderpaymentReason.amended")), classes = "govuk-!-width-two-thirds"),
+        value = Value(content = HtmlContent(underpaymentReason.amended)),
         actions = Some(Actions(
           items = Seq(
             ActionItemHelper.createChangeActionItem(
               controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
               messages("changeUnderpaymentReason.values.amended.change")
             )
-          ),
-          classes = "govuk-!-padding-bottom-1")
+          ))
         )
       )
     )
