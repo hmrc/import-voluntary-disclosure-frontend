@@ -63,12 +63,10 @@ object ChangeUnderpaymentReasonData {
         ),
         SummaryListRow(
           key = Key(
-            content = Text("Original value"),
-            classes = "govuk-!-padding-bottom-1"
+            content = Text("Original value")
           ),
           value = Value(
-            HtmlContent("50"),
-            classes = "govuk-!-padding-bottom-1"
+            HtmlContent("50")
           ),
           actions = Some(
             Actions(
@@ -76,22 +74,30 @@ object ChangeUnderpaymentReasonData {
                 ActionItem(
                   changeDetailsAction(boxNumber).url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  Some("Change values")
+                  Some("Change original value")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-1"
+              )
             )
-          ),
-          classes = "govuk-summary-list__row--no-border"
+          )
         ),
         SummaryListRow(
           key = Key(
             content = Text("Amended value"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent("60"),
-            classes = "govuk-!-padding-top-0"
+            HtmlContent("60")
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  changeDetailsAction(boxNumber).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change amended value")
+                )
+              )
+            )
           )
         )
       )
@@ -102,12 +108,10 @@ object ChangeUnderpaymentReasonData {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text("Original value"),
-            classes = "govuk-!-padding-bottom-1"
+            content = Text("Original value")
           ),
           value = Value(
-            HtmlContent("50"),
-            classes = "govuk-!-padding-bottom-1"
+            HtmlContent("50")
           ),
           actions = Some(
             Actions(
@@ -117,20 +121,17 @@ object ChangeUnderpaymentReasonData {
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some("Change")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-1"
+              )
             )
-          ),
-          classes = "govuk-summary-list__row--no-border"
+          )
         ),
         SummaryListRow(
           key = Key(
             content = Text("Amended value"),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent("60"),
-            classes = "govuk-!-padding-top-0"
+            HtmlContent("60")
           )
         )
       )

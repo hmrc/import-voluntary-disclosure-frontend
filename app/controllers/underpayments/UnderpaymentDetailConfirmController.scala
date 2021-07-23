@@ -95,31 +95,36 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
         SummaryListRow(
           key = Key(
             content = Text(messages("underpaymentDetailsConfirm.originalAmount")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.original)),
-            classes = "govuk-!-padding-bottom-1"
+            content = HtmlContent(displayMoney(underpaymentAmount.original))
           ),
           actions = Some(Actions(
             items = Seq(
               ActionItemHelper.createChangeActionItem(
                 controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                messages(s"underpaymentDetailsConfirm.$underpaymentType.change")
+                messages(s"underpaymentDetailsConfirm.$underpaymentType.original.change")
               )
-            ),
-            classes = "govuk-!-padding-bottom-1")
-          ),
-          classes = "govuk-summary-list__row--no-border"
+            )
+          )
+          )
         ),
         SummaryListRow(
           key = Key(
             content = Text(messages("underpaymentDetailsConfirm.amendedAmount")),
-            classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended)),
-            classes = "govuk-!-padding-top-0"
+            content = HtmlContent(displayMoney(underpaymentAmount.amended))
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItemHelper.createChangeActionItem(
+                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                messages(s"underpaymentDetailsConfirm.$underpaymentType.amended.change")
+              )
+            ))
           )
         ),
         SummaryListRow(

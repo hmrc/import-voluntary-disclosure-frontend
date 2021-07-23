@@ -87,7 +87,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
             items = Seq(
               ActionItemHelper.createChangeActionItem(
                 controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
-                messages("confirmReason.change")
+                messages("confirmReason.item.change")
               )
             )
           ))
@@ -102,31 +102,35 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
           SummaryListRow(
             key = Key(
               content = Text(messages("confirmReason.original")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.original),
-              classes = "govuk-!-padding-bottom-1"
+              content = HtmlContent(reason.changed.original)
             ),
             actions = Some(Actions(
               items = Seq(
                 ActionItemHelper.createChangeActionItem(
                   controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-                  messages("confirmReason.change")
+                  messages("confirmReason.values.original.change")
                 )
-              ),
-              classes = "govuk-!-padding-bottom-1")
-            ),
-            classes = "govuk-summary-list__row--no-border"
+              ))
+            )
           ),
           SummaryListRow(
             key = Key(
               content = Text(messages("confirmReason.amended")),
-              classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+              classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.amended),
-              classes = "govuk-!-padding-top-0"
+              content = HtmlContent(reason.changed.amended)
+            ),
+            actions = Some(Actions(
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                  messages("confirmReason.values.amended.change")
+                )
+              ))
             )
           )
         )

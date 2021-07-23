@@ -115,9 +115,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.change")
-            )),
-            columnClasses = "govuk-!-padding-bottom-1",
-            rowClasses = "govuk-summary-list__row--no-border"
+            ))
           )
         )
       case _ => None
@@ -136,7 +134,10 @@ trait CYAPaymentDetailsSummaryListHelper {
           createRow(
             Text(messages("cya.accountOwner")),
             Text(accountOwnerContent),
-            columnClasses = "govuk-!-padding-top-0"
+            action = Some(ActionItemHelper.createChangeActionItem(
+              controllers.routes.RepresentativeDanController.onLoad().url,
+              messages("cya.repDanDuty.change")
+            ))
           )
         )
       case _ => None

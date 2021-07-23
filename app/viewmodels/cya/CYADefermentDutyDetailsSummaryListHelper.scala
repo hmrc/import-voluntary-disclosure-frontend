@@ -64,9 +64,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanDutyController.onLoad().url,
           messages("cya.repDutyAccountNumber.change")
-        )),
-        columnClasses = "govuk-!-padding-bottom-1",
-        rowClasses = "govuk-summary-list__row--no-border"
+        ))
       )
     }
 
@@ -80,7 +78,10 @@ trait CYADefermentDutyDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
-        columnClasses = "govuk-!-padding-top-0"
+        Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.RepresentativeDanDutyController.onLoad().url,
+          messages("cya.repDutyAccountNumber.change")
+        ))
       )
     }
   }

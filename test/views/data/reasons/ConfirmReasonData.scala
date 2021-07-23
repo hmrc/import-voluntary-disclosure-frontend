@@ -71,42 +71,48 @@ object ConfirmReasonData {
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.originalValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-bottom-1"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
-        content = HtmlContent(originalValue),
-        classes = "govuk-!-padding-bottom-1"
+        content = HtmlContent(originalValue)
       ),
       actions = Some(Actions(
         items = Seq(
           ActionItem(
             controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.itemValuesChange)
+            Some(ConfirmReasonDetailMessages.originalAmountChange)
           )
-        ),
-        classes = "govuk-!-padding-bottom-1")
-      ),
-      classes = "govuk-summary-list__row--no-border"
+        )
+      )
+      )
     )
     )
 
-  def amendedAmount(amendedValue: String): Seq[SummaryListRow] =
+  def amendedAmount(amendedValue: String, boxNumber: Int): Seq[SummaryListRow] =
     Seq(SummaryListRow(
       key = Key(
         content = Text(ConfirmReasonDetailMessages.amendedValue),
-        classes = "govuk-!-width-two-thirds govuk-!-padding-top-0"
+        classes = "govuk-!-width-two-thirds"
       ),
       value = Value(
-        content = HtmlContent(amendedValue),
-        classes = "govuk-!-padding-top-0"
-      )
+        content = HtmlContent(amendedValue)
+      ),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItem(
+            controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(ConfirmReasonDetailMessages.amendedAmountChange)
+          )
+        ))
+      ),
     )
     )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
-      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue)
+      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue, box)
     )
   )
 }

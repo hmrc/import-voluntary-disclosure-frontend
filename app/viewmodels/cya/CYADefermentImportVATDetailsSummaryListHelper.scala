@@ -65,9 +65,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanImportVATController.onLoad().url,
           messages("cya.repVATAccountNumber.change")
-        )),
-        columnClasses = "govuk-!-padding-bottom-1",
-        rowClasses = "govuk-summary-list__row--no-border"
+        ))
       )
     }
 
@@ -81,7 +79,10 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
-        columnClasses = "govuk-!-padding-top-0"
+        Some(ActionItemHelper.createChangeActionItem(
+          controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+          messages("cya.repVATAccountNumber.change")
+        ))
       )
     }
   }

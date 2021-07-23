@@ -72,17 +72,25 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
       "have correct Change link for Item Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.change
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.itemChange
 
         document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.ChangeItemNumberController.onLoad().url
       }
 
-      "have correct Change link for original/amended value " in {
+      "have correct Change link for original value " in {
         elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.change
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.originalAmountChange
 
         document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(33).url
+      }
+
+      "have correct Change link for amended value " in {
+        elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a") mustBe
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.amendedAmountChange
+
+        document.select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(33).url
       }
 
@@ -119,11 +127,19 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "GBP190.50"
       }
 
-      "have correct Change link for original/amended value " in {
+      "have correct Change link for original value " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.change
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.originalAmountChange
 
         document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(22).url
+      }
+
+      "have correct Change link for amended value " in {
+        elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a") mustBe
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.amendedAmountChange
+
+        document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(22).url
       }
     }

@@ -425,11 +425,10 @@ object CheckYourAnswersData {
         SummaryListRow(
           key = Key(
             Text(CYAMessages.epu),
-            classes = "govuk-!-width-one-third govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(epu),
-            classes = "govuk-!-padding-bottom-1"
+            Text(epu)
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
@@ -437,33 +436,42 @@ object CheckYourAnswersData {
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),
               Some(CYAMessages.epuChange)
             )
-          ),
-            classes = "govuk-!-padding-bottom-1")
-          ),
-          classes = "govuk-summary-list__row--no-border"
+          ))
+          )
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryNumber),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0 govuk-!-padding-bottom-1"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryNumber),
-            classes = "govuk-!-padding-top-0 govuk-!-padding-bottom-1"
+            Text(entryNumber)
           ),
-          actions = None,
-          classes = "govuk-summary-list__row--no-border"
+           actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.entryNumberChange)
+            )
+          ))
+          )
         ),
         SummaryListRow(
           key = Key(
             Text(CYAMessages.entryDate),
-            classes = "govuk-!-width-one-third govuk-!-padding-top-0"
+            classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryDate),
-            classes = "govuk-!-padding-top-0"
+            Text(entryDate)
           ),
-          actions = None
+          actions = Some(Actions(items = Seq(
+            ActionItem(
+              controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+              HtmlContent("<span aria-hidden=\"true\">Change</span>"),
+              Some(CYAMessages.entryDateChange)
+            )
+          ))
+          ),
         ),
         SummaryListRow(
           key = Key(
