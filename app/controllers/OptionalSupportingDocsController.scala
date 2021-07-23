@@ -48,7 +48,10 @@ class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, Seq.empty))),
+      formWithErrors => {
+        val form = formWithErrors.discardingErrors.withError("importAndEntry", "optionalSupportingDocuments.error.required", Seq.empty)
+        Future.successful(BadRequest(view(form, backLink, Seq.empty)))
+      },
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
