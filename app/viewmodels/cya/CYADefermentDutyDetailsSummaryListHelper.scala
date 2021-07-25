@@ -80,7 +80,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Text(accountOwnerContent),
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanDutyController.onLoad().url,
-          messages("cya.repDutyAccountNumber.change")
+          messages("cya.repDutyAccountOwner.change")
         ))
       )
     }

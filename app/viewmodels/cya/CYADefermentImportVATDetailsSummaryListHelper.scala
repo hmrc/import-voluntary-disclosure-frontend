@@ -81,7 +81,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Text(accountOwnerContent),
         Some(ActionItemHelper.createChangeActionItem(
           controllers.routes.RepresentativeDanImportVATController.onLoad().url,
-          messages("cya.repVATAccountNumber.change")
+          messages("cya.repVATAccountOwner.change")
         ))
       )
     }
