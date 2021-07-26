@@ -19,10 +19,11 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeDanFormProvider
-import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
 import models.requests.DataRequest
+import models.{RepresentativeDan, UserAnswers}
 import pages._
+import play.api.data.FormError
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -59,36 +60,49 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        val previousVATAccountNumber = request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse(dan.accountNumber)
-        val previousVATAccountType = request.userAnswers.get(AdditionalDefermentTypePage).getOrElse(dan.danType)
-        if (dan.accountNumber != previousVATAccountNumber || dan.danType != previousVATAccountType) {
 
-          val authorityFiles = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == Vat)
-
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAuthorityPage, authorityFiles))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentTypePage, dan.danType))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
-            _ <- sessionRepository.set(updatedAnswers)
+        if (sameAccountNumber(dan.accountNumber, request.userAnswers)) {
+          val form = (for {
+            danType <- request.userAnswers.get(AdditionalDefermentTypePage)
+            accountNumber <- request.userAnswers.get(AdditionalDefermentNumberPage)
           } yield {
-            dan.danType match {
-              case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-              case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
-            }
-          }
+            formProvider().fill()
+          }).getOrElse(formProvider())
+          Future.successful(Ok(view(form.copy(errors = Seq(FormError("accountNumber", "repDan.error.sameAccountNumber"))), backLink)))
         } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if (request.checkMode) {
-              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-            } else {
+
+
+          val previousVATAccountNumber = request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse(dan.accountNumber)
+          val previousVATAccountType = request.userAnswers.get(AdditionalDefermentTypePage).getOrElse(dan.danType)
+          if (dan.accountNumber != previousVATAccountNumber || dan.danType != previousVATAccountType) {
+
+            val authorityFiles = request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(_.dutyType == Vat)
+
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadAuthorityPage, authorityFiles))
+              updatedAnswers <- Future.fromTry(updatedAnswers.set(CheckModePage, false))
+              updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentTypePage, dan.danType))
+              updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield {
               dan.danType match {
                 case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
                 case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+              }
+            }
+          } else {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(AdditionalDefermentTypePage, dan.danType))
+              updatedAnswers <- Future.fromTry(updatedAnswers.set(AdditionalDefermentNumberPage, dan.accountNumber))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield {
+              if (request.checkMode) {
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+              } else {
+                dan.danType match {
+                  case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+                  case _ => Redirect(controllers.routes.UploadAuthorityController.onLoad(Vat, dan.accountNumber))
+                }
               }
             }
           }
@@ -103,6 +117,14 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
     } else {
       controllers.routes.RepresentativeDanDutyController.onLoad()
     }
+  }
+
+  private[controllers] def sameAccountNumber(vatAccountNumber: String,
+                                             userAnswers: UserAnswers) = {
+    lazy val dutyAccountNumber: String = userAnswers.get(DefermentAccountPage).getOrElse("")
+    dutyAccountNumber.exists(
+      accountNumber => dutyAccountNumber == vatAccountNumber
+    )
   }
 
 }
