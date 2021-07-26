@@ -146,7 +146,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDan)
+        visuallyHiddenText = Some(CYAMessages.changeRepDanAccountNumber)
       )
     )
     )),
@@ -218,7 +218,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDan)
+        visuallyHiddenText = Some(CYAMessages.changeRepDanAccountOwner)
       )
     )
     ))

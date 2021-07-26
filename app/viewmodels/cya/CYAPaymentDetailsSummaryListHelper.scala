@@ -114,7 +114,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(accountNumber),
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.RepresentativeDanController.onLoad().url,
-              messages("cya.repDanDuty.change")
+              messages("cya.repDanDuty.accountNumber.change")
             ))
           )
         )
@@ -136,7 +136,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(accountOwnerContent),
             action = Some(ActionItemHelper.createChangeActionItem(
               controllers.routes.RepresentativeDanController.onLoad().url,
-              messages("cya.repDanDuty.change")
+              messages("cya.repDanDuty.accountOwner.change")
             ))
           )
         )
