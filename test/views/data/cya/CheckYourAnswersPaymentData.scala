@@ -164,7 +164,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
       )
     ),
     ))
@@ -182,7 +182,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
     )
     )),
@@ -200,7 +200,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
     )
     )),
@@ -236,7 +236,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
     )
     ))
@@ -254,7 +254,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
     )
     ))
@@ -272,7 +272,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
       )
     )
     ))
@@ -290,7 +290,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
     )
     ))
@@ -308,7 +308,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDutyAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
     )
     ))
@@ -369,7 +369,7 @@ object CheckYourAnswersPaymentData {
       ActionItem(
         controllers.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepVATAccountNumber)
+        visuallyHiddenText = Some(CYAMessages.repVATAccountNumber)
       )
     )
     ))
