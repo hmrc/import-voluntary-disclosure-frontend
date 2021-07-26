@@ -21,11 +21,12 @@
         button: components.button
 )
 
-@(changeReason: SummaryList, boxNumber: Int, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(changeReason: SummaryList, boxNumber: Int)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("confirmChangeReason.pageTitle", boxNumber),
-    customBackLinkUrl = Some(backLink)
+    customBackLinkUrl = None,
+    showBackLink = false
 ) {
 
     @h1(messages("confirmChangeReason.heading", boxNumber))
