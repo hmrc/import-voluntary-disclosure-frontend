@@ -287,7 +287,6 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       controller.onSubmit(request)
     }
 
-
   }
 
 }
