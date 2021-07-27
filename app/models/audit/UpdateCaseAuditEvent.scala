@@ -20,17 +20,17 @@ import models.UpdateCaseData
 import play.api.libs.json._
 import services.JsonAuditModel
 
-case class UpdateCaseAuditEvent(update: UpdateCaseData, credId: String, eori: String)
+case class UpdateCaseAuditEvent(updateCaseData: UpdateCaseData, credId: String, eori: String)
   extends JsonAuditModel {
   override val auditType: String = "UpdateCase"
   override val transactionName: String = "create-case"
   override val detail: JsValue = Json.obj(
-    "caseID" -> update.caseId,
-    "description" -> update.additionalInfo,
-    "uploadedFiles" -> update.supportingDocuments,
+    "caseID" -> updateCaseData.caseId,
+    "description" -> updateCaseData.additionalInfo,
+    "uploadedFiles" -> updateCaseData.supportingDocuments,
     "credentialId" -> credId,
     "declarantEORI" -> eori,
-    "numberOfFilesUploaded" -> update.supportingDocuments.map(_.length),
-    "uploadedFiles" -> update.supportingDocuments
+    "numberOfFilesUploaded" -> updateCaseData.supportingDocuments.map(_.length),
+    "uploadedFiles" -> updateCaseData.supportingDocuments
   )
 }

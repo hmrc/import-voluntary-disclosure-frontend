@@ -37,8 +37,7 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case JsSuccess(data, _) =>
         ivdSubmissionConnector.updateCase(buildUpdate(data)).map {
           case Right(confirmationResponse) =>
-            val event = UpdateCaseAuditEvent(data, request.credId, request.eori)
-            auditService.audit(event)
+            auditService.audit(UpdateCaseAuditEvent(data, request.credId, request.eori))
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
