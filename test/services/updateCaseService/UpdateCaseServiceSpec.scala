@@ -19,15 +19,17 @@ package services.updateCaseService
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
+import models.audit.UpdateCaseAuditEvent
 import models.requests._
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import services.UpdateCaseService
+import utils.ReusableValues
 
 class UpdateCaseServiceSpec extends SpecBase {
 
-  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData {
+  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData with ReusableValues {
     def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
       setupMockUpdateCase(response)
     }
@@ -56,9 +58,9 @@ class UpdateCaseServiceSpec extends SpecBase {
     "called with valid user answers" should {
       "return successful UpdateCaseResponse" in new Test {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
-        setupMock(Right(response))
+        setupMockUpdateCase(Right(response))
+        verifyAudit(UpdateCaseAuditEvent(updateData, "credId", "eori"))
         private val result = await(service.updateCase()(dataRequest, hc, ec))
-
         result mustBe Right(response)
       }
 
