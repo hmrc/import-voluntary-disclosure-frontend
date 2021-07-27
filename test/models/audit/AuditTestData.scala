@@ -237,5 +237,26 @@ trait AuditTestData {
       |   ]
       |}""".stripMargin
 
+  val updateCaseOutputJson =
+    """
+      |{
+      |   "caseID":"caseId",
+      |   "description":"fewfew",
+      |   "uploadedFiles":[
+      |      {
+      |         "reference":"file-ref-1",
+      |         "fileName":"Example.pdf",
+      |         "downloadUrl":"https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+      |         "uploadTimestamp":"2021-07-21T11:45:36.000000286",
+      |         "checksum":"396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+      |         "fileMimeType":"application/pdf"
+      |      }
+      |   ],
+      |   "credentialId":"credId",
+      |   "declarantEORI":"eori",
+      |   "numberOfFilesUploaded":1
+      |}
+      |""".stripMargin
+
   val submissionResponse = SubmissionResponse(id = "1234567890")
 }
