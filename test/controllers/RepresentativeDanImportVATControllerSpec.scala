@@ -257,4 +257,37 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
     }
   }
 
+  "sameAccountNumber" when {
+
+    "same value for duty account number and vat account number submitted" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentAccountPage, "1234567").success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(AdditionalDefermentNumberPage, "1234567").success.value
+          .set(AdditionalDefermentTypePage, "A").success.value
+
+      )
+      controller.sameAccountNumber("1234567", "1234567", userAnswers.get) mustBe true
+      val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+      controller.onSubmit(request)
+    }
+
+    "different value for duty account number and vat account number submitted" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DefermentAccountPage, "1234567").success.value
+          .set(DefermentTypePage, "C").success.value
+          .set(AdditionalDefermentNumberPage, "7654321").success.value
+          .set(AdditionalDefermentTypePage, "A").success.value
+
+      )
+      controller.sameAccountNumber("1234567", "7654321", userAnswers.get) mustBe false
+      val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
+      controller.onSubmit(request)
+    }
+
+
+  }
+
 }
