@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.{ConfirmChangeReasonDetailMessages, ConfirmReasonDetailMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.data.reasons.ConfirmChangeReasonData.reasons
 import views.html.reasons.ConfirmChangeReasonDetailView
@@ -29,13 +28,10 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: ConfirmChangeReasonDetailView = app.injector.instanceOf[ConfirmChangeReasonDetailView]
 
-  private val backLink: Call = Call("GET", "url")
-
-
   "Rendering the Confirm Change Reason Detail page" when {
     "when an item level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), 33, backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), 33)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -100,7 +96,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Change Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22, backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -147,17 +143,13 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22, backLink)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmChangeReasonDetailMessages.title(22))
 
     s"have the correct h1 of '${ConfirmChangeReasonDetailMessages.h1(22)}'" in {
       elementText("h1") mustBe ConfirmChangeReasonDetailMessages.h1(22)
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
     }
 
     s"have the correct Continue button" in {

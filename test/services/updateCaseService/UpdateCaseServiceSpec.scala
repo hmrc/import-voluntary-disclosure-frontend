@@ -18,16 +18,18 @@ package services.updateCaseService
 
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import mocks.services.MockAuditService
+import models.audit.UpdateCaseAuditEvent
+import models.requests._
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
-import pages.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import services.UpdateCaseService
+import utils.ReusableValues
 
 class UpdateCaseServiceSpec extends SpecBase {
 
-  trait Test extends MockIvdSubmissionConnector with UpdateCaseServiceTestData {
+  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData with ReusableValues {
     def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
       setupMockUpdateCase(response)
     }
@@ -49,16 +51,16 @@ class UpdateCaseServiceSpec extends SpecBase {
     val failedCreateCaseConnectorCall: UpdateCaseError =
       UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, Some("Downstream error returned when retrieving SubmissionResponse from back end"))
 
-    val service = new UpdateCaseService(mockIVDSubmissionConnector)
+    val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
   }
 
   "UpdateCaseService" when {
     "called with valid user answers" should {
       "return successful UpdateCaseResponse" in new Test {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
-        setupMock(Right(response))
+        setupMockUpdateCase(Right(response))
+        verifyAudit(UpdateCaseAuditEvent(updateData, "credId", "eori"))
         private val result = await(service.updateCase()(dataRequest, hc, ec))
-
         result mustBe Right(response)
       }
 
@@ -85,17 +87,17 @@ class UpdateCaseServiceSpec extends SpecBase {
   "buildUpdate" when {
     "called with a complete User Answers" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(userAnswers)
+        private val result = service.buildUpdate(updateData)
 
-        result mustBe Right(updateCaseJson)
+        result mustBe updateCaseJson
       }
     }
 
     "called without supporting documents" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(userAnswers.remove(UploadSupportingDocumentationPage).success.value)
+        private val result = service.buildUpdate(updateData.copy(supportingDocuments = None))
 
-        result mustBe Right(updateCaseJsonWithoutDocs)
+        result mustBe updateCaseJsonWithoutDocs
       }
     }
   }

@@ -48,7 +48,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
       reason.original.boxNumber
     }
     val summary = summaryList(request.userAnswers, boxNumber)
-    Future.successful(Ok(view(summary, boxNumber, controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber))))
+    Future.successful(Ok(view(summary, boxNumber)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
