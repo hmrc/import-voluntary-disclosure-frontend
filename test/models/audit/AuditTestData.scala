@@ -16,7 +16,8 @@
 
 package models.audit
 
-import models.SubmissionResponse
+import models.{SubmissionResponse, UpdateCaseError}
+import play.api.libs.json.JsValue
 
 trait AuditTestData {
   val completeSubmissionJson =
@@ -236,6 +237,35 @@ trait AuditTestData {
       |      }
       |   ]
       |}""".stripMargin
+
+  val updateCaseOutputJson =
+    """
+      |{
+      |   "caseID":"C181234567891234567891",
+      |   "description":"dewdew",
+      |   "uploadedFiles":[
+      |      {
+      |         "reference":"34349f41-8b70-4967-bb9c-6fa67b04fb75",
+      |         "fileName":"Test doc – attachment for underpayment.docx",
+      |         "downloadUrl":"http://localhost:9570/upscan/download/c8ecf665-3c54-4470-881d-3c9cd6e0ebc9",
+      |         "uploadTimestamp":"2021-07-26T15:42:32.035",
+      |         "checksum":"db8d51ba206c1bc972a1755f6c7870603768b3e2147f6396ed0d7cb7e3ad622c",
+      |         "fileMimeType":"application/binary"
+      |      },
+      |      {
+      |         "reference":"c2edfd16-d5a3-481d-aefd-30faaf53cb16",
+      |         "fileName":"Test doc attachment for underpayment.docx",
+      |         "downloadUrl":"http://localhost:9570/upscan/download/9d34be19-f14f-4699-b74e-5219f15f7fac",
+      |         "uploadTimestamp":"2021-07-26T15:42:38.723",
+      |         "checksum":"db8d51ba206c1bc972a1755f6c7870603768b3e2147f6396ed0d7cb7e3ad622c",
+      |         "fileMimeType":"application/binary"
+      |      }
+      |   ],
+      |   "credentialId":"Ext-bb5e40ca-1c0a-40bd-8509-a9cb0e195abe",
+      |   "declarantEORI":"GB987654321000",
+      |   "numberOfFilesUploaded":2
+      |}
+      |""".stripMargin
 
   val submissionResponse = SubmissionResponse(id = "1234567890")
 }

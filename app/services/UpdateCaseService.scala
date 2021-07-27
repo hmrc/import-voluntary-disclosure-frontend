@@ -17,17 +17,21 @@
 package services
 
 import connectors.IvdSubmissionConnector
+import javax.inject.{Inject, Singleton}
 import models._
+import models.audit.UpdateCaseAuditEvent
 import models.requests.DataRequest
+import pages.UploadSupportingDocumentationPage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector) {
+class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector,
+                                  auditService: AuditService) {
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
@@ -35,10 +39,32 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case Right(submission) =>
         ivdSubmissionConnector.updateCase(submission).map {
           case Right(confirmationResponse) =>
+            auditService.audit(UpdateCaseAuditEvent(buildUpdateCaseAuditEvent(request.userAnswers, request.credId)))
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
       case Left(err) => Future.successful(Left(err))
+    }
+  }
+
+   def buildUpdateCaseAuditEvent(answers: UserAnswers, credId: String): Either[UpdateCaseError, JsValue] = {
+    val eori = answers.get(KnownEoriDetailsPage).get.eori
+    val uploadedFiles = answers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty)
+    Json.fromJson[UpdateCaseData](answers.data) match {
+      case JsSuccess(data, _) =>
+        val json = Json.obj(
+          "caseID" -> data.caseId,
+          "description" -> data.additionalInfo,
+          "uploadedFiles" -> data.supportingDocuments,
+          "credentialId" -> credId,
+          "declarantEORI" -> eori,
+          "numberOfFilesUploaded" -> uploadedFiles.size,
+          "uploadedFiles" -> uploadedFiles
+        )
+        Right(json)
+      case JsError(err) =>
+        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
+        Left(UpdateCaseError.UnexpectedError(-1, Some(err.toString())))
     }
   }
 
