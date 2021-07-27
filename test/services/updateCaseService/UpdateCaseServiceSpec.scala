@@ -19,9 +19,8 @@ package services.updateCaseService
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
-import pages.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import services.UpdateCaseService
@@ -88,7 +87,7 @@ class UpdateCaseServiceSpec extends SpecBase {
       "return expected JSON" in new Test {
         private val result = service.buildUpdate(updateData)
 
-        result mustBe Right(updateCaseJson)
+        result mustBe updateCaseJson
       }
     }
 
@@ -96,7 +95,7 @@ class UpdateCaseServiceSpec extends SpecBase {
       "return expected JSON" in new Test {
         private val result = service.buildUpdate(updateData.copy(supportingDocuments = None))
 
-        result mustBe Right(updateCaseJsonWithoutDocs)
+        result mustBe updateCaseJsonWithoutDocs
       }
     }
   }
