@@ -18,6 +18,7 @@ package services.updateCaseService
 
 import base.SpecBase
 import mocks.connectors.MockIvdSubmissionConnector
+import mocks.services.MockAuditService
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
 import pages.UploadSupportingDocumentationPage
@@ -27,7 +28,7 @@ import services.UpdateCaseService
 
 class UpdateCaseServiceSpec extends SpecBase {
 
-  trait Test extends MockIvdSubmissionConnector with UpdateCaseServiceTestData {
+  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData {
     def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
       setupMockUpdateCase(response)
     }
@@ -49,7 +50,7 @@ class UpdateCaseServiceSpec extends SpecBase {
     val failedCreateCaseConnectorCall: UpdateCaseError =
       UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, Some("Downstream error returned when retrieving SubmissionResponse from back end"))
 
-    val service = new UpdateCaseService(mockIVDSubmissionConnector)
+    val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
   }
 
   "UpdateCaseService" when {
@@ -85,7 +86,7 @@ class UpdateCaseServiceSpec extends SpecBase {
   "buildUpdate" when {
     "called with a complete User Answers" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(userAnswers)
+        private val result = service.buildUpdate(updateData)
 
         result mustBe Right(updateCaseJson)
       }
@@ -93,7 +94,7 @@ class UpdateCaseServiceSpec extends SpecBase {
 
     "called without supporting documents" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(userAnswers.remove(UploadSupportingDocumentationPage).success.value)
+        private val result = service.buildUpdate(updateData.copy(supportingDocuments = None))
 
         result mustBe Right(updateCaseJsonWithoutDocs)
       }

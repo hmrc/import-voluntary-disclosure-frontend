@@ -17,16 +17,14 @@
 package services
 
 import connectors.IvdSubmissionConnector
-import javax.inject.{Inject, Singleton}
 import models._
 import models.audit.UpdateCaseAuditEvent
 import models.requests.DataRequest
-import pages.UploadSupportingDocumentationPage
-import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
