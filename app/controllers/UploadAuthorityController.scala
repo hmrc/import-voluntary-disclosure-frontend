@@ -52,7 +52,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                          )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
-  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
+  private[controllers] def backLink(currentDutyType: SelectedDutyType, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
                                    (implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
@@ -84,7 +84,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     }
 
     upScanService.initiateAuthorityJourney(dutyType.toString, dan).map { response =>
-      Ok(view(form, response, backLink(dutyType, dan, request.dutyType, splitPayment), dan, dutyTypeKey))
+      Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), dan, dutyTypeKey))
         .removingFromSession("AuthorityUpscanReference")
         .addingToSession("AuthorityUpscanReference" -> response.reference.value)
     }
