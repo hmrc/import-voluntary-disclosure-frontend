@@ -19,9 +19,9 @@ package controllers
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.RepresentativeDanFormProvider
+import models.RepresentativeDan
 import models.SelectedDutyTypes.Vat
 import models.requests.DataRequest
-import models.{RepresentativeDan, UserAnswers}
 import pages._
 import play.api.data.FormError
 import play.api.i18n.I18nSupport
@@ -61,14 +61,10 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
       ))),
       dan => {
         val dutyAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse("No Duty Account Number")
-        if (sameAccountNumber(dutyAccountNumber, dan.accountNumber, request.userAnswers)) {
-          val form = (for {
-            danType <- request.userAnswers.get(AdditionalDefermentTypePage)
-            accountNumber <- request.userAnswers.get(AdditionalDefermentNumberPage)
-          } yield {
-            formProvider().fill(RepresentativeDan(accountNumber, danType))
-          }).getOrElse(formProvider())
-          Future.successful(Ok(view(form.copy(errors = Seq(FormError("accountNumber", "repDan.error.sameAccountNumber"))), backLink)))
+        if (dutyAccountNumber == dan.accountNumber) {
+          val form = formProvider().fill(RepresentativeDan(dan.accountNumber, dan.danType))
+            .withError(FormError("accountNumber", "repDan.error.sameAccountNumber"))
+          Future.successful(Ok(view(form, backLink)))
         } else {
 
           val previousVATAccountNumber = request.userAnswers.get(AdditionalDefermentNumberPage).getOrElse(dan.accountNumber)
@@ -116,15 +112,6 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
     } else {
       controllers.routes.RepresentativeDanDutyController.onLoad()
     }
-  }
-
-  private[controllers] def sameAccountNumber(dutyAccountNumber: String,
-                                             vatAccountNumber: String,
-                                             userAnswers: UserAnswers) = {
-    lazy val dutyAccountNumber: String = userAnswers.get(DefermentAccountPage).getOrElse("")
-    dutyAccountNumber.exists(
-      accountNumber => dutyAccountNumber == vatAccountNumber
-    )
   }
 
 }
