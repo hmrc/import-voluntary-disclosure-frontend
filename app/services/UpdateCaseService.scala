@@ -17,14 +17,15 @@
 package services
 
 import connectors.IvdSubmissionConnector
-import javax.inject.{Inject, Singleton}
 import models._
 import models.audit.UpdateCaseAuditEvent
 import models.requests.DataRequest
 import play.api.Logger
 import play.api.libs.json._
+import services.ServiceJsonUtils._
 import uk.gov.hmrc.http.HeaderCarrier
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -54,7 +55,7 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
           "caseId" -> data.caseId,
           "additionalInfo" -> data.additionalInfo,
           "supportingDocuments" -> data.supportingDocuments
-        )
+        ).dropNullValues
         Right(json)
       case JsError(err) =>
         logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")

@@ -17,7 +17,7 @@
 package services.updateCaseService
 
 import models.{UpdateCaseData, UserAnswers}
-import pages.{DisclosureReferenceNumberPage, MoreDocumentationPage, UpdateAdditionalInformationPage, UploadSupportingDocumentationPage}
+import pages._
 import play.api.libs.json.{JsObject, Json}
 import utils.ReusableValues
 
@@ -63,7 +63,6 @@ trait UpdateCaseServiceTestData extends ReusableValues {
   val updateCaseJsonWithoutDocs: JsObject =
     Json.obj(
       "caseId" -> "C18",
-      "additionalInfo" -> "Additional Information",
-      "supportingDocuments" -> Json.parse("null")
+      "additionalInfo" -> "Additional Information"
     )
 }

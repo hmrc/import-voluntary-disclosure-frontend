@@ -22,13 +22,14 @@ import models.OptionalDocument._
 import models.SelectedDutyTypes.{Duty, Vat}
 import models._
 import models.audit.CreateCaseAuditEvent
+import models.importDetails.{NumberOfEntries, UserType}
 import models.requests.DataRequest
 import play.api.Logger
 import play.api.libs.json._
+import services.ServiceJsonUtils._
 import uk.gov.hmrc.http.HeaderCarrier
-import javax.inject.{Inject, Singleton}
-import models.importDetails.{NumberOfEntries, UserType}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -58,16 +59,15 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     Json.fromJson[SubmissionData](answers.data) match {
       case JsSuccess(data, _) =>
         try {
-          Right(
-            buildEntryDetails(data) ++
-              buildUnderpaymentDetails(data) ++
-              buildReasonsDetails(data) ++
-              buildSupportingDocumentation(data) ++
-              buildDefermentDetails(data) ++
-              buildDeclarantDetails(data) ++
-              buildImporterDetails(data) ++
-              buildRepresentativeDetails(data)
-          )
+          val json = buildEntryDetails(data) ++
+            buildUnderpaymentDetails(data) ++
+            buildReasonsDetails(data) ++
+            buildSupportingDocumentation(data) ++
+            buildDefermentDetails(data) ++
+            buildDeclarantDetails(data) ++
+            buildImporterDetails(data) ++
+            buildRepresentativeDetails(data)
+          Right(json.dropNullValues)
         } catch {
           case err: Exception => {
             logger.error(s"Failed to build SubmissionData Json. Error: ${err.getMessage}")
