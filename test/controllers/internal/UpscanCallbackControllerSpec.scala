@@ -17,7 +17,6 @@
 package controllers.internal
 
 import base.ControllerSpecBase
-import mocks.config.MockAppConfig
 import mocks.repositories.MockFileUploadRepository
 import models.upscan._
 import play.api.http.Status
@@ -76,7 +75,7 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
     lazy val controller = {
       setupMocks()
-      new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, MockAppConfig, ec)
+      new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, ec)
     }
   }
 

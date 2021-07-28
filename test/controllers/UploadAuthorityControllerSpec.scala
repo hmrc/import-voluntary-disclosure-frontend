@@ -24,17 +24,17 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.SelectedDutyTypes._
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{CheckModePage, SplitPaymentPage, UploadAuthorityPage}
+import pages._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsEmpty, Call, Result}
+import play.api.mvc._
 import play.api.test.Helpers._
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
+import views.html._
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -335,17 +335,17 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     "checkMode is false" should {
       "return link to Rep Duty Dan" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
-        val result: Call = controller.backLink(Duty, dan, Both, splitPayment = true)(dataRequest)
+        val result: Call = controller.backLink(Duty, Both, splitPayment = true)(dataRequest)
         result mustBe controllers.routes.RepresentativeDanDutyController.onLoad()
       }
       "return link to Rep Vat Dan" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
-        val result: Call = controller.backLink(Vat, dan, Both, splitPayment = true)(dataRequest)
+        val result: Call = controller.backLink(Vat, Both, splitPayment = true)(dataRequest)
         result mustBe controllers.routes.RepresentativeDanImportVATController.onLoad()
       }
       "return link to Rep Dan" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(SplitPaymentPage, false).success.value)
-        val result: Call = controller.backLink(Both, dan, Both, splitPayment = true)(dataRequest)
+        val result: Call = controller.backLink(Both, Both, splitPayment = true)(dataRequest)
         result mustBe controllers.routes.RepresentativeDanController.onLoad()
       }
     }
@@ -353,7 +353,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     "checkMode is true" should {
       "return link to check your answers" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(CheckModePage, true).success.value)
-        val result: Call = controller.backLink(Duty, dan, Both, splitPayment = true)(dataRequest)
+        val result: Call = controller.backLink(Duty, Both, splitPayment = true)(dataRequest)
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

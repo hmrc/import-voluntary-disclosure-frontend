@@ -16,25 +16,24 @@
 
 package controllers.underpayments
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import models.requests.DataRequest
+import pages.importDetails.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentStartView
-import javax.inject.{Inject, Singleton}
-import pages.importDetails.EnterCustomsProcedureCodePage
 
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
 
 @Singleton
 class UnderpaymentStartController @Inject()(identify: IdentifierAction,
                                             getData: DataRetrievalAction,
                                             mcc: MessagesControllerComponents,
                                             requireData: DataRequiredAction,
-                                            view: UnderpaymentStartView,
-                                            implicit val ec: ExecutionContext)
+                                            view: UnderpaymentStartView)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
