@@ -16,11 +16,11 @@
 
 package controllers.reasons
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import models.UserAnswers
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -53,19 +53,20 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(UnderpaymentReasonsPage) match {
-      case Some(oldReasonList) => {
-        request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
-          case Some(reason) =>
-            val newReasonList =
-              oldReasonList.filterNot(x => x.boxNumber == reason.original.boxNumber && x.itemNumber == reason.original.itemNumber) ++ Seq(reason.changed)
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, newReasonList))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield {
-              Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad())
-            }
-          case _ => Future.successful(InternalServerError("Changed underpayment reason not found"))
-        }
+      case Some(oldReasonList) => request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
+        case Some(reason) =>
+          val newReasonList =
+            oldReasonList.filterNot(x =>
+              x.boxNumber == reason.original.boxNumber && x.itemNumber == reason.original.itemNumber
+            ) ++ Seq(reason.changed)
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, newReasonList))
+            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ChangeUnderpaymentReasonPage))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad())
+          }
+        case _ => Future.successful(InternalServerError("Changed underpayment reason not found"))
       }
       case _ => Future.successful(InternalServerError("Existing underpayment reasons not found"))
     }
