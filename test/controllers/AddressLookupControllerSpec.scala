@@ -46,7 +46,6 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
         mockAddressLookupService,
         errorHandler,
         messagesControllerComponents,
-        appConfig,
         ec)
   }
 

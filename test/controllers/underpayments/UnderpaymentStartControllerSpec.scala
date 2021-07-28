@@ -49,7 +49,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     )
 
     lazy val controller = new UnderpaymentStartController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, ec)
+      messagesControllerComponents, dataRequiredAction, view)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view: UnderpaymentStartView = injector.instanceOf[UnderpaymentStartView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
