@@ -24,17 +24,17 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.SelectedDutyTypes._
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import pages.underpayments.UnderpaymentDetailSummaryPage
-import pages.{CheckModePage, SplitPaymentPage, UploadAuthorityPage}
+import pages._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsEmpty, Call, Result}
+import play.api.mvc._
 import play.api.test.Helpers._
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
+import views.html._
 
 import java.time.LocalDateTime
 import scala.concurrent.Future

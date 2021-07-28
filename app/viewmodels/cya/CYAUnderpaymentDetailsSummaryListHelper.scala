@@ -20,7 +20,7 @@ import models.UserAnswers
 import models.requests.DataRequest
 import pages._
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages.reasons._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList

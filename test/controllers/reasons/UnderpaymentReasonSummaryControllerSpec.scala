@@ -26,7 +26,7 @@ import pages.reasons.UnderpaymentReasonsPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.data.reasons.UnderpaymentReasonSummaryData
 import views.html.reasons.UnderpaymentReasonSummaryView
 

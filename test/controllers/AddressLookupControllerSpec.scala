@@ -39,14 +39,14 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
 
     lazy val controller = new AddressLookupController(
-        authenticatedAction,
-        dataRetrievalAction,
-        dataRequiredAction,
-        mockSessionRepository,
-        mockAddressLookupService,
-        errorHandler,
-        messagesControllerComponents,
-        ec)
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      mockAddressLookupService,
+      errorHandler,
+      messagesControllerComponents,
+      ec)
   }
 
   "Calling .callback" must {
@@ -139,17 +139,17 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
     "address lookup service returns success" when {
 
-        "return redirect to the url returned" in new Test {
-          setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
-          val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
-          status(result) mustBe Status.SEE_OTHER
-        }
+      "return redirect to the url returned" in new Test {
+        setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+      }
 
-        "redirect to url returned" in new Test {
-          setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
-          val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
-          redirectLocation(result) mustBe Some("redirect-url")
-        }
+      "redirect to url returned" in new Test {
+        setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
+        redirectLocation(result) mustBe Some("redirect-url")
+      }
     }
 
     "address lookup service returns an error" should {
@@ -166,17 +166,17 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
     "address lookup service returns success" when {
 
-        "return redirect to the url returned" in new Test {
-          setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
-          val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
-          status(result) mustBe Status.SEE_OTHER
-        }
+      "return redirect to the url returned" in new Test {
+        setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+      }
 
-        "redirect to url returned" in new Test {
-          setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
-          val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
-          redirectLocation(result) mustBe Some("redirect-url")
-        }
+      "redirect to url returned" in new Test {
+        setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
+        redirectLocation(result) mustBe Some("redirect-url")
+      }
     }
 
     "address lookup service returns an error" should {

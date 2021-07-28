@@ -17,7 +17,7 @@
 package controllers
 
 import config.AppConfig
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.UploadFileFormProvider
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
@@ -29,7 +29,7 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
+import views.html._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
