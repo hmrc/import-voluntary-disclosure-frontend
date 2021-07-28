@@ -60,7 +60,7 @@ class RepresentativeDanImportVATController @Inject()(identify: IdentifierAction,
         backLink
       ))),
       dan => {
-        val dutyAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse("")
+        val dutyAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse("No Duty Account Number")
         if (sameAccountNumber(dutyAccountNumber, dan.accountNumber, request.userAnswers)) {
           val form = (for {
             danType <- request.userAnswers.get(AdditionalDefermentTypePage)
