@@ -17,15 +17,15 @@
 package controllers.reasons
 
 import config.AppConfig
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.BoxGuidanceView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 @Singleton
 class BoxGuidanceController @Inject()(identify: IdentifierAction,
@@ -33,8 +33,7 @@ class BoxGuidanceController @Inject()(identify: IdentifierAction,
                                       mcc: MessagesControllerComponents,
                                       requireData: DataRequiredAction,
                                       view: BoxGuidanceView,
-                                      implicit val appConfig: AppConfig,
-                                      implicit val ec: ExecutionContext)
+                                      implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()

@@ -16,7 +16,6 @@
 
 package controllers.internal
 
-import config.AppConfig
 import models.upscan._
 import play.api.i18n.I18nSupport
 import play.api.libs.json.JsValue
@@ -31,7 +30,6 @@ import scala.concurrent.ExecutionContext
 @Singleton
 class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
                                          fileUploadRepository: FileUploadRepository,
-                                         implicit val appConfig: AppConfig,
                                          implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 

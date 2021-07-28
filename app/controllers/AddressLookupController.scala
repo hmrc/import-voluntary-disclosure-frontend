@@ -16,13 +16,13 @@
 
 package controllers
 
-import config.{AppConfig, ErrorHandler}
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import config.ErrorHandler
+import controllers.actions._
 import models.ContactAddress
 import models.addressLookup.AddressModel
-import pages.{TraderAddressPage, ImporterAddressPage}
+import pages.{ImporterAddressPage, TraderAddressPage}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
 import services.AddressLookupService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -38,7 +38,6 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
                                         addressLookupService: AddressLookupService,
                                         val errorHandler: ErrorHandler,
                                         val mcc: MessagesControllerComponents,
-                                        implicit val appConfig: AppConfig,
                                         implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   def initialiseJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

@@ -16,12 +16,12 @@
 
 package controllers.reasons
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
 import models.reasons.UnderpaymentReason
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -29,16 +29,14 @@ import viewmodels.ActionItemHelper
 import views.html.reasons.UnderpaymentReasonSummaryView
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                     getData: DataRetrievalAction,
                                                     requireData: DataRequiredAction,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentReasonSummaryView,
-                                                    formProvider: UnderpaymentReasonSummaryFormProvider,
-                                                    implicit val ec: ExecutionContext
-                                                   )
+                                                    formProvider: UnderpaymentReasonSummaryFormProvider)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

@@ -19,11 +19,11 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.requests._
 import pages.importDetails.{EnterCustomsProcedureCodePage, NumberOfEntriesPage}
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
 import play.api.test.Helpers._
@@ -49,7 +49,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     )
 
     lazy val controller = new UnderpaymentStartController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, ec)
+      messagesControllerComponents, dataRequiredAction, view)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view: UnderpaymentStartView = injector.instanceOf[UnderpaymentStartView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))

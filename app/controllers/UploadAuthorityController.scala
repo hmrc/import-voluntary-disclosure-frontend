@@ -17,7 +17,7 @@
 package controllers
 
 import config.AppConfig
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.UploadFileFormProvider
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
@@ -29,7 +29,7 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, FileUploadSuccessView, UploadAuthorityView}
+import views.html._
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -52,7 +52,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                          )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
-  private[controllers] def backLink(currentDutyType: SelectedDutyType, dan: String, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
+  private[controllers] def backLink(currentDutyType: SelectedDutyType, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
                                    (implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
@@ -84,7 +84,7 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
     }
 
     upScanService.initiateAuthorityJourney(dutyType.toString, dan).map { response =>
-      Ok(view(form, response, backLink(dutyType, dan, request.dutyType, splitPayment), dan, dutyTypeKey))
+      Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), dan, dutyTypeKey))
         .removingFromSession("AuthorityUpscanReference")
         .addingToSession("AuthorityUpscanReference" -> response.reference.value)
     }

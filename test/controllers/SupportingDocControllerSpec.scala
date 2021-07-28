@@ -35,7 +35,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
 
     lazy val controller = new SupportingDocController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig, ec)
+      messagesControllerComponents, dataRequiredAction, view, appConfig)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view = injector.instanceOf[SupportingDocView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))

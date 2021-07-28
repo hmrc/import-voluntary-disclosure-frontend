@@ -20,7 +20,7 @@ import models.UserAnswers
 import models.requests.DataRequest
 import pages._
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages.reasons._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -139,7 +139,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
   }
 
   private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(NumberOfEntriesPage).map { numberOfEntries =>
+    answers.get(NumberOfEntriesPage).map { _ =>
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(messages("cya.bulkEntry")),
