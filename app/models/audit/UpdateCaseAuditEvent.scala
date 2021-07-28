@@ -16,21 +16,18 @@
 
 package models.audit
 
-import models.UpdateCaseData
+import models.UpdateCaseResponse
+import models.requests.DataRequest
 import play.api.libs.json._
 import services.JsonAuditModel
 
-case class UpdateCaseAuditEvent(updateCaseData: UpdateCaseData, credId: String, eori: String)
+case class UpdateCaseAuditEvent(updateCaseData: JsValue, updateCaseResponse: UpdateCaseResponse)(implicit request: DataRequest[_])
   extends JsonAuditModel {
   override val auditType: String = "UpdateCase"
-  override val transactionName: String = "create-case"
+  override val transactionName: String = "update-case"
   override val detail: JsValue = Json.obj(
-    "caseID" -> updateCaseData.caseId,
-    "description" -> updateCaseData.additionalInfo,
-    "uploadedFiles" -> updateCaseData.supportingDocuments,
-    "credentialId" -> credId,
-    "declarantEORI" -> eori,
-    "numberOfFilesUploaded" -> updateCaseData.supportingDocuments.map(_.length),
-    "uploadedFiles" -> updateCaseData.supportingDocuments
-  )
+    "caseId" -> updateCaseResponse.id,
+    "declarantEORI" -> request.eori,
+    "credentialId" -> request.credId
+  ) ++ Json.toJson(updateCaseData).asInstanceOf[JsObject]
 }

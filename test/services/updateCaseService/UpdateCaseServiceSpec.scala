@@ -22,6 +22,7 @@ import mocks.services.MockAuditService
 import models.audit.UpdateCaseAuditEvent
 import models.requests._
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
+import pages.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import services.UpdateCaseService
@@ -59,7 +60,7 @@ class UpdateCaseServiceSpec extends SpecBase {
       "return successful UpdateCaseResponse" in new Test {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
-        verifyAudit(UpdateCaseAuditEvent(updateData, "credId", "eori"))
+        verifyAudit(UpdateCaseAuditEvent(updateCaseJson, UpdateCaseResponse("1234")))
         private val result = await(service.updateCase()(dataRequest, hc, ec))
         result mustBe Right(response)
       }
@@ -87,17 +88,17 @@ class UpdateCaseServiceSpec extends SpecBase {
   "buildUpdate" when {
     "called with a complete User Answers" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(updateData)
+        private val result = service.buildUpdate(userAnswers)
 
-        result mustBe updateCaseJson
+        result mustBe Right(updateCaseJson)
       }
     }
 
     "called without supporting documents" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(updateData.copy(supportingDocuments = None))
+        private val result = service.buildUpdate(userAnswers.remove(UploadSupportingDocumentationPage).success.value)
 
-        result mustBe updateCaseJsonWithoutDocs
+        result mustBe Right(updateCaseJsonWithoutDocs)
       }
     }
   }

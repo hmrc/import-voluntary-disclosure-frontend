@@ -17,6 +17,7 @@
 package services
 
 import connectors.IvdSubmissionConnector
+import javax.inject.{Inject, Singleton}
 import models._
 import models.audit.UpdateCaseAuditEvent
 import models.requests.DataRequest
@@ -24,7 +25,6 @@ import play.api.Logger
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -33,25 +33,30 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
-    Json.fromJson[UpdateCaseData](request.userAnswers.data) match {
-      case JsSuccess(data, _) =>
-        ivdSubmissionConnector.updateCase(buildUpdate(data)).map {
+    buildUpdate(request.userAnswers) match {
+      case Right(submission) =>
+        ivdSubmissionConnector.updateCase(submission).map {
           case Right(confirmationResponse) =>
-            auditService.audit(UpdateCaseAuditEvent(data, request.credId, request.eori))
+            auditService.audit(UpdateCaseAuditEvent(submission, confirmationResponse))
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
-      case JsError(err) =>
-        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
-        Future.successful(Left(UpdateCaseError.UnexpectedError(-1, Some(err.toString()))))
+      case Left(err) => Future.successful(Left(err))
     }
   }
 
-  private[services] def buildUpdate(update: UpdateCaseData): JsValue = {
-    Json.obj(
-      "caseId" -> update.caseId,
-      "additionalInfo" -> update.additionalInfo,
-      "supportingDocuments" -> update.supportingDocuments
-    )
+  private[services] def buildUpdate(answers: UserAnswers): Either[UpdateCaseError, JsValue] = {
+    Json.fromJson[UpdateCaseData](answers.data) match {
+      case JsSuccess(data, _) =>
+        val json = Json.obj(
+          "caseId" -> data.caseId,
+          "additionalInfo" -> data.additionalInfo,
+          "supportingDocuments" -> data.supportingDocuments
+        )
+        Right(json)
+      case JsError(err) =>
+        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
+        Left(UpdateCaseError.UnexpectedError(-1, Some(err.toString())))
+    }
   }
 }
