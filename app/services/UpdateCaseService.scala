@@ -32,12 +32,14 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
                                   auditService: AuditService) {
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def updateCase()(implicit request: DataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
-    buildUpdate(request.userAnswers) match {
+  def updateCase()(implicit request: DataRequest[_],
+                   hc: HeaderCarrier,
+                   ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
+    buildUpdate match {
       case Right(submission) =>
         ivdSubmissionConnector.updateCase(submission).map {
           case Right(confirmationResponse) =>
-            auditService.audit(UpdateCaseAuditEvent(submission, confirmationResponse))
+            auditService.audit(UpdateCaseAuditEvent(submission))
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }
@@ -45,8 +47,8 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     }
   }
 
-  private[services] def buildUpdate(answers: UserAnswers): Either[UpdateCaseError, JsValue] = {
-    Json.fromJson[UpdateCaseData](answers.data) match {
+  private[services] def buildUpdate()(implicit request: DataRequest[_]): Either[UpdateCaseError, JsValue] = {
+    Json.fromJson[UpdateCaseData](request.userAnswers.data) match {
       case JsSuccess(data, _) =>
         val json = Json.obj(
           "caseId" -> data.caseId,

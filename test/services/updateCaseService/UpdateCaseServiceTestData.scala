@@ -37,6 +37,13 @@ trait UpdateCaseServiceTestData extends ReusableValues {
     answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
   } yield answers).get
 
+  val userAnswersWithoutDocs: UserAnswers = (for {
+    answers <- new UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, updateData.caseId)
+    answers <- answers.set(MoreDocumentationPage, updateData.anyOtherSupportingDocs)
+    answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
+  } yield answers).get
+
+
   val updateCaseJson: JsObject =
     Json.obj(
       "caseId" -> "C18",

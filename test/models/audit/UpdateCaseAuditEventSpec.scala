@@ -41,7 +41,7 @@ class UpdateCaseAuditEventSpec extends SpecBase with AuditTestData with Reusable
 
   "A valid UpdateCaseAuditEvent model" should {
     "contain correct details" in {
-      val event = UpdateCaseAuditEvent(Json.parse(updateSubmissionJson), updateCaseResponse)
+      val event = UpdateCaseAuditEvent(Json.parse(updateSubmissionJson))
 
       event.detail mustBe Json.parse(updateCaseOutputJson)
     }

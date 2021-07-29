@@ -240,6 +240,7 @@ trait AuditTestData {
   val updateSubmissionJson: String =
     """
       |{
+      |        "caseId":"1234567890",
       |        "supportingDocuments" : [
       |            {
       |                "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
