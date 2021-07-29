@@ -16,10 +16,10 @@
 
 package models.audit
 
-import base.SpecBase
+import base.ModelSpecBase
 import play.api.libs.json.Json
 
-class EoriDetailsAuditEventSpec extends SpecBase with AuditTestData {
+class EoriDetailsAuditEventSpec extends ModelSpecBase with AuditTestData {
 
   "A valid EoriDetailsAuditEvent model" should {
     "contain correct details" in {

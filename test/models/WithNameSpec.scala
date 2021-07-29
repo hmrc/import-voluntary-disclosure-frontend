@@ -16,11 +16,10 @@
 
 package models
 
-import org.scalatest.matchers.must.Matchers
-import org.scalatest.wordspec.AnyWordSpec
+import base.ModelSpecBase
 
 
-class WithNameSpec extends AnyWordSpec with Matchers {
+class WithNameSpec extends ModelSpecBase {
 
   object Foo extends WithName("bar")
 
