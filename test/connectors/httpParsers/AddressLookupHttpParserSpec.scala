@@ -16,14 +16,15 @@
 
 package connectors.httpParsers
 
-import assets.AddressLookupTestConstants.{customerAddressJsonError, customerAddressJsonMin, customerAddressMin}
-import base.SpecBase
+import assets.AddressLookupTestConstants._
 import connectors.httpParsers.AddressLookupHttpParser.AddressLookupReads
 import models.ErrorModel
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 
-class AddressLookupHttpParserSpec extends SpecBase {
+class AddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
 
   val errorModel: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
 
