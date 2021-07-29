@@ -16,12 +16,12 @@
 
 package forms.reasons
 
-import base.SpecBase
+import base.FormSpecBase
 import models.reasons.UnderpaymentReasonValue
-import play.api.data.validation.{Constraint, Invalid, Valid}
+import play.api.data.validation._
 import play.api.data.{Form, FormError}
 
-class UnderpaymentReasonAmendmentFormProviderSpec extends SpecBase {
+class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   val originalKey = "original"
   val amendedKey = "amended"
   val originalFormatMessageKey = "amendmentValue.error.original.format"

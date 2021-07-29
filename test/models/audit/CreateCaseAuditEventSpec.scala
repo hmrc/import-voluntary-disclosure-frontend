@@ -16,17 +16,22 @@
 
 package models.audit
 
-import base.SpecBase
+import base.ModelSpecBase
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import play.api.libs.json.Json
+import play.api.mvc.AnyContentAsEmpty
+import play.api.test.FakeRequest
+import uk.gov.hmrc.http.SessionKeys
 
-class CreateCaseAuditEventSpec extends SpecBase with AuditTestData {
+class CreateCaseAuditEventSpec extends ModelSpecBase with AuditTestData {
 
   "A valid CreateCaseAuditEvent model" should {
 
     val userAnswers = UserAnswers("credId")
 
+    val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
+      FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo")
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),

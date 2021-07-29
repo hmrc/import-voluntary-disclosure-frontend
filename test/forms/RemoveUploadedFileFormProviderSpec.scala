@@ -16,9 +16,9 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 
-class RemoveUploadedFileFormProviderSpec extends SpecBase {
+class RemoveUploadedFileFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

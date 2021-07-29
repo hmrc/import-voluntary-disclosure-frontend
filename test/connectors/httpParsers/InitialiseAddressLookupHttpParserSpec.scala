@@ -17,14 +17,15 @@
 package connectors.httpParsers
 
 import assets.AddressLookupTestConstants.customerAddressJsonError
-import base.SpecBase
 import connectors.httpParsers.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
 import models.ErrorModel
 import models.addressLookup.AddressLookupOnRampModel
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 
-class InitialiseAddressLookupHttpParserSpec extends SpecBase {
+class InitialiseAddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
 
   val errorModel: ErrorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect")
 

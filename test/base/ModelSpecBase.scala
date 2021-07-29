@@ -16,7 +16,7 @@
 
 package base
 
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 trait ModelSpecBase extends AnyWordSpec with Matchers

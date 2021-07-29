@@ -16,9 +16,9 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 
-class SplitPaymentFormProviderSpec extends SpecBase {
+class SplitPaymentFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

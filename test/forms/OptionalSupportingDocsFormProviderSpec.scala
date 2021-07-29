@@ -16,9 +16,9 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 
-class OptionalSupportingDocsFormProviderSpec extends SpecBase {
+class OptionalSupportingDocsFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
     val data = Map("" -> "")

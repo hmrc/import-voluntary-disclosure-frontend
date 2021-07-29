@@ -16,14 +16,15 @@
 
 package models
 
-import base.SpecBase
+import base.ModelSpecBase
+import org.scalatest.TryValues
 import pages._
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterNamePage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
+import pages.importDetails._
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import services.submissionService.SubmissionServiceTestData
 
-class UserAnswersSpec extends SpecBase with SubmissionServiceTestData {
+class UserAnswersSpec extends ModelSpecBase with TryValues with SubmissionServiceTestData {
   "Calling .preserve" should {
     "preserve known pages stored as JsObjects" in {
       val pagesToPreserve: Seq[QuestionPage[_]] = Seq(KnownEoriDetailsPage, UserTypePage)

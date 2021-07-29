@@ -16,11 +16,11 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 import models.ContactDetails
 import play.api.data.{Form, FormError}
 
-class DeclarantContactDetailsFormProviderSpec extends SpecBase {
+class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
 
   private final val fullName = "fullName"
   private final val email = "email"

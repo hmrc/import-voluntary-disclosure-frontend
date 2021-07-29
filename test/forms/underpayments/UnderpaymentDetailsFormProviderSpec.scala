@@ -16,11 +16,11 @@
 
 package forms.underpayments
 
-import base.SpecBase
+import base.FormSpecBase
 import models.underpayments.UnderpaymentAmount
 import play.api.data.Form
 
-class UnderpaymentDetailsFormProviderSpec extends SpecBase {
+class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
 
   private final val nonNumericValue = "Hello!@£$%^&8"
   private final val fifty = "50"

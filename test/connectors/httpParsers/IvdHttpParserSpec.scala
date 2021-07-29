@@ -16,15 +16,16 @@
 
 package connectors.httpParsers
 
-import base.SpecBase
 import connectors.httpParsers.IvdHttpParser.{EoriDetailsReads, SubmissionResponseReads, UpdateResponseReads}
 import models._
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HttpResponse
 import utils.ReusableValues
 
-class IvdHttpParserSpec extends SpecBase with ReusableValues {
+class IvdHttpParserSpec extends AnyWordSpec with Matchers with ReusableValues {
 
   val eoriDetailsJson: EoriDetails = EoriDetails(
     "GB987654321000",

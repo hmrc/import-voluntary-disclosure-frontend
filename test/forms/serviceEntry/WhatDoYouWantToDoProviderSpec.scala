@@ -16,9 +16,9 @@
 
 package forms.serviceEntry
 
-import base.SpecBase
+import base.FormSpecBase
 
-class WhatDoYouWantToDoProviderSpec extends SpecBase {
+class WhatDoYouWantToDoProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

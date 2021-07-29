@@ -16,10 +16,10 @@
 
 package forms.importDetails
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class ImporterEORINumberFormProviderSpec extends SpecBase {
+class ImporterEORINumberFormProviderSpec extends FormSpecBase {
 
   private final val importerEORINumber = "GB345834921000"
   private final val importerEORINumberNonEmptyKey = "importerEORINumber.error.nonEmpty"

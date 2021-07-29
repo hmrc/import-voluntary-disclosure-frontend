@@ -16,9 +16,9 @@
 
 package forms.importDetails
 
-import base.SpecBase
+import base.FormSpecBase
 
-class AcceptanceDateFormProviderSpec extends SpecBase {
+class AcceptanceDateFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-package models
+package base
 
-import base.ModelSpecBase
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-
-class WithNameSpec extends ModelSpecBase {
-
-  object Foo extends WithName("bar")
-
-  ".toString" must {
-    "return the correct string" in {
-      Foo.toString mustEqual "bar"
-    }
-  }
-}
+trait FormSpecBase extends AnyWordSpec with Matchers

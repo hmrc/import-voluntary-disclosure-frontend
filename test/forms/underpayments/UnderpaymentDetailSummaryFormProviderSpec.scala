@@ -16,9 +16,9 @@
 
 package forms.underpayments
 
-import base.SpecBase
+import base.FormSpecBase
 
-class UnderpaymentDetailSummaryFormProviderSpec extends SpecBase {
+class UnderpaymentDetailSummaryFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

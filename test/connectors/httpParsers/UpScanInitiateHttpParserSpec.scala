@@ -16,14 +16,15 @@
 
 package connectors.httpParsers
 
-import base.SpecBase
+import models.upscan._
 import models.{BadRequest, InvalidJson, UnexpectedFailure}
-import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import uk.gov.hmrc.http.HttpResponse
 
-class UpScanInitiateHttpParserSpec extends SpecBase {
+class UpScanInitiateHttpParserSpec extends AnyWordSpec with Matchers {
 
   class Test(status: Int, json: JsValue = Json.obj(), responseHeaders: Map[String, Seq[String]] = Map.empty) {
     private val httpMethod = "POST"
