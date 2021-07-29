@@ -28,7 +28,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
   val ukMode: Boolean = false
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
-  val accessibilityFooterUrl: String = "/accessibility-statement/import-voluntary-disclosure" //TODO: Needs to point somewhere
+  val accessibilityFooterUrl: String = "/accessibility-statement/import-voluntary-disclosure"
   val serviceHref: String = "/disclose-import-taxes-underpayment"
 
   object Version2 {
