@@ -22,19 +22,18 @@ import forms.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Duty, Vat}
 import models._
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
+import pages.importDetails.UserTypePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.RepresentativeDanImportVATView
+
 import java.time.LocalDateTime
-
-import models.importDetails.UserType
-import pages.importDetails.UserTypePage
-
 import scala.concurrent.Future
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
@@ -255,6 +254,40 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
+  }
+
+  "same Account Number" when {
+
+    "same value for duty account number and vat account number submitted" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(UnderpaymentDetailSummaryPage, Seq(
+          UnderpaymentDetail("B00", 0.0, 1.0),
+          UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+        .set(SplitPaymentPage, true).success.value
+        .set(DefermentAccountPage, "1234567").success.value
+        .set(DefermentTypePage, "C").success.value
+      )
+      private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
+      lazy val result: Future[Result] = controller.onSubmit(request)
+      redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
+    }
+
+    "different value for duty account number and vat account number submitted" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(UnderpaymentDetailSummaryPage, Seq(
+          UnderpaymentDetail("B00", 0.0, 1.0),
+          UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+        .set(SplitPaymentPage, true).success.value
+        .set(DefermentAccountPage, "1234567").success.value
+        .set(DefermentTypePage, "C").success.value
+      )
+      private val request = fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
+      lazy val result: Future[Result] = controller.onSubmit(request)
+      redirectLocation(result) mustBe None
+    }
+
   }
 
 }
