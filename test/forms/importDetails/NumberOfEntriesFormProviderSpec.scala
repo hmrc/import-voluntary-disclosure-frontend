@@ -16,10 +16,10 @@
 
 package forms.importDetails
 
-import base.SpecBase
+import base.FormSpecBase
 import models.importDetails.NumberOfEntries
 
-class NumberOfEntriesFormProviderSpec extends SpecBase {
+class NumberOfEntriesFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 

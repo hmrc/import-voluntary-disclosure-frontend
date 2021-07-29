@@ -16,10 +16,10 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class ImporterDanFormProviderSpec extends SpecBase {
+class ImporterDanFormProviderSpec extends FormSpecBase {
 
   def formBuilder(dan: String = ""): Map[String, String] = Map(
     "value" -> dan

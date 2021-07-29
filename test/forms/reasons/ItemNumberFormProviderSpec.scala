@@ -16,10 +16,10 @@
 
 package forms.reasons
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class ItemNumberFormProviderSpec extends SpecBase {
+class ItemNumberFormProviderSpec extends FormSpecBase {
 
 
   private final val itemNumberKey = "itemNumber"

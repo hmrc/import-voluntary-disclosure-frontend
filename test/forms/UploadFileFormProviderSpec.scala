@@ -16,10 +16,10 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class UploadFileFormProviderSpec extends SpecBase {
+class UploadFileFormProviderSpec extends FormSpecBase {
 
   def formBuilder(file: String = ""): Map[String, String] = Map(
     "file" -> file

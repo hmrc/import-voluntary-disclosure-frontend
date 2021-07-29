@@ -16,11 +16,11 @@
 
 package forms
 
-import base.SpecBase
+import base.FormSpecBase
 import models.RepresentativeDan
 import play.api.data.FormError
 
-class RepresentativeDanFormProviderSpec extends SpecBase {
+class RepresentativeDanFormProviderSpec extends FormSpecBase {
 
   def buildFormData(accountNumber: Option[String] = Some("1234567"),
                     danType: Option[String] = Some("A")): Map[String, String] =

@@ -16,10 +16,10 @@
 
 package forms.importDetails
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class ImporterNameFormProviderSpec extends SpecBase {
+class ImporterNameFormProviderSpec extends FormSpecBase {
 
   private final val fullName1 = "fullName"
   private final val fullNameNonEmptyKey = "importerName.error.nameNonEmpty"

@@ -16,13 +16,13 @@
 
 package forms.importDetails
 
-import java.time.LocalDate
-
-import base.SpecBase
+import base.FormSpecBase
 import models.importDetails.EntryDetails
 import play.api.data.FormError
 
-class EntryDetailsFormProviderSpec extends SpecBase {
+import java.time.LocalDate
+
+class EntryDetailsFormProviderSpec extends FormSpecBase {
 
   def buildFormData(epu: Option[String] = Some("123"),
                     entryNumber: Option[String] = Some("123456Q"),

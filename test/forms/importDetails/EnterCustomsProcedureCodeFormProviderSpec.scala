@@ -16,10 +16,10 @@
 
 package forms.importDetails
 
-import base.SpecBase
+import base.FormSpecBase
 import play.api.data.Form
 
-class EnterCustomsProcedureCodeFormProviderSpec extends SpecBase {
+class EnterCustomsProcedureCodeFormProviderSpec extends FormSpecBase {
 
   private final val cpc = "1234567"
   private final val cpcKey = "cpc"

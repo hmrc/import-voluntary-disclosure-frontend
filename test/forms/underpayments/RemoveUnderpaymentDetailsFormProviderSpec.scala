@@ -16,9 +16,9 @@
 
 package forms.underpayments
 
-import base.SpecBase
+import base.FormSpecBase
 
-class RemoveUnderpaymentDetailsFormProviderSpec extends SpecBase {
+class RemoveUnderpaymentDetailsFormProviderSpec extends FormSpecBase {
 
   val underpaymentType = "B00"
 
