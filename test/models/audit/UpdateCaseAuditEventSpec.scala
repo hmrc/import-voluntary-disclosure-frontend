@@ -16,39 +16,32 @@
 
 package models.audit
 
-import java.time.LocalDateTime
-
 import base.SpecBase
-import models.{FileUploadInfo, UpdateCaseData}
+import models.UserAnswers
+import models.requests._
 import play.api.libs.json.Json
 import utils.ReusableValues
 
 class UpdateCaseAuditEventSpec extends SpecBase with AuditTestData with ReusableValues {
 
-  val year = 2021
-  val month = 7
-  val dayOfMonth = 21
-  val hour = 11
-  val minute = 45
-  val second = 36
-  val nanoOfSecond = 286
+  val userAnswers: UserAnswers = UserAnswers("credId")
 
-  val updateCaseData: UpdateCaseData = UpdateCaseData(
-    "caseId",
-    anyOtherSupportingDocs = true,
-    Some(Seq(FileUploadInfo(
-      "file-ref-1",
-      "Example.pdf",
-      "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-      LocalDateTime.of(year, month, dayOfMonth, hour, minute, second, nanoOfSecond),
-      "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-      "application/pdf"))),
-    "fewfew"
+  implicit lazy val dataRequest = DataRequest(
+    OptionalDataRequest(
+      IdentifierRequest(fakeRequest, "credId", "eori"),
+      "credId",
+      "eori",
+      Some(userAnswers)
+    ),
+    "credId",
+    "eori",
+    userAnswers
   )
+
 
   "A valid UpdateCaseAuditEvent model" should {
     "contain correct details" in {
-      val event = UpdateCaseAuditEvent(updateCaseData, "credId", "eori")
+      val event = UpdateCaseAuditEvent(Json.parse(updateSubmissionJson))
 
       event.detail mustBe Json.parse(updateCaseOutputJson)
     }

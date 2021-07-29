@@ -16,10 +16,10 @@
 
 package models.audit
 
-import models.SubmissionResponse
+import models.{SubmissionResponse, UpdateCaseResponse}
 
 trait AuditTestData {
-  val completeSubmissionJson =
+  val completeSubmissionJson: String =
     """{
       |   "customsProcessingCode":"4000C09",
       |   "importer":{
@@ -127,7 +127,7 @@ trait AuditTestData {
       |   ]
       |}""".stripMargin
 
-  val auditOutputJson =
+  val auditOutputJson: String =
     """{
       |   "caseId":"1234567890",
       |   "credentialId":"credId",
@@ -237,26 +237,45 @@ trait AuditTestData {
       |   ]
       |}""".stripMargin
 
-  val updateCaseOutputJson =
+  val updateSubmissionJson: String =
     """
       |{
-      |   "caseID":"caseId",
-      |   "description":"fewfew",
-      |   "uploadedFiles":[
+      |        "caseId":"1234567890",
+      |        "supportingDocuments" : [
+      |            {
+      |                "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+      |                "uploadTimestamp" : "2021-07-28T13:58:46.431",
+      |                "checksum" : "4642463acfd2c19a5f2f0154c2b953cb6de13e90f0ed83d314528b89b8400ec5",
+      |                "fileMimeType" : "application/pdf",
+      |                "reference" : "file-ref-1",
+      |                "fileName" : "Example.pdf"
+      |            }
+      |        ],
+      |        "additionalInfo" : "fewfew"
+      |    }
+      |""".stripMargin
+
+  val updateCaseOutputJson: String =
+    """
+      |{
+      |   "caseId":"1234567890",
+      |   "eori": "eori",
+      |   "credentialId":"credId",
+      |   "additionalInfo":"fewfew",
+      |   "supportingDocuments":[
       |      {
       |         "reference":"file-ref-1",
       |         "fileName":"Example.pdf",
       |         "downloadUrl":"https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-      |         "uploadTimestamp":"2021-07-21T11:45:36.000000286",
-      |         "checksum":"396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+      |         "uploadTimestamp":"2021-07-28T13:58:46.431",
+      |         "checksum":"4642463acfd2c19a5f2f0154c2b953cb6de13e90f0ed83d314528b89b8400ec5",
       |         "fileMimeType":"application/pdf"
       |      }
-      |   ],
-      |   "credentialId":"credId",
-      |   "declarantEORI":"eori",
-      |   "numberOfFilesUploaded":1
+      |   ]
       |}
       |""".stripMargin
 
-  val submissionResponse = SubmissionResponse(id = "1234567890")
+  val submissionResponse: SubmissionResponse = SubmissionResponse(id = "1234567890")
+
+  val updateCaseResponse: UpdateCaseResponse = UpdateCaseResponse(id = "1234567890")
 }

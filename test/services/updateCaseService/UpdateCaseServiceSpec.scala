@@ -59,7 +59,7 @@ class UpdateCaseServiceSpec extends SpecBase {
       "return successful UpdateCaseResponse" in new Test {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
-        verifyAudit(UpdateCaseAuditEvent(updateData, "credId", "eori"))
+        verifyAudit(UpdateCaseAuditEvent(updateCaseJson))
         private val result = await(service.updateCase()(dataRequest, hc, ec))
         result mustBe Right(response)
       }
@@ -87,17 +87,18 @@ class UpdateCaseServiceSpec extends SpecBase {
   "buildUpdate" when {
     "called with a complete User Answers" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(updateData)
+        private val result = service.buildUpdate()
 
-        result mustBe updateCaseJson
+        result mustBe Right(updateCaseJson)
       }
     }
 
     "called without supporting documents" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate(updateData.copy(supportingDocuments = None))
+        override val userAnswers: UserAnswers = userAnswersWithoutDocs
+        private val result = service.buildUpdate()
 
-        result mustBe updateCaseJsonWithoutDocs
+        result mustBe Right(updateCaseJsonWithoutDocs)
       }
     }
   }
