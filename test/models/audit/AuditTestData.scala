@@ -258,7 +258,7 @@ trait AuditTestData {
     """
       |{
       |   "caseId":"1234567890",
-      |   "declarantEORI": "eori",
+      |   "eori": "eori",
       |   "credentialId":"credId",
       |   "additionalInfo":"fewfew",
       |   "supportingDocuments":[

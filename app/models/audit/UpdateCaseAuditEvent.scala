@@ -27,7 +27,7 @@ case class UpdateCaseAuditEvent(updateCaseData: JsValue, updateCaseResponse: Upd
   override val transactionName: String = "update-case"
   override val detail: JsValue = Json.obj(
     "caseId" -> updateCaseResponse.id,
-    "declarantEORI" -> request.eori,
+    "eori" -> request.eori,
     "credentialId" -> request.credId
   ) ++ Json.toJson(updateCaseData).asInstanceOf[JsObject]
 }
