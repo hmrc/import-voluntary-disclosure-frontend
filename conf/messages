@@ -34,7 +34,7 @@ footer.termsConditions.text = Terms and conditions
 footer.termsConditions.url = /help/terms-and-conditions
 footer.govukHelp.text = Help using GOV.UK
 footer.govukHelp.url = https://www.gov.uk/help
-footer.accessibility.text = Accessibility
+footer.accessibility.text = Accessibility Statement
 footer.accessibility.url = /accessibility-statement/import-voluntary-disclosure
 
 #Unauthorised
