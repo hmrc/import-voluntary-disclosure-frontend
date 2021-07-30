@@ -33,5 +33,17 @@ class ServiceJsonUtilsSpec extends SpecBase {
       json.dropNullValues mustBe
         Json.obj("aa" -> 1, "bb" -> 2, "ba" -> Json.obj("aa" -> Json.obj("aa" -> 1)))
     }
+
+    "remove None values from nested JSON objects" in {
+      val json = Json.obj(
+        "aa" -> Some(1),
+        "ab" -> None,
+        "bb" -> 2,
+        "ba" -> Json.obj("aa" -> Json.obj("aa" -> Some(1), "ab" -> None))
+      )
+
+      json.dropNullValues mustBe
+        Json.obj("aa" -> 1, "bb" -> 2, "ba" -> Json.obj("aa" -> Json.obj("aa" -> 1)))
+    }
   }
 }
