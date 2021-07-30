@@ -75,7 +75,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(999999999999.99))
       )
-      case _ => textFormMapping(regex = """^.*$""") // TODO: Remove this when all box numbers added to story
+      case _ => textFormMapping(regex = """^.*$""")
     }
   }
 
