@@ -1023,4 +1023,3 @@ updateCase.disclosureClosed.heading = The information cannot be added to the dis
 updateCase.disclosureClosed.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.
 updateCase.disclosureClosed.p2.part1 = 'You can email us at '
 updateCase.disclosureClosed.p2.part2 = , including the additional information and the disclosure reference number {0}.
-
