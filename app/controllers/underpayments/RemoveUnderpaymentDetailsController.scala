@@ -84,7 +84,7 @@ class RemoveUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
     )
   }
 
-  def backLink(underpaymentType: String): Call = {
+  private[controllers] def backLink(underpaymentType: String): Call = {
     controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType)
   }
 

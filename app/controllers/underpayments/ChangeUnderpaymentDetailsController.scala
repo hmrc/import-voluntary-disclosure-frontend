@@ -42,14 +42,6 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
 
   extends FrontendController(mcc) with I18nSupport {
 
-  private def backLink(underpaymentType: String, summaryPageChange: Boolean) = {
-    if (summaryPageChange) {
-      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-    } else {
-      controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
-    }
-  }
-
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
       case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
@@ -104,5 +96,13 @@ class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
           }
         }
       )
+  }
+
+  private[controllers] def backLink(underpaymentType: String, summaryPageChange: Boolean) = {
+    if (summaryPageChange) {
+      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+    } else {
+      controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
+    }
   }
 }

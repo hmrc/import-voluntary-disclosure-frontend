@@ -50,13 +50,6 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
                                                        )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
-    request.userAnswers.get(UploadSupportingDocumentationPage) match {
-      case Some(files) if files.nonEmpty => controllers.routes.UploadSupportingDocumentationSummaryController.onLoad()
-      case _ => controllers.routes.MoreDocumentationController.onLoad()
-    }
-  }
-
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.flash.get("uploadError") match {
       case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
@@ -115,4 +108,12 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
       saveFilesList
     )
   }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    request.userAnswers.get(UploadSupportingDocumentationPage) match {
+      case Some(files) if files.nonEmpty => controllers.routes.UploadSupportingDocumentationSummaryController.onLoad()
+      case _ => controllers.routes.MoreDocumentationController.onLoad()
+    }
+  }
+
 }

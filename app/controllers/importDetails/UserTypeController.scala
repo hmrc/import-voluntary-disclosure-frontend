@@ -47,21 +47,6 @@ class UserTypeController @Inject()(identify: IdentifierAction,
                                    implicit val ec: ExecutionContext
                                   ) extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
-    val cyaMode = {
-      for {
-        answers <- request.userAnswers
-        mode <- answers.get(CheckModePage)
-      } yield mode
-    }.getOrElse(false)
-
-    (cyaMode, appConfig.updateCaseEnabled) match {
-      case (true, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
-      case (false, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
-      case (false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
-    }
-  }
-
   def onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
 
     val form = for {
@@ -103,6 +88,21 @@ class UserTypeController @Inject()(identify: IdentifierAction,
         }
       }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
+    val cyaMode = {
+      for {
+        answers <- request.userAnswers
+        mode <- answers.get(CheckModePage)
+      } yield mode
+    }.getOrElse(false)
+
+    (cyaMode, appConfig.updateCaseEnabled) match {
+      case (true, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
+      case (false, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
+      case (false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
+    }
   }
 
 }

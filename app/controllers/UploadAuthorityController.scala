@@ -52,19 +52,6 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
                                          )
   extends FrontendController(mcc) with I18nSupport with FileUploadHandler[UploadAuthority] {
 
-  private[controllers] def backLink(currentDutyType: SelectedDutyType, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
-                                   (implicit request: DataRequest[_]): Call = {
-    if (request.checkMode) {
-      controllers.cya.routes.CheckYourAnswersController.onLoad()
-    } else {
-      selectedDutyTypes match {
-        case Both if splitPayment && currentDutyType == Duty => controllers.routes.RepresentativeDanDutyController.onLoad()
-        case Both if splitPayment && currentDutyType == Vat => controllers.routes.RepresentativeDanImportVATController.onLoad()
-        case _ => controllers.routes.RepresentativeDanController.onLoad()
-      }
-    }
-  }
-
   def onLoad(dutyType: SelectedDutyType, dan: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
     val dutyTypeKey = dutyType match {
@@ -154,6 +141,19 @@ class UploadAuthorityController @Inject()(identify: IdentifierAction,
         action = action)
       )
     )
+  }
+
+  private[controllers] def backLink(currentDutyType: SelectedDutyType, selectedDutyTypes: SelectedDutyType, splitPayment: Boolean)
+                                   (implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
+    } else {
+      selectedDutyTypes match {
+        case Both if splitPayment && currentDutyType == Duty => controllers.routes.RepresentativeDanDutyController.onLoad()
+        case Both if splitPayment && currentDutyType == Vat => controllers.routes.RepresentativeDanImportVATController.onLoad()
+        case _ => controllers.routes.RepresentativeDanController.onLoad()
+      }
+    }
   }
 
 }

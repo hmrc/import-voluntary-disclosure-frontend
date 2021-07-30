@@ -43,13 +43,6 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                      )
   extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] def backLink(boxNumber: Int): Option[Call] = {
-    boxNumber match {
-      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => Some(controllers.reasons.routes.ItemNumberController.onLoad())
-      case _ => Some(controllers.reasons.routes.BoxNumberController.onLoad())
-    }
-  }
-
   private def formAction(boxNumber: Int): Call = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
 
   def onLoad(boxNumber: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -84,6 +77,13 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
         }
       }
     )
+  }
+
+  private[controllers] def backLink(boxNumber: Int): Option[Call] = {
+    boxNumber match {
+      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => Some(controllers.reasons.routes.ItemNumberController.onLoad())
+      case _ => Some(controllers.reasons.routes.BoxNumberController.onLoad())
+    }
   }
 
   private[controllers] def routeToView(boxNumber: Int, itemNumber: Int, form: Form[_])(implicit request: Request[_]) = {

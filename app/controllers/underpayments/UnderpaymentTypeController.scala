@@ -103,7 +103,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     )
   }
 
-  def backLink(userAnswers: UserAnswers): Call = {
+  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
     val underpaymentDetailsList = userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
     if (underpaymentDetailsList.nonEmpty) {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
