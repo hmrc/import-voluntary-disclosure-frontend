@@ -27,48 +27,48 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("repDan.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("repDan.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @h1(messages("repDan.heading"))
+    @h1(messages("repDan.heading"))
 
-        @formHelper(action = controllers.routes.RepresentativeDanController.onSubmit()) {
-            @inputText(form, "accountNumber", "accountNumber", messages("repDan.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
-            @inputRadio(
-                form = form,
-                legend = messages("repDan.radioLabel"),
-                items = Seq(
-                            RadioItem(
-                                value = Some("A"),
-                                content = Text(messages("repDan.radio1")),
-                                hint = None,
-                                checked = form("value").value.contains("A")
-                            ),
-                            RadioItem(
-                                value = Some("B"),
-                                content = Text(messages("repDan.radio2")),
-                                hint = Some(hint("repDan.radio2.hint")),
-                                checked = form("value").value.contains("B")
-                            ),
-                            RadioItem(
-                                value = Some("C"),
-                                content = Text(messages("repDan.radio3")),
-                                hint = None,
-                                checked = form("value").value.contains("C")
-                            )
-                        ),
-                legendAsHeading = false,
-                classes = "govuk-fieldset__legend"
-            )
-            @button("common.button.continue")
+    @formHelper(action = controllers.routes.RepresentativeDanController.onSubmit()) {
+        @inputText(form, "accountNumber", "accountNumber", messages("repDan.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
+        @inputRadio(
+            form = form,
+            legend = messages("repDan.radioLabel"),
+            items = Seq(
+                RadioItem(
+                    value = Some("A"),
+                    content = Text(messages("repDan.radio1")),
+                    hint = None,
+                    checked = form("value").value.contains("A")
+                ),
+                RadioItem(
+                    value = Some("B"),
+                    content = Text(messages("repDan.radio2")),
+                    hint = Some(hint("repDan.radio2.hint")),
+                    checked = form("value").value.contains("B")
+                ),
+                RadioItem(
+                    value = Some("C"),
+                    content = Text(messages("repDan.radio3")),
+                    hint = None,
+                    checked = form("value").value.contains("C")
+                )
+            ),
+            legendAsHeading = false,
+            classes = "govuk-fieldset__legend"
+        )
+        @button("common.button.continue")
 
-        }
     }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

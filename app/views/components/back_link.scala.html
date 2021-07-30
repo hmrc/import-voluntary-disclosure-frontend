@@ -16,12 +16,12 @@
 
 @import uk.gov.hmrc.govukfrontend.views.html.components._
 
-@this(govukBackLink : GovukBackLink)
+@this(govukBackLink: GovukBackLink)
 
 @(url: Option[Call] = None)(implicit messages: Messages)
 
 @govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
 
 @{
- //$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

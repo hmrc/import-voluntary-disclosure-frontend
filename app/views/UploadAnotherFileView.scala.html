@@ -39,11 +39,11 @@
     form = Some(form),
     showBackLink = false) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @h1(messages("uploadAnotherFile.heading", answers.size, singularFile))
+    @h1(messages("uploadAnotherFile.heading", answers.size, singularFile))
 
-        @formHelper(action = controllers.routes.UploadAnotherFileController.onSubmit()) {
+    @formHelper(action = controllers.routes.UploadAnotherFileController.onSubmit()) {
 
         @addToList(answers)
 
@@ -84,5 +84,5 @@
 }
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

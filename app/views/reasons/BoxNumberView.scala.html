@@ -24,30 +24,30 @@
 
 @(form: Form[_], backLink: Call, boxNumbers: Seq[RadioItem], isFirstBox: Boolean)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("boxNumber.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)
-    ) {
+@layout(
+    pageTitle = messages("boxNumber.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)
+) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.reasons.routes.BoxNumberController.onSubmit()) {
+    @formHelper(action = controllers.reasons.routes.BoxNumberController.onSubmit()) {
 
-            @inputRadio(
-                form = form,
-                legend = if (isFirstBox) messages("boxNumber.heading.isFirstBox") else messages("boxNumber.heading"),
-                items = boxNumbers,
-                legendAsHeading = true,
-                hint = if (isFirstBox) Some(Html(messages("boxNumber.hint.isFirstBox"))) else None
-            )
+        @inputRadio(
+            form = form,
+            legend = if(isFirstBox) messages("boxNumber.heading.isFirstBox") else messages("boxNumber.heading"),
+            items = boxNumbers,
+            legendAsHeading = true,
+            hint = if(isFirstBox) Some(Html(messages("boxNumber.hint.isFirstBox"))) else None
+        )
 
-            @button("common.button.continue")
-
-        }
+        @button("common.button.continue")
 
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

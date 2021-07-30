@@ -20,12 +20,14 @@
 
     @if(errors.nonEmpty) {
         @defining(errors.map { error =>
-            val id = if(error.key == "") { errorId.getOrElse("") } else {
+            val id = if(error.key == "") {
+                errorId.getOrElse("")
+            } else {
                 error.key + errorFieldSuffix.fold("")(suffix => s".$suffix")
             }
             ErrorLink(
                 href = Some(s"#$id"),
-                content = Text(messages(error.message, error.args:_*))
+                content = Text(messages(error.message, error.args: _*))
             )
         }) { errorLinks =>
             @govukErrorSummary(ErrorSummary(

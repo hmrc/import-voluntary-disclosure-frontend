@@ -30,7 +30,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       case 22 | 62 | 63 | 66 | 67 | 68 => foreignCurrencyFormMapping
       case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
       case 34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
-      case 35 | 38  => decimalFormMapping(
+      case 35 | 38 => decimalFormMapping(
         isCurrency = false,
         requiredKey = "weight.missing",
         nonNumericKey = "weight.nonNumeric",
@@ -43,7 +43,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       case 36 => textFormMapping(regex = """^[0-9]{3}$""")
       case 37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
       case 39 => textFormMapping(regex = """^[0-9]{6}$""")
-      case 41  => decimalFormMapping(
+      case 41 => decimalFormMapping(
         isCurrency = false,
         requiredKey = "unit.missing",
         nonNumericKey = "unit.nonNumeric",
@@ -65,7 +65,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       )
       case 43 => textFormMapping(regex = """^[1-7]{1}$""")
       case 45 => textFormMapping(regex = """^[A-M]{1}$|^[A-M]{1}[0-9]{1,2}$|^[A-M]{1}[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}$""")
-      case 46  => decimalFormMapping(
+      case 46 => decimalFormMapping(
         isCurrency = true,
         requiredKey = "currency.missing",
         nonNumericKey = "currency.nonNumeric",
@@ -88,8 +88,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         "amended" -> foreignCurrency(
           "amendmentValue.error.amended.missing",
           "amendmentValue.error.amended.format")
-      ) (UnderpaymentReasonValue.apply) (UnderpaymentReasonValue.unapply)
-      .verifying(different("amendmentValue.error.amended.different"))
+      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
+        .verifying(different("amendmentValue.error.amended.different"))
     )
   }
 
@@ -102,7 +102,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         "amended" -> text("amendmentValue.error.amended.missing")
           .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
           .verifying(regexp(regex, "amendmentValue.error.amended.format"))
-      ) (UnderpaymentReasonValue.apply) (UnderpaymentReasonValue.unapply)
+      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
@@ -151,8 +151,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
     }
 
   private[forms] def minMaxRange(rangeMin: Option[BigDecimal] = None,
-                                  rangeMax: Option[BigDecimal] = None,
-                                  errorKey: String): Constraint[BigDecimal] = {
+                                 rangeMax: Option[BigDecimal] = None,
+                                 errorKey: String): Constraint[BigDecimal] = {
     (rangeMin, rangeMax) match {
       case (Some(min), Some(max)) => inRange(min, max, errorKey)
       case (Some(min), None) => minimumValue(min, errorKey)

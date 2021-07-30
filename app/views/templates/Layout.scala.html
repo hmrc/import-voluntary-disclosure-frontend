@@ -25,8 +25,8 @@
         head: partials.Head,
         backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-        hmrcHeader : HmrcHeader,
-        govukBetaBanner : phaseBanner
+        hmrcHeader: HmrcHeader,
+        govukBetaBanner: phaseBanner
 )
 
 @(pageTitle: String,
@@ -38,51 +38,51 @@
         enableTimeoutDialog: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
-@scripts = {
-    <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
-    <script>window.GOVUKFrontend.initAll();</script>
-    <script>window.HMRCFrontend.initAll();</script>
+    @scripts = {
+        <script src='@controllers.routes.Assets.versioned("javascripts/application.min.js")'></script>
+        <script>window.GOVUKFrontend.initAll();</script>
+        <script>window.HMRCFrontend.initAll();</script>
     @scriptsBlock
-}
+    }
 
-@header = @{
+    @header = @{
         hmrcHeader(Header(
             serviceName = Some(messages("service.name")),
             serviceUrl = messages("service.homePageUrl"),
             signOutHref = Some(controllers.routes.SignOutController.signOut().url)
-            ))
-}
+        ))
+    }
 
-@beforeContentBlock = {
+    @beforeContentBlock = {
     @govukBetaBanner()
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
     }
-}
+    }
 
-@content = {
+    @content = {
 
     @contentBlock
 
-  <div class="govuk-!-margin-top-6">
-    @hmrcReportTechnicalIssueHelper()
-  </div>
-}
+        <div class="govuk-!-margin-top-6">
+        @hmrcReportTechnicalIssueHelper()
+        </div>
+    }
 
-@defining({
-    form.collect[String] {
-        case f if f.errors.nonEmpty => messages("common.errorPrefix") + pageTitle
-    }.orElse(Some(pageTitle))
-}) { title =>
-    @govukLayout(
-        pageTitle = title.map(_ + messages("page.title.suffix")),
-        headBlock = Some(head(headBlock, enableTimeoutDialog)),
-        headerBlock = Some(header),
-        scriptsBlock = Some(scripts),
-        beforeContentBlock = Some(beforeContentBlock),
-        footerItems = footerLinks.links()
-    )(content)
-}
-@{
-    //$COVERAGE-OFF$
-}
+    @defining({
+        form.collect[String] {
+            case f if f.errors.nonEmpty => messages("common.errorPrefix") + pageTitle
+        }.orElse(Some(pageTitle))
+    }) { title =>
+        @govukLayout(
+            pageTitle = title.map(_ + messages("page.title.suffix")),
+            headBlock = Some(head(headBlock, enableTimeoutDialog)),
+            headerBlock = Some(header),
+            scriptsBlock = Some(scripts),
+            beforeContentBlock = Some(beforeContentBlock),
+            footerItems = footerLinks.links()
+        )(content)
+    }
+    @{
+        //$COVERAGE-OFF$
+    }

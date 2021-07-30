@@ -29,7 +29,7 @@
 
     <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">
-            @messages("updateCase.confirmation.heading")
+        @messages("updateCase.confirmation.heading")
         </h1>
     </div>
 
@@ -43,13 +43,18 @@
 
     @p {
         @Html(messages("updateCase.confirmation.whatYouShouldDoNext.p"))
-        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">
+            customsaccountingrepayments@@hmrc.gov.uk</a>.
     }
 
     <div id="helpImproveServiceLink">
-        @p{
-            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("updateCase.confirmation.helpImproveServiceLink")}</a>
-        }
+    @p {
+        <a href=@{
+            appConfig.surveyUrl
+        } class="govuk-link">@{
+            messages("updateCase.confirmation.helpImproveServiceLink")
+        }</a>
+    }
     </div>
 }
 

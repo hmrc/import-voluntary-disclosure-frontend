@@ -17,14 +17,14 @@
 @import config.AppConfig
 
 @this(layout: templates.Layout,
-      formHelper: FormWithCSRF,
-      h1: components.h1,
-      p: components.p,
-      bullets: components.bullets,
-      linkButton: components.linkButton
-      )
+        formHelper: FormWithCSRF,
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets,
+        linkButton: components.linkButton
+)
 
-@(backLink: Call, displayBackLink: Boolean)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(backLink: Call, displayBackLink: Boolean)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("boxGuidance.pageTitle"),
     customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
@@ -43,6 +43,6 @@
 }
 
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

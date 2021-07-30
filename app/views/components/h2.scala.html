@@ -18,12 +18,12 @@
 
 @(headingMsg: String, id: Option[String] = None)(implicit messages: Messages)
 
- @if(id.isDefined){
-  <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
- } else {
-  <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
- }
+    @if(id.isDefined) {
+        <h2 class="govuk-heading-m" id ="@id">@messages(headingMsg)</h2>
+    } else {
+        <h2 class="govuk-heading-m" >@messages(headingMsg)</h2>
+    }
 
-@{
- //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

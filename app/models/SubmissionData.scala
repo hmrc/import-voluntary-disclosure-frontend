@@ -56,7 +56,7 @@ case class SubmissionData(userType: UserType,
                           splitDeferment: Option[Boolean],
                           authorityDocuments: Option[Seq[UploadAuthority]],
                           isImporterVatRegistered: Option[Boolean]
-                        )
+                         )
 
 object SubmissionData extends FixedConfig {
 

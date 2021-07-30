@@ -21,17 +21,17 @@
 @()(implicit request: Request[_], messages: Messages)
 
 
-@govukPhaseBanner(PhaseBanner(
-    tag = Some(Tag(
-        content = Text(messages("banner.phaseName"))
-    )),
-    content = HtmlContent(
-        s"""${messages("feedback.before")} """ +
-        <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
-        s""" ${messages("feedback.after")}"""
-    )
-))
+    @govukPhaseBanner(PhaseBanner(
+        tag = Some(Tag(
+            content = Text(messages("banner.phaseName"))
+        )),
+        content = HtmlContent(
+            s"""${messages("feedback.before")} """ +
+                        <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
+                    s""" ${messages("feedback.after")}"""
+        )
+    ))
 
-@{
-//$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

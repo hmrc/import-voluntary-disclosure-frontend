@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@this(govukFileUpload : GovukFileUpload)
+@this(govukFileUpload: GovukFileUpload)
 
 @(
         form: Form[_],
@@ -29,22 +29,22 @@
         attributes: Map[String, String] = Map.empty
 )(implicit messages: Messages)
 
-    @govukFileUpload(FileUpload(
-        id,
-        name,
-        classes = classes.fold("")(x => x),
-        label = Label(
-            content = Text(messages(label, headingMessageArgs:_*)),
-            isPageHeading = isPageHeading,
-            classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
-        ),
-        hint = hint.map(hintHtml => Hint(
-            content = HtmlContent(hintHtml)
-        )),
-        value = form(name).value,
-        errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*)))),
-        attributes = attributes
-    ))
+@govukFileUpload(FileUpload(
+    id,
+    name,
+    classes = classes.fold("")(x => x),
+    label = Label(
+        content = Text(messages(label, headingMessageArgs: _*)),
+        isPageHeading = isPageHeading,
+        classes = if(isPageHeading) "govuk-label--l" else if(labelHidden) "govuk-visually-hidden" else ""
+    ),
+    hint = hint.map(hintHtml => Hint(
+        content = HtmlContent(hintHtml)
+    )),
+    value = form(name).value,
+    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+    attributes = attributes
+))
 
 @{
     //$COVERAGE-OFF$

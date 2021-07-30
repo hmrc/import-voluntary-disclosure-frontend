@@ -23,14 +23,14 @@
 
 @(backLink: Call, oneEntry: Boolean, displayBackLink: Boolean)(implicit request: Request[_], messages: Messages)
 
-    @layout(pageTitle = messages("underpaymentStart.pageTitle"),
-        customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
+@layout(pageTitle = messages("underpaymentStart.pageTitle"),
+    customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
 
-        @h1(messages("underpaymentStart.heading"))
+    @h1(messages("underpaymentStart.heading"))
 
-        @p {
-            @messages("underpaymentStart.p1")
-        }
+    @p {
+        @messages("underpaymentStart.p1")
+    }
 
     @if(oneEntry) {
         @bullets(Seq(
@@ -44,10 +44,10 @@
         ))
     }
 
-        @linkButton(url = controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url, messages("common.button.continue"))
+    @linkButton(url = controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url, messages("common.button.continue"))
 
-    }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

@@ -17,11 +17,11 @@
 @import views.ViewUtils.hint
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    errorSummary: components.errorSummary,
-    inputRadio: components.inputRadio,
-    button: components.button
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        errorSummary: components.errorSummary,
+        inputRadio: components.inputRadio,
+        button: components.button
 )
 
 @(form: Form[_], backLink: Call, headerAndTitleMessage: String)(implicit request: Request[_], messages: Messages)
@@ -32,33 +32,33 @@
     customBackLinkUrl = Some(backLink)
 ) {
 
-   @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-   @formHelper(action = controllers.routes.DefermentController.onSubmit()) {
-       @inputRadio(
-           form = form,
-           legend = messages(headerAndTitleMessage),
-           items = Seq(
-               RadioItem(
-                   value = Some("true"),
-                   content = Text(messages("deferment.payingByDeferment")),
-                   hint = None,
-                   checked = form("value").value.contains("true")
-               ),
-               RadioItem(
-                   value = Some("false"),
-                   content = Text(messages("deferment.payingByOther")),
-                   hint = Some(hint("deferment.hint")),
-                   checked = form("value").value.contains("false")
-               )
-           ),
-           legendAsHeading = true
-       )
+    @formHelper(action = controllers.routes.DefermentController.onSubmit()) {
+        @inputRadio(
+            form = form,
+            legend = messages(headerAndTitleMessage),
+            items = Seq(
+                RadioItem(
+                    value = Some("true"),
+                    content = Text(messages("deferment.payingByDeferment")),
+                    hint = None,
+                    checked = form("value").value.contains("true")
+                ),
+                RadioItem(
+                    value = Some("false"),
+                    content = Text(messages("deferment.payingByOther")),
+                    hint = Some(hint("deferment.hint")),
+                    checked = form("value").value.contains("false")
+                )
+            ),
+            legendAsHeading = true
+        )
 
-   @button("common.button.continue")
-   }
+        @button("common.button.continue")
+    }
 }
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

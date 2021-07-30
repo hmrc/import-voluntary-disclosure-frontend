@@ -87,8 +87,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 object ImporterAddressLookupJsonBuilder {
 
   implicit val writes: Writes[ImporterAddressLookupJsonBuilder] = new Writes[ImporterAddressLookupJsonBuilder] {
-    def writes(data: ImporterAddressLookupJsonBuilder): JsObject =
-    {
+    def writes(data: ImporterAddressLookupJsonBuilder): JsObject = {
       Json.obj(fields =
         "version" -> 2,
         "options" -> Json.obj(

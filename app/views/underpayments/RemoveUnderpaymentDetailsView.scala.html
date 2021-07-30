@@ -15,12 +15,12 @@
  *@
 
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    errorSummary: components.errorSummary,
-    inputRadio: components.inputRadio,
-    button: components.button,
-    h1: components.h1
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        errorSummary: components.errorSummary,
+        inputRadio: components.inputRadio,
+        button: components.button,
+        h1: components.h1
 )
 
 @(form: Form[_], underpaymentType: String, backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -31,38 +31,38 @@
     customBackLinkUrl = Some(backLink)
 ) {
 
-   @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-   @h1(messages(s"removeUnderpaymentDetails.$underpaymentType.pageHeader"))
+    @h1(messages(s"removeUnderpaymentDetails.$underpaymentType.pageHeader"))
 
-   @formHelper(action = controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType)) {
-       @inputRadio(
-           form = form,
-           legend = "",
-           classes = "govuk-fieldset__legend",
-           items = Seq(
-                    RadioItem(
-                        id = Some("value"),
-                        value = Some("true"),
-                        content = Text(messages("site.yes")),
-                        checked = form("value").value.contains("true")
-                    ),
-                    RadioItem(
-                        id = Some("value-no"),
-                        value = Some("false"),
-                        content = Text(messages("site.no")),
-                        checked = form("value").value.contains("false")
-                    )
+    @formHelper(action = controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType)) {
+        @inputRadio(
+            form = form,
+            legend = "",
+            classes = "govuk-fieldset__legend",
+            items = Seq(
+                RadioItem(
+                    id = Some("value"),
+                    value = Some("true"),
+                    content = Text(messages("site.yes")),
+                    checked = form("value").value.contains("true")
+                ),
+                RadioItem(
+                    id = Some("value-no"),
+                    value = Some("false"),
+                    content = Text(messages("site.no")),
+                    checked = form("value").value.contains("false")
+                )
             ),
-           legendAsHeading = false,
-           inline = true
-       )
+            legendAsHeading = false,
+            inline = true
+        )
 
-   @button("common.button.confirm")
-   }
+        @button("common.button.confirm")
+    }
 }
 
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

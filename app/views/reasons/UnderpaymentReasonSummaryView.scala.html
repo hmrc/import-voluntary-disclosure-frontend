@@ -25,43 +25,43 @@
 
 @(form: Form[_], summaryList: Option[SummaryList])(implicit request: Request[_], messages: Messages)
 
-@titleAndHeader = {
-@summaryList.map { sl =>
-    @if(sl.rows.size == 1) {
-        @messages("underpaymentReasonSummary.pageHeaderSingleReason")
-    } else {
-        @messages("underpaymentReasonSummary.pageHeader", sl.rows.size)
+    @titleAndHeader = {
+    @summaryList.map { sl =>
+        @if(sl.rows.size == 1) {
+            @messages("underpaymentReasonSummary.pageHeaderSingleReason")
+        } else {
+            @messages("underpaymentReasonSummary.pageHeader", sl.rows.size)
+        }
     }
-}
-}
-
-@layout(
-    form = Some(form),
-    pageTitle = titleAndHeader.toString,
-    showBackLink = false
-) {
-
-    @errorSummary(form.errors)
-
-    @h1(titleAndHeader.toString)
-
-    @if(summaryList.isDefined) {
-        @govukSummaryList(summaryList.get)
     }
 
-    @formHelper(action = controllers.reasons.routes.UnderpaymentReasonSummaryController.onSubmit()) {
-        @yesNoRadio(
-            form,
-            headingKey = "underpaymentReasonSummary.radioMessage",
-            inline = true,
-            isPageHeading = false,
-            classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
-        )
-        @button("common.button.continue")
+    @layout(
+        form = Some(form),
+        pageTitle = titleAndHeader.toString,
+        showBackLink = false
+    ) {
+
+        @errorSummary(form.errors)
+
+        @h1(titleAndHeader.toString)
+
+        @if(summaryList.isDefined) {
+            @govukSummaryList(summaryList.get)
+        }
+
+        @formHelper(action = controllers.reasons.routes.UnderpaymentReasonSummaryController.onSubmit()) {
+            @yesNoRadio(
+                form,
+                headingKey = "underpaymentReasonSummary.radioMessage",
+                inline = true,
+                isPageHeading = false,
+                classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
+            )
+            @button("common.button.continue")
+        }
+
     }
 
-}
-
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

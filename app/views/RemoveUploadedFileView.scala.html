@@ -27,8 +27,8 @@
 @(form: Form[_], index: Index, filename: String, backlink: Call, action: Call)(implicit request: Request[_], messages: Messages)
 
 @legendContent = {
-    @h1("removeUploadedFile.heading")
-    @p(Html(filename))
+@h1("removeUploadedFile.heading")
+@p(Html(filename))
 }
 
 @layout(pageTitle = messages("removeUploadedFile.pageTitle"), form = Some(form), customBackLinkUrl = Some(backlink)) {
@@ -58,5 +58,5 @@
 }
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

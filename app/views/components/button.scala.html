@@ -18,14 +18,14 @@
 
 @(msg: String, idForButton: String = "button-1", changeContinueToSaveAndContinue: Boolean = true)(implicit messages: Messages)
 
-@govukButton(Button(
-    attributes = Map("id" -> idForButton),
-    content = {
-        Text(messages(msg))
-    },
-    preventDoubleClick = true
-))
+    @govukButton(Button(
+        attributes = Map("id" -> idForButton),
+        content = {
+            Text(messages(msg))
+        },
+        preventDoubleClick = true
+    ))
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

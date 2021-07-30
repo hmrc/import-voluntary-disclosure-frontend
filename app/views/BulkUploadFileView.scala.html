@@ -55,12 +55,12 @@
         Details(
             summary = HtmlContent(messages("bulkUploadFile.typesOfFile")),
             content = HtmlContent(
-                 bullets(Seq(
-                 Html(messages("bulkUploadFile.PDF")),
-                 Html(messages("bulkUploadFile.CSV")),
-                 Html(messages("bulkUploadFile.ms")),
-                 Html(messages("bulkUploadFile.openDocumentFormat")),
-                 Html(messages("bulkUploadFile.image"))
+                bullets(Seq(
+                    Html(messages("bulkUploadFile.PDF")),
+                    Html(messages("bulkUploadFile.CSV")),
+                    Html(messages("bulkUploadFile.ms")),
+                    Html(messages("bulkUploadFile.openDocumentFormat")),
+                    Html(messages("bulkUploadFile.image"))
                 ))
             )
         )
@@ -72,10 +72,12 @@
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
-        <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
-           @upScanResponse.uploadFormTemplate.fields.map { row =>
-               <input type="hidden" name="@row._1" value="@row._2">
-           }
+        <div id="file-upload-form-group" class="govuk-form-group @{
+            if(form.hasErrors) "govuk-form-group--error"
+        }">
+            @upScanResponse.uploadFormTemplate.fields.map { row =>
+                <input type="hidden" name="@row._1" value="@row._2">
+            }
 
             @inputFileUpload(
                 form = form,
@@ -90,7 +92,7 @@
                 )
             )
 
-       </div>
+        </div>
 
         @button("bulkUploadFile.uploadFile")
     </form>

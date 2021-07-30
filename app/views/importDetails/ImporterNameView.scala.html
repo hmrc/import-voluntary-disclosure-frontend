@@ -30,7 +30,7 @@
 
     @if(form.errors.nonEmpty) {
         @errorSummary(Seq(form.errors.head))
-        }
+    }
 
     @formHelper(action = controllers.importDetails.routes.ImporterNameController.onSubmit()) {
         @inputText(
