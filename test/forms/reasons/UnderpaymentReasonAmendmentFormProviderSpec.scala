@@ -636,7 +636,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
         val rangeValueArgs = Seq(0, bigDecimal)
         formBinderBox(formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString), box = 42).errors mustBe Seq(
           FormError(originalKey, originalDecimalRangeMessageKey, rangeValueArgs),
-          FormError(amendedKey, amendedDecimalRangeMessageKey,  rangeValueArgs)
+          FormError(amendedKey, amendedDecimalRangeMessageKey, rangeValueArgs)
         )
       }
     }
@@ -702,9 +702,9 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     val minAmount = BigDecimal(0)
     val maxAmount = BigDecimal(100)
-    lazy val rangeResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), Some(maxAmount),"error.key")
-    lazy val minResult: Constraint[BigDecimal] = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), None,"error.key")
-    lazy val maxResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(None, Some(maxAmount),"error.key")
+    lazy val rangeResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), Some(maxAmount), "error.key")
+    lazy val minResult: Constraint[BigDecimal] = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(Some(minAmount), None, "error.key")
+    lazy val maxResult = new UnderpaymentReasonAmendmentFormProvider().minMaxRange(None, Some(maxAmount), "error.key")
 
     "return Valid if value is greater than Min" in {
       minResult(BigDecimal(5)) mustEqual Valid

@@ -16,7 +16,7 @@
 
 package messages
 
-object SupportingDocMessages  extends BaseMessages {
+object SupportingDocMessages extends BaseMessages {
 
   val pageTitle: String = "Documents you must upload"
   val heading: String = "Documents you must upload"

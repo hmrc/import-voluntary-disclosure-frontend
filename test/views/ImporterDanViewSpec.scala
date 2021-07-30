@@ -29,7 +29,7 @@ import views.html.ImporterDanView
 class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: ImporterDanView = app.injector.instanceOf[ImporterDanView]
-  val backLink = Some(Call("GET","backLinkUrl"))
+  val backLink = Some(Call("GET", "backLinkUrl"))
 
   val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
 

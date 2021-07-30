@@ -19,7 +19,9 @@ package messages
 object ConfirmChangeReasonDetailMessages extends BaseMessages {
 
   def title(boxNumber: Int) = s"Confirm the changes to box $boxNumber reason for underpayment"
+
   def h1(boxNumber: Int) = s"Confirm the changes to box $boxNumber reason for underpayment"
+
   val itemNumber = "Item number"
   val originalValue = "Original value"
   val amendedValue = "Amended value"

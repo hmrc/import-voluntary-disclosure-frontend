@@ -67,8 +67,8 @@ object ChangeUnderpaymentDetailsMessages extends BaseMessages {
 
   val underpaymentTypeContent: Map[String, ExpectedContentChangeUnderpayment] = Map(
     "B00" -> ExpectedContentChangeUnderpayment(
-       B00pageTitle,
-       B00pageHeader,
+      B00pageTitle,
+      B00pageHeader,
       B00removeLink
     ),
     "A00" -> ExpectedContentChangeUnderpayment(

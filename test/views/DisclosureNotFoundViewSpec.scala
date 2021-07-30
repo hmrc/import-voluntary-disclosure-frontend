@@ -27,7 +27,7 @@ class DisclosureNotFoundViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: DisclosureNotFoundView = app.injector.instanceOf[DisclosureNotFoundView]
   private val caseId = "C181234567890123456789"
-  
+
   "DisclosureNotFound page" should {
     lazy val view: Html = injectedView(caseId)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)

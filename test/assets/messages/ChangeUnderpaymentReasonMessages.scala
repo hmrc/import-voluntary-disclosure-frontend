@@ -19,6 +19,7 @@ package messages
 object ChangeUnderpaymentReasonMessages extends BaseMessages {
 
   def title(box: Int): String = s"Change box ${box} of the reason for underpayment"
+
   val h1: String = "Underpayment amount summary"
   val itemNumber = "Item number"
   val itemNumberChange = "Change item number"

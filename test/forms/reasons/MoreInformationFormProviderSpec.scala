@@ -60,7 +60,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
 
     "maxLength data entered single entry" should {
 
-      val maxLengthData: Map[String, String] = Map("value" -> "c"*1501)
+      val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
       val form = new MoreInformationFormProvider()().bind(maxLengthData)
 
       "result in a form with errors" in {
@@ -78,7 +78,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
 
     "maxLength data entered bulk entry" should {
 
-      val maxLengthData: Map[String, String] = Map("value" -> "c"*1501)
+      val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
       val form = new MoreInformationFormProvider()(false).bind(maxLengthData)
 
       "result in a form with errors" in {

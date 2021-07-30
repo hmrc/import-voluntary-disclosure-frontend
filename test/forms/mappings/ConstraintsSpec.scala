@@ -102,7 +102,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
 
     val max = 10
     val min = 1
-    lazy val length = lengthBetween(min, max,  "error.lengthBetween")
+    lazy val length = lengthBetween(min, max, "error.lengthBetween")
 
     "return Valid for a string within the threshold" in {
       length("hello") mustEqual Valid
@@ -159,8 +159,8 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
 
     val values = Seq("a", "b", "c", "d", "e")
 
-    for(idx <- 1 to values.length) {
-      if(idx == 3) {
+    for (idx <- 1 to values.length) {
+      if (idx == 3) {
         s"return valid for a value thats in the list but at the current idx $idx" in {
           uniqueEntry(values, 3, "error")("c") mustBe Valid
         }
@@ -171,7 +171,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
       }
     }
 
-    for(idx <- 1 to values.length) {
+    for (idx <- 1 to values.length) {
 
       s"return valid for with idx $idx for a value not in the values sequence" in {
         uniqueEntry(values, idx, "error")("f") mustBe Valid
@@ -184,7 +184,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
     lazy val nonEmpty = nonEmptySet("error")
 
     "return Valid when supplied with a Set of values" in {
-      nonEmpty(Set(1,2)) mustEqual Valid
+      nonEmpty(Set(1, 2)) mustEqual Valid
     }
 
     "return Invalid when an empty set is supplied" in {

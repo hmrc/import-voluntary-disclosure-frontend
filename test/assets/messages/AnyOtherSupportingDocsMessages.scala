@@ -16,7 +16,7 @@
 
 package messages
 
-object AnyOtherSupportingDocsMessages  extends BaseMessages {
+object AnyOtherSupportingDocsMessages extends BaseMessages {
 
   val pageTitle: String = "Do you have any of these documents?"
   val heading: String = "Do you have any of these documents?"
@@ -25,7 +25,7 @@ object AnyOtherSupportingDocsMessages  extends BaseMessages {
   val bullet2: String = "the airway bill, if the goods were transported by air"
   val bullet3: String = "a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences"
   val bullet4: String = "other documentation relevant to this underpayment disclosure"
-  val yes: String= "Yes"
-  val no: String= "No"
+  val yes: String = "Yes"
+  val no: String = "No"
 
 }
