@@ -24,48 +24,48 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 @legendContent = {
-    @h1("acceptanceDate.bulk.heading")
-    @p(Html(messages("acceptanceDate.bulk.info")))
+@h1("acceptanceDate.bulk.heading")
+@p(Html(messages("acceptanceDate.bulk.info")))
 }
-    @layout(
-        pageTitle = messages("acceptanceDate.bulk.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("acceptanceDate.bulk.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
-            @defining({
-                Some(Legend(
-                    content = HtmlContent(legendContent.toString()),
-                    isPageHeading = false,
-                    classes = "govuk-radios--inline"
-                ))
-            }) { legend =>
-                @inputRadio(
-                    form,
-                    legend = "",
-                    customLegend = legend,
-                    items = Seq(
-                        RadioItem(id = Some("value"),
-                            value = Some("true"),
-                            content = Text(messages("acceptanceDate.bulk.radio.before")),
-                            checked = form("value").value.contains("true")
-                        ),
-                        RadioItem(id = Some("value-no"),
-                            value = Some("false"),
-                            content = Text(messages("acceptanceDate.bulk.radio.after")),
-                            checked = form("value").value.contains("false")
-                        )
+    @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
+        @defining({
+            Some(Legend(
+                content = HtmlContent(legendContent.toString()),
+                isPageHeading = false,
+                classes = "govuk-radios--inline"
+            ))
+        }) { legend =>
+            @inputRadio(
+                form,
+                legend = "",
+                customLegend = legend,
+                items = Seq(
+                    RadioItem(id = Some("value"),
+                        value = Some("true"),
+                        content = Text(messages("acceptanceDate.bulk.radio.before")),
+                        checked = form("value").value.contains("true")
+                    ),
+                    RadioItem(id = Some("value-no"),
+                        value = Some("false"),
+                        content = Text(messages("acceptanceDate.bulk.radio.after")),
+                        checked = form("value").value.contains("false")
                     )
                 )
-            }
-
-            @button("common.button.continue")
+            )
         }
 
+        @button("common.button.continue")
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

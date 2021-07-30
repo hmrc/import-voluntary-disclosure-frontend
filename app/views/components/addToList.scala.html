@@ -24,7 +24,7 @@
     @for(item <- items) {
         <li class="hmrc-add-to-a-list__contents">
             <span class="hmrc-add-to-a-list__identifier hmrc-add-to-a-list__identifier--light">
-                @item.value.content.asHtml
+            @item.value.content.asHtml
             </span>
             @item.changeAction.map { action =>
                 <span class="hmrc-add-to-a-list__change">
@@ -37,14 +37,14 @@
                 </span>
             }
             @item.removeAction.map { action =>
-            <span class="hmrc-add-to-a-list__remove">
-                <a class="govuk-link" href="@action.href">
-                    <span aria-hidden="true">@action.content.asHtml</span>
-                    @action.visuallyHiddenText.map { text =>
-                        <span class="govuk-visually-hidden">@text</span>
-                    }
-                </a>
-            </span>
+                <span class="hmrc-add-to-a-list__remove">
+                    <a class="govuk-link" href="@action.href">
+                        <span aria-hidden="true">@action.content.asHtml</span>
+                        @action.visuallyHiddenText.map { text =>
+                            <span class="govuk-visually-hidden">@text</span>
+                        }
+                    </a>
+                </span>
             }
         </li>
     }

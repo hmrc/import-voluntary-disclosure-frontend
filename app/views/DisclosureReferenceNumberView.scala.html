@@ -22,29 +22,29 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("disclosureReference.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("disclosureReference.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.DisclosureReferenceNumberController.onSubmit()) {
-            @inputText(
-                form = form,
-                id = "value",
-                name = "value",
-                label = messages("disclosureReference.label"),
-                isPageHeading = true,
-                hint = Some(Html(messages("disclosureReference.hint"))),
-                classes = Some("govuk-!-width-one-half")
-            )
+    @formHelper(action = controllers.routes.DisclosureReferenceNumberController.onSubmit()) {
+        @inputText(
+            form = form,
+            id = "value",
+            name = "value",
+            label = messages("disclosureReference.label"),
+            isPageHeading = true,
+            hint = Some(Html(messages("disclosureReference.hint"))),
+            classes = Some("govuk-!-width-one-half")
+        )
 
-            @button("common.button.continue")
-        }
+        @button("common.button.continue")
     }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}
 

@@ -17,24 +17,26 @@
 @import config.AppConfig
 
 @this(layout: templates.Layout,
-      h1: components.h1,
-      p: components.p,
-      bullets: components.bullets,
-      linkButton: components.linkButton
-      )
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets,
+        linkButton: components.linkButton
+)
 
-@(backLink: Call)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(backLink: Call)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(pageTitle = messages("SupportDoc.pageTitle"),
     customBackLinkUrl = Some(backLink)) {
 
     @h1(messages("SupportDoc.heading"))
 
-    @p{ @messages("SupportDoc.disclosure") }
+    @p {
+        @messages("SupportDoc.disclosure")
+    }
 
-    @bullets(Seq(messages("SupportDoc.bullet1"),messages("SupportDoc.bullet2"),messages("SupportDoc.bullet3")).map(Html(_)))
+    @bullets(Seq(messages("SupportDoc.bullet1"), messages("SupportDoc.bullet2"), messages("SupportDoc.bullet3")).map(Html(_)))
 
-    @linkButton(url = controllers.routes.AnyOtherSupportingDocsController.onLoad().url,messages(("common.button.continue")))
+    @linkButton(url = controllers.routes.AnyOtherSupportingDocsController.onLoad().url, messages(("common.button.continue")))
 }
 
 

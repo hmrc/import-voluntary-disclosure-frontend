@@ -34,9 +34,9 @@
     @answers.map { answer =>
 
         @if(answer.heading.startsWith("Deferment")) {
-            @h3(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+            @h3(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s", "")))
         } else {
-            @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+            @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s", "")))
         }
 
 

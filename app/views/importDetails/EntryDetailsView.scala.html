@@ -36,7 +36,7 @@
     @h1(messages("entryDetails.title"))
 
     @{
-        if (isRepFlow)
+        if(isRepFlow)
             p(Html(messages("entryDetails.representativeParagraph")))
         else
             p(Html(messages("entryDetails.importerParagraph")))
@@ -69,7 +69,6 @@
             legendContent = messages("entryDetails.entryDate.label"),
             hintText = Some(messages("entryDetails.entryDate.hint"))
         )
-
 
         @button("common.button.continue")
     }

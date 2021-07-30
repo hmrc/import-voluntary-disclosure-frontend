@@ -33,7 +33,7 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: DisclosureReferenceNumberFormProvider = injector.instanceOf[DisclosureReferenceNumberFormProvider]
 
   private val backlink: Call = Call("GET", controllers.routes.DisclosureReferenceNumberController.onLoad().url)
-  
+
   "Rendering the Disclosure Reference Number page" when {
     "no errors exist" should {
 

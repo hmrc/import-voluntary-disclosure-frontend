@@ -27,24 +27,24 @@
         classes: Option[String] = None
 )(implicit messages: Messages)
 
-@govukInput(Input(
-    id,
-    name,
-    inputType = "text",
-    classes = classes.fold("")(x => x),
-    label = Label(
-        content = Text(messages(label)),
-        isPageHeading = isPageHeading,
-        classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
-    ),
-    hint = hint.map(hintKey => Hint(
-        content = HtmlContent(messages(hintKey))
-    )),
-    value = form(name).value,
-    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*)))),
-    attributes = if(isDecimal) Map.empty else Map("inputmode" -> "numeric", "pattern" -> "[0-9]*")
-))
+    @govukInput(Input(
+        id,
+        name,
+        inputType = "text",
+        classes = classes.fold("")(x => x),
+        label = Label(
+            content = Text(messages(label)),
+            isPageHeading = isPageHeading,
+            classes = if(isPageHeading) "govuk-label--l" else if(labelHidden) "govuk-visually-hidden" else ""
+        ),
+        hint = hint.map(hintKey => Hint(
+            content = HtmlContent(messages(hintKey))
+        )),
+        value = form(name).value,
+        errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*)))),
+        attributes = if(isDecimal) Map.empty else Map("inputmode" -> "numeric", "pattern" -> "[0-9]*")
+    ))
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

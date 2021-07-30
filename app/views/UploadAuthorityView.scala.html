@@ -70,24 +70,26 @@
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
 
-        <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
-           @upScanResponse.uploadFormTemplate.fields.map { row =>
-               <input type="hidden" name="@row._1" value="@row._2">
-           }
+        <div id="file-upload-form-group" class="govuk-form-group @{
+            if(form.hasErrors) "govuk-form-group--error"
+        }">
+            @upScanResponse.uploadFormTemplate.fields.map { row =>
+                <input type="hidden" name="@row._1" value="@row._2">
+            }
 
-        @inputFileUpload(
-            form = form,
-            name = "file",
-            id = "file",
-            label = messages("uploadAuthority.uploadFile"),
-            isPageHeading = false,
-            attributes = Map(
-                "accept" -> appConfig.upScanAcceptedFileTypes,
-                "data-max-file-size" -> appConfig.upScanMaxFileSize.toString,
-                "data-min-file-size" -> appConfig.upScanMinFileSize.toString
+            @inputFileUpload(
+                form = form,
+                name = "file",
+                id = "file",
+                label = messages("uploadAuthority.uploadFile"),
+                isPageHeading = false,
+                attributes = Map(
+                    "accept" -> appConfig.upScanAcceptedFileTypes,
+                    "data-max-file-size" -> appConfig.upScanMaxFileSize.toString,
+                    "data-min-file-size" -> appConfig.upScanMinFileSize.toString
+                )
             )
-        )
-       </div>
+        </div>
 
         @button("uploadAuthority.uploadChosenFile")
 

@@ -25,32 +25,31 @@
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("updateAdditionalInformation.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = backLink) {
+@layout(
+    pageTitle = messages("updateAdditionalInformation.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = backLink) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @h1(messages("updateAdditionalInformation.heading"))
+    @h1(messages("updateAdditionalInformation.heading"))
 
-        @p(Html(messages("updateAdditionalInformation.p1")))
+    @p(Html(messages("updateAdditionalInformation.p1")))
 
-
-        @formHelper(action = controllers.routes.UpdateAdditionalInformationController.onSubmit()) {
-            @inputTextArea(
-                form,
-                "value",
-                "value",
-                messages("updateAdditionalInformation.heading"),
-                true,
-                false,
-                classes = Some("govuk-fieldset__legend")
-            )
-            @button("common.button.continue")
-        }
+    @formHelper(action = controllers.routes.UpdateAdditionalInformationController.onSubmit()) {
+        @inputTextArea(
+            form,
+            "value",
+            "value",
+            messages("updateAdditionalInformation.heading"),
+            true,
+            false,
+            classes = Some("govuk-fieldset__legend")
+        )
+        @button("common.button.continue")
     }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

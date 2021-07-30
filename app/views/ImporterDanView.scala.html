@@ -23,27 +23,27 @@
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("importerDan.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = backLink) {
+@layout(
+    pageTitle = messages("importerDan.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = backLink) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.ImporterDanController.onSubmit()) {
-            @inputText(
-                form = form,
-                id = "value",
-                name = "value",
-                label = messages("importerDan.pageHeader"),
-                isPageHeading = true,
-                classes = Some("govuk-fieldset__legend govuk-input--width-10")
-            )
-            @button("common.button.continue")
+    @formHelper(action = controllers.routes.ImporterDanController.onSubmit()) {
+        @inputText(
+            form = form,
+            id = "value",
+            name = "value",
+            label = messages("importerDan.pageHeader"),
+            isPageHeading = true,
+            classes = Some("govuk-fieldset__legend govuk-input--width-10")
+        )
+        @button("common.button.continue")
 
-        }
     }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

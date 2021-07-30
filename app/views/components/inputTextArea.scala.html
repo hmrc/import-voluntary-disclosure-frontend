@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@this(govukTextarea : GovukTextarea)
+@this(govukTextarea: GovukTextarea)
 
 @(form: Form[_],
         id: String,
@@ -26,22 +26,22 @@
         classes: Option[String] = None
 )(implicit messages: Messages)
 
-@govukTextarea(Textarea(
-    id,
-    name,
-    classes = classes.fold("")(x => x),
-    label = Label(
-        content = Text(messages(label)),
-        isPageHeading = isPageHeading,
-        classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
-    ),
-    hint = hint.map(hintKey => Hint(
-        content = HtmlContent(messages(hintKey))
-    )),
-    value = form(name).value,
-    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
-))
+    @govukTextarea(Textarea(
+        id,
+        name,
+        classes = classes.fold("")(x => x),
+        label = Label(
+            content = Text(messages(label)),
+            isPageHeading = isPageHeading,
+            classes = if(isPageHeading) "govuk-label--l" else if(labelHidden) "govuk-visually-hidden" else ""
+        ),
+        hint = hint.map(hintKey => Hint(
+            content = HtmlContent(messages(hintKey))
+        )),
+        value = form(name).value,
+        errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args: _*))))
+    ))
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

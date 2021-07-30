@@ -63,9 +63,11 @@ object CYAMessages extends BaseMessages {
   val cpcChanged = "Customs procedure code changed?"
   val numAmendments = "Number of amendments"
   val supportingInformation = "Supporting information"
+
   def filesUploaded(numberOfFiles: Int): String = {
-    if(numberOfFiles ==1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
+    if (numberOfFiles == 1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
   }
+
   val yourDetails = "Your details"
   val name = "Name"
   val userType = "Importer or representative?"
@@ -84,7 +86,6 @@ object CYAMessages extends BaseMessages {
   val repAccountNumber = "Account number"
   val accountOwner = "Account owner"
   val proofOfAuthority = "Proof of authority"
-
 
 
   val change = "Change"
@@ -107,7 +108,7 @@ object CYAMessages extends BaseMessages {
   val changeRepDanAccountNumber = "Change account number"
   val changeRepDanAccountOwner = "Change account owner"
   val changeMoreInformation = "Change Extra information"
-  val changeReasonForUnderpayment= "Change reason for underpayment"
+  val changeReasonForUnderpayment = "Change reason for underpayment"
   val changeSplitDeferment = "Change split deferment payment?"
   val repDutyAccountNumber = "Change account number for duty owed"
   val repDutyAccountOwner = "Change account owner for duty owed"

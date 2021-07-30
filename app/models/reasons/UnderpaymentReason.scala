@@ -31,8 +31,8 @@ object UnderpaymentReason {
 }
 
 case class ChangeUnderpaymentReason(
-                                   original: UnderpaymentReason,
-                                   changed: UnderpaymentReason
+                                     original: UnderpaymentReason,
+                                     changed: UnderpaymentReason
                                    )
 
 object ChangeUnderpaymentReason {

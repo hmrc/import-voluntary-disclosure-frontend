@@ -23,16 +23,16 @@
 )
 
 @(reference: String = "",
-    isPayByDeferment: Boolean,
-    isSingleEntry: Boolean,
-    data: ConfirmationViewData
+        isPayByDeferment: Boolean,
+        isSingleEntry: Boolean,
+        data: ConfirmationViewData
 )(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
 
     <div class="govuk-panel govuk-panel--confirmation">
         <h1 class="govuk-panel__title">
-            @messages("confirmation.heading")
+        @messages("confirmation.heading")
         </h1>
         <div class="govuk-panel__body">
             <div id = "entryNumber">@messages("confirmation.caseId")</div>
@@ -51,7 +51,6 @@
         }
     }
 
-
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
     @if(isPayByDeferment) {
@@ -65,23 +64,34 @@
 
     @h2(messages("confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
 
-    @p{
+    @p {
         <a id="printSave" class="print-this__link govuk-body govuk-link" href="javascript:window.print()">@messages("confirmation.whatYouShouldDoNext.printSave")</a>
         <a id = "printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.whatYouShouldDoNext.printSaveRestOfMessage")</a>
     }
 
     @p {
         @Html(messages("confirmation.whatYouShouldDoNext.p5"))
-        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">
+            customsaccountingrepayments@@hmrc.gov.uk</a>.
     }
 
-    @p{<a href=@{controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.link")}</a>}
+    @p {
+        <a href=@{
+            controllers.routes.IndexController.onPageLoad.url
+        } id="discloseAnotherUnderpayment" class="govuk-link">@{
+            messages("confirmation.whatYouShouldDoNext.link")
+        }</a>
+    }
 
     <div id="helpImproveServiceLink">
-        @p{
-            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("confirmation.helpImproveServiceLink")}</a>
-            @Html(messages("confirmation.helpImproveServiceLinkTime"))
-        }
+    @p {
+        <a href=@{
+            appConfig.surveyUrl
+        } class="govuk-link">@{
+            messages("confirmation.helpImproveServiceLink")
+        }</a>
+        @Html(messages("confirmation.helpImproveServiceLinkTime"))
+    }
     </div>
 }
 

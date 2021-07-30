@@ -88,8 +88,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
 object AddressLookupJsonBuilder {
 
   implicit val writes: Writes[AddressLookupJsonBuilder] = new Writes[AddressLookupJsonBuilder] {
-    def writes(data: AddressLookupJsonBuilder): JsObject =
-    {
+    def writes(data: AddressLookupJsonBuilder): JsObject = {
       Json.obj(fields =
         "version" -> 2,
         "options" -> Json.obj(

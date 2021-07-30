@@ -25,38 +25,38 @@
 
 @(form: Form[_], backLink: Option[Call], isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = if(isSingleEntry) messages("moreInformation.single.pageTitle") else messages("moreInformation.bulk.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = backLink) {
+@layout(
+    pageTitle = if(isSingleEntry) messages("moreInformation.single.pageTitle") else messages("moreInformation.bulk.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = backLink) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @h1(if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"))
+    @h1(if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"))
 
-        @if(!isSingleEntry) {
-            @p(Html(messages("moreInformation.bulk.p1")))
-        }
-
-        @if(!isSingleEntry){
-            @p(Html(messages("moreInformation.bulk.p2")))
-        }
-
-        @formHelper(action = controllers.reasons.routes.MoreInformationController.onSubmit()) {
-            @inputTextArea(
-                form,
-                "value",
-                "value",
-                if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"),
-                true,
-                false,
-                classes = Some("govuk-fieldset__legend")
-            )
-            @button("common.button.continue")
-
-        }
+    @if(!isSingleEntry) {
+        @p(Html(messages("moreInformation.bulk.p1")))
     }
 
-    @{
-        //$COVERAGE-OFF$
+    @if(!isSingleEntry) {
+        @p(Html(messages("moreInformation.bulk.p2")))
     }
+
+    @formHelper(action = controllers.reasons.routes.MoreInformationController.onSubmit()) {
+        @inputTextArea(
+            form,
+            "value",
+            "value",
+            if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"),
+            true,
+            false,
+            classes = Some("govuk-fieldset__legend")
+        )
+        @button("common.button.continue")
+
+    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

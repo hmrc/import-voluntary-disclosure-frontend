@@ -60,8 +60,9 @@
                 inline = true,
                 isPageHeading = false,
                 classes = "govuk-fieldset__legend govuk-fieldset__legend--m",
-                hint = if(isOneEntry){
-                    Some(messages("underpaymentDetailsSummary.radioMessage.hint.oneEntry"))}
+                hint = if(isOneEntry) {
+                    Some(messages("underpaymentDetailsSummary.radioMessage.hint.oneEntry"))
+                }
                 else {
                     Some(messages("underpaymentDetailsSummary.radioMessage.hint.bulkEntry"))
                 }

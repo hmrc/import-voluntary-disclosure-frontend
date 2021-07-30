@@ -28,12 +28,12 @@ class EntryDetailsFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply(): Form[EntryDetails] = {
 
-    Form( mapping(
+    Form(mapping(
       "epu" -> text("entryDetails.epu.error.missing")
-        .verifying(regexp("[0-9]{3}","entryDetails.epu.error.format")),
+        .verifying(regexp("[0-9]{3}", "entryDetails.epu.error.format")),
       "entryNumber" -> text("entryDetails.entryNumber.error.missing")
         .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-        .verifying(regexp("[0-9]{6}[a-z|A-Z]","entryDetails.entryNumber.error.format")),
+        .verifying(regexp("[0-9]{6}[a-z|A-Z]", "entryDetails.entryNumber.error.format")),
       "entryDate" -> localDate(
         invalidKey = "entryDetails.entryDate.error.invalid",
         allRequiredKey = "entryDetails.entryDate.error.required.all",

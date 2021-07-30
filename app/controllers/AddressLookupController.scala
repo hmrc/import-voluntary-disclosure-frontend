@@ -61,15 +61,15 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
   def callback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
-         for {
+        for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressPage, formatAddress(address)))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-           if(request.checkMode){
-             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-           } else {
-             Redirect(controllers.routes.DefermentController.onLoad())
-           }
+          if (request.checkMode) {
+            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.routes.DefermentController.onLoad())
+          }
         }
 
       case Left(_) =>
@@ -101,7 +101,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
     val addressLine2: Option[String] = (address.line2, address.line3) match {
       case (Some(line2), _) if line2 == city => None
       case (Some(line2), Some(line3)) if line3 == city => Some(line2)
-      case (Some(line2), Some(line3))  => Some(line2 + ", " + line3)
+      case (Some(line2), Some(line3)) => Some(line2 + ", " + line3)
       case _ => None
     }
 

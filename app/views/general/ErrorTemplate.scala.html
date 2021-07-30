@@ -18,11 +18,15 @@
         appConfig: AppConfig)
 
 @(pageTitle: String, heading: String, message: String)(implicit request: Request[_], messages: Messages)
-@layout(pageTitle = pageTitle) {
-    <h1 class="govuk-heading-xl">@{Text(heading).asHtml}</h1>
-    <p class="govuk-body">@{Text(message).asHtml}</p>
-}
+    @layout(pageTitle = pageTitle) {
+        <h1 class="govuk-heading-xl">@{
+            Text(heading).asHtml
+        }</h1>
+        <p class="govuk-body">@{
+            Text(message).asHtml
+        }</p>
+    }
 
-@{
- //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

@@ -17,12 +17,12 @@
 @this(govukDateInput: GovukDateInput)
 
 @(
-  form: Form[_],
-  legendContent: String,
-  id: String = "date",
-  hintText: Option[String] = None,
-  legendHidden: Boolean = false,
-  legendAsPageHeading: Boolean = false)(implicit messages: Messages)
+        form: Form[_],
+        legendContent: String,
+        id: String = "date",
+        hintText: Option[String] = None,
+        legendHidden: Boolean = false,
+        legendAsPageHeading: Boolean = false)(implicit messages: Messages)
 
 @govukDateInput(DateInput(
     fieldset = Some(Fieldset(
@@ -30,7 +30,7 @@
             Legend(
                 content = Text(messages(legendContent)),
                 isPageHeading = legendAsPageHeading,
-                classes = if (legendAsPageHeading) "govuk-label--l" else if (legendHidden) "govuk-visually-hidden" else ""
+                classes = if(legendAsPageHeading) "govuk-label--l" else if(legendHidden) "govuk-visually-hidden" else ""
             )
         )
     )),
@@ -39,7 +39,7 @@
         InputItem(
             id = s"$id.day",
             classes = s"govuk-input--width-2${if(componentHasError("day")) " govuk-input--error" else ""}",
-            name =  s"$id.day",
+            name = s"$id.day",
             label = Some(messages("date.day")),
             value = form(s"$id.day").value
         ),
@@ -59,7 +59,7 @@
         )
     ),
     hint = hintText.map(hint => Hint(content = Text(messages(hint)))),
-    errorMessage = if (!hasAnyError) None else Some(ErrorMessage(content = HtmlContent(getAllErrors.map(err => messages(err.message, err.args:_*)).mkString("<br>"))))
+    errorMessage = if(!hasAnyError) None else Some(ErrorMessage(content = HtmlContent(getAllErrors.map(err => messages(err.message, err.args: _*)).mkString("<br>"))))
 ))
 
 @hasAnyError = @{

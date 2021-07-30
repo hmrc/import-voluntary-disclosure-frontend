@@ -15,26 +15,28 @@
  *@
 
 @this(layout: templates.Layout,
-  h1: components.h1,
-  p: components.p,
-  bullets: components.bullets,
-  linkButton: components.linkButton,
-  appConfig: AppConfig
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets,
+        linkButton: components.linkButton,
+        appConfig: AppConfig
 )
 
 @()(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("timeout.pageTitle"), customBackLinkUrl = None, showBackLink = false, enableTimeoutDialog = false) {
 
-  @h1(messages("timeout.heading"))
+    @h1(messages("timeout.heading"))
 
-  @p{ @messages("timeout.p") }
+    @p {
+        @messages("timeout.p")
+    }
 
-  @linkButton(url = appConfig.loginContinueUrl, messages(("timeout.button")))
+    @linkButton(url = appConfig.loginContinueUrl, messages(("timeout.button")))
 
 }
 
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

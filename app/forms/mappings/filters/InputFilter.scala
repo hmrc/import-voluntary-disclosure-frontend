@@ -41,6 +41,7 @@ trait InputFilter {
       case Nil => sanitizedOuput.filterNot(_ == '|')
       case filter :: tail => applyFilters(tail, filter.matcher(sanitizedOuput).replaceAll(""))
     }
+
     applyFilters(filters, input)
   }
 }

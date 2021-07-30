@@ -96,7 +96,7 @@ trait Constraints extends InputFilter {
 
   protected def uniqueEntry(values: Seq[String], idx: Int, errorKey: String): Constraint[String] = {
 
-    val filteredValues = values.zipWithIndex.filterNot(_._2 == idx -1).map(_._1)
+    val filteredValues = values.zipWithIndex.filterNot(_._2 == idx - 1).map(_._1)
 
     Constraint {
       case str if filteredValues.contains(str) =>
@@ -125,8 +125,8 @@ trait Constraints extends InputFilter {
   protected def emojiConstraint(errorKey: String): Constraint[String] =
     Constraint {
       text =>
-      if (containsEmoji(text)) Invalid(errorKey)
-      else Valid
+        if (containsEmoji(text)) Invalid(errorKey)
+        else Valid
     }
 
   private def containsEmoji(valueToCheck: String): Boolean = {

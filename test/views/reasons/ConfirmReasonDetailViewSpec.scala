@@ -80,14 +80,14 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
       "have correct Change link for Box Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change  + " " +  ConfirmReasonDetailMessages.boxChange
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.boxChange
 
         document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.BoxNumberController.onLoad().url
       }
       "have correct Change link for Item Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change  + " " +  ConfirmReasonDetailMessages.itemChange
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.itemChange
 
         document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.ItemNumberController.onLoad().url
@@ -95,7 +95,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
       "have correct Change link for original value " in {
         elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change  + " " +  ConfirmReasonDetailMessages.originalAmountChange
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.originalAmountChange
 
         document.select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(33).url
@@ -103,7 +103,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
       "have correct Change link for amended value " in {
         elementText("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change  + " " +  ConfirmReasonDetailMessages.amendedAmountChange
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.amendedAmountChange
 
         document.select("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(33).url
@@ -152,7 +152,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
       "have correct Change link for Box Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
-          ConfirmReasonDetailMessages.change  + " " +  ConfirmReasonDetailMessages.boxChange
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.boxChange
 
         document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
           controllers.reasons.routes.BoxNumberController.onLoad().url

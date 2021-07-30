@@ -22,25 +22,25 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("acceptanceDate.single.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("acceptanceDate.single.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
-            @yesNoRadio(
-                form,
-                headingKey = "acceptanceDate.single.heading",
-                inline = true
-            )
+    @formHelper(action = controllers.importDetails.routes.AcceptanceDateController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "acceptanceDate.single.heading",
+            inline = true
+        )
 
-            @button("common.button.continue")
-        }
-
+        @button("common.button.continue")
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

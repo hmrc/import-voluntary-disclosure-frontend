@@ -20,19 +20,19 @@
 
 @()(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("common.error.title"),
-    form = None,
-    showBackLink = false) {
+    @layout(
+        pageTitle = messages("common.error.title"),
+        form = None,
+        showBackLink = false) {
 
-    @h1(messages("common.error.header"))
+        @h1(messages("common.error.header"))
 
-    @p(Html(messages("common.error.p1")))
+        @p(Html(messages("common.error.p1")))
 
-    @p(Html(messages("common.error.p2")))
+        @p(Html(messages("common.error.p2")))
 
-}
+    }
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

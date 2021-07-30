@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
@@ -34,7 +35,9 @@
 
         @h1(messages("anyOtherSupportingDocs.heading"))
 
-        @p{ @messages("anyOtherSupportingDocs.p1") }
+        @p {
+            @messages("anyOtherSupportingDocs.p1")
+        }
 
         @bullets(
             isSpaced = true,

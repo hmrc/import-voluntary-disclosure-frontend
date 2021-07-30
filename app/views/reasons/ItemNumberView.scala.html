@@ -15,15 +15,15 @@
  *@
 
 @this(layout: templates.Layout,
-      formHelper: FormWithCSRF,
-      errorSummary: components.errorSummary,
-      button: components.button,
-      inputNumber: components.inputNumber
+        formHelper: FormWithCSRF,
+        errorSummary: components.errorSummary,
+        button: components.button,
+        inputNumber: components.inputNumber
 )
 
 @(form: Form[_], formAction: Call, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-   @layout(
+@layout(
     pageTitle = messages("itemNo.pageTitle"),
     form = Some(form),
     customBackLinkUrl = Some(backLink)) {
@@ -31,12 +31,12 @@
     @errorSummary(form.errors)
 
     @formHelper(action = formAction) {
-      @inputNumber(form = form, id = "itemNumber", name = "itemNumber", label = messages("itemNo.pageHeader"), isPageHeading = true, classes = Some("govuk-fieldset__legend govuk-input--width-5"))
-      @button("common.button.continue")
+        @inputNumber(form = form, id = "itemNumber", name = "itemNumber", label = messages("itemNo.pageHeader"), isPageHeading = true, classes = Some("govuk-fieldset__legend govuk-input--width-5"))
+        @button("common.button.continue")
 
     }
-  }
+}
 
 @{
-//$COVERAGE-OFF$
+    //$COVERAGE-OFF$
 }

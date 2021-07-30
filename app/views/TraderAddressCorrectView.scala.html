@@ -25,35 +25,35 @@
 
 @(form: Form[_], traderAddress: ContactAddress, backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @legendContent = {
-        @h1(messages("traderAddressCorrect.h1"))
+@legendContent = {
+@h1(messages("traderAddressCorrect.h1"))
 
-        @if(!traderAddress.postalCode.isEmpty) {
-            @p(content = Html(
-                traderAddress.addressLine1 + "<br/>" +
+@if(!traderAddress.postalCode.isEmpty) {
+    @p(content = Html(
+        traderAddress.addressLine1 + "<br/>" +
                 traderAddress.city + "<br/>" +
                 traderAddress.postalCode.getOrElse("") + "<br/>" +
                 traderAddress.countryCode)
-            )
-        } else {
-            @p(
-                Html(
-                    traderAddress.addressLine1 + "<br/>" +
+    )
+} else {
+    @p(
+        Html(
+            traderAddress.addressLine1 + "<br/>" +
                     traderAddress.city + "<br/>" +
                     traderAddress.countryCode
-                )
-            )
-        }
-    }
+        )
+    )
+}
+}
 
-    @layout(
-        pageTitle = messages("traderAddressCorrect.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("traderAddressCorrect.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.routes.TraderAddressCorrectController.onSubmit()) {
+    @formHelper(action = controllers.routes.TraderAddressCorrectController.onSubmit()) {
 
         @defining({
             Some(Legend(
@@ -62,18 +62,18 @@
                 classes = "govuk-radios--inline"
             ))
         }) { legend =>
-                @yesNoRadio(
-                    form = form,
-                    headingKey = messages("traderAddressCorrect.h1"),
-                    isPageHeading = false,
-                    classes = "govuk-visually-hidden",
-                    customLegend = legend
-                )
-                @button("common.button.continue")
-            }
+            @yesNoRadio(
+                form = form,
+                headingKey = messages("traderAddressCorrect.h1"),
+                isPageHeading = false,
+                classes = "govuk-visually-hidden",
+                customLegend = legend
+            )
+            @button("common.button.continue")
         }
     }
+}
 
-    @{
-        //$COVERAGE-OFF$
-    }
+@{
+    //$COVERAGE-OFF$
+}

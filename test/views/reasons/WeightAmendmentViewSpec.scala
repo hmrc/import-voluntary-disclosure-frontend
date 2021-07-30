@@ -198,7 +198,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   "The Underpayment Reason Amendment page" when {
-    Seq(35,38).map { testBox =>
+    Seq(35, 38).map { testBox =>
       checkContent(testBox)
     }
 
@@ -219,7 +219,9 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         "have the correct body text (if applicable)" in {
           if (AmendReasonValuesMessages.boxContent.get(boxNumber).get.body.isDefined) {
             elementText("#main-content p:nth-of-type(1)") mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.body.get
-          } else {assert(true)}
+          } else {
+            assert(true)
+          }
         }
       }
     }

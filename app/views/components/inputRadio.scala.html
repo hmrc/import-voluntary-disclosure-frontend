@@ -17,15 +17,15 @@
 @this(govukRadios: GovukRadios)
 
 @(
-    form: Form[_],
-    legend: String,
-    items: Seq[RadioItem],
-    legendAsHeading: Boolean = true,
-    hint: Option[Html] = None,
-    classes: String = "govuk-fieldset__legend--l",
-    inline: Boolean = false,
-    errorKey: Option[String] = None,
-    customLegend: Option[Legend] = None
+        form: Form[_],
+        legend: String,
+        items: Seq[RadioItem],
+        legendAsHeading: Boolean = true,
+        hint: Option[Html] = None,
+        classes: String = "govuk-fieldset__legend--l",
+        inline: Boolean = false,
+        errorKey: Option[String] = None,
+        customLegend: Option[Legend] = None
 )(implicit messages: Messages)
 
 @defining({
@@ -40,7 +40,11 @@
 
 }) { legend =>
     @govukRadios(Radios(
-        classes = s"${if(inline) {"govuk-radios--inline"}}",
+        classes = s"${
+            if(inline) {
+                "govuk-radios--inline"
+            }
+        }",
         name = "value",
         fieldset = Some(Fieldset(legend = legend)),
         hint = hint.map { hint =>

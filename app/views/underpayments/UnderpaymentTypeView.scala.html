@@ -26,30 +26,30 @@
 
 @(form: Form[_], backLink: Call, radioItems: Seq[RadioItem], isFirstTime: Boolean)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = if(isFirstTime) messages("underpaymentType.firstTime.pageTitle") else messages("underpaymentType.secondTime.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)
-    ) {
+@layout(
+    pageTitle = if(isFirstTime) messages("underpaymentType.firstTime.pageTitle") else messages("underpaymentType.secondTime.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)
+) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.underpayments.routes.UnderpaymentTypeController.onSubmit()) {
+    @formHelper(action = controllers.underpayments.routes.UnderpaymentTypeController.onSubmit()) {
 
-            @inputRadio(
-                form = form,
-                legend = if(isFirstTime) messages("underpaymentType.firstTime.pageHeader") else messages("underpaymentType.secondTime.pageHeader"),
-                items = radioItems,
-                hint = if(isFirstTime) Some(Html(messages("underpaymentType.firstTime.hint"))) else None,
-                errorKey = radioItems.head.id
-            )
+        @inputRadio(
+            form = form,
+            legend = if(isFirstTime) messages("underpaymentType.firstTime.pageHeader") else messages("underpaymentType.secondTime.pageHeader"),
+            items = radioItems,
+            hint = if(isFirstTime) Some(Html(messages("underpaymentType.firstTime.hint"))) else None,
+            errorKey = radioItems.head.id
+        )
 
-            @button("common.button.continue")
-
-        }
+        @button("common.button.continue")
 
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

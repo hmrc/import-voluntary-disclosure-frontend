@@ -22,7 +22,9 @@ sealed trait UpdateCaseError extends Product with Serializable
 
 object UpdateCaseError {
   case object InvalidCaseId extends UpdateCaseError
+
   case object CaseAlreadyClosed extends UpdateCaseError
+
   final case class UnexpectedError(status: Int, message: Option[String]) extends UpdateCaseError
 
   implicit val reads: Reads[UpdateCaseError] =

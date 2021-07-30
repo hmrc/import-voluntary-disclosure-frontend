@@ -22,25 +22,25 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("hasFurtherInformation.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("hasFurtherInformation.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.reasons.routes.HasFurtherInformationController.onSubmit()) {
-            @yesNoRadio(
-                form,
-                headingKey = "hasFurtherInformation.heading",
-                hint = Some(messages("hasFurtherInformation.hint"))
-            )
+    @formHelper(action = controllers.reasons.routes.HasFurtherInformationController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "hasFurtherInformation.heading",
+            hint = Some(messages("hasFurtherInformation.hint"))
+        )
 
-            @button("common.button.continue")
-        }
-
+        @button("common.button.continue")
     }
 
-    @{
-        //$COVERAGE-OFF$
-    }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

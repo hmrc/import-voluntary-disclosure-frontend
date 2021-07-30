@@ -43,7 +43,7 @@ class AddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
       "return an ErrorModel" in {
         AddressLookupReads.read("", "",
           HttpResponse(Status.OK, customerAddressJsonError, Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json returned from Address Lookup"))
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
       }
     }
 
@@ -52,7 +52,7 @@ class AddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
       "return an ErrorModel" in {
         AddressLookupReads.read("", "",
           HttpResponse(Status.BAD_REQUEST, "")) mustBe
-          Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
+          Left(ErrorModel(Status.BAD_REQUEST, "Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }
 
@@ -61,7 +61,7 @@ class AddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
       "return an ErrorModel" in {
         AddressLookupReads.read("", "",
           HttpResponse(Status.SEE_OTHER, "")) mustBe
-          Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
+          Left(ErrorModel(Status.SEE_OTHER, "Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }
   }

@@ -21,7 +21,9 @@ import play.api.libs.json._
 case class UpScanInitiateResponse(reference: Reference, uploadFormTemplate: UploadFormTemplate)
 
 case class Reference(value: String)
+
 case class UploadFormTemplate(href: String, fields: Map[String, String])
+
 object UpScanInitiateResponse {
 
   implicit val referenceFormat: Format[Reference] = new Format[Reference] {

@@ -35,8 +35,10 @@
     @h1(messages(s"underpaymentDetails.$underpaymentType.pageHeader") + " " + messages("underpaymentDetails.dutyMessageEnding"))
 
     @if(!oneEntry) {
-        @p{ @messages("underpaymentDetails.bulkMessage") }
+        @p {
+            @messages("underpaymentDetails.bulkMessage")
         }
+    }
 
     @formHelper(action = controllers.underpayments.routes.UnderpaymentDetailsController.onSubmit(underpaymentType)) {
         @currencyInput(form, "original", messages("underpaymentDetails.originalAmount"), "10", false, classes = "govuk-input--width-20")

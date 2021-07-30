@@ -36,8 +36,8 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
       element("a").attr("href").contains(feedbackUrl(fakeRequest) + s"&backUrl=${SafeRedirectUrl(appConfig.host + fakeRequest.uri).encodedUrl}") mustBe true
-      }
     }
+  }
 
   it should {
     lazy val markup: Html = target()(fakeRequest, messages)

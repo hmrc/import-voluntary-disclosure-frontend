@@ -15,32 +15,32 @@
  *@
 
 @this(layout: templates.Layout,
-      formHelper: FormWithCSRF,
-      errorSummary: components.errorSummary,
-      yesNoRadio: components.yesNoRadio,
-      button: components.button)
+        formHelper: FormWithCSRF,
+        errorSummary: components.errorSummary,
+        yesNoRadio: components.yesNoRadio,
+        button: components.button)
 
-@(form: Form[_],backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("oneCustomsProcedureCode.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)) {
+@layout(
+    pageTitle = messages("oneCustomsProcedureCode.pageTitle"),
+    form = Some(form),
+    customBackLinkUrl = Some(backLink)) {
 
-        @errorSummary(form.errors)
+    @errorSummary(form.errors)
 
-        @formHelper(action = controllers.importDetails.routes.OneCustomsProcedureCodeController.onSubmit()) {
-            @yesNoRadio(
-                form,
-                headingKey = "oneCustomsProcedureCode.heading",
-                hint = Some(messages("oneCustomsProcedureCode.hint"))
-            )
+    @formHelper(action = controllers.importDetails.routes.OneCustomsProcedureCodeController.onSubmit()) {
+        @yesNoRadio(
+            form,
+            headingKey = "oneCustomsProcedureCode.heading",
+            hint = Some(messages("oneCustomsProcedureCode.hint"))
+        )
 
-            @button("common.button.continue")
-        }
-
+        @button("common.button.continue")
     }
 
-   @{
-   //$COVERAGE-OFF$
-   }
+}
+
+@{
+    //$COVERAGE-OFF$
+}

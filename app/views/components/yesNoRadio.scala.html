@@ -32,7 +32,7 @@
 @defining({
 
     val defaultLegend = Some(Legend(
-        content = Text(messages(headingKey, headingMessageArgs:_*)),
+        content = Text(messages(headingKey, headingMessageArgs: _*)),
         isPageHeading = isPageHeading,
         classes = classes
     ))
@@ -41,7 +41,11 @@
 
 }) { legend =>
     @govukRadios(Radios(
-        classes = s"${if(inline) {"govuk-radios--inline"} else ""}",
+        classes = s"${
+            if(inline) {
+                "govuk-radios--inline"
+            } else ""
+        }",
         idPrefix = None,
         name = "value",
         hint = hint.map(txt => Hint(content = HtmlContent(txt))),
