@@ -18,11 +18,11 @@ package services.submissionService
 
 import models.importDetails.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
-import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages.importDetails._
+import pages.reasons._
 import pages.serviceEntry.KnownEoriDetailsPage
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import utils.ReusableValues
 
 trait SubmissionServiceTestData extends ReusableValues {

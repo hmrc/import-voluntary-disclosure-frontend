@@ -16,17 +16,18 @@
 
 package services
 
-import base.SpecBase
+import base.ServiceSpecBase
 import connectors.httpParsers.UpScanInitiateHttpParser.UpscanInitiateResponse
 import mocks.config.MockAppConfig
 import mocks.connectors.MockUpScanConnector
 import models.InvalidJson
-import models.upscan.{Reference, UpScanInitiateRequest, UpScanInitiateResponse, UploadFormTemplate}
+import models.upscan._
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.InternalServerException
 
 import scala.concurrent.Future
 
-class UpScanServiceSpec extends SpecBase {
+class UpScanServiceSpec extends ServiceSpecBase {
 
   private val dutyType = "duty"
   private val dan = "1234567"

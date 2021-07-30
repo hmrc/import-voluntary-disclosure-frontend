@@ -16,7 +16,8 @@
 
 package services
 
-import base.SpecBase
+import base.ServiceSpecBase
+import mocks.config.MockAppConfig
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -25,7 +26,7 @@ import uk.gov.hmrc.play.audit.model.ExtendedDataEvent
 
 import scala.concurrent.ExecutionContext
 
-class AuditServiceSpec extends SpecBase with MockFactory {
+class AuditServiceSpec extends ServiceSpecBase with MockFactory {
 
   "audit" must {
     "call the audit connector" in {
@@ -34,7 +35,7 @@ class AuditServiceSpec extends SpecBase with MockFactory {
         .expects(*, *, *)
         .once()
 
-      val service = new AuditService(appConfig, mockAuditConnector)
+      val service = new AuditService(MockAppConfig, mockAuditConnector)
 
       val auditModel: JsonAuditModel = new JsonAuditModel {
         override val auditType: String = "SomeEvent"
@@ -50,15 +51,13 @@ class AuditServiceSpec extends SpecBase with MockFactory {
     "return a data event with credId and affinityGroup appended to the data event" in {
       val mockAuditConnector = mock[AuditConnector]
 
-      val service = new AuditService(appConfig, mockAuditConnector)
+      val service = new AuditService(MockAppConfig, mockAuditConnector)
 
       val auditModel: JsonAuditModel = new JsonAuditModel {
         override val auditType: String = "SomeEvent"
         override val transactionName: String = "some-event"
         override val detail: JsObject = Json.obj("name" -> "test name")
       }
-
-      implicit val hc: HeaderCarrier = HeaderCarrier()
 
       val result = service.toExtendedDataEvent(auditModel, "/some-path")
 

@@ -16,13 +16,14 @@
 
 package services.submissionService
 
-import base.SpecBase
+import base.ServiceSpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
 import play.api.libs.json.Json
 import services.SubmissionService
 
-class BuildSupportingDocumentationSpec extends SpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
+class BuildSupportingDocumentationSpec
+  extends ServiceSpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
 
   val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
 

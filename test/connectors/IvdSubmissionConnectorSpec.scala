@@ -16,15 +16,17 @@
 
 package connectors
 
-import base.SpecBase
+import base.ConnectorSpecBase
 import mocks.MockHttp
+import mocks.config.MockAppConfig
 import models._
 import play.api.libs.json.Json
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import utils.ReusableValues
 
-class IvdSubmissionConnectorSpec extends SpecBase with MockHttp with ReusableValues {
+class IvdSubmissionConnectorSpec extends ConnectorSpecBase with MockHttp with ReusableValues {
 
-  lazy val target = new IvdSubmissionConnector(mockHttp, appConfig)
+  lazy val target = new IvdSubmissionConnector(mockHttp, MockAppConfig)
 
   "Ivd Submission Connector" should {
 
