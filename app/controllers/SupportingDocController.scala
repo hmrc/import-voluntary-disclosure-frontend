@@ -38,18 +38,18 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
                                         implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
-    userAnswers.get(HasFurtherInformationPage) match {
-      case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
-      case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
-    }
-  }
-
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
     } else {
       Future.successful(Ok(view(backLink(request.userAnswers))))
+    }
+  }
+
+  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
+    userAnswers.get(HasFurtherInformationPage) match {
+      case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
+      case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
     }
   }
 }

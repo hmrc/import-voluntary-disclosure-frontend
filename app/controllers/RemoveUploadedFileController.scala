@@ -73,7 +73,7 @@ class RemoveUploadedFileController @Inject()(
       )
   }
 
-  private def backlink() =
+  private[controllers] def backlink() =
     controllers.routes.UploadAnotherFileController.onLoad()
 
   private def submitLink(index: Index) =

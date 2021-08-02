@@ -70,9 +70,9 @@ class RemoveSupportingDocumentationController @Inject()(override val messagesApi
       )
   }
 
-  private def backlink() =
+  private[controllers] def backlink() =
     controllers.routes.UploadSupportingDocumentationSummaryController.onLoad()
 
-  private def submitLink(index: Index) =
+  private[controllers] def submitLink(index: Index) =
     controllers.routes.RemoveSupportingDocumentationController.onSubmit(index)
 }
