@@ -16,7 +16,7 @@
 
 package services.updateCaseService
 
-import base.SpecBase
+import base.ServiceSpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
 import models.audit.UpdateCaseAuditEvent
@@ -24,10 +24,11 @@ import models.requests._
 import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import services.UpdateCaseService
 import utils.ReusableValues
 
-class UpdateCaseServiceSpec extends SpecBase {
+class UpdateCaseServiceSpec extends ServiceSpecBase {
 
   trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData with ReusableValues {
     def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
@@ -60,13 +61,13 @@ class UpdateCaseServiceSpec extends SpecBase {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
         verifyAudit(UpdateCaseAuditEvent(updateCaseJson))
-        private val result = await(service.updateCase()(dataRequest, hc, ec))
+        private val result = await(service.updateCase())
         result mustBe Right(response)
       }
 
       "return error if connector call fails" in new Test {
         setupMock(Left(failedCreateCaseConnectorCall))
-        private val result = await(service.updateCase()(dataRequest, hc, ec))
+        private val result = await(service.updateCase())
 
         result mustBe Left(failedCreateCaseConnectorCall)
       }
@@ -75,7 +76,7 @@ class UpdateCaseServiceSpec extends SpecBase {
     "called with incomplete User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.updateCase()(dataRequest, hc, ec))
+        private val result = await(service.updateCase())
 
         result must matchPattern {
           case Left(UpdateCaseError.UnexpectedError(_, _)) =>

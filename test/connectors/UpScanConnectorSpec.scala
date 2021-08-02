@@ -16,13 +16,14 @@
 
 package connectors
 
-import base.SpecBase
+import base.ConnectorSpecBase
 import mocks.MockHttp
 import mocks.config.MockAppConfig
 import models.BadRequest
-import models.upscan.{Reference, UpScanInitiateRequest, UpScanInitiateResponse, UploadFormTemplate}
+import models.upscan._
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
-class UpScanConnectorSpec extends SpecBase with MockHttp {
+class UpScanConnectorSpec extends ConnectorSpecBase with MockHttp {
 
   object TestConnector extends UpScanConnector(mockHttp, MockAppConfig)
 
@@ -45,7 +46,7 @@ class UpScanConnectorSpec extends SpecBase with MockHttp {
     setupMockHttpPostWithBody(TestConnector.urlForPostInitiate, exampleModel)(
       Right(response)
     )
-    val actualResult = TestConnector.postToInitiate(exampleModel)(hc, ec)
+    val actualResult = TestConnector.postToInitiate(exampleModel)
 
     await(actualResult) mustBe Right(response)
   }
@@ -53,7 +54,7 @@ class UpScanConnectorSpec extends SpecBase with MockHttp {
     setupMockHttpPostWithBody(TestConnector.urlForPostInitiate, exampleModel)(
       Left(BadRequest)
     )
-    val actualResult = TestConnector.postToInitiate(exampleModel)(hc, ec)
+    val actualResult = TestConnector.postToInitiate(exampleModel)
 
     await(actualResult) mustBe Left(BadRequest)
   }

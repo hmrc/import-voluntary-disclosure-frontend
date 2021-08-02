@@ -16,18 +16,21 @@
 
 package services.submissionService
 
-import base.SpecBase
+import base.ServiceSpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.{ErrorModel, SubmissionData, SubmissionResponse, UserAnswers}
+import models.requests._
+import models._
+import org.scalatest.TryValues
 import pages.importDetails.EnterCustomsProcedureCodePage
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.mvc.AnyContentAsEmpty
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import services.SubmissionService
 
-class SubmissionServiceSpec extends SpecBase
+class SubmissionServiceSpec extends ServiceSpecBase
+  with TryValues
   with MockIvdSubmissionConnector
   with MockAuditService
   with SubmissionServiceTestData
@@ -68,14 +71,14 @@ class SubmissionServiceSpec extends SpecBase
     "called with a valid User Answers" should {
       "return successful SubmissionResponse" in new Test {
         setupMock(Right(successfulCreateCase))
-        private val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase())
 
         result mustBe Right(successfulCreateCase)
       }
 
       "return error if connector call fails" in new Test {
         setupMock(Left(failedCreateCaseConnectorCall))
-        private val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase())
 
         result mustBe Left(failedCreateCaseConnectorCall)
       }
@@ -84,7 +87,7 @@ class SubmissionServiceSpec extends SpecBase
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result
@@ -106,7 +109,7 @@ class SubmissionServiceSpec extends SpecBase
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result
@@ -116,7 +119,7 @@ class SubmissionServiceSpec extends SpecBase
       "return error - parsed model is not valid" in new Test {
         override val userAnswers: UserAnswers =
           completeUserAnswers.remove(EnterCustomsProcedureCodePage).success.value
-        private val result = await(service.createCase()(dataRequest, hc, ec))
+        private val result = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result
