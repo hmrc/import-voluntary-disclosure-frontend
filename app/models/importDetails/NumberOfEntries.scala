@@ -29,6 +29,7 @@ sealed trait NumberOfEntries
 object NumberOfEntries extends Enumerable.Implicits[NumberOfEntries] {
 
   case object OneEntry extends WithName("oneEntry") with NumberOfEntries
+
   case object MoreThanOneEntry extends WithName("moreThanOneEntry") with NumberOfEntries
 
   val values: Seq[NumberOfEntries] = Seq(
@@ -39,7 +40,7 @@ object NumberOfEntries extends Enumerable.Implicits[NumberOfEntries] {
 
     val hintMap = Map[NumberOfEntries, Option[Hint]](
       OneEntry -> None,
-      if(isRepFlow) {
+      if (isRepFlow) {
         MoreThanOneEntry -> Some(hint(s"numberOfEntries.moreThanOneEntry.hint"))
       } else {
         MoreThanOneEntry -> None

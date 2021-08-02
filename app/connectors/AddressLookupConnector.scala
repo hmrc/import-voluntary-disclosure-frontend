@@ -33,7 +33,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
                                        implicit val config: AppConfig) {
 
   def initialiseJourney(addressLookupJsonBuilder: JsValue)
-                      (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
+                       (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
     val url = s"${config.addressLookupFrontend}${config.addressLookupInitialise}"
 
@@ -44,7 +44,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupFrontend}/api/confirmed?id=$id"
 
-  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] ={
+  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] = {
     http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))
   }
 }

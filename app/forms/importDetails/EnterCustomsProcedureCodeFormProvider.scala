@@ -26,10 +26,10 @@ class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with Form
 
   def apply(): Form[String] =
     Form(
-        "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
-          .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-          .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$","enterCustomsProcedureCode.cpc.error.format"))
-      )
+      "cpc" -> text("enterCustomsProcedureCode.cpc.error.required")
+        .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
+        .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$", "enterCustomsProcedureCode.cpc.error.format"))
+    )
 
 
 }

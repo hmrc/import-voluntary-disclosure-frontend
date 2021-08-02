@@ -102,7 +102,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressString)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.TraderAddressCorrectController.onLoad().url,messages("cya.address.change")
+          controllers.routes.TraderAddressCorrectController.onLoad().url, messages("cya.address.change")
         ))
       )
     }

@@ -18,5 +18,5 @@ package forms.utils
 
 trait FormHelpers {
 
-  def toUpperNoSpaces(input: String): String = input.replaceAll("\\s","").toUpperCase
+  def toUpperNoSpaces(input: String): String = input.replaceAll("\\s", "").toUpperCase
 }
