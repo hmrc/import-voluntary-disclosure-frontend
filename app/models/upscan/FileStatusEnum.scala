@@ -19,15 +19,21 @@ package models.upscan
 import models.Enumerable
 
 sealed trait FileStatusEnum
+
 sealed trait FileStatusError extends FileStatusEnum
+
 sealed trait FileStatusSuccess extends FileStatusEnum
 
 object FileStatusEnum extends Enumerable.Implicits[FileStatusEnum] {
 
   case object READY extends FileStatusSuccess
+
   case object FAILED extends FileStatusError
+
   case object FAILED_QUARANTINE extends FileStatusError
+
   case object FAILED_REJECTED extends FileStatusError
+
   case object FAILED_UNKNOWN extends FileStatusError
 
   val values: Seq[FileStatusEnum] = Seq(

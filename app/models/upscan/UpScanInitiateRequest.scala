@@ -23,7 +23,8 @@ case class UpScanInitiateRequest(callbackUrl: String,
                                  errorRedirect: String,
                                  minimumFileSize: Int,
                                  maximumFileSize: Int
-                             )
+                                )
+
 object UpScanInitiateRequest {
   implicit val jsonWrites: Writes[UpScanInitiateRequest] = Json.writes[UpScanInitiateRequest]
 }

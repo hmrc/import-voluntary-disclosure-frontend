@@ -30,7 +30,7 @@ case class FileUpload(reference: String,
                       fileStatus: Option[FileStatusEnum] = None,
                       uploadDetails: Option[UploadDetails] = None,
                       failureDetails: Option[FailureDetails] = None,
-                      lastUpdatedDate: Option[Instant] = None){
+                      lastUpdatedDate: Option[Instant] = None) {
   val fileName = uploadDetails.map(_.fileName)
 }
 
@@ -45,7 +45,7 @@ object FileUpload {
       (JsPath \ "uploadDetails").readNullable[UploadDetails] and
       (JsPath \ "failureDetails").readNullable[FailureDetails] and
       (JsPath \ "lastUpdatedDate").readNullable[Instant]
-    )(FileUpload.apply _)
+    ) (FileUpload.apply _)
 
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
@@ -61,12 +61,12 @@ object UploadDetails {
     ((JsPath \ "uploadTimestamp").read[LocalDateTime] and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
-      (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
+      (JsPath \ "fileMimeType").read[String]) (UploadDetails.apply _),
     ((JsPath \ "uploadTimestamp").write[LocalDateTime] and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
-      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))
-    )
+      (JsPath \ "fileMimeType").write[String]) (unlift(UploadDetails.unapply _))
+  )
 
   def decodeMimeEncodedWord(word: String): String =
     Try(MimeUtility.decodeText(word)).getOrElse(word)

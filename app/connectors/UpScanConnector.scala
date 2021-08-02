@@ -28,7 +28,7 @@ class UpScanConnector @Inject()(httpClient: HttpClient, appConfig: AppConfig) {
 
   lazy val urlForPostInitiate: String = s"${appConfig.upScanInitiateBaseUrl}/upscan/v2/initiate"
 
-    def postToInitiate(body: UpScanInitiateRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[UpscanInitiateResponse] = {
+  def postToInitiate(body: UpScanInitiateRequest)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[UpscanInitiateResponse] = {
     httpClient.POST(urlForPostInitiate, body)(UpScanInitiateRequest.jsonWrites, UpScanInitiateResponseReads, hc, ec)
   }
 }
