@@ -57,7 +57,6 @@ trait FileUploadHandler[T] {
         successRoute
       }
     case (_, Some(error)) =>
-      // TODO: Redirect to synchronous error page
       val uploadError = syncErrorToUpscanErrorMapping(error.code)
       Future.successful(errorRoute.flashing("uploadError" -> uploadError.toString))
     case _ =>
@@ -81,7 +80,6 @@ trait FileUploadHandler[T] {
           uploadCompleteRoute
         }
       case Some(FileUpload(_, _, _, Some(errorStatus), _, _, _)) =>
-        // TODO: Redirect to asynchronous error page
         val uploadError = asyncErrorToUpscanErrorMapping(errorStatus)
         Future.successful(uploadFailedRoute.flashing("uploadError" -> uploadError.toString))
       case Some(FileUpload(_, _, _, None, _, _, _)) =>
