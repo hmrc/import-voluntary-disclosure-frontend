@@ -46,26 +46,26 @@ class UpdateCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(UpdateCaseCYAMessages.title)
+    checkPageTitle(UpdateCaseCYAMessages.title)
 
-      s"have the correct h1 of '${UpdateCaseCYAMessages.heading}'" in {
-        elementText("h1") mustBe UpdateCaseCYAMessages.heading
-      }
-
-      "have Now add your information sub-heading " in {
-        document.select("main h2").last.text mustBe UpdateCaseCYAMessages.sendInformation
-      }
-
-      "have Now add your information message " in {
-        document.select("main p").text mustBe UpdateCaseCYAMessages.disclosureConfirmation
-      }
-
-      s"have the correct Accept button" in {
-        elementText(".govuk-button") mustBe UpdateCaseCYAMessages.addToTheDisclosure
-      }
-
+    s"have the correct h1 of '${UpdateCaseCYAMessages.heading}'" in {
+      elementText("h1") mustBe UpdateCaseCYAMessages.heading
     }
+
+    "have Now add your information sub-heading " in {
+      document.select("main h2").last.text mustBe UpdateCaseCYAMessages.sendInformation
+    }
+
+    "have Now add your information message " in {
+      document.select("main p").text mustBe UpdateCaseCYAMessages.disclosureConfirmation
+    }
+
+    s"have the correct Accept button" in {
+      elementText(".govuk-button") mustBe UpdateCaseCYAMessages.addToTheDisclosure
+    }
+
+  }
 }

@@ -56,7 +56,7 @@ class InitialiseAddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
       "return an ErrorModel" in {
         InitialiseAddressLookupReads.read("", "",
           HttpResponse(Status.UNAUTHORIZED, customerAddressJsonError, Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Downstream error returned from Address Lookup"))
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }
   }

@@ -29,7 +29,7 @@ import views.html.RepresentativeDanView
 
 class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
-  val backLink = Call("GET","backLinkUrl")
+  val backLink = Call("GET", "backLinkUrl")
 
   private lazy val injectedView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 

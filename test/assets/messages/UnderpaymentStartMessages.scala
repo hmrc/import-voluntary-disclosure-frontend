@@ -16,7 +16,7 @@
 
 package messages
 
-object UnderpaymentStartMessages  extends BaseMessages {
+object UnderpaymentStartMessages extends BaseMessages {
 
   val pageTitle: String = "Tell us what was underpaid"
   val heading: String = "Tell us what was underpaid"

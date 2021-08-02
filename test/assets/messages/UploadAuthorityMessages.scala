@@ -20,7 +20,9 @@ object UploadAuthorityMessages extends BaseMessages {
 
   val title: String = "Upload proof of authority to use this deferment account"
   val h1: String = "Upload proof of authority to use this deferment account"
+
   def para1(dan: String, dutyType: String): String = s"You must provide proof that you have one-off authority to use this deferment account ${dan} to pay for the ${dutyType} owed."
+
   val para2: String = "The proof needs to be dated and signed by the owner of the deferment account. The date must be after the date of the original import declaration."
   val fileSizeText: String = "Each file must be 6MB or less and you can only upload one file at a time."
   val typesOfFile = "Types of file you can upload"

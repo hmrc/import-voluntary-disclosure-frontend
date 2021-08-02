@@ -34,7 +34,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
   "Rendering the ChangeUnderpaymentReasonView page" when {
     "showing underpayment with item number" should {
 
-      lazy val view: Html = injectedView(backLink, summaryList(22), singleItemReason.original.boxNumber )(fakeRequest, messages)
+      lazy val view: Html = injectedView(backLink, summaryList(22), singleItemReason.original.boxNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber))
@@ -94,7 +94,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment without item number" should {
 
-      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), singleEntryLevelReason.original.boxNumber )(fakeRequest, messages)
+      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), singleEntryLevelReason.original.boxNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber))

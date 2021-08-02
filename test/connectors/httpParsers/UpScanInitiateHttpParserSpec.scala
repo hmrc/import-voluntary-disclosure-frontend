@@ -35,7 +35,7 @@ class UpScanInitiateHttpParserSpec extends AnyWordSpec with Matchers {
       UpScanInitiateHttpParser.UpScanInitiateResponseReads.read(httpMethod, url, httpResponse)
   }
 
-  val validModel: UpScanInitiateResponse =  UpScanInitiateResponse(
+  val validModel: UpScanInitiateResponse = UpScanInitiateResponse(
     Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
     UploadFormTemplate(
       "https://bucketName.s3.eu-west-2.amazonaws.com",

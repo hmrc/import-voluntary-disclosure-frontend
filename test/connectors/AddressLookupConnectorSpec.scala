@@ -52,12 +52,13 @@ class AddressLookupConnectorSpec extends SpecBase with MockHttp {
 
         "return an Left with an ErrorModel" in {
           setupMockHttpGet(TestAddressLookupConnector.getAddressUrl(id))(Left(errorModel))
-          await(getAddressResult) mustBe  Left(errorModel)
+          await(getAddressResult) mustBe Left(errorModel)
         }
       }
     }
 
     val continueUrl = "continue-url"
+
     def initaliseJourneyResult: Future[HttpPostResult[AddressLookupOnRampModel]] =
       TestAddressLookupConnector.initialiseJourney(Json.toJson(AddressLookupJsonBuilder(continueUrl)(messagesApi, appConfig)))
 

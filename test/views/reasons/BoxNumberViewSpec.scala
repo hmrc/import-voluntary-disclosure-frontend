@@ -59,7 +59,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     "no errors exist on first box" should {
 
       val form: Form[Int] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons, true)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.pageTitle)
@@ -85,7 +85,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     "no errors exist on second box" should {
 
       val form: Form[Int] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons, false)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.pageTitle)
@@ -105,7 +105,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
     "an error exists (no option has been selected)" should {
       val form: Form[Int] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons, false)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.errorPrefix + BoxNumberMessages.pageTitle)
@@ -125,7 +125,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
   it should {
 
     val form: Form[Int] = formProvider.apply()
-    lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(),boxNumberRadioButtons, false)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${BoxNumberMessages.radioButton22}'" in {

@@ -52,13 +52,13 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(), true, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-          s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet1}'" in {
-            elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.oneEntryBullet1
-          }
+      s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet1}'" in {
+        elementText("#main-content li:nth-of-type(1)") mustBe UnderpaymentStartMessages.oneEntryBullet1
+      }
 
-          s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet2}'" in {
-            elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.oneEntryBullet2
-          }
+      s"have the correct page text of '${UnderpaymentStartMessages.oneEntryBullet2}'" in {
+        elementText("#main-content li:nth-of-type(2)") mustBe UnderpaymentStartMessages.oneEntryBullet2
+      }
     }
 
     "bulk entry" should {
