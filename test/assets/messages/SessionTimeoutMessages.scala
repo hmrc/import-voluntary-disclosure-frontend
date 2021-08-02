@@ -16,7 +16,7 @@
 
 package messages
 
-object SessionTimeoutMessages  extends BaseMessages {
+object SessionTimeoutMessages extends BaseMessages {
 
   val pageTitle: String = "For your security, we signed you out"
   val heading: String = "For your security, we signed you out"

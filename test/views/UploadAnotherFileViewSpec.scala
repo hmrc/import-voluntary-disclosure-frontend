@@ -44,20 +44,20 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     value = Value(HtmlContent("")),
     removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))),
     AddToListRow(
-    value = Value(HtmlContent("")),
-    removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
-  ))
+      value = Value(HtmlContent("")),
+      removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
+    ))
 
-  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry,AirwayBill,OriginProof,Other)
+  private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
   "Rendering the UploadAnotherFile page" when {
     "no errors exist when one file is present and no optional documents selected" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form,answers, Seq.empty)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, answers, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(UploadAnotherFileMessages.title("1","file"))
+      checkPageTitle(UploadAnotherFileMessages.title("1", "file"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -80,10 +80,10 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist when one file is present and all optional documents selected" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form,answers, maxOptDocs)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, answers, maxOptDocs)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(UploadAnotherFileMessages.title("1","file"))
+      checkPageTitle(UploadAnotherFileMessages.title("1", "file"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -138,10 +138,10 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist when two files are present" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form,answersTwoFiles)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, answersTwoFiles)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(UploadAnotherFileMessages.title("2","files"))
+      checkPageTitle(UploadAnotherFileMessages.title("2", "files"))
 
       "not render an error summary" in {
         document.select("div.govuk-error-summary").size mustBe 0
@@ -166,10 +166,10 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form,answers)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1","file"))
+      checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1", "file"))
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe UploadAnotherFileMessages.requiredError
@@ -185,11 +185,11 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form,answers, maxOptDocs)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, answers, maxOptDocs)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${UploadAnotherFileMessages.h1("1","file")}'" in {
-      elementText("h1") mustBe UploadAnotherFileMessages.h1("1","file")
+    s"have the correct h1 of '${UploadAnotherFileMessages.h1("1", "file")}'" in {
+      elementText("h1") mustBe UploadAnotherFileMessages.h1("1", "file")
     }
 
     s"have the correct value for the first radio button of '${UploadAnotherFileMessages.siteYes}'" in {

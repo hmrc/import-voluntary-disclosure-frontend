@@ -447,7 +447,7 @@ object CheckYourAnswersData {
           value = Value(
             Text(entryNumber)
           ),
-           actions = Some(Actions(items = Seq(
+          actions = Some(Actions(items = Seq(
             ActionItem(
               controllers.importDetails.routes.EntryDetailsController.onLoad().url,
               HtmlContent("<span aria-hidden=\"true\">Change</span>"),

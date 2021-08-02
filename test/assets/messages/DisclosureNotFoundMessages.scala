@@ -16,11 +16,13 @@
 
 package messages
 
-object DisclosureNotFoundMessages  extends BaseMessages {
+object DisclosureNotFoundMessages extends BaseMessages {
 
   val pageTitle: String = "No disclosure found"
   val heading: String = "No disclosure found"
+
   def p1(caseId: String): String = s"We cannot find a disclosure with the reference number $caseId."
+
   val p2: String = "You can:"
   val li1: String = "check and enter the disclosure reference number again"
   val li2: String =

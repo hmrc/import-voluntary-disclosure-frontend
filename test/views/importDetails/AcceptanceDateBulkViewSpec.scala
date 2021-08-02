@@ -28,7 +28,7 @@ import views.html.importDetails.AcceptanceDateBulkView
 
 class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
 
-  lazy val backLink = Call("GET","url")
+  lazy val backLink = Call("GET", "url")
 
   private lazy val injectedView: AcceptanceDateBulkView = app.injector.instanceOf[AcceptanceDateBulkView]
 
