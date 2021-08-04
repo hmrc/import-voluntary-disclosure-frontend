@@ -19,12 +19,21 @@ package mocks.config
 import config.AppConfig
 import play.api.mvc.RequestHeader
 
-object MockAppConfig extends MockAppConfig(List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false, welshToggleEnabled = true)
+object MockAppConfig extends MockAppConfig(
+  List.empty,
+  privateBetaAllowListEnabled = false,
+  updateCaseEnabled = false,
+  privateCitizenEnabled = false,
+  otherItemEnabled = false,
+  welshToggleEnabled = true
+)
 
 class MockAppConfig(override val privateBetaAllowList: List[String],
                     override val privateBetaAllowListEnabled: Boolean,
                     override val updateCaseEnabled: Boolean,
-                    override val welshToggleEnabled: Boolean
+                    override val welshToggleEnabled: Boolean,
+                    override val privateCitizenEnabled: Boolean,
+                    override val otherItemEnabled: Boolean
                    ) extends AppConfig {
   override val footerLinkItems: Seq[String] = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"

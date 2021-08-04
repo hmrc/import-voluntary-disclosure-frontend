@@ -97,6 +97,10 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   val updateCaseEnabled: Boolean = servicesConfig.getBoolean("features.updateCaseEnabled")
   val welshToggleEnabled: Boolean = servicesConfig.getBoolean("features.welshToggleEnabled")
 
+  val privateCitizenEnabled: Boolean = servicesConfig.getBoolean("features.privateCitizenEnabled")
+
+  val otherItemEnabled: Boolean = servicesConfig.getBoolean("features.otherItemEnabled")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -144,6 +148,8 @@ trait AppConfig extends FixedConfig {
   val privateBetaAllowListEnabled: Boolean
   val updateCaseEnabled: Boolean
   val welshToggleEnabled: Boolean
+  val privateCitizenEnabled: Boolean
+  val otherItemEnabled: Boolean
 }
 
 trait FixedConfig {
