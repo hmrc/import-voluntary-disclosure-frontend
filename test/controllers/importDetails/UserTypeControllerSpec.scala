@@ -187,7 +187,11 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
       "go to the confirm New Or Update Case page" in new Test {
         override lazy val appConfig = new MockAppConfig(
-          privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = true, privateCitizenEnabled = true, otherItemEnabled = true
+          privateBetaAllowList = List.empty,
+          privateBetaAllowListEnabled = false,
+          updateCaseEnabled = true,
+          privateCitizenEnabled = true,
+          otherItemEnabled = true
         )
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
           IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None
