@@ -22,7 +22,7 @@ import play.api.mvc.RequestHeader
 object MockAppConfig extends MockAppConfig(List.empty,
                                            privateBetaAllowListEnabled = false,
                                            updateCaseEnabled = false,
-                                           otherItemEnabled = true)
+                                           otherItemEnabled = false)
 
 class MockAppConfig(override val privateBetaAllowList: List[String],
                     override val privateBetaAllowListEnabled: Boolean,
