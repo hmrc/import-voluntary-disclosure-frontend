@@ -21,7 +21,7 @@ import mocks.MockHttp
 import mocks.config.MockAppConfig
 import mocks.connectors.MockAuthConnector
 import play.api.http.Status
-import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
+import play.api.mvc._
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.syntax.retrieved.authSyntaxForRetrieved
@@ -39,13 +39,20 @@ class AuthActionSpec extends SpecBase {
   val noEnrolment: Enrolments = Enrolments(Set.empty)
 
   trait Test extends MockAuthConnector with MockHttp {
+
     class Harness(authAction: IdentifierAction) {
       def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
     }
 
     lazy val bodyParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
     lazy val unauthorisedView: UnauthorisedView = injector.instanceOf[views.html.errors.UnauthorisedView]
-    lazy val config = new MockAppConfig(List.empty, false, false, false)
+    lazy val config = new MockAppConfig(
+      List.empty,
+      privateBetaAllowListEnabled = false,
+      updateCaseEnabled = false,
+      privateCitizenEnabled = false,
+      otherItemEnabled = false
+    )
     lazy val action = new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
     val target = new Harness(action)
   }
@@ -122,7 +129,13 @@ class AuthActionSpec extends SpecBase {
     "user is on the private beta allow list and the allow list is enabled" must {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
-        override lazy val config: MockAppConfig = new MockAppConfig(List(testEori), privateBetaAllowListEnabled = true, false, true)
+        override lazy val config: MockAppConfig = new MockAppConfig(
+          List(testEori),
+          privateBetaAllowListEnabled = true,
+          updateCaseEnabled = false,
+          privateCitizenEnabled = true,
+          otherItemEnabled = true
+        )
         private val response = target.onPageLoad()(fakeRequest)
 
         status(response) mustBe Status.OK
@@ -132,7 +145,13 @@ class AuthActionSpec extends SpecBase {
     "user is not on the private beta allow list and the allow list is enabled" must {
       "receive an unauthorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
-        override lazy val config: MockAppConfig = new MockAppConfig(List(), privateBetaAllowListEnabled = true, false, true)
+        override lazy val config: MockAppConfig = new MockAppConfig(
+          List(),
+          privateBetaAllowListEnabled = true,
+          updateCaseEnabled = false,
+          privateCitizenEnabled = true,
+          otherItemEnabled = true
+        )
         private val response = target.onPageLoad()(fakeRequest)
 
         status(response) mustBe Status.SEE_OTHER
@@ -143,7 +162,13 @@ class AuthActionSpec extends SpecBase {
     "user is not on the private beta allow list and the allow list is disabled" must {
       "receive an authorised response" in new Test {
         MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
-        override lazy val config: MockAppConfig = new MockAppConfig(List(), privateBetaAllowListEnabled = false, false, true)
+        override lazy val config: MockAppConfig = new MockAppConfig(
+          List(testEori),
+          privateBetaAllowListEnabled = false,
+          updateCaseEnabled = false,
+          privateCitizenEnabled = true,
+          otherItemEnabled = true
+        )
         private val response = target.onPageLoad()(fakeRequest)
 
         status(response) mustBe Status.OK
