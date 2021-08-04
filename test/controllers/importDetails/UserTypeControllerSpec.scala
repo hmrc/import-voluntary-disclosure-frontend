@@ -43,7 +43,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
     val form: UserTypeFormProvider = formProvider
     lazy val appConfig = new MockAppConfig(
-      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false, privateCitizenEnabled = false, otherItemEnabled = false
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false, privateCitizenEnabled = false, otherItemEnabled = false, welshToggleEnabled = true
     )
 
     MockedSessionRepository.set(Future.successful(true))
@@ -191,7 +191,8 @@ class UserTypeControllerSpec extends ControllerSpecBase {
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = true,
           privateCitizenEnabled = true,
-          otherItemEnabled = true
+          otherItemEnabled = true,
+          welshToggleEnabled = true
         )
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
           IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None

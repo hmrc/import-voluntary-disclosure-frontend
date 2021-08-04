@@ -24,12 +24,14 @@ object MockAppConfig extends MockAppConfig(
   privateBetaAllowListEnabled = false,
   updateCaseEnabled = false,
   privateCitizenEnabled = false,
-  otherItemEnabled = false
+  otherItemEnabled = false,
+  welshToggleEnabled = true
 )
 
 class MockAppConfig(override val privateBetaAllowList: List[String],
                     override val privateBetaAllowListEnabled: Boolean,
                     override val updateCaseEnabled: Boolean,
+                    override val welshToggleEnabled: Boolean,
                     override val privateCitizenEnabled: Boolean,
                     override val otherItemEnabled: Boolean
                    ) extends AppConfig {

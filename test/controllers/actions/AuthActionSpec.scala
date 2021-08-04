@@ -51,7 +51,8 @@ class AuthActionSpec extends SpecBase {
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
       privateCitizenEnabled = false,
-      otherItemEnabled = false
+      otherItemEnabled = false,
+      welshToggleEnabled = true
     )
     lazy val action = new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
     val target = new Harness(action)
@@ -134,7 +135,8 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true
+          otherItemEnabled = true,
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 
@@ -150,7 +152,8 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true
+          otherItemEnabled = true,
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 
@@ -167,7 +170,8 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true
+          otherItemEnabled = true,
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 
