@@ -33,7 +33,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
   "Rendering the Confirm EORI Details page without the vatNumber" should {
 
     lazy val appConfig = new MockAppConfig(
-      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = false, privateCitizenEnabled = true
     )
 
     lazy val view: Html = injectedView(
@@ -78,7 +78,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
   "Rendering the Confirm EORI Details page with the vatNumber" should {
 
     lazy val appConfig = new MockAppConfig(
-      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = true
+      privateBetaAllowList = List.empty, privateBetaAllowListEnabled = false, updateCaseEnabled = true, privateCitizenEnabled = true
     )
 
     lazy val view: Html = injectedView(

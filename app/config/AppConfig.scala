@@ -96,6 +96,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val updateCaseEnabled: Boolean = servicesConfig.getBoolean("features.updateCaseEnabled")
 
+  val privateCitizenEnabled: Boolean = servicesConfig.getBoolean("features.privateCitizenEnabled")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -142,6 +144,7 @@ trait AppConfig extends FixedConfig {
   val eccSubscribeUrl: String
   val privateBetaAllowListEnabled: Boolean
   val updateCaseEnabled: Boolean
+  val privateCitizenEnabled: Boolean
 }
 
 trait FixedConfig {
