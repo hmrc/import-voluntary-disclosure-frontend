@@ -26,7 +26,8 @@
         backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
-        govukBetaBanner : phaseBanner
+        govukBetaBanner : phaseBanner,
+        languageSelect: LanguageSelector
 )
 
 @(pageTitle: String,
@@ -54,6 +55,7 @@
 }
 
 @beforeContentBlock = {
+    @if(appConfig.welshToggleEnabled) {@languageSelect()}
     @govukBetaBanner()
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
