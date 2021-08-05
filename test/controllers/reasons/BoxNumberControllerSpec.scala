@@ -98,7 +98,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
           fakeRequestGenerator("99")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.MoreInformationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url)
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
