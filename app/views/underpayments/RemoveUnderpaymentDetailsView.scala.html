@@ -38,7 +38,7 @@
    @formHelper(action = controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType)) {
        @inputRadio(
            form = form,
-           legend = "",
+           legend = None,
            classes = "govuk-fieldset__legend",
            items = Seq(
                     RadioItem(

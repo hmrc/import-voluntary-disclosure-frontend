@@ -535,7 +535,7 @@ boxNumber.63.radio = Box 63 AWB or freight charges
 boxNumber.66.radio = Box 66 Insurance
 boxNumber.67.radio = Box 67 Other charges of deductions
 boxNumber.68.radio = Box 68 Adjustment for VAT value
-
+boxNumber.99.radio = Other reason
 
 # Amend Reason Values
 amendmentValue.originalAmount = Original value

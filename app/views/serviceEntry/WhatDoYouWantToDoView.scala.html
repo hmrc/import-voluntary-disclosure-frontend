@@ -32,7 +32,7 @@
         @formHelper(action = controllers.serviceEntry.routes.WhatDoYouWantToDoController.onSubmit()) {
             @inputRadio(
                 form,
-                "whatDoYouWantToDo.heading",
+                Some("whatDoYouWantToDo.heading"),
                 Seq(
                     RadioItem(
                         id = Some("value"),

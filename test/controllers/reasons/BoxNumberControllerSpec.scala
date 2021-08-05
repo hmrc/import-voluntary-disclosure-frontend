@@ -45,6 +45,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     lazy val controller = new BoxNumberController(
+      appConfig,
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -90,6 +91,14 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url)
+      }
+
+      "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("99")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.reasons.routes.MoreInformationController.onLoad().url)
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
