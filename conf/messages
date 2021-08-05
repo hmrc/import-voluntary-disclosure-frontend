@@ -1024,7 +1024,7 @@ updateCase.disclosureClosed.p1 = We cannot add any information to this underpaym
 updateCase.disclosureClosed.p2.part1 = 'You can email us at '
 updateCase.disclosureClosed.p2.part2 = , including the additional information and the disclosure reference number {0}.
 
-# Private Citizen - Landing page
-privateCitizen.landingPage.title = Have you underpaid tax or duty on an import that was declared to customs?
-privateCitizen.landingPage.heading = Have you underpaid tax or duty on an import that was declared to customs?
-privateCitizen.landingPage.error.required = Select yes if you underpaid tax or duty on an import that was declared to customs
+# Private Citizen - Customs Declaration Page
+privateCitizen.customsDeclaration.title = Have you underpaid tax or duty on an import that was declared to customs?
+privateCitizen.customsDeclaration.heading = Have you underpaid tax or duty on an import that was declared to customs?
+privateCitizen.customsDeclaration.error.required = Select yes if you underpaid tax or duty on an import that was declared to customs

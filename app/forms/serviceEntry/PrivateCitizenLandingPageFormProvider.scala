@@ -26,6 +26,6 @@ class PrivateCitizenLandingPageFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("privateCitizen.landingPage.error.required")
+      "value" -> boolean("privateCitizen.customsDeclaration.error.required")
     )
 }
