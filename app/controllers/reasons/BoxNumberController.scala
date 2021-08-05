@@ -47,7 +47,7 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
 
   private lazy val backLink: Call = controllers.reasons.routes.BoxGuidanceController.onLoad()
   private val boxNumbers = Seq("22", "33", "34", "35", "36", "37", "38", "39", "41", "42",
-    "43", "45", "46", "62", "63", "66", "67", "68", "99")
+    "43", "45", "46", "62", "63", "66", "67", "68")
 
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -106,7 +106,7 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
         checked = form("value").value.contains(boxNumber)
       )
 
-    val items = boxNumbers.dropRight(1).map(radioItem)
+    val items = boxNumbers.map(radioItem)
 
     if (appConfig.otherItemEnabled) {
       val divider = RadioItem(divider = Some("or"))
