@@ -55,8 +55,8 @@
 }
 
 @beforeContentBlock = {
-    @if(appConfig.welshToggleEnabled) {@languageSelect()}
     @govukBetaBanner()
+    @if(appConfig.welshToggleEnabled) {@languageSelect()}
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
     }
