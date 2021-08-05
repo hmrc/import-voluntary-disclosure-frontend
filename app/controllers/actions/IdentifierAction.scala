@@ -68,8 +68,12 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           val req = IdentifierRequest(request, userId, eori)
           block(req)
         }
-      case Some(userId) ~ enrolments ~ _ if !isValidUser(enrolments) =>
-        Future.successful(Redirect(config.eccSubscribeUrl))
+      case Some(userId) ~ enrolments ~ Some(group) if !isValidUser(enrolments) =>
+        if (config.privateCitizenEnabled && group == AffinityGroup.Individual) {
+          Future.successful(Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad()))
+        } else {
+          Future.successful(Redirect(config.eccSubscribeUrl))
+        }
       case _ =>
         logger.warn("Unable to retrieve the external ID for the user")
         Future.successful(Unauthorized(unauthorisedView()(request, request2Messages(request))))

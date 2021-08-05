@@ -18,9 +18,7 @@ package controllers.serviceEntry
 
 import controllers.actions._
 import forms.serviceEntry.PrivateCitizenLandingPageFormProvider
-import pages.serviceEntry.PrivateCitizenLandingPage
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -40,31 +38,22 @@ class PrivateCitizenLandingPageController @Inject()(identify: IdentifierAction,
                                                     implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = Action.async { implicit request =>
 
-    val form = request.userAnswers.get(PrivateCitizenLandingPage).fold(formProvider()) {
-      formProvider().fill
-    }
-
-    Future.successful(Ok(view(form)))
+    Future.successful(Ok(view(formProvider())))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
 
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors)
-      )),
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(PrivateCitizenLandingPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (value) Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
-          else {
-            Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
-          }
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      value =>
+        if (value) {
+          Future.successful(Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad()))
         }
-      }
+        else {
+          Future.successful(Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad()))
+        }
     )
   }
 
