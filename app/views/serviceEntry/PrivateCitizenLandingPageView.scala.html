@@ -23,7 +23,7 @@
 @(form: Form[_])(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("privateCitizen.landingPage.title"),
+        pageTitle = messages("privateCitizen.customsDeclaration.title"),
         form = Some(form),
         showBackLink = false) {
 
@@ -32,7 +32,7 @@
         @formHelper(action = controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onSubmit()) {
             @yesNoRadio(
                 form,
-                headingKey = "privateCitizen.landingPage.heading",
+                headingKey = "privateCitizen.customsDeclaration.heading",
                 inline = true
             )
 
