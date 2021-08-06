@@ -134,6 +134,9 @@ POST        /disclosure/box-67-other-charges-deductions-amendment               
 GET         /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 68)
 POST        /disclosure/box-68-adjustment-vat-value-amendment                                  controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 68)
 
+GET         /disclosure/other-reason-details                                                   controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 99)
+POST        /disclosure/other-reason-details                                                   controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 99)
+
 GET         /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onLoad
 POST        /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onSubmit
 
@@ -202,6 +205,9 @@ POST        /disclosure/change/box-67-other-charges-deductions-amendment        
 
 GET         /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 68)
 POST        /disclosure/change/box-68-adjustment-vat-value-amendment                           controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 68)
+
+GET         /disclosure/change/change-other-reason-details                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 99)
+POST        /disclosure/change/change-other-reason-details                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 99)
 
 GET         /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onLoad
 POST        /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onSubmit

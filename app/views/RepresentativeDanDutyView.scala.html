@@ -40,7 +40,7 @@
             @inputText(form, "accountNumber", "accountNumber", messages("repDan.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))
             @inputRadio(
                 form = form,
-                legend = messages("repDan.radioLabel"),
+                legend = Some(messages("repDan.radioLabel")),
                 items = Seq(
                             RadioItem(
                                 value = Some("A"),

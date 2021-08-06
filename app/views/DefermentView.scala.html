@@ -37,7 +37,7 @@
    @formHelper(action = controllers.routes.DefermentController.onSubmit()) {
        @inputRadio(
            form = form,
-           legend = messages(headerAndTitleMessage),
+           legend = Some(messages(headerAndTitleMessage)),
            items = Seq(
                RadioItem(
                    value = Some("true"),
