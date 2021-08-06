@@ -19,9 +19,9 @@ package forms.reasons
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
 import models.reasons.UnderpaymentReasonValue
-import play.api.data.Form
+import play.api.data.{Form, Forms}
 import play.api.data.Forms._
-import play.api.data.validation.{Constraint, Invalid, Valid}
+import play.api.data.validation._
 
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
@@ -75,6 +75,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(999999999999.99))
       )
+      case 99 => otherReason()
       case _ => textFormMapping(regex = """^.*$""")
     }
   }
@@ -159,5 +160,16 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       case (None, Some(max)) => maximumValue(max, errorKey)
       case _ => Constraint(_ => Valid)
     }
+  }
+
+  private[forms] def otherReason(): Form[UnderpaymentReasonValue] = {
+    Form(
+      mapping(
+        "original" -> text("otherReason.error.required")
+          .verifying(maxLength(1500, "otherReason.error.maxLength"))
+          .verifying(emojiConstraint("otherReason.error.noEmoji")),
+        "amended" -> Forms.text
+      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
+    )
   }
 }

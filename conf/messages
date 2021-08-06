@@ -629,6 +629,13 @@ box67.pageBody = Must be the currency code followed by the invoice price or the 
 box68.pageTitle = Box 68 adjustment for VAT value amendment
 box68.pageHeader = Box 68 adjustment for VAT value amendment
 box68.pageBody = Must be the currency code followed by the invoice price or the customs value, for example GBP871.12 or EUR2908946.
+box99.pageTitle = What was the reason for the underpayment?
+box99.pageHeader = What was the reason for the underpayment?
+
+# other reason errors
+otherReason.error.required = Enter the reason for the underpayment
+otherReason.error.maxLength = The reason for the underpayment must be 1500 characters or fewer
+otherReason.error.noEmoji = The reason for the underpayment must not include emojis
 
 # Check Your Answers
 cya.pageTitle = Check your answers before sending your disclosure

@@ -24,9 +24,9 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.reasons.{CurrencyAmendmentView, TextAmendmentView, WeightAmendmentView}
-
+import views.html.reasons.{CurrencyAmendmentView, OtherReasonAmendmentView, TextAmendmentView, WeightAmendmentView}
 import javax.inject.{Inject, Singleton}
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -39,6 +39,7 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                       textAmendmentView: TextAmendmentView,
                                                       weightAmendmentView: WeightAmendmentView,
                                                       currencyAmendmentView: CurrencyAmendmentView,
+                                                     otherReasonAmendmentView: OtherReasonAmendmentView,
                                                       implicit val ec: ExecutionContext
                                                      )
   extends FrontendController(mcc) with I18nSupport {
@@ -94,8 +95,7 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
       case 35 | 38 => weightAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
       case 45 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-4"))
       case 46 => currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
-      // TODO: update below with an appropriate view for Other Reason
-      case 99 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
+      case 99 => otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
       case _ => throw new RuntimeException("Invalid Box Number")
     }
   }
