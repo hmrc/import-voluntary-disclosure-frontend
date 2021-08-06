@@ -16,8 +16,10 @@
 
 package controllers.serviceEntry
 
+import config.ErrorHandler
 import forms.serviceEntry.PrivateCitizenLandingPageFormProvider
 import models.UserAnswers
+import pages.PrivateCitizensLandingPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -32,37 +34,47 @@ class PrivateCitizenLandingPageController @Inject()(sessionRepository: SessionRe
                                                     mcc: MessagesControllerComponents,
                                                     formProvider: PrivateCitizenLandingPageFormProvider,
                                                     view: PrivateCitizenLandingPageView,
+                                                    val errorHandler: ErrorHandler,
                                                     implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
-
-    request.session.get("credId") match {
-      case Some(credId) => {
-        val userAnswers = sessionRepository.get(credId) match {
-          case Some(answers) => answers
-          case None => UserAnswers(credId)
-        }
-        val form = sessionRepository.get(credId)
+    val credId: Option[String] = request.session.get("credId")
+    getUserAnswers(credId.get).map { userAnswers =>
+      val form = userAnswers.get(PrivateCitizensLandingPage).fold(formProvider()) {
+        formProvider().fill
       }
-      case None => ???
+      Ok(view(form))
     }
-
-    Future.successful(Ok(view(formProvider())))
   }
 
   def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
-
+    val credId: Option[String] = request.session.get("credId")
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value =>
-        if (value) {
-          Future.successful(Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad()))
-        }
-        else {
-          Future.successful(Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad()))
+        getUserAnswers(credId.get).flatMap {
+          case userAnswers: UserAnswers => for {
+            updatedAnswers <- Future.fromTry(userAnswers.set(PrivateCitizensLandingPage, value))
+            _ <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (value) {
+              Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
+            }
+            else {
+              Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
+            }
+          }
+          case _ => Future.successful(errorHandler.showInternalServerError)
         }
     )
+  }
+
+  def getUserAnswers(credId: String): Future[UserAnswers] = {
+    sessionRepository.get(credId).map {
+      case Some(existingUserAnswers) => existingUserAnswers
+      case None => UserAnswers(credId)
+    }
   }
 
 }
