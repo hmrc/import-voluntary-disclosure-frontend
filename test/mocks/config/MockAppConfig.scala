@@ -29,12 +29,12 @@ object MockAppConfig extends MockAppConfig(
   welshToggleEnabled = true
 )
 
-class MockAppConfig(override val privateBetaAllowList: List[String],
-                    override val privateBetaAllowListEnabled: Boolean,
-                    override val updateCaseEnabled: Boolean,
-                    override val welshToggleEnabled: Boolean,
-                    override val privateCitizenEnabled: Boolean,
-                    override val otherItemEnabled: Boolean
+class MockAppConfig(override val privateBetaAllowList: List[String] = List.empty,
+                    override val privateBetaAllowListEnabled: Boolean = false,
+                    override val updateCaseEnabled: Boolean = false,
+                    override val welshToggleEnabled: Boolean = false,
+                    override val privateCitizenEnabled: Boolean = false,
+                    override val otherItemEnabled: Boolean = false
                    ) extends AppConfig {
   override val footerLinkItems: Seq[String] = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"

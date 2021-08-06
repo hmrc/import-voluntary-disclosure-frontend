@@ -17,8 +17,10 @@
 package controllers.reasons
 
 import base.ControllerSpecBase
+import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.BoxNumberFormProvider
+import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.UnderpaymentReason
@@ -44,7 +46,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
+    val testConfig: AppConfig = appConfig
     lazy val controller = new BoxNumberController(
+      testConfig,
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -90,6 +94,15 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url)
+      }
+
+      "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
+        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
+        lazy val result: Future[Result] = controller.onSubmit(
+          fakeRequestGenerator("99")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url)
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {

@@ -35,7 +35,7 @@
     @formHelper(action = controllers.importDetails.routes.NumberOfEntriesController.onSubmit()) {
         @inputRadio(
             form = form,
-            legend = messages("numberOfEntries.title"),
+            legend = Some(messages("numberOfEntries.title")),
             items = NumberOfEntries.options(form, isRepFlow),
             inline = false,
             legendAsHeading = true

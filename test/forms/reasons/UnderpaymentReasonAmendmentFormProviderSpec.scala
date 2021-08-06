@@ -734,4 +734,22 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
       rangeResult(BigDecimal(-1)) mustEqual Invalid("error.key", minAmount, maxAmount)
     }
   }
+
+  "invalid format for other reason" should {
+    "result in a required error" in {
+      formBinderBox(formBuilder(original = ""), box = 99).errors mustBe
+        Seq(FormError(originalKey, "otherReason.error.required"))
+    }
+
+    "result in a no emoji error" in {
+      formBinderBox(formBuilder(original = "😀"), box = 99).errors mustBe
+        Seq(FormError(originalKey, "otherReason.error.noEmoji"))
+    }
+
+    "result in a max length error" in {
+      val maxLengthData: String = "c" * 1502
+      formBinderBox(formBuilder(original = maxLengthData), box = 99).errors mustBe
+        Seq(FormError(originalKey, "otherReason.error.maxLength", Seq(1500)))
+    }
+  }
 }
