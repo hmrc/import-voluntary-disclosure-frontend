@@ -40,7 +40,7 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
     val credId: Option[String] = request.session.get("credId")
-    getUserAnswers(credId.get).map { userAnswers =>
+    getUserAnswers(credId.getOrElse("")).map { userAnswers =>
       val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
         formProvider().fill
       }
@@ -53,7 +53,7 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value =>
-        getUserAnswers(credId.get).flatMap {
+        getUserAnswers(credId.getOrElse("")).flatMap {
           case userAnswers: UserAnswers => for {
             updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
             _ <- sessionRepository.set(updatedAnswers)
