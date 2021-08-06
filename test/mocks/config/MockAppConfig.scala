@@ -17,6 +17,7 @@
 package mocks.config
 
 import config.AppConfig
+import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 
 object MockAppConfig extends MockAppConfig(
@@ -77,4 +78,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
 
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
+  override val en: String = "en"
+  override val cy: String = "cy"
+  override val defaultLanguage: Lang = Lang(en)
 }
