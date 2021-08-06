@@ -19,9 +19,9 @@ package forms.reasons
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
 import models.reasons.UnderpaymentReasonValue
-import play.api.data.{Form, Forms}
 import play.api.data.Forms._
 import play.api.data.validation._
+import play.api.data.{Form, Forms}
 
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 

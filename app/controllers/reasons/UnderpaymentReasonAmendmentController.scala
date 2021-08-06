@@ -25,8 +25,8 @@ import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.{CurrencyAmendmentView, OtherReasonAmendmentView, TextAmendmentView, WeightAmendmentView}
-import javax.inject.{Inject, Singleton}
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -39,7 +39,7 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                       textAmendmentView: TextAmendmentView,
                                                       weightAmendmentView: WeightAmendmentView,
                                                       currencyAmendmentView: CurrencyAmendmentView,
-                                                     otherReasonAmendmentView: OtherReasonAmendmentView,
+                                                      otherReasonAmendmentView: OtherReasonAmendmentView,
                                                       implicit val ec: ExecutionContext
                                                      )
   extends FrontendController(mcc) with I18nSupport {
