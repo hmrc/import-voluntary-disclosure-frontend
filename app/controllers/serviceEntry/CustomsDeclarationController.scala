@@ -59,10 +59,10 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (value) {
-              Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
+              Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
             }
             else {
-              Redirect(controllers.serviceEntry.routes.PrivateCitizenLandingPageController.onLoad())
+              Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
             }
           }
           case _ => Future.successful(errorHandler.showInternalServerError)
