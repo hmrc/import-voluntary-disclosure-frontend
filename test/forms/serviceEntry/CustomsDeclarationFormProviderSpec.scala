@@ -18,14 +18,14 @@ package forms.serviceEntry
 
 import base.FormSpecBase
 
-class PrivateCitizenLandingPageFormProviderSpec extends FormSpecBase {
+class CustomsDeclarationFormProviderSpec extends FormSpecBase {
 
   "Binding a form with invalid data" when {
 
     "with no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new PrivateCitizenLandingPageFormProvider()().bind(missingOption)
+      val form = new CustomsDeclarationFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -44,7 +44,7 @@ class PrivateCitizenLandingPageFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data" should {
 
     val data = Map("value" -> "true")
-    val form = new PrivateCitizenLandingPageFormProvider()().bind(data)
+    val form = new CustomsDeclarationFormProvider()().bind(data)
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false

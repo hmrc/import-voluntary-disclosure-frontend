@@ -22,7 +22,7 @@ import play.api.data.Form
 import javax.inject.Inject
 
 
-class PrivateCitizenLandingPageFormProvider @Inject() extends Mappings {
+class CustomsDeclarationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(

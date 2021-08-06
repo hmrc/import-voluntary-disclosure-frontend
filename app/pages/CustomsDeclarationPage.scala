@@ -18,7 +18,7 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object PrivateCitizensLandingPage extends QuestionPage[Boolean] {
+case object CustomsDeclarationPage extends QuestionPage[Boolean] {
 
   def path: JsPath = JsPath \ toString
 

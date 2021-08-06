@@ -17,31 +17,31 @@
 package controllers.serviceEntry
 
 import config.ErrorHandler
-import forms.serviceEntry.PrivateCitizenLandingPageFormProvider
+import forms.serviceEntry.CustomsDeclarationFormProvider
 import models.UserAnswers
-import pages.PrivateCitizensLandingPage
+import pages.CustomsDeclarationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.serviceEntry.PrivateCitizenLandingPageView
+import views.html.serviceEntry.CustomsDeclarationView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PrivateCitizenLandingPageController @Inject()(sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: PrivateCitizenLandingPageFormProvider,
-                                                    view: PrivateCitizenLandingPageView,
-                                                    val errorHandler: ErrorHandler,
-                                                    implicit val ec: ExecutionContext)
+class CustomsDeclarationController @Inject()(sessionRepository: SessionRepository,
+                                             mcc: MessagesControllerComponents,
+                                             formProvider: CustomsDeclarationFormProvider,
+                                             view: CustomsDeclarationView,
+                                             val errorHandler: ErrorHandler,
+                                             implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
     val credId: Option[String] = request.session.get("credId")
     getUserAnswers(credId.get).map { userAnswers =>
-      val form = userAnswers.get(PrivateCitizensLandingPage).fold(formProvider()) {
+      val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
         formProvider().fill
       }
       Ok(view(form))
@@ -55,7 +55,7 @@ class PrivateCitizenLandingPageController @Inject()(sessionRepository: SessionRe
       value =>
         getUserAnswers(credId.get).flatMap {
           case userAnswers: UserAnswers => for {
-            updatedAnswers <- Future.fromTry(userAnswers.set(PrivateCitizensLandingPage, value))
+            updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (value) {
