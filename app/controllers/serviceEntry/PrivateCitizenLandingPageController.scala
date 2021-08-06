@@ -16,8 +16,8 @@
 
 package controllers.serviceEntry
 
-import controllers.actions._
 import forms.serviceEntry.PrivateCitizenLandingPageFormProvider
+import models.UserAnswers
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -28,10 +28,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PrivateCitizenLandingPageController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
+class PrivateCitizenLandingPageController @Inject()(sessionRepository: SessionRepository,
                                                     mcc: MessagesControllerComponents,
                                                     formProvider: PrivateCitizenLandingPageFormProvider,
                                                     view: PrivateCitizenLandingPageView,
@@ -39,6 +36,17 @@ class PrivateCitizenLandingPageController @Inject()(identify: IdentifierAction,
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
+
+    request.session.get("credId") match {
+      case Some(credId) => {
+        val userAnswers = sessionRepository.get(credId) match {
+          case Some(answers) => answers
+          case None => UserAnswers(credId)
+        }
+        val form = sessionRepository.get(credId)
+      }
+      case None => ???
+    }
 
     Future.successful(Ok(view(formProvider())))
   }
