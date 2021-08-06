@@ -19,7 +19,7 @@ package controllers.serviceEntry
 import config.ErrorHandler
 import forms.serviceEntry.CustomsDeclarationFormProvider
 import models.UserAnswers
-import pages.CustomsDeclarationPage
+import pages.serviceEntry.CustomsDeclarationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
