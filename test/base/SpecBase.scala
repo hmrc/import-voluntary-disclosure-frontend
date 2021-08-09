@@ -53,7 +53,7 @@ trait SpecBase extends PlaySpec
     .build()
 
   lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo").withCSRFToken.asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
+    FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo", "credId" -> "credId").withCSRFToken.asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
 
   implicit val defaultTimeout: FiniteDuration = 5.seconds
 

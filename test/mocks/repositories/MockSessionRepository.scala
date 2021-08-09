@@ -29,6 +29,11 @@ trait MockSessionRepository extends RepositorySpecBase {
 
   object MockedSessionRepository {
 
+    def get(response: Future[Option[UserAnswers]]): CallHandler[Future[Option[UserAnswers]]] =
+      (mockSessionRepository.get(_: String)(_: ExecutionContext))
+        .expects(*, *)
+        .returning(response)
+
     def set(response: Future[Boolean]): CallHandler[Future[Boolean]] =
       (mockSessionRepository.set(_: UserAnswers)(_: ExecutionContext))
         .expects(*, *)

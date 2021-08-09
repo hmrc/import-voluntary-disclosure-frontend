@@ -68,6 +68,8 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
           val req = IdentifierRequest(request, userId, eori)
           block(req)
         }
+      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual) if !isValidUser(enrolments) && config.privateCitizenEnabled =>
+        Future.successful(Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad()).withSession("credId" -> userId))
       case Some(userId) ~ enrolments ~ _ if !isValidUser(enrolments) =>
         Future.successful(Redirect(config.eccSubscribeUrl))
       case _ =>

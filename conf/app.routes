@@ -413,3 +413,6 @@ GET         /update-disclosure/confirmation                                     
 GET         /update-disclosure/disclosure-not-found                                            controllers.DisclosureNotFoundController.onLoad
 
 GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
+
+GET         /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onLoad()
+POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
