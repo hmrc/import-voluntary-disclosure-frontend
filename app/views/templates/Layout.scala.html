@@ -16,6 +16,7 @@
 
 @import views.helpers.FooterLinks
 @import views.html.components.phaseBanner
+@import views.html.components.languageSelector
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 
@@ -26,7 +27,8 @@
         backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
-        govukBetaBanner : phaseBanner
+        govukBetaBanner : phaseBanner,
+        languageSelect: languageSelector
 )
 
 @(pageTitle: String,
@@ -55,6 +57,7 @@
 
 @beforeContentBlock = {
     @govukBetaBanner()
+    @if(appConfig.welshToggleEnabled) {@languageSelect()}
     @if(showBackLink) {
         @backLink(customBackLinkUrl)
     }
