@@ -34,8 +34,8 @@ class LanguageSwitchController @Inject()(
   override def fallbackURL: String = s"$host/disclose-import-taxes-underpayment"
 
   override protected def languageMap: Map[String, Lang] = {
-    if (appConfig.welshToggleEnabled) Map(en -> Lang(en), cy -> Lang(cy))
-    else Map(en -> Lang(en))
+    if (appConfig.welshToggleEnabled) Map(en.code -> en, cy.code -> cy)
+    else Map(en.code -> en)
   }
 
 }

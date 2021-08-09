@@ -78,7 +78,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String] = List.empty
 
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
-  override val en: String = "en"
-  override val cy: String = "cy"
-  override val defaultLanguage: Lang = Lang(en)
+  override val en: Lang = Lang("en")
+  override val cy: Lang = Lang("cy")
+  override val defaultLanguage: Lang = en
 }
