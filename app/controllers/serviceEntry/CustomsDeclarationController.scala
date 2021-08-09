@@ -59,9 +59,11 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (value) {
+              // TODO - update when next page is developed
               Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
             }
             else {
+              // TODO - update when next page is developed
               Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
             }
           }
