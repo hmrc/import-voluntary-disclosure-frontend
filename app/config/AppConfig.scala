@@ -21,6 +21,7 @@ import java.util.Base64
 
 import javax.inject.{Inject, Singleton}
 import play.api.Configuration
+import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
@@ -101,6 +102,9 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val otherItemEnabled: Boolean = servicesConfig.getBoolean("features.otherItemEnabled")
 
+  val en: Lang = Lang("en")
+  val cy: Lang = Lang("cy")
+  val defaultLanguage: Lang = en
 }
 
 trait AppConfig extends FixedConfig {
@@ -150,6 +154,9 @@ trait AppConfig extends FixedConfig {
   val welshToggleEnabled: Boolean
   val privateCitizenEnabled: Boolean
   val otherItemEnabled: Boolean
+  val en: Lang
+  val cy: Lang
+  val defaultLanguage: Lang
 }
 
 trait FixedConfig {

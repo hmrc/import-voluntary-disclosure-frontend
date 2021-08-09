@@ -32,6 +32,7 @@ import play.api.test.CSRFTokenHelper._
 import play.api.test.FakeRequest
 import repositories.{FileUploadRepository, SessionRepository}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, SessionKeys}
+import uk.gov.hmrc.play.language.LanguageUtils
 
 import scala.concurrent.duration.{Duration, FiniteDuration, _}
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -65,6 +66,8 @@ trait SpecBase extends PlaySpec
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
   lazy val messagesControllerComponents: MessagesControllerComponents = injector.instanceOf[MessagesControllerComponents]
+
+  lazy val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
 
   implicit lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit val messages: Messages = messagesApi.preferred(fakeRequest)

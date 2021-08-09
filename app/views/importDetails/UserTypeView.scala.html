@@ -31,7 +31,7 @@
     @formHelper(action = controllers.importDetails.routes.UserTypeController.onSubmit()) {
         @inputRadio(
             form = form,
-            legend = messages("userType.heading"),
+            legend = Some(messages("userType.heading")),
             items = UserType.options(form),
             inline = false,
             legendAsHeading = true

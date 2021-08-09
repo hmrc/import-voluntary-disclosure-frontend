@@ -18,7 +18,7 @@
 
 @(
     form: Form[_],
-    legend: String,
+    legend: Option[String],
     items: Seq[RadioItem],
     legendAsHeading: Boolean = true,
     hint: Option[Html] = None,
@@ -30,11 +30,13 @@
 
 @defining({
 
-    val defaultLegend = Some(Legend(
-        content = Text(messages(legend)),
-        isPageHeading = legendAsHeading,
-        classes = classes
-    ))
+    val defaultLegend = legend.map { legendText =>
+        Legend(
+            content = Text(messages(legendText)),
+            isPageHeading = legendAsHeading,
+            classes = classes
+        )
+    }
 
     customLegend.orElse(defaultLegend)
 

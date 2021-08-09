@@ -535,7 +535,7 @@ boxNumber.63.radio = Box 63 AWB or freight charges
 boxNumber.66.radio = Box 66 Insurance
 boxNumber.67.radio = Box 67 Other charges of deductions
 boxNumber.68.radio = Box 68 Adjustment for VAT value
-boxNumber.99.radio = Other reason
+
 
 # Amend Reason Values
 amendmentValue.originalAmount = Original value
@@ -629,13 +629,6 @@ box67.pageBody = Must be the currency code followed by the invoice price or the 
 box68.pageTitle = Box 68 adjustment for VAT value amendment
 box68.pageHeader = Box 68 adjustment for VAT value amendment
 box68.pageBody = Must be the currency code followed by the invoice price or the customs value, for example GBP871.12 or EUR2908946.
-box99.pageTitle = What was the reason for the underpayment?
-box99.pageHeader = What was the reason for the underpayment?
-
-# other reason errors
-otherReason.error.required = Enter the reason for the underpayment
-otherReason.error.maxLength = The reason for the underpayment must be 1500 characters or fewer
-otherReason.error.noEmoji = The reason for the underpayment must not include emojis
 
 # Check Your Answers
 cya.pageTitle = Check your answers before sending your disclosure
@@ -1031,7 +1024,3 @@ updateCase.disclosureClosed.p1 = We cannot add any information to this underpaym
 updateCase.disclosureClosed.p2.part1 = 'You can email us at '
 updateCase.disclosureClosed.p2.part2 = , including the additional information and the disclosure reference number {0}.
 
-# Private Citizen - Customs Declaration Page
-privateCitizen.customsDeclaration.title = Have you underpaid tax or duty on an import that was declared to customs?
-privateCitizen.customsDeclaration.heading = Have you underpaid tax or duty on an import that was declared to customs?
-privateCitizen.customsDeclaration.error.required = Select yes if you underpaid tax or duty on an import that was declared to customs

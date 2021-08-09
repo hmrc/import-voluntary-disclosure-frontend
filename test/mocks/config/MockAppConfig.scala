@@ -17,6 +17,7 @@
 package mocks.config
 
 import config.AppConfig
+import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 
 object MockAppConfig extends MockAppConfig(
@@ -28,12 +29,12 @@ object MockAppConfig extends MockAppConfig(
   welshToggleEnabled = true
 )
 
-class MockAppConfig(override val privateBetaAllowList: List[String],
-                    override val privateBetaAllowListEnabled: Boolean,
-                    override val updateCaseEnabled: Boolean,
-                    override val welshToggleEnabled: Boolean,
-                    override val privateCitizenEnabled: Boolean,
-                    override val otherItemEnabled: Boolean
+class MockAppConfig(override val privateBetaAllowList: List[String] = List.empty,
+                    override val privateBetaAllowListEnabled: Boolean = false,
+                    override val updateCaseEnabled: Boolean = false,
+                    override val welshToggleEnabled: Boolean = false,
+                    override val privateCitizenEnabled: Boolean = false,
+                    override val otherItemEnabled: Boolean = false
                    ) extends AppConfig {
   override val footerLinkItems: Seq[String] = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"
@@ -77,4 +78,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String],
 
   override val eccSubscribeUrl: String = "TBC"
   override val c2001Url: String = "TBC"
+  override val en: Lang = Lang("en")
+  override val cy: Lang = Lang("cy")
+  override val defaultLanguage: Lang = en
 }
