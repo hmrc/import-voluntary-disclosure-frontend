@@ -39,8 +39,7 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
-    val credId: Option[String] = request.session.get("credId")
-    getUserAnswers(credId.getOrElse("")).map { userAnswers =>
+    getUserAnswers(getCredId(request)).map { userAnswers =>
       val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
         formProvider().fill
       }
@@ -49,11 +48,10 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
   }
 
   def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
-    val credId: Option[String] = request.session.get("credId")
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value =>
-        getUserAnswers(credId.getOrElse("")).flatMap {
+        getUserAnswers(getCredId(request)).flatMap {
           case userAnswers: UserAnswers => for {
             updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
             _ <- sessionRepository.set(updatedAnswers)
@@ -70,6 +68,10 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
           case _ => Future.successful(errorHandler.showInternalServerError)
         }
     )
+  }
+
+  def getCredId(request: Request[_]): String = {
+    request.session.apply("credId")
   }
 
   def getUserAnswers(credId: String): Future[UserAnswers] = {
