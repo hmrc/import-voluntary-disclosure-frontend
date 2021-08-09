@@ -758,11 +758,13 @@ confirmReason.boxNumber = Box number
 confirmReason.itemNumber = Item number
 confirmReason.original = Original value
 confirmReason.amended = Amended value
+confirmReason.otherReason = Other reason
 confirmReason.change = Change
 confirmReason.box.change = Change box number
 confirmReason.item.change = Change item number
 confirmReason.values.original.change = Change original value
 confirmReason.values.amended.change = Change amended value
+confirmReason.values.otherReason.change = Change other reason
 
 # Underpayment Reason Summary
 underpaymentReasonSummary.pageTitle = Reason summary
