@@ -87,7 +87,7 @@ class CustomsDeclarationControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.serviceEntry.routes.IndividualHandoffController.onLoad().url)
       }
 
     }
