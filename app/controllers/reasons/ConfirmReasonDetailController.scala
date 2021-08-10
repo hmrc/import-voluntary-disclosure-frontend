@@ -150,9 +150,16 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
       )
     }
 
-    val rows = boxNumberSummaryListRow.getOrElse(Seq.empty) ++
-      itemNumberSummaryListRow.getOrElse(Seq.empty) ++
-      originalAmountSummaryListRow.getOrElse(Seq.empty)
+    val rows =
+      if (boxNumber == 99) {
+        userAnswers.get(UnderpaymentReasonAmendmentPage)
+          .map(value => otherReasonSummaryList(value.original))
+          .getOrElse(Seq.empty)
+      } else {
+        boxNumberSummaryListRow.getOrElse(Seq.empty) ++
+          itemNumberSummaryListRow.getOrElse(Seq.empty) ++
+          originalAmountSummaryListRow.getOrElse(Seq.empty)
+      }
 
     if (rows.nonEmpty) {
       Some(Seq(SummaryList(rows)))
@@ -162,4 +169,19 @@ class ConfirmReasonDetailController @Inject()(identify: IdentifierAction,
 
   }
 
+  private def otherReasonSummaryList(value: String)(implicit messages: Messages) =
+    Seq(
+      SummaryListRow(
+        key = Key(content = Text(messages("confirmReason.otherReason"))),
+        value = Value(content = HtmlContent(value)),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItemHelper.createChangeActionItem(
+              controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url,
+              messages("confirmReason.values.otherReason.change")
+            )
+          ))
+        )
+      )
+    )
 }
