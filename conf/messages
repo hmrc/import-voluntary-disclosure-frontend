@@ -1042,5 +1042,5 @@ privateCitizen.customsDeclaration.error.required = Select yes if you underpaid t
 privateCitizen.handOff.title = You cannot use this service
 privateCitizen.handOff.heading = You cannot use this service
 privateCitizen.handOff.p1 = This service can only be used where goods were originally declared to customs.
-privateCitizen.handOff.p2.1 = You need to contact us on the email address
-privateCitizen.handOff.p2.2 = and give brief details. We will take you through the process of paying the tax or duty that is owed.
+privateCitizen.handOff.p2.part1 = You need to contact us on the email address
+privateCitizen.handOff.p2.part2 = and give brief details. We will take you through the process of paying the tax or duty that is owed.
