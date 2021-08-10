@@ -416,3 +416,5 @@ GET         /language/:lang                                                     
 
 GET         /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onLoad()
 POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
+
+GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad

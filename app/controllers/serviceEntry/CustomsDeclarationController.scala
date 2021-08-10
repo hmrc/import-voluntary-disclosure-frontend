@@ -61,8 +61,7 @@ class CustomsDeclarationController @Inject()(sessionRepository: SessionRepositor
               Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
             }
             else {
-              // TODO - update when next page is developed
-              Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
+              Redirect(controllers.serviceEntry.routes.IndividualHandoffController.onLoad())
             }
           }
           case _ => Future.successful(errorHandler.showInternalServerError)
