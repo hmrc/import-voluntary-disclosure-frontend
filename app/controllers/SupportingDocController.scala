@@ -20,7 +20,7 @@ import config.AppConfig
 import controllers.actions._
 import models.UserAnswers
 import pages.FileUploadPage
-import pages.reasons.HasFurtherInformationPage
+import pages.reasons.{HasFurtherInformationPage, UnderpaymentReasonsPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -47,9 +47,14 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def backLink(userAnswers: UserAnswers): Call = {
-    userAnswers.get(HasFurtherInformationPage) match {
-      case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
-      case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
+    val reasons = userAnswers.get(UnderpaymentReasonsPage)
+    if (reasons.exists(_.exists(_.boxNumber == 99))) {
+      controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
+    } else {
+      userAnswers.get(HasFurtherInformationPage) match {
+        case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
+        case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
+      }
     }
   }
 }

@@ -57,11 +57,14 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
         )
       ),
       anotherReason => {
+        val reasons = request.userAnswers.get(UnderpaymentReasonsPage)
         if (anotherReason) {
           Future.successful(Redirect(controllers.reasons.routes.BoxNumberController.onLoad()))
         } else {
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+          } else if (reasons.exists(_.exists(_.boxNumber == 99))) {
+            Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.reasons.routes.HasFurtherInformationController.onLoad()))
           }
@@ -79,8 +82,17 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
       SummaryList(
         rows = for (underpayment <- sortedReasons) yield {
           val label = underpayment.boxNumber match {
-            case 99 => Text("Other reason")
+            case 99 => Text(messages("underpaymentReasonSummary.otherReason"))
             case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber}")
+          }
+          val hiddenLabel = underpayment.boxNumber match {
+            case 99 => messages("changeUnderpaymentReason.otherReason.change")
+            case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
+              "changeUnderpaymentReason.itemLevel.change",
+              underpayment.boxNumber,
+              underpayment.itemNumber
+            )
+            case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
           }
           SummaryListRow(
             key = Key(
@@ -102,14 +114,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                 items = Seq(
                   ActionItemHelper.createChangeActionItem(
                     changeAction(underpayment.boxNumber, underpayment.itemNumber).url,
-                    underpayment.boxNumber match {
-                      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
-                        "changeUnderpaymentReason.itemLevel.change",
-                        underpayment.boxNumber,
-                        underpayment.itemNumber
-                      )
-                      case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
-                    }
+                    hiddenLabel
                   )
                 ),
                 classes = "govuk-!-width-one-third"

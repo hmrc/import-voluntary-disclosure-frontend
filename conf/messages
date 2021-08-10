@@ -777,6 +777,7 @@ underpaymentReasonSummary.item = Item
 underpaymentReasonSummary.entryOrItem = Entry or item level
 underpaymentReasonSummary.radioMessage = Add another reason for the underpayment?
 underpaymentReasonSummary.error.required = Select yes to add another reason for the underpayment
+underpaymentReasonSummary.otherReason = Other reason
 
 # Has Further Information
 hasFurtherInformation.pageTitle = Do you want to tell us anything else about the underpayment?
@@ -894,6 +895,7 @@ changeUnderpaymentReason.values.original.change = Change original value
 changeUnderpaymentReason.values.amended.change = Change amended value
 changeUnderpaymentReason.itemLevel.change = Change box {0} item {1} reason for underpayment details
 changeUnderpaymentReason.entryLevel.change = Change box {0} reason for underpayment details
+changeUnderpaymentReason.otherReason.change = Change other reason for underpayment details
 
 # Remove Underpayment Reason Page
 removeUnderpaymentReason.pageTitle = Are you sure you want to remove this reason for underpayment?

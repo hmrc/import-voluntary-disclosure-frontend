@@ -88,6 +88,23 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad().url)
       }
 
+      "return a SEE OTHER on Other Reason selected" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(
+              UnderpaymentReasonsPage,
+              Seq(
+                UnderpaymentReason(boxNumber = 33, itemNumber = 15, original = "50", amended = "60"),
+                UnderpaymentReason(boxNumber = 99, original = "Other reason", amended = "")
+              )
+            ).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
+      }
+
     }
 
     "payload contains valid data when check mode is true" should {
