@@ -771,6 +771,10 @@ underpaymentReasonSummary.pageTitle = Reason summary
 underpaymentReasonSummary.pageHeader = You have added {0} reasons for the underpayment
 underpaymentReasonSummary.pageHeaderSingleReason = You have added 1 reason for the underpayment
 underpaymentReasonSummary.remove = Remove
+underpaymentReasonSummary.box = Box
+underpaymentReasonSummary.entryLevel = Entry level
+underpaymentReasonSummary.item = Item
+underpaymentReasonSummary.entryOrItem = Entry or item level
 underpaymentReasonSummary.radioMessage = Add another reason for the underpayment?
 underpaymentReasonSummary.error.required = Select yes to add another reason for the underpayment
 

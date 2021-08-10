@@ -18,6 +18,7 @@ package controllers.reasons
 
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
+import javax.inject.Inject
 import models.reasons.UnderpaymentReason
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.{I18nSupport, Messages}
@@ -28,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
 import views.html.reasons.UnderpaymentReasonSummaryView
 
-import javax.inject.Inject
 import scala.concurrent.Future
 
 class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
@@ -77,17 +77,25 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
-        rows = for (underpayment <- sortedReasons) yield
+        rows = for (underpayment <- sortedReasons) yield {
+          val label = underpayment.boxNumber match {
+            case 99 => Text("Other reason")
+            case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber}")
+          }
           SummaryListRow(
             key = Key(
-              content = Text("Box " + underpayment.boxNumber)
+              content = label
             ),
             value = Value(
-              content = if (underpayment.itemNumber == 0) {
-                HtmlContent("Entry level")
-              } else {
-                HtmlContent("Item " + underpayment.itemNumber)
-              }
+              content =
+                if (underpayment.boxNumber == 99) {
+                  HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
+                }
+                else if (underpayment.itemNumber == 0) {
+                  HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
+                } else {
+                  HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
+                }
             ),
             actions = Some(
               Actions(
@@ -108,6 +116,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
               )
             )
           )
+        }
       )
     }
   }
