@@ -16,8 +16,10 @@
 
 package controllers.reasons
 
+import config.AppConfig
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
+
 import javax.inject.Inject
 import models.reasons.UnderpaymentReason
 import pages.reasons.UnderpaymentReasonsPage
@@ -36,7 +38,8 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                     requireData: DataRequiredAction,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentReasonSummaryView,
-                                                    formProvider: UnderpaymentReasonSummaryFormProvider)
+                                                    formProvider: UnderpaymentReasonSummaryFormProvider,
+                                                    appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -57,13 +60,12 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
         )
       ),
       anotherReason => {
-        val reasons = request.userAnswers.get(UnderpaymentReasonsPage)
         if (anotherReason) {
           Future.successful(Redirect(controllers.reasons.routes.BoxNumberController.onLoad()))
         } else {
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
-          } else if (reasons.exists(_.exists(_.boxNumber == 99))) {
+          } else if (appConfig.otherItemEnabled) {
             Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.reasons.routes.HasFurtherInformationController.onLoad()))
