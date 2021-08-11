@@ -16,8 +16,11 @@
 
 package controllers.reasons
 
+import config.AppConfig
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
+
+import javax.inject.Inject
 import models.reasons.UnderpaymentReason
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.{I18nSupport, Messages}
@@ -28,7 +31,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
 import views.html.reasons.UnderpaymentReasonSummaryView
 
-import javax.inject.Inject
 import scala.concurrent.Future
 
 class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
@@ -36,7 +38,8 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
                                                     requireData: DataRequiredAction,
                                                     mcc: MessagesControllerComponents,
                                                     view: UnderpaymentReasonSummaryView,
-                                                    formProvider: UnderpaymentReasonSummaryFormProvider)
+                                                    formProvider: UnderpaymentReasonSummaryFormProvider,
+                                                    appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -62,6 +65,8 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
         } else {
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+          } else if (appConfig.otherItemEnabled) {
+            Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.reasons.routes.HasFurtherInformationController.onLoad()))
           }
@@ -77,37 +82,48 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
-        rows = for (underpayment <- sortedReasons) yield
+        rows = for (underpayment <- sortedReasons) yield {
+          val label = underpayment.boxNumber match {
+            case 99 => Text(messages("underpaymentReasonSummary.otherReason"))
+            case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber}")
+          }
+          val hiddenLabel = underpayment.boxNumber match {
+            case 99 => messages("changeUnderpaymentReason.otherReason.change")
+            case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
+              "changeUnderpaymentReason.itemLevel.change",
+              underpayment.boxNumber,
+              underpayment.itemNumber
+            )
+            case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
+          }
           SummaryListRow(
             key = Key(
-              content = Text("Box " + underpayment.boxNumber)
+              content = label
             ),
             value = Value(
-              content = if (underpayment.itemNumber == 0) {
-                HtmlContent("Entry level")
-              } else {
-                HtmlContent("Item " + underpayment.itemNumber)
-              }
+              content =
+                if (underpayment.boxNumber == 99) {
+                  HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
+                }
+                else if (underpayment.itemNumber == 0) {
+                  HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
+                } else {
+                  HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
+                }
             ),
             actions = Some(
               Actions(
                 items = Seq(
                   ActionItemHelper.createChangeActionItem(
                     changeAction(underpayment.boxNumber, underpayment.itemNumber).url,
-                    underpayment.boxNumber match {
-                      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
-                        "changeUnderpaymentReason.itemLevel.change",
-                        underpayment.boxNumber,
-                        underpayment.itemNumber
-                      )
-                      case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
-                    }
+                    hiddenLabel
                   )
                 ),
                 classes = "govuk-!-width-one-third"
               )
             )
           )
+        }
       )
     }
   }

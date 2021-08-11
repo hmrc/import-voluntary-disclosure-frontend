@@ -17,7 +17,9 @@
 package controllers
 
 import base.ControllerSpecBase
+import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
+import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, UserAnswers}
 import pages.FileUploadPage
@@ -34,8 +36,9 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
+    val testConfig = appConfig
     lazy val controller = new SupportingDocController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig)
+      messagesControllerComponents, dataRequiredAction, view, testConfig)
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val view = injector.instanceOf[SupportingDocView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
@@ -67,6 +70,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
   "Back link" should {
     "return to Has further information page if further information not required" in new Test {
+      override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(HasFurtherInformationPage, false).success.value
@@ -76,12 +80,18 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
     }
 
     "return to More information page if further information is required" in new Test {
+      override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(HasFurtherInformationPage, true).success.value
       )
 
       controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.MoreInformationController.onLoad()
+    }
+
+    "return to Underpayment Reason Summary if otherItemEnabled feature switch is on" in new Test {
+      override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
+      controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
     }
   }
 }

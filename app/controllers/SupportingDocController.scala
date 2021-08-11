@@ -47,9 +47,13 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
   }
 
   private[controllers] def backLink(userAnswers: UserAnswers): Call = {
-    userAnswers.get(HasFurtherInformationPage) match {
-      case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
-      case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
+    if (appConfig.otherItemEnabled) {
+      controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
+    } else {
+      userAnswers.get(HasFurtherInformationPage) match {
+        case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
+        case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
+      }
     }
   }
 }

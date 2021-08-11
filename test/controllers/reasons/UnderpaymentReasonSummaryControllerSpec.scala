@@ -17,8 +17,10 @@
 package controllers.reasons
 
 import base.ControllerSpecBase
+import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
+import mocks.config.MockAppConfig
 import models.UserAnswers
 import models.reasons.UnderpaymentReason
 import pages.CheckModePage
@@ -35,6 +37,8 @@ import scala.concurrent.Future
 class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
   trait Test {
+
+    val testConfig = appConfig
     private lazy val view: UnderpaymentReasonSummaryView = app.injector.instanceOf[UnderpaymentReasonSummaryView]
     private lazy val formProvider: UnderpaymentReasonSummaryFormProvider = app.injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
 
@@ -52,7 +56,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new UnderpaymentReasonSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, view, formProvider)
+      messagesControllerComponents, view, formProvider, testConfig)
   }
 
   "GET onLoad" when {
@@ -82,10 +86,19 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       }
 
       "return a SEE OTHER on no" in new Test {
+        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad().url)
+      }
+
+      "return a SEE OTHER on Other Reason feature switch enabled" in new Test {
+        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
       }
 
     }

@@ -35,7 +35,8 @@ object UnderpaymentReasonSummaryData {
   val multipleItemReason: Option[Seq[UnderpaymentReason]] = Some(
     Seq(
       UnderpaymentReason(22, 0, "50", "60"),
-      UnderpaymentReason(33, 1, "50", "60")
+      UnderpaymentReason(33, 1, "50", "60"),
+      UnderpaymentReason(99, 0, "Other reason", "")
     )
   )
 
@@ -103,6 +104,26 @@ object UnderpaymentReasonSummaryData {
                   changeAction(boxNumber = 33, itemNumber = 1).url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some("Change box 33 item 1 reason for underpayment details")
+                )
+              ),
+              classes = "govuk-!-width-one-third"
+            )
+          )
+        ),
+        SummaryListRow(
+          key = Key(
+            content = Text("Other reason")
+          ),
+          value = Value(
+            HtmlContent("Entry or item level")
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  changeAction(boxNumber = 99, itemNumber = 0).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change other reason for underpayment details")
                 )
               ),
               classes = "govuk-!-width-one-third"
