@@ -88,13 +88,13 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
             case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber}")
           }
           val hiddenLabel = underpayment.boxNumber match {
-            case 99 => messages("changeUnderpaymentReason.otherReason.change")
+            case 99 => messages("underpaymentReasonSummary.otherReason.change")
             case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
-              "changeUnderpaymentReason.itemLevel.change",
+              "underpaymentReasonSummary.itemLevel.change",
               underpayment.boxNumber,
               underpayment.itemNumber
             )
-            case _ => messages("changeUnderpaymentReason.entryLevel.change", underpayment.boxNumber)
+            case _ => messages("underpaymentReasonSummary.entryLevel.change", underpayment.boxNumber)
           }
           SummaryListRow(
             key = Key(

@@ -33,6 +33,11 @@ object ChangeUnderpaymentReasonData {
     changed = UnderpaymentReason(35, 1, "50", "60")
   )
 
+  val otherItemReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
+    original = UnderpaymentReason(99, 0, "Other reason", ""),
+    changed = UnderpaymentReason(99, 0, "Other reason changed", "")
+  )
+
   val singleEntryLevelReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
     original = UnderpaymentReason(22, 0, "50", "60"),
     changed = UnderpaymentReason(22, 0, "50", "60")
@@ -132,6 +137,31 @@ object ChangeUnderpaymentReasonData {
           ),
           value = Value(
             HtmlContent("60")
+          )
+        )
+      )
+    )
+
+  def otherItemSummaryList(): SummaryList =
+    SummaryList(
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text("Other reason")
+          ),
+          value = Value(
+            HtmlContent("Other reason")
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  changeDetailsAction(99).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some("Change other reason")
+                )
+              )
+            )
           )
         )
       )

@@ -20,14 +20,14 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call, summaryList: SummaryList, boxNumber: Int)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, summaryList: SummaryList, heading: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("changeUnderpaymentReason.heading", boxNumber),
+    pageTitle = heading,
     customBackLinkUrl = Some(backLink)
 ) {
 
-    @h1(messages("changeUnderpaymentReason.heading", boxNumber))
+    @h1(heading)
 
     @govukSummaryList(summaryList)
 

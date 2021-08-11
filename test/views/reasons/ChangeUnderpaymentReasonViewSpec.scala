@@ -34,7 +34,8 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
   "Rendering the ChangeUnderpaymentReasonView page" when {
     "showing underpayment with item number" should {
 
-      lazy val view: Html = injectedView(backLink, summaryList(22), singleItemReason.original.boxNumber)(fakeRequest, messages)
+      val heading = messages("changeUnderpaymentReason.heading", singleItemReason.original.boxNumber)
+      lazy val view: Html = injectedView(backLink, summaryList(22), heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber))
@@ -94,7 +95,8 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment without item number" should {
 
-      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), singleEntryLevelReason.original.boxNumber)(fakeRequest, messages)
+      val heading = messages("changeUnderpaymentReason.heading", singleEntryLevelReason.original.boxNumber)
+      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber))
@@ -132,11 +134,43 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
       }
     }
 
+    "showing underpayment for Other Item" should {
+
+      lazy val view: Html = injectedView(backLink, otherItemSummaryList(), messages("changeUnderpaymentReason.otherReasonHeading"))(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      checkPageTitle(ChangeUnderpaymentReasonMessages.otherItemTitle)
+
+      "have correct heading" in {
+        document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.otherItemTitle
+      }
+
+      "have only 1 Summary List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have correct original amount title" in {
+        document.select(".govuk-summary-list__key").eachText.get(0) mustBe ChangeUnderpaymentReasonMessages.otherItem
+      }
+
+      "have correct original amount value" in {
+        document.select(".govuk-summary-list__value").eachText.get(0) mustBe otherItemReason.original.original
+      }
+
+      "have correct Change link" in {
+        document.select(".govuk-summary-list__actions").eachText.get(0).trim mustBe
+          ChangeUnderpaymentReasonMessages.change + " " + ChangeUnderpaymentReasonMessages.otherReasonChange
+
+        document.select(".govuk-summary-list__actions > a").eachAttr("href").get(0) mustBe
+          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url
+      }
+    }
+
   }
 
   it should {
 
-    lazy val view: Html = injectedView(backLink, summaryList(22), singleItemReason.original.boxNumber)(fakeRequest, messages)
+    lazy val view: Html = injectedView(backLink, summaryList(22), messages("changeUnderpaymentReason.heading", 22))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {
