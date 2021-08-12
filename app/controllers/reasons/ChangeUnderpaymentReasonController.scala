@@ -47,7 +47,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
-      case Some(reason) => Future.successful(Ok(view(backLink, summaryList(reason.original), pageHeading(reason))))
+      case Some(reason) => Future.successful(Ok(view(backLink, summaryList(reason.original), pageTitle(reason), pageHeading(reason))))
       case _ => Future.successful(InternalServerError("No change underpayment reasons found"))
     }
   }
@@ -137,6 +137,13 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
         ))
       )
     )
+
+  private def pageTitle(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
+    if (reason.original.boxNumber == 99) {
+      messages("changeUnderpaymentReason.otherReasonTitle")
+    } else {
+      messages("changeUnderpaymentReason.pageTitle", reason.original.boxNumber)
+    }
 
   private def pageHeading(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
     if (reason.original.boxNumber == 99) {

@@ -34,8 +34,9 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
   "Rendering the ChangeUnderpaymentReasonView page" when {
     "showing underpayment with item number" should {
 
+      val title = messages("changeUnderpaymentReason.pageTitle", singleItemReason.original.boxNumber)
       val heading = messages("changeUnderpaymentReason.heading", singleItemReason.original.boxNumber)
-      lazy val view: Html = injectedView(backLink, summaryList(22), heading)(fakeRequest, messages)
+      lazy val view: Html = injectedView(backLink, summaryList(22), title, heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber))
@@ -95,8 +96,9 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment without item number" should {
 
+      val title = messages("changeUnderpaymentReason.pageTitle", singleEntryLevelReason.original.boxNumber)
       val heading = messages("changeUnderpaymentReason.heading", singleEntryLevelReason.original.boxNumber)
-      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), heading)(fakeRequest, messages)
+      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), title, heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber))
@@ -136,7 +138,9 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment for Other Item" should {
 
-      lazy val view: Html = injectedView(backLink, otherItemSummaryList(), messages("changeUnderpaymentReason.otherReasonHeading"))(fakeRequest, messages)
+      val title = messages("changeUnderpaymentReason.otherReasonTitle")
+      val heading = messages("changeUnderpaymentReason.otherReasonHeading")
+      lazy val view: Html = injectedView(backLink, otherItemSummaryList(), title, heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ChangeUnderpaymentReasonMessages.otherItemTitle)
@@ -170,7 +174,9 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(backLink, summaryList(22), messages("changeUnderpaymentReason.heading", 22))(fakeRequest, messages)
+    val title =messages("changeUnderpaymentReason.pageTitle", 22)
+    val heading = messages("changeUnderpaymentReason.heading", 22)
+    lazy val view: Html = injectedView(backLink, summaryList(22),  title, heading)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {

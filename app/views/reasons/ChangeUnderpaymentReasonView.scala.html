@@ -20,10 +20,10 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call, summaryList: SummaryList, heading: String)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, summaryList: SummaryList, title: String, heading: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = heading,
+    pageTitle = title,
     customBackLinkUrl = Some(backLink)
 ) {
 

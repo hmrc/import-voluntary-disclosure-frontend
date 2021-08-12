@@ -886,6 +886,8 @@ repImportVat.pageTitle = Deferment account details for the import VAT owed
 repImportVat.heading = Deferment account details for the import VAT owed
 
 # Change Underpayment Reason Page
+changeUnderpaymentReason.pageTitle = Change box {0} of the reason for underpayment
+changeUnderpaymentReason.otherReasonTitle = Change other reason for underpayment
 changeUnderpaymentReason.heading = Change box {0} of the reason for underpayment
 changeUnderpaymentReason.otherReasonHeading = Change other reason for underpayment
 changeUnderpaymentReason.removeLink = Remove this reason for underpayment
