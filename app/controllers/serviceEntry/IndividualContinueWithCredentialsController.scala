@@ -16,56 +16,62 @@
 
 package controllers.serviceEntry
 
-import config.ErrorHandler
-import forms.serviceEntry.CustomsDeclarationFormProvider
+import config.{AppConfig, ErrorHandler}
+import forms.serviceEntry.IndividualContinueWithCredentialsFormProvider
 import models.UserAnswers
-import pages.serviceEntry.CustomsDeclarationPage
+import pages.serviceEntry.IndividualContinueWithCredentialsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.serviceEntry.CustomsDeclarationView
+import views.html.serviceEntry.IndividualContinueWithCredentialsView
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-@Singleton
-class CustomsDeclarationController @Inject()(sessionRepository: SessionRepository,
-                                             mcc: MessagesControllerComponents,
-                                             formProvider: CustomsDeclarationFormProvider,
-                                             view: CustomsDeclarationView,
-                                             val errorHandler: ErrorHandler,
-                                             implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class IndividualContinueWithCredentialsController @Inject()(sessionRepository: SessionRepository,
+                                                            mcc: MessagesControllerComponents,
+                                                            view: IndividualContinueWithCredentialsView,
+                                                            formProvider: IndividualContinueWithCredentialsFormProvider,
+                                                            appConfig: AppConfig,
+                                                            val errorHandler: ErrorHandler,
+                                                            implicit val ec: ExecutionContext
+                                                           ) extends FrontendController(mcc) with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
     getUserAnswers(getCredId(request)).map { userAnswers =>
-      val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
+      val form = userAnswers.get(IndividualContinueWithCredentialsPage).fold(formProvider()) {
         formProvider().fill
       }
-      Ok(view(form))
+      Ok(view(form, backLink()))
     }
   }
 
   def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
+    println("££££££££££££££££££££££££££££££")
+    println(formProvider().bindFromRequest().get)
+
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value =>
         getUserAnswers(getCredId(request)).flatMap {
           case userAnswers: UserAnswers => for {
-            updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
+            updatedAnswers <- Future.fromTry(userAnswers.set(IndividualContinueWithCredentialsPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
             if (value) {
-              Redirect(controllers.serviceEntry.routes.IndividualContinueWithCredentialsController.onLoad())
-            }
-            else {
-              Redirect(controllers.serviceEntry.routes.IndividualHandoffController.onLoad())
+              Redirect(appConfig.eccSubscribeUrl)
+            } else {
+              Redirect(controllers.routes.SignOutController.signOut())
             }
           }
           case _ => Future.successful(errorHandler.showInternalServerError)
         }
     )
+  }
+
+  private[serviceEntry] def backLink(): Option[Call] = {
+    Some(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
   }
 
   def getCredId(request: Request[_]): String = {
