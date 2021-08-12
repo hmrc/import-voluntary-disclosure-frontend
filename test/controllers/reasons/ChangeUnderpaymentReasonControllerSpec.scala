@@ -104,6 +104,10 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       "produce summary list with one item" in new Test {
         controller.summaryList(ChangeUnderpaymentReasonData.singleItemReason.original) mustBe ChangeUnderpaymentReasonData.summaryList(35)
       }
+
+      "produce summary list with Other Item" in new Test {
+        controller.summaryList(ChangeUnderpaymentReasonData.otherItemReason.original) mustBe ChangeUnderpaymentReasonData.otherItemSummaryList()
+      }
     }
 
   }

@@ -47,7 +47,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
-      case Some(reason) => Future.successful(Ok(view(backLink, summaryList(reason.original), reason.original.boxNumber)))
+      case Some(reason) => Future.successful(Ok(view(backLink, summaryList(reason.original), pageTitle(reason), pageHeading(reason))))
       case _ => Future.successful(InternalServerError("No change underpayment reasons found"))
     }
   }
@@ -117,8 +117,38 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
       )
     )
 
-    SummaryList(itemNumberSummaryListRow ++ originalAmountSummaryListRow)
+    if (underpaymentReason.boxNumber == 99) {
+      SummaryList(Seq(otherReasonSummary(underpaymentReason.original)))
+    } else {
+      SummaryList(itemNumberSummaryListRow ++ originalAmountSummaryListRow)
+    }
   }
 
+  private def otherReasonSummary(value: String)(implicit messages: Messages): SummaryListRow =
+    SummaryListRow(
+      key = Key(content = Text(messages("changeUnderpaymentReason.otherReason"))),
+      value = Value(content = HtmlContent(value)),
+      actions = Some(Actions(
+        items = Seq(
+          ActionItemHelper.createChangeActionItem(
+            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
+            messages("changeUnderpaymentReason.values.otherReason.change")
+          )
+        ))
+      )
+    )
 
+  private def pageTitle(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
+    if (reason.original.boxNumber == 99) {
+      messages("changeUnderpaymentReason.otherReasonTitle")
+    } else {
+      messages("changeUnderpaymentReason.pageTitle", reason.original.boxNumber)
+    }
+
+  private def pageHeading(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
+    if (reason.original.boxNumber == 99) {
+      messages("changeUnderpaymentReason.otherReasonHeading")
+    } else {
+      messages("changeUnderpaymentReason.heading", reason.original.boxNumber)
+    }
 }
