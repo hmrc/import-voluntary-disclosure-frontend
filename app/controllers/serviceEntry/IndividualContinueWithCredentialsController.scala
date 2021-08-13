@@ -48,9 +48,6 @@ class IndividualContinueWithCredentialsController @Inject()(sessionRepository: S
   }
 
   def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
-    println("££££££££££££££££££££££££££££££")
-    println(formProvider().bindFromRequest().get)
-
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value =>
