@@ -21,15 +21,15 @@
         button: components.button
 )
 
-@(changeReason: SummaryList, boxNumber: Int)(implicit request: Request[_], messages: Messages)
+@(changeReason: SummaryList, pageTitle: String, heading: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("confirmChangeReason.pageTitle", boxNumber),
+    pageTitle = pageTitle,
     customBackLinkUrl = None,
     showBackLink = false
 ) {
 
-    @h1(messages("confirmChangeReason.heading", boxNumber))
+    @h1(heading)
 
     @govukSummaryList(changeReason)
 

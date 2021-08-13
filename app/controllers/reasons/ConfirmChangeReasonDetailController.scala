@@ -48,7 +48,7 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
       reason.original.boxNumber
     }
     val summary = summaryList(request.userAnswers, boxNumber)
-    Future.successful(Ok(view(summary, boxNumber)))
+    Future.successful(Ok(view(summary, pageTitle(boxNumber), pageHeading(boxNumber))))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -138,7 +138,45 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
       case _ => Seq.empty
     }
 
-    SummaryList(itemNumberSummaryListRow ++ originalAmountSummaryListRow)
+    val rows =
+      if (boxNumber == 99) {
+        userAnswers.get(ChangeUnderpaymentReasonPage)
+          .map(value => otherReasonSummaryList(value.changed.original))
+          .getOrElse(Seq.empty)
+      } else {
+        itemNumberSummaryListRow ++ originalAmountSummaryListRow
+      }
+
+    SummaryList(rows)
   }
 
+  private def otherReasonSummaryList(value: String)(implicit messages: Messages) =
+    Seq(
+      SummaryListRow(
+        key = Key(content = Text(messages("confirmReason.otherReason"))),
+        value = Value(content = HtmlContent(value)),
+        actions = Some(Actions(
+          items = Seq(
+            ActionItemHelper.createChangeActionItem(
+              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
+              messages("confirmReason.values.otherReason.change")
+            )
+          ))
+        )
+      )
+    )
+
+  private def pageTitle(boxNumber: Int)(implicit messages: Messages): String =
+    if (boxNumber == 99) {
+      messages("confirmChangeReason.otherReason.title")
+    } else {
+      messages("confirmChangeReason.pageTitle", boxNumber)
+    }
+
+  private def pageHeading(boxNumber: Int)(implicit messages: Messages): String =
+    if (boxNumber == 99) {
+      messages("confirmChangeReason.otherReason.heading")
+    } else {
+      messages("confirmChangeReason.heading", boxNumber)
+    }
 }

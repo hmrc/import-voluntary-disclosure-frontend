@@ -21,7 +21,7 @@ import messages.{ConfirmChangeReasonDetailMessages, ConfirmReasonDetailMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.data.reasons.ConfirmChangeReasonData.reasons
+import views.data.reasons.ConfirmChangeReasonData.{otherItemReasons, reasons}
 import views.html.reasons.ConfirmChangeReasonDetailView
 
 class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
@@ -31,7 +31,9 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Change Reason Detail page" when {
     "when an item level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), 33)(fakeRequest, messages)
+      val pageTitle = messages("confirmChangeReason.pageTitle", 33)
+      val pageHeading = messages("confirmChangeReason.heading", 33)
+      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), pageTitle, pageHeading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -96,7 +98,9 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Change Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22)(fakeRequest, messages)
+      val pageTitle = messages("confirmChangeReason.pageTitle", 22)
+      val pageHeading = messages("confirmChangeReason.heading", 22)
+      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), pageTitle, pageHeading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -139,11 +143,45 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
           controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(22).url
       }
     }
+
+    "when Other Item is selected" should {
+
+      val pageTitle = messages("confirmChangeReason.otherReason.title")
+      val pageHeading = messages("confirmChangeReason.otherReason.heading")
+      lazy val view: Html = injectedView(otherItemReasons("Other reason"), pageTitle, pageHeading)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have only 1 Summary List" in {
+        document.select(".govuk-summary-list").size mustBe 1
+      }
+
+      "have 1 Summary List Row" in {
+        document.select(".govuk-summary-list__row").size mustBe 1
+      }
+
+      "have correct Other reason title" in {
+        elementText("#main-content > div > div > dl > div:nth-child(1) > dt") mustBe ConfirmReasonDetailMessages.otherReason
+      }
+
+      "have correct Other reason value" in {
+        elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__value") mustBe "Other reason"
+      }
+
+      "have correct Change link " in {
+        elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
+          ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.otherReasonChange
+
+        document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url
+      }
+    }
   }
 
   it should {
 
-    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), 22)(fakeRequest, messages)
+    val pageTitle = messages("confirmChangeReason.pageTitle", 22)
+    val pageHeading = messages("confirmChangeReason.heading", 22)
+    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), pageTitle, pageHeading)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmChangeReasonDetailMessages.title(22))

@@ -82,6 +82,19 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
       val expectedResult = ConfirmChangeReasonData.reasons(33, Some(2), "1806321001", "2204109400X412")
       result mustBe expectedResult
     }
+
+    "produce correct summary list for Other Item" in new Test {
+      val result = controller.summaryList(UserAnswers("some-cred-id")
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
+          underpayment(box = 99, original = "Other reason", amended = ""),
+          underpayment(box = 99, original = "New other reason", amended = ""),
+        )).success.value,
+        boxNumber = 99
+      )
+
+      val expectedResult = ConfirmChangeReasonData.otherItemReasons("New other reason")
+      result mustBe expectedResult
+    }
   }
 
   "POST onSubmit" when {
