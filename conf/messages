@@ -1055,3 +1055,12 @@ privateCitizen.handOff.heading = You cannot use this service
 privateCitizen.handOff.p1 = This service can only be used where goods were originally declared to customs.
 privateCitizen.handOff.p2.part1 = You need to contact us on the email address
 privateCitizen.handOff.p2.part2 = and give brief details. We will take you through the process of paying the tax or duty that is owed.
+
+# Private Citizen - Continue with the current creds
+privateCitizen.continueWithCreds.title = Are you sure you want to use this Government Gateway user ID to set up access to the service?
+privateCitizen.continueWithCreds.heading = Are you sure you want to use this Government Gateway user ID to set up access to the service?
+privateCitizen.continueWithCreds.legend = Ensure you have signed in with the Government Gateway user ID you use for your business.
+privateCitizen.continueWithCreds.yesMessage = Yes I want to use this user ID to set up access
+privateCitizen.continueWithCreds.noMessage = No I want to sign in with a different user ID
+privateCitizen.continueWithCreds.error.required = Select yes if you want to use this user ID to set up access
+

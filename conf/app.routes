@@ -418,3 +418,6 @@ GET         /import-declaration-exists                                          
 POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
 
 GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad
+
+GET         /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
+POST        /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
