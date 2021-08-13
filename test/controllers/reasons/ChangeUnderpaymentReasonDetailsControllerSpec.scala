@@ -27,7 +27,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.reasons.{CurrencyAmendmentView, TextAmendmentView, WeightAmendmentView}
+import views.html.reasons._
 
 import scala.concurrent.Future
 
@@ -57,11 +57,13 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       textAmendmentView,
       weightAmendmentView,
       currencyAmendmentView,
+      otherReasonAmendmentView,
       ec
     )
-    lazy val textAmendmentView = app.injector.instanceOf[TextAmendmentView]
-    lazy val weightAmendmentView = app.injector.instanceOf[WeightAmendmentView]
-    lazy val currencyAmendmentView = app.injector.instanceOf[CurrencyAmendmentView]
+    lazy val textAmendmentView: TextAmendmentView = app.injector.instanceOf[TextAmendmentView]
+    lazy val weightAmendmentView: WeightAmendmentView = app.injector.instanceOf[WeightAmendmentView]
+    lazy val currencyAmendmentView: CurrencyAmendmentView = app.injector.instanceOf[CurrencyAmendmentView]
+    lazy val otherReasonAmendmentView: OtherReasonAmendmentView = app.injector.instanceOf[OtherReasonAmendmentView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("some-cred-id")
@@ -255,6 +257,29 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
       s"route for box 0" in new Test {
         val result = intercept[RuntimeException](
           controller.routeToView(0, 1, form.apply(0))(fakeRequest)
+        )
+        assert(result.getMessage.contains("Invalid Box Number"))
+      }
+    }
+  }
+
+  "routeToView for other reason Amendment" when {
+    def checkRoute(boxNumber: Int, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
+      s"render the view using the otherReasonAmendmentView for box ${boxNumber}" in new Test {
+        val formAction = controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber)
+        val result = controller.routeToView(boxNumber, itemNumber, form.apply(boxNumber))(fakeRequest)
+        result mustBe otherReasonAmendmentView(form.apply(boxNumber), formAction, boxNumber, itemNumber, back, inputClass = expectedInputClass)(fakeRequest, messages)
+      }
+    }
+
+    "called with entry level box 99" should {
+      checkRoute(99, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+    }
+
+    "called with an invalid box number" should {
+      s"route for box 0" in new Test {
+        val result = intercept[RuntimeException](
+          controller.routeToView(0, 0, form.apply(0))(fakeRequest)
         )
         assert(result.getMessage.contains("Invalid Box Number"))
       }
