@@ -61,13 +61,7 @@ class RemoveUnderpaymentReasonController @Inject()(identify: IdentifierAction,
     val changeReason = getChangeReason(request.userAnswers)
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(
-        BadRequest(
-          view(
-            formWithErrors,
-            backLink,
-            changeReason.boxNumber,
-            changeReason.itemNumber)
-        )
+        BadRequest(view(formWithErrors, backLink, changeReason.boxNumber, changeReason.itemNumber))
       ),
       value => {
         if (value) {
