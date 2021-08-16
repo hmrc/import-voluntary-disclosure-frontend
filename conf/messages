@@ -910,6 +910,8 @@ removeUnderpaymentReason.error.required = Select yes to remove this reason for u
 # Confirm Change Reason Details
 confirmChangeReason.pageTitle = Confirm the changes to box {0} reason for underpayment
 confirmChangeReason.heading = Confirm the changes to box {0} reason for underpayment
+confirmChangeReason.otherReason.title = Confirm the changes to the reason for underpayment
+confirmChangeReason.otherReason.heading = Confirm the changes to the reason for underpayment
 
 # Upload Authority page
 uploadAuthority.pageTitle = Upload proof of authority to use this deferment account
