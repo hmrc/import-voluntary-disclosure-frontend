@@ -231,7 +231,8 @@ trait SubmissionServiceTestJson {
 
   val otherReasonJson =
     """{
-      |   "additionalInfo":"This is a other reason"
+      |   "additionalInfo":"This is a other reason",
+      |   "amendedItems": []
       |}""".stripMargin
 
 
