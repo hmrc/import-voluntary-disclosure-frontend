@@ -190,8 +190,8 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
       elementText("h1") mustBe ConfirmChangeReasonDetailMessages.h1(22)
     }
 
-    s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe ConfirmChangeReasonDetailMessages.continue
+    s"have the correct Confirm button" in {
+      elementText(".govuk-button") mustBe ConfirmChangeReasonDetailMessages.confirm
     }
 
   }
