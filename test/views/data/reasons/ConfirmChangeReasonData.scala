@@ -92,4 +92,27 @@ object ConfirmChangeReasonData {
     SummaryList(
       itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue, box)
     )
+
+  def otherItemReasons(value: String): SummaryList =
+    SummaryList(
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(ConfirmReasonDetailMessages.otherReason),
+          ),
+          value = Value(
+            content = HtmlContent(value)
+          ),
+          actions = Some(Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.otherReasonChange)
+              )
+            )
+          ))
+        )
+      )
+    )
 }

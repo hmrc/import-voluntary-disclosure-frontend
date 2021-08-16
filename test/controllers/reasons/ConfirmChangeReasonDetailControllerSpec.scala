@@ -18,6 +18,7 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import messages.ConfirmChangeReasonDetailMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
@@ -80,6 +81,19 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
       )
 
       val expectedResult = ConfirmChangeReasonData.reasons(33, Some(2), "1806321001", "2204109400X412")
+      result mustBe expectedResult
+    }
+
+    "produce correct summary list for Other Item" in new Test {
+      val result = controller.summaryList(UserAnswers("some-cred-id")
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
+          underpayment(box = 99, original = "Other reason", amended = ""),
+          underpayment(box = 99, original = "New other reason", amended = ""),
+        )).success.value,
+        boxNumber = 99
+      )
+
+      val expectedResult = ConfirmChangeReasonData.otherItemReasons("New other reason")
       result mustBe expectedResult
     }
   }
@@ -149,6 +163,22 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
           val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
           result mustBe SummaryList(Seq.empty)
         }
+      }
+    }
+  }
+
+  "title and heading" when {
+    "Other Item is selected" should {
+      "render dedicated messages" in new Test {
+        controller.pageTitle(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonTitle
+        controller.pageHeading(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonHeading
+      }
+    }
+
+    "Other Item is not selected" should {
+      "render regular messages" in new Test {
+        controller.pageTitle(33) mustBe ConfirmChangeReasonDetailMessages.title(33)
+        controller.pageHeading(33) mustBe ConfirmChangeReasonDetailMessages.heading(33)
       }
     }
   }
