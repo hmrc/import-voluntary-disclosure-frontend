@@ -166,14 +166,14 @@ class ConfirmChangeReasonDetailController @Inject()(identify: IdentifierAction,
       )
     )
 
-  private def pageTitle(boxNumber: Int)(implicit messages: Messages): String =
+  private[controllers] def pageTitle(boxNumber: Int)(implicit messages: Messages): String =
     if (boxNumber == 99) {
       messages("confirmChangeReason.otherReason.title")
     } else {
       messages("confirmChangeReason.pageTitle", boxNumber)
     }
 
-  private def pageHeading(boxNumber: Int)(implicit messages: Messages): String =
+  private[controllers] def pageHeading(boxNumber: Int)(implicit messages: Messages): String =
     if (boxNumber == 99) {
       messages("confirmChangeReason.otherReason.heading")
     } else {

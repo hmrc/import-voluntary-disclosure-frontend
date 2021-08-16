@@ -18,6 +18,7 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import messages.ConfirmChangeReasonDetailMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
@@ -162,6 +163,22 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
           val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
           result mustBe SummaryList(Seq.empty)
         }
+      }
+    }
+  }
+
+  "title and heading" when {
+    "Other Item is selected" should {
+      "render dedicated messages" in new Test {
+        controller.pageTitle(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonTitle
+        controller.pageHeading(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonHeading
+      }
+    }
+
+    "Other Item is not selected" should {
+      "render regular messages" in new Test {
+        controller.pageTitle(33) mustBe ConfirmChangeReasonDetailMessages.title(33)
+        controller.pageHeading(33) mustBe ConfirmChangeReasonDetailMessages.heading(33)
       }
     }
   }

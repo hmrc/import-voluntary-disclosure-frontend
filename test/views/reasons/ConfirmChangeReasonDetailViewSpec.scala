@@ -31,9 +31,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Change Reason Detail page" when {
     "when an item level box is selected" should {
 
-      val pageTitle = messages("confirmChangeReason.pageTitle", 33)
-      val pageHeading = messages("confirmChangeReason.heading", 33)
-      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), pageTitle, pageHeading)(fakeRequest, messages)
+      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), "title", "heading")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -98,9 +96,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Change Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      val pageTitle = messages("confirmChangeReason.pageTitle", 22)
-      val pageHeading = messages("confirmChangeReason.heading", 22)
-      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), pageTitle, pageHeading)(fakeRequest, messages)
+      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title", "heading")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -146,9 +142,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
     "when Other Item is selected" should {
 
-      val pageTitle = messages("confirmChangeReason.otherReason.title")
-      val pageHeading = messages("confirmChangeReason.otherReason.heading")
-      lazy val view: Html = injectedView(otherItemReasons("Other reason"), pageTitle, pageHeading)(fakeRequest, messages)
+      lazy val view: Html = injectedView(otherItemReasons("Other reason"), "title", "heading")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -179,16 +173,8 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val pageTitle = messages("confirmChangeReason.pageTitle", 22)
-    val pageHeading = messages("confirmChangeReason.heading", 22)
-    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), pageTitle, pageHeading)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title", "heading")(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
-
-    checkPageTitle(ConfirmChangeReasonDetailMessages.title(22))
-
-    s"have the correct h1 of '${ConfirmChangeReasonDetailMessages.h1(22)}'" in {
-      elementText("h1") mustBe ConfirmChangeReasonDetailMessages.h1(22)
-    }
 
     s"have the correct Confirm button" in {
       elementText(".govuk-button") mustBe ConfirmChangeReasonDetailMessages.confirm
