@@ -16,7 +16,7 @@
 
 package controllers.reasons
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
 import models.UserAnswers
 import models.reasons.UnderpaymentReason
@@ -93,7 +93,11 @@ class RemoveUnderpaymentReasonController @Inject()(identify: IdentifierAction,
             case _ => Future.successful(InternalServerError("Invalid sequence of reasons"))
           }
         } else {
-          Future.successful(Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+          if (changeReason.boxNumber == 99) {
+            Future.successful(Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()))
+          } else {
+            Future.successful(Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+          }
         }
       }
     )

@@ -103,6 +103,19 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
       }
 
+      "redirect to Reason Underpayment Summary page when not removing other reason" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
+          .set(UnderpaymentReasonsPage, Seq(underpaymentReason(boxNumber = 99, itemNumber = 0))).success.value
+          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
+            original = underpaymentReason(boxNumber = 99, itemNumber = 0),
+            changed = underpaymentReason(boxNumber = 99, itemNumber = 0))
+          ).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("false")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+      }
+
       "redirect to Box Guidance page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
           .set(UnderpaymentReasonsPage, Seq(
