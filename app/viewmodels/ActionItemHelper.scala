@@ -30,6 +30,14 @@ object ActionItemHelper {
     )
   }
 
+  def createDeleteActionItem(url: String, accessibilityMessage: String)(implicit messages: Messages): ActionItem = {
+    ActionItem(
+      url,
+      HtmlContent(s"""<span aria-hidden="true">${messages("common.remove")}</span>"""),
+      Some(accessibilityMessage)
+    )
+  }
+
   def createViewSummaryActionItem(url: String, accessibilityMessage: String)(implicit messages: Messages): ActionItem = {
     ActionItem(
       url,

@@ -19,35 +19,33 @@
 @this(
         layout: templates.Layout,
         h1: components.h1,
-        addToList: components.addToList,
         p: components.p,
         bullets: components.bullets,
         button: components.button,
         yesNoRadio: components.yesNoRadio,
         errorSummary: components.errorSummary,
-        formHelper: FormWithCSRF
+        formHelper: FormWithCSRF,
+        govukSummaryList: GovukSummaryList
 )
 
-@(form: Form[_], answers: Seq[AddToListRow], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], files: SummaryList, optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], messages: Messages)
 
 @singularFile = @{
-    if(answers.size == 1) "file" else "files"
+    if(files.rows.length == 1) "file" else "files"
 }
 
 @layout(
-    pageTitle = messages("uploadAnotherFile.pageTitle", answers.size, singularFile),
+    pageTitle = messages("uploadAnotherFile.pageTitle", files.rows.length, singularFile),
     form = Some(form),
     showBackLink = false) {
 
         @errorSummary(form.errors)
 
-        @h1(messages("uploadAnotherFile.heading", answers.size, singularFile))
+        @h1(messages("uploadAnotherFile.heading", files.rows.length, singularFile))
 
         @formHelper(action = controllers.routes.UploadAnotherFileController.onSubmit()) {
 
-        @addToList(answers)
-
-        <br>
+        @govukSummaryList(files)
 
         @p {
             @messages("uploadFile.mustInclude")
