@@ -229,6 +229,13 @@ trait SubmissionServiceTestJson {
       |   "additionalInfo":"This is a bulk submission"
       |}""".stripMargin
 
+  val otherReasonJson =
+    """{
+      |   "additionalInfo":"This is a other reason",
+      |   "amendedItems": []
+      |}""".stripMargin
+
+
   val supportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[

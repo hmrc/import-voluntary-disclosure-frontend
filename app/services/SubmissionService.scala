@@ -105,9 +105,11 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
   }
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
-    val additionalInfo = data.additionalInfo.getOrElse("Not Applicable")
     val isBulk = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    val amendedItems = if (isBulk) Json.obj() else Json.obj("amendedItems" -> data.amendedItems)
+    val filteredItems = data.amendedItems.map(_.filterNot(_.boxNumber == 99))
+    val amendedItems = if (isBulk) Json.obj() else Json.obj("amendedItems" -> filteredItems)
+    val otherReason = data.amendedItems.flatMap(_.find(_.boxNumber == 99)).map(_.original)
+    val additionalInfo = otherReason.orElse(data.additionalInfo).getOrElse("Not Applicable")
 
     Json.obj("additionalInfo" -> additionalInfo) ++ amendedItems
   }
