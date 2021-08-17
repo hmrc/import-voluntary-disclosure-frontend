@@ -21,7 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.ChangeUnderpaymentReasonPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
@@ -43,7 +44,7 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    def underpayment(boxNumber: Int, itemNumber: Int = 0, original: String = "60", amended: String = "70"): UnderpaymentReason = {
+    def underpayment(boxNumber: BoxNumber, itemNumber: Int = 0, original: String = "60", amended: String = "70"): UnderpaymentReason = {
       UnderpaymentReason(boxNumber, itemNumber, original, amended)
     }
 
@@ -68,8 +69,8 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("some-cred-id")
         .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(boxNumber = 35, itemNumber = 1),
-          underpayment(boxNumber = 35, itemNumber = 1))).success.value
+          underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
+          underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
     )
     val formProvider: UnderpaymentReasonAmendmentFormProvider = injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
     MockedSessionRepository.set(Future.successful(true))

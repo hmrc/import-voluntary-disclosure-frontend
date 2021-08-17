@@ -28,7 +28,7 @@ import views.data.cya.CheckYourAnswersPaymentData._
 
 import java.time.{LocalDate, LocalDateTime}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
@@ -64,7 +64,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
         "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
       .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-        boxNumber = 22, original = "50", amended = "60")
+        boxNumber = BoxNumber.Box22, original = "50", amended = "60")
       )).success.value
       .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
@@ -184,7 +184,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
             "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = 22, original = "50", amended = "60")
+            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
@@ -235,7 +235,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
             "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = 22, original = "50", amended = "60")
+            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
@@ -286,7 +286,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
             "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = 22, original = "50", amended = "60")
+            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
@@ -351,7 +351,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
             "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = 22, original = "50", amended = "60")
+            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
@@ -435,7 +435,7 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
             "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = 22, original = "50", amended = "60")
+            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value

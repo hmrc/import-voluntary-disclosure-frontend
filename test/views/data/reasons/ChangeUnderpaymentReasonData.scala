@@ -16,7 +16,8 @@
 
 package views.data.reasons
 
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import play.api.mvc.Call
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -26,25 +27,25 @@ object ChangeUnderpaymentReasonData {
 
   private lazy val changeItemAction: Call = controllers.reasons.routes.ChangeItemNumberController.onLoad()
 
-  private def changeDetailsAction(boxNumber: Int): Call = controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber)
+  private def changeDetailsAction(boxNumber: BoxNumber): Call = controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber.id)
 
   val singleItemReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
-    original = UnderpaymentReason(35, 1, "50", "60"),
-    changed = UnderpaymentReason(35, 1, "50", "60")
+    original = UnderpaymentReason(BoxNumber.Box35, 1, "50", "60"),
+    changed = UnderpaymentReason(BoxNumber.Box35, 1, "50", "60")
   )
 
   val otherItemReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
-    original = UnderpaymentReason(99, 0, "Other reason", ""),
-    changed = UnderpaymentReason(99, 0, "Other reason changed", "")
+    original = UnderpaymentReason(BoxNumber.OtherItem, 0, "Other reason", ""),
+    changed = UnderpaymentReason(BoxNumber.OtherItem, 0, "Other reason changed", "")
   )
 
   val singleEntryLevelReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
-    original = UnderpaymentReason(22, 0, "50", "60"),
-    changed = UnderpaymentReason(22, 0, "50", "60")
+    original = UnderpaymentReason(BoxNumber.Box22, 0, "50", "60"),
+    changed = UnderpaymentReason(BoxNumber.Box22, 0, "50", "60")
   )
 
 
-  def summaryList(boxNumber: Int): SummaryList =
+  def summaryList(boxNumber: BoxNumber): SummaryList =
     SummaryList(
       Seq(
         SummaryListRow(
@@ -108,7 +109,7 @@ object ChangeUnderpaymentReasonData {
       )
     )
 
-  def entryLevelSummaryList(boxNumber: Int): SummaryList =
+  def entryLevelSummaryList(boxNumber: BoxNumber): SummaryList =
     SummaryList(
       Seq(
         SummaryListRow(
@@ -156,7 +157,7 @@ object ChangeUnderpaymentReasonData {
             Actions(
               items = Seq(
                 ActionItem(
-                  changeDetailsAction(99).url,
+                  changeDetailsAction(BoxNumber.OtherItem).url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some("Change other reason")
                 )

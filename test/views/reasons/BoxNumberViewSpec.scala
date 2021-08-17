@@ -19,6 +19,7 @@ package views.reasons
 import base.ViewBaseSpec
 import forms.reasons.BoxNumberFormProvider
 import messages.{BaseMessages, BoxNumberMessages}
+import models.reasons.BoxNumber.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -58,7 +59,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
     "no errors exist on first box" should {
 
-      val form: Form[Int] = formProvider.apply()
+      val form: Form[BoxNumber] = formProvider.apply()
       lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -84,7 +85,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
     "no errors exist on second box" should {
 
-      val form: Form[Int] = formProvider.apply()
+      val form: Form[BoxNumber] = formProvider.apply()
       lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -104,7 +105,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     }
 
     "an error exists (no option has been selected)" should {
-      val form: Form[Int] = formProvider().bind(Map("value" -> ""))
+      val form: Form[BoxNumber] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -124,7 +125,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
   it should {
 
-    val form: Form[Int] = formProvider.apply()
+    val form: Form[BoxNumber] = formProvider.apply()
     lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

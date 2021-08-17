@@ -28,7 +28,7 @@ import uk.gov.hmrc.http.HttpResponse
 
 import java.time.{LocalDate, LocalDateTime}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 
 trait ReusableValues {
 
@@ -153,8 +153,8 @@ trait ReusableValues {
     ))
   val defermentAccountNumber: String = "1234567"
   val underpaymentReasons = Some(Seq(
-    UnderpaymentReason(22, 0, "GBP100", "GBP200"),
-    UnderpaymentReason(33, 1, "2204109400X411", "2204109400X412")
+    UnderpaymentReason(BoxNumber.Box22, 0, "GBP100", "GBP200"),
+    UnderpaymentReason(BoxNumber.Box33, 1, "2204109400X411", "2204109400X412")
   ))
   val optionalSupportingDocuments: Seq[OptionalDocument] = Seq(
     ImportAndEntry, AirwayBill, OriginProof, Other

@@ -19,9 +19,10 @@ package controllers.reasons
 import config.AppConfig
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
+import models.reasons.BoxNumber.BoxNumber
 
 import javax.inject.Inject
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
@@ -77,32 +78,29 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
 
   private[controllers] def summaryList(underpaymentReason: Option[Seq[UnderpaymentReason]]
                                       )(implicit messages: Messages): Option[SummaryList] = {
-    def changeAction(boxNumber: Int, itemNumber: Int): Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.change(boxNumber, itemNumber)
+    def changeAction(boxNumber: BoxNumber, itemNumber: Int): Call =
+      controllers.reasons.routes.ChangeUnderpaymentReasonController.change(boxNumber.id, itemNumber)
 
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
       SummaryList(
         rows = for (underpayment <- sortedReasons) yield {
           val label = underpayment.boxNumber match {
-            case 99 => Text(messages("underpaymentReasonSummary.otherReason"))
-            case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber}")
+            case BoxNumber.OtherItem => Text(messages("underpaymentReasonSummary.otherReason"))
+            case _ => Text(s"${messages("underpaymentReasonSummary.box")} ${underpayment.boxNumber.id}")
           }
           val hiddenLabel = underpayment.boxNumber match {
-            case 99 => messages("underpaymentReasonSummary.otherReason.change")
-            case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => messages(
-              "underpaymentReasonSummary.itemLevel.change",
-              underpayment.boxNumber,
-              underpayment.itemNumber
-            )
-            case _ => messages("underpaymentReasonSummary.entryLevel.change", underpayment.boxNumber)
+            case BoxNumber.OtherItem => messages("underpaymentReasonSummary.otherReason.change")
+            case BoxNumber.Box33 | BoxNumber.Box34 | BoxNumber.Box35 | BoxNumber.Box36 | BoxNumber.Box37 | BoxNumber.Box38 | BoxNumber.Box39 |
+                 BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 | BoxNumber.Box45 | BoxNumber.Box46 =>
+              messages("underpaymentReasonSummary.itemLevel.change", underpayment.boxNumber.id, underpayment.itemNumber)
+            case _ => messages("underpaymentReasonSummary.entryLevel.change", underpayment.boxNumber.id)
           }
           SummaryListRow(
-            key = Key(
-              content = label
-            ),
+            key = Key(content = label),
             value = Value(
               content =
-                if (underpayment.boxNumber == 99) {
+                if (underpayment.boxNumber == BoxNumber.OtherItem) {
                   HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
                 }
                 else if (underpayment.itemNumber == 0) {

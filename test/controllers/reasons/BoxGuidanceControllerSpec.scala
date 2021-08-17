@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.http.Status
 import play.api.mvc.Result
@@ -55,7 +55,7 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
     "redirect to the summary page when underpayment reasons already exist" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(35, 1, "100", "350"))).success.value
+          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "100", "350"))).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
