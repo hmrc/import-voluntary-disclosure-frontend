@@ -32,19 +32,19 @@ class BuildReasonsDetailsSpec
 
     "called with valid User Answers" should {
 
-      "return expect json for single submission" in {
+      "return expected json for single submission" in {
         lazy val result = service.buildReasonsDetails(importerSubmission)
 
         result mustBe Json.parse(reasonsDetailsJson)
       }
 
-      "return expect json for bulk submission" in {
+      "return expected json for bulk submission" in {
         lazy val result = service.buildReasonsDetails(bulkImporterSubmission)
 
         result mustBe Json.parse(bulkReasonsDetailsJson)
       }
 
-      "return expect json for other reason submission" in {
+      "return expected json for other reason submission" in {
         val submission = importerSubmission.copy(amendedItems = Some(Seq(UnderpaymentReason(99, 0 ,"This is a other reason", ""))))
         lazy val result = service.buildReasonsDetails(submission)
 

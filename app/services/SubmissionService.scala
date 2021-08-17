@@ -109,9 +109,9 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
     val filteredItems = data.amendedItems.map(_.filterNot(_.boxNumber == 99))
     val amendedItems = if (isBulk) Json.obj() else Json.obj("amendedItems" -> filteredItems)
     val otherReason = data.amendedItems.flatMap(_.find(_.boxNumber == 99)).map(_.original)
-    val additionInfo = otherReason.orElse(data.additionalInfo).getOrElse("Not Applicable")
+    val additionalInfo = otherReason.orElse(data.additionalInfo).getOrElse("Not Applicable")
 
-    Json.obj("additionalInfo" -> additionInfo) ++ amendedItems
+    Json.obj("additionalInfo" -> additionalInfo) ++ amendedItems
   }
 
   private[services] def buildSupportingDocumentation(data: SubmissionData): JsObject = {
