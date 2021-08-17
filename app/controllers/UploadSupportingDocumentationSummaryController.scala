@@ -16,15 +16,17 @@
 
 package controllers
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.UploadAnotherFileFormProvider
 import models.requests.DataRequest
+import models.{FileUploadInfo, Index}
 import pages.UploadSupportingDocumentationPage
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import play.api.mvc._
+import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.AddFileNameRowHelper
+import viewmodels.ActionItemHelper
 import views.html.UploadSupportingDocumentationSummaryView
 
 import javax.inject.Inject
@@ -39,17 +41,15 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
                                                                implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(UploadSupportingDocumentationPage)
-        .fold(Future(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad().url))) { files =>
-          val helper = new AddFileNameRowHelper(files, controllers.routes.RemoveSupportingDocumentationController.onLoad)
-          if (files.isEmpty) {
-            Future.successful(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad()))
-          } else {
-            Future.successful(Ok(view(formProvider(), helper.rows)))
-          }
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    request.userAnswers.get(UploadSupportingDocumentationPage)
+      .fold(Future(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad().url))) { files =>
+        if (files.isEmpty) {
+          Future.successful(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad()))
+        } else {
+          Future.successful(Ok(view(formProvider(), buildSummaryList(files))))
         }
+      }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -72,9 +72,30 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
   private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
     request.userAnswers.get(UploadSupportingDocumentationPage)
       .fold(Future(Redirect(controllers.routes.UploadSupportingDocumentationController.onLoad().url))) { files =>
-        val helper = new AddFileNameRowHelper(files, controllers.routes.RemoveSupportingDocumentationController.onLoad)
-
-        Future.successful(BadRequest(view(formWithErrors, helper.rows)))
+        Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files))))
       }
   }
+
+  private def buildSummaryList(files: Seq[FileUploadInfo])(implicit request: DataRequest[AnyContent]) = {
+    val summaryListRows = files.zipWithIndex.map {
+      case (file, index) => SummaryListRow(
+        key = Key(content = Text(file.fileName), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveSupportingDocumentationController.onLoad(Index(index)).url,
+                s"Remove ${file.fileName}"
+              )
+            )
+          )
+        )
+      )
+    }
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = summaryListRows
+    )
+  }
+
 }

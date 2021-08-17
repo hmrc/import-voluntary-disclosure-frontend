@@ -25,7 +25,6 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Value}
-import viewmodels.AddToListRow
 import views.html.UploadSupportingDocumentationSummaryView
 
 class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with BaseMessages {
