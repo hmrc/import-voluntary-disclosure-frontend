@@ -19,13 +19,14 @@ package views
 import base.ViewBaseSpec
 import forms.UploadAnotherFileFormProvider
 import messages.{BaseMessages, UploadAnotherFileMessages}
+import models.Index
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Value}
-import viewmodels.AddToListRow
+import uk.gov.hmrc.govukfrontend.views.Aliases._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import viewmodels.ActionItemHelper
 import views.html.UploadSupportingDocumentationSummaryView
 
 class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with BaseMessages {
@@ -34,23 +35,62 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
 
   val formProvider: UploadAnotherFileFormProvider = injector.instanceOf[UploadAnotherFileFormProvider]
 
-  val answers: Seq[AddToListRow] = Seq(AddToListRow(
-    value = Value(HtmlContent("")),
-    removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))))
+  val singleFileSummaryList = SummaryList(
+    classes = "govuk-!-margin-bottom-9",
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text("fileName"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
+                s"Remove fileName"
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 
-  val answersTwoFiles: Seq[AddToListRow] = Seq(AddToListRow(
-    value = Value(HtmlContent("")),
-    removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))),
-    AddToListRow(
-      value = Value(HtmlContent("")),
-      removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
-    ))
+  val twoFilesSummaryList = SummaryList(
+    classes = "govuk-!-margin-bottom-9",
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text("fileName"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
+                s"Remove fileName"
+              )
+            )
+          )
+        )
+      ),
+      SummaryListRow(
+        key = Key(content = Text("fileName2"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
+                s"Remove fileName2"
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 
   "Rendering the UploadSupportingDocumentationSummary page" when {
     "no errors exist when one file is present" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, answers)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, singleFileSummaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.title("1", "file"))
@@ -64,11 +104,11 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
       }
 
       "remove link is present" in {
-        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 1
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
       }
 
       "first remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe
           UploadAnotherFileMessages.remove
       }
 
@@ -76,7 +116,7 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
 
     "no errors exist when two files are present" should {
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, answersTwoFiles)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, twoFilesSummaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.title("2", "files"))
@@ -89,24 +129,28 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
         document.select("#value-error").size mustBe 0
       }
 
-      "remove link is present" in {
-        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 2
+      "remove link is present for fileName" in {
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
+      }
+
+      "remove link is present for fileName2" in {
+        document.select("#main-content > div > div > form > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
       }
 
       "first remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe
           UploadAnotherFileMessages.remove
       }
 
       "second remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(2) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe
-          UploadAnotherFileMessages.remove
+        document.select("#main-content > div > div > form > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe
+          UploadAnotherFileMessages.remove2
       }
     }
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, answers)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, singleFileSummaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1", "file"))
@@ -125,7 +169,7 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, answers)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, singleFileSummaryList)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${UploadAnotherFileMessages.h1("1", "file")}'" in {

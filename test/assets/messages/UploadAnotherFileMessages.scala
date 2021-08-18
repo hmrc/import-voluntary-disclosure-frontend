@@ -23,7 +23,8 @@ object UploadAnotherFileMessages extends BaseMessages {
   def h1(size: String, singularFile: String) = s"You have uploaded $size $singularFile"
 
   val requiredError: String = "Select yes to upload another file"
-  val remove: String = "Remove"
+  val remove: String = "Remove fileName"
+  val remove2: String = "Remove fileName2"
   val mustInclude: String = "You must upload:"
   val mayInclude: String = "You have told us you will upload:"
   val mustIncludeFile1: String = "the import declaration, also known as the C88 or SAD"

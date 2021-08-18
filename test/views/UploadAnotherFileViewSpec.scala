@@ -19,16 +19,16 @@ package views
 import base.ViewBaseSpec
 import forms.UploadAnotherFileFormProvider
 import messages.{BaseMessages, UploadAnotherFileMessages}
-import models.OptionalDocument
 import models.OptionalDocument._
+import models.{Index, OptionalDocument}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
-import viewmodels.AddToListRow
+import uk.gov.hmrc.govukfrontend.views.Aliases._
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import viewmodels.ActionItemHelper
 import views.html.UploadAnotherFileView
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Value}
 
 class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
 
@@ -36,17 +36,56 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: UploadAnotherFileFormProvider = injector.instanceOf[UploadAnotherFileFormProvider]
 
-  val answers: Seq[AddToListRow] = Seq(AddToListRow(
-    value = Value(HtmlContent("")),
-    removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))))
+  val singleFileSummaryList = SummaryList(
+    classes = "govuk-!-margin-bottom-9",
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text("fileName"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                s"Remove fileName"
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 
-  val answersTwoFiles: Seq[AddToListRow] = Seq(AddToListRow(
-    value = Value(HtmlContent("")),
-    removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))),
-    AddToListRow(
-      value = Value(HtmlContent("")),
-      removeAction = Some(ActionItem(href = "", content = Text("Remove"), visuallyHiddenText = Some("")))
-    ))
+  val twoFilesSummaryList = SummaryList(
+    classes = "govuk-!-margin-bottom-9",
+    rows = Seq(
+      SummaryListRow(
+        key = Key(content = Text("fileName"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                s"Remove fileName"
+              )
+            )
+          )
+        )
+      ),
+      SummaryListRow(
+        key = Key(content = Text("fileName2"), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createDeleteActionItem(
+                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                s"Remove fileName2"
+              )
+            )
+          )
+        )
+      )
+    )
+  )
 
   private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
@@ -54,7 +93,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist when one file is present and no optional documents selected" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, answers, Seq.empty)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, singleFileSummaryList, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.title("1", "file"))
@@ -68,11 +107,11 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "remove link is present" in {
-        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 1
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
       }
 
       "first remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe UploadAnotherFileMessages.remove
       }
 
     }
@@ -80,7 +119,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist when one file is present and all optional documents selected" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, answers, maxOptDocs)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, singleFileSummaryList, maxOptDocs)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.title("1", "file"))
@@ -94,11 +133,11 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "remove link is present" in {
-        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 1
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
       }
 
       "first remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe UploadAnotherFileMessages.remove
       }
 
       s"have the correct text of '${UploadAnotherFileMessages.mustInclude}'" in {
@@ -106,15 +145,15 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "have the correct text for mandatory file bullet 1" in {
-        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
+        elementText("#main-content > div > div > form > ul > li:nth-child(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
       }
 
       "have the correct text for mandatory file bullet 2" in {
-        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
+        elementText("#main-content > div > div > form > ul > li:nth-child(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
       }
 
       "have the correct text for mandatory file bullet 3" in {
-        elementText("#main-content ul:nth-of-type(2) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
+        elementText("#main-content > div > div > form > ul > li:nth-child(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
       }
 
       s"have the correct text of '${UploadAnotherFileMessages.mayInclude}'" in {
@@ -122,15 +161,15 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "have the correct text for optional file bullet 1" in {
-        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mayIncludeFile1
+        elementText("#main-content > div > div > form > ul:nth-child(6) > li:nth-child(1)") mustBe UploadAnotherFileMessages.mayIncludeFile1
       }
 
       "have the correct text for optional file bullet 2" in {
-        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mayIncludeFile2
+        elementText("#main-content > div > div > form > ul:nth-child(6) > li:nth-child(2)") mustBe UploadAnotherFileMessages.mayIncludeFile2
       }
 
       "have the correct text for optional file bullet 3" in {
-        elementText("#main-content ul:nth-of-type(3) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mayIncludeFile3
+        elementText("#main-content > div > div > form > ul:nth-child(6) > li:nth-child(3)") mustBe UploadAnotherFileMessages.mayIncludeFile3
       }
 
     }
@@ -138,7 +177,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist when two files are present" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, answersTwoFiles)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, twoFilesSummaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.title("2", "files"))
@@ -151,22 +190,26 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      "remove link is present" in {
-        document.select("#main-content > div > div > form > ul > li > span.hmrc-add-to-a-list__remove > a").size mustBe 2
+      "remove link is present for firstFile" in {
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
+      }
+
+      "remove link is present for firstFile2" in {
+        document.select("#main-content > div > div > form > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a > span:nth-child(1)").size mustBe 1
       }
 
       "first remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(1) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+        document.select("#main-content > div > div > form > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe UploadAnotherFileMessages.remove
       }
 
       "second remove contains the correct text" in {
-        document.select("#main-content > div > div > form > ul > li:nth-child(2) > span.hmrc-add-to-a-list__remove > a > span:nth-child(1)").text mustBe UploadAnotherFileMessages.remove
+        document.select("#main-content > div > div > form > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a > span.govuk-visually-hidden").text mustBe UploadAnotherFileMessages.remove2
       }
     }
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, answers)(fakeRequest, messages)
+      lazy val view: Html = injectedView(form, singleFileSummaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1", "file"))
@@ -185,7 +228,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, answers, maxOptDocs)(fakeRequest, messages)
+    lazy val view: Html = injectedView(form, singleFileSummaryList, maxOptDocs)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${UploadAnotherFileMessages.h1("1", "file")}'" in {
@@ -205,15 +248,15 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct text for mandatory file bullet 1" in {
-      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
+      elementText("#main-content > div > div > form > ul:nth-child(4) > li:nth-child(1)") mustBe UploadAnotherFileMessages.mustIncludeFile1
     }
 
     "have the correct text for mandatory file bullet 2" in {
-      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
+      elementText("#main-content > div > div > form > ul:nth-child(4) > li:nth-child(2)") mustBe UploadAnotherFileMessages.mustIncludeFile2
     }
 
     "have the correct text for mandatory file bullet 3" in {
-      elementText("#main-content ul:nth-of-type(2) li:nth-of-type(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
+      elementText("#main-content > div > div > form > ul:nth-child(4) > li:nth-child(3)") mustBe UploadAnotherFileMessages.mustIncludeFile3
     }
 
     s"have the correct Continue button" in {
