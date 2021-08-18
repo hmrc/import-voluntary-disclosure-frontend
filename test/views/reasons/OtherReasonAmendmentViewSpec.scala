@@ -19,7 +19,8 @@ package views.reasons
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import messages.{BaseMessages, OtherReasonAmendmentMessages}
-import models.reasons.UnderpaymentReasonValue
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -33,7 +34,7 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: UnderpaymentReasonAmendmentFormProvider = injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
 
-  private final val boxNumber: Int = 99
+  private final val boxNumber: BoxNumber = BoxNumber.OtherItem
   private final val itemNumber: Int = 0
   private val formAction = Call("POST", "formActionUrl")
   private val backLink = Some(Call("GET", "backLinkUrl"))

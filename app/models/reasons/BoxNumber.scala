@@ -18,13 +18,15 @@ package models.reasons
 
 import play.api.libs.json.{Reads, Writes}
 
+import scala.util.control.Exception
+
 object BoxNumber extends Enumeration {
   type BoxNumber = Value
 
   val Box22: Value = Value(22)
   val Box33: Value = Value(33)
-  val Box34: Value = Value(34) //
-  val Box35: Value = Value(35) //
+  val Box34: Value = Value(34)
+  val Box35: Value = Value(35)
   val Box36: Value = Value(36)
   val Box37: Value = Value(37)
   val Box38: Value = Value(38)
@@ -40,6 +42,11 @@ object BoxNumber extends Enumeration {
   val Box67: Value = Value(67)
   val Box68: Value = Value(68)
   val OtherItem: Value = Value(99)
+
+  def fromInt(i: Int): BoxNumber =
+    Exception.nonFatalCatch
+      .opt(BoxNumber(i))
+      .getOrElse(throw new RuntimeException("Invalid Box Number"))
 
   implicit val reads: Reads[BoxNumber.Value] = implicitly[Reads[Int]].map(BoxNumber.apply)
   implicit val writes: Writes[BoxNumber.Value] = implicitly[Writes[Int]].contramap(_.id)

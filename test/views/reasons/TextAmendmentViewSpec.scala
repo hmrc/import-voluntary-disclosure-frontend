@@ -19,7 +19,8 @@ package views.reasons
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import messages.{AmendReasonValuesMessages, BaseMessages}
-import models.reasons.UnderpaymentReasonValue
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.{Form, FormError}
@@ -37,7 +38,7 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: UnderpaymentReasonAmendmentFormProvider = injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
 
-  private final val boxNumber: Int = 22
+  private final val boxNumber: BoxNumber = BoxNumber.Box22
   private final val itemNumber: Int = 1
   private final val validValue = "GBP871.12"
   private final val originalErrorId = "#original-error"
@@ -153,11 +154,12 @@ class TextAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   "The Underpayment Reason Amendment page" when {
-    Seq(22, 33, 34, 36, 37, 39, 41, 42, 43, 45, 62, 63, 66, 67, 68).map { testBox =>
+    Seq(BoxNumber.Box22, BoxNumber.Box33, BoxNumber.Box34, BoxNumber.Box36, BoxNumber.Box37, BoxNumber.Box39, BoxNumber.Box41, BoxNumber.Box42,
+      BoxNumber.Box43, BoxNumber.Box45, BoxNumber.Box62, BoxNumber.Box63, BoxNumber.Box66, BoxNumber.Box67, BoxNumber.Box68).map { testBox =>
       checkContent(testBox)
     }
 
-    def checkContent(boxNumber: Int) = {
+    def checkContent(boxNumber: BoxNumber): Unit = {
       s"rendered for box ${boxNumber}" should {
         val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
         lazy val view: Html = injectedView(
