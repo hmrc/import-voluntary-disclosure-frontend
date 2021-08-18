@@ -102,6 +102,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val otherItemEnabled: Boolean = servicesConfig.getBoolean("features.otherItemEnabled")
 
+  val cancelCaseEnabled: Boolean = servicesConfig.getBoolean("features.cancelCaseEnabled")
+
   val en: Lang = Lang("en")
   val cy: Lang = Lang("cy")
   val defaultLanguage: Lang = en
@@ -154,6 +156,7 @@ trait AppConfig extends FixedConfig {
   val welshToggleEnabled: Boolean
   val privateCitizenEnabled: Boolean
   val otherItemEnabled: Boolean
+  val cancelCaseEnabled: Boolean
   val en: Lang
   val cy: Lang
   val defaultLanguage: Lang
