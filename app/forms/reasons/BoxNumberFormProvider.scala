@@ -18,17 +18,18 @@ package forms.reasons
 
 import forms.mappings.Mappings
 import models.reasons.BoxNumber
+import models.reasons.BoxNumber.BoxNumber
 import play.api.data.Form
 
 import javax.inject.Inject
 
 class BoxNumberFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[BoxNumber.Value] =
+  def apply(): Form[BoxNumber] =
     Form(
       "value" -> int(
         requiredKey = "boxNumber.error.required"
-      ).transform[BoxNumber.Value](BoxNumber.apply, _.id)
+      ).transform[BoxNumber](BoxNumber.fromInt, _.id)
     )
 
 }
