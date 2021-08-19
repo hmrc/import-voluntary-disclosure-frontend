@@ -291,52 +291,6 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     }
   }
 
-//  "Binding a form with invalid data for an unrecognised box selected" when {
-//    "no values provided" should {
-//      "result in a form with errors" in {
-//        formBinderBox(box = 0).errors mustBe Seq(
-//          FormError(originalKey, originalMissingMessageKey),
-//          FormError(amendedKey, amendedMissingMessageKey)
-//        )
-//      }
-//    }
-//
-//    "no original value provided" should {
-//      "result in a form with errors" in {
-//        formBinderBox(formBuilder(amended = invalidBoxAmendedValue), box = 0).errors mustBe
-//          Seq(
-//            FormError(originalKey, originalMissingMessageKey)
-//          )
-//      }
-//    }
-//
-//    "no amended value provided" should {
-//      "result in a form with errors" in {
-//        formBinderBox(formBuilder(original = invalidBoxAmendedValue), box = 0).errors mustBe
-//          Seq(
-//            FormError(amendedKey, amendedMissingMessageKey)
-//          )
-//      }
-//    }
-//
-//    "original and amended value are the same" should {
-//      "result in a form with errors" in {
-//        formBinderBox(formBuilder(original = invalidBoxAmendedValue, amended = invalidBoxAmendedValue), box = 0).errors mustBe
-//          Seq(
-//            FormError("", keysDifferentMessageKey)
-//          )
-//      }
-//      "result in a form with errors due to case sensitive diff" in {
-//        formBinderBox(formBuilder(
-//          original = invalidBoxAmendedValue.toUpperCase,
-//          amended = invalidBoxAmendedValue.toLowerCase), box = 0).errors mustBe
-//          Seq(
-//            FormError("", keysDifferentMessageKey)
-//          )
-//      }
-//    }
-//  }
-
   "Binding a form with invalid data for a weight box selected" when {
     "no values provided" should {
       "result in a form with errors" in {
@@ -661,30 +615,6 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
       }
     }
   }
-
-//  "Binding a form with valid data for an unrecognised box selected" when {
-//    "provided with valid values" should {
-//      "result in a form with no errors" in {
-//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = invalidBoxOriginalValue, amended = invalidBoxAmendedValue), box = 0)
-//        form.hasErrors mustBe false
-//      }
-//
-//      "generate the correct model" in {
-//        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = invalidBoxOriginalValue, amended = invalidBoxAmendedValue), box = 0)
-//        form.value mustBe Some(UnderpaymentReasonValue(invalidBoxOriginalValue, invalidBoxAmendedValue))
-//      }
-//    }
-//  }
-
-//  "An unrecognised box form " when {
-//    "built from a valid model" should {
-//      "generate the correct mapping" in {
-//        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(invalidBoxAmendedValue, invalidBoxOriginalValue)
-//        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(0).fill(model)
-//        form.data mustBe formBuilder(original = invalidBoxAmendedValue, amended = invalidBoxOriginalValue)
-//      }
-//    }
-//  }
 
   "different Constraint" must {
 
