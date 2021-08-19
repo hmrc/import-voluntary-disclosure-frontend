@@ -421,3 +421,7 @@ GET         /not-eligible/no-access-for-individual-user-id                      
 
 GET         /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
 POST        /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
+
+GET         /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
+POST        /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
+
