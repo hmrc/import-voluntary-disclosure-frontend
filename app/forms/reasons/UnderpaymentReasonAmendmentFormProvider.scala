@@ -18,19 +18,21 @@ package forms.reasons
 
 import forms.mappings.Mappings
 import forms.utils.FormHelpers
-import models.reasons.UnderpaymentReasonValue
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import play.api.data.Forms._
 import play.api.data.validation._
 import play.api.data.{Form, Forms}
 
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
-  def apply(boxNumber: Int): Form[UnderpaymentReasonValue] = {
+  def apply(boxNumber: BoxNumber): Form[UnderpaymentReasonValue] = {
     boxNumber match {
-      case 22 | 62 | 63 | 66 | 67 | 68 => foreignCurrencyFormMapping
-      case 33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
-      case 34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
-      case 35 | 38 => decimalFormMapping(
+      case BoxNumber.Box22 | BoxNumber.Box62 | BoxNumber.Box63 | BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 =>
+        foreignCurrencyFormMapping
+      case BoxNumber.Box33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
+      case BoxNumber.Box34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
+      case BoxNumber.Box35 | BoxNumber.Box38 => decimalFormMapping(
         isCurrency = false,
         requiredKey = "weight.missing",
         nonNumericKey = "weight.nonNumeric",
@@ -40,10 +42,10 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
-      case 36 => textFormMapping(regex = """^[0-9]{3}$""")
-      case 37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
-      case 39 => textFormMapping(regex = """^[0-9]{6}$""")
-      case 41 => decimalFormMapping(
+      case BoxNumber.Box36 => textFormMapping(regex = """^[0-9]{3}$""")
+      case BoxNumber.Box37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
+      case BoxNumber.Box39 => textFormMapping(regex = """^[0-9]{6}$""")
+      case BoxNumber.Box41 => decimalFormMapping(
         isCurrency = false,
         requiredKey = "unit.missing",
         nonNumericKey = "unit.nonNumeric",
@@ -53,7 +55,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(9999999.999))
       )
-      case 42 => decimalFormMapping(
+      case BoxNumber.Box42 => decimalFormMapping(
         isCurrency = false,
         requiredKey = "decimal.missing",
         nonNumericKey = "decimal.nonNumeric",
@@ -63,9 +65,11 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(999999999999.99))
       )
-      case 43 => textFormMapping(regex = """^[1-7]{1}$""")
-      case 45 => textFormMapping(regex = """^[A-M]{1}$|^[A-M]{1}[0-9]{1,2}$|^[A-M]{1}[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}$""")
-      case 46 => decimalFormMapping(
+      case BoxNumber.Box43 =>
+        textFormMapping(regex = """^[1-7]{1}$""")
+      case BoxNumber.Box45 =>
+        textFormMapping(regex = """^[A-M]{1}$|^[A-M]{1}[0-9]{1,2}$|^[A-M]{1}[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}$""")
+      case BoxNumber.Box46 => decimalFormMapping(
         isCurrency = true,
         requiredKey = "currency.missing",
         nonNumericKey = "currency.nonNumeric",
@@ -75,8 +79,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         rangeMin = Some(BigDecimal(0)),
         rangeMax = Some(BigDecimal(999999999999.99))
       )
-      case 99 => otherReason()
-      case _ => textFormMapping(regex = """^.*$""")
+      case BoxNumber.OtherItem => otherReason()
     }
   }
 

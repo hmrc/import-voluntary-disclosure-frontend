@@ -22,7 +22,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
 import mocks.config.MockAppConfig
 import models.UserAnswers
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.CheckModePage
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.http.Status
@@ -48,8 +48,8 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
         .set(
           UnderpaymentReasonsPage,
           Seq(
-            UnderpaymentReason(boxNumber = 33, itemNumber = 15, original = "50", amended = "60"),
-            UnderpaymentReason(boxNumber = 22, original = "50", amended = "60")
+            UnderpaymentReason(boxNumber = BoxNumber.Box33, itemNumber = 15, original = "50", amended = "60"),
+            UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )
         ).success.value
     )

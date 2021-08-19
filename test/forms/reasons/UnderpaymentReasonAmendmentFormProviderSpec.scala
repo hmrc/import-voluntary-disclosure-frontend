@@ -17,7 +17,8 @@
 package forms.reasons
 
 import base.FormSpecBase
-import models.reasons.UnderpaymentReasonValue
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import play.api.data.validation._
 import play.api.data.{Form, FormError}
 
@@ -84,25 +85,25 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     amendedKey -> amended
   )
 
-  def formBinderBox(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> ""), box: Int = 22): Form[UnderpaymentReasonValue] =
+  def formBinderBox(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> ""), box: BoxNumber = BoxNumber.Box22): Form[UnderpaymentReasonValue] =
     new UnderpaymentReasonAmendmentFormProvider()(box).bind(formValues)
 
   "UnderpaymentReasonAmendmentFormProvider" when {
     "mapping for a given box" should {
       "produce the correct form for box 22" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = BoxNumber.Box22)
         form.value mustBe Some(UnderpaymentReasonValue(foreignCurrencyOriginalValue, foreignCurrencyAmendedValue))
       }
       "produce the correct form for box 33" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = commodityCodeOriginalValue, amended = commodityCodeAmendedValue), box = 33)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = commodityCodeOriginalValue, amended = commodityCodeAmendedValue), box = BoxNumber.Box33)
         form.value mustBe Some(UnderpaymentReasonValue(commodityCodeOriginalValue, commodityCodeAmendedValue))
       }
       "produce the correct form for box 62" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 62)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = BoxNumber.Box62)
         form.value mustBe Some(UnderpaymentReasonValue(foreignCurrencyOriginalValue, foreignCurrencyAmendedValue))
       }
       "produce the correct form for box 43" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = vmNumberOriginalValue, amended = vmNumberAmendedValue), box = 43)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = vmNumberOriginalValue, amended = vmNumberAmendedValue), box = BoxNumber.Box43)
         form.value mustBe Some(UnderpaymentReasonValue(vmNumberOriginalValue, vmNumberAmendedValue))
       }
     }
@@ -111,7 +112,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with invalid data for a foreignCurrency box selected" when {
     "no values provided" should {
       "result in a form with errors" in {
-        formBinderBox(box = 22).errors mustBe Seq(
+        formBinderBox(box = BoxNumber.Box22).errors mustBe Seq(
           FormError(originalKey, originalMissingMessageKey),
           FormError(amendedKey, amendedMissingMessageKey)
         )
@@ -120,7 +121,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(amended = foreignCurrencyAmendedValue), box = 22).errors mustBe
+        formBinderBox(formBuilder(amended = foreignCurrencyAmendedValue), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError(originalKey, originalMissingMessageKey)
           )
@@ -129,7 +130,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue), box = 22).errors mustBe
+        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError(amendedKey, amendedMissingMessageKey)
           )
@@ -138,7 +139,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = 22).errors mustBe Seq(
+        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = BoxNumber.Box22).errors mustBe Seq(
           FormError(originalKey, originalFormatMessageKey),
           FormError(amendedKey, amendedFormatMessageKey)
         )
@@ -147,7 +148,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = foreignCurrencyAmendedValue), box = 22).errors mustBe
+        formBinderBox(formBuilder(original = nonNumeric, amended = foreignCurrencyAmendedValue), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError(originalKey, originalFormatMessageKey)
           )
@@ -156,7 +157,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = nonNumeric), box = 22).errors mustBe
+        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = nonNumeric), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError(amendedKey, amendedFormatMessageKey)
           )
@@ -165,13 +166,13 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyAmendedValue), box = 22).errors mustBe
+        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyAmendedValue), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
       }
       "result in a form with errors due to case sensitive diff" in {
-        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue.toUpperCase, amended = foreignCurrencyAmendedValue.toLowerCase), box = 22).errors mustBe
+        formBinderBox(formBuilder(original = foreignCurrencyAmendedValue.toUpperCase, amended = foreignCurrencyAmendedValue.toLowerCase), box = BoxNumber.Box22).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
@@ -182,13 +183,13 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data for a foreignCurrency box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = 22)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = foreignCurrencyOriginalValue, amended = foreignCurrencyAmendedValue), box = BoxNumber.Box22)
         form.hasErrors mustBe false
       }
     }
     "provided with valid values with spaces" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "gbp 40", amended = " G b P 50 "), box = 22)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "gbp 40", amended = " G b P 50 "), box = BoxNumber.Box22)
         form.hasErrors mustBe false
       }
     }
@@ -198,7 +199,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "built from a valid model" should {
       "generate the correct mapping" in {
         val model: UnderpaymentReasonValue = UnderpaymentReasonValue(foreignCurrencyAmendedValue, foreignCurrencyOriginalValue)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(22).fill(model)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(BoxNumber.Box22).fill(model)
         form.data mustBe formBuilder(original = foreignCurrencyAmendedValue, amended = foreignCurrencyOriginalValue)
       }
     }
@@ -208,7 +209,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no values provided" should {
       "result in a form with errors" in {
-        formBinderBox(box = 33).errors mustBe Seq(
+        formBinderBox(box = BoxNumber.Box33).errors mustBe Seq(
           FormError(originalKey, originalMissingMessageKey),
           FormError(amendedKey, amendedMissingMessageKey)
         )
@@ -217,7 +218,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(amended = commodityCodeAmendedValue), box = 33).errors mustBe
+        formBinderBox(formBuilder(amended = commodityCodeAmendedValue), box = BoxNumber.Box33).errors mustBe
           Seq(
             FormError(originalKey, originalMissingMessageKey)
           )
@@ -226,7 +227,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = commodityCodeAmendedValue), box = 33).errors mustBe
+        formBinderBox(formBuilder(original = commodityCodeAmendedValue), box = BoxNumber.Box33).errors mustBe
           Seq(
             FormError(amendedKey, amendedMissingMessageKey)
           )
@@ -235,13 +236,13 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = commodityCodeAmendedValue, amended = commodityCodeAmendedValue), box = 33).errors mustBe
+        formBinderBox(formBuilder(original = commodityCodeAmendedValue, amended = commodityCodeAmendedValue), box = BoxNumber.Box33).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
       }
       "result in a form with errors if difference is case sensitivity" in {
-        formBinderBox(formBuilder(original = commodityCodeAmendedValue.toUpperCase, amended = commodityCodeAmendedValue.toLowerCase), box = 33).errors mustBe
+        formBinderBox(formBuilder(original = commodityCodeAmendedValue.toUpperCase, amended = commodityCodeAmendedValue.toLowerCase), box = BoxNumber.Box33).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
@@ -250,14 +251,14 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "invalid format for box 45" should {
       "result in a form with errors for original field" in {
-        formBinderBox(formBuilder(original = invalidAdjustmentOriginalValue, amended = adjustmentAmendedValue), box = 45).errors mustBe
+        formBinderBox(formBuilder(original = invalidAdjustmentOriginalValue, amended = adjustmentAmendedValue), box = BoxNumber.Box45).errors mustBe
           Seq(
             FormError(originalKey, originalFormatMessageKey, Seq(box45Regex))
           )
       }
 
       "result in a form with errors for amendment field" in {
-        formBinderBox(formBuilder(original = adjustmentOriginalValue, amended = invalidAdjustmentAmendedValue), box = 45).errors mustBe
+        formBinderBox(formBuilder(original = adjustmentOriginalValue, amended = invalidAdjustmentAmendedValue), box = BoxNumber.Box45).errors mustBe
           Seq(
             FormError(amendedKey, amendedFormatMessageKey, Seq(box45Regex))
           )
@@ -268,13 +269,13 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data for a textForm box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = commodityCodeOriginalValue, amended = commodityCodeAmendedValue), box = 33)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = commodityCodeOriginalValue, amended = commodityCodeAmendedValue), box = BoxNumber.Box33)
         form.hasErrors mustBe false
       }
     }
     "provided with valid values with spaces" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "2204109400 x 412", amended = " 220410 9400X411 "), box = 33)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = "2204109400 x 412", amended = " 220410 9400X411 "), box = BoxNumber.Box33)
         form.hasErrors mustBe false
       }
     }
@@ -284,54 +285,8 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "built from a valid model" should {
       "generate the correct mapping" in {
         val model: UnderpaymentReasonValue = UnderpaymentReasonValue(commodityCodeAmendedValue, commodityCodeOriginalValue)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(33).fill(model)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(BoxNumber.Box33).fill(model)
         form.data mustBe formBuilder(original = commodityCodeAmendedValue, amended = commodityCodeOriginalValue)
-      }
-    }
-  }
-
-  "Binding a form with invalid data for an unrecognised box selected" when {
-    "no values provided" should {
-      "result in a form with errors" in {
-        formBinderBox(box = 0).errors mustBe Seq(
-          FormError(originalKey, originalMissingMessageKey),
-          FormError(amendedKey, amendedMissingMessageKey)
-        )
-      }
-    }
-
-    "no original value provided" should {
-      "result in a form with errors" in {
-        formBinderBox(formBuilder(amended = invalidBoxAmendedValue), box = 0).errors mustBe
-          Seq(
-            FormError(originalKey, originalMissingMessageKey)
-          )
-      }
-    }
-
-    "no amended value provided" should {
-      "result in a form with errors" in {
-        formBinderBox(formBuilder(original = invalidBoxAmendedValue), box = 0).errors mustBe
-          Seq(
-            FormError(amendedKey, amendedMissingMessageKey)
-          )
-      }
-    }
-
-    "original and amended value are the same" should {
-      "result in a form with errors" in {
-        formBinderBox(formBuilder(original = invalidBoxAmendedValue, amended = invalidBoxAmendedValue), box = 0).errors mustBe
-          Seq(
-            FormError("", keysDifferentMessageKey)
-          )
-      }
-      "result in a form with errors due to case sensitive diff" in {
-        formBinderBox(formBuilder(
-          original = invalidBoxAmendedValue.toUpperCase,
-          amended = invalidBoxAmendedValue.toLowerCase), box = 0).errors mustBe
-          Seq(
-            FormError("", keysDifferentMessageKey)
-          )
       }
     }
   }
@@ -339,7 +294,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with invalid data for a weight box selected" when {
     "no values provided" should {
       "result in a form with errors" in {
-        formBinderBox(box = 35).errors mustBe Seq(
+        formBinderBox(box = BoxNumber.Box35).errors mustBe Seq(
           FormError(originalKey, originalWeightMissingMessageKey),
           FormError(amendedKey, amendedWeightMissingMessageKey)
         )
@@ -348,7 +303,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = weightOriginalValue.toString), box = 35).errors mustBe
+        formBinderBox(formBuilder(original = weightOriginalValue.toString), box = BoxNumber.Box35).errors mustBe
           Seq(
             FormError(amendedKey, amendedWeightMissingMessageKey)
           )
@@ -357,7 +312,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = 35).errors mustBe Seq(
+        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = BoxNumber.Box35).errors mustBe Seq(
           FormError(originalKey, originalWeightFormatMessageKey),
           FormError(amendedKey, amendedWeightFormatMessageKey)
         )
@@ -366,7 +321,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = nonNumeric), box = 35).errors mustBe
+        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = nonNumeric), box = BoxNumber.Box35).errors mustBe
           Seq(
             FormError(amendedKey, amendedWeightFormatMessageKey)
           )
@@ -375,7 +330,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = 35).errors mustBe Seq(
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box35).errors mustBe Seq(
           FormError(originalKey, originalWeightDecimalMessageKey),
           FormError(amendedKey, amendedWeightDecimalMessageKey)
         )
@@ -384,7 +339,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = weightAmendedValue.toString), box = 35).errors mustBe
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = weightAmendedValue.toString), box = BoxNumber.Box35).errors mustBe
           Seq(
             FormError(originalKey, originalWeightDecimalMessageKey)
           )
@@ -393,7 +348,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = tooManyDecimalValue.toString), box = 35).errors mustBe
+        formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box35).errors mustBe
           Seq(
             FormError(amendedKey, amendedWeightDecimalMessageKey)
           )
@@ -403,7 +358,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "out of range values provided" should {
       "result in a form with errors" in {
         val rangeValueArgs = Seq(0, 9999999.999)
-        formBinderBox(formBuilder(original = outOfRangeValue.toString, amended = outOfRangeValue.toString), box = 35).errors mustBe Seq(
+        formBinderBox(formBuilder(original = outOfRangeValue.toString, amended = outOfRangeValue.toString), box = BoxNumber.Box35).errors mustBe Seq(
           FormError(originalKey, originalWeightRangeMessageKey, rangeValueArgs),
           FormError(amendedKey, amendedWeightRangeMessageKey, rangeValueArgs)
         )
@@ -412,7 +367,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = weightAmendedValue.toString, amended = weightAmendedValue.toString), box = 35).errors mustBe
+        formBinderBox(formBuilder(original = weightAmendedValue.toString, amended = weightAmendedValue.toString), box = BoxNumber.Box35).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
@@ -423,12 +378,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data for a weightForm box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = 35)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = BoxNumber.Box35)
         form.hasErrors mustBe false
       }
 
       "generate the correct model" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = 35)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString), box = BoxNumber.Box35)
         form.value mustBe Some(UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString))
       }
     }
@@ -438,7 +393,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "built from a valid model" should {
       "generate the correct mapping" in {
         val model: UnderpaymentReasonValue = UnderpaymentReasonValue(weightOriginalValue.toString, weightAmendedValue.toString)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(35).fill(model)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(BoxNumber.Box35).fill(model)
         form.data mustBe formBuilder(original = weightOriginalValue.toString, amended = weightAmendedValue.toString)
       }
     }
@@ -447,7 +402,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with invalid data for a unit box selected" when {
     "no values provided" should {
       "result in a form with errors" in {
-        formBinderBox(box = 41).errors mustBe Seq(
+        formBinderBox(box = BoxNumber.Box41).errors mustBe Seq(
           FormError(originalKey, originalUnitMissingMessageKey),
           FormError(amendedKey, amendedUnitMissingMessageKey)
         )
@@ -456,7 +411,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = unitOriginalValue.toString), box = 41).errors mustBe
+        formBinderBox(formBuilder(original = unitOriginalValue.toString), box = BoxNumber.Box41).errors mustBe
           Seq(
             FormError(amendedKey, amendedUnitMissingMessageKey)
           )
@@ -465,7 +420,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = 41).errors mustBe Seq(
+        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = BoxNumber.Box41).errors mustBe Seq(
           FormError(originalKey, originalUnitFormatMessageKey),
           FormError(amendedKey, amendedUnitFormatMessageKey)
         )
@@ -474,7 +429,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = nonNumeric), box = 41).errors mustBe
+        formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = nonNumeric), box = BoxNumber.Box41).errors mustBe
           Seq(
             FormError(amendedKey, amendedUnitFormatMessageKey)
           )
@@ -483,7 +438,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = 41).errors mustBe Seq(
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box41).errors mustBe Seq(
           FormError(originalKey, originalUnitDecimalMessageKey),
           FormError(amendedKey, amendedUnitDecimalMessageKey)
         )
@@ -492,7 +447,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = unitAmendedValue.toString), box = 41).errors mustBe
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = unitAmendedValue.toString), box = BoxNumber.Box41).errors mustBe
           Seq(
             FormError(originalKey, originalUnitDecimalMessageKey)
           )
@@ -501,7 +456,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = tooManyDecimalValue.toString), box = 41).errors mustBe
+        formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box41).errors mustBe
           Seq(
             FormError(amendedKey, amendedUnitDecimalMessageKey)
           )
@@ -511,7 +466,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "out of range values provided" should {
       "result in a form with errors" in {
         val rangeValueArgs = Seq(0, 9999999.999)
-        formBinderBox(formBuilder(original = outOfRangeValue.toString, amended = outOfRangeValue.toString), box = 41).errors mustBe Seq(
+        formBinderBox(formBuilder(original = outOfRangeValue.toString, amended = outOfRangeValue.toString), box = BoxNumber.Box41).errors mustBe Seq(
           FormError(originalKey, originalUnitRangeMessageKey, rangeValueArgs),
           FormError(amendedKey, amendedUnitRangeMessageKey, rangeValueArgs)
         )
@@ -520,7 +475,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = unitAmendedValue.toString, amended = unitAmendedValue.toString), box = 41).errors mustBe
+        formBinderBox(formBuilder(original = unitAmendedValue.toString, amended = unitAmendedValue.toString), box = BoxNumber.Box41).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
@@ -531,12 +486,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data for a unitForm box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = unitAmendedValue.toString), box = 41)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = unitAmendedValue.toString), box = BoxNumber.Box41)
         form.hasErrors mustBe false
       }
 
       "generate the correct model" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = unitAmendedValue.toString), box = 41)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = unitOriginalValue.toString, amended = unitAmendedValue.toString), box = BoxNumber.Box41)
         form.value mustBe Some(UnderpaymentReasonValue(unitOriginalValue.toString, unitAmendedValue.toString))
       }
     }
@@ -546,7 +501,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "built from a valid model" should {
       "generate the correct mapping" in {
         val model: UnderpaymentReasonValue = UnderpaymentReasonValue(unitOriginalValue.toString, unitAmendedValue.toString)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(41).fill(model)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(BoxNumber.Box41).fill(model)
         form.data mustBe formBuilder(original = unitOriginalValue.toString, amended = unitAmendedValue.toString)
       }
     }
@@ -555,12 +510,12 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data for a decimal box selected" when {
     "provided with valid values" should {
       "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString), box = 42)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString), box = BoxNumber.Box42)
         form.hasErrors mustBe false
       }
 
       "generate the correct model" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString), box = 42)
+        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString), box = BoxNumber.Box42)
         form.value mustBe Some(UnderpaymentReasonValue(decimalOriginalValue.toString, decimalAmendedValue.toString))
       }
     }
@@ -569,7 +524,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
   "Binding a form with invalid data for a decimal box selected" when {
     "no values provided" should {
       "result in a form with errors" in {
-        formBinderBox(box = 42).errors mustBe Seq(
+        formBinderBox(box = BoxNumber.Box42).errors mustBe Seq(
           FormError(originalKey, originalDecimalMissingMessageKey),
           FormError(amendedKey, amendedDecimalMissingMessageKey)
         )
@@ -578,7 +533,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "no amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = decimalOriginalValue.toString), box = 42).errors mustBe
+        formBinderBox(formBuilder(original = decimalOriginalValue.toString), box = BoxNumber.Box42).errors mustBe
           Seq(
             FormError(amendedKey, amendedDecimalMissingMessageKey)
           )
@@ -587,7 +542,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = 42).errors mustBe Seq(
+        formBinderBox(formBuilder(original = nonNumeric, amended = nonNumeric), box = BoxNumber.Box42).errors mustBe Seq(
           FormError(originalKey, originalDecimalFormatMessageKey),
           FormError(amendedKey, amendedDecimalFormatMessageKey)
         )
@@ -596,7 +551,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "non numeric amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = nonNumeric), box = 42).errors mustBe
+        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = nonNumeric), box = BoxNumber.Box42).errors mustBe
           Seq(
             FormError(amendedKey, amendedDecimalFormatMessageKey)
           )
@@ -605,7 +560,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal values provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = 42).errors mustBe Seq(
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box42).errors mustBe Seq(
           FormError(originalKey, originalDecimalInvalidDecimalMessageKey),
           FormError(amendedKey, amendedDecimalInvalidDecimalMessageKey)
         )
@@ -614,7 +569,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal original value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = decimalAmendedValue.toString), box = 42).errors mustBe
+        formBinderBox(formBuilder(original = tooManyDecimalValue.toString, amended = decimalAmendedValue.toString), box = BoxNumber.Box42).errors mustBe
           Seq(
             FormError(originalKey, originalDecimalInvalidDecimalMessageKey)
           )
@@ -623,7 +578,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "too many decimal amended value provided" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = tooManyDecimalValue.toString), box = 42).errors mustBe
+        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = tooManyDecimalValue.toString), box = BoxNumber.Box42).errors mustBe
           Seq(
             FormError(amendedKey, amendedDecimalInvalidDecimalMessageKey)
           )
@@ -634,7 +589,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
       "result in a form with errors" in {
         val bigDecimal: BigDecimal = 999999999999.99
         val rangeValueArgs = Seq(0, bigDecimal)
-        formBinderBox(formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString), box = 42).errors mustBe Seq(
+        formBinderBox(formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString), box = BoxNumber.Box42).errors mustBe Seq(
           FormError(originalKey, originalDecimalRangeMessageKey, rangeValueArgs),
           FormError(amendedKey, amendedDecimalRangeMessageKey, rangeValueArgs)
         )
@@ -643,7 +598,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
     "original and amended value are the same" should {
       "result in a form with errors" in {
-        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalOriginalValue.toString), box = 42).errors mustBe
+        formBinderBox(formBuilder(original = decimalOriginalValue.toString, amended = decimalOriginalValue.toString), box = BoxNumber.Box42).errors mustBe
           Seq(
             FormError("", keysDifferentMessageKey)
           )
@@ -655,32 +610,8 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "built from a valid model" should {
       "generate the correct mapping" in {
         val model: UnderpaymentReasonValue = UnderpaymentReasonValue(decimalOriginalValue.toString, decimalAmendedValue.toString)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(42).fill(model)
+        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(BoxNumber.Box42).fill(model)
         form.data mustBe formBuilder(original = decimalOriginalValue.toString, amended = decimalAmendedValue.toString)
-      }
-    }
-  }
-
-  "Binding a form with valid data for an unrecognised box selected" when {
-    "provided with valid values" should {
-      "result in a form with no errors" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = invalidBoxOriginalValue, amended = invalidBoxAmendedValue), box = 0)
-        form.hasErrors mustBe false
-      }
-
-      "generate the correct model" in {
-        val form: Form[UnderpaymentReasonValue] = formBinderBox(formBuilder(original = invalidBoxOriginalValue, amended = invalidBoxAmendedValue), box = 0)
-        form.value mustBe Some(UnderpaymentReasonValue(invalidBoxOriginalValue, invalidBoxAmendedValue))
-      }
-    }
-  }
-
-  "An unrecognised box form " when {
-    "built from a valid model" should {
-      "generate the correct mapping" in {
-        val model: UnderpaymentReasonValue = UnderpaymentReasonValue(invalidBoxAmendedValue, invalidBoxOriginalValue)
-        val form: Form[UnderpaymentReasonValue] = new UnderpaymentReasonAmendmentFormProvider()(0).fill(model)
-        form.data mustBe formBuilder(original = invalidBoxAmendedValue, amended = invalidBoxOriginalValue)
       }
     }
   }
@@ -737,18 +668,18 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
 
   "invalid format for other reason" should {
     "result in a required error" in {
-      formBinderBox(formBuilder(original = ""), box = 99).errors mustBe
+      formBinderBox(formBuilder(original = ""), box = BoxNumber.OtherItem).errors mustBe
         Seq(FormError(originalKey, "otherReason.error.required"))
     }
 
     "result in a no emoji error" in {
-      formBinderBox(formBuilder(original = "😀"), box = 99).errors mustBe
+      formBinderBox(formBuilder(original = "😀"), box = BoxNumber.OtherItem).errors mustBe
         Seq(FormError(originalKey, "otherReason.error.noEmoji"))
     }
 
     "result in a max length error" in {
       val maxLengthData: String = "c" * 1502
-      formBinderBox(formBuilder(original = maxLengthData), box = 99).errors mustBe
+      formBinderBox(formBuilder(original = maxLengthData), box = BoxNumber.OtherItem).errors mustBe
         Seq(FormError(originalKey, "otherReason.error.maxLength", Seq(1500)))
     }
   }

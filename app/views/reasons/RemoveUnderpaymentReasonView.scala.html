@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
+@import models.reasons.BoxNumber.BoxNumber
 
 @this(
     layout: templates.Layout,
@@ -24,7 +25,7 @@
     p: components.p
 )
 
-@(form: Form[_], backLink: Call, boxNumber: Int, itemNumber: Int)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], backLink: Call, boxNumber: BoxNumber, itemNumber: Int)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("removeUnderpaymentReason.pageTitle"),
@@ -36,7 +37,7 @@
 
    @h1(messages("removeUnderpaymentReason.heading"))
 
-   @p{ @messages(s"box${boxNumber}.pageHeader", itemNumber) }
+   @p{ @messages(s"box${boxNumber.id}.pageHeader", itemNumber) }
 
    @formHelper(action = controllers.reasons.routes.RemoveUnderpaymentReasonController.onSubmit()) {
        @inputRadio(

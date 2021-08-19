@@ -17,7 +17,8 @@
 package controllers.reasons
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
@@ -47,7 +48,9 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
-      case Some(reason) => Future.successful(Ok(view(backLink, summaryList(reason.original), pageTitle(reason), pageHeading(reason))))
+      case Some(reason) =>
+        val boxNumber = reason.original.boxNumber
+        Future.successful(Ok(view(backLink, summaryList(reason.original), pageTitle(boxNumber), pageHeading(boxNumber))))
       case _ => Future.successful(InternalServerError("No change underpayment reasons found"))
     }
   }
@@ -55,7 +58,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
   def change(boxNumber: Int, itemNumber: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(UnderpaymentReasonsPage) match {
       case Some(reasons) =>
-        val originalReason = reasons.filter(x => x.boxNumber == boxNumber && x.itemNumber == itemNumber).head
+        val originalReason = reasons.filter(x => x.boxNumber.id == boxNumber && x.itemNumber == itemNumber).head
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(originalReason, originalReason)))
           _ <- sessionRepository.set(updatedAnswers)
@@ -96,7 +99,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
         actions = Some(Actions(
           items = Seq(
             ActionItemHelper.createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
+              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber.id).url,
               messages("changeUnderpaymentReason.values.original.change")
             )
           )
@@ -109,7 +112,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
         actions = Some(Actions(
           items = Seq(
             ActionItemHelper.createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber).url,
+              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber.id).url,
               messages("changeUnderpaymentReason.values.amended.change")
             )
           ))
@@ -117,7 +120,7 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
       )
     )
 
-    if (underpaymentReason.boxNumber == 99) {
+    if (underpaymentReason.boxNumber == BoxNumber.OtherItem) {
       SummaryList(Seq(otherReasonSummary(underpaymentReason.original)))
     } else {
       SummaryList(itemNumberSummaryListRow ++ originalAmountSummaryListRow)
@@ -138,17 +141,16 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
       )
     )
 
-  private def pageTitle(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
-    if (reason.original.boxNumber == 99) {
-      messages("changeUnderpaymentReason.otherReasonTitle")
-    } else {
-      messages("changeUnderpaymentReason.pageTitle", reason.original.boxNumber)
+  private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String = {
+    boxNumber match {
+      case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonTitle")
+      case _ => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
     }
+  }
 
-  private def pageHeading(reason: ChangeUnderpaymentReason)(implicit messages: Messages): String =
-    if (reason.original.boxNumber == 99) {
-      messages("changeUnderpaymentReason.otherReasonHeading")
-    } else {
-      messages("changeUnderpaymentReason.heading", reason.original.boxNumber)
+  private[controllers] def pageHeading(boxNumber: BoxNumber)(implicit messages: Messages): String =
+    boxNumber match {
+      case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonHeading")
+      case _ => messages("changeUnderpaymentReason.heading", boxNumber.id)
     }
 }

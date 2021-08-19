@@ -20,6 +20,8 @@ import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.BoxNumberFormProvider
 import models.UserAnswers
+import models.reasons.BoxNumber
+import models.reasons.BoxNumber.BoxNumber
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
@@ -47,10 +49,8 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
 
   private lazy val backLink: Call = controllers.reasons.routes.BoxGuidanceController.onLoad()
   private val boxNumbers = {
-    val baseNumbers =
-      Seq("22", "33", "34", "35", "36", "37", "38", "39", "41", "42", "43", "45", "46", "62", "63", "66", "67", "68")
-    if (appConfig.otherItemEnabled) baseNumbers :+ "99"
-    else baseNumbers
+    if (appConfig.otherItemEnabled) BoxNumber.values
+    else BoxNumber.values - BoxNumber.OtherItem
   }
 
 
@@ -59,16 +59,16 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
       formProvider().fill
     }
 
-    val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber.toInt))
-    val isFirstBox = filteredBoxNumbers.length == boxNumbers.length
+    val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber))
+    val isFirstBox = filteredBoxNumbers.size == boxNumbers.size
     Future.successful(Ok(view(form, backLink, createRadioButtons(form, filteredBoxNumbers), isFirstBox)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => {
-        val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber.toInt))
-        val isFirstBox = filteredBoxNumbers.length == boxNumbers.length
+        val filteredBoxNumbers = boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber))
+        val isFirstBox = filteredBoxNumbers.size == boxNumbers.size
         Future.successful(BadRequest(view(formWithErrors, backLink, createRadioButtons(formWithErrors, filteredBoxNumbers), isFirstBox)))
       },
       value => {
@@ -94,26 +94,27 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
     )
   }
 
-  private[controllers] def navigateTo(value: Int) = {
+  private[controllers] def navigateTo(value: BoxNumber) = {
     value match {
-      case 22 | 62 | 63 | 66 | 67 | 68 | 99 => Redirect(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(value))
+      case BoxNumber.Box22 | BoxNumber.Box62 | BoxNumber.Box63 | BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 | BoxNumber.OtherItem =>
+        Redirect(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(value.id))
       case _ => Redirect(controllers.reasons.routes.ItemNumberController.onLoad())
     }
   }
 
-  private def createRadioButtons(form: Form[_], boxNumbers: Seq[String])(implicit messages: Messages): Seq[RadioItem] = {
-    def radioItem(boxNumber: String): RadioItem =
+  private def createRadioButtons(form: Form[_], boxNumbers: Set[BoxNumber])(implicit messages: Messages): Seq[RadioItem] = {
+    def radioItem(boxNumber: BoxNumber): RadioItem =
       RadioItem(
-        value = Some(boxNumber),
-        content = Text(messages(s"boxNumber.$boxNumber.radio")),
-        checked = form("value").value.contains(boxNumber)
+        value = Some(boxNumber.id.toString),
+        content = Text(messages(s"boxNumber.${boxNumber.id}.radio")),
+        checked = form("value").value.contains(boxNumber.id.toString)
       )
 
-    val radioButtons = boxNumbers.filterNot(_ == "99").map(radioItem)
+    val radioButtons = (boxNumbers - BoxNumber.OtherItem).toList.map(radioItem)
 
-    if (boxNumbers.contains("99")) {
+    if (boxNumbers.contains(BoxNumber.OtherItem)) {
       val divider = RadioItem(divider = Some("or"))
-      val otherItemButton = radioItem("99")
+      val otherItemButton = radioItem(BoxNumber.OtherItem)
 
       radioButtons :+ divider :+ otherItemButton
     } else {
@@ -121,7 +122,7 @@ class BoxNumberController @Inject()(appConfig: AppConfig,
     }
   }
 
-  private[controllers] def underpaymentReasonSelected(userAnswers: UserAnswers, boxNumber: Int): Boolean = {
+  private[controllers] def underpaymentReasonSelected(userAnswers: UserAnswers, boxNumber: BoxNumber): Boolean = {
     userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
       .exists(reason => reason.boxNumber == boxNumber && reason.itemNumber == 0)
   }

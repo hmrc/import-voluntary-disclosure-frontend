@@ -20,6 +20,7 @@ import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.ItemNumberFormProvider
 import models.UserAnswers
+import models.reasons.BoxNumber.BoxNumber
 import models.reasons.UnderpaymentReason
 import pages.reasons.{UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.data.FormError
@@ -73,7 +74,7 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, submittedItemNumber))
                 _ <- sessionRepository.set(updatedAnswers)
               } yield {
-                Redirect(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(currentBoxNumber))
+                Redirect(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(currentBoxNumber.id))
               }
             }
           case _ =>
@@ -83,7 +84,7 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def existsSameBoxItem(currentBoxNumber: Int,
+  private[controllers] def existsSameBoxItem(currentBoxNumber: BoxNumber,
                                              submittedItemNumber: Int,
                                              userAnswers: UserAnswers) = {
     lazy val currentUnderpayments: Seq[UnderpaymentReason] = userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)

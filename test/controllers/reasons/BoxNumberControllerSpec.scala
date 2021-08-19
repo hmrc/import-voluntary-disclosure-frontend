@@ -23,7 +23,7 @@ import forms.reasons.BoxNumberFormProvider
 import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.reasons.{UnderpaymentReasonBoxNumberPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -35,7 +35,7 @@ import scala.concurrent.Future
 
 class BoxNumberControllerSpec extends ControllerSpecBase {
 
-  val BOX_NUMBER = 22
+  val BOX_NUMBER = BoxNumber.Box22
 
   val underpaymentReasonBoxNumber: UserAnswers = UserAnswers("some-cred-id")
     .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER).success.value

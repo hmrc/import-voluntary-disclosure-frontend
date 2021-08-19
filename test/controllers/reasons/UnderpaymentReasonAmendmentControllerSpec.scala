@@ -21,7 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.UnderpaymentReasonValue
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
@@ -90,17 +91,12 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
     "should redirect the back button to Box Number Controller" in new Test {
-      controller.backLink(22) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad())
+      controller.backLink(BoxNumber.Box22) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad())
     }
 
     "should redirect the back button to Item Number Controller" in new Test {
-      controller.backLink(33) mustBe Some(controllers.reasons.routes.ItemNumberController.onLoad())
+      controller.backLink(BoxNumber.Box33) mustBe Some(controllers.reasons.routes.ItemNumberController.onLoad())
     }
-
-    "should redirect the back button to Box Number Controller when the box number is not in the list" in new Test {
-      controller.backLink(0) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad())
-    }
-
   }
 
   "POST onSubmit" when {
@@ -151,134 +147,98 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
   }
 
   "routeToView for Text Amendment" when {
-    def checkRoute(boxNumber: Int, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
+    def checkRoute(boxNumber: BoxNumber, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
       s"render the view using the textAmendmentView for box ${boxNumber}" in new Test {
-        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
+        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
         val result = controller.routeToView(boxNumber, itemNumber, form.apply(boxNumber))(fakeRequest)
         result mustBe textAmendmentView(form.apply(boxNumber), formAction, boxNumber, itemNumber, back, inputClass = expectedInputClass)(fakeRequest, messages)
       }
     }
 
     "called with entry level box 22" should {
-      checkRoute(22, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box22, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
     "called with entry level box 62" should {
-      checkRoute(62, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box62, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
     "called with entry level box 63" should {
-      checkRoute(63, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box63, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
     "called with entry level box 66" should {
-      checkRoute(66, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box66, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
     "called with entry level box 67" should {
-      checkRoute(67, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box67, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
     "called with entry level box 68" should {
-      checkRoute(68, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box68, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
 
     "called with item level box 33" should {
-      checkRoute(33, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-20"))
+      checkRoute(BoxNumber.Box33, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-20"))
     }
     "called with item level box 34" should {
-      checkRoute(34, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-3"))
+      checkRoute(BoxNumber.Box34, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-3"))
     }
     "called with item level box 36" should {
-      checkRoute(36, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-3"))
+      checkRoute(BoxNumber.Box36, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-3"))
     }
     "called with item level box 37" should {
-      checkRoute(37, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box37, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
     "called with item level box 39" should {
-      checkRoute(39, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box39, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
     "called with item level box 41" should {
-      checkRoute(41, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box41, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
     "called with item level box 45" should {
-      checkRoute(45, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-4"))
-    }
-
-    "called with an invalid box number" should {
-      s"route for box 0" in new Test {
-        val result = intercept[RuntimeException](
-          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-        )
-        assert(result.getMessage.contains("Invalid Box Number"))
-      }
+      checkRoute(BoxNumber.Box45, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-4"))
     }
   }
 
   "routeToView for Weight Amendment" when {
-    def checkRoute(boxNumber: Int, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
+    def checkRoute(boxNumber: BoxNumber, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
       s"render the view using the weightAmendmentView for box ${boxNumber}" in new Test {
-        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
+        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
         val result = controller.routeToView(boxNumber, itemNumber, form.apply(boxNumber))(fakeRequest)
         result mustBe weightAmendmentView(form.apply(boxNumber), formAction, boxNumber, itemNumber, back, inputClass = expectedInputClass)(fakeRequest, messages)
       }
     }
 
     "called with item level box 35" should {
-      checkRoute(35, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box35, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
     "called with item level box 38" should {
-      checkRoute(38, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
-    }
-
-    "called with an invalid box number" should {
-      s"route for box 0" in new Test {
-        val result = intercept[RuntimeException](
-          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-        )
-        assert(result.getMessage.contains("Invalid Box Number"))
-      }
+      checkRoute(BoxNumber.Box38, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
   }
 
   "routeToView for Currency Amendment" when {
-    def checkRoute(boxNumber: Int, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
+    def checkRoute(boxNumber: BoxNumber, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
       s"render the view using the currencyAmendmentView for box ${boxNumber}" in new Test {
-        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
+        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
         val result = controller.routeToView(boxNumber, itemNumber, form.apply(boxNumber))(fakeRequest)
         result mustBe currencyAmendmentView(form.apply(boxNumber), formAction, boxNumber, itemNumber, back, inputClass = expectedInputClass)(fakeRequest, messages)
       }
     }
 
     "called with item level box 46" should {
-      checkRoute(46, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
-    }
-
-    "called with an invalid box number" should {
-      s"route for box 0" in new Test {
-        val result = intercept[RuntimeException](
-          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-        )
-        assert(result.getMessage.contains("Invalid Box Number"))
-      }
+      checkRoute(BoxNumber.Box46, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
   }
 
   "routeToView for other reason amendment" when {
-    def checkRoute(boxNumber: Int, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
+    def checkRoute(boxNumber: BoxNumber, itemNumber: Int, back: Option[Call], expectedInputClass: Option[String] = Some("govuk-input--width-10")) = {
       s"render the view using the otherReasonAmendmentView for box ${boxNumber}" in new Test {
-        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
+        val formAction = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
         val result = controller.routeToView(boxNumber, itemNumber, form.apply(boxNumber))(fakeRequest)
         result mustBe otherReasonAmendmentView(form.apply(boxNumber), formAction, boxNumber, itemNumber, back, inputClass = expectedInputClass)(fakeRequest, messages)
       }
     }
 
     "called with item level box 99" should {
-      checkRoute(99, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
-    }
-
-    "called with an invalid box number" should {
-      s"route for box 0" in new Test {
-        val result = intercept[RuntimeException](
-          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-        )
-        assert(result.getMessage.contains("Invalid Box Number"))
-      }
+      checkRoute(BoxNumber.OtherItem, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
   }
 }
