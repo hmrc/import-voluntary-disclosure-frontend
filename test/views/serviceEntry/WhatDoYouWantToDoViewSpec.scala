@@ -19,6 +19,7 @@ package views.serviceEntry
 import base.ViewBaseSpec
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import messages.WhatDoYouWantToDoMessages
+import models.WhatDoYouWantToDo
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -37,7 +38,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
   "Rendering the WhatDoYouWantToDo page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
+      val form: Form[WhatDoYouWantToDo] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -53,7 +54,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
+      lazy val form: Form[WhatDoYouWantToDo] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -72,7 +73,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
+    val form: Form[WhatDoYouWantToDo] = formProvider.apply()
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -82,19 +83,19 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
 
     "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.leftOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.createOptionMsg
     }
 
     "have the correct value for the first radio button hint" in {
-      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.leftOptionHint
+      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.createOptionHint
     }
 
     "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.rightOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.updateOptionMsg
     }
 
-    "have the correct value for the second radio button hint" in {
-      elementText("#value-no-item-hint") mustBe WhatDoYouWantToDoMessages.rightOptionHint
+    "have the correct value for the third radio button" in {
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(3) > label") mustBe WhatDoYouWantToDoMessages.cancelOptionMsg
     }
 
     "render a back link with the correct URL" in {

@@ -44,7 +44,7 @@ class WhatDoYouWantToDoProviderSpec extends FormSpecBase {
 
   "Binding a form with valid data" should {
 
-    val data = Map("value" -> "true")
+    val data = Map("value" -> "createOption")
     val form = new WhatDoYouWantToDoFormProvider()().bind(data)
 
     "result in a form with no errors" in {

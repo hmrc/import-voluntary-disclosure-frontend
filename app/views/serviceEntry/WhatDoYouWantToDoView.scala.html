@@ -31,25 +31,13 @@
 
         @formHelper(action = controllers.serviceEntry.routes.WhatDoYouWantToDoController.onSubmit()) {
             @inputRadio(
-                form,
-                Some("whatDoYouWantToDo.heading"),
-                Seq(
-                    RadioItem(
-                        id = Some("value"),
-                        value = Some("true"),
-                        content = Text(messages("whatDoYouWantToDo.leftOptionMsg")),
-                        checked = form("value").value.contains("true"),
-                        hint = Some(Hint(content = Text(messages("whatDoYouWantToDo.leftOptionHint"))))
-                    ),
-                    RadioItem(
-                        id = Some("value-no"),
-                        value = Some("false"),
-                        content = Text(messages("whatDoYouWantToDo.rightOptionMsg")),
-                        checked = form("value").value.contains("false"),
-                        hint = Some(Hint(content = Text(messages("whatDoYouWantToDo.rightOptionHint"))))
+                form = form,
+                legend = Some(messages("whatDoYouWantToDo.heading")),
+                items = WhatDoYouWantToDo.options(form),
+                inline = false,
+                legendAsHeading = true
                     )
-                )
-            )
+
             @button("common.button.continue")
         }
 

@@ -17,6 +17,7 @@
 package viewmodels.cya
 
 import base.SpecBase
+import models.WhatDoYouWantToDo.CreateOption
 import models._
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import org.scalatest.matchers.must.Matchers
@@ -32,7 +33,7 @@ class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with Try
   trait Test {
 
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-      .set(WhatDoYouWantToDoPage, false).success.value
+      .set(WhatDoYouWantToDoPage, CreateOption).success.value
       .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
       .set(MoreDocumentationPage, true).success.value
       .set(UploadSupportingDocumentationPage, Seq(FileUploadInfo(
@@ -75,7 +76,7 @@ class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with Try
 
     "produce a valid model when all answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        .set(WhatDoYouWantToDoPage, false).success.value
+        .set(WhatDoYouWantToDoPage, CreateOption).success.value
         .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
         .set(MoreDocumentationPage, false).success.value
         .set(UpdateAdditionalInformationPage, "Hello World").success.value

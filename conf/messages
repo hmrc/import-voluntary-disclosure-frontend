@@ -974,10 +974,10 @@ timeout.button = Sign in
 # What do you want to do Page
 whatDoYouWantToDo.title = What do you want to do?
 whatDoYouWantToDo.heading = What do you want to do?
-whatDoYouWantToDo.leftOptionMsg = Start a new underpayment disclosure
-whatDoYouWantToDo.rightOptionMsg = Add more information to an existing underpayment disclosure
-whatDoYouWantToDo.leftOptionHint = Tell us about an underpayment of Customs Duty or import VAT.
-whatDoYouWantToDo.rightOptionHint = You will need the disclosure reference number.
+whatDoYouWantToDo.createOption = Start a new underpayment disclosure
+whatDoYouWantToDo.updateOption = Add more information to an existing underpayment disclosure
+whatDoYouWantToDo.cancelOption = Cancel an existing underpayment disclosure
+whatDoYouWantToDo.createOptionHint = Tell us about an underpayment of Customs Duty or import VAT.
 whatDoYouWantToDo.error.required = User must select an option
 
 # Disclosure Reference Number Page
