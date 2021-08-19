@@ -97,11 +97,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     "should redirect the back button to Item Number Controller" in new Test {
       controller.backLink(BoxNumber.Box33) mustBe Some(controllers.reasons.routes.ItemNumberController.onLoad())
     }
-
-//    "should redirect the back button to Box Number Controller when the box number is not in the list" in new Test {
-//      controller.backLink(0) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad())
-//    }
-
   }
 
   "POST onSubmit" when {
@@ -200,15 +195,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     "called with item level box 45" should {
       checkRoute(BoxNumber.Box45, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()), Some("govuk-input--width-4"))
     }
-
-//    "called with an invalid box number" should {
-//      s"route for box 0" in new Test {
-//        val result = intercept[RuntimeException](
-//          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-//        )
-//        assert(result.getMessage.contains("Invalid Box Number"))
-//      }
-//    }
   }
 
   "routeToView for Weight Amendment" when {
@@ -226,15 +212,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     "called with item level box 38" should {
       checkRoute(BoxNumber.Box38, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
-
-//    "called with an invalid box number" should {
-//      s"route for box 0" in new Test {
-//        val result = intercept[RuntimeException](
-//          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-//        )
-//        assert(result.getMessage.contains("Invalid Box Number"))
-//      }
-//    }
   }
 
   "routeToView for Currency Amendment" when {
@@ -249,15 +226,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     "called with item level box 46" should {
       checkRoute(BoxNumber.Box46, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
     }
-
-//    "called with an invalid box number" should {
-//      s"route for box 0" in new Test {
-//        val result = intercept[RuntimeException](
-//          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-//        )
-//        assert(result.getMessage.contains("Invalid Box Number"))
-//      }
-//    }
   }
 
   "routeToView for other reason amendment" when {
@@ -272,14 +240,5 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     "called with item level box 99" should {
       checkRoute(BoxNumber.OtherItem, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
     }
-
-//    "called with an invalid box number" should {
-//      s"route for box 0" in new Test {
-//        val result = intercept[RuntimeException](
-//          controller.routeToView(0, 1, form.apply(0))(fakeRequest)
-//        )
-//        assert(result.getMessage.contains("Invalid Box Number"))
-//      }
-//    }
   }
 }

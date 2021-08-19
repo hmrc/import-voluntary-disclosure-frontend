@@ -48,6 +48,6 @@ object BoxNumber extends Enumeration {
       .opt(BoxNumber(i))
       .getOrElse(throw new RuntimeException("Invalid Box Number"))
 
-  implicit val reads: Reads[BoxNumber.Value] = implicitly[Reads[Int]].map(BoxNumber.apply)
-  implicit val writes: Writes[BoxNumber.Value] = implicitly[Writes[Int]].contramap(_.id)
+  implicit val reads: Reads[BoxNumber] = implicitly[Reads[Int]].map(BoxNumber.fromInt)
+  implicit val writes: Writes[BoxNumber] = implicitly[Writes[Int]].contramap(_.id)
 }
