@@ -19,6 +19,7 @@ package views.reasons
 import base.ViewBaseSpec
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
 import messages.RemoveUnderpaymentReasonMessages
+import models.reasons.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -31,7 +32,7 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
   private lazy val injectedView: RemoveUnderpaymentReasonView = app.injector.instanceOf[RemoveUnderpaymentReasonView]
   val backLink = Call("GET", "backLink/url")
 
-  val boxNumber = 35
+  val boxNumber = BoxNumber.Box35
   val itemNumber = 1
 
   val formProvider: RemoveUnderpaymentReasonFormProvider = injector.instanceOf[RemoveUnderpaymentReasonFormProvider]

@@ -75,7 +75,7 @@ class ChangeItemNumberController @Inject()(identify: IdentifierAction,
                   updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentReasonPage, reason))
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield {
-                  Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(data.original.boxNumber))
+                  Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(data.original.boxNumber.id))
                 }
               }
             } else {

@@ -18,6 +18,8 @@ package controllers.reasons
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
+import models.reasons.BoxNumber
+import models.reasons.BoxNumber.BoxNumber
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.data.{Form, FormError}
 import play.api.i18n.I18nSupport
@@ -44,9 +46,10 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
                                                      )
   extends FrontendController(mcc) with I18nSupport {
 
-  private def formAction(boxNumber: Int): Call = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber)
+  private def formAction(boxNumber: BoxNumber): Call = controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
 
-  def onLoad(boxNumber: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(boxNumberId: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val boxNumber = BoxNumber.fromInt(boxNumberId)
     val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage).getOrElse(0)
 
     val form = request.userAnswers.get(UnderpaymentReasonAmendmentPage).fold(formProvider(boxNumber)) {
@@ -56,7 +59,8 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
     Future.successful(Ok(routeToView(boxNumber, itemNumber, form)))
   }
 
-  def onSubmit(boxNumber: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(boxNumberId: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val boxNumber = BoxNumber.fromInt(boxNumberId)
     val itemNumber = request.userAnswers.get(UnderpaymentReasonItemNumberPage).getOrElse(0)
     formProvider(boxNumber).bindFromRequest().fold(
       formWithErrors => {
@@ -80,22 +84,32 @@ class UnderpaymentReasonAmendmentController @Inject()(identify: IdentifierAction
     )
   }
 
-  private[controllers] def backLink(boxNumber: Int): Option[Call] = {
+  private[controllers] def backLink(boxNumber: BoxNumber): Option[Call] = {
     boxNumber match {
-      case 33 | 34 | 35 | 36 | 37 | 38 | 39 | 41 | 42 | 43 | 45 | 46 => Some(controllers.reasons.routes.ItemNumberController.onLoad())
+      case BoxNumber.Box33 | BoxNumber.Box34 | BoxNumber.Box35 | BoxNumber.Box36 | BoxNumber.Box37 | BoxNumber.Box38 | BoxNumber.Box39 |
+           BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 | BoxNumber.Box45 | BoxNumber.Box46 =>
+        Some(controllers.reasons.routes.ItemNumberController.onLoad())
       case _ => Some(controllers.reasons.routes.BoxNumberController.onLoad())
     }
   }
 
-  private[controllers] def routeToView(boxNumber: Int, itemNumber: Int, form: Form[_])(implicit request: Request[_]) = {
+  private[controllers] def routeToView(boxNumber: BoxNumber, itemNumber: Int, form: Form[_])(implicit request: Request[_]) = {
     boxNumber match {
-      case 22 | 37 | 39 | 41 | 42 | 62 | 63 | 66 | 67 | 68 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
-      case 33 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-20"))
-      case 34 | 36 | 43 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-3"))
-      case 35 | 38 => weightAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
-      case 45 => textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-4"))
-      case 46 => currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
-      case 99 => otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
+      case BoxNumber.Box22 | BoxNumber.Box37 | BoxNumber.Box39 | BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box62 | BoxNumber.Box63 |
+           BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 =>
+        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
+      case BoxNumber.Box33 =>
+        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-20"))
+      case BoxNumber.Box34 | BoxNumber.Box36 | BoxNumber.Box43 =>
+        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-3"))
+      case BoxNumber.Box35 | BoxNumber.Box38 =>
+        weightAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
+      case BoxNumber.Box45 =>
+        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber), inputClass = Some("govuk-input--width-4"))
+      case BoxNumber.Box46 =>
+        currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
+      case BoxNumber.OtherItem =>
+        otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
       case _ => throw new RuntimeException("Invalid Box Number")
     }
   }

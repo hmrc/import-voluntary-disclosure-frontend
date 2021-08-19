@@ -16,7 +16,7 @@
 
 package views.data.reasons
 
-import models.reasons.UnderpaymentReason
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import play.api.mvc.Call
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -28,15 +28,15 @@ object UnderpaymentReasonSummaryData {
 
   val singleItemReason: Option[Seq[UnderpaymentReason]] = Some(
     Seq(
-      UnderpaymentReason(22, 0, "50", "60")
+      UnderpaymentReason(BoxNumber.Box22, 0, "50", "60")
     )
   )
 
   val multipleItemReason: Option[Seq[UnderpaymentReason]] = Some(
     Seq(
-      UnderpaymentReason(22, 0, "50", "60"),
-      UnderpaymentReason(33, 1, "50", "60"),
-      UnderpaymentReason(99, 0, "Other reason", "")
+      UnderpaymentReason(BoxNumber.Box22, 0, "50", "60"),
+      UnderpaymentReason(BoxNumber.Box33, 1, "50", "60"),
+      UnderpaymentReason(BoxNumber.OtherItem, 0, "Other reason", "")
     )
   )
 

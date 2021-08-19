@@ -20,7 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
@@ -35,7 +36,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val view: ChangeUnderpaymentReasonView = app.injector.instanceOf[ChangeUnderpaymentReasonView]
 
-    def underpayment(box: Int, item: Int = 0, original: String = "50", amended: String = "60") =
+    def underpayment(box: BoxNumber, item: Int = 0, original: String = "50", amended: String = "60") =
       UnderpaymentReason(boxNumber = box, itemNumber = item, original = original, amended = amended)
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -43,8 +44,8 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         .set(
           UnderpaymentReasonsPage,
           Seq(
-            underpayment(box = 33, item = 15, original = "50", amended = "60"),
-            underpayment(box = 22, original = "50", amended = "60")
+            underpayment(box = BoxNumber.Box33, item = 15, original = "50", amended = "60"),
+            underpayment(box = BoxNumber.Box22, original = "50", amended = "60")
           )
         ).success.value
     )
@@ -61,7 +62,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "return OK" in new Test {
       override val userAnswers = Some(UserAnswers("credId")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = 22), changed = underpayment(box = 22))).success.value
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = BoxNumber.Box22), changed = underpayment(box = BoxNumber.Box22))).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
@@ -69,7 +70,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers = Some(UserAnswers("credId")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = 22), changed = underpayment(box = 22))).success.value
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = BoxNumber.Box22), changed = underpayment(box = BoxNumber.Box22))).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -102,7 +103,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "single item is passed" should {
       "produce summary list with one item" in new Test {
-        controller.summaryList(ChangeUnderpaymentReasonData.singleItemReason.original) mustBe ChangeUnderpaymentReasonData.summaryList(35)
+        controller.summaryList(ChangeUnderpaymentReasonData.singleItemReason.original) mustBe ChangeUnderpaymentReasonData.summaryList(BoxNumber.Box35)
       }
 
       "produce summary list with Other Item" in new Test {

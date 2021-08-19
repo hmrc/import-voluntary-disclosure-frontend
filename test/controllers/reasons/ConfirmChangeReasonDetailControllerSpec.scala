@@ -21,7 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import messages.ConfirmChangeReasonDetailMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
@@ -36,16 +37,16 @@ import scala.concurrent.Future
 class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    def underpayment(box: Int, item: Int = 0, original: String = "50", amended: String = "60") =
+    def underpayment(box: BoxNumber, item: Int = 0, original: String = "50", amended: String = "60") =
       UnderpaymentReason(boxNumber = box, itemNumber = item, original = original, amended = amended)
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
         .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-          boxNumber = 33, itemNumber = 1, original = "1806321000", amended = "2204109400X411"))).success.value
+          boxNumber = BoxNumber.Box33, itemNumber = 1, original = "1806321000", amended = "2204109400X411"))).success.value
         .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = 33, item = 1, original = "1806321000", amended = "2204109400X411"),
-          underpayment(box = 33, item = 2, original = "1806321001", amended = "2204109400X412"),
+          underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
+          underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412"),
         )).success.value
     )
 
@@ -74,10 +75,10 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     "produce correct summary list" in new Test {
       val result = controller.summaryList(UserAnswers("some-cred-id")
         .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = 33, item = 1, original = "1806321000", amended = "2204109400X411"),
-          underpayment(box = 33, item = 2, original = "1806321001", amended = "2204109400X412"),
+          underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
+          underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412"),
         )).success.value,
-        boxNumber = 33
+        boxNumber = BoxNumber.Box33
       )
 
       val expectedResult = ConfirmChangeReasonData.reasons(33, Some(2), "1806321001", "2204109400X412")
@@ -87,10 +88,10 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     "produce correct summary list for Other Item" in new Test {
       val result = controller.summaryList(UserAnswers("some-cred-id")
         .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = 99, original = "Other reason", amended = ""),
-          underpayment(box = 99, original = "New other reason", amended = ""),
+          underpayment(box = BoxNumber.OtherItem, original = "Other reason", amended = ""),
+          underpayment(box = BoxNumber.OtherItem, original = "New other reason", amended = ""),
         )).success.value,
-        boxNumber = 99
+        boxNumber = BoxNumber.OtherItem
       )
 
       val expectedResult = ConfirmChangeReasonData.otherItemReasons("New other reason")
@@ -106,11 +107,11 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = 22, original = "50", amended = "60")
+              boxNumber = BoxNumber.Box22, original = "50", amended = "60")
             )).success.value
             .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = 22, original = "50", amended = "60"),
-              underpayment(box = 22, original = "60", amended = "70"),
+              underpayment(box = BoxNumber.Box22, original = "50", amended = "60"),
+              underpayment(box = BoxNumber.Box22, original = "60", amended = "70"),
             )).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
@@ -122,11 +123,11 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = 33, itemNumber = 1, original = "50", amended = "60")
+              boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60")
             )).success.value
             .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = 33, item = 1, original = "50", amended = "60"),
-              underpayment(box = 33, item = 2, original = "60", amended = "70"),
+              underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
+              underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70"),
             )).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
@@ -139,7 +140,7 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = 33, itemNumber = 1, original = "50", amended = "60")
+              boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60")
             )).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
@@ -150,8 +151,8 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = 33, item = 1, original = "50", amended = "60"),
-              underpayment(box = 33, item = 2, original = "60", amended = "70"),
+              underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
+              underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70"),
             )).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
@@ -160,7 +161,7 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
       "payload contains no data" should {
         "produce no summary list" in new Test {
-          val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
+          val result = controller.summaryList(UserAnswers("some-cred-id"), BoxNumber.Box22)
           result mustBe SummaryList(Seq.empty)
         }
       }
@@ -170,15 +171,15 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
   "title and heading" when {
     "Other Item is selected" should {
       "render dedicated messages" in new Test {
-        controller.pageTitle(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonTitle
-        controller.pageHeading(99) mustBe ConfirmChangeReasonDetailMessages.otherReasonHeading
+        controller.pageTitle(BoxNumber.OtherItem) mustBe ConfirmChangeReasonDetailMessages.otherReasonTitle
+        controller.pageHeading(BoxNumber.OtherItem) mustBe ConfirmChangeReasonDetailMessages.otherReasonHeading
       }
     }
 
     "Other Item is not selected" should {
       "render regular messages" in new Test {
-        controller.pageTitle(33) mustBe ConfirmChangeReasonDetailMessages.title(33)
-        controller.pageHeading(33) mustBe ConfirmChangeReasonDetailMessages.heading(33)
+        controller.pageTitle(BoxNumber.Box33) mustBe ConfirmChangeReasonDetailMessages.title(33)
+        controller.pageHeading(BoxNumber.Box33) mustBe ConfirmChangeReasonDetailMessages.heading(33)
       }
     }
   }

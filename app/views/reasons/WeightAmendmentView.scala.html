@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
+@import models.reasons.BoxNumber.BoxNumber
 
 @this(layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -23,23 +24,23 @@
         inputWeight: components.inputWeight
 )
 
-@(form: Form[_], formAction: Call, boxNumber: Int, itemNumber: Int, backLink: Option[Call], inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
+@(form: Form[_], formAction: Call, boxNumber: BoxNumber, itemNumber: Int, backLink: Option[Call], inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
 @bodyMessage=@{
-    if (messages.isDefinedAt(s"box${boxNumber}.pageBody")) {
-        Some(messages(s"box${boxNumber}.pageBody"))
+    if (messages.isDefinedAt(s"box${boxNumber.id}.pageBody")) {
+        Some(messages(s"box${boxNumber.id}.pageBody"))
     } else {
         None
     }
 }
 
     @layout(
-        pageTitle = messages(s"box${boxNumber}.pageTitle", itemNumber),
+        pageTitle = messages(s"box${boxNumber.id}.pageTitle", itemNumber),
         form = Some(form),
         customBackLinkUrl = backLink) {
 
         @errorSummary(form.errors)
 
-        @h1(messages(s"box${boxNumber}.pageHeader", itemNumber))
+        @h1(messages(s"box${boxNumber.id}.pageHeader", itemNumber))
 
         @bodyMessage.map{msg => @p{ @msg } }
 

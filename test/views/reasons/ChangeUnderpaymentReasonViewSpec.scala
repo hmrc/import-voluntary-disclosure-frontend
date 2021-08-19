@@ -18,6 +18,7 @@ package views.reasons
 
 import base.ViewBaseSpec
 import messages.ChangeUnderpaymentReasonMessages
+import models.reasons.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call
@@ -34,15 +35,15 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
   "Rendering the ChangeUnderpaymentReasonView page" when {
     "showing underpayment with item number" should {
 
-      val title = messages("changeUnderpaymentReason.pageTitle", singleItemReason.original.boxNumber)
-      val heading = messages("changeUnderpaymentReason.heading", singleItemReason.original.boxNumber)
-      lazy val view: Html = injectedView(backLink, summaryList(22), title, heading)(fakeRequest, messages)
+      val title = messages("changeUnderpaymentReason.pageTitle", singleItemReason.original.boxNumber.id)
+      val heading = messages("changeUnderpaymentReason.heading", singleItemReason.original.boxNumber.id)
+      lazy val view: Html = injectedView(backLink, summaryList(BoxNumber.Box22), title, heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber))
+      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber.id))
 
       "have correct heading" in {
-        document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber)
+        document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleItemReason.original.boxNumber.id)
       }
 
       "have only 1 Summary List" in {
@@ -96,15 +97,15 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment without item number" should {
 
-      val title = messages("changeUnderpaymentReason.pageTitle", singleEntryLevelReason.original.boxNumber)
-      val heading = messages("changeUnderpaymentReason.heading", singleEntryLevelReason.original.boxNumber)
-      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(35), title, heading)(fakeRequest, messages)
+      val title = messages("changeUnderpaymentReason.pageTitle", singleEntryLevelReason.original.boxNumber.id)
+      val heading = messages("changeUnderpaymentReason.heading", singleEntryLevelReason.original.boxNumber.id)
+      lazy val view: Html = injectedView(backLink, entryLevelSummaryList(BoxNumber.Box35), title, heading)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber))
+      checkPageTitle(ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber.id))
 
       "have correct heading" in {
-        document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber)
+        document.select("h1").text mustBe ChangeUnderpaymentReasonMessages.title(singleEntryLevelReason.original.boxNumber.id)
       }
 
       "have only 1 Summary List" in {
@@ -174,9 +175,9 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val title =messages("changeUnderpaymentReason.pageTitle", 22)
-    val heading = messages("changeUnderpaymentReason.heading", 22)
-    lazy val view: Html = injectedView(backLink, summaryList(22),  title, heading)(fakeRequest, messages)
+    val title = messages("changeUnderpaymentReason.pageTitle", BoxNumber.Box22.id)
+    val heading = messages("changeUnderpaymentReason.heading", BoxNumber.Box22.id)
+    lazy val view: Html = injectedView(backLink, summaryList(BoxNumber.Box22), title, heading)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {

@@ -21,7 +21,8 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.{ChangeUnderpaymentReason, UnderpaymentReason}
+import models.reasons.BoxNumber.BoxNumber
+import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -37,7 +38,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
   private def fakeRequestGenerator(value: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody("value" -> value)
 
-  def underpaymentReason(boxNumber: Int, itemNumber: Int = 0, original: String = "50", amended: String = "60") = {
+  def underpaymentReason(boxNumber: BoxNumber, itemNumber: Int = 0, original: String = "50", amended: String = "60") = {
     UnderpaymentReason(boxNumber, itemNumber, original, amended)
   }
 
@@ -59,7 +60,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
   "GET onLoad" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = BoxNumber.Box22), underpaymentReason(boxNumber = BoxNumber.Box22))).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
@@ -67,7 +68,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
+        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = BoxNumber.Box22), underpaymentReason(boxNumber = BoxNumber.Box22))).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -81,7 +82,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when false" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
+          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = BoxNumber.Box22), underpaymentReason(boxNumber = BoxNumber.Box22))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("false")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -92,11 +93,11 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       "redirect to Reason Underpayment Summary page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
           .set(UnderpaymentReasonsPage, Seq(
-            underpaymentReason(boxNumber = 35, itemNumber = 1),
-            underpaymentReason(boxNumber = 35, itemNumber = 2))).success.value
+            underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1),
+            underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 2))).success.value
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            original = underpaymentReason(boxNumber = 35, itemNumber = 1),
-            changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            original = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1),
+            changed = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -105,10 +106,10 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
       "redirect to Reason Underpayment Summary page when not removing other reason" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(UnderpaymentReasonsPage, Seq(underpaymentReason(boxNumber = 99, itemNumber = 0))).success.value
+          .set(UnderpaymentReasonsPage, Seq(underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0))).success.value
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            original = underpaymentReason(boxNumber = 99, itemNumber = 0),
-            changed = underpaymentReason(boxNumber = 99, itemNumber = 0))
+            original = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0),
+            changed = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0))
           ).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("false")
@@ -119,10 +120,10 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       "redirect to Box Guidance page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
           .set(UnderpaymentReasonsPage, Seq(
-            underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            original = underpaymentReason(boxNumber = 35, itemNumber = 1),
-            changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            original = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1),
+            changed = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -131,7 +132,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
       "return an Internal Server Error" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = 22), underpaymentReason(boxNumber = 22))).success.value
+          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(underpaymentReason(boxNumber = BoxNumber.Box22), underpaymentReason(boxNumber = BoxNumber.Box22))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequestGenerator("true")
         lazy val result: Future[Result] = controller.onSubmit(request)
@@ -141,10 +142,10 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
           .set(UnderpaymentReasonsPage, Seq(
-            underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            original = underpaymentReason(boxNumber = 35, itemNumber = 1),
-            changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            original = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1),
+            changed = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
         )
         private val request = fakeRequestGenerator("true")
         await(controller.onSubmit(request))
@@ -156,10 +157,10 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       "return a BAD REQUEST" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
           .set(UnderpaymentReasonsPage, Seq(
-            underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
           .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            original = underpaymentReason(boxNumber = 35, itemNumber = 1),
-            changed = underpaymentReason(boxNumber = 35, itemNumber = 1))).success.value
+            original = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1),
+            changed = underpaymentReason(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
         )
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST

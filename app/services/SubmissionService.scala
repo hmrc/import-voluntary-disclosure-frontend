@@ -23,6 +23,7 @@ import models.SelectedDutyTypes.{Duty, Vat}
 import models._
 import models.audit.CreateCaseAuditEvent
 import models.importDetails.{NumberOfEntries, UserType}
+import models.reasons.BoxNumber
 import models.requests.DataRequest
 import play.api.Logger
 import play.api.libs.json._
@@ -106,9 +107,9 @@ class SubmissionService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
 
   private[services] def buildReasonsDetails(data: SubmissionData): JsObject = {
     val isBulk = data.numEntries == NumberOfEntries.MoreThanOneEntry
-    val filteredItems = data.amendedItems.map(_.filterNot(_.boxNumber == 99))
+    val filteredItems = data.amendedItems.map(_.filterNot(_.boxNumber == BoxNumber.OtherItem))
     val amendedItems = if (isBulk) Json.obj() else Json.obj("amendedItems" -> filteredItems)
-    val otherReason = data.amendedItems.flatMap(_.find(_.boxNumber == 99)).map(_.original)
+    val otherReason = data.amendedItems.flatMap(_.find(_.boxNumber == BoxNumber.OtherItem)).map(_.original)
     val additionalInfo = otherReason.orElse(data.additionalInfo).getOrElse("Not Applicable")
 
     Json.obj("additionalInfo" -> additionalInfo) ++ amendedItems

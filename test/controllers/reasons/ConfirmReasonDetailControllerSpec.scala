@@ -20,7 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.reasons.{UnderpaymentReason, UnderpaymentReasonValue}
+import models.reasons.{BoxNumber, UnderpaymentReason, UnderpaymentReasonValue}
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
@@ -39,7 +39,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(UnderpaymentReasonBoxNumberPage, 22).success.value
+      .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box22).success.value
       .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -63,10 +63,10 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
     "produce correct summary list" in new Test {
       val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, 33).success.value
+        .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
         .set(UnderpaymentReasonItemNumberPage, 1).success.value
         .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value,
-        boxNumber = 33
+        boxNumber = BoxNumber.Box33
       )
 
       val expectedResult = Some(ConfirmReasonData.reasons(33, Some(1), "1806321000", "2204109400X411"))
@@ -75,9 +75,9 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
     "produce correct summary list for Other Reason" in new Test {
       val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, 99).success.value
+        .set(UnderpaymentReasonBoxNumberPage, BoxNumber.OtherItem).success.value
         .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("Other Reason", "")).success.value,
-        boxNumber = 99
+        boxNumber = BoxNumber.OtherItem
       )
 
       val rows = result.value.head.rows
@@ -100,7 +100,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER item level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
+            .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
             .set(UnderpaymentReasonItemNumberPage, 1).success.value
             .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
         )
@@ -113,10 +113,10 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER when existing reason are present" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentReasonBoxNumberPage, 33).success.value
+            .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
             .set(UnderpaymentReasonItemNumberPage, 1).success.value
             .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(22, 0, "GBP871.12", "EUR2908946"))).success.value
+            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box22, 0, "GBP871.12", "EUR2908946"))).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
@@ -126,7 +126,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
       "payload contains no data" should {
         "produce no summary list" in new Test {
-          val result = controller.summaryList(UserAnswers("some-cred-id"), 22)
+          val result = controller.summaryList(UserAnswers("some-cred-id"), BoxNumber.Box22)
           result mustBe None
         }
       }

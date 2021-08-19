@@ -16,10 +16,11 @@
 
 package pages.reasons
 
+import models.reasons.BoxNumber.BoxNumber
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object UnderpaymentReasonBoxNumberPage extends QuestionPage[Int] {
+case object UnderpaymentReasonBoxNumberPage extends QuestionPage[BoxNumber] {
 
   def path: JsPath = JsPath \ toString
 
