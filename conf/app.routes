@@ -412,6 +412,9 @@ GET         /update-disclosure/check-your-answers                               
 GET         /update-disclosure/confirmation                                                    controllers.UpdateCaseCheckYourAnswersController.onSubmit()
 GET         /update-disclosure/disclosure-not-found                                            controllers.DisclosureNotFoundController.onLoad
 
+GET         /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onLoad
+POST        /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onSubmit
+
 GET         /language/:lang                                       controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
 GET         /import-declaration-exists                            controllers.serviceEntry.CustomsDeclarationController.onLoad()
