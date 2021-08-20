@@ -22,7 +22,7 @@
         bullets: components.bullets
 )
 
-@()(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @layout(pageTitle = "Disclose an underpayment of Customs Duty or import VAT", form = None, showBackLink = false) {
 
@@ -33,12 +33,11 @@
 
     @h1("Disclose an underpayment of Customs Duty or import VAT")
 
-    @p(Html("Use this service if you have underpaid customs duties, excise duities or import VAT on an import declaration made using CHIEF."))
+    @p(Html("Use this service to tell HMRC about an underpayment of Customs Duty, excise duty or import VAT on an import declaration (entry) made using CHIEF."))
 
     @h2("Contents", Some("0"))
 
     @bullets(Seq(
-        Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#1">Who can use this service</a>.toString),
         Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#2">Before you start</a>.toString),
         Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#3">What you’ll need</a>.toString),
         Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#4">How to disclose</a>.toString),
@@ -46,38 +45,51 @@
     ))
 
 
-    @h2("Who can use this service", Some("1"))
+    @p(Html("If you’ve previously told us about underpaid Customs Duty or import VAT and you need to send us more information about your disclosure you can use this service. You’ll need to have your disclosure reference number."))
 
-    @p(Html("This service can be used by importers or those acting on their behalf."))
+    @p(
+        Html(
+            <span>
+              If you paid the import VAT using postponed VAT accounting when you imported the goods, you cannot use this service. You should
+              <a class="govuk-link" href={appConfig.vatReturnAdjustmentsUrl}>make adjustments on your VAT return to account for the underpaid import VAT.</a>
+            </span>.toString()
+        )
+    )
 
-    @p(Html("If you paid the import VAT using PVA (Postponed VAT Accounting) at the time of importation you should not use this service. You can make adjustments on your VAT return to account for the underpaid import VAT."))
-
-    @p(Html("If you need to tell us about Custom Duty or import VAT that was not paid at all because an import declaration was not made then email customsaccountingrepayments@hmrc.gov.uk."))
+    @p(
+        Html(
+            <span>
+              If you need to pay duty or taxes on goods that were not declared to customs, you cannot use this service. You should email
+              <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+              for advice.
+            </span>.toString()
+        )
+    )
 
     @h2("Before you start", Some("2"))
 
-    @p(Html("You will need to have identified the errors on your original import declaration."))
+    @p(Html("You'll need to:"))
 
-    @p(Html("You will need to have calculated the amount of customs duties, excise duty and import VAT you should have paid."))
+    @bullets(Seq(
+        "identify the errors on your original import declaration",
+        "calculate the amount of customs duties, excise duty and import VAT you should have paid").map(Html(_)))
 
     @h2("What you’ll need", Some("3"))
 
-    @p(Html("In order to use this service to disclose the Customs Duty and import VAT underpayment, you will need to ensure you have the information listed below."))
-
     @h3("Information about the import declaration or declarations")
 
-    @bullets(Seq("the EPU number","the entry number","the entry date", "the original Customs Procedure Code (CPC)").map(Html(_)))
+    @bullets(Seq("the Entry Processing Unit (EPU) number","the entry number","the entry date", "the original Customs Procedure Code (CPC)").map(Html(_)))
 
-    @p(Html("This information can be found on the import declaration also known as the C88 or SAD, or the E2 remmittance advice from CHIEF."))
+    @p(Html("You can find this information on the import declaration (C88 or SAD), or the E2 remittance advice from the Customs Handling of Import and Export Freight system (CHIEF)."))
 
     @h3("What and how much was underpaid")
 
-    @p(Html("For each of the following tax or duties that were underpaid you will need to tell us the amount that was paid to HMRC and the amount that should have been paid to HMRC:"))
+    @p(Html("You’ll need to tell us the amount that was paid to HMRC and the amount that should have been paid to HMRC for each of the following that were underpaid:"))
 
     @bullets(Seq(
         "Import VAT (B00)",
         "Customs Duty (A00)",
-        "Excise duty",
+        "excise duty",
         "Additional Duty (A20)",
         "Definitive Anti-Dumping Duty (A30)",
         "Provisional Anti-Dumping Duty (A35)",
@@ -86,80 +98,53 @@
         "Customs Duty on Agricultural Products (A10)",
         "Compensatory Duty (D10)").map(Html(_)))
 
-    @p(Html("If you are offsetting a Customs Duty (A00) overpayment against an Additional Duty (A20) underpayment of duty or vice versa then email the C18 team on customsaccountingrepayments@hmrc.gov.uk"))
+    @p(
+        Html(
+            <span>
+                If you are offsetting a Customs Duty (A00) overpayment against an Additional Duty (A20) underpayment (or the other way round), email the C18 team at
+                <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+            </span>.toString()
+        )
+    )
 
     @h3("Reason for the underpayment")
 
-    @p(Html("You will need to tell us what information was wrong on the import declaration that resulted in the tax or duty being uderpaid. This includes:"))
-
-    @bullets(Seq(
-        "the box number of what was wrong on the import declaration",
-        "the item number",
-        "the original value and what it should be amended to").map(Html(_)))
+    @p(Html("For underpaid tax or duty, you’ll need to tell us what information was wrong on the import declaration."))
 
     @h3("Supporting documents")
 
-    @p(Html("You must provide the following documents:"))
+    @p(Html("You must provide the:"))
 
     @bullets(Seq(
-        "the import declaration, also known as the C88 or SAD",
-        "the entry acceptance advice, also known as the E2",
-        "the calculations showing the tax or duty that should have been paid, this could be a spreadsheet or a scanned image").map(Html(_)))
-
-    @p(Html("If they apply, you must also provide:"))
-
-    @bullets(Seq(
-        "the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry on CHIEF",
-        "the airway bill, if the goods were transported by air",
-        "a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences",
-        "other documentation relevant to this underpayment disclosure").map(Html(_)))
-
-    @p(Html("If you have files containing several of the documents above you do not need to separate them out."))
-
-    @p(Html("All files must be no larger than 6MB and of the following types:"))
-
-    @bullets(Seq(
-        "PDF (.pdf)",
-        "Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)",
-        "Open Document Format (.odt, .ods or .odp)",
-        "image (.jpg, .png or .tiff)").map(Html(_)))
+        "import declaration (C88 or SAD)",
+        "entry acceptance advice (E2)",
+        "calculations showing the tax or duty that should have been paid").map(Html(_)))
 
     @h3("Disclosing underpaid tax and duty for multiple import declarations")
 
-    @p(Html("You can dislose an underpayment of duty or import VAT for multiple import declarations at the same time if the goods were all brought into the country by the same importer."))
-
-    @p(Html("You will be asked to upload a file containing a list of all the import declarations that are being included in the disclosure. For each import declaration, you must provide:"))
-
-    @bullets(Seq(
-        "the EPU number, entry number and entry date",
-        "all item numbers",
-        "the type of duty or tax that was paid",
-        "the amount of tax or duty that was paid and the amount that should have been paid",
-        "the original and amended values of any information that was wrong in the original import declaration (for example, commodity codes or invoice values)").map(Html(_)))
-
-    @p(Html("You must not include import declarations where some have an entry acceptance date before and some after 1 January 2021. If the entries cross this date you will need to separate them and make two disclosures.\n"))
+    @p(Html("You can include underpayments from multiple import declarations by the same importer in one disclosure."))
 
     @h3("Deferment account details")
 
-    @p(Html("If you are paying by deferment account, you will need to supply the deferment account number (DAN). Where it is not your own deferment account you will need to have one of the following:"))
+    @p(Html("If you are paying by deferment account, you will need to supply the deferment account number. Where it is not your own deferment account you will need to have one of the following:"))
 
     @bullets(Seq(
         "standing authority as indicated on CHIEF",
-        "a document provided by the owner of the deferment account giving you permission to use it. This must be dated after the import declaration was made.").map(Html(_)))
+        "a document provided by the owner of the deferment account giving you permission to use it - this must be dated after the import declaration was made.").map(Html(_)))
 
     @h3("Disclosing underpaid import tax or duty on behalf of an importer")
 
-    @p(Html("If you are acting on behalf of an importer you will need to provide:"))
+    @p(Html("If you are acting on behalf of an importer you must tell us:"))
 
     @bullets(Seq(
-        "the importer's EORI number (if they have one)",
+        "the importer's Economic Operators Registration and Identification (EORI) number (if they have one)",
         "the importer's trading name",
         "whether they are VAT registered",
         "their address so that we can send them a copy of the demand note").map(Html(_)))
 
     @h2("How to disclose", Some("4"))
 
-    @p(Html("You'll need the Government Gateway user ID and password you used to register your EORI number. You may also be asked to subscribe or link your EORI number to your Government Gateway user ID. You will only be asked to do this once."))
+    @p(Html("You'll need the Government Gateway user ID and password you used to register your EORI number. You may also be asked to subscribe to Customs Trader Services or link your EORI number to your Government Gateway user ID. You’ll only be asked to do this once."))
 
     @p(Html("You need to complete the disclosure in one go. You cannot save your answers and return later."))
 
@@ -171,13 +156,20 @@
 
     @h2("After you have disclosed", Some("5"))
 
-    @p(Html("We will check the information you have provided and if we agree with the calculations we will send a C18 Post Clearance Demand Note in the post within 14 days."))
+    @p(Html("If we agree with the calculations you’ve provided, we’ll send a C18 Post Clearance Demand Note in the post within 14 days."))
 
-    @p(Html("The demand note will confirm what is owed to HMRC and, if you have not paid by deferment, will tell you how to pay. Payment must be made within 10 days of receiving the demand note otherwise interest will become due."))
+    @p(Html("This will confirm what you owe to HMRC and, if you have not paid by deferment, will tell you how to pay. You must pay within 10 days of receiving the demand note otherwise you’ll be charged interest."))
 
-    @p(Html("If you have paid too much import VAT or customs duties apply for repayment of import duties or import VAT."))
+    @p(Html("If you’ve paid too much import VAT or customs duties apply for repayment of import duties or import VAT."))
 
-    @p(Html("If you have any questions or have not received the demand note within 10 working days then email customsaccountingrepayments@hmrc.gov.uk."))
+    @p(
+        Html(
+            <span>
+                If you have any questions or have not received the demand note within 14 days, email
+                <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>.
+            </span>.toString()
+        )
+    )
 
     <a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#0">Contents</a>
 
