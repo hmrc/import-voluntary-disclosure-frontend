@@ -16,9 +16,10 @@
 
 package controllers.serviceEntry
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import models.UserAnswers
+import models.SubmissionType.{CreateCase, UpdateCase}
+import models.{SubmissionType, UserAnswers}
 import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -43,39 +44,39 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    Future.successful(Ok(view(form, backLink())))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      isCreateCase => {
-        val currentValue = request.userAnswers.get(WhatDoYouWantToDoPage).getOrElse(false)
-        if (currentValue == isCreateCase) {
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+      userCase => {
+        val currentValue = request.userAnswers.get(WhatDoYouWantToDoPage).getOrElse(userCase)
+        if (currentValue == userCase) {
           for {
-            userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, isCreateCase))
+            userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, userCase))
             _ <- sessionRepository.set(userAnswers)
           } yield {
-            submitRedirect(isCreateCase)
+            submitRedirect(userCase)
           }
         } else {
           val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))
           for {
-            userAnswers <- Future.fromTry(cleanedUserAnswers.set(WhatDoYouWantToDoPage, isCreateCase))
+            userAnswers <- Future.fromTry(cleanedUserAnswers.set(WhatDoYouWantToDoPage, userCase))
             _ <- sessionRepository.set(userAnswers)
           } yield {
-            submitRedirect(isCreateCase)
+            submitRedirect(userCase)
           }
         }
       }
     )
   }
 
-  private[serviceEntry] def submitRedirect(submittedValue: Boolean): Result = {
-    if (submittedValue) {
-      Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
-    } else {
-      Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
+  private[serviceEntry] def submitRedirect(submittedValue: SubmissionType): Result = {
+    submittedValue match {
+      case CreateCase => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
+      case UpdateCase => Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
+      case _ => Redirect(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad())
     }
   }
 
