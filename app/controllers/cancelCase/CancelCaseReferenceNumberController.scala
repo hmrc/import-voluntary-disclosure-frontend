@@ -59,7 +59,7 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.MoreDocumentationController.onLoad())
+            Redirect(controllers.cancelCase.routes.CancellationReasonController.onLoad())
           }
         }
     )

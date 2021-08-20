@@ -22,7 +22,7 @@ import forms.cancelCase.CancellationReasonFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, MoreDocumentationPage, UpdateAdditionalInformationPage}
+import pages.{CheckModePage, UpdateAdditionalInformationPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -115,12 +115,9 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to Disclosure Referencer Number Page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(MoreDocumentationPage, false).success.value
-          )
+          Some(UserAnswers("some-cred-id").set(CheckModePage, false).success.value)
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+        result mustBe Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
 
       }
     }
@@ -128,9 +125,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
-          )
+          Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
       }

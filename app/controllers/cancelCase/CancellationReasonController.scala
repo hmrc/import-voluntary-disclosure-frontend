@@ -70,8 +70,7 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
       // TODO: point at the Cancellation CYA page
       Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
     } else {
-      // TODO: point at the Disclosure Referencer Number page
-      Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+      Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }
 
   }
