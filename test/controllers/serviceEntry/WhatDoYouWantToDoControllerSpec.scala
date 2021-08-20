@@ -92,7 +92,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
 
-      "return a SEE OTHER when there's no current saved value and submitted is CreateOption" in new Test {
+      "return a SEE OTHER when there's no current saved value and submitted is CreateCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "createCase"
         )
@@ -101,7 +101,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
 
-      "return a SEE OTHER when there's no current saved value and submitted is UpdateOption" in new Test {
+      "return a SEE OTHER when there's no current saved value and submitted is UpdateCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "updateCase"
         )
@@ -110,7 +110,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.routes.DisclosureReferenceNumberController.onLoad().url)
       }
 
-      "return a SEE OTHER when there's no current saved value and submitted is CancelOption" in new Test {
+      "return a SEE OTHER when there's no current saved value and submitted is CancelCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "cancelCase"
         )

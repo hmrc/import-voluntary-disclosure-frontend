@@ -83,19 +83,19 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
 
     "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.createOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.createCaseMsg
     }
 
     "have the correct value for the first radio button hint" in {
-      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.createOptionHint
+      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.createCaseHint
     }
 
     "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.updateOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.updateCaseMsg
     }
 
     "have the correct value for the third radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(3) > label") mustBe WhatDoYouWantToDoMessages.cancelOptionMsg
+      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(3) > label") mustBe WhatDoYouWantToDoMessages.cancelCaseMsg
     }
 
     "render a back link with the correct URL" in {
