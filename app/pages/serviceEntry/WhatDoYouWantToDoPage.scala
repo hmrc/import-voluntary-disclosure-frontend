@@ -24,6 +24,6 @@ case object WhatDoYouWantToDoPage extends QuestionPage[SubmissionType] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "user-case"
+  override def toString: String = "submission-type"
 
 }
