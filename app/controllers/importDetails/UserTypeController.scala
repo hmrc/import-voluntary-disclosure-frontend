@@ -19,13 +19,12 @@ package controllers.importDetails
 import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import forms.importDetails.UserTypeFormProvider
-import javax.inject.{Inject, Singleton}
-import models.requests.OptionalDataRequest
 import models.UserAnswers
 import models.importDetails.UserType
-import pages.serviceEntry.KnownEoriDetailsPage
+import models.requests.OptionalDataRequest
 import pages.CheckModePage
 import pages.importDetails.UserTypePage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -33,6 +32,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.UserTypeView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 
@@ -98,11 +98,12 @@ class UserTypeController @Inject()(identify: IdentifierAction,
       } yield mode
     }.getOrElse(false)
 
-    (cyaMode, appConfig.updateCaseEnabled, appConfig.cancelCaseEnabled) match {
-      case (true, _, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
-      case (false, true, _) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
-      case (false, _, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
-      case (false, false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
+    if (cyaMode) {
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
+    } else if (appConfig.updateCaseEnabled || appConfig.cancelCaseEnabled) {
+      controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
+    } else {
+      controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
     }
   }
 
