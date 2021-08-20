@@ -24,6 +24,6 @@ object WhatDoYouWantToDoMessages extends BaseMessages {
   val updateOptionMsg: String = "Add more information to an existing underpayment disclosure"
   val cancelOptionMsg: String = "Cancel an existing underpayment disclosure"
   val createOptionHint: String = "Tell us about an underpayment of Customs Duty or import VAT."
-  val error: String = "User must select an option"
+  val error: String = "Select what you want to do"
 
 }

@@ -98,10 +98,11 @@ class UserTypeController @Inject()(identify: IdentifierAction,
       } yield mode
     }.getOrElse(false)
 
-    (cyaMode, appConfig.updateCaseEnabled) match {
-      case (true, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
-      case (false, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
-      case (false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
+    (cyaMode, appConfig.updateCaseEnabled, appConfig.cancelCaseEnabled) match {
+      case (true, _, _) => controllers.cya.routes.CheckYourAnswersController.onLoad()
+      case (false, true, _) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
+      case (false, _, true) => controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
+      case (false, false, false) => controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
     }
   }
 

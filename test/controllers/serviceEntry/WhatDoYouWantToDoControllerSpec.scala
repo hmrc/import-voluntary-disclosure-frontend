@@ -20,8 +20,8 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import mocks.repositories.MockSessionRepository
+import models.SubmissionType.CreateCase
 import models.UserAnswers
-import models.WhatDoYouWantToDo.CreateOption
 import models.requests._
 import pages.serviceEntry.WhatDoYouWantToDoPage
 import play.api.http.Status
@@ -65,7 +65,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
   "GET onLoad" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(WhatDoYouWantToDoPage, CreateOption).success.value)
+        .set(WhatDoYouWantToDoPage, CreateCase).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
@@ -82,10 +82,10 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER when the current saved value is the same as submitted value" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, CreateOption).success.value
+          UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, CreateCase).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "createOption"
+          "value" -> "createCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
@@ -94,7 +94,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER when there's no current saved value and submitted is CreateOption" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "createOption"
+          "value" -> "createCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
@@ -103,7 +103,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER when there's no current saved value and submitted is UpdateOption" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "updateOption"
+          "value" -> "updateCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
@@ -112,7 +112,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER when there's no current saved value and submitted is CancelOption" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "cancelOption"
+          "value" -> "cancelCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER

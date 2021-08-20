@@ -16,12 +16,12 @@
 
 package models.requests
 
-import models._
 import models.SelectedDutyTypes._
-import models.WhatDoYouWantToDo.{CancelOption, CreateOption, UpdateOption}
+import models.SubmissionType.{CancelCase, CreateCase, UpdateCase}
+import models._
 import models.importDetails.{NumberOfEntries, UserType}
 import pages._
-import pages.importDetails.{ImporterEORIExistsPage, NumberOfEntriesPage, UserTypePage}
+import pages.importDetails._
 import pages.serviceEntry.WhatDoYouWantToDoPage
 import pages.underpayments._
 import play.api.mvc.WrappedRequest
@@ -40,19 +40,19 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
 
   def isCreateCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
-      case Some(CreateOption) => true
+      case Some(CreateCase) => true
       case _ => false
     }
 
   def isUpdateCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
-      case Some(UpdateOption) => true
+      case Some(UpdateCase) => true
       case _ => false
     }
 
   def isCancelCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
-      case Some(CancelOption) => true
+      case Some(CancelCase) => true
       case _ => false
     }
 

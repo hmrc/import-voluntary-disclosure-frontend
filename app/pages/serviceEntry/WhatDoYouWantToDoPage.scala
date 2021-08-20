@@ -16,11 +16,11 @@
 
 package pages.serviceEntry
 
-import models.WhatDoYouWantToDo
+import models.SubmissionType
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object WhatDoYouWantToDoPage extends QuestionPage[WhatDoYouWantToDo] {
+case object WhatDoYouWantToDoPage extends QuestionPage[SubmissionType] {
 
   def path: JsPath = JsPath \ toString
 

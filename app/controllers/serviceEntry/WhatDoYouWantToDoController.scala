@@ -16,10 +16,10 @@
 
 package controllers.serviceEntry
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import models.WhatDoYouWantToDo.{CreateOption, UpdateOption}
-import models.{UserAnswers, WhatDoYouWantToDo}
+import models.SubmissionType.{CreateCase, UpdateCase}
+import models.{SubmissionType, UserAnswers}
 import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -72,10 +72,10 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[serviceEntry] def submitRedirect(submittedValue: WhatDoYouWantToDo): Result = {
+  private[serviceEntry] def submitRedirect(submittedValue: SubmissionType): Result = {
     submittedValue match {
-      case CreateOption => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
-      case UpdateOption => Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
+      case CreateCase => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
+      case UpdateCase => Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
       case _ => Redirect(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad())
     }
   }

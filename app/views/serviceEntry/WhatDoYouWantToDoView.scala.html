@@ -18,7 +18,9 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         inputRadio: components.inputRadio,
-        button: components.button)
+        button: components.button,
+        appConfig: AppConfig
+        )
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
@@ -33,7 +35,7 @@
             @inputRadio(
                 form = form,
                 legend = Some(messages("whatDoYouWantToDo.heading")),
-                items = WhatDoYouWantToDo.options(form),
+                items = SubmissionType.options(form, appConfig.cancelCaseEnabled, appConfig.updateCaseEnabled),
                 inline = false,
                 legendAsHeading = true
                     )

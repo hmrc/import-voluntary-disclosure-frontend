@@ -19,7 +19,7 @@ package views.serviceEntry
 import base.ViewBaseSpec
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import messages.WhatDoYouWantToDoMessages
-import models.WhatDoYouWantToDo
+import models.SubmissionType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -38,7 +38,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
   "Rendering the WhatDoYouWantToDo page" when {
     "no errors exist" should {
 
-      val form: Form[WhatDoYouWantToDo] = formProvider.apply()
+      val form: Form[SubmissionType] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -54,7 +54,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[WhatDoYouWantToDo] = formProvider().bind(Map("value" -> ""))
+      lazy val form: Form[SubmissionType] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -73,7 +73,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[WhatDoYouWantToDo] = formProvider.apply()
+    val form: Form[SubmissionType] = formProvider.apply()
     lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
