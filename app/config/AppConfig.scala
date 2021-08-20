@@ -107,6 +107,9 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   val en: Lang = Lang("en")
   val cy: Lang = Lang("cy")
   val defaultLanguage: Lang = en
+
+  lazy val vatReturnAdjustmentsUrl: String = servicesConfig.getString("urls.vatReturnAdjustmentsUrl")
+
 }
 
 trait AppConfig extends FixedConfig {
@@ -160,6 +163,7 @@ trait AppConfig extends FixedConfig {
   val en: Lang
   val cy: Lang
   val defaultLanguage: Lang
+  val vatReturnAdjustmentsUrl: String
 }
 
 trait FixedConfig {

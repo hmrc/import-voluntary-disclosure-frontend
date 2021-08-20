@@ -83,4 +83,7 @@ class MockAppConfig(override val privateBetaAllowList: List[String] = List.empty
   override val en: Lang = Lang("en")
   override val cy: Lang = Lang("cy")
   override val defaultLanguage: Lang = en
+
+  override val vatReturnAdjustmentsUrl: String = "url"
+
 }
