@@ -17,6 +17,7 @@
 package forms.serviceEntry
 
 import forms.mappings.Mappings
+import models.SubmissionType
 import play.api.data.Form
 
 import javax.inject.Inject
@@ -24,9 +25,9 @@ import javax.inject.Inject
 
 class WhatDoYouWantToDoFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] = {
+  def apply(): Form[SubmissionType] = {
     Form(
-      "value" -> boolean("whatDoYouWantToDo.error.required")
+      "value" -> enumerable[SubmissionType]("whatDoYouWantToDo.error.required")
     )
   }
 }

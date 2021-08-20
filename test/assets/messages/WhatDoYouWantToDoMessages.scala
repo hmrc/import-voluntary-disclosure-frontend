@@ -20,10 +20,10 @@ object WhatDoYouWantToDoMessages extends BaseMessages {
 
   val title: String = "What do you want to do?"
   val h1: String = "What do you want to do?"
-  val leftOptionMsg: String = "Start a new underpayment disclosure"
-  val rightOptionMsg: String = "Add more information to an existing underpayment disclosure"
-  val leftOptionHint: String = "Tell us about an underpayment of Customs Duty or import VAT."
-  val rightOptionHint: String = "You will need the disclosure reference number."
-  val error: String = "User must select an option"
+  val createCaseMsg: String = "Start a new underpayment disclosure"
+  val updateCaseMsg: String = "Add more information to an existing underpayment disclosure"
+  val cancelCaseMsg: String = "Cancel an existing underpayment disclosure"
+  val createCaseHint: String = "Tell us about an underpayment of Customs Duty or import VAT."
+  val error: String = "Select what you want to do"
 
 }

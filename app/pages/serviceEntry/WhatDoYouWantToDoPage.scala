@@ -16,13 +16,14 @@
 
 package pages.serviceEntry
 
+import models.SubmissionType
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object WhatDoYouWantToDoPage extends QuestionPage[Boolean] {
+case object WhatDoYouWantToDoPage extends QuestionPage[SubmissionType] {
 
   def path: JsPath = JsPath \ toString
 
-  override def toString: String = "is-create-case"
+  override def toString: String = "submission-type"
 
 }

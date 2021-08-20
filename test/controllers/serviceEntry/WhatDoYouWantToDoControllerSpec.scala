@@ -20,11 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import mocks.repositories.MockSessionRepository
+import models.SubmissionType.CreateCase
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import pages.serviceEntry.WhatDoYouWantToDoPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.serviceEntry.WhatDoYouWantToDoView
@@ -64,7 +65,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
   "GET onLoad" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(WhatDoYouWantToDoPage, true).success.value)
+        .set(WhatDoYouWantToDoPage, CreateCase).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
@@ -79,37 +80,43 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
   "POST onSubmit" when {
     "payload contains valid data" should {
 
-      "return a SEE OTHER then current saved value is true and submitted is true" in new Test {
+      "return a SEE OTHER when the current saved value is the same as submitted value" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, true).success.value
+          UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, CreateCase).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "true"
+          "value" -> "createCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
 
-      "return a SEE OTHER when there's no current saved value and submitted is false" in new Test {
+      "return a SEE OTHER when there's no current saved value and submitted is CreateCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "false"
+          "value" -> "createCase"
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(request)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
+      }
+
+      "return a SEE OTHER when there's no current saved value and submitted is UpdateCase" in new Test {
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
+          "value" -> "updateCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.routes.DisclosureReferenceNumberController.onLoad().url)
       }
 
-      "return a SEE OTHER when there's current saved value is true and submitted is false" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, true).success.value
-        )
+      "return a SEE OTHER when there's no current saved value and submitted is CancelCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
-          "value" -> "false"
+          "value" -> "cancelCase"
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.DisclosureReferenceNumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url)
       }
 
     }
