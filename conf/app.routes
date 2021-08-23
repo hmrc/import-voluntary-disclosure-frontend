@@ -425,3 +425,5 @@ POST        /continue-with-user-id                                controllers.se
 GET         /cancel-disclosure/reference-number                   controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
 POST        /cancel-disclosure/reference-number                   controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
 
+GET         /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onLoad
+POST        /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onSubmit
