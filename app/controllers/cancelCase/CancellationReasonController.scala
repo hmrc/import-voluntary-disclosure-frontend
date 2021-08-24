@@ -58,8 +58,7 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          // TODO: point at the More Documentation page
-          Redirect(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+          Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
         }
       }
     )
