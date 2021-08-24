@@ -35,7 +35,7 @@ class AnyOtherSupportingCancellationDocsViewSpec extends ViewBaseSpec with BaseM
 
   val backLink: Call = Call("GET", "url")
 
-  "Rendering the AnyOtherSupportDocs page" when {
+  "Rendering the AnyOtherSupportCancellationDocs page" when {
     "no errors exist" should {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)

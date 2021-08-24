@@ -47,7 +47,7 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
       mockSessionRepository, messagesControllerComponents, form, anyOtherSupportingDocsView, ec)
   }
 
-  "GET AnyOtherSupportingDocs Page" should {
+  "GET AnyOtherSupportingCancellationDocs Page" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(AnyOtherSupportingDocsPage, false).success.value)
@@ -62,7 +62,7 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
     }
   }
 
-  "POST AnyOtherSupportingDocs Page" when {
+  "POST AnyOtherSupportingCancellationDocs Page" when {
     "payload contains valid data" should {
 
       "return a SEE OTHER response" in new Test {
