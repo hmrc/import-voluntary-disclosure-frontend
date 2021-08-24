@@ -16,16 +16,15 @@
 
 package config
 
-import java.time.LocalDate
-import java.util.Base64
-
-import javax.inject.{Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+import java.time.LocalDate
+import java.util.Base64
+import javax.inject.{Inject, Singleton}
 import scala.util.Try
 
 @Singleton
@@ -79,6 +78,9 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   lazy val upScanAuthoritySuccessRedirectForUser: String = host + servicesConfig.getString("upscan.authoritySuccessRedirectForUser")
   lazy val upScanAuthorityErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
+
+  lazy val upScanCancelCaseRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocSuccessRedirectForUser")
+  lazy val cancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
 
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
@@ -150,6 +152,8 @@ trait AppConfig extends FixedConfig {
   val upScanAuthorityErrorRedirectForUser: String
   val upScanSupportingDocSuccessRedirectForUser: String
   val upScanSupportingDocErrorRedirectForUser: String
+  val upScanCancelCaseRedirectForUser: String
+  val cancelCaseDocErrorRedirectForUser: String
   val privateBetaAllowList: Seq[String]
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
