@@ -27,46 +27,46 @@
 
 @(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, numberOfFilesUploaded: Int, checkMode: Boolean)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
-@layout(
-    pageTitle = messages("uploadSupportingDocumentation.pageTitle"),
-    customBackLinkUrl = Some(backLink),
-    form = Some(form),
-    showBackLink = if(numberOfFilesUploaded == 0 && checkMode) false else true
-) {
+    @layout(
+        pageTitle = messages("uploadSupportingDocumentation.cancelCase.pageTitle"),
+        customBackLinkUrl = Some(backLink),
+        form = Some(form),
+        showBackLink = if(numberOfFilesUploaded == 0 && checkMode) false else true
+    ) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @h1(messages("uploadSupportingDocumentation.pageHeader"))
+        @h1(messages("uploadSupportingDocumentation.cancelCase.pageHeader"))
 
-    <h2 class="govuk-heading-s">@messages("uploadSupportingDocumentation.typesOfFile")</h2>
+        <h2 class="govuk-heading-s">@messages("uploadSupportingDocumentation.cancelCase.typesOfFile")</h2>
 
-    @bullets(Seq(
-        Html(messages("uploadSupportingDocumentation.PDF")),
-        Html(messages("uploadSupportingDocumentation.CSV")),
-        Html(messages("uploadSupportingDocumentation.ms")),
-        Html(messages("uploadSupportingDocumentation.openDocumentFormat")),
-        Html(messages("uploadSupportingDocumentation.image"))
-    ))
+        @bullets(Seq(
+            Html(messages("uploadSupportingDocumentation.cancelCase.PDF")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.CSV")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.ms")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.openDocumentFormat")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.image"))
+        ))
 
-    @p {
-        @messages("uploadSupportingDocumentation.fileSizeText")
-    }
+        @p {
+            @messages("uploadSupportingDocumentation.cancelCase.fileSizeText")
+        }
 
-    <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
+        <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
 
-        <div id="file-upload-form-group" class="govuk-form-group @{
-            if(form.hasErrors) "govuk-form-group--error"
-        }">
-            @upScanResponse.uploadFormTemplate.fields.map { row =>
-                <input type="hidden" name="@row._1" value="@row._2">
+            <div id="file-upload-form-group" class="govuk-form-group @{
+                if(form.hasErrors) "govuk-form-group--error"
+            }">
+                @upScanResponse.uploadFormTemplate.fields.map { row =>
+                    <input type="hidden" name="@row._1" value="@row._2">
             }
 
             @inputFileUpload(
                 form = form,
                 name = "file",
                 id = "file",
-                label = messages("uploadSupportingDocumentation.uploadFile"),
+                label = messages("uploadSupportingDocumentation.cancelCase.uploadFile"),
                 isPageHeading = false,
                 attributes = Map(
                     "accept" -> appConfig.upScanAcceptedFileTypes,
@@ -74,13 +74,13 @@
                     "data-min-file-size" -> appConfig.upScanMinFileSize.toString
                 )
             )
-        </div>
+            </div>
 
-        @button("uploadSupportingDocumentation.uploadChosenFile")
+            @button("uploadSupportingDocumentation.cancelCase.uploadChosenFile")
 
-    </form>
-}
+        </form>
+    }
 
-@{
-    //$COVERAGE-OFF$
-}
+    @{
+        //$COVERAGE-OFF$
+    }

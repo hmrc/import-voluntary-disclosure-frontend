@@ -29,7 +29,8 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, UploadSupportingDocumentationView}
+import views.html.FileUploadProgressView
+import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -43,7 +44,7 @@ class CancelCaseUploadSupportingDocumentationController @Inject()(identify: Iden
                                                                   val fileUploadRepository: FileUploadRepository,
                                                                   val sessionRepository: SessionRepository,
                                                                   upScanService: UpScanService,
-                                                                  view: UploadSupportingDocumentationView,
+                                                                  view: CancelCaseUploadSupportingDocumentationView,
                                                                   progressView: FileUploadProgressView,
                                                                   formProvider: CancelCaseUploadFileFormProvider,
                                                                   implicit val appConfig: AppConfig,

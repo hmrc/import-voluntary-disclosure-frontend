@@ -1020,6 +1020,19 @@ uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and y
 uploadSupportingDocumentation.uploadFile = Upload a file
 uploadSupportingDocumentation.uploadChosenFile = Upload chosen file
 
+# Cancel Case Upload Supporting Documentation page
+uploadSupportingDocumentation.cancelCase.pageTitle = Upload documentation
+uploadSupportingDocumentation.cancelCase.pageHeader = Upload documentation
+uploadSupportingDocumentation.cancelCase.typesOfFile = Types of file you can upload
+uploadSupportingDocumentation.cancelCase.PDF = PDF (.pdf)
+uploadSupportingDocumentation.cancelCase.CSV = CSV (.csv)
+uploadSupportingDocumentation.cancelCase.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+uploadSupportingDocumentation.cancelCase.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+uploadSupportingDocumentation.cancelCase.image = image (.jpeg, .jpg, .png or .tiff)
+uploadSupportingDocumentation.cancelCase.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
+uploadSupportingDocumentation.cancelCase.uploadFile = Upload a file
+uploadSupportingDocumentation.cancelCase.uploadChosenFile = Upload chosen file
+
 # Update Case - Check Your Answers Page
 updateCase.cya.pageTitle = Check your information before adding it to the disclosure
 updateCase.cya.heading = Check your information before adding it to the disclosure
