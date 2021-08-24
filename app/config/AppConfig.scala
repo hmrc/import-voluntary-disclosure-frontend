@@ -80,7 +80,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanAuthorityErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
 
   lazy val upScanCancelCaseRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocSuccessRedirectForUser")
-  lazy val cancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
+  lazy val upScanCancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
 
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
@@ -153,7 +153,7 @@ trait AppConfig extends FixedConfig {
   val upScanSupportingDocSuccessRedirectForUser: String
   val upScanSupportingDocErrorRedirectForUser: String
   val upScanCancelCaseRedirectForUser: String
-  val cancelCaseDocErrorRedirectForUser: String
+  val upScanCancelCaseDocErrorRedirectForUser: String
   val privateBetaAllowList: Seq[String]
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String

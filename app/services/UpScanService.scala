@@ -62,7 +62,7 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
   lazy val buildCancelCaseInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
     appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
     appConfig.upScanCancelCaseRedirectForUser,
-    appConfig.cancelCaseDocErrorRedirectForUser,
+    appConfig.upScanCancelCaseDocErrorRedirectForUser,
     appConfig.upScanMinFileSize,
     appConfig.upScanMaxFileSize
   )

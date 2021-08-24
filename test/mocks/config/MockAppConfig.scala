@@ -76,6 +76,9 @@ class MockAppConfig(override val privateBetaAllowList: List[String] = List.empty
   override val upScanSupportingDocSuccessRedirectForUser: String = "TBC"
   override val upScanSupportingDocErrorRedirectForUser: String = "TBC"
 
+  override val upScanCancelCaseRedirectForUser: String = "TBC"
+  override val upScanCancelCaseDocErrorRedirectForUser: String = "TBC"
+
   override val importVoluntaryDisclosureSubmission: String = "TBC"
 
   override val eccSubscribeUrl: String = "TBC"
