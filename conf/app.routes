@@ -427,3 +427,6 @@ POST        /cancel-disclosure/reference-number                   controllers.ca
 
 GET         /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onLoad
 POST        /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onSubmit
+
+GET         /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
+POST        /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit

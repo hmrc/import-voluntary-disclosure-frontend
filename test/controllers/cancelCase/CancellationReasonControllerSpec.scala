@@ -92,7 +92,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
