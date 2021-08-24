@@ -17,7 +17,7 @@
 package controllers.cancelCase
 
 import controllers.actions._
-import forms.RemoveUploadedFileFormProvider
+import forms.cancelCase.CancelCaseRemoveUploadedFileFormProvider
 import models.Index
 import pages.{RemoveSupportingDocumentationPage, UploadSupportingDocumentationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +34,7 @@ class CancelCaseRemoveSupportingDocumentationController @Inject()(override val m
                                                                   identify: IdentifierAction,
                                                                   getData: DataRetrievalAction,
                                                                   requireData: DataRequiredAction,
-                                                                  formProvider: RemoveUploadedFileFormProvider,
+                                                                  formProvider: CancelCaseRemoveUploadedFileFormProvider,
                                                                   mcc: MessagesControllerComponents,
                                                                   view: RemoveUploadedFileView,
                                                                   implicit val ec: ExecutionContext

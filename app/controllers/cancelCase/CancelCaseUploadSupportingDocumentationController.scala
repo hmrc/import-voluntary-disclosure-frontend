@@ -19,7 +19,7 @@ package controllers.cancelCase
 import config.AppConfig
 import controllers.FileUploadHandler
 import controllers.actions._
-import forms.UploadFileFormProvider
+import forms.cancelCase.CancelCaseUploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan._
 import models.{FileUploadInfo, UserAnswers}
@@ -45,7 +45,7 @@ class CancelCaseUploadSupportingDocumentationController @Inject()(identify: Iden
                                                                   upScanService: UpScanService,
                                                                   view: UploadSupportingDocumentationView,
                                                                   progressView: FileUploadProgressView,
-                                                                  formProvider: UploadFileFormProvider,
+                                                                  formProvider: CancelCaseUploadFileFormProvider,
                                                                   implicit val appConfig: AppConfig,
                                                                   implicit val ec: ExecutionContext
                                                                  )

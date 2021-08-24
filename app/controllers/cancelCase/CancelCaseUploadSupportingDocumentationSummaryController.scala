@@ -17,7 +17,7 @@
 package controllers.cancelCase
 
 import controllers.actions._
-import forms.UploadAnotherFileFormProvider
+import forms.cancelCase.CancelCaseUploadAnotherFileFormProvider
 import models.requests.DataRequest
 import models.{FileUploadInfo, Index}
 import pages.UploadSupportingDocumentationPage
@@ -36,7 +36,7 @@ class CancelCaseUploadSupportingDocumentationSummaryController @Inject()(identif
                                                                          getData: DataRetrievalAction,
                                                                          requireData: DataRequiredAction,
                                                                          mcc: MessagesControllerComponents,
-                                                                         formProvider: UploadAnotherFileFormProvider,
+                                                                         formProvider: CancelCaseUploadAnotherFileFormProvider,
                                                                          view: UploadSupportingDocumentationSummaryView,
                                                                          implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
