@@ -26,6 +26,6 @@ class CancelCaseUploadAnotherFileFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
     Form(
-      "value" -> boolean("uploadAnotherFile.error.required")
+      "value" -> boolean("uploadAnotherFile.cancelCase.error.required")
     )
 }

@@ -27,7 +27,7 @@ import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
-import views.html.UploadSupportingDocumentationSummaryView
+import views.html.cancelCase.CancelCaseUploadSupportingDocumentationSummaryView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -37,7 +37,7 @@ class CancelCaseUploadSupportingDocumentationSummaryController @Inject()(identif
                                                                          requireData: DataRequiredAction,
                                                                          mcc: MessagesControllerComponents,
                                                                          formProvider: CancelCaseUploadAnotherFileFormProvider,
-                                                                         view: UploadSupportingDocumentationSummaryView,
+                                                                         view: CancelCaseUploadSupportingDocumentationSummaryView,
                                                                          implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 

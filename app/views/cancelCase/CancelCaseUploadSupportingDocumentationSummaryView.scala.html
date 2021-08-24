@@ -30,13 +30,13 @@
 }
 
 @layout(
-    pageTitle = messages("uploadAnotherFile.pageTitle", files.rows.size, singularFile),
+    pageTitle = messages("uploadAnotherFile.cancelCase.pageTitle", files.rows.size, singularFile),
     form = Some(form),
     showBackLink = false) {
 
     @errorSummary(form.errors)
 
-    @h1(messages("uploadAnotherFile.heading", files.rows.size, singularFile))
+    @h1(messages("uploadAnotherFile.cancelCase.heading", files.rows.size, singularFile))
 
     @formHelper(action = controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onSubmit()) {
 
@@ -44,7 +44,7 @@
 
         @yesNoRadio(
             form,
-            headingKey = "uploadAnotherFile.addFile",
+            headingKey = "uploadAnotherFile.cancelCase.addFile",
             inline = true,
             isPageHeading = false,
             classes = "govuk-fieldset__legend govuk-fieldset__legend--m"
