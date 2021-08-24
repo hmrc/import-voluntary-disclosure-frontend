@@ -115,7 +115,7 @@ class CancelCaseUploadSupportingDocumentationController @Inject()(identify: Iden
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     request.userAnswers.get(UploadSupportingDocumentationPage) match {
       case Some(files) if files.nonEmpty => controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()
-      case _ => controllers.routes.MoreDocumentationController.onLoad() // TODO
+      case _ => controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad()
     }
   }
 
