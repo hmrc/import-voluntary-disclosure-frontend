@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package forms.cancelCase
+package messages.cancelCase
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import messages.BaseMessages
 
-import javax.inject.Inject
+object CancelCaseRemoveUploadedFileMessages extends BaseMessages {
 
-class CancelCaseRemoveUploadedFileFormProvider @Inject() extends Mappings {
+  val title: String = "Are you sure you want to remove this file?"
+  val h1: String = "Are you sure you want to remove this file?"
+  val requiredError: String = "Select yes if you want to remove this file"
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("removeUploadedFile.cancelCase.error.required")
-    )
 }

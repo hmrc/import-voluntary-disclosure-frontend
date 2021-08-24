@@ -26,7 +26,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RemoveUploadedFileView
+import views.html.cancelCase.CancelCaseRemoveUploadedFileView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
@@ -35,7 +35,7 @@ import scala.concurrent.Future
 class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val RemoveUploadedFileView: RemoveUploadedFileView = app.injector.instanceOf[RemoveUploadedFileView]
+    private lazy val cancelCaseRemoveUploadedFileView: CancelCaseRemoveUploadedFileView = app.injector.instanceOf[CancelCaseRemoveUploadedFileView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -48,7 +48,7 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
     MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new CancelCaseRemoveSupportingDocumentationController(messagesApi, mockSessionRepository, authenticatedAction,
-      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, RemoveUploadedFileView, ec)
+      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, cancelCaseRemoveUploadedFileView, ec)
   }
 
 

@@ -479,6 +479,11 @@ removeUploadedFile.pageTitle = Are you sure you want to remove this file?
 removeUploadedFile.heading = Are you sure you want to remove this file?
 removeUploadedFile.error.required = Select yes if you want to remove this file
 
+# Cancel Case Remove Uploaded File page
+removeUploadedFile.cancelCase.pageTitle = Are you sure you want to remove this file?
+removeUploadedFile.cancelCase.heading = Are you sure you want to remove this file?
+removeUploadedFile.cancelCase.error.required = Select yes if you want to remove this file
+
 # Confirmation page
 confirmation.pageTitle = Confirmation screen
 confirmation.heading = Disclosure sent

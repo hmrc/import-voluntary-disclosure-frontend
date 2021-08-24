@@ -24,7 +24,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.RemoveUploadedFileView
+import views.html.cancelCase.CancelCaseRemoveUploadedFileView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +36,7 @@ class CancelCaseRemoveSupportingDocumentationController @Inject()(override val m
                                                                   requireData: DataRequiredAction,
                                                                   formProvider: CancelCaseRemoveUploadedFileFormProvider,
                                                                   mcc: MessagesControllerComponents,
-                                                                  view: RemoveUploadedFileView,
+                                                                  view: CancelCaseRemoveUploadedFileView,
                                                                   implicit val ec: ExecutionContext
                                                                  ) extends FrontendController(mcc) with I18nSupport {
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
