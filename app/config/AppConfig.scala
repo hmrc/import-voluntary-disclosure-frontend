@@ -80,7 +80,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val upScanAuthorityErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
 
   lazy val upScanCancelCaseRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocSuccessRedirectForUser")
-  lazy val upScanCancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
+  lazy val upScanCancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocErrorRedirectForUser")
 
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
