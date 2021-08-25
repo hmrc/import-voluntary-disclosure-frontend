@@ -38,7 +38,7 @@
 
         @h1(messages("uploadAnotherFile.heading", files.rows.size, singularFile))
 
-        @formHelper(action = controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onSubmit()) {
+        @formHelper(action = controllers.routes.UploadSupportingDocumentationSummaryController.onSubmit()) {
 
             @govukSummaryList(files)
 
