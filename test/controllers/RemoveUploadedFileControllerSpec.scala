@@ -18,6 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.RemoveUploadedFileController
 import forms.RemoveUploadedFileFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, Index, UserAnswers}
@@ -110,7 +111,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(index)(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

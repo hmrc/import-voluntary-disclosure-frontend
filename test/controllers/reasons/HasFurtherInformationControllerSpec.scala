@@ -96,7 +96,7 @@ class HasFurtherInformationControllerSpec extends ControllerSpecBase {
       "return the correct location header for No response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.SupportingDocController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

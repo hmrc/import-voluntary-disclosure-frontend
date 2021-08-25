@@ -123,7 +123,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BulkUploadFileController.onLoad().url)
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
 
       "return a SEE OTHER Check Your Answers page when false is selected" in new Test {
@@ -167,7 +167,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BulkUploadFileController.onLoad().url)
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
 
       "return a SEE OTHER Check Your Answers page when in Representative flow Both and Both" in new Test {

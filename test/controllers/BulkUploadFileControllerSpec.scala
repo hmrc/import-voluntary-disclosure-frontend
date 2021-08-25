@@ -18,6 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.BulkUploadFileController
 import forms.UploadFileFormProvider
 import messages.BulkUploadFileMessages
 import mocks.config.MockAppConfig
@@ -164,7 +165,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BulkUploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
     }
 
@@ -175,7 +176,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BulkUploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
     }
 
@@ -186,7 +187,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BulkUploadFileController.uploadProgress("key").url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.uploadProgress("key").url)
       }
       "for a valid key, create record in file Repository" in new Test {
         override def setupMocks(): Unit = {
@@ -221,7 +222,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BulkUploadFileController.onSuccess().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onSuccess().url)
 
         verifyCalls()
       }
@@ -235,7 +236,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.BulkUploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
 
         verifyCalls()
       }

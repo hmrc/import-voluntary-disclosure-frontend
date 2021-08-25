@@ -18,6 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.UploadFileController
 import forms.UploadFileFormProvider
 import messages.UploadFileMessages
 import mocks.config.MockAppConfig
@@ -113,14 +114,14 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(AnyOtherSupportingDocsPage, false).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.routes.AnyOtherSupportingDocsController.onLoad.url) mustBe true
+      contentAsString(result).contains(controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad.url) mustBe true
     }
 
     "return correct back link for additional documents" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
         .set(AnyOtherSupportingDocsPage, true).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
+      contentAsString(result).contains(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
     }
 
     "return correct back link if come from Summary screen" in new Test {
@@ -134,7 +135,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
           fileMimeType = "mime"
         ))).success.value)
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.routes.UploadAnotherFileController.onLoad.url) mustBe true
+      contentAsString(result).contains(controllers.docUpload.routes.UploadAnotherFileController.onLoad.url) mustBe true
     }
 
     "return no back link if in check mode and all files removed" in new Test {
@@ -183,7 +184,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
     }
 
@@ -194,7 +195,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
     }
 
@@ -205,7 +206,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.uploadProgress("key").url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.uploadProgress("key").url)
       }
       "for a valid key, create record in file Repository" in new Test {
         override def setupMocks(): Unit = {
@@ -240,7 +241,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
 
         verifyCalls()
       }
@@ -254,7 +255,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
 
         verifyCalls()
       }

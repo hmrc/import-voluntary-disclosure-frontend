@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import config.AppConfig
+import controllers.FileUploadHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
 import models.requests.DataRequest
@@ -76,19 +77,19 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
                            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
-    val errorRoute = Redirect(controllers.routes.BulkUploadFileController.onLoad())
-    val successRoute = Redirect(controllers.routes.BulkUploadFileController.uploadProgress(key.getOrElse("this will never be used")))
+    val errorRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
+    val successRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key.getOrElse("this will never be used")))
 
     handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val uploadCompleteRoute = Redirect(controllers.routes.BulkUploadFileController.onSuccess())
-    val uploadFailedRoute = Redirect(controllers.routes.BulkUploadFileController.onLoad())
+    val uploadCompleteRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onSuccess())
+    val uploadFailedRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
     val uploadInProgressRoute = Ok(
       progressView(
         key = key,
-        action = controllers.routes.BulkUploadFileController.uploadProgress(key).url
+        action = controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key).url
       )
     )
     val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>

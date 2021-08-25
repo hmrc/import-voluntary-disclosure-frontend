@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import config.AppConfig
+import controllers.FileUploadHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.UploadFileFormProvider
 import models.upscan.FileUpload
@@ -52,9 +53,9 @@ class UploadFileController @Inject()(identify: IdentifierAction,
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     lazy val backLink =
       (request.userAnswers.get(FileUploadPage), request.userAnswers.get(AnyOtherSupportingDocsPage)) match {
-        case (Some(files), _) if files.nonEmpty => Some(controllers.routes.UploadAnotherFileController.onLoad())
-        case (_, Some(true)) if !request.checkMode => Some(controllers.routes.OptionalSupportingDocsController.onLoad())
-        case (_, Some(false)) if !request.checkMode => Some(controllers.routes.AnyOtherSupportingDocsController.onLoad())
+        case (Some(files), _) if files.nonEmpty => Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad())
+        case (_, Some(true)) if !request.checkMode => Some(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad())
+        case (_, Some(false)) if !request.checkMode => Some(controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad())
         case _ => None
       }
 
@@ -86,19 +87,19 @@ class UploadFileController @Inject()(identify: IdentifierAction,
                            ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
 
     val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
-    val errorRoute = Redirect(controllers.routes.UploadFileController.onLoad())
-    val successRoute = Redirect(controllers.routes.UploadFileController.uploadProgress(key.getOrElse("this will never be used")))
+    val errorRoute = Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
+    val successRoute = Redirect(controllers.docUpload.routes.UploadFileController.uploadProgress(key.getOrElse("this will never be used")))
 
     handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
   def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val uploadCompleteRoute = Redirect(controllers.routes.UploadAnotherFileController.onLoad())
-    val uploadFailedRoute = Redirect(controllers.routes.UploadFileController.onLoad())
+    val uploadCompleteRoute = Redirect(controllers.docUpload.routes.UploadAnotherFileController.onLoad())
+    val uploadFailedRoute = Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
     val uploadInProgressRoute = Ok(
       progressView(
         key,
-        action = controllers.routes.UploadFileController.uploadProgress(key).url
+        action = controllers.docUpload.routes.UploadFileController.uploadProgress(key).url
       )
     )
     val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>

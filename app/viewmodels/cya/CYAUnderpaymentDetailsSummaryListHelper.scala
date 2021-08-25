@@ -74,7 +74,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.UploadAnotherFileController.onLoad().url,
+          controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
           messages("cya.supportingDocuments.change")
         ))
       )
@@ -170,7 +170,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.bulk.multipleEntriesFile")),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.BulkUploadFileController.onLoad().url,
+          controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
           messages("cya.bulk.multipleEntriesFile.change")
         ))
       )

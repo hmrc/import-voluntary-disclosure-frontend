@@ -46,7 +46,7 @@
             )
         )
 
-        @formHelper(action = controllers.routes.AnyOtherSupportingDocsController.onSubmit()) {
+        @formHelper(action = controllers.docUpload.routes.AnyOtherSupportingDocsController.onSubmit()) {
             @yesNoRadio(
                 form,
                 headingKey = "anyOtherSupportingDocs.heading",

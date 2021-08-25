@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import controllers.actions._
 import forms.UploadAnotherFileFormProvider
@@ -43,9 +43,9 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.SupportingDocController.onLoad().url))) { files =>
+      request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad().url))) { files =>
         if (files.isEmpty) {
-          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+          Future.successful(Redirect(controllers.docUpload.routes.UploadFileController.onLoad()))
         } else {
           Future.successful(Ok(view(formProvider(), buildSummaryList(files), getOptionalDocs(request.userAnswers))))
         }
@@ -57,7 +57,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
       formWithErrors => resultWithErrors(formWithErrors),
       addAnotherFile => {
         if (addAnotherFile) {
-          Future.successful(Redirect(controllers.routes.UploadFileController.onLoad()))
+          Future.successful(Redirect(controllers.docUpload.routes.UploadFileController.onLoad()))
         } else {
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
@@ -70,7 +70,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   }
 
   private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
-    request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.routes.UploadFileController.onLoad().url))) { files =>
+    request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.docUpload.routes.UploadFileController.onLoad().url))) { files =>
       Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files), getOptionalDocs(request.userAnswers))))
     }
   }
@@ -92,7 +92,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
           Actions(
             items = Seq(
               ActionItemHelper.createDeleteActionItem(
-                controllers.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
+                controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(index)).url,
                 s"Remove ${file.fileName}"
               )
             )

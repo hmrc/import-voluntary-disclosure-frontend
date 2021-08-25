@@ -19,6 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.SupportingDocController
 import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, UserAnswers}
@@ -63,7 +64,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
-      redirectLocation(result) mustBe Some(controllers.routes.UploadAnotherFileController.onLoad().url)
+      redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
 
     }
   }

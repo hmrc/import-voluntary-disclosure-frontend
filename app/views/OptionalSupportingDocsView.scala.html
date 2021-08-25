@@ -35,7 +35,7 @@
         @errorSummary(Seq(form.errors.head))
     }
 
-    @formHelper(action = controllers.routes.OptionalSupportingDocsController.onSubmit()) {
+    @formHelper(action = controllers.docUpload.routes.OptionalSupportingDocsController.onSubmit()) {
 
         @govukCheckboxes(
             Checkboxes(

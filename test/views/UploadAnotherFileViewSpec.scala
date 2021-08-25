@@ -45,7 +45,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
           Actions(
             items = Seq(
               ActionItemHelper.createDeleteActionItem(
-                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
             )
@@ -64,7 +64,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
           Actions(
             items = Seq(
               ActionItemHelper.createDeleteActionItem(
-                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
             )
@@ -77,7 +77,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
           Actions(
             items = Seq(
               ActionItemHelper.createDeleteActionItem(
-                controllers.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
+                controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName2"
               )
             )

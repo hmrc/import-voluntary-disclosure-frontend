@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import config.AppConfig
 import controllers.actions._
@@ -40,7 +40,7 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty).nonEmpty) {
-      Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
+      Future.successful(Redirect(controllers.docUpload.routes.UploadAnotherFileController.onLoad()))
     } else {
       Future.successful(Ok(view(backLink(request.userAnswers))))
     }

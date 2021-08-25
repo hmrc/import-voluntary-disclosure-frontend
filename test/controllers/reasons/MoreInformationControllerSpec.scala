@@ -98,7 +98,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.SupportingDocController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.SupportingDocController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -176,7 +176,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
             .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.routes.BulkUploadFileController.onLoad())
+        result mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
 
       }
     }

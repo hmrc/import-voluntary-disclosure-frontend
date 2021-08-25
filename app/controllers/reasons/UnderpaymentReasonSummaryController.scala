@@ -67,7 +67,7 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
           } else if (appConfig.otherItemEnabled) {
-            Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
+            Future.successful(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad()))
           } else {
             Future.successful(Redirect(controllers.reasons.routes.HasFurtherInformationController.onLoad()))
           }

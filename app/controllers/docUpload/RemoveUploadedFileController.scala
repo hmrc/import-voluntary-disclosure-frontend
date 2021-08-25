@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import controllers.actions._
 import forms.RemoveUploadedFileFormProvider
@@ -47,7 +47,7 @@ class RemoveUploadedFileController @Inject()(
       request.userAnswers.get(FileUploadPage) match {
         case Some(files) if (files.isDefinedAt(index.position)) =>
           Future.successful(Ok(view(formProvider(), index, files(index.position).fileName, backlink(), submitLink(index))))
-        case _ => Future.successful(Redirect(controllers.routes.SupportingDocController.onLoad()))
+        case _ => Future.successful(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad()))
       }
   }
 
@@ -65,17 +65,17 @@ class RemoveUploadedFileController @Inject()(
               updatedAnswers <- Future.fromTry(request.userAnswers.remove(RemoveUploadedFilePage(index)))
               _ <- sessionRepository.set(updatedAnswers)
             } yield
-              Redirect(controllers.routes.UploadAnotherFileController.onLoad())
+              Redirect(controllers.docUpload.routes.UploadAnotherFileController.onLoad())
           } else {
-            Future.successful(Redirect(controllers.routes.UploadAnotherFileController.onLoad()))
+            Future.successful(Redirect(controllers.docUpload.routes.UploadAnotherFileController.onLoad()))
           }
         }
       )
   }
 
   private[controllers] def backlink() =
-    controllers.routes.UploadAnotherFileController.onLoad()
+    controllers.docUpload.routes.UploadAnotherFileController.onLoad()
 
   private def submitLink(index: Index) =
-    controllers.routes.RemoveUploadedFileController.onSubmit(index)
+    controllers.docUpload.routes.RemoveUploadedFileController.onSubmit(index)
 }

@@ -18,6 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.OptionalSupportingDocsController
 import forms.OptionalSupportingDocsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.OptionalDocument._
@@ -73,7 +74,7 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
         private val request = fakeRequest.withFormUrlEncodedBody("optionalDocumentsList[]" -> "importAndEntry")
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
 
     }

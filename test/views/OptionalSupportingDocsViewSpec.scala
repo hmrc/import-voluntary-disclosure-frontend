@@ -33,7 +33,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
   val formProvider: OptionalSupportingDocsFormProvider = injector.instanceOf[OptionalSupportingDocsFormProvider]
 
-  val backLink: Call = controllers.routes.AnyOtherSupportingDocsController.onLoad()
+  val backLink: Call = controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad()
 
   "Rendering the Optional Supporting Documents page" when {
 

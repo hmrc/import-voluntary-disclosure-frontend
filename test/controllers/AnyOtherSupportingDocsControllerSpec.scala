@@ -18,6 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.docUpload.AnyOtherSupportingDocsController
 import forms.AnyOtherSupportingDocsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
@@ -75,13 +76,13 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
       "return the correct location header when value is set to true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.OptionalSupportingDocsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad().url)
       }
 
       "return the correct location header when value is set to false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UploadFileController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

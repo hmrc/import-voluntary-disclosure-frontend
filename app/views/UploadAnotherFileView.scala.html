@@ -40,7 +40,7 @@
 
     @h1(messages("uploadAnotherFile.heading", files.rows.length, singularFile))
 
-    @formHelper(action = controllers.routes.UploadAnotherFileController.onSubmit()) {
+    @formHelper(action = controllers.docUpload.routes.UploadAnotherFileController.onSubmit()) {
 
         @govukSummaryList(files)
 

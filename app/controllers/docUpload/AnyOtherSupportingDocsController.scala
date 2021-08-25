@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.docUpload
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.AnyOtherSupportingDocsFormProvider
@@ -40,7 +40,7 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
                                                  implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.routes.SupportingDocController.onLoad()
+  private lazy val backLink: Call = controllers.docUpload.routes.SupportingDocController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(AnyOtherSupportingDocsPage).fold(formProvider()) {
@@ -58,9 +58,9 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
-            Redirect(controllers.routes.OptionalSupportingDocsController.onLoad())
+            Redirect(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad())
           } else {
-            Redirect(controllers.routes.UploadFileController.onLoad())
+            Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
           }
         }
     )
