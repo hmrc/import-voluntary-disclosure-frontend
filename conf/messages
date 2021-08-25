@@ -1087,3 +1087,18 @@ cancellationReason.error.noEmoji = Why you want this disclosure cancelled must n
 anyOtherSupportingCancellationDocs.pageTitle = Do you have any documentation to support cancelling this disclosure?
 anyOtherSupportingCancellationDocs.heading = Do you have any documentation to support cancelling this disclosure?
 anyOtherSupportingCancellationDocs.error.required = Do you have any documentation to support cancelling this disclosure?
+
+# Cancel case - Check Your Answers page
+cancelCase.cya.pageTitle = Check your answers before sending your cancellation request
+cancelCase.cya.heading = Check your answers before sending your cancellation request
+cancelCase.cya.sendDisclosure = Now send your cancellation request
+cancelCase.cya.disclosureConfirmation = By submitting this request you are confirming that, to the best of your knowledge, the details you are providing are correct.
+cancelCase.cya.Accept = Accept and send
+cancelCase.cya.referenceNumber = Reference number
+cancelCase.cya.reasonCancellation = Reason for cancellation
+cancelCase.cya.supportingDocumentation = Supporting documentation?
+cancelCase.cya.referenceNumber.change = Change reference number
+cancelCase.cya.reasonCancellation.change = Change reason for cancellation
+cancelCase.cya.supportingDocumentation.change = Change supporting documentation?
+cancelCase.cya.uploadedFiles.change = Change uploaded files
+

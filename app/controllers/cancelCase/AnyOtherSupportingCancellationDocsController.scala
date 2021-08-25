@@ -61,8 +61,7 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
             // TODO: point at the Upload documentation page
             Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
           } else {
-            // TODO: point at the CYA page
-            Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
           }
         }
     )

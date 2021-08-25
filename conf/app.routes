@@ -430,3 +430,5 @@ POST        /cancel-disclosure/cancellation-reason                controllers.ca
 
 GET         /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
 POST        /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
+
+GET         /cancel-disclosure/check-your-answers                     controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad
