@@ -52,6 +52,13 @@ trait MockUpScanService extends MockFactory {
         .expects(*, *)
         .returns(response)
     }
+
+    def initiateCancelCaseJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] = {
+      (mockUpScanService.initiateCancelCaseJourney()(_: ExecutionContext, _: HeaderCarrier))
+        .expects(*, *)
+        .returns(response)
+    }
+
   }
 
 }

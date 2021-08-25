@@ -74,7 +74,7 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
       "return the correct location header when value is set to true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
       }
 
       "return the correct location header when value is set to false" in new Test {

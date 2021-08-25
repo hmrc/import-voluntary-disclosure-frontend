@@ -1,0 +1,86 @@
+@*
+* Copyright 2021 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+@import config.AppConfig
+@import models.upscan.UpScanInitiateResponse
+
+@this(layout: templates.Layout,
+        inputFileUpload: components.inputFileUpload,
+        h1: components.h1,
+        errorSummary: components.errorSummary,
+        p: components.p,
+        button: components.button,
+        bullets: components.bullets,
+)
+
+@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, numberOfFilesUploaded: Int, checkMode: Boolean)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+
+    @layout(
+        pageTitle = messages("uploadSupportingDocumentation.cancelCase.pageTitle"),
+        customBackLinkUrl = Some(backLink),
+        form = Some(form),
+        showBackLink = if(numberOfFilesUploaded == 0 && checkMode) false else true
+    ) {
+
+        @errorSummary(form.errors)
+
+        @h1(messages("uploadSupportingDocumentation.cancelCase.pageHeader"))
+
+        <h2 class="govuk-heading-s">@messages("uploadSupportingDocumentation.cancelCase.typesOfFile")</h2>
+
+        @bullets(Seq(
+            Html(messages("uploadSupportingDocumentation.cancelCase.PDF")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.CSV")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.ms")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.openDocumentFormat")),
+            Html(messages("uploadSupportingDocumentation.cancelCase.image"))
+        ))
+
+        @p {
+            @messages("uploadSupportingDocumentation.cancelCase.fileSizeText")
+        }
+
+        <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
+
+
+            <div id="file-upload-form-group" class="govuk-form-group @{
+                if(form.hasErrors) "govuk-form-group--error"
+            }">
+                @upScanResponse.uploadFormTemplate.fields.map { row =>
+                    <input type="hidden" name="@row._1" value="@row._2">
+            }
+
+            @inputFileUpload(
+                form = form,
+                name = "file",
+                id = "file",
+                label = messages("uploadSupportingDocumentation.cancelCase.uploadFile"),
+                isPageHeading = false,
+                attributes = Map(
+                    "accept" -> appConfig.upScanAcceptedFileTypes,
+                    "data-max-file-size" -> appConfig.upScanMaxFileSize.toString,
+                    "data-min-file-size" -> appConfig.upScanMinFileSize.toString
+                )
+            )
+            </div>
+
+            @button("uploadSupportingDocumentation.cancelCase.uploadChosenFile")
+
+        </form>
+    }
+
+    @{
+        //$COVERAGE-OFF$
+    }

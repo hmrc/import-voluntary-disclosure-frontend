@@ -16,7 +16,7 @@
 
 package controllers.cancelCase
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.cancelCase.AnyOtherSupportingCancellationDocsFormProvider
 import pages.AnyOtherSupportingDocsPage
 import play.api.i18n.I18nSupport
@@ -58,8 +58,7 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
-            // TODO: point at the Upload documentation page
-            Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
+            Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
           } else {
             Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
           }
