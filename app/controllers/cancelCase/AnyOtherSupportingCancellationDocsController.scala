@@ -18,7 +18,8 @@ package controllers.cancelCase
 
 import controllers.actions._
 import forms.cancelCase.AnyOtherSupportingCancellationDocsFormProvider
-import pages.AnyOtherSupportingDocsPage
+import models.requests.DataRequest
+import pages.{AnyOtherSupportingDocsPage, UploadSupportingDocumentationPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -54,15 +55,30 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
+          answersWithSupportingDocumentation <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
+          answersWithUpdatedFiles <-
+            if (!value) Future.fromTry(answersWithSupportingDocumentation.remove(UploadSupportingDocumentationPage))
+            else Future.successful(answersWithSupportingDocumentation)
+          existingAnswers = request.userAnswers.get(AnyOtherSupportingDocsPage)
+          _ <- sessionRepository.set(answersWithUpdatedFiles)
         } yield {
-          if (value) {
+          val hasNotChanged = existingAnswers.contains(value)
+          if (request.checkMode && (!value || hasNotChanged)) {
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+          } else if (value) {
             Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
           } else {
             Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
           }
         }
     )
+  }
+
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    if (request.checkMode) {
+      controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
+    } else {
+      controllers.cancelCase.routes.CancellationReasonController.onLoad()
+    }
   }
 }

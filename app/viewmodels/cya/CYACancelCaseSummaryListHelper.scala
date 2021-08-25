@@ -21,7 +21,7 @@ import models.requests.DataRequest
 import pages._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
@@ -33,8 +33,8 @@ trait CYACancelCaseSummaryListHelper {
     val rows = Seq(
       buildReferenceNumberSummaryListRow(answers),
       buildReasonForCancellation(answers),
-      buildSupportingDocumentationListRow(answers)
-      //      buildUploadedFilesRow(answers) TODO- uncomment when upload page is done
+      buildSupportingDocumentationListRow(answers),
+      buildUploadedFilesRow(answers)
     ).flatten
 
     if (rows.nonEmpty) {
@@ -90,20 +90,20 @@ trait CYACancelCaseSummaryListHelper {
       )
     }
 
-  //    private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-  //      answers.get(UploadSupportingDocumentationPage).map { files =>
-  //        val fileNames = files map (file => file.fileName)
-  //        val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
-  //        createRow(
-  //          keyText = Text(messages(numberOfFiles, fileNames.length)),
-  //          valueContent = HtmlContent(encodeMultilineText(fileNames)),
-  //          action = Some(ActionItemHelper.createChangeActionItem(
-  //            controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
-  //            messages("updateCase.cya.uploadedFiles.change")
-  //          ))
-  //        )
-  //      }
-  //    } TODO - add new upload page to method
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+    answers.get(UploadSupportingDocumentationPage).map { files =>
+      val fileNames = files map (file => file.fileName)
+      val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
+      createRow(
+        keyText = Text(messages(numberOfFiles, fileNames.length)),
+        valueContent = HtmlContent(encodeMultilineText(fileNames)),
+        action = Some(ActionItemHelper.createChangeActionItem(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
+          messages("updateCase.cya.uploadedFiles.change")
+        ))
+      )
+    }
+  }
 
 
 }
