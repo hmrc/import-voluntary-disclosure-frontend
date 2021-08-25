@@ -16,6 +16,7 @@
 
 package controllers.cancelCase
 
+import config.ErrorHandler
 import controllers.actions._
 import pages._
 import play.api.i18n.I18nSupport
@@ -23,7 +24,7 @@ import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYACancelCaseSummaryListHelper
-import views.html.cancelCase.CancelCaseCheckYourAnswersView
+import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,6 +36,8 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      mcc: MessagesControllerComponents,
                                                      sessionRepository: SessionRepository,
                                                      view: CancelCaseCheckYourAnswersView,
+                                                     confirmationView: CancelCaseConfirmationView,
+                                                     errorHandler: ErrorHandler,
                                                      implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport with CYACancelCaseSummaryListHelper {
 
@@ -47,5 +50,10 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
     }
   }
 
-  // TODO: redirect to confirmation page
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    request.userAnswers.get(DisclosureReferenceNumberPage) match {
+      case Some(caseId) => Future.successful(Ok(confirmationView(caseId)))
+      case None => Future.successful(errorHandler.showInternalServerError)
+    }
+  }
 }

@@ -37,10 +37,11 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockUpdateCaseService
 import models._
+import pages.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
-import views.html.cancelCase.CancelCaseCheckYourAnswersView
+import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
 
 import scala.concurrent.Future
 
@@ -49,6 +50,7 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository with MockUpdateCaseService {
 
     private lazy val cancelCaseCheckYourAnswersView: CancelCaseCheckYourAnswersView = app.injector.instanceOf[CancelCaseCheckYourAnswersView]
+    private lazy val cancelCaseConfirmationView: CancelCaseConfirmationView = app.injector.instanceOf[CancelCaseConfirmationView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -64,6 +66,8 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       messagesControllerComponents,
       mockSessionRepository,
       cancelCaseCheckYourAnswersView,
+      cancelCaseConfirmationView,
+      errorHandler,
       ec
     )
 
@@ -80,6 +84,30 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+  }
+
+  "GET onSubmit" should {
+    "return Redirect to the confirmation view" in new Test {
+      override def repositoryExpectation(): Unit = {
+        MockedSessionRepository.remove(Future.successful("some-cred-id"))
+      }
+
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
+      )
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return Internal Server error when user answers incomplete for confirmation view" in new Test {
+      override def repositoryExpectation(): Unit = {
+        MockedSessionRepository.remove(Future.successful("some-cred-id"))
+      }
+
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }
 }

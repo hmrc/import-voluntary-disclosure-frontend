@@ -39,7 +39,7 @@
     @p(Html(messages("cancelCase.cya.disclosureConfirmation")))
 
     @linkButton(
-        url = controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url,
+        url = controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onSubmit().url,
         value = messages("cancelCase.cya.Accept")
     )
 }

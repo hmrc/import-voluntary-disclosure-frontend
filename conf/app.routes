@@ -440,3 +440,4 @@ GET         /cancel-disclosure/confirm-file-removal/:index                      
 POST        /cancel-disclosure/confirm-file-removal/:index                                     controllers.cancelCase.CancelCaseRemoveSupportingDocumentationController.onSubmit(index: models.Index)
 
 GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad
+GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit
