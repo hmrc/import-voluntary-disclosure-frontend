@@ -43,11 +43,13 @@ trait UpdateCaseServiceTestData extends ReusableValues {
     answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
   } yield answers).get
 
+  val additionalInfoWithPrependedText: String =
+    "Cancellation request:\n" + "Additional Information"
 
   val updateCaseJson: JsObject =
     Json.obj(
       "caseId" -> "C18",
-      "additionalInfo" -> "Additional Information",
+      "additionalInfo" -> additionalInfoWithPrependedText,
       "supportingDocuments" -> Json.arr(
         Json.obj(
           "reference" -> "file-ref-1",
@@ -63,6 +65,6 @@ trait UpdateCaseServiceTestData extends ReusableValues {
   val updateCaseJsonWithoutDocs: JsObject =
     Json.obj(
       "caseId" -> "C18",
-      "additionalInfo" -> "Additional Information"
+      "additionalInfo" -> additionalInfoWithPrependedText
     )
 }
