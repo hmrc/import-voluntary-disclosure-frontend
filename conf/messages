@@ -1111,3 +1111,12 @@ cancellationReason.error.noEmoji = Why you want this disclosure cancelled must n
 anyOtherSupportingCancellationDocs.pageTitle = Do you have any documentation to support cancelling this disclosure?
 anyOtherSupportingCancellationDocs.heading = Do you have any documentation to support cancelling this disclosure?
 anyOtherSupportingCancellationDocs.error.required = Do you have any documentation to support cancelling this disclosure?
+
+# Cancel Case - Confirmation Page
+cancelCase.confirmation.pageTitle = Confirmation
+cancelCase.confirmation.heading = Cancellation requested
+cancelCase.confirmation.panelText = 'for disclosure reference number '
+cancelCase.confirmation.whatHappensNext = What happens next
+cancelCase.confirmation.whatHappensNext.p = We will check the information you have provided. If we accept the reason for cancellation, we will cancel the underpayment disclosure. Otherwise, we will continue to issue the C18 Post Clearance Demand Note.
+cancelCase.confirmation.anotherDisclosure = Start a new, add to, or cancel a disclosure
+cancelCase.confirmation.helpImproveServiceLink = What did you think of this service?
