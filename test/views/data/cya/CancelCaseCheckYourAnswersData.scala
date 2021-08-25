@@ -93,23 +93,23 @@ object CancelCaseCheckYourAnswersData {
     ))
   )
 
-  //  val fileUploadRow: SummaryListRow = SummaryListRow(
-  //    key = Key(
-  //      Text(CancelCaseCYAMessages.filesUploaded(1)),
-  //      classes = "govuk-!-width-one-third"
-  //    ),
-  //    value = Value(
-  //      HtmlContent(file)
-  //    ),
-  //    actions = Some(Actions(items = Seq(
-  //      ActionItem(
-  //        controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
-  //        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-  //        visuallyHiddenText = Some(CancelCaseCYAMessages.changeUploadedFiles)
-  //      )
-  //    )
-  //    ))
-  //  )
+    val fileUploadRow: SummaryListRow = SummaryListRow(
+      key = Key(
+        Text(CancelCaseCYAMessages.filesUploaded(1)),
+        classes = "govuk-!-width-one-third"
+      ),
+      value = Value(
+        HtmlContent(file)
+      ),
+      actions = Some(Actions(items = Seq(
+        ActionItem(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
+          HtmlContent("""<span aria-hidden="true">Change</span>"""),
+          visuallyHiddenText = Some(CancelCaseCYAMessages.changeUploadedFiles)
+        )
+      )
+      ))
+    )
 
 
   val answers: Seq[CYASummaryList] = Seq(
@@ -117,7 +117,8 @@ object CancelCaseCheckYourAnswersData {
     cancelCaseAnswers(Seq(
       referenceNumberRow,
       supportingDocumentationRow(true),
-      reasonCancellation
+      reasonCancellation,
+      fileUploadRow
     )),
   )
 
