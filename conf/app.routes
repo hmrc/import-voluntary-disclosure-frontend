@@ -412,21 +412,29 @@ GET         /update-disclosure/check-your-answers                               
 GET         /update-disclosure/confirmation                                                    controllers.UpdateCaseCheckYourAnswersController.onSubmit()
 GET         /update-disclosure/disclosure-not-found                                            controllers.DisclosureNotFoundController.onLoad
 
-GET         /language/:lang                                       controllers.LanguageSwitchController.switchToLanguage(lang: String)
+GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET         /import-declaration-exists                            controllers.serviceEntry.CustomsDeclarationController.onLoad()
-POST        /import-declaration-exists                            controllers.serviceEntry.CustomsDeclarationController.onSubmit()
+GET         /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onLoad()
+POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
 
-GET         /not-eligible/no-access-for-individual-user-id        controllers.serviceEntry.IndividualHandoffController.onLoad
+GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad
 
-GET         /continue-with-user-id                                controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
-POST        /continue-with-user-id                                controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
+GET         /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
+POST        /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
 
-GET         /cancel-disclosure/reference-number                   controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
-POST        /cancel-disclosure/reference-number                   controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
+GET         /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
+POST        /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
 
-GET         /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onLoad
-POST        /cancel-disclosure/cancellation-reason                controllers.cancelCase.CancellationReasonController.onSubmit
+GET         /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onLoad
+POST        /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onSubmit
 
-GET         /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
-POST        /cancel-disclosure/need-to-upload                     controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
+GET         /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
+POST        /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
+
+GET         /cancel-disclosure/upload-file                                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.onLoad
+GET         /cancel-disclosure/upload-file/upscan-response                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /cancel-disclosure/upload-file/polling                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.uploadProgress(key: String)
+GET         /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onLoad
+POST        /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onSubmit
+GET         /cancel-disclosure/confirm-file-removal/:index                                     controllers.cancelCase.CancelCaseRemoveSupportingDocumentationController.onLoad(index: models.Index)
+POST        /cancel-disclosure/confirm-file-removal/:index                                     controllers.cancelCase.CancelCaseRemoveSupportingDocumentationController.onSubmit(index: models.Index)
