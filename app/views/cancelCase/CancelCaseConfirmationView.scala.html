@@ -14,16 +14,13 @@
  * limitations under the License.
  *@
 
-@import viewmodels.cya.ConfirmationViewData
-
 @this(layout: templates.Layout,
         h2: components.h2,
         p: components.p,
         appConfig: AppConfig
 )
 
-@(caseId: String,
-)(implicit request: Request[_], messages: Messages)
+@(caseId: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("cancelCase.confirmation.pageTitle"), showBackLink = false) {
 
