@@ -65,6 +65,15 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
         result mustBe Right(response)
       }
 
+      "return successful UpdateCaseResponse for Cancel Case" in new Test {
+        override val userAnswers: UserAnswers = cancelCaseCompleteUserAnswers
+        private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
+        setupMockUpdateCase(Right(response))
+        verifyAudit(UpdateCaseAuditEvent(cancelCaseJson))
+        private val result = await(service.updateCase())
+        result mustBe Right(response)
+      }
+
       "return error if connector call fails" in new Test {
         setupMock(Left(failedCreateCaseConnectorCall))
         private val result = await(service.updateCase())
