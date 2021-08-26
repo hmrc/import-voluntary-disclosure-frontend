@@ -59,7 +59,7 @@ class ImporterNameController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.AddressLookupController.initialiseImporterJourney())
+            Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney())
           }
         }
       }

@@ -29,6 +29,7 @@ import views.data.cya.CheckYourAnswersPaymentData._
 import java.time.{LocalDate, LocalDateTime}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
 import models.reasons.{BoxNumber, UnderpaymentReason}
+import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressPage}
 import pages.docUpload.FileUploadPage
 import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
 import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}

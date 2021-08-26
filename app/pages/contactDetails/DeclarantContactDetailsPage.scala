@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages
+package pages.contactDetails
 
 import models.ContactDetails
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 case object DeclarantContactDetailsPage extends QuestionPage[ContactDetails] {

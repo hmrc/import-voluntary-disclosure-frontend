@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import config.ErrorHandler
 import controllers.actions._
 import models.ContactAddress
 import models.addressLookup.AddressModel
-import pages.{ImporterAddressPage, TraderAddressPage}
+import pages.contactDetails.{ImporterAddressPage, TraderAddressPage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository

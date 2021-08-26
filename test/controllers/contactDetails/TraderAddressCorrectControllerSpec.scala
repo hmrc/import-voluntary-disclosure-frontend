@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.TraderAddressCorrectFormProvider
+import forms.contactDetails.TraderAddressCorrectFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests._
 import pages.serviceEntry.KnownEoriDetailsPage
-import pages.{CheckModePage, TraderAddressCorrectPage}
+import pages.CheckModePage
+import pages.contactDetails.TraderAddressCorrectPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import utils.ReusableValues
-import views.html.TraderAddressCorrectView
+import views.html.contactDetails.TraderAddressCorrectView
 
 import scala.concurrent.Future
 
@@ -121,7 +122,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.AddressLookupController.initialiseJourney().url)
+        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.AddressLookupController.initialiseJourney().url)
       }
 
       "update the UserAnswers in session when Trader Address is correct" in new Test {
@@ -154,7 +155,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
         override val userAnswers: UserAnswers =
           UserAnswers("some-cred-id").set(CheckModePage, false).success.value
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.DeclarantContactDetailsController.onLoad()
+        result mustBe controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()
       }
     }
 

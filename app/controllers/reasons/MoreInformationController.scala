@@ -65,7 +65,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
             if (request.isOneEntry) {
               Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
             } else {
-              Redirect(controllers.routes.DeclarantContactDetailsController.onLoad())
+              Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad())
             }
           }
         }

@@ -87,7 +87,7 @@ object CheckYourAnswersData {
             Actions(
               items = Seq(
                 ActionItem(
-                  controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+                  controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(CYAMessages.changeImporterAddress)
                 )
@@ -375,7 +375,7 @@ object CheckYourAnswersData {
             Actions(
               items = Seq(
                 ActionItem(
-                  controllers.routes.DeclarantContactDetailsController.onLoad().url,
+                  controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url,
                   HtmlContent("""<span aria-hidden="true">Change</span>"""),
                   Some(CYAMessages.changeContactDetails)
                 )
@@ -391,7 +391,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.TraderAddressCorrectController.onLoad().url,
+              controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(CYAMessages.changeAddress)
             ))

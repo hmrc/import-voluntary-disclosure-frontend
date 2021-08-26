@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package views
+package views.contactDetails
 
 import base.ViewBaseSpec
-import forms.DeclarantContactDetailsFormProvider
+import forms.contactDetails.DeclarantContactDetailsFormProvider
 import messages.{BaseMessages, TraderContactDetailsMessages}
 import models.ContactDetails
 import org.jsoup.Jsoup
@@ -25,7 +25,7 @@ import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
-import views.html.DeclarantContactDetailsView
+import views.html.contactDetails.DeclarantContactDetailsView
 
 class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 

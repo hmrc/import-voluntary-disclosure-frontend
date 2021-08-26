@@ -36,7 +36,7 @@
 
     @p(Html(messages("declarantContactDetails.text")))
 
-    @formHelper(action = controllers.routes.DeclarantContactDetailsController.onSubmit()) {
+    @formHelper(action = controllers.contactDetails.routes.DeclarantContactDetailsController.onSubmit()) {
         @inputText(
             form = form,
             id = "fullName",

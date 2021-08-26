@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package views
+package views.contactDetails
 
 import base.ViewBaseSpec
-import forms.TraderAddressCorrectFormProvider
+import forms.contactDetails.TraderAddressCorrectFormProvider
 import messages.{BaseMessages, ImporterAddressMessages}
 import models.ContactAddress
 import org.jsoup.Jsoup
@@ -26,7 +26,7 @@ import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
 import utils.ReusableValues
-import views.html.TraderAddressCorrectView
+import views.html.contactDetails.TraderAddressCorrectView
 
 class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with ReusableValues {
 

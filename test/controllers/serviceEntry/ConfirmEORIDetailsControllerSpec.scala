@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockEoriDetailsService
 import models.{ContactAddress, EoriDetails, ErrorModel, UserAnswers}
-import pages._
+import pages.contactDetails.TraderAddressCorrectPage
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result

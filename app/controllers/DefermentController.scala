@@ -122,7 +122,7 @@ class DefermentController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.TraderAddressCorrectController.onLoad()
+      controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
     }
   }
 

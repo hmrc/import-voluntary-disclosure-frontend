@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package forms.contactDetails
 
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case object TraderAddressCorrectPage extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  def path: JsPath = JsPath \ toString
+class TraderAddressCorrectFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "trader-address-correct"
+  def apply(): Form[Boolean] =
+    Form(
+      "value" -> boolean("traderAddressCorrect.error.required")
+    )
 
 }
