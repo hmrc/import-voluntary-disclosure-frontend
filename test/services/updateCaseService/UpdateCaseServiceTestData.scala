@@ -16,8 +16,10 @@
 
 package services.updateCaseService
 
+import models.SubmissionType.{CancelCase, UpdateCase}
 import models.{UpdateCaseData, UserAnswers}
 import pages._
+import pages.serviceEntry.WhatDoYouWantToDoPage
 import play.api.libs.json.{JsObject, Json}
 import utils.ReusableValues
 
@@ -32,6 +34,15 @@ trait UpdateCaseServiceTestData extends ReusableValues {
 
   val completeUserAnswers: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, updateData.caseId)
+    answers <- answers.set(WhatDoYouWantToDoPage, UpdateCase)
+    answers <- answers.set(MoreDocumentationPage, updateData.anyOtherSupportingDocs)
+    answers <- answers.set(UploadSupportingDocumentationPage, updateData.supportingDocuments.getOrElse(Seq.empty))
+    answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
+  } yield answers).get
+
+  val cancelCaseCompleteUserAnswers: UserAnswers = (for {
+    answers <- new UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, updateData.caseId)
+    answers <- answers.set(WhatDoYouWantToDoPage, CancelCase)
     answers <- answers.set(MoreDocumentationPage, updateData.anyOtherSupportingDocs)
     answers <- answers.set(UploadSupportingDocumentationPage, updateData.supportingDocuments.getOrElse(Seq.empty))
     answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
@@ -43,11 +54,31 @@ trait UpdateCaseServiceTestData extends ReusableValues {
     answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
   } yield answers).get
 
+  val additionalInfo: String = "Additional Information"
+
+  val additionalInfoWithPrependedText: String =
+    "Cancellation request:\n" + "Additional Information"
 
   val updateCaseJson: JsObject =
     Json.obj(
       "caseId" -> "C18",
-      "additionalInfo" -> "Additional Information",
+      "additionalInfo" -> additionalInfo,
+      "supportingDocuments" -> Json.arr(
+        Json.obj(
+          "reference" -> "file-ref-1",
+          "fileName" -> "TestDocument.pdf",
+          "downloadUrl" -> "http://some/location",
+          "uploadTimestamp" -> "2021-05-14T20:15:13.807",
+          "checksum" -> "the file checksum",
+          "fileMimeType" -> "application/pdf"
+        )
+      )
+    )
+
+  val cancelCaseJson: JsObject =
+    Json.obj(
+      "caseId" -> "C18",
+      "additionalInfo" -> additionalInfoWithPrependedText,
       "supportingDocuments" -> Json.arr(
         Json.obj(
           "reference" -> "file-ref-1",
@@ -63,6 +94,6 @@ trait UpdateCaseServiceTestData extends ReusableValues {
   val updateCaseJsonWithoutDocs: JsObject =
     Json.obj(
       "caseId" -> "C18",
-      "additionalInfo" -> "Additional Information"
+      "additionalInfo" -> additionalInfoWithPrependedText
     )
 }
