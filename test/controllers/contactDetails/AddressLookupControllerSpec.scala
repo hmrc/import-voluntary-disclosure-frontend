@@ -59,7 +59,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
           setupMockRetrieveAddress(Right(customerAddressMax))
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.routes.DefermentController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad.url)
           verifyCalls()
         }
 

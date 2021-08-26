@@ -91,7 +91,7 @@ class AddressLookupControllerISpec extends IntegrationSpec {
         val response: WSResponse = await(request.get())
 
         response.status shouldBe Status.SEE_OTHER
-        response.header(HeaderNames.LOCATION) shouldBe Some(controllers.routes.DefermentController.onLoad().url)
+        response.header(HeaderNames.LOCATION) shouldBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
     }
   }

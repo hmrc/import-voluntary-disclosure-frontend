@@ -68,7 +68,7 @@ class AddressLookupController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.DefermentController.onLoad())
+            Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
           }
         }
 

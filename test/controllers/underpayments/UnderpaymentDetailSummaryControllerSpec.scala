@@ -27,7 +27,8 @@ import models.UserAnswers
 import models.importDetails.NumberOfEntries
 import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
-import pages.{CheckModePage, SplitPaymentPage}
+import pages.CheckModePage
+import pages.paymentInfo.SplitPaymentPage
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -203,7 +204,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.DefermentController.onLoad().url)
+          Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
       "return a SEE OTHER Deferment page when in Representative flow Both and VatOrDuty and Split initially" in new Test {
@@ -219,7 +220,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.DefermentController.onLoad().url)
+          Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
     }

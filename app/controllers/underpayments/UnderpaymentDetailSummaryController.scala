@@ -22,6 +22,7 @@ import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
 import pages._
+import pages.paymentInfo._
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -130,7 +131,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _ <- sessionRepository.set(updatedAnswers)
     } yield {
-      Redirect(controllers.routes.DefermentController.onLoad())
+      Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
     }
   }
 

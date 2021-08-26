@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.requests.DataRequest
 import models.{SelectedDutyTypes, UserAnswers}
-import pages._
+import pages.paymentInfo._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -64,7 +64,7 @@ trait CYAPaymentDetailsSummaryListHelper {
         Text(messages("cya.paymentMethod")),
         Text(payingByDeferment),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.DefermentController.onLoad().url,
+          controllers.paymentInfo.routes.DefermentController.onLoad().url,
           messages("cya.deferment.change")
         ))
       )
@@ -79,7 +79,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(messages("cya.splitDeferment")),
             Text(isSplitDeferment),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.SplitPaymentController.onLoad().url,
+              controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
               messages("cya.splitDeferment.change")
             ))
           )
@@ -95,7 +95,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(messages("cya.importerAccountNumber")),
             Text(accountNumber),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.ImporterDanController.onLoad().url,
+              controllers.paymentInfo.routes.ImporterDanController.onLoad().url,
               messages("cya.importerAccountNumber.change")
             )),
             rowClasses = "govuk-summary-list__row"
@@ -113,7 +113,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(messages("cya.repAccountNumber")),
             Text(accountNumber),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.RepresentativeDanController.onLoad().url,
+              controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.accountNumber.change")
             ))
           )
@@ -135,7 +135,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(messages("cya.accountOwner")),
             Text(accountOwnerContent),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.RepresentativeDanController.onLoad().url,
+              controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
               messages("cya.repDanDuty.accountOwner.change")
             ))
           )
@@ -160,7 +160,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.UploadAuthorityController.onLoad(dutyType, dan).url,
+              controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan).url,
               messages("cya.proofOfAuth.change")
             ))
           )

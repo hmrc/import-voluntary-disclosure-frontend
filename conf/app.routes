@@ -52,16 +52,16 @@ GET         /disclosure/upload-multiple-entry-file/success                      
 GET         /disclosure/upload-multiple-entry-file/polling                                     controllers.docUpload.BulkUploadFileController.uploadProgress(key:String)
 GET         /disclosure/upload-multiple-entry-file/upscan-response                             controllers.docUpload.BulkUploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan                              controllers.UploadAuthorityController.onLoad(dutyType: SelectedDutyType, dan: String)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-response              controllers.UploadAuthorityController.upscanResponseHandler(dutyType: SelectedDutyType, dan: String, key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/polling                      controllers.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, dan: String, key: String)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success                      controllers.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType, dan: String)
+GET         /disclosure/upload-deferment-authority/:dutyType/:dan                              controllers.paymentInfo.UploadAuthorityController.onLoad(dutyType: SelectedDutyType, dan: String)
+GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-response              controllers.paymentInfo.UploadAuthorityController.upscanResponseHandler(dutyType: SelectedDutyType, dan: String, key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /disclosure/upload-deferment-authority/:dutyType/:dan/polling                      controllers.paymentInfo.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, dan: String, key: String)
+GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success                      controllers.paymentInfo.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType, dan: String)
 
 GET         /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onLoad
 POST        /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onSubmit
 
-GET         /disclosure/how-will-you-pay                                                       controllers.DefermentController.onLoad
-POST        /disclosure/how-will-you-pay                                                       controllers.DefermentController.onSubmit
+GET         /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onLoad
+POST        /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onSubmit
 
 GET         /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onLoad
 POST        /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onSubmit
@@ -232,20 +232,20 @@ POST        /disclosure/importer-eori-number                                    
 
 GET         /confirm-eori                                                                      controllers.serviceEntry.ConfirmEORIDetailsController.onLoad
 
-GET         /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onLoad
-POST        /disclosure/importer-deferment-account-number                                      controllers.ImporterDanController.onSubmit
+GET         /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onLoad
+POST        /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onSubmit
 
-GET         /disclosure/split-deferment-payment                                                controllers.SplitPaymentController.onLoad
-POST        /disclosure/split-deferment-payment                                                controllers.SplitPaymentController.onSubmit
+GET         /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onLoad
+POST        /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onSubmit
 
-GET         /disclosure/deferment-account-details-all                                          controllers.RepresentativeDanController.onLoad
-POST        /disclosure/deferment-account-details-all                                          controllers.RepresentativeDanController.onSubmit
+GET         /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onLoad
+POST        /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onSubmit
 
-GET         /disclosure/deferment-account-details-duties                                       controllers.RepresentativeDanDutyController.onLoad
-POST        /disclosure/deferment-account-details-duties                                       controllers.RepresentativeDanDutyController.onSubmit
+GET         /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onLoad
+POST        /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onSubmit
 
-GET         /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onLoad
-POST        /disclosure/deferment-account-details-vat                                          controllers.RepresentativeDanImportVATController.onSubmit
+GET         /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onLoad
+POST        /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onSubmit
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
 

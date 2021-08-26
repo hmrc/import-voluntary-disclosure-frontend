@@ -47,7 +47,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.DefermentController.onLoad().url,
+        controllers.paymentInfo.routes.DefermentController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
       )
@@ -65,7 +65,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.DefermentController.onLoad().url,
+        controllers.paymentInfo.routes.DefermentController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
       )
@@ -83,7 +83,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.SplitPaymentController.onLoad().url,
+        controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         Some(CYAMessages.changeSplitDeferment)
       )
@@ -100,7 +100,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.SplitPaymentController.onLoad().url,
+        controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         Some(CYAMessages.changeSplitDeferment)
       )
@@ -117,7 +117,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.ImporterDanController.onLoad().url,
+        controllers.paymentInfo.routes.ImporterDanController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
       )
@@ -144,7 +144,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeRepDanAccountNumber)
       )
@@ -162,7 +162,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
       )
@@ -180,7 +180,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
@@ -198,7 +198,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
@@ -216,7 +216,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeRepDanAccountOwner)
       )
@@ -234,7 +234,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
@@ -252,7 +252,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
@@ -270,7 +270,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
       )
@@ -288,7 +288,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
       )
@@ -306,7 +306,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanDutyController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
       )
@@ -323,7 +323,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
       )
@@ -341,7 +341,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
+        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
       )
@@ -367,7 +367,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.repVATAccountNumber)
       )
@@ -385,7 +385,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
       )
@@ -403,7 +403,7 @@ object CheckYourAnswersPaymentData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
+        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
       )
