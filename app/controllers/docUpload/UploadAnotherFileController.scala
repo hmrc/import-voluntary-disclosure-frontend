@@ -17,17 +17,18 @@
 package controllers.docUpload
 
 import controllers.actions._
-import forms.UploadAnotherFileFormProvider
+import forms.shared.UploadAnotherFileFormProvider
 import models.requests.DataRequest
 import models.{FileUploadInfo, Index, OptionalDocument, UserAnswers}
-import pages._
+import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
+import pages.shared.AnyOtherSupportingDocsPage
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
-import views.html.UploadAnotherFileView
+import views.html.docUpload.UploadAnotherFileView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

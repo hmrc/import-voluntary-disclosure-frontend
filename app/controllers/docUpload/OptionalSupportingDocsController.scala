@@ -17,13 +17,13 @@
 package controllers.docUpload
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.OptionalSupportingDocsFormProvider
-import pages.OptionalSupportingDocsPage
+import forms.docUpload.OptionalSupportingDocsFormProvider
+import pages.docUpload.OptionalSupportingDocsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.OptionalSupportingDocsView
+import views.html.docUpload.OptionalSupportingDocsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

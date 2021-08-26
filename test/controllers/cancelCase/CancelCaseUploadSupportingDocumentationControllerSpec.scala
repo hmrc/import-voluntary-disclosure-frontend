@@ -30,7 +30,7 @@ import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import play.api.test.Helpers._
-import views.html.FileUploadProgressView
+import views.html.shared.FileUploadProgressView
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 
 import scala.concurrent.Future

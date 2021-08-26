@@ -18,7 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.UploadAnotherFileFormProvider
+import forms.shared.UploadAnotherFileFormProvider
 import models.UserAnswers
 import pages._
 import play.api.http.Status

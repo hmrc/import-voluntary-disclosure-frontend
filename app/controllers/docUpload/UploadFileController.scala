@@ -19,16 +19,18 @@ package controllers.docUpload
 import config.AppConfig
 import controllers.FileUploadHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.UploadFileFormProvider
+import forms.shared.UploadFileFormProvider
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
-import pages.{AnyOtherSupportingDocsPage, FileUploadPage, OptionalSupportingDocsPage}
+import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
+import pages.shared.AnyOtherSupportingDocsPage
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, UploadFileView}
+import views.html.docUpload.UploadFileView
+import views.html.shared.FileUploadProgressView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

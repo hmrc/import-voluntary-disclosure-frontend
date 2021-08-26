@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions._
-import forms.UploadAnotherFileFormProvider
+import forms.shared.UploadAnotherFileFormProvider
 import models.requests.DataRequest
 import models.{FileUploadInfo, Index}
 import pages.UploadSupportingDocumentationPage

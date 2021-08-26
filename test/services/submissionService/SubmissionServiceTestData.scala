@@ -19,9 +19,11 @@ package services.submissionService
 import models.importDetails.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
 import pages._
+import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.importDetails._
 import pages.reasons._
 import pages.serviceEntry.KnownEoriDetailsPage
+import pages.shared.AnyOtherSupportingDocsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import utils.ReusableValues
 

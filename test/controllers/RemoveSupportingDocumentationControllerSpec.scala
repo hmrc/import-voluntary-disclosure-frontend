@@ -18,7 +18,7 @@ package controllers
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.RemoveUploadedFileFormProvider
+import forms.shared.RemoveUploadedFileFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, Index, UserAnswers}
 import pages.UploadSupportingDocumentationPage
@@ -26,7 +26,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import views.html.RemoveUploadedFileView
+import views.html.shared.RemoveUploadedFileView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future

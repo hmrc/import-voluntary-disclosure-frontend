@@ -19,12 +19,12 @@ package controllers.docUpload
 import config.AppConfig
 import controllers.actions._
 import models.UserAnswers
-import pages.FileUploadPage
+import pages.docUpload.FileUploadPage
 import pages.reasons.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.SupportingDocView
+import views.html.docUpload.SupportingDocView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future

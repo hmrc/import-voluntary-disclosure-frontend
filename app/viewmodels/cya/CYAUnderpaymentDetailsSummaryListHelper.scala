@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
+import pages.docUpload.FileUploadPage
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
 import pages.reasons._
 import pages.underpayments.UnderpaymentDetailSummaryPage

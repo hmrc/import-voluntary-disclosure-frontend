@@ -17,7 +17,7 @@
 package views
 
 import base.ViewBaseSpec
-import forms.UploadFileFormProvider
+import forms.shared.UploadFileFormProvider
 import messages.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
