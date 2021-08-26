@@ -32,10 +32,10 @@ POST        /disclosure/entry-details                                           
 GET         /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onLoad
 POST        /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onSubmit
 
-GET         /disclosure/mandatory-documents                                                    controllers.SupportingDocController.onLoad
+GET         /disclosure/mandatory-documents                                                    controllers.docUpload.SupportingDocController.onLoad
 
-GET         /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onLoad
-POST        /disclosure/further-documents                                                      controllers.AnyOtherSupportingDocsController.onSubmit
+GET         /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onLoad
+POST        /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onSubmit
 
 GET         /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onLoad
 POST        /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onSubmit
@@ -43,14 +43,14 @@ POST        /disclosure/only-one-cpc                                            
 GET         /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onLoad
 POST        /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onSubmit
 
-GET         /disclosure/upload-file                                                            controllers.UploadFileController.onLoad
-GET         /disclosure/upload-file/upscan-response                                            controllers.UploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
-GET         /disclosure/upload-file/polling                                                    controllers.UploadFileController.uploadProgress(key: String)
+GET         /disclosure/upload-file                                                            controllers.docUpload.UploadFileController.onLoad
+GET         /disclosure/upload-file/upscan-response                                            controllers.docUpload.UploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /disclosure/upload-file/polling                                                    controllers.docUpload.UploadFileController.uploadProgress(key: String)
 
-GET         /disclosure/upload-multiple-entry-file                                             controllers.BulkUploadFileController.onLoad
-GET         /disclosure/upload-multiple-entry-file/success                                     controllers.BulkUploadFileController.onSuccess
-GET         /disclosure/upload-multiple-entry-file/polling                                     controllers.BulkUploadFileController.uploadProgress(key:String)
-GET         /disclosure/upload-multiple-entry-file/upscan-response                             controllers.BulkUploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /disclosure/upload-multiple-entry-file                                             controllers.docUpload.BulkUploadFileController.onLoad
+GET         /disclosure/upload-multiple-entry-file/success                                     controllers.docUpload.BulkUploadFileController.onSuccess
+GET         /disclosure/upload-multiple-entry-file/polling                                     controllers.docUpload.BulkUploadFileController.uploadProgress(key:String)
+GET         /disclosure/upload-multiple-entry-file/upscan-response                             controllers.docUpload.BulkUploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan                              controllers.UploadAuthorityController.onLoad(dutyType: SelectedDutyType, dan: String)
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-response              controllers.UploadAuthorityController.upscanResponseHandler(dutyType: SelectedDutyType, dan: String, key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
@@ -63,11 +63,11 @@ POST        /disclosure/your-contact-details                                    
 GET         /disclosure/how-will-you-pay                                                       controllers.DefermentController.onLoad
 POST        /disclosure/how-will-you-pay                                                       controllers.DefermentController.onSubmit
 
-GET         /disclosure/upload-another-file                                                    controllers.UploadAnotherFileController.onLoad
-POST        /disclosure/upload-another-file                                                    controllers.UploadAnotherFileController.onSubmit
+GET         /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onLoad
+POST        /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onSubmit
 
-GET         /disclosure/confirm-file-removal/:index                                            controllers.RemoveUploadedFileController.onLoad(index: models.Index)
-POST        /disclosure/confirm-file-removal/:index                                            controllers.RemoveUploadedFileController.onSubmit(index: models.Index)
+GET         /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onLoad(index: models.Index)
+POST        /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onSubmit(index: models.Index)
 
 GET         /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onLoad
 POST        /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onSubmit
@@ -382,8 +382,8 @@ POST        /disclosure/remove-customs-duty-agricultural-products-underpayment-c
 GET         /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "D10")
 POST        /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "D10")
 
-GET         /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onLoad
-POST        /disclosure/which-documents-upload                                                 controllers.OptionalSupportingDocsController.onSubmit
+GET         /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onLoad
+POST        /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onSubmit
 
 GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad
 POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit

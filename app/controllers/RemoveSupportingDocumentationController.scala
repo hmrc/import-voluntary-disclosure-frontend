@@ -17,14 +17,14 @@
 package controllers
 
 import controllers.actions._
-import forms.RemoveUploadedFileFormProvider
+import forms.shared.RemoveUploadedFileFormProvider
 import models.Index
 import pages.{RemoveSupportingDocumentationPage, UploadSupportingDocumentationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.RemoveUploadedFileView
+import views.html.shared.RemoveUploadedFileView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}

@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.cancelCase.AnyOtherSupportingCancellationDocsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import pages.AnyOtherSupportingDocsPage
+import pages.shared.AnyOtherSupportingDocsPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest

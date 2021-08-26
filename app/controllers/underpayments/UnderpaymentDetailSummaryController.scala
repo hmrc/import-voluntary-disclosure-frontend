@@ -88,7 +88,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
               if (request.isOneEntry) {
                 Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
               } else {
-                Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
+                Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
               }
           }
         }
@@ -111,7 +111,7 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
         if (request.isOneEntry) {
           Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
         } else {
-          Future.successful(Redirect(controllers.routes.BulkUploadFileController.onLoad()))
+          Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
         }
       case _ => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
     }

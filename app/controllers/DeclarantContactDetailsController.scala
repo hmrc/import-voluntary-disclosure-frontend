@@ -69,7 +69,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       if (request.isOneEntry) {
-        controllers.routes.UploadAnotherFileController.onLoad()
+        controllers.docUpload.routes.UploadAnotherFileController.onLoad()
       } else {
         controllers.reasons.routes.MoreInformationController.onLoad()
       }

@@ -63,7 +63,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             if (request.isOneEntry) {
-              Redirect(controllers.routes.SupportingDocController.onLoad())
+              Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
             } else {
               Redirect(controllers.routes.DeclarantContactDetailsController.onLoad())
             }
@@ -80,7 +80,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
       if (request.isOneEntry) {
         Some(controllers.reasons.routes.HasFurtherInformationController.onLoad())
       } else {
-        Some(controllers.routes.BulkUploadFileController.onLoad())
+        Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
       }
     }
   }

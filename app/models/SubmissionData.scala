@@ -22,9 +22,11 @@ import models.reasons.UnderpaymentReason
 import models.underpayments.UnderpaymentDetail
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages._
+import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.importDetails._
 import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
+import pages.shared.AnyOtherSupportingDocsPage
 import play.api.libs.json.Reads
 
 case class SubmissionData(userType: UserType,

@@ -17,7 +17,7 @@
 package views
 
 import base.ViewBaseSpec
-import forms.UploadAnotherFileFormProvider
+import forms.shared.UploadAnotherFileFormProvider
 import messages.{BaseMessages, UploadAnotherFileMessages}
 import models.Index
 import org.jsoup.Jsoup

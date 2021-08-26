@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
+import pages.docUpload.FileUploadPage
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
 import pages.reasons._
 import pages.underpayments.UnderpaymentDetailSummaryPage
@@ -74,7 +74,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.UploadAnotherFileController.onLoad().url,
+          controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
           messages("cya.supportingDocuments.change")
         ))
       )
@@ -170,7 +170,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.bulk.multipleEntriesFile")),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.BulkUploadFileController.onLoad().url,
+          controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
           messages("cya.bulk.multipleEntriesFile.change")
         ))
       )

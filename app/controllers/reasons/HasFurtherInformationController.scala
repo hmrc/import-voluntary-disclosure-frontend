@@ -63,7 +63,7 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
             if (request.checkMode) {
               Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
-              Redirect(controllers.routes.SupportingDocController.onLoad())
+              Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
             }
           }
         }

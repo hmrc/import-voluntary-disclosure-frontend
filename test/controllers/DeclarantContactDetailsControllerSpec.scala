@@ -167,7 +167,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
             .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.UploadAnotherFileController.onLoad()
+        result mustBe controllers.docUpload.routes.UploadAnotherFileController.onLoad()
       }
     }
 

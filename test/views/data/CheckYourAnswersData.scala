@@ -239,7 +239,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.UploadAnotherFileController.onLoad().url,
+              controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(CYAMessages.changeSupportingDocuments)
             )
@@ -313,7 +313,7 @@ object CheckYourAnswersData {
           ),
           actions = Some(Actions(items = Seq(
             ActionItem(
-              controllers.routes.BulkUploadFileController.onLoad().url,
+              controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
               HtmlContent("""<span aria-hidden="true">Change</span>"""),
               Some(CYAMessages.changeMultipleEntriesFile)
             )

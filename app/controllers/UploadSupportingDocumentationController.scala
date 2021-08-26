@@ -18,7 +18,7 @@ package controllers
 
 import config.AppConfig
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.UploadFileFormProvider
+import forms.shared.UploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan._
 import models.{FileUploadInfo, UserAnswers}
@@ -28,7 +28,8 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.{FileUploadProgressView, UploadSupportingDocumentationView}
+import views.html.UploadSupportingDocumentationView
+import views.html.shared.FileUploadProgressView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext

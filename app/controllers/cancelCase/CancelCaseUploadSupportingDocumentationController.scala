@@ -29,8 +29,8 @@ import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.FileUploadProgressView
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
+import views.html.shared.FileUploadProgressView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
