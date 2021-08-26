@@ -42,7 +42,6 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
                                                              implicit val ec: ExecutionContext)
   extends FrontendController(mcc) with I18nSupport {
 
-  private lazy val backLink: Call = controllers.cancelCase.routes.CancellationReasonController.onLoad()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(AnyOtherSupportingDocsPage).fold(formProvider()) {
