@@ -108,7 +108,7 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
       "return the correct location header when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
       }
 
       "return to check your answers when in check mode and false" in new Test {
@@ -117,7 +117,7 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
       }
     }
 

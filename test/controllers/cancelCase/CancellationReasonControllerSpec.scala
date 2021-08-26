@@ -127,7 +127,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+        result mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
       }
     }
 

@@ -61,16 +61,10 @@ class CancelCaseUploadSupportingDocumentationSummaryController @Inject()(identif
         if (addAnotherFile) {
           Future.successful(Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad()))
         } else {
-          if (request.checkMode) {
             Future.successful(
-              Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad())
-            ) // TODO
-          } else {
-            Future.successful(
-              Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad())
-            ) // TODO
+              Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+            )
           }
-        }
       }
     )
   }

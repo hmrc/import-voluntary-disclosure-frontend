@@ -16,7 +16,7 @@
 
 package controllers.cancelCase
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.cancelCase.CancellationReasonFormProvider
 import models.requests.DataRequest
 import pages.UpdateAdditionalInformationPage
@@ -58,7 +58,11 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
-          Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
+          }
         }
       }
     )
@@ -66,8 +70,7 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
-      // TODO: point at the Cancellation CYA page
-      Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+      Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
     } else {
       Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }

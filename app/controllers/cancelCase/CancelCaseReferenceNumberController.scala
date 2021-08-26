@@ -57,7 +57,7 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
           } else {
             Redirect(controllers.cancelCase.routes.CancellationReasonController.onLoad())
           }
@@ -67,7 +67,7 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()
+      controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
     }

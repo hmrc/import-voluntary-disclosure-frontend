@@ -120,7 +120,7 @@ class CancelCaseDisclosureReferenceNumberControllerSpec extends ControllerSpecBa
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
@@ -176,7 +176,7 @@ class CancelCaseDisclosureReferenceNumberControllerSpec extends ControllerSpecBa
             .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()
+        result mustBe controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
       }
     }
 
