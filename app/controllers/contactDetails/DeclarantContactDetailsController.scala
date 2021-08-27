@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import forms.DeclarantContactDetailsFormProvider
+import forms.contactDetails.DeclarantContactDetailsFormProvider
 import models.requests.DataRequest
-import pages.DeclarantContactDetailsPage
+import pages.contactDetails.DeclarantContactDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.DeclarantContactDetailsView
+import views.html.contactDetails.DeclarantContactDetailsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -57,7 +57,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
-            Redirect(controllers.routes.TraderAddressCorrectController.onLoad())
+            Redirect(controllers.contactDetails.routes.TraderAddressCorrectController.onLoad())
           }
         }
       }

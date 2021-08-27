@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import com.google.inject.Inject
 import config.ErrorHandler
 import controllers.actions._
-import forms.TraderAddressCorrectFormProvider
+import forms.contactDetails.TraderAddressCorrectFormProvider
 import models.ContactAddress
 import models.requests.DataRequest
 import pages.serviceEntry.KnownEoriDetailsPage
-import pages.{TraderAddressCorrectPage, TraderAddressPage}
+import pages.contactDetails.{TraderAddressCorrectPage, TraderAddressPage}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.TraderAddressCorrectView
+import views.html.contactDetails.TraderAddressCorrectView
 
 import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
@@ -84,7 +84,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
             _ <- sessionRepository.set(updatedAnswers)
           } yield {
-            Redirect(controllers.routes.AddressLookupController.initialiseJourney())
+            Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseJourney())
           }
         }
       }
@@ -95,7 +95,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.routes.DeclarantContactDetailsController.onLoad()
+      controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()
     }
   }
 

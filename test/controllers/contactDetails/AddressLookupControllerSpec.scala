@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import assets.AddressLookupTestConstants.{customerAddressMax, customerAddressMissingLine3}
 import assets.BaseTestConstants.errorModel

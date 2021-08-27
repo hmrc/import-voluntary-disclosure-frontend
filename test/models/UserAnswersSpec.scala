@@ -19,6 +19,7 @@ package models
 import base.ModelSpecBase
 import org.scalatest.TryValues
 import pages._
+import pages.contactDetails.TraderAddressCorrectPage
 import pages.importDetails._
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage

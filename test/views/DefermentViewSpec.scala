@@ -38,7 +38,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -58,7 +58,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -78,7 +78,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -98,7 +98,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -118,7 +118,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -138,7 +138,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        controllers.routes.DeclarantContactDetailsController.onLoad(),
+        controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty"
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -161,7 +161,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     val form: Form[Boolean] = formProvider.apply()
     lazy val view: Html = injectedView(
       form,
-      Call("GET", controllers.routes.DeclarantContactDetailsController.onLoad().url),
+      Call("GET", controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url),
       "deferment.headingDutyOnly"
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -179,7 +179,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.routes.DeclarantContactDetailsController.onLoad().url)
+      elementAttributes("#back-link") must contain("href" -> controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url)
     }
 
     s"have the correct Continue button" in {

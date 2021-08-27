@@ -20,7 +20,7 @@ import models.UserAnswers
 import models.importDetails.UserType
 import models.requests.DataRequest
 import pages.importDetails.UserTypePage
-import pages.{DeclarantContactDetailsPage, TraderAddressPage}
+import pages.contactDetails.{DeclarantContactDetailsPage, TraderAddressPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -74,7 +74,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.contactDetails")),
         valueContent = HtmlContent(encodeMultilineText(contactDetailsValue)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.DeclarantContactDetailsController.onLoad().url,
+          controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url,
           messages("cya.contactDetails.change")
         ))
       )
@@ -102,7 +102,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressString)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.TraderAddressCorrectController.onLoad().url, messages("cya.address.change")
+          controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url, messages("cya.address.change")
         ))
       )
     }

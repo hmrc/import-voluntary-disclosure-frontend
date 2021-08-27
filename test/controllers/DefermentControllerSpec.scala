@@ -248,7 +248,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
-        result mustBe controllers.routes.TraderAddressCorrectController.onLoad()
+        result mustBe controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
 
       }
     }

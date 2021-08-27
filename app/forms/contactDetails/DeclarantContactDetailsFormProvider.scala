@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.contactDetails
 
 import forms.mappings.Mappings
 import models.ContactDetails

@@ -19,6 +19,7 @@ package services.submissionService
 import models.importDetails.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
 import pages._
+import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressCorrectPage, TraderAddressPage}
 import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.importDetails._
 import pages.reasons._

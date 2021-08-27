@@ -6,15 +6,15 @@ GET         /assets/*file                                                       
 
 GET         /guidance                                                                          controllers.GuidanceController.onLoad
 GET         /                                                                                  controllers.IndexController.onPageLoad
-GET         /address-initialise                                                                controllers.AddressLookupController.initialiseJourney
-GET         /address-callback                                                                  controllers.AddressLookupController.callback(id: String)
-GET         /importer-address-callback                                                         controllers.AddressLookupController.importerCallback(id: String)
+GET         /address-initialise                                                                controllers.contactDetails.AddressLookupController.initialiseJourney
+GET         /address-callback                                                                  controllers.contactDetails.AddressLookupController.callback(id: String)
+GET         /importer-address-callback                                                         controllers.contactDetails.AddressLookupController.importerCallback(id: String)
 
 GET         /keep-alive                                                                        controllers.serviceEntry.SessionExpiredController.keepAlive
 GET         /timeout-remove-answers                                                            controllers.serviceEntry.SessionExpiredController.timeout
 GET         /timeout-signed-out                                                                controllers.serviceEntry.SessionExpiredController.showView
 
-GET         /importer-address-initialise                                                       controllers.AddressLookupController.initialiseImporterJourney
+GET         /importer-address-initialise                                                       controllers.contactDetails.AddressLookupController.initialiseImporterJourney
 
 GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad
 POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit
@@ -57,8 +57,8 @@ GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-respons
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan/polling                      controllers.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, dan: String, key: String)
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success                      controllers.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType, dan: String)
 
-GET         /disclosure/your-contact-details                                                   controllers.DeclarantContactDetailsController.onLoad
-POST        /disclosure/your-contact-details                                                   controllers.DeclarantContactDetailsController.onSubmit
+GET         /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onLoad
+POST        /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onSubmit
 
 GET         /disclosure/how-will-you-pay                                                       controllers.DefermentController.onLoad
 POST        /disclosure/how-will-you-pay                                                       controllers.DefermentController.onSubmit
@@ -69,8 +69,8 @@ POST        /disclosure/upload-another-file                                     
 GET         /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onLoad(index: models.Index)
 POST        /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onSubmit(index: models.Index)
 
-GET         /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onLoad
-POST        /disclosure/address-correct                                                        controllers.TraderAddressCorrectController.onSubmit
+GET         /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onLoad
+POST        /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onSubmit
 
 GET         /disclosure/reason-introduction                                                    controllers.reasons.BoxGuidanceController.onLoad
 

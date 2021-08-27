@@ -63,7 +63,7 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
           } else {
-            Future.successful(Redirect(controllers.routes.DeclarantContactDetailsController.onLoad()))
+            Future.successful(Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()))
           }
         }
       }

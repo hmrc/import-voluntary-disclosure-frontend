@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
+import pages.contactDetails.ImporterAddressPage
 import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -90,7 +90,7 @@ trait CYAImporterDetailsSummaryListHelper {
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressParts)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.AddressLookupController.initialiseImporterJourney().url,
+          controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url,
           messages("cya.importerAddress.change")
         ))
       )

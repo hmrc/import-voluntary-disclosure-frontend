@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms
+package forms.contactDetails
 
 import base.FormSpecBase
 

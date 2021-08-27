@@ -100,7 +100,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.AddressLookupController.initialiseImporterJourney().url)
+        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url)
       }
 
       "return a SEE OTHER response to Check Your Answers when correct data with character values" in new Test {

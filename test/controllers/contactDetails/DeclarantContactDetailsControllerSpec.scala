@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.contactDetails
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import forms.DeclarantContactDetailsFormProvider
+import forms.contactDetails.DeclarantContactDetailsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.{ContactDetails, UserAnswers}
 import pages.importDetails.NumberOfEntriesPage
-import pages.{CheckModePage, DeclarantContactDetailsPage}
+import pages.CheckModePage
+import pages.contactDetails.DeclarantContactDetailsPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
-import views.html.DeclarantContactDetailsView
+import views.html.contactDetails.DeclarantContactDetailsView
 
 import scala.concurrent.Future
 
@@ -104,7 +105,7 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
           )
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.TraderAddressCorrectController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url)
       }
 
       "return a SEE OTHER to Check Your Answers page response when correct data is sent and in checkMode" in new Test {
