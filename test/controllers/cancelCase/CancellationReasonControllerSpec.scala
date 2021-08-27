@@ -22,7 +22,8 @@ import forms.cancelCase.CancellationReasonFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, UpdateAdditionalInformationPage}
+import pages.CheckModePage
+import pages.updateCase.UpdateAdditionalInformationPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest

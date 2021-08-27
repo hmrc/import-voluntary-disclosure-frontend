@@ -19,6 +19,7 @@ package controllers.cancelCase
 import config.ErrorHandler
 import controllers.actions._
 import pages._
+import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository

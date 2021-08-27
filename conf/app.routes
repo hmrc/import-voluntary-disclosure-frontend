@@ -249,7 +249,7 @@ POST        /disclosure/deferment-account-details-vat                           
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
 
-GET         /update-disclosure/cannot-add-information                                          controllers.DisclosureClosedController.onLoad()
+GET         /update-disclosure/cannot-add-information                                          controllers.updateCase.DisclosureClosedController.onLoad()
 
 # Underpayments
 
@@ -391,26 +391,26 @@ POST        /disclosure/importer-vat-registered                                 
 GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
 POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
 
-GET         /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onLoad
-POST        /update-disclosure/reference-number                                                controllers.DisclosureReferenceNumberController.onSubmit
+GET         /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onLoad
+POST        /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onSubmit
 
-GET         /update-disclosure/need-to-upload                                                  controllers.MoreDocumentationController.onLoad
-POST        /update-disclosure/need-to-upload                                                  controllers.MoreDocumentationController.onSubmit
+GET         /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onLoad
+POST        /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onSubmit
 
-GET         /update-disclosure/upload-file                                                     controllers.UploadSupportingDocumentationController.onLoad
-GET         /update-disclosure/upload-file/upscan-response                                     controllers.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
-GET         /update-disclosure/upload-file/polling                                             controllers.UploadSupportingDocumentationController.uploadProgress(key: String)
-GET         /update-disclosure/upload-another-file                                             controllers.UploadSupportingDocumentationSummaryController.onLoad
-POST        /update-disclosure/upload-another-file                                             controllers.UploadSupportingDocumentationSummaryController.onSubmit
-GET         /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onLoad(index: models.Index)
-POST        /update-disclosure/confirm-file-removal/:index                                     controllers.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
+GET         /update-disclosure/upload-file                                                     controllers.updateCase.UploadSupportingDocumentationController.onLoad
+GET         /update-disclosure/upload-file/upscan-response                                     controllers.updateCase.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /update-disclosure/upload-file/polling                                             controllers.updateCase.UploadSupportingDocumentationController.uploadProgress(key: String)
+GET         /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onLoad
+POST        /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onSubmit
+GET         /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onLoad(index: models.Index)
+POST        /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
 
-GET         /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onLoad
-POST        /update-disclosure/additional-information                                          controllers.UpdateAdditionalInformationController.onSubmit
+GET         /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onLoad
+POST        /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onSubmit
 
-GET         /update-disclosure/check-your-answers                                              controllers.UpdateCaseCheckYourAnswersController.onLoad()
-GET         /update-disclosure/confirmation                                                    controllers.UpdateCaseCheckYourAnswersController.onSubmit()
-GET         /update-disclosure/disclosure-not-found                                            controllers.DisclosureNotFoundController.onLoad
+GET         /update-disclosure/check-your-answers                                              controllers.updateCase.UpdateCaseCheckYourAnswersController.onLoad()
+GET         /update-disclosure/confirmation                                                    controllers.updateCase.UpdateCaseCheckYourAnswersController.onSubmit()
+GET         /update-disclosure/disclosure-not-found                                            controllers.updateCase.DisclosureNotFoundController.onLoad
 
 GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
