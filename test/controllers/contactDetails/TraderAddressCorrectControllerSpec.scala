@@ -104,7 +104,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.DefermentController.onLoad().url)
+        redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
       "redirect to the check your answers page if choosing to use the known address and checkMode is true" in new Test {

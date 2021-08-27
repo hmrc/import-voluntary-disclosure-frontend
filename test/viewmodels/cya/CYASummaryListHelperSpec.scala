@@ -22,7 +22,6 @@ import models.underpayments.UnderpaymentDetail
 import models.{ContactAddress, ContactDetails, FileUploadInfo, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
-import pages._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.CheckYourAnswersData._
 
@@ -31,7 +30,8 @@ import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
 import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressPage}
 import pages.docUpload.FileUploadPage
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
+import pages.importDetails._
+import pages.paymentInfo.DefermentPage
 import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
 

@@ -22,6 +22,7 @@ import models._
 import models.importDetails.{NumberOfEntries, UserType}
 import pages._
 import pages.importDetails._
+import pages.paymentInfo.{DefermentPage, SplitPaymentPage}
 import pages.serviceEntry.WhatDoYouWantToDoPage
 import pages.underpayments._
 import play.api.mvc.WrappedRequest

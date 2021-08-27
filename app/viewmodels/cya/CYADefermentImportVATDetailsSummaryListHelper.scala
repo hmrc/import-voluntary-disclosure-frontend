@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.requests.DataRequest
 import models.{SelectedDutyTypes, UserAnswers}
-import pages._
+import pages.paymentInfo._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -63,7 +63,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
         Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+          controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
           messages("cya.repVATAccountNumber.change")
         ))
       )
@@ -80,7 +80,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
         Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.RepresentativeDanImportVATController.onLoad().url,
+          controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
           messages("cya.repVATAccountOwner.change")
         ))
       )
@@ -96,7 +96,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
             action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Vat, dan).url,
+              controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Vat, dan).url,
               messages("cya.proofOfAuth.Vat.change")
             ))
           )
