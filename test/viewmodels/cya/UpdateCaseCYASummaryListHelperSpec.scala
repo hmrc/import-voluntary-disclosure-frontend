@@ -24,6 +24,7 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
 import pages._
 import pages.serviceEntry.WhatDoYouWantToDoPage
+import pages.shared.MoreDocumentationPage
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime

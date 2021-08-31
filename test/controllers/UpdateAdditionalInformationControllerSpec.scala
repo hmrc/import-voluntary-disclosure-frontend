@@ -21,10 +21,11 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.UpdateAdditionalInformationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, MoreDocumentationPage, UpdateAdditionalInformationPage}
+import models.requests._
+import pages.shared.MoreDocumentationPage
+import pages.{CheckModePage, UpdateAdditionalInformationPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.UpdateAdditionalInformationView

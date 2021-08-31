@@ -16,10 +16,11 @@
 
 package controllers
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.MoreDocumentationFormProvider
 import models.requests.DataRequest
-import pages.{MoreDocumentationPage, UploadSupportingDocumentationPage}
+import pages.UploadSupportingDocumentationPage
+import pages.shared.MoreDocumentationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._

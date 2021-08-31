@@ -96,6 +96,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
   }
 
   "GET onSubmit" should {
+
     "return Redirect to the confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
@@ -122,7 +123,6 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       redirectLocation(result) mustBe Some(controllers.routes.DisclosureNotFoundController.onLoad().url)
     }
 
-
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
@@ -138,5 +138,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
+
   }
+
 }

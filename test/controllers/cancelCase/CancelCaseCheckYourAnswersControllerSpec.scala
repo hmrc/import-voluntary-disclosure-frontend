@@ -40,7 +40,7 @@ import models._
 import pages.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
 
 import scala.concurrent.Future
@@ -59,12 +59,17 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       MockedSessionRepository.set(Future.successful(true))
     }
 
+    def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = {
+      Right(UpdateCaseResponse("1234"))
+    }
+
     lazy val controller = new CancelCaseCheckYourAnswersController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
       messagesControllerComponents,
       mockSessionRepository,
+      mockUpdateCaseService,
       cancelCaseCheckYourAnswersView,
       cancelCaseConfirmationView,
       errorHandler,
@@ -72,6 +77,7 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
     )
 
     repositoryExpectation()
+    setupMockUpdateCase(serviceMock)
   }
 
   "GET onLoad" should {
@@ -88,6 +94,7 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
   }
 
   "GET onSubmit" should {
+
     "return Redirect to the confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
@@ -100,6 +107,20 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
+    "return Redirect to DisclosureNotFound on InvalidCaseId error" in new Test {
+      private val caseId = "C181234567890123456789"
+
+      override def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = Left(UpdateCaseError.InvalidCaseId)
+
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
+        .set(DisclosureReferenceNumberPage, caseId).success.value
+      )
+
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(controllers.routes.DisclosureNotFoundController.onLoad().url)
+    }
+
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
@@ -109,5 +130,13 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
+
+    "return Internal Server error is update fails" in new Test {
+      override lazy val serviceMock = Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
   }
+
 }

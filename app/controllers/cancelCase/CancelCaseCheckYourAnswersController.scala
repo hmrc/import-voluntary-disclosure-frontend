@@ -18,10 +18,12 @@ package controllers.cancelCase
 
 import config.ErrorHandler
 import controllers.actions._
+import models.UpdateCaseError
 import pages._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
+import services.UpdateCaseService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYACancelCaseSummaryListHelper
 import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
@@ -35,6 +37,7 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
                                                      requireData: DataRequiredAction,
                                                      mcc: MessagesControllerComponents,
                                                      sessionRepository: SessionRepository,
+                                                     updateCaseService: UpdateCaseService,
                                                      view: CancelCaseCheckYourAnswersView,
                                                      confirmationView: CancelCaseConfirmationView,
                                                      errorHandler: ErrorHandler,
@@ -52,8 +55,21 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
-      case Some(caseId) => Future.successful(Ok(confirmationView(caseId)))
-      case None => Future.successful(errorHandler.showInternalServerError)
+      case Some(caseId) =>
+        updateCaseService.updateCase().flatMap {
+          case Left(UpdateCaseError.InvalidCaseId) =>
+            Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
+          case Left(UpdateCaseError.CaseAlreadyClosed) =>
+            Future.successful(Redirect(controllers.routes.DisclosureClosedController.onLoad()))
+          case Left(_) =>
+            Future.successful(errorHandler.showInternalServerError)
+          case Right(_) =>
+            sessionRepository
+              .remove(request.credId)
+              .map(_ => Ok(confirmationView(caseId)))
+        }
+      case None =>
+        Future.successful(errorHandler.showInternalServerError)
     }
   }
 }

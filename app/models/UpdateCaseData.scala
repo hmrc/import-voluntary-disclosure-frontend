@@ -16,7 +16,8 @@
 
 package models
 
-import pages.{DisclosureReferenceNumberPage, MoreDocumentationPage, UpdateAdditionalInformationPage, UploadSupportingDocumentationPage}
+import pages._
+import pages.shared.MoreDocumentationPage
 import play.api.libs.json.Reads
 
 case class UpdateCaseData(caseId: String,

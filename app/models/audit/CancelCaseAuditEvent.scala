@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
-package pages
+package models.audit
 
-import play.api.libs.json.JsPath
+import models.requests.DataRequest
+import play.api.libs.json._
+import services.JsonAuditModel
 
-case object MoreDocumentationPage extends QuestionPage[Boolean] {
-
-  def path: JsPath = JsPath \ toString
-
-  override def toString: String = "more-documentation"
-
+case class CancelCaseAuditEvent(cancelCaseData: JsValue)(implicit request: DataRequest[_])
+  extends JsonAuditModel {
+  override val auditType: String = "CancelCase"
+  override val transactionName: String = "cancel-case"
+  override val detail: JsValue = Json.obj(
+    "eori" -> request.eori,
+    "credentialId" -> request.credId
+  ) ++ Json.toJson(cancelCaseData).asInstanceOf[JsObject]
 }
