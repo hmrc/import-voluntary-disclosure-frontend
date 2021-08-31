@@ -50,7 +50,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.DisclosureReferenceNumberController.onLoad().url,
+        controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(UpdateCaseCYAMessages.changeReferenceNumber)
       )
@@ -68,7 +68,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.MoreDocumentationController.onLoad().url,
+        controllers.updateCase.routes.MoreDocumentationController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(UpdateCaseCYAMessages.changeMoreDocumentation)
       )
@@ -85,7 +85,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
+        controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(UpdateCaseCYAMessages.changeUploadedFiles)
       )
@@ -103,7 +103,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     actions = Some(Actions(items = Seq(
       ActionItem(
-        controllers.routes.UpdateAdditionalInformationController.onLoad().url,
+        controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad().url,
         HtmlContent("""<span aria-hidden="true">Change</span>"""),
         visuallyHiddenText = Some(UpdateCaseCYAMessages.changeAdditionalInformation)
       )

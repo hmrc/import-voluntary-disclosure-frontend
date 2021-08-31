@@ -21,7 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.cancelCase.CancelCaseRemoveUploadedFileFormProvider
 import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, Index, UserAnswers}
-import pages.UploadSupportingDocumentationPage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest

@@ -18,8 +18,8 @@ package services.updateCaseService
 
 import models.SubmissionType.{CancelCase, UpdateCase}
 import models.{UpdateCaseData, UserAnswers}
-import pages._
 import pages.serviceEntry.WhatDoYouWantToDoPage
+import pages.updateCase._
 import play.api.libs.json.{JsObject, Json}
 import utils.ReusableValues
 
