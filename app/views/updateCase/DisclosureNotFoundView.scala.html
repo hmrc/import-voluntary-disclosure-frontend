@@ -34,12 +34,15 @@
         Seq(
             Html(
                     <span>
-                    {messages("updateCase.disclosureNotFound.li1")}<a class="govuk-link" href={controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url}>{messages("updateCase.disclosureNotFound.link")}</a>
+                    {messages("updateCase.disclosureNotFound.li1")}
+                    <a class="govuk-link" href={controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url}>{messages("updateCase.disclosureNotFound.link")}</a>
                     </span>.toString()
             ),
             Html(
                     <span>
-                    {messages("updateCase.disclosureNotFound.li2.part1")}<a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>{messages("updateCase.disclosureNotFound.li2.part2")}
+                    {messages("updateCase.disclosureNotFound.li2.part1")}
+                    <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+                    {messages("updateCase.disclosureNotFound.li2.part2")}
                     </span>.toString()
             )
         )
