@@ -75,7 +75,7 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
   private[serviceEntry] def submitRedirect(submittedValue: SubmissionType): Result = {
     submittedValue match {
       case CreateCase => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
-      case UpdateCase => Redirect(controllers.routes.DisclosureReferenceNumberController.onLoad())
+      case UpdateCase => Redirect(controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad())
       case _ => Redirect(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }
   }

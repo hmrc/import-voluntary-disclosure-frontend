@@ -19,8 +19,8 @@ package controllers.cancelCase
 import controllers.actions._
 import forms.cancelCase.AnyOtherSupportingCancellationDocsFormProvider
 import models.requests.DataRequest
-import pages.UploadSupportingDocumentationPage
 import pages.shared.MoreDocumentationPage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._

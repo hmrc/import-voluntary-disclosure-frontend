@@ -18,8 +18,8 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
 import pages.shared.MoreDocumentationPage
+import pages.updateCase._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -59,7 +59,7 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages("updateCase.cya.referenceNumber")),
         valueContent = Text(reference),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.DisclosureReferenceNumberController.onLoad().url,
+          controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url,
           messages("updateCase.cya.referenceNumber.change")
         ))
       )
@@ -72,7 +72,7 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages("updateCase.cya.moreDocumentation")),
         valueContent = Text(anyMoreDocumentation),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.MoreDocumentationController.onLoad().url,
+          controllers.updateCase.routes.MoreDocumentationController.onLoad().url,
           messages("updateCase.cya.moreDocumentation.change")
         ))
       )
@@ -86,7 +86,7 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
+          controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
           messages("updateCase.cya.uploadedFiles.change")
         ))
       )
@@ -99,7 +99,7 @@ trait CYAUpdateCaseSummaryListHelper {
         keyText = Text(messages("updateCase.cya.moreInformation")),
         valueContent = Text(moreInformation),
         action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.UpdateAdditionalInformationController.onLoad().url,
+          controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad().url,
           messages("updateCase.cya.moreInformation.change")
         ))
       )

@@ -16,8 +16,8 @@
 
 package models
 
-import pages._
 import pages.shared.MoreDocumentationPage
+import pages.updateCase._
 import play.api.libs.json.Reads
 
 case class UpdateCaseData(caseId: String,

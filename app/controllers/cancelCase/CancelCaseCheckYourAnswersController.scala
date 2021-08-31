@@ -20,6 +20,7 @@ import config.ErrorHandler
 import controllers.actions._
 import models.UpdateCaseError
 import pages._
+import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -58,9 +59,9 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
-            Future.successful(Redirect(controllers.routes.DisclosureNotFoundController.onLoad()))
+            Future.successful(Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad()))
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
-            Future.successful(Redirect(controllers.routes.DisclosureClosedController.onLoad()))
+            Future.successful(Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad()))
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

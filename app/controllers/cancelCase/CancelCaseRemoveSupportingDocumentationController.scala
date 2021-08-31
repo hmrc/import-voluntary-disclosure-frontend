@@ -19,7 +19,7 @@ package controllers.cancelCase
 import controllers.actions._
 import forms.cancelCase.CancelCaseRemoveUploadedFileFormProvider
 import models.Index
-import pages.{RemoveSupportingDocumentationPage, UploadSupportingDocumentationPage}
+import pages.updateCase.{RemoveSupportingDocumentationPage, UploadSupportingDocumentationPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import repositories.SessionRepository

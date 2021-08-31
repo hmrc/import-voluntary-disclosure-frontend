@@ -23,7 +23,7 @@ import forms.cancelCase.CancelCaseUploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan._
 import models.{FileUploadInfo, UserAnswers}
-import pages.UploadSupportingDocumentationPage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
