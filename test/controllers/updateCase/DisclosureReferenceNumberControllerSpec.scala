@@ -28,7 +28,7 @@ import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.updateCase.DisclosureReferenceNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
