@@ -18,6 +18,7 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
+import pages.shared.MoreDocumentationPage
 import pages.updateCase._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList

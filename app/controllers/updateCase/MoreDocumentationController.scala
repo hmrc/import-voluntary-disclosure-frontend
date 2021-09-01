@@ -16,10 +16,11 @@
 
 package controllers.updateCase
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.updateCase.MoreDocumentationFormProvider
 import models.requests.DataRequest
-import pages.updateCase.{MoreDocumentationPage, UploadSupportingDocumentationPage}
+import pages.shared.MoreDocumentationPage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._

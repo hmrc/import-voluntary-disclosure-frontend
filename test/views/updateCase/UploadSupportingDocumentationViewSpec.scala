@@ -20,7 +20,7 @@ import base.ViewBaseSpec
 import forms.shared.UploadFileFormProvider
 import messages.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
-import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
+import models.upscan._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

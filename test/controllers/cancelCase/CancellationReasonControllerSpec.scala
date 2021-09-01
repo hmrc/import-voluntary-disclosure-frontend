@@ -21,13 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.cancelCase.CancellationReasonFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import pages.CheckModePage
 import pages.updateCase.UpdateAdditionalInformationPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.cancelCase.CancellationReasonView
 
 import scala.concurrent.Future

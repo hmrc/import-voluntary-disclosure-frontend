@@ -16,7 +16,7 @@
 
 package controllers.updateCase
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.updateCase.DisclosureReferenceNumberFormProvider
 import models.requests.DataRequest
 import pages.updateCase.DisclosureReferenceNumberPage

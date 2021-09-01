@@ -22,23 +22,23 @@
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
-@layout(
-    pageTitle = messages("moreDocumentation.pageTitle"),
-    form = Some(form),
-    customBackLinkUrl = Some(backLink)) {
+    @layout(
+        pageTitle = messages("moreDocumentation.pageTitle"),
+        form = Some(form),
+        customBackLinkUrl = Some(backLink)) {
 
-    @errorSummary(form.errors)
+        @errorSummary(form.errors)
 
-    @formHelper(action = controllers.updateCase.routes.MoreDocumentationController.onSubmit()) {
-        @yesNoRadio(
-            form,
-            headingKey = "moreDocumentation.heading",
-        )
+        @formHelper(action = controllers.updateCase.routes.MoreDocumentationController.onSubmit()) {
+            @yesNoRadio(
+                form,
+                headingKey = "moreDocumentation.heading",
+            )
 
-        @button("common.button.continue")
+            @button("common.button.continue")
+        }
+
     }
-
-}
 
 @{
     //$COVERAGE-OFF$

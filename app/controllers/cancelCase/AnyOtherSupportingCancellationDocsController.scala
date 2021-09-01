@@ -19,7 +19,7 @@ package controllers.cancelCase
 import controllers.actions._
 import forms.cancelCase.AnyOtherSupportingCancellationDocsFormProvider
 import models.requests.DataRequest
-import pages.shared.AnyOtherSupportingDocsPage
+import pages.shared.MoreDocumentationPage
 import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -44,7 +44,7 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
 
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(AnyOtherSupportingDocsPage).fold(formProvider()) {
+    val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink)))
@@ -55,11 +55,11 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       value =>
         for {
-          answersWithSupportingDocumentation <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
+          answersWithSupportingDocumentation <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, value))
           answersWithUpdatedFiles <-
             if (!value) Future.fromTry(answersWithSupportingDocumentation.remove(UploadSupportingDocumentationPage))
             else Future.successful(answersWithSupportingDocumentation)
-          existingAnswers = request.userAnswers.get(AnyOtherSupportingDocsPage)
+          existingAnswers = request.userAnswers.get(MoreDocumentationPage)
           _ <- sessionRepository.set(answersWithUpdatedFiles)
         } yield {
           val hasNotChanged = existingAnswers.contains(value)

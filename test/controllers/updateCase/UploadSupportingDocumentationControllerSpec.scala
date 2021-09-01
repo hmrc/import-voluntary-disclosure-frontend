@@ -24,14 +24,14 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import models.upscan._
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{AnyContentAsEmpty, Call, Result}
+import play.api.mvc._
 import play.api.test.Helpers._
-import views.html.updateCase.UploadSupportingDocumentationView
 import views.html.shared.FileUploadProgressView
+import views.html.updateCase.UploadSupportingDocumentationView
 
 import scala.concurrent.Future
 
