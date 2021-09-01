@@ -431,11 +431,8 @@ fileUploadSuccess.pageHeader = The file has been uploaded successfully
 fileUploadSuccess.text = You have uploaded {0}
 
 # File Upload Progress page
-fileUploadProgress.pageTitle = Upload progress
-fileUploadProgress.pageHeader = Upload progress
-fileUploadProgress.message = Waiting for uploaded file to be scanned.
-fileUploadProgress.request = Please refresh to view latest progress.
-fileUploadProgress.refresh = Refresh
+fileUploadProgress.pageTitle = Your document is being uploaded. You’ll be redirected once the file has been processed.
+fileUploadProgress.pageHeader = Your document is being uploaded. You’ll be redirected once the file has been processed.
 
 # Deferement page
 deferment.headingOnlyVAT = How will you pay for the import VAT owed?

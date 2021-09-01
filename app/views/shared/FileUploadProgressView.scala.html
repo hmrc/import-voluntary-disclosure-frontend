@@ -25,20 +25,13 @@
 @layout(
     pageTitle = messages("fileUploadProgress.pageTitle"),
     customBackLinkUrl = None,
-    showBackLink = false
+    showBackLink = false,
+    refresh = Some(3)
 ) {
 
     @h1(messages("fileUploadProgress.pageHeader"))
 
-    @p {
-        @messages("fileUploadProgress.message")
-    }
-
-    @p {
-        @messages("fileUploadProgress.request")
-    }
-
-    @linkButton(url = action, messages(("fileUploadProgress.refresh")))
+    <div class="ccms-loader"></div>
 
 }
 

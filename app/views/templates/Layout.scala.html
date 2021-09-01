@@ -37,7 +37,8 @@
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
-        enableTimeoutDialog: Boolean = true
+        enableTimeoutDialog: Boolean = true,
+        refresh: Option[Int] = None
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @scripts = {
@@ -63,6 +64,14 @@
     }
 }
 
+@headBlockWrapper = {
+    @headBlock
+
+    @if(refresh.isDefined) {
+        <meta http-equiv="refresh" content=@{refresh.map(_.toString).getOrElse("")} />
+    }
+}
+
 @content = {
 
     @contentBlock
@@ -79,7 +88,7 @@
 }) { title =>
     @govukLayout(
         pageTitle = title.map(_ + messages("page.title.suffix")),
-        headBlock = Some(head(headBlock, enableTimeoutDialog)),
+        headBlock = Some(head(Some(headBlockWrapper), enableTimeoutDialog)),
         headerBlock = Some(header),
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
