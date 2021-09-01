@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class DefermentFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
@@ -29,4 +28,3 @@ class DefermentFormProvider @Inject() extends Mappings {
       "value" -> boolean("deferment.error.required")
     )
 }
-

@@ -41,18 +41,27 @@ import scala.concurrent.Future
 class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockSessionRepository {
-    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView = app.injector.instanceOf[UnderpaymentDetailSummaryView]
+    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView =
+      app.injector.instanceOf[UnderpaymentDetailSummaryView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailSummaryFormProvider = injector.instanceOf[UnderpaymentDetailSummaryFormProvider]
-    val form: UnderpaymentDetailSummaryFormProvider = formProvider
+    val form: UnderpaymentDetailSummaryFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form, ec)
+    lazy val controller = new UnderpaymentDetailSummaryController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentDetailSummaryView,
+      form,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -60,7 +69,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -68,7 +77,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId")
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -76,7 +85,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, allUnderpaymentDetailsSelected()).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       Helpers.charset(result) mustBe Some("utf-8")
     }
@@ -88,9 +97,12 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
 
       "return a SEE OTHER Underpayment Type page when true is selected" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "true")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -101,10 +113,14 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Box Guidance page when false is selected and One Entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -112,14 +128,17 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
           Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
 
-
       "return a SEE OTHER Bulk Upload File page when false is selected and Bulk Entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -130,10 +149,14 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Check Your Answers page when false is selected" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(CheckModePage, true).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(CheckModePage, true)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -144,11 +167,17 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Box Guidance page when in Representative flow in first pass and not Bulk entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(UserTypePage, Representative).success.value
-            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(UserTypePage, Representative)
+            .success
+            .value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -159,11 +188,17 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Box Guidance page when in Representative flow in first pass and Bulk entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(UserTypePage, Representative).success.value
-            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(UserTypePage, Representative)
+            .success
+            .value
+            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -174,14 +209,23 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Check Your Answers page when in Representative flow Both and Both" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(TempUnderpaymentTypePage, Both).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
-            .set(UserTypePage, Representative).success.value
+            .set(TempUnderpaymentTypePage, Both)
+            .success
+            .value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            )
+            .success
+            .value
+            .set(UserTypePage, Representative)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -192,14 +236,23 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Deferment page when in Representative flow VatOrDuty and Both" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(TempUnderpaymentTypePage, Vat).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
-            .set(UserTypePage, Representative).success.value
+            .set(TempUnderpaymentTypePage, Vat)
+            .success
+            .value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            )
+            .success
+            .value
+            .set(UserTypePage, Representative)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -210,12 +263,20 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       "return a SEE OTHER Deferment page when in Representative flow Both and VatOrDuty and Split initially" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(TempUnderpaymentTypePage, Both).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-            .set(UserTypePage, Representative).success.value
-            .set(SplitPaymentPage, true).success.value
+            .set(TempUnderpaymentTypePage, Both)
+            .success
+            .value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+            .success
+            .value
+            .set(UserTypePage, Representative)
+            .success
+            .value
+            .set(SplitPaymentPage, true)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -239,7 +300,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       )
-      val result: Future[Result] = controller.cya()(fakeRequest)
+      val result: Future[Result]                    = controller.cya()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe
         Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)

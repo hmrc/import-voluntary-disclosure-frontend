@@ -20,10 +20,10 @@ import play.api.libs.json._
 import services.JsonAuditModel
 
 case class EoriDetailsAuditEvent(eori: String, credId: String) extends JsonAuditModel {
-  override val auditType: String = "MatchedEndUserToEori"
+  override val auditType: String       = "MatchedEndUserToEori"
   override val transactionName: String = "matched-end-user-to-eori"
-  override val detail: JsValue = Json.obj(
-    "eori" -> eori,
+  override val detail: JsValue         = Json.obj(
+    "eori"         -> eori,
     "credentialId" -> credId
   )
 }

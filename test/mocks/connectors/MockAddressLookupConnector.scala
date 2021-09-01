@@ -33,16 +33,15 @@ trait MockAddressLookupConnector extends MockFactory {
 
   type AddressLookupInitialiseResponse = Either[ErrorModel, AddressLookupOnRampModel]
 
-  def setupMockGetAddress(response: Either[ErrorModel, AddressModel]): Unit = {
-    (mockAddressLookupConnector.getAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
+  def setupMockGetAddress(response: Either[ErrorModel, AddressModel]): Unit =
+    (mockAddressLookupConnector
+      .getAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 
-  def setupMockInitialiseJourney(response: Either[ErrorModel, AddressLookupOnRampModel]): Unit = {
-    (mockAddressLookupConnector.initialiseJourney(_: JsValue)(_: HeaderCarrier, _: ExecutionContext))
+  def setupMockInitialiseJourney(response: Either[ErrorModel, AddressLookupOnRampModel]): Unit =
+    (mockAddressLookupConnector
+      .initialiseJourney(_: JsValue)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 }
-

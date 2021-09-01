@@ -20,17 +20,17 @@ import messages.BaseMessages
 
 object UnderpaymentDetailSummaryMessages extends BaseMessages {
 
-  val pageTitle = "Underpayment summary"
-  val pageHeader = "Underpayment summary"
-  val pageHeaderSmall = "Amount owed for each type of duty or tax"
-  val owedToHMRC = "Total owed to HMRC"
-  val radioMessage = "Add another underpayment?"
-  val radioMessageHintSingleEntry = "You must tell us about all the types of duty or tax that were underpaid on the original import declaration."
-  val radioMessageHintBulkEntry = "You must tell us about all the types of duty or tax that were underpaid on the original import declarations."
-  val fullList = "You cannot add any more underpayment details as you have selected all the possible types of tax or duty that can apply to an import declaration."
-  val errorRequired = "Select yes if you want to add another type of duty or tax underpayment"
+  val pageTitle                   = "Underpayment summary"
+  val pageHeader                  = "Underpayment summary"
+  val pageHeaderSmall             = "Amount owed for each type of duty or tax"
+  val owedToHMRC                  = "Total owed to HMRC"
+  val radioMessage                = "Add another underpayment?"
+  val radioMessageHintSingleEntry =
+    "You must tell us about all the types of duty or tax that were underpaid on the original import declaration."
+  val radioMessageHintBulkEntry   =
+    "You must tell us about all the types of duty or tax that were underpaid on the original import declarations."
+  val fullList                    =
+    "You cannot add any more underpayment details as you have selected all the possible types of tax or duty that can apply to an import declaration."
+  val errorRequired               = "Select yes if you want to add another type of duty or tax underpayment"
 
 }
-
-
-

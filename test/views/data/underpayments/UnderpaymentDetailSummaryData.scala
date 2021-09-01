@@ -22,11 +22,9 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
-
 object UnderpaymentDetailSummaryData {
 
   private lazy val changeAction: Call = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-
 
   val summaryList: SummaryList = SummaryList(
     Seq(

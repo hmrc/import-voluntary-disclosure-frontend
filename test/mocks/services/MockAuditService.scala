@@ -28,17 +28,19 @@ trait MockAuditService extends MockFactory {
   val mockAuditService: AuditService = mock[AuditService]
 
   def stubAudit(): Unit =
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
+    (mockAuditService
+      .audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
       .stubs(*, *, *, *)
 
   def verifyAudit(model: JsonAuditModel): Unit =
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
+    (mockAuditService
+      .audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
       .expects(model, *, *, *)
       .once()
 
-  def verifyNoAudit[T <: JsonAuditModel](): Unit = {
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
+  def verifyNoAudit[T <: JsonAuditModel](): Unit =
+    (mockAuditService
+      .audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
       .verify(*, *, *, *)
       .never()
-  }
 }

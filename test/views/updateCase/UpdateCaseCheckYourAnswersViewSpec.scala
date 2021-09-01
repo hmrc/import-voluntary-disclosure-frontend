@@ -26,11 +26,12 @@ import views.html.updateCase.UpdateCaseCheckYourAnswersView
 
 class UpdateCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: UpdateCaseCheckYourAnswersView = app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
+  private lazy val injectedView: UpdateCaseCheckYourAnswersView =
+    app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
-      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${answers.size} sub-headings" in {
@@ -46,7 +47,7 @@ class UpdateCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UpdateCaseCYAMessages.title)

@@ -23,6 +23,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext
 
 trait ConnectorSpecBase extends AnyWordSpec with Matchers {
-  implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  implicit val headerCarrier: HeaderCarrier       = HeaderCarrier()
   implicit val executionContext: ExecutionContext = ExecutionContext.global
 }

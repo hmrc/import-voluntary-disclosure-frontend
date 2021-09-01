@@ -29,12 +29,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class UnderpaymentStartController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            mcc: MessagesControllerComponents,
-                                            requireData: DataRequiredAction,
-                                            view: UnderpaymentStartView)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentStartController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  view: UnderpaymentStartView
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
@@ -44,7 +46,7 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.isOneEntry) {
       if (request.userAnswers.get(EnterCustomsProcedureCodePage).isDefined) {
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad()
@@ -54,6 +56,5 @@ class UnderpaymentStartController @Inject()(identify: IdentifierAction,
     } else {
       controllers.importDetails.routes.AcceptanceDateController.onLoad()
     }
-  }
 
 }

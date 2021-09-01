@@ -29,45 +29,61 @@ import views.html.cancelCase.CancelCaseRemoveUploadedFileView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CancelCaseRemoveSupportingDocumentationController @Inject()(override val messagesApi: MessagesApi,
-                                                                  sessionRepository: SessionRepository,
-                                                                  identify: IdentifierAction,
-                                                                  getData: DataRetrievalAction,
-                                                                  requireData: DataRequiredAction,
-                                                                  formProvider: CancelCaseRemoveUploadedFileFormProvider,
-                                                                  mcc: MessagesControllerComponents,
-                                                                  view: CancelCaseRemoveUploadedFileView,
-                                                                  implicit val ec: ExecutionContext
-                                                                 ) extends FrontendController(mcc) with I18nSupport {
+class CancelCaseRemoveSupportingDocumentationController @Inject() (
+  override val messagesApi: MessagesApi,
+  sessionRepository: SessionRepository,
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  formProvider: CancelCaseRemoveUploadedFileFormProvider,
+  mcc: MessagesControllerComponents,
+  view: CancelCaseRemoveUploadedFileView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(UploadSupportingDocumentationPage) match {
-        case Some(files) if (files.isDefinedAt(index.position)) =>
-          Future.successful(Ok(view(formProvider(), index, files(index.position).fileName, backlink(), submitLink(index))))
-        case _ => Future.successful(Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad()))
+        case Some(files) if files.isDefinedAt(index.position) =>
+          Future.successful(
+            Ok(view(formProvider(), index, files(index.position).fileName, backlink(), submitLink(index)))
+          )
+        case _                                                =>
+          Future.successful(
+            Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
+          )
       }
   }
 
   def onSubmit(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      formProvider().bindFromRequest().fold(
-        formWithErrors => request.userAnswers.get(UploadSupportingDocumentationPage) match {
-          case Some(files) if (files.isDefinedAt(index.position)) =>
-            Future.successful(BadRequest(view(formWithErrors, index, files(index.position).fileName, backlink(), submitLink(index))))
-          case _ => Future.successful(InternalServerError("File Upload list unavailable."))
-        },
-        value => {
-          if (value) {
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.remove(RemoveSupportingDocumentationPage(index)))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield
-              Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad())
-          } else {
-            Future.successful(Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()))
-          }
-        }
-      )
+      formProvider()
+        .bindFromRequest()
+        .fold(
+          formWithErrors =>
+            request.userAnswers.get(UploadSupportingDocumentationPage) match {
+              case Some(files) if files.isDefinedAt(index.position) =>
+                Future.successful(
+                  BadRequest(view(formWithErrors, index, files(index.position).fileName, backlink(), submitLink(index)))
+                )
+              case _                                                => Future.successful(InternalServerError("File Upload list unavailable."))
+            },
+          value =>
+            if (value) {
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.remove(RemoveSupportingDocumentationPage(index)))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(
+                controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()
+              )
+            } else {
+              Future.successful(
+                Redirect(
+                  controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()
+                )
+              )
+            }
+        )
   }
 
   private[controllers] def backlink() =

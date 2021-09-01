@@ -28,11 +28,10 @@ case object OneCustomsProcedureCodePage extends QuestionPage[Boolean] {
 
   override def toString: String = "one-customs-procedure-code"
 
-  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] =
     if (value.get) {
       Try(userAnswers)
     } else {
       Try(userAnswers.remove(EnterCustomsProcedureCodePage).getOrElse(userAnswers))
     }
-  }
 }

@@ -37,8 +37,8 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the OneCustomsProcedureCode page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(OneCustomsProcedureCodeMessages.title)
@@ -53,8 +53,8 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + OneCustomsProcedureCodeMessages.title)
@@ -72,8 +72,8 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${OneCustomsProcedureCodeMessages.h1}'" in {
@@ -84,11 +84,11 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#value-hint") mustBe OneCustomsProcedureCodeMessages.hint
     }
 
-    s"have the correct value for the first radio button of '${siteYes}'" in {
+    s"have the correct value for the first radio button of '$siteYes'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe siteYes
     }
 
-    s"have the correct value for the second radio button of '${siteNo}'" in {
+    s"have the correct value for the second radio button of '$siteNo'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe siteNo
     }
 

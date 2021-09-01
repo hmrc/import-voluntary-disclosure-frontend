@@ -32,13 +32,13 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
 
   val underpaymentType = "B00"
 
-  val submitCall: Call = controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = true)
-
+  val submitCall: Call =
+    controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = true)
 
   "Rendering the Underpayment Detail Summary page" when {
     "no errors exist" should {
 
-      lazy val view: Html = injectedView(
+      lazy val view: Html                  = injectedView(
         underpaymentType,
         UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
           underpaymentType,
@@ -67,9 +67,9 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
       checkContent(testType)
     }
 
-    def checkContent(underpaymentType: String): Unit = {
+    def checkContent(underpaymentType: String): Unit =
       s"rendered for type $underpaymentType" should {
-        lazy val view: Html = injectedView(
+        lazy val view: Html                  = injectedView(
           underpaymentType,
           UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
             underpaymentType,
@@ -93,12 +93,11 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
             UnderpaymentDetailConfirmMessages.underpaymentTypeContent(underpaymentType).body.get
         }
       }
-    }
   }
 
   it should {
 
-    lazy val view: Html = injectedView(
+    lazy val view: Html                  = injectedView(
       underpaymentType,
       UnderpaymentDetailConfirmData.underpaymentDetailSummaryList(
         underpaymentType,
@@ -111,11 +110,15 @@ class UnderpaymentDetailConfirmViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct value for Amount that was paid" in {
-      elementText("#main-content > div > div > dl > div:nth-child(1) > dt") mustBe UnderpaymentDetailConfirmMessages.originalAmount
+      elementText(
+        "#main-content > div > div > dl > div:nth-child(1) > dt"
+      ) mustBe UnderpaymentDetailConfirmMessages.originalAmount
     }
 
     "have the correct value for Amount that should have been paid" in {
-      elementText("#main-content > div > div > dl > div:nth-child(2) > dt") mustBe UnderpaymentDetailConfirmMessages.amendedAmount
+      elementText(
+        "#main-content > div > div > dl > div:nth-child(2) > dt"
+      ) mustBe UnderpaymentDetailConfirmMessages.amendedAmount
     }
 
     s"have the correct Continue button" in {

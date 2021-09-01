@@ -37,8 +37,8 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the AcceptanceDate page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(AcceptanceDateMessages.title)
@@ -53,8 +53,8 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(AcceptanceDateMessages.errorPrefix + AcceptanceDateMessages.title)
@@ -72,8 +72,8 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${AcceptanceDateMessages.h1}'" in {
@@ -81,11 +81,15 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the first radio button of '${AcceptanceDateMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe AcceptanceDateMessages.siteYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe AcceptanceDateMessages.siteYes
     }
 
     s"have the correct value for the second radio button of '${AcceptanceDateMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateMessages.siteNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe AcceptanceDateMessages.siteNo
     }
 
     "render a back link with the correct URL" in {

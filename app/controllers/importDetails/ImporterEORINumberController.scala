@@ -30,15 +30,17 @@ import views.html.importDetails.ImporterEORINumberView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ImporterEORINumberController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             sessionRepository: SessionRepository,
-                                             mcc: MessagesControllerComponents,
-                                             formProvider: ImporterEORINumberFormProvider,
-                                             view: ImporterEORINumberView,
-                                             implicit val ec: ExecutionContext
-                                            ) extends FrontendController(mcc) with I18nSupport {
+class ImporterEORINumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: ImporterEORINumberFormProvider,
+  view: ImporterEORINumberView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
@@ -48,24 +50,22 @@ class ImporterEORINumberController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.importDetails.routes.ImporterVatRegisteredController.onLoad())
-        }
-      }
-    )
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.importDetails.routes.ImporterVatRegisteredController.onLoad())
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] =
     if (request.checkMode) {
       None
     } else {
       Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
     }
-  }
 }

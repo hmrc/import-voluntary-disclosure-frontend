@@ -27,8 +27,7 @@ import scala.concurrent.Future
 
 class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(
-    """
+  private val callbackReadyJson: JsValue = Json.parse("""
       | {
       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
       |   "fileStatus" : "READY",
@@ -41,8 +40,7 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
       |   }
       | }""".stripMargin)
 
-  private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(
-    s"""
+  private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "READY",
@@ -69,16 +67,14 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockFileUploadRepository {
 
-    def setupMocks(): Unit = {
+    def setupMocks(): Unit =
       MockedFileUploadRepository.updateRecord(Future.successful(true))
-    }
 
     lazy val controller = {
       setupMocks()
       new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, ec)
     }
   }
-
 
   "POST callbackHandler" when {
     "valid file upload callback" should {
@@ -88,9 +84,8 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.NO_CONTENT
       }
       "return 500 (InternalServerError)" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.updateRecord(Future.successful(false))
-        }
 
         val result = controller.callbackHandler()(fakeRequest.withBody(callbackReadyJson))
 
@@ -106,7 +101,7 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
         result.fileStatus mustBe Some(FileStatusEnum.READY)
       }
     }
-    "processing failure response" should {
+    "processing failure response"    should {
       "return FAILED_QUARENTINE" in new Test {
         val result = controller.deriveFileStatus(Json.fromJson[FileUpload](callbackFailedQuarentineJson).get)
         result.fileStatus mustBe Some(FileStatusEnum.FAILED_QUARANTINE)

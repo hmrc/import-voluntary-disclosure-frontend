@@ -21,7 +21,6 @@ import play.api.data.validation.{Invalid, Valid}
 
 class ConstraintsSpec extends FormSpecBase with Constraints {
 
-
   "firstError" must {
 
     lazy val first = firstError(maxLength(10, "error.length"), regexp("""^\w+$""", "error.regexp"))
@@ -100,8 +99,8 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
 
   "lengthBetween" must {
 
-    val max = 10
-    val min = 1
+    val max         = 10
+    val min         = 1
     lazy val length = lengthBetween(min, max, "error.lengthBetween")
 
     "return Valid for a string within the threshold" in {
@@ -159,7 +158,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
 
     val values = Seq("a", "b", "c", "d", "e")
 
-    for (idx <- 1 to values.length) {
+    for (idx <- 1 to values.length)
       if (idx == 3) {
         s"return valid for a value thats in the list but at the current idx $idx" in {
           uniqueEntry(values, 3, "error")("c") mustBe Valid
@@ -169,14 +168,11 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
           uniqueEntry(values, 1, "error")("c") mustBe Invalid("error", values)
         }
       }
-    }
 
-    for (idx <- 1 to values.length) {
-
+    for (idx <- 1 to values.length)
       s"return valid for with idx $idx for a value not in the values sequence" in {
         uniqueEntry(values, idx, "error")("f") mustBe Valid
       }
-    }
   }
 
   "nonEmptySet" must {

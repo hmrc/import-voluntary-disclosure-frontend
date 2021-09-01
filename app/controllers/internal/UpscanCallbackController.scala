@@ -26,12 +26,13 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 
-
 @Singleton
-class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
-                                         fileUploadRepository: FileUploadRepository,
-                                         implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class UpscanCallbackController @Inject() (
+  mcc: MessagesControllerComponents,
+  fileUploadRepository: FileUploadRepository,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>
@@ -41,16 +42,15 @@ class UpscanCallbackController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  private[controllers] def deriveFileStatus(fileUpload: FileUpload): FileUpload = {
+  private[controllers] def deriveFileStatus(fileUpload: FileUpload): FileUpload =
     fileUpload.failureDetails match {
-      case Some(details) if (details.failureReason == "QUARANTINE") =>
+      case Some(details) if details.failureReason == "QUARANTINE" =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_QUARANTINE))
-      case Some(details) if (details.failureReason == "REJECTED") =>
+      case Some(details) if details.failureReason == "REJECTED"   =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_REJECTED))
-      case Some(details) =>
+      case Some(details)                                          =>
         fileUpload.copy(fileStatus = Some(FileStatusEnum.FAILED_UNKNOWN))
-      case None => fileUpload
+      case None                                                   => fileUpload
     }
-  }
 
 }

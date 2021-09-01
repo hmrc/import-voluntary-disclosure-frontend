@@ -32,63 +32,74 @@ import views.html.underpayments.UnderpaymentDetailConfirmView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    view: UnderpaymentDetailConfirmView,
-                                                    implicit val ec: ExecutionContext
-                                                   )
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentDetailConfirmController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: UnderpaymentDetailConfirmView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-
-  def onLoad(underpaymentType: String, change: Boolean): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val underpaymentDetail = request.userAnswers.get(UnderpaymentDetailsPage).getOrElse(UnderpaymentAmount(0, 0))
-    Future.successful(Ok(view(
-      underpaymentType,
-      summaryList(underpaymentType, underpaymentDetail),
-      submitCall(underpaymentType, change)
-    )))
-  }
-
-  def onSubmit(underpaymentType: String, change: Boolean): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    request.userAnswers.get(UnderpaymentDetailsPage) match {
-      case Some(value) => val newUnderpaymentDetail = Seq(UnderpaymentDetail(underpaymentType, value.original, value.amended))
-        val currentUnderpaymentTypes = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
-        if (change) {
-          val updatedUnderpaymentTypes = currentUnderpaymentTypes.map(underpayment => if (underpayment.duty == underpaymentType) {
-            underpayment.copy(original = value.original, amended = value.amended)
-          } else {
-            underpayment
-          })
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailSummaryPage, updatedUnderpaymentTypes))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
-          }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailSummaryPage, newUnderpaymentDetail ++ currentUnderpaymentTypes))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
-          }
-        }
-      case None => Future.successful(InternalServerError("Couldn't find underpayment details"))
+  def onLoad(underpaymentType: String, change: Boolean): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      val underpaymentDetail = request.userAnswers.get(UnderpaymentDetailsPage).getOrElse(UnderpaymentAmount(0, 0))
+      Future.successful(
+        Ok(
+          view(
+            underpaymentType,
+            summaryList(underpaymentType, underpaymentDetail),
+            submitCall(underpaymentType, change)
+          )
+        )
+      )
     }
-  }
 
-  private def submitCall(underpaymentType: String, change: Boolean): Call = {
+  def onSubmit(underpaymentType: String, change: Boolean): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers.get(UnderpaymentDetailsPage) match {
+        case Some(value) =>
+          val newUnderpaymentDetail    = Seq(UnderpaymentDetail(underpaymentType, value.original, value.amended))
+          val currentUnderpaymentTypes = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
+          if (change) {
+            val updatedUnderpaymentTypes = currentUnderpaymentTypes.map(underpayment =>
+              if (underpayment.duty == underpaymentType) {
+                underpayment.copy(original = value.original, amended = value.amended)
+              } else {
+                underpayment
+              }
+            )
+            for {
+              updatedAnswers <-
+                Future.fromTry(request.userAnswers.set(UnderpaymentDetailSummaryPage, updatedUnderpaymentTypes))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
+          } else {
+            for {
+              updatedAnswers <-
+                Future.fromTry(
+                  request.userAnswers
+                    .set(UnderpaymentDetailSummaryPage, newUnderpaymentDetail ++ currentUnderpaymentTypes)
+                )
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
+          }
+        case None        => Future.successful(InternalServerError("Couldn't find underpayment details"))
+      }
+    }
+
+  private def submitCall(underpaymentType: String, change: Boolean): Call =
     if (change) {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = true)
     } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = false)
     }
-  }
 
-  private[controllers] def summaryList(underpaymentType: String, underpaymentAmount: UnderpaymentAmount)(implicit messages: Messages): SummaryList = {
+  private[controllers] def summaryList(underpaymentType: String, underpaymentAmount: UnderpaymentAmount)(implicit
+    messages: Messages
+  ): SummaryList =
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -100,14 +111,15 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
           value = Value(
             content = HtmlContent(displayMoney(underpaymentAmount.original))
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItemHelper.createChangeActionItem(
-                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                messages(s"underpaymentDetailsConfirm.$underpaymentType.original.change")
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                  messages(s"underpaymentDetailsConfirm.$underpaymentType.original.change")
+                )
               )
             )
-          )
           )
         ),
         SummaryListRow(
@@ -118,13 +130,15 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
           value = Value(
             content = HtmlContent(displayMoney(underpaymentAmount.amended))
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItemHelper.createChangeActionItem(
-                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                messages(s"underpaymentDetailsConfirm.$underpaymentType.amended.change")
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                  messages(s"underpaymentDetailsConfirm.$underpaymentType.amended.change")
+                )
               )
-            ))
+            )
           )
         ),
         SummaryListRow(
@@ -139,6 +153,5 @@ class UnderpaymentDetailConfirmController @Inject()(identify: IdentifierAction,
         )
       )
     )
-  }
 
 }

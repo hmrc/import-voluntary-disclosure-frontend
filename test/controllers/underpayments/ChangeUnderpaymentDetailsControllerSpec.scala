@@ -36,18 +36,27 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
-    private lazy val changeUnderpaymentDetailsView: ChangeUnderpaymentDetailsView = app.injector.instanceOf[ChangeUnderpaymentDetailsView]
+    private lazy val changeUnderpaymentDetailsView: ChangeUnderpaymentDetailsView =
+      app.injector.instanceOf[ChangeUnderpaymentDetailsView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailsFormProvider = injector.instanceOf[UnderpaymentDetailsFormProvider]
-    val form: UnderpaymentDetailsFormProvider = formProvider
+    val form: UnderpaymentDetailsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new ChangeUnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, changeUnderpaymentDetailsView, ec)
+    lazy val controller = new ChangeUnderpaymentDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      changeUnderpaymentDetailsView,
+      ec
+    )
   }
 
   "GET onLoad" when {
@@ -56,21 +65,26 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
-
     "return HTML after pre-populating form from underpayment details" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UnderpaymentDetailsPage, UnderpaymentAmount(original = 10, amended = 20)).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UnderpaymentDetailsPage, UnderpaymentAmount(original = 10, amended = 20))
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(underpaymentType)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(underpaymentType)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
 
     "return HTML after pre-populating form from underpayment details Summary" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail(underpaymentType, original = 10, amended = 20))).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail(underpaymentType, original = 10, amended = 20)))
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(underpaymentType)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(underpaymentType)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -82,10 +96,13 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response for correct data changed from Summary Page" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail(underpaymentType, original = 10, amended = 20))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail(underpaymentType, original = 10, amended = 20)))
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(
+        lazy val result: Future[Result]               = controller.onSubmit(underpaymentType)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -95,7 +112,7 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response for correct data changed from first addition of underpayment" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(
+        lazy val result: Future[Result]               = controller.onSubmit(underpaymentType)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -104,8 +121,10 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(underpaymentType)(
-          fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
+        await(
+          controller.onSubmit(underpaymentType)(
+            fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
+          )
         )
         verifyCalls()
       }
@@ -130,6 +149,4 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
   }
 
-
 }
-

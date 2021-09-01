@@ -30,21 +30,21 @@ trait MockIvdSubmissionConnector extends MockFactory {
 
   type EoriDetailsResponse = Either[ErrorModel, EoriDetails]
 
-  def setupMockGetEoriDetails(response: Either[ErrorModel, EoriDetails]): Unit = {
-    (mockIVDSubmissionConnector.getEoriDetails(_: String)(_: HeaderCarrier, _: ExecutionContext))
+  def setupMockGetEoriDetails(response: Either[ErrorModel, EoriDetails]): Unit =
+    (mockIVDSubmissionConnector
+      .getEoriDetails(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 
-  def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit = {
-    (mockIVDSubmissionConnector.createCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
+  def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit =
+    (mockIVDSubmissionConnector
+      .createCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 
-  def setupMockUpdateCase(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
-    (mockIVDSubmissionConnector.updateCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
+  def setupMockUpdateCase(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
+    (mockIVDSubmissionConnector
+      .updateCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 }

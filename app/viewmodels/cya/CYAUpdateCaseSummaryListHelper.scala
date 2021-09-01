@@ -31,7 +31,7 @@ trait CYAUpdateCaseSummaryListHelper {
 
   def buildUpdateCaseSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
-    val rows = Seq(
+    val rows    = Seq(
       buildReferenceNumberSummaryListRow(answers),
       buildMoreDocumentationListRow(answers),
       buildUploadedFilesRow(answers),
@@ -53,15 +53,19 @@ trait CYAUpdateCaseSummaryListHelper {
     }
   }
 
-  private def buildReferenceNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildReferenceNumberSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DisclosureReferenceNumberPage).map { reference =>
       createRow(
         keyText = Text(messages("updateCase.cya.referenceNumber")),
         valueContent = Text(reference),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url,
-          messages("updateCase.cya.referenceNumber.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url,
+            messages("updateCase.cya.referenceNumber.change")
+          )
+        )
       )
     }
 
@@ -71,39 +75,43 @@ trait CYAUpdateCaseSummaryListHelper {
       createRow(
         keyText = Text(messages("updateCase.cya.moreDocumentation")),
         valueContent = Text(anyMoreDocumentation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.updateCase.routes.MoreDocumentationController.onLoad().url,
-          messages("updateCase.cya.moreDocumentation.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.updateCase.routes.MoreDocumentationController.onLoad().url,
+            messages("updateCase.cya.moreDocumentation.change")
+          )
+        )
       )
     }
 
-  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UploadSupportingDocumentationPage).map { files =>
-      val fileNames = files map (file => file.fileName)
+      val fileNames     = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
       createRow(
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
-          messages("updateCase.cya.uploadedFiles.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url,
+            messages("updateCase.cya.uploadedFiles.change")
+          )
+        )
       )
     }
-  }
 
-  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UpdateAdditionalInformationPage).map { moreInformation =>
       createRow(
         keyText = Text(messages("updateCase.cya.moreInformation")),
         valueContent = Text(moreInformation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad().url,
-          messages("updateCase.cya.moreInformation.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad().url,
+            messages("updateCase.cya.moreInformation.change")
+          )
+        )
       )
     }
-  }
 
 }

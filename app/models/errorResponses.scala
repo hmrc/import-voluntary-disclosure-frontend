@@ -26,12 +26,12 @@ trait ErrorResponse {
 case class ErrorModel(status: Int, message: String) extends ErrorResponse
 
 case object InvalidJson extends ErrorResponse {
-  override val status = BAD_REQUEST
+  override val status  = BAD_REQUEST
   override val message = "Invalid JSON received"
 }
 
 case object BadRequest extends ErrorResponse {
-  override val status: Int = BAD_REQUEST
+  override val status: Int     = BAD_REQUEST
   override val message: String = "Json body sent incorrect"
 }
 

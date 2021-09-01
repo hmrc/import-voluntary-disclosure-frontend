@@ -37,32 +37,35 @@ import scala.concurrent.ExecutionContext
 import scala.util.Try
 
 @Singleton
-class UploadSupportingDocumentationController @Inject()(identify: IdentifierAction,
-                                                        getData: DataRetrievalAction,
-                                                        requireData: DataRequiredAction,
-                                                        mcc: MessagesControllerComponents,
-                                                        val fileUploadRepository: FileUploadRepository,
-                                                        val sessionRepository: SessionRepository,
-                                                        upScanService: UpScanService,
-                                                        view: UploadSupportingDocumentationView,
-                                                        progressView: FileUploadProgressView,
-                                                        formProvider: UploadFileFormProvider,
-                                                        implicit val appConfig: AppConfig,
-                                                        implicit val ec: ExecutionContext
-                                                       )
-  extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
+class UploadSupportingDocumentationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  val fileUploadRepository: FileUploadRepository,
+  val sessionRepository: SessionRepository,
+  upScanService: UpScanService,
+  view: UploadSupportingDocumentationView,
+  progressView: FileUploadProgressView,
+  formProvider: UploadFileFormProvider,
+  implicit val appConfig: AppConfig,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.flash.get("uploadError") match {
-      case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
-      case Some("TooBig") => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
-      case Some("Unknown") => formProvider().withError("file", Messages("uploadFile.error.unknown"))
-      case Some("Rejected") => formProvider().withError("file", Messages("uploadFile.error.rejected"))
+      case Some("TooSmall")    => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
+      case Some("TooBig")      => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
+      case Some("Unknown")     => formProvider().withError("file", Messages("uploadFile.error.unknown"))
+      case Some("Rejected")    => formProvider().withError("file", Messages("uploadFile.error.rejected"))
       case Some("Quarantined") => formProvider().withError("file", Messages("uploadFile.error.quarantined"))
-      case _ => formProvider()
+      case _                   => formProvider()
     }
 
-    val numberOfFilesUploaded: Int = request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty).length
+    val numberOfFilesUploaded: Int =
+      request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty).length
 
     upScanService.initiateSupportingDocJourney().map { response =>
       Ok(view(form, response, backLink(), numberOfFilesUploaded, request.checkMode))
@@ -71,51 +74,57 @@ class UploadSupportingDocumentationController @Inject()(identify: IdentifierActi
     }
   }
 
-  def upscanResponseHandler(key: Option[String] = None,
-                            errorCode: Option[String] = None,
-                            errorMessage: Option[String] = None,
-                            errorResource: Option[String] = None,
-                            errorRequestId: Option[String] = None
-                           ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
-    val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
-    val errorRoute = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
-    val successRoute = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.uploadProgress(key.getOrElse("this will never be used")))
+  def upscanResponseHandler(
+    key: Option[String] = None,
+    errorCode: Option[String] = None,
+    errorMessage: Option[String] = None,
+    errorResource: Option[String] = None,
+    errorRequestId: Option[String] = None
+  ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val upscanError  = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
+    val errorRoute   = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
+    val successRoute = Redirect(
+      controllers.updateCase.routes.UploadSupportingDocumentationController
+        .uploadProgress(key.getOrElse("this will never be used"))
+    )
 
     handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
-  def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val uploadCompleteRoute = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
-    val uploadFailedRoute = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
-    val uploadInProgressRoute = Ok(
-      progressView(
-        key = key,
-        action = controllers.updateCase.routes.UploadSupportingDocumentationController.uploadProgress(key).url
+  def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val uploadCompleteRoute   =
+        Redirect(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
+      val uploadFailedRoute     = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
+      val uploadInProgressRoute = Ok(
+        progressView(
+          key = key,
+          action = controllers.updateCase.routes.UploadSupportingDocumentationController.uploadProgress(key).url
+        )
       )
-    )
-    val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
-      val upload = extractFileDetails(file, key)
-      request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty) :+ upload
-    }
-    val saveFilesList: Seq[FileUploadInfo] => Try[UserAnswers] = { list =>
-      request.userAnswers.set(UploadSupportingDocumentationPage, list)
-    }
+      val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
+        val upload = extractFileDetails(file, key)
+        request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty) :+ upload
+      }
+      val saveFilesList: Seq[FileUploadInfo] => Try[UserAnswers] = { list =>
+        request.userAnswers.set(UploadSupportingDocumentationPage, list)
+      }
 
-    handleUpscanFileProcessing(key,
-      uploadCompleteRoute,
-      uploadInProgressRoute,
-      uploadFailedRoute,
-      updateFilesList,
-      saveFilesList
-    )
+      handleUpscanFileProcessing(
+        key,
+        uploadCompleteRoute,
+        uploadInProgressRoute,
+        uploadFailedRoute,
+        updateFilesList,
+        saveFilesList
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     request.userAnswers.get(UploadSupportingDocumentationPage) match {
-      case Some(files) if files.nonEmpty => controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad()
-      case _ => controllers.updateCase.routes.MoreDocumentationController.onLoad()
+      case Some(files) if files.nonEmpty =>
+        controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad()
+      case _                             => controllers.updateCase.routes.MoreDocumentationController.onLoad()
     }
-  }
 
 }

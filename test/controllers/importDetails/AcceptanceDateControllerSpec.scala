@@ -33,11 +33,10 @@ import views.html.importDetails.{AcceptanceDateBulkView, AcceptanceDateView}
 
 import scala.concurrent.Future
 
-
 class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val acceptanceDateView: AcceptanceDateView = app.injector.instanceOf[AcceptanceDateView]
+    private lazy val acceptanceDateView: AcceptanceDateView         = app.injector.instanceOf[AcceptanceDateView]
     private lazy val acceptanceDateBulkView: AcceptanceDateBulkView = app.injector.instanceOf[AcceptanceDateBulkView]
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -46,7 +45,7 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: AcceptanceDateFormProvider = injector.instanceOf[AcceptanceDateFormProvider]
-    val form: AcceptanceDateFormProvider = formProvider
+    val form: AcceptanceDateFormProvider         = formProvider
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
@@ -62,8 +61,17 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new AcceptanceDateController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, acceptanceDateView, acceptanceDateBulkView, ec)
+    lazy val controller = new AcceptanceDateController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      acceptanceDateView,
+      acceptanceDateBulkView,
+      ec
+    )
   }
 
   val acceptanceDateYes: Boolean = true
@@ -75,8 +83,9 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(AcceptanceDatePage, acceptanceDateYes).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(AcceptanceDatePage, acceptanceDateYes).success.value)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -87,34 +96,44 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header for Single Entry" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
-        redirectLocation(result) mustBe Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
+        redirectLocation(result) mustBe Some(
+          controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url
+        )
       }
 
       "return the correct location header for Bulk Entry" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+        override val userAnswers: Option[UserAnswers]        =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(NumberOfEntriesPage, MoreThanOneEntry)
+              .success
+              .value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentStartController.onLoad().url)
       }
 
       "return the correct location header in check mode" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers]        =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(AcceptanceDatePage, acceptanceDateYes)
+              .success
+              .value
+              .set(CheckModePage, true)
+              .success
+              .value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
@@ -132,10 +151,13 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
       }
       "return a BAD REQUEST in bulk mode" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(NumberOfEntriesPage, MoreThanOneEntry)
+              .success
+              .value
           )
-        val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        val result: Future[Result]                    = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
     }
@@ -146,22 +168,36 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "when loading page back button should take you to Entry details page for Single Entry" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(NumberOfEntriesPage, OneEntry).success.value
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(AcceptanceDatePage, acceptanceDateYes)
+              .success
+              .value
+              .set(NumberOfEntriesPage, OneEntry)
+              .success
+              .value
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.importDetails.routes.EntryDetailsController.onLoad()
       }
       "when loading page back button should take you to NumberOfEntrues details page for Bulk Entry" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(AcceptanceDatePage, acceptanceDateYes)
+              .success
+              .value
+              .set(NumberOfEntriesPage, MoreThanOneEntry)
+              .success
+              .value
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.importDetails.routes.NumberOfEntriesController.onLoad()
       }
     }
@@ -169,11 +205,16 @@ class AcceptanceDateControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "when loading page back button should take you to Check your answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(AcceptanceDatePage, acceptanceDateYes).success.value
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(AcceptanceDatePage, acceptanceDateYes)
+              .success
+              .value
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

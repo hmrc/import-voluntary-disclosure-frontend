@@ -30,12 +30,14 @@ trait MockFileUploadRepository extends RepositorySpecBase {
   object MockedFileUploadRepository {
 
     def updateRecord(response: Future[Boolean]): CallHandler[Future[Boolean]] =
-      (mockFileUploadRepository.updateRecord(_: FileUpload)(_: ExecutionContext))
+      (mockFileUploadRepository
+        .updateRecord(_: FileUpload)(_: ExecutionContext))
         .expects(*, *)
         .returning(response)
 
     def getRecord(response: Future[Option[FileUpload]]): CallHandler[Future[Option[FileUpload]]] =
-      (mockFileUploadRepository.getRecord(_: String)(_: ExecutionContext))
+      (mockFileUploadRepository
+        .getRecord(_: String)(_: ExecutionContext))
         .expects(*, *)
         .returning(response)
 

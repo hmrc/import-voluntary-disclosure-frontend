@@ -27,16 +27,21 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: SupportingDocView = app.injector.instanceOf[SupportingDocView]
 
-
   "Rendering the Supportdoc page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())(fakeRequest, appConfig, messages)
+      lazy val view: Html                  = injectedView(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())(
+        fakeRequest,
+        appConfig,
+        messages
+      )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(SupportingDocMessages.pageTitle)
 
       "it" should {
-        lazy val view: Html = injectedView(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())(fakeRequest, appConfig, messages)
+        lazy val view: Html                  = injectedView(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+        )(fakeRequest, appConfig, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page heading of '${SupportingDocMessages.heading}'" in {
           elementText("h1") mustBe SupportingDocMessages.heading
@@ -59,11 +64,15 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render a continue button with the correct URL " in {
-          elementAttributes(".govuk-button") must contain("href" -> controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad().url)
+          elementAttributes(".govuk-button") must contain(
+            "href" -> controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad().url
+          )
         }
 
         "render a back link with the correct URL" in {
-          elementAttributes("#back-link") must contain("href" -> controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+          elementAttributes("#back-link") must contain(
+            "href" -> controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+          )
         }
       }
     }

@@ -26,9 +26,9 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 @Singleton
-class FileUploadController @Inject()(val mcc: MessagesControllerComponents,
-                                     repository: FileUploadRepository)
-  extends FrontendController(mcc) with I18nSupport {
+class FileUploadController @Inject() (val mcc: MessagesControllerComponents, repository: FileUploadRepository)
+    extends FrontendController(mcc)
+    with I18nSupport {
 
   def deleteAll(): Action[JsValue] = Action.async(parse.json) { _ =>
     repository.testOnlyRemoveAllRecords() map { result => Ok(Json.obj("count" -> result.getDeletedCount)) }

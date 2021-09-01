@@ -30,10 +30,13 @@ trait MockUpScanConnector extends MockFactory {
   val mockUpScanConnector: UpScanConnector = mock[UpScanConnector]
 
   object MockedUpScanConnector {
-    def postToInitiate(request: UpScanInitiateRequest, response: Future[UpscanInitiateResponse]): CallHandler[Future[UpscanInitiateResponse]] = {
-      (mockUpScanConnector.postToInitiate(_: UpScanInitiateRequest)(_: HeaderCarrier, _: ExecutionContext))
+    def postToInitiate(
+      request: UpScanInitiateRequest,
+      response: Future[UpscanInitiateResponse]
+    ): CallHandler[Future[UpscanInitiateResponse]] =
+      (mockUpScanConnector
+        .postToInitiate(_: UpScanInitiateRequest)(_: HeaderCarrier, _: ExecutionContext))
         .expects(request, *, *)
         .returns(response)
-    }
   }
 }

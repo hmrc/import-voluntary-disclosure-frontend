@@ -36,8 +36,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "no errors exist single entry" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreInformationMessages.singleEntryTitle)
@@ -58,8 +58,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "no errors exist bulk entry" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreInformationMessages.bulkEntryTitle)
@@ -89,8 +89,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
     "no data supplied" should {
 
       "an error exists single entry" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryTitle)
@@ -100,14 +100,16 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryRequiredError
+          elementText(
+            "#value-error"
+          ) mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryRequiredError
         }
 
       }
 
       "an error exists bulk entry" should {
-        lazy val form: Form[String] = formProvider(false).bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider(false).bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")), isSingleEntry = false)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryTitle)
@@ -117,7 +119,9 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryRequiredError
+          elementText(
+            "#value-error"
+          ) mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryRequiredError
         }
 
       }
@@ -128,8 +132,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct Continue button" in {

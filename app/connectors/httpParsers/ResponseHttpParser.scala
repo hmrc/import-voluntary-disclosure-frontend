@@ -19,7 +19,7 @@ package connectors.httpParsers
 import models.ErrorModel
 
 object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
+  type HttpGetResult[T]  = Either[ErrorModel, T]
   type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
+  type HttpPutResult[T]  = Either[ErrorModel, T]
 }

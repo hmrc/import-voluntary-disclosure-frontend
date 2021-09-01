@@ -20,12 +20,11 @@ import models.requests.DataRequest
 import play.api.libs.json._
 import services.JsonAuditModel
 
-case class CancelCaseAuditEvent(cancelCaseData: JsValue)(implicit request: DataRequest[_])
-  extends JsonAuditModel {
-  override val auditType: String = "CancelCase"
+case class CancelCaseAuditEvent(cancelCaseData: JsValue)(implicit request: DataRequest[_]) extends JsonAuditModel {
+  override val auditType: String       = "CancelCase"
   override val transactionName: String = "cancel-case"
-  override val detail: JsValue = Json.obj(
-    "eori" -> request.eori,
+  override val detail: JsValue         = Json.obj(
+    "eori"         -> request.eori,
     "credentialId" -> request.credId
   ) ++ Json.toJson(cancelCaseData).asInstanceOf[JsObject]
 }

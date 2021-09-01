@@ -33,15 +33,17 @@ import views.html.underpayments.UnderpaymentTypeView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           sessionRepository: SessionRepository,
-                                           mcc: MessagesControllerComponents,
-                                           underpaymentTypeView: UnderpaymentTypeView,
-                                           formProvider: UnderpaymentTypeFormProvider,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentTypeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  underpaymentTypeView: UnderpaymentTypeView,
+  formProvider: UnderpaymentTypeFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
@@ -50,49 +52,51 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     if (availableUnderpaymentTypes.isEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      val form = request.userAnswers.get(UnderpaymentTypePage).fold(formProvider()) {
+      val form                              = request.userAnswers.get(UnderpaymentTypePage).fold(formProvider()) {
         formProvider().fill
       }
       val availableUnderPaymentTypesOptions = createRadioButton(form, availableUnderpaymentTypes)
-      Future.successful(Ok(
-        underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime())))
+      Future.successful(
+        Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime()))
+      )
     }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val availableUnderPaymentTypes: Seq[String] = getAvailableUnderpayments()
-        val error = formWithErrors.errors.head
-        val replacementFormError = formWithErrors.copy(errors = Seq(error.copy(key = availableUnderPaymentTypes.head)))
-        Future.successful(
-          BadRequest(
-            underpaymentTypeView(
-              replacementFormError,
-              backLink(request.userAnswers),
-              createRadioButton(replacementFormError, availableUnderPaymentTypes),
-              isFirstTime()
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => {
+          val availableUnderPaymentTypes: Seq[String] = getAvailableUnderpayments()
+          val error                                   = formWithErrors.errors.head
+          val replacementFormError                    =
+            formWithErrors.copy(errors = Seq(error.copy(key = availableUnderPaymentTypes.head)))
+          Future.successful(
+            BadRequest(
+              underpaymentTypeView(
+                replacementFormError,
+                backLink(request.userAnswers),
+                createRadioButton(replacementFormError, availableUnderPaymentTypes),
+                isFirstTime()
+              )
             )
           )
-        )
-      },
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(value))
-        }
-      }
-    )
+        },
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(value))
+      )
   }
 
   private[underpayments] def getAvailableUnderpayments()(implicit request: DataRequest[_]): Seq[String] = {
-    val existingUnderpaymentDetails = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
+    val existingUnderpaymentDetails =
+      request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
     underpaymentTypes.filterNot(item => existingUnderpaymentDetails.contains(item))
   }
 
-  private def createRadioButton(form: Form[_], values: Seq[String])(implicit messages: Messages): Seq[RadioItem] = {
+  private def createRadioButton(form: Form[_], values: Seq[String])(implicit messages: Messages): Seq[RadioItem] =
     values.map(keyValue =>
       RadioItem(
         value = Some(keyValue),
@@ -101,7 +105,6 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
         id = Some(keyValue)
       )
     )
-  }
 
   private[controllers] def backLink(userAnswers: UserAnswers): Call = {
     val underpaymentDetailsList = userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
@@ -112,9 +115,10 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private def isFirstTime()(implicit request: DataRequest[_]): Boolean = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
-    case Some(value) if value.nonEmpty => false
-    case _ => true
-  }
+  private def isFirstTime()(implicit request: DataRequest[_]): Boolean =
+    request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+      case Some(value) if value.nonEmpty => false
+      case _                             => true
+    }
 
 }

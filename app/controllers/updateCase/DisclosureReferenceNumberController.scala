@@ -31,15 +31,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: DisclosureReferenceNumberFormProvider,
-                                                    view: DisclosureReferenceNumberView,
-                                                    implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class DisclosureReferenceNumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: DisclosureReferenceNumberFormProvider,
+  view: DisclosureReferenceNumberView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DisclosureReferenceNumberPage).fold(formProvider()) {
@@ -49,28 +51,29 @@ class DisclosureReferenceNumberController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      reference =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (request.checkMode) {
-            Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
-          } else {
-            Redirect(controllers.updateCase.routes.MoreDocumentationController.onLoad())
-          }
-        }
-    )
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        reference =>
+          for {
+            updatedAnswers <-
+              Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (request.checkMode) {
+              Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.updateCase.routes.MoreDocumentationController.onLoad())
+            }
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
     }
-  }
 
 }

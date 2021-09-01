@@ -25,7 +25,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
 import scala.concurrent.ExecutionContext
 
 trait ServiceSpecBase extends AnyWordSpec with Matchers {
-  implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+  implicit val headerCarrier: HeaderCarrier       = HeaderCarrier()
   implicit val executionContext: ExecutionContext = ExecutionContext.global
 
   val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =

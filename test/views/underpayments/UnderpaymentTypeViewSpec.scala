@@ -38,8 +38,9 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
   "Rendering the UnderpaymentType page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  =
+        injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentTypeMessages.firstTimePageTitle)
@@ -54,8 +55,9 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
+      lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  =
+        injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.firstTimePageTitle)
@@ -74,8 +76,9 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
   it should {
 
     "First time through" should {
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  =
+        injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct h1 of '${UnderpaymentTypeMessages.firstTimePageHeader}'" in {
@@ -142,8 +145,9 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
     }
 
     "Second time through" should {
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = false)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  =
+        injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentTypeMessages.secondTimePageTitle)

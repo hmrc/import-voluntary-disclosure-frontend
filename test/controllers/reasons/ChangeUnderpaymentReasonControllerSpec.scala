@@ -47,30 +47,57 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
             underpayment(box = BoxNumber.Box33, item = 15, original = "50", amended = "60"),
             underpayment(box = BoxNumber.Box22, original = "50", amended = "60")
           )
-        ).success.value
+        )
+        .success
+        .value
     )
 
     MockedSessionRepository.set(Future.successful(true))
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new ChangeUnderpaymentReasonController(authenticatedAction, dataRetrievalAction, dataRequiredAction, mockSessionRepository,
-      messagesControllerComponents, view, ec)
+    lazy val controller = new ChangeUnderpaymentReasonController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" when {
 
     "return OK" in new Test {
-      override val userAnswers = Some(UserAnswers("credId")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = BoxNumber.Box22), changed = underpayment(box = BoxNumber.Box22))).success.value
+      override val userAnswers   = Some(
+        UserAnswers("credId")
+          .set(
+            ChangeUnderpaymentReasonPage,
+            ChangeUnderpaymentReason(
+              original = underpayment(box = BoxNumber.Box22),
+              changed = underpayment(box = BoxNumber.Box22)
+            )
+          )
+          .success
+          .value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      override val userAnswers = Some(UserAnswers("credId")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(original = underpayment(box = BoxNumber.Box22), changed = underpayment(box = BoxNumber.Box22))).success.value
+      override val userAnswers   = Some(
+        UserAnswers("credId")
+          .set(
+            ChangeUnderpaymentReasonPage,
+            ChangeUnderpaymentReason(
+              original = underpayment(box = BoxNumber.Box22),
+              changed = underpayment(box = BoxNumber.Box22)
+            )
+          )
+          .success
+          .value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -93,7 +120,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server Error" in new Test {
-      override val userAnswers = Some(UserAnswers("credId"))
+      override val userAnswers   = Some(UserAnswers("credId"))
       val result: Future[Result] = controller.change(22, 0)(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
@@ -103,11 +130,15 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "single item is passed" should {
       "produce summary list with one item" in new Test {
-        controller.summaryList(ChangeUnderpaymentReasonData.singleItemReason.original) mustBe ChangeUnderpaymentReasonData.summaryList(BoxNumber.Box35)
+        controller.summaryList(
+          ChangeUnderpaymentReasonData.singleItemReason.original
+        ) mustBe ChangeUnderpaymentReasonData.summaryList(BoxNumber.Box35)
       }
 
       "produce summary list with Other Item" in new Test {
-        controller.summaryList(ChangeUnderpaymentReasonData.otherItemReason.original) mustBe ChangeUnderpaymentReasonData.otherItemSummaryList()
+        controller.summaryList(
+          ChangeUnderpaymentReasonData.otherItemReason.original
+        ) mustBe ChangeUnderpaymentReasonData.otherItemSummaryList()
       }
     }
 

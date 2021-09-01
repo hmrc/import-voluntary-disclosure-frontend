@@ -32,7 +32,7 @@ class CreateCaseAuditEventSpec extends ModelSpecBase with AuditTestData {
 
     val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
       FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo")
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest                        = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",

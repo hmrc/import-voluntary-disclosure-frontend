@@ -29,72 +29,84 @@ object IvdHttpParser {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[EoriDetails] = {
-
+    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[EoriDetails] =
       response.status match {
         case Status.OK =>
-          response.json.validate[EoriDetails](EoriDetails.reads).fold(
-            invalid => {
-              logger.error("Failed to validate JSON with errors: " + invalid)
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for EoriDetailsHttpParser"))
-            },
-            valid => Right(valid)
-          )
-        case status =>
+          response.json
+            .validate[EoriDetails](EoriDetails.reads)
+            .fold(
+              invalid => {
+                logger.error("Failed to validate JSON with errors: " + invalid)
+                Left(
+                  ErrorModel(
+                    Status.INTERNAL_SERVER_ERROR,
+                    "Invalid Json returned from SUB09 API for EoriDetailsHttpParser"
+                  )
+                )
+              },
+              valid => Right(valid)
+            )
+        case status    =>
           logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
           Left(ErrorModel(status, "Downstream error returned when retrieving EoriDetails model from back end"))
       }
-    }
   }
 
   implicit object SubmissionResponseReads extends HttpReads[HttpPostResult[SubmissionResponse]] {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[SubmissionResponse] = {
-
+    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[SubmissionResponse] =
       response.status match {
         case Status.OK =>
-          response.json.validate[SubmissionResponse].fold(
-            invalid => {
-              logger.error("Failed to validate JSON with errors: " + invalid)
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from IVD Submission"))
-            },
-            valid => Right(valid)
-          )
-        case status =>
+          response.json
+            .validate[SubmissionResponse]
+            .fold(
+              invalid => {
+                logger.error("Failed to validate JSON with errors: " + invalid)
+                Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from IVD Submission"))
+              },
+              valid => Right(valid)
+            )
+        case status    =>
           logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
           Left(ErrorModel(status, "Downstream error returned when retrieving SubmissionResponse from back end"))
       }
-    }
   }
 
   implicit object UpdateResponseReads extends HttpReads[Either[UpdateCaseError, UpdateCaseResponse]] {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): Either[UpdateCaseError, UpdateCaseResponse] = {
-
+    override def read(
+      method: String,
+      url: String,
+      response: HttpResponse
+    ): Either[UpdateCaseError, UpdateCaseResponse] =
       response.status match {
-        case Status.OK =>
+        case Status.OK          =>
           response.json.validate[UpdateCaseResponse] match {
             case JsSuccess(value, _) => Right(value)
-            case JsError(errors) =>
+            case JsError(errors)     =>
               logger.error("Failed to validate JSON with errors: " + errors)
               Left(UpdateCaseError.UnexpectedError(response.status, Some("Invalid JSON returned from IVD Update Case")))
           }
         case Status.BAD_REQUEST =>
           response.json.validate[UpdateCaseError] match {
             case JsSuccess(value, _) => Left(value)
-            case JsError(err) =>
-              logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err")
+            case JsError(err)        =>
+              logger.error(
+                s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err"
+              )
               Left(UpdateCaseError.UnexpectedError(response.status, Some("Received an unexpected error response")))
           }
-        case status =>
+        case status             =>
           logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}")
-          Left(UpdateCaseError.UnexpectedError(status, Some("Downstream error returned when retrieving UpdateResponse from back end")))
+          Left(
+            UpdateCaseError
+              .UnexpectedError(status, Some("Downstream error returned when retrieving UpdateResponse from back end"))
+          )
       }
-    }
   }
 
 }

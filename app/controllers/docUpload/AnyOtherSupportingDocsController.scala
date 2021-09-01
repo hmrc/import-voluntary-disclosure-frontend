@@ -30,15 +30,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 sessionRepository: SessionRepository,
-                                                 mcc: MessagesControllerComponents,
-                                                 formProvider: AnyOtherSupportingDocsFormProvider,
-                                                 view: AnyOtherSupportingDocsView,
-                                                 implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class AnyOtherSupportingDocsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: AnyOtherSupportingDocsFormProvider,
+  view: AnyOtherSupportingDocsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink: Call = controllers.docUpload.routes.SupportingDocController.onLoad()
 
@@ -50,19 +52,20 @@ class AnyOtherSupportingDocsController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (value) {
-            Redirect(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad())
-          } else {
-            Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
-          }
-        }
-    )
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(AnyOtherSupportingDocsPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (value) {
+              Redirect(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad())
+            } else {
+              Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
+            }
+      )
   }
 }

@@ -31,7 +31,7 @@ trait CYACancelCaseSummaryListHelper {
 
   def buildCancelCaseSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
-    val rows = Seq(
+    val rows    = Seq(
       buildReferenceNumberSummaryListRow(answers),
       buildReasonForCancellation(answers),
       buildSupportingDocumentationListRow(answers),
@@ -53,58 +53,67 @@ trait CYACancelCaseSummaryListHelper {
     }
   }
 
-  private def buildReferenceNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildReferenceNumberSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DisclosureReferenceNumberPage).map { reference =>
       createRow(
         keyText = Text(messages("cancelCase.cya.referenceNumber")),
         valueContent = Text(reference),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url,
-          messages("cancelCase.cya.referenceNumber.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url,
+            messages("cancelCase.cya.referenceNumber.change")
+          )
+        )
       )
     }
 
-  private def buildReasonForCancellation(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildReasonForCancellation(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UpdateAdditionalInformationPage).map { moreInformation =>
       createRow(
         keyText = Text(messages("cancelCase.cya.reasonCancellation")),
         valueContent = Text(moreInformation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.cancelCase.routes.CancellationReasonController.onLoad().url,
-          messages("cancelCase.cya.reasonCancellation.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.cancelCase.routes.CancellationReasonController.onLoad().url,
+            messages("cancelCase.cya.reasonCancellation.change")
+          )
+        )
       )
     }
-  }
 
-  private def buildSupportingDocumentationListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildSupportingDocumentationListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(MoreDocumentationPage).map { supportingDocumentation =>
       val anySupportingDocumentation = if (supportingDocumentation) messages("site.yes") else messages("site.no")
       createRow(
         keyText = Text(messages("cancelCase.cya.supportingDocumentation")),
         valueContent = Text(anySupportingDocumentation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url,
-          messages("cancelCase.cya.supportingDocumentation.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url,
+            messages("cancelCase.cya.supportingDocumentation.change")
+          )
+        )
       )
     }
 
-  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UploadSupportingDocumentationPage).map { files =>
-      val fileNames = files map (file => file.fileName)
+      val fileNames     = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
       createRow(
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
-          messages("updateCase.cya.uploadedFiles.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
+            messages("updateCase.cya.uploadedFiles.change")
+          )
+        )
       )
     }
-  }
-
 
 }

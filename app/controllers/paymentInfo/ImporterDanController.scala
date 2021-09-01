@@ -29,16 +29,17 @@ import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ImporterDanController @Inject()(identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      requireData: DataRequiredAction,
-                                      sessionRepository: SessionRepository,
-                                      mcc: MessagesControllerComponents,
-                                      formProvider: ImporterDanFormProvider,
-                                      view: ImporterDanView,
-                                      implicit val ec: ExecutionContext
-                                     )
-  extends FrontendController(mcc) with I18nSupport {
+class ImporterDanController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: ImporterDanFormProvider,
+  view: ImporterDanView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DefermentAccountPage).fold(formProvider()) {
@@ -48,25 +49,23 @@ class ImporterDanController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-        }
-      }
-    )
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] =
     if (request.checkMode) {
       None
     } else {
       Some(controllers.paymentInfo.routes.DefermentController.onLoad())
     }
-  }
 
 }

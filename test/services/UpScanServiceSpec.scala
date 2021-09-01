@@ -30,11 +30,11 @@ import scala.concurrent.Future
 class UpScanServiceSpec extends ServiceSpecBase {
 
   private val dutyType = "duty"
-  private val dan = "1234567"
+  private val dan      = "1234567"
 
   private val callBackUrl = MockAppConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
-  private val success = MockAppConfig.upScanSuccessRedirectForUser
-  private val error = MockAppConfig.upScanErrorRedirectForUser
+  private val success     = MockAppConfig.upScanSuccessRedirectForUser
+  private val error       = MockAppConfig.upScanErrorRedirectForUser
   private val minFileSize = MockAppConfig.upScanMinFileSize
   private val maxFileSize = MockAppConfig.upScanMaxFileSize
 
@@ -73,7 +73,7 @@ class UpScanServiceSpec extends ServiceSpecBase {
   }
 
   "initiateNewJourney" should {
-    val model = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
+    val model   = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
     val request = UpScanInitiateRequest(callBackUrl, success, error, minFileSize, maxFileSize)
 
     "throw exception if Left returned from connector" in new Test {
@@ -92,8 +92,14 @@ class UpScanServiceSpec extends ServiceSpecBase {
   }
 
   "initiateAuthorityJourney" should {
-    val model = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
-    val request = UpScanInitiateRequest(callBackUrl, upScanAuthoritySuccessRedirectForUser, upScanAuthorityErrorRedirectForUser, minFileSize, maxFileSize)
+    val model   = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
+    val request = UpScanInitiateRequest(
+      callBackUrl,
+      upScanAuthoritySuccessRedirectForUser,
+      upScanAuthorityErrorRedirectForUser,
+      minFileSize,
+      maxFileSize
+    )
 
     "throw exception if Left returned from connector" in new Test {
       val res: UpscanInitiateResponse = Left(InvalidJson)

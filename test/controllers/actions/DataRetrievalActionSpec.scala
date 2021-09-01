@@ -32,7 +32,7 @@ class DataRetrievalActionSpec extends SpecBase {
     }
 
     val mockSessionRepository: SessionRepository = mock[SessionRepository]
-    val action = new Harness(mockSessionRepository)
+    val action                                   = new Harness(mockSessionRepository)
 
     val request: IdentifierRequest[_] = IdentifierRequest(fakeRequest, "some cred ID", "GB987654321000")
   }
@@ -43,7 +43,8 @@ class DataRetrievalActionSpec extends SpecBase {
 
       "set userAnswers to 'None' in the request" in new Test {
 
-        (mockSessionRepository.get(_: String)(_: ExecutionContext))
+        (mockSessionRepository
+          .get(_: String)(_: ExecutionContext))
           .expects(*, *)
           .returns(Future.successful(None))
 
@@ -60,7 +61,8 @@ class DataRetrievalActionSpec extends SpecBase {
       "build a userAnswers object and add it to the request" in new Test {
 
         private val answers = Some(new UserAnswers("id"))
-        (mockSessionRepository.get(_: String)(_: ExecutionContext))
+        (mockSessionRepository
+          .get(_: String)(_: ExecutionContext))
           .expects(*, *)
           .returns(Future.successful(answers))
 

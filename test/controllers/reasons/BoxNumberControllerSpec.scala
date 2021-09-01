@@ -38,7 +38,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
   val BOX_NUMBER = BoxNumber.Box22
 
   val underpaymentReasonBoxNumber: UserAnswers = UserAnswers("some-cred-id")
-    .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER).success.value
+    .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER)
+    .success
+    .value
 
   private def fakeRequestGenerator(value: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
@@ -46,8 +48,8 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    val testConfig: AppConfig = appConfig
-    lazy val controller = new BoxNumberController(
+    val testConfig: AppConfig               = appConfig
+    lazy val controller                     = new BoxNumberController(
       testConfig,
       authenticatedAction,
       dataRetrievalAction,
@@ -58,12 +60,12 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       boxNumberView,
       ec
     )
-    val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-    private lazy val boxNumberView = app.injector.instanceOf[BoxNumberView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
+    val userAnswers: UserAnswers            = UserAnswers("some-cred-id")
+    private lazy val boxNumberView          = app.injector.instanceOf[BoxNumberView]
+    private lazy val dataRetrievalAction    = new FakeDataRetrievalAction(Some(userAnswers))
     val formProvider: BoxNumberFormProvider = injector.instanceOf[BoxNumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: BoxNumberFormProvider = formProvider
+    val form: BoxNumberFormProvider         = formProvider
   }
 
   "GET onLoad" when {
@@ -75,7 +77,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER).success.value
+        .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER)
+        .success
+        .value
 
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -93,21 +97,25 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
           fakeRequestGenerator("62")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url
+        )
       }
 
       "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
         override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
-        lazy val result: Future[Result] = controller.onSubmit(
+        lazy val result: Future[Result]    = controller.onSubmit(
           fakeRequestGenerator("99")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url
+        )
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
         override val userAnswers: UserAnswers = underpaymentReasonBoxNumber
-        lazy val result: Future[Result] = controller.onSubmit(
+        lazy val result: Future[Result]       = controller.onSubmit(
           fakeRequestGenerator("33")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -119,7 +127,6 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit(fakeRequestGenerator("22")))
         verifyCalls()
       }
-
 
     }
 
@@ -136,7 +143,8 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       "return true if a box Number exists " in new Test {
         val answers: UserAnswers = UserAnswers("some-cred-id")
           .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BOX_NUMBER, 0, "", "")))
-          .success.value
+          .success
+          .value
 
         controller.underpaymentReasonSelected(answers, BOX_NUMBER) mustBe true
       }

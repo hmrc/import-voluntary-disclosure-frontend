@@ -33,7 +33,6 @@ import views.html.reasons.ConfirmChangeReasonDetailView
 
 import scala.concurrent.Future
 
-
 class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
@@ -42,12 +41,28 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
-        .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-          boxNumber = BoxNumber.Box33, itemNumber = 1, original = "1806321000", amended = "2204109400X411"))).success.value
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
-          underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412"),
-        )).success.value
+        .set(
+          UnderpaymentReasonsPage,
+          Seq(
+            UnderpaymentReason(
+              boxNumber = BoxNumber.Box33,
+              itemNumber = 1,
+              original = "1806321000",
+              amended = "2204109400X411"
+            )
+          )
+        )
+        .success
+        .value
+        .set(
+          ChangeUnderpaymentReasonPage,
+          ChangeUnderpaymentReason(
+            underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
+            underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412")
+          )
+        )
+        .success
+        .value
     )
 
     private lazy val view: ConfirmChangeReasonDetailView = app.injector.instanceOf[ConfirmChangeReasonDetailView]
@@ -55,8 +70,15 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.set(Future.successful(true))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new ConfirmChangeReasonDetailController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, view, ec)
+    lazy val controller = new ConfirmChangeReasonDetailController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      view,
+      ec
+    )
   }
 
   "GET onLoad " should {
@@ -73,11 +95,17 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
-          underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412"),
-        )).success.value,
+      val result = controller.summaryList(
+        UserAnswers("some-cred-id")
+          .set(
+            ChangeUnderpaymentReasonPage,
+            ChangeUnderpaymentReason(
+              underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
+              underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412")
+            )
+          )
+          .success
+          .value,
         boxNumber = BoxNumber.Box33
       )
 
@@ -86,11 +114,17 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list for Other Item" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(box = BoxNumber.OtherItem, original = "Other reason", amended = ""),
-          underpayment(box = BoxNumber.OtherItem, original = "New other reason", amended = ""),
-        )).success.value,
+      val result = controller.summaryList(
+        UserAnswers("some-cred-id")
+          .set(
+            ChangeUnderpaymentReasonPage,
+            ChangeUnderpaymentReason(
+              underpayment(box = BoxNumber.OtherItem, original = "Other reason", amended = ""),
+              underpayment(box = BoxNumber.OtherItem, original = "New other reason", amended = "")
+            )
+          )
+          .success
+          .value,
         boxNumber = BoxNumber.OtherItem
       )
 
@@ -106,56 +140,84 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-            )).success.value
-            .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = BoxNumber.Box22, original = "50", amended = "60"),
-              underpayment(box = BoxNumber.Box22, original = "60", amended = "70"),
-            )).success.value
+            .set(
+              UnderpaymentReasonsPage,
+              Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+            )
+            .success
+            .value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(box = BoxNumber.Box22, original = "50", amended = "60"),
+                underpayment(box = BoxNumber.Box22, original = "60", amended = "70")
+              )
+            )
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
+        )
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60")
-            )).success.value
-            .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
-              underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70"),
-            )).success.value
+            .set(
+              UnderpaymentReasonsPage,
+              Seq(UnderpaymentReason(boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60"))
+            )
+            .success
+            .value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
+                underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70")
+              )
+            )
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
+        )
         verifyCalls()
       }
 
       "return an Internal Server Error when Changed underpayment reasons are not present" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-              boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60")
-            )).success.value
+            .set(
+              UnderpaymentReasonsPage,
+              Seq(UnderpaymentReason(boxNumber = BoxNumber.Box33, itemNumber = 1, original = "50", amended = "60"))
+            )
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return an Internal Server Error when Existing underpayment reasons are not present" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-              underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
-              underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70"),
-            )).success.value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(box = BoxNumber.Box33, item = 1, original = "50", amended = "60"),
+                underpayment(box = BoxNumber.Box33, item = 2, original = "60", amended = "70")
+              )
+            )
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 

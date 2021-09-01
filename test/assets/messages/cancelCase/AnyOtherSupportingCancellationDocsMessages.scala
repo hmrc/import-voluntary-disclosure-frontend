@@ -21,8 +21,8 @@ import messages.BaseMessages
 object AnyOtherSupportingCancellationDocsMessages extends BaseMessages {
 
   val pageTitle: String = "Do you have any documentation to support cancelling this disclosure?"
-  val heading: String = "Do you have any documentation to support cancelling this disclosure?"
-  val yes: String = "Yes"
-  val no: String = "No"
+  val heading: String   = "Do you have any documentation to support cancelling this disclosure?"
+  val yes: String       = "Yes"
+  val no: String        = "No"
 
 }

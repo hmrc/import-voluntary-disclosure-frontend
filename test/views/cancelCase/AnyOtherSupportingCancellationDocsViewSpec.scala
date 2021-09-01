@@ -29,23 +29,25 @@ import views.html.cancelCase.AnyOtherSupportingCancellationDocsView
 
 class AnyOtherSupportingCancellationDocsViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: AnyOtherSupportingCancellationDocsView = app.injector.instanceOf[AnyOtherSupportingCancellationDocsView]
+  private lazy val injectedView: AnyOtherSupportingCancellationDocsView =
+    app.injector.instanceOf[AnyOtherSupportingCancellationDocsView]
 
-  val formProvider: AnyOtherSupportingCancellationDocsFormProvider = injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
+  val formProvider: AnyOtherSupportingCancellationDocsFormProvider =
+    injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
 
   val backLink: Call = Call("GET", "url")
 
   "Rendering the AnyOtherSupportCancellationDocs page" when {
     "no errors exist" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(AnyOtherSupportingCancellationDocsMessages.pageTitle)
 
       "it" should {
-        val form: Form[Boolean] = formProvider.apply()
-        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+        val form: Form[Boolean]              = formProvider.apply()
+        lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page heading of '${AnyOtherSupportingCancellationDocsMessages.heading}'" in {
           elementText("h1") mustBe AnyOtherSupportingCancellationDocsMessages.heading
@@ -57,7 +59,9 @@ class AnyOtherSupportingCancellationDocsViewSpec extends ViewBaseSpec with BaseM
         }
 
         s"have the correct value for the second radio button of '${AnyOtherSupportingCancellationDocsMessages.no}'" in {
-          elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe AnyOtherSupportingCancellationDocsMessages.no
+          elementText(
+            "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+          ) mustBe AnyOtherSupportingCancellationDocsMessages.no
         }
 
         "render a back link with the correct URL" in {

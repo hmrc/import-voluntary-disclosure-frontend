@@ -25,7 +25,7 @@ class RemoveUploadedFileFormProviderSpec extends FormSpecBase {
     "with no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new RemoveUploadedFileFormProvider()().bind(missingOption)
+      val form                               = new RemoveUploadedFileFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -53,4 +53,3 @@ class RemoveUploadedFileFormProviderSpec extends FormSpecBase {
   }
 
 }
-

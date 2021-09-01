@@ -20,14 +20,16 @@ import play.api.libs.json._
 
 import java.time.LocalDateTime
 
-case class FileUploadInfo(reference: String,
-                          fileName: String,
-                          downloadUrl: String,
-                          uploadTimestamp: LocalDateTime,
-                          checksum: String,
-                          fileMimeType: String)
+case class FileUploadInfo(
+  reference: String,
+  fileName: String,
+  downloadUrl: String,
+  uploadTimestamp: LocalDateTime,
+  checksum: String,
+  fileMimeType: String
+)
 
 object FileUploadInfo {
-  implicit val reads: Reads[FileUploadInfo] = Json.reads[FileUploadInfo]
+  implicit val reads: Reads[FileUploadInfo]   = Json.reads[FileUploadInfo]
   implicit val writes: Writes[FileUploadInfo] = Json.writes[FileUploadInfo]
 }

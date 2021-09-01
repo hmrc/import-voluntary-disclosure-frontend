@@ -21,7 +21,7 @@ import play.api.data.Form
 
 class EnterCustomsProcedureCodeFormProviderSpec extends FormSpecBase {
 
-  private final val cpc = "1234567"
+  private final val cpc    = "1234567"
   private final val cpcKey = "cpc"
 
   def formBuilder(cpc: String = ""): Map[String, String] = Map(
@@ -31,13 +31,12 @@ class EnterCustomsProcedureCodeFormProviderSpec extends FormSpecBase {
   def formBinder(formValues: Map[String, String] = Map(cpc -> "")): Form[String] =
     new EnterCustomsProcedureCodeFormProvider()().bind(formValues)
 
-
   "Binding a form with invalid data" when {
 
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new EnterCustomsProcedureCodeFormProvider()().bind(missingOption)
+      val form                               = new EnterCustomsProcedureCodeFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -96,4 +95,3 @@ class EnterCustomsProcedureCodeFormProviderSpec extends FormSpecBase {
   }
 
 }
-

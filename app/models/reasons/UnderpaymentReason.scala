@@ -19,11 +19,11 @@ package models.reasons
 import play.api.libs.json.Json
 
 case class UnderpaymentReason(
-                               boxNumber: BoxNumber.Value,
-                               itemNumber: Int = 0,
-                               original: String,
-                               amended: String
-                             )
+  boxNumber: BoxNumber.Value,
+  itemNumber: Int = 0,
+  original: String,
+  amended: String
+)
 
 object UnderpaymentReason {
 
@@ -31,9 +31,9 @@ object UnderpaymentReason {
 }
 
 case class ChangeUnderpaymentReason(
-                                     original: UnderpaymentReason,
-                                     changed: UnderpaymentReason
-                                   )
+  original: UnderpaymentReason,
+  changed: UnderpaymentReason
+)
 
 object ChangeUnderpaymentReason {
 

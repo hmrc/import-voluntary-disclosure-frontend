@@ -28,20 +28,19 @@ object UnderpaymentReasonsPage extends QuestionPage[Seq[UnderpaymentReason]] {
   override def path: JsPath = JsPath \ "underpayment-reasons"
 
   def arrayWrites: Writes[Seq[UnderpaymentReason]] =
-    (reasons: Seq[UnderpaymentReason]) => JsArray(reasons.map { reason =>
-      Json.toJson(reason)
-    })
+    (reasons: Seq[UnderpaymentReason]) =>
+      JsArray(reasons.map { reason =>
+        Json.toJson(reason)
+      })
 
-  override def cleanup(value: Option[Seq[UnderpaymentReason]], userAnswers: UserAnswers): Try[UserAnswers] = {
+  override def cleanup(value: Option[Seq[UnderpaymentReason]], userAnswers: UserAnswers): Try[UserAnswers] =
     value match {
-      case Some(answer) => {
-        val boxNumber = userAnswers.remove(UnderpaymentReasonBoxNumberPage).getOrElse(userAnswers)
-        val itemNumber = boxNumber.remove(UnderpaymentReasonItemNumberPage).getOrElse(userAnswers)
+      case Some(answer) =>
+        val boxNumber          = userAnswers.remove(UnderpaymentReasonBoxNumberPage).getOrElse(userAnswers)
+        val itemNumber         = boxNumber.remove(UnderpaymentReasonItemNumberPage).getOrElse(userAnswers)
         val originalAndAmended = itemNumber.remove(UnderpaymentReasonAmendmentPage).getOrElse(userAnswers)
         Try(originalAndAmended)
-      }
-      case None => super.cleanup(value, userAnswers)
+      case None         => super.cleanup(value, userAnswers)
     }
-  }
 
 }

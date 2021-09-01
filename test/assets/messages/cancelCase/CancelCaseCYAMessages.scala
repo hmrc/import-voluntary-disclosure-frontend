@@ -20,21 +20,21 @@ import messages.BaseMessages
 
 object CancelCaseCYAMessages extends BaseMessages {
 
-  val title: String = "Check your answers before sending your cancellation request"
-  val heading: String = "Check your answers before sending your cancellation request"
-  val sendInformation: String = "Now send your cancellation request"
-  val disclosureConfirmation: String = "By submitting this request you are confirming that, to the best of your knowledge, the details you are providing are correct."
-  val accept: String = "Accept and send"
-  val referenceNumber: String = "Reference number"
-  val reasonCancellation: String = "Reason for cancellation"
-  val supportingDocumentation: String = "Supporting documentation?"
-  val changeReferenceNumber: String = "Change reference number"
-  val changeReasonCancellation: String = "Change reason for cancellation"
+  val title: String                         = "Check your answers before sending your cancellation request"
+  val heading: String                       = "Check your answers before sending your cancellation request"
+  val sendInformation: String               = "Now send your cancellation request"
+  val disclosureConfirmation: String        =
+    "By submitting this request you are confirming that, to the best of your knowledge, the details you are providing are correct."
+  val accept: String                        = "Accept and send"
+  val referenceNumber: String               = "Reference number"
+  val reasonCancellation: String            = "Reason for cancellation"
+  val supportingDocumentation: String       = "Supporting documentation?"
+  val changeReferenceNumber: String         = "Change reference number"
+  val changeReasonCancellation: String      = "Change reason for cancellation"
   val changeSupportingDocumentation: String = "Change supporting documentation?"
-  val changeUploadedFiles: String = "Change uploaded files"
+  val changeUploadedFiles: String           = "Change uploaded files"
 
-  def filesUploaded(numberOfFiles: Int): String = {
+  def filesUploaded(numberOfFiles: Int): String =
     if (numberOfFiles == 1) s"$numberOfFiles file uploaded" else s"$numberOfFiles files uploaded"
-  }
 
 }

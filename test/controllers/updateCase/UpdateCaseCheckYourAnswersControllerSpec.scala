@@ -50,20 +50,19 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockUpdateCaseService {
 
-    private lazy val updateCaseCheckYourAnswersView: UpdateCaseCheckYourAnswersView = app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
-    private lazy val confirmationView: UpdateCaseConfirmationView = app.injector.instanceOf[UpdateCaseConfirmationView]
-    val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
+    private lazy val updateCaseCheckYourAnswersView: UpdateCaseCheckYourAnswersView =
+      app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
+    private lazy val confirmationView: UpdateCaseConfirmationView                   = app.injector.instanceOf[UpdateCaseConfirmationView]
+    val errorHandler: ErrorHandler                                                  = app.injector.instanceOf[ErrorHandler]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = {
+    def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] =
       Right(UpdateCaseResponse("1234"))
-    }
 
-    def repositoryExpectation(): Unit = {
+    def repositoryExpectation(): Unit =
       MockedSessionRepository.set(Future.successful(true))
-    }
 
     lazy val controller = new UpdateCaseCheckYourAnswersController(
       authenticatedAction,
@@ -98,14 +97,16 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
   "GET onSubmit" should {
 
     "return Redirect to the confirmation view" in new Test {
-      override def repositoryExpectation(): Unit = {
+      override def repositoryExpectation(): Unit =
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
-      }
 
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DisclosureReferenceNumberPage, "C181234567890123456789")
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result]                    = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -114,8 +115,11 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
       override def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = Left(UpdateCaseError.InvalidCaseId)
 
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(DisclosureReferenceNumberPage, caseId).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DisclosureReferenceNumberPage, caseId)
+          .success
+          .value
       )
 
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
@@ -124,18 +128,18 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
-      override def repositoryExpectation(): Unit = {
+      override def repositoryExpectation(): Unit =
         MockedSessionRepository.remove(Future.successful("some-cred-id"))
-      }
 
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result]                    = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
     "return Internal Server error is update fails" in new Test {
-      override lazy val serviceMock = Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      override lazy val serviceMock =
+        Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
+      val result: Future[Result]    = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 

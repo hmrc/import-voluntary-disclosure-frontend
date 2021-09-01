@@ -21,17 +21,15 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class UpdateAdditionalInformationFormProvider @Inject() extends Mappings {
 
   val maxLength: Int = 1500
 
-  def apply(): Form[String] = {
+  def apply(): Form[String] =
     Form(
       "value" -> text("updateAdditionalInformation.error.required")
         .verifying(maxLength(maxLength, "updateAdditionalInformation.error.maxLength"))
         .verifying(emojiConstraint("updateAdditionalInformation.error.noEmoji"))
     )
-  }
 
 }

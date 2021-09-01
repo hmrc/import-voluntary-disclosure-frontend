@@ -54,13 +54,17 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     createRadioButton("68", BoxNumberMessages.radioButton68)
   )
 
-
   "Rendering the Box number page" when {
 
     "no errors exist on first box" should {
 
-      val form: Form[BoxNumber] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, true)(fakeRequest, messages)
+      val form: Form[BoxNumber]            = formProvider.apply()
+      lazy val view: Html                  = injectedView(
+        form,
+        controllers.reasons.routes.BoxGuidanceController.onLoad(),
+        boxNumberRadioButtons,
+        true
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.pageTitle)
@@ -85,8 +89,13 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
     "no errors exist on second box" should {
 
-      val form: Form[BoxNumber] = formProvider.apply()
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
+      val form: Form[BoxNumber]            = formProvider.apply()
+      lazy val view: Html                  = injectedView(
+        form,
+        controllers.reasons.routes.BoxGuidanceController.onLoad(),
+        boxNumberRadioButtons,
+        false
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.pageTitle)
@@ -105,8 +114,13 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     }
 
     "an error exists (no option has been selected)" should {
-      val form: Form[BoxNumber] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
+      val form: Form[BoxNumber]            = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
+        form,
+        controllers.reasons.routes.BoxGuidanceController.onLoad(),
+        boxNumberRadioButtons,
+        false
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxNumberMessages.errorPrefix + BoxNumberMessages.pageTitle)
@@ -125,8 +139,13 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
   it should {
 
-    val form: Form[BoxNumber] = formProvider.apply()
-    lazy val view: Html = injectedView(form, controllers.reasons.routes.BoxGuidanceController.onLoad(), boxNumberRadioButtons, false)(fakeRequest, messages)
+    val form: Form[BoxNumber]            = formProvider.apply()
+    lazy val view: Html                  = injectedView(
+      form,
+      controllers.reasons.routes.BoxGuidanceController.onLoad(),
+      boxNumberRadioButtons,
+      false
+    )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${BoxNumberMessages.radioButton22}'" in {
@@ -224,7 +243,9 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.reasons.routes.BoxGuidanceController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.reasons.routes.BoxGuidanceController.onLoad().url
+      )
     }
 
     s"the input field is rendered" in {

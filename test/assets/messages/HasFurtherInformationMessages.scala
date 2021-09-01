@@ -18,9 +18,9 @@ package messages
 
 object HasFurtherInformationMessages extends BaseMessages {
 
-  val title: String = "Do you want to tell us anything else about the underpayment?"
-  val h1: String = "Do you want to tell us anything else about the underpayment?"
-  val hint = "That you have not told us about already."
+  val title: String         = "Do you want to tell us anything else about the underpayment?"
+  val h1: String            = "Do you want to tell us anything else about the underpayment?"
+  val hint                  = "That you have not told us about already."
   val requiredError: String = "Select yes if you want to provide more information about the underpayment"
 
 }

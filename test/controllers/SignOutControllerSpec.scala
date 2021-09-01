@@ -59,7 +59,6 @@ class SignOutControllerSpec extends ControllerSpecBase {
     )
   }
 
-
   "GET signOut" should {
     "return 303" in new Test {
       val result: Future[Result] = controller.signOut()(fakeRequest)
@@ -74,4 +73,3 @@ class SignOutControllerSpec extends ControllerSpecBase {
   }
 
 }
-

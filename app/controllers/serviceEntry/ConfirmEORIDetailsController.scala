@@ -37,43 +37,40 @@ import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             mcc: MessagesControllerComponents,
-                                             sessionRepository: SessionRepository,
-                                             eoriDetailsService: EoriDetailsService,
-                                             view: ConfirmEORIDetailsView,
-                                             errorView: ConfirmEoriDetailsErrorView,
-                                             implicit val appConfig: AppConfig,
-                                             implicit val ec: ExecutionContext
-                                            )
-  extends FrontendController(mcc) with I18nSupport {
+class ConfirmEORIDetailsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  eoriDetailsService: EoriDetailsService,
+  view: ConfirmEORIDetailsView,
+  errorView: ConfirmEoriDetailsErrorView,
+  implicit val appConfig: AppConfig,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
-
 
   def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
 
     userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) => Future.successful(Ok(view(summaryList(eoriDetails))))
-      case _ =>
+      case _                 =>
         eoriDetailsService.retrieveEoriDetails(request.eori).flatMap {
           case Right(eoriDetails) =>
             for {
               updatedAnswers <- Future.fromTry(userAnswers.set(KnownEoriDetailsPage, eoriDetails))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield {
-              Ok(view(summaryList(eoriDetails)))
-            }
-          case Left(error) =>
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Ok(view(summaryList(eoriDetails)))
+          case Left(error)        =>
             logger.error(error.message + " " + error.status)
             Future.successful(InternalServerError(errorView()))
         }
     }
 
   }
-
 
   private[serviceEntry] def summaryList(eoriDetails: EoriDetails)(implicit messages: Messages): SummaryList = {
 
@@ -83,10 +80,10 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
     )
 
     val eoriNumberSummaryListRow: SummaryListRow = rowItem("confirmEORI.eoriNumber", eoriDetails.eori)
-    val nameSummaryListRow: SummaryListRow = rowItem("confirmEORI.name", eoriDetails.name)
-    val vatNumberSummaryListRow: SummaryListRow = eoriDetails.vatNumber match {
+    val nameSummaryListRow: SummaryListRow       = rowItem("confirmEORI.name", eoriDetails.name)
+    val vatNumberSummaryListRow: SummaryListRow  = eoriDetails.vatNumber match {
       case Some(vatNumber) => rowItem("confirmEORI.vatNumber", vatNumber)
-      case None => rowItem("confirmEORI.vatNumber", messages("confirmEORI.vatNumberNotPresent"))
+      case None            => rowItem("confirmEORI.vatNumber", messages("confirmEORI.vatNumberNotPresent"))
     }
 
     SummaryList(Seq(eoriNumberSummaryListRow, nameSummaryListRow, vatNumberSummaryListRow))
@@ -94,5 +91,3 @@ class ConfirmEORIDetailsController @Inject()(identify: IdentifierAction,
   }
 
 }
-
-

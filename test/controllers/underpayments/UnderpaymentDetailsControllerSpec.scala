@@ -41,12 +41,20 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailsFormProvider = injector.instanceOf[UnderpaymentDetailsFormProvider]
-    val form: UnderpaymentDetailsFormProvider = formProvider
+    val form: UnderpaymentDetailsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, underpaymentDetailsView, ec)
+    lazy val controller = new UnderpaymentDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      underpaymentDetailsView,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -59,7 +67,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailsPage, UnderpaymentAmount(50, 60)).success.value
       )
-      val result: Future[Result] = controller.onLoad(underpaymentType)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(underpaymentType)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -71,7 +79,7 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(
+        lazy val result: Future[Result]               = controller.onSubmit(underpaymentType)(
           fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -80,8 +88,10 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(underpaymentType)(
-          fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
+        await(
+          controller.onSubmit(underpaymentType)(
+            fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
+          )
         )
         verifyCalls()
       }

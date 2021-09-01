@@ -30,7 +30,6 @@ import views.html.contactDetails.TraderAddressCorrectView
 
 class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with ReusableValues {
 
-
   private lazy val injectedView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
 
   private val backLink: Call = Call("GET", "url")
@@ -40,8 +39,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
   "Rendering the AcceptanceDate page" when {
     "no errors exist with full trader details" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.pageTitle)
@@ -57,8 +56,9 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
 
     "no errors exist with trader details without postcode" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, ContactAddress("first", None, "second", None, "fourth"), backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  =
+        injectedView(form, ContactAddress("first", None, "second", None, "fourth"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.pageTitle)
@@ -73,8 +73,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.errorPrefix + ImporterAddressMessages.pageTitle)
@@ -93,8 +93,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterAddressMessages.h1}'" in {
@@ -122,6 +122,5 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
     }
 
   }
-
 
 }

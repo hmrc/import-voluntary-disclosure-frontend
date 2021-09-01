@@ -23,12 +23,12 @@ import play.api.libs.json._
 case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: MessagesApi, config: AppConfig) {
 
   // general journey overrides
-  val showPhaseBanner: Boolean = true
-  val ukMode: Boolean = false
-  val conf: AppConfig = config
-  val deskproServiceName: String = conf.contactFormServiceIdentifier
+  val showPhaseBanner: Boolean       = true
+  val ukMode: Boolean                = false
+  val conf: AppConfig                = config
+  val deskproServiceName: String     = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = "/accessibility-statement/import-voluntary-disclosure"
-  val serviceHref: String = "/disclose-import-taxes-underpayment"
+  val serviceHref: String            = "/disclose-import-taxes-underpayment"
 
   object Version2 {
 
@@ -41,40 +41,44 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val confirmPageConfig: JsObject = Json.obj(
       "showSubHeadingAndInfo" -> true,
-      "showSearchAgainLink" -> true
+      "showSearchAgainLink"   -> true
     )
 
-    val timeoutConfig: JsObject = Json.obj(
+    val timeoutConfig: JsObject                = Json.obj(
       "timeoutAmount" -> conf.timeoutPeriod,
-      "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+      "timeoutUrl"    -> "/disclose-import-taxes-underpayment/timeout-signed-out"
     )
-    val selectPageLabels: Messages => JsObject = message => Json.obj(
-      "title" -> message("importerAddress_lookupPage.selectPage.heading"),
-      "heading" -> message("importerAddress_lookupPage.selectPage.heading"),
-      "submitLabel" -> message("common.continue"),
-      "editAddressLinkText" -> message("importerAddress_lookupPage.selectPage.editLink")
-    )
+    val selectPageLabels: Messages => JsObject = message =>
+      Json.obj(
+        "title"               -> message("importerAddress_lookupPage.selectPage.heading"),
+        "heading"             -> message("importerAddress_lookupPage.selectPage.heading"),
+        "submitLabel"         -> message("common.continue"),
+        "editAddressLinkText" -> message("importerAddress_lookupPage.selectPage.editLink")
+      )
 
-    val lookupPageLabels: Messages => JsObject = message => Json.obj(
-      "title" -> message("importerAddress_lookupPage.heading"),
-      "heading" -> message("importerAddress_lookupPage.heading"),
-      "filterLabel" -> message("importerAddress_lookupPage.filter"),
-      "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
-      "submitLabel" -> message("importerAddress_lookupPage.lookupPage.submit")
-    )
+    val lookupPageLabels: Messages => JsObject = message =>
+      Json.obj(
+        "title"         -> message("importerAddress_lookupPage.heading"),
+        "heading"       -> message("importerAddress_lookupPage.heading"),
+        "filterLabel"   -> message("importerAddress_lookupPage.filter"),
+        "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
+        "submitLabel"   -> message("importerAddress_lookupPage.lookupPage.submit")
+      )
 
-    val confirmPageLabels: Messages => JsObject = message => Json.obj(
-      "title" -> message("importerAddress_lookupPage.confirmPage.heading"),
-      "heading" -> message("importerAddress_lookupPage.confirmPage.heading"),
-      "infoMessage" -> message("importerAddress_lookupPage.confirmPage.infoMessage"),
-      "showConfirmChangeText" -> false
-    )
+    val confirmPageLabels: Messages => JsObject = message =>
+      Json.obj(
+        "title"                 -> message("importerAddress_lookupPage.confirmPage.heading"),
+        "heading"               -> message("importerAddress_lookupPage.confirmPage.heading"),
+        "infoMessage"           -> message("importerAddress_lookupPage.confirmPage.infoMessage"),
+        "showConfirmChangeText" -> false
+      )
 
-    val editPageLabels: Messages => JsObject = message => Json.obj(
-      "heading" -> message("importerAddress_lookupPage.editPage.heading"),
-      "townLabel" -> message("importerAddress_lookupPage.editPage.townOrCity"),
-      "submitLabel" -> message("common.continue")
-    )
+    val editPageLabels: Messages => JsObject = message =>
+      Json.obj(
+        "heading"     -> message("importerAddress_lookupPage.editPage.heading"),
+        "townLabel"   -> message("importerAddress_lookupPage.editPage.townOrCity"),
+        "submitLabel" -> message("common.continue")
+      )
 
     val phaseBannerHtml: Messages => String = message =>
       s"${message("feedback.before")}" +
@@ -87,42 +91,41 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 object ImporterAddressLookupJsonBuilder {
 
   implicit val writes: Writes[ImporterAddressLookupJsonBuilder] = new Writes[ImporterAddressLookupJsonBuilder] {
-    def writes(data: ImporterAddressLookupJsonBuilder): JsObject = {
-      Json.obj(fields =
-        "version" -> 2,
+    def writes(data: ImporterAddressLookupJsonBuilder): JsObject =
+      Json.obj(
+        fields = "version" -> 2,
         "options" -> Json.obj(
-          "continueUrl" -> data.continueUrl,
-          "serviceHref" -> data.serviceHref,
+          "continueUrl"            -> data.continueUrl,
+          "serviceHref"            -> data.serviceHref,
           "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
-          "deskProServiceName" -> data.deskproServiceName,
-          "showPhaseBanner" -> data.showPhaseBanner,
-          "ukMode" -> data.ukMode,
-          "timeoutConfig" -> data.Version2.timeoutConfig,
-          "confirmPageConfig" -> data.Version2.confirmPageConfig
+          "deskProServiceName"     -> data.deskproServiceName,
+          "showPhaseBanner"        -> data.showPhaseBanner,
+          "ukMode"                 -> data.ukMode,
+          "timeoutConfig"          -> data.Version2.timeoutConfig,
+          "confirmPageConfig"      -> data.Version2.confirmPageConfig
         ),
-        "labels" -> Json.obj(
+        "labels"  -> Json.obj(
           "en" -> Json.obj(
-            "appLevelLabels" -> Json.obj(
-              "navTitle" -> data.Version2.navTitle(data.Version2.eng),
+            "appLevelLabels"    -> Json.obj(
+              "navTitle"        -> data.Version2.navTitle(data.Version2.eng),
               "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.eng)
             ),
-            "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.eng),
-            "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.eng),
+            "selectPageLabels"  -> data.Version2.selectPageLabels(data.Version2.eng),
+            "lookupPageLabels"  -> data.Version2.lookupPageLabels(data.Version2.eng),
             "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.eng),
-            "editPageLabels" -> data.Version2.editPageLabels(data.Version2.eng)
+            "editPageLabels"    -> data.Version2.editPageLabels(data.Version2.eng)
           ),
           "cy" -> Json.obj(
-            "appLevelLabels" -> Json.obj(
-              "navTitle" -> data.Version2.navTitle(data.Version2.wel),
+            "appLevelLabels"    -> Json.obj(
+              "navTitle"        -> data.Version2.navTitle(data.Version2.wel),
               "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.wel)
             ),
-            "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.wel),
-            "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.wel),
+            "selectPageLabels"  -> data.Version2.selectPageLabels(data.Version2.wel),
+            "lookupPageLabels"  -> data.Version2.lookupPageLabels(data.Version2.wel),
             "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.wel),
-            "editPageLabels" -> data.Version2.editPageLabels(data.Version2.wel)
+            "editPageLabels"    -> data.Version2.editPageLabels(data.Version2.wel)
           )
         )
       )
-    }
   }
 }

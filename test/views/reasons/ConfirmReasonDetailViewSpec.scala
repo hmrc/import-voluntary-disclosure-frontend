@@ -31,11 +31,11 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
   private val backLink: Call = Call("GET", "url")
 
-
   "Rendering the Confirm Reason Detail page" when {
     "when an item level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
+      lazy val view: Html                  =
+        injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -47,19 +47,27 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
       }
 
       "have correct box number title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(1) > dt") mustBe ConfirmReasonDetailMessages.boxNumber
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(1) > dt"
+        ) mustBe ConfirmReasonDetailMessages.boxNumber
       }
 
       "have correct item number title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(2) > dt") mustBe ConfirmReasonDetailMessages.itemNumber
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(2) > dt"
+        ) mustBe ConfirmReasonDetailMessages.itemNumber
       }
 
       "have correct original value title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(3) > dt") mustBe ConfirmReasonDetailMessages.originalValue
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(3) > dt"
+        ) mustBe ConfirmReasonDetailMessages.originalValue
       }
 
       "have correct amended value title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(4) > dt") mustBe ConfirmReasonDetailMessages.amendedValue
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(4) > dt"
+        ) mustBe ConfirmReasonDetailMessages.amendedValue
       }
 
       "have correct box number value" in {
@@ -71,25 +79,33 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
       }
 
       "have correct original value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "1806321000"
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value"
+        ) mustBe "1806321000"
       }
 
       "have correct amended value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__value") mustBe "2204109400X411"
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__value"
+        ) mustBe "2204109400X411"
       }
 
       "have correct Change link for Box Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.boxChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.BoxNumberController.onLoad().url
       }
       "have correct Change link for Item Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.itemChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.ItemNumberController.onLoad().url
       }
 
@@ -97,7 +113,9 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.originalAmountChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(33).url
       }
 
@@ -105,7 +123,9 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.amendedAmountChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(4) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(33).url
       }
 
@@ -115,7 +135,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -127,15 +147,21 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
       }
 
       "have correct box number title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(1) > dt") mustBe ConfirmReasonDetailMessages.boxNumber
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(1) > dt"
+        ) mustBe ConfirmReasonDetailMessages.boxNumber
       }
 
       "have correct original value title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(2) > dt") mustBe ConfirmReasonDetailMessages.originalValue
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(2) > dt"
+        ) mustBe ConfirmReasonDetailMessages.originalValue
       }
 
       "have correct amended value title" in {
-        elementText("#main-content > div > div > dl > div:nth-child(3) > dt") mustBe ConfirmReasonDetailMessages.amendedValue
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(3) > dt"
+        ) mustBe ConfirmReasonDetailMessages.amendedValue
       }
 
       "have correct box number value" in {
@@ -143,18 +169,24 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
       }
 
       "have correct original value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value") mustBe "EUR125.00"
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__value"
+        ) mustBe "EUR125.00"
       }
 
       "have correct amended value" in {
-        elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value") mustBe "GBP190.50"
+        elementText(
+          "#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__value"
+        ) mustBe "GBP190.50"
       }
 
       "have correct Change link for Box Number " in {
         elementText("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.boxChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(1) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.BoxNumberController.onLoad().url
       }
 
@@ -162,7 +194,9 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.originalAmountChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(2) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(22).url
       }
 
@@ -170,7 +204,9 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
         elementText("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a") mustBe
           ConfirmReasonDetailMessages.change + " " + ConfirmReasonDetailMessages.amendedAmountChange
 
-        document.select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a").attr("href") mustBe
+        document
+          .select("#main-content > div > div > dl > div:nth-child(3) > dd.govuk-summary-list__actions > a")
+          .attr("href") mustBe
           controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(22).url
       }
     }
@@ -178,7 +214,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmReasonDetailMessages.title)

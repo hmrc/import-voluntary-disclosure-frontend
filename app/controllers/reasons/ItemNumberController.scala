@@ -32,16 +32,17 @@ import views.html.reasons.ItemNumberView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ItemNumberController @Inject()(identify: IdentifierAction,
-                                     getData: DataRetrievalAction,
-                                     requireData: DataRequiredAction,
-                                     sessionRepository: SessionRepository,
-                                     mcc: MessagesControllerComponents,
-                                     view: ItemNumberView,
-                                     formProvider: ItemNumberFormProvider,
-                                     implicit val ec: ExecutionContext
-                                    )
-  extends FrontendController(mcc) with I18nSupport {
+class ItemNumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: ItemNumberView,
+  formProvider: ItemNumberFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink: Call = controllers.reasons.routes.BoxNumberController.onLoad()
 
@@ -55,42 +56,49 @@ class ItemNumberController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, backLink))),
-      submittedItemNumber => {
-        request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
-          case Some(currentBoxNumber) =>
-            if (existsSameBoxItem(currentBoxNumber, submittedItemNumber, request.userAnswers)) {
-              val form = request.userAnswers.get(UnderpaymentReasonItemNumberPage).fold(formProvider()) {
-                formProvider().fill
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, backLink))),
+        submittedItemNumber =>
+          request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
+            case Some(currentBoxNumber) =>
+              if (existsSameBoxItem(currentBoxNumber, submittedItemNumber, request.userAnswers)) {
+                val form = request.userAnswers.get(UnderpaymentReasonItemNumberPage).fold(formProvider()) {
+                  formProvider().fill
+                }
+                Future.successful(
+                  Ok(
+                    view(
+                      form.copy(errors = Seq(FormError("itemNumber", "itemNo.error.notTheSameNumber"))),
+                      formAction,
+                      backLink
+                    )
+                  )
+                )
+              } else {
+                for {
+                  updatedAnswers <-
+                    Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, submittedItemNumber))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(currentBoxNumber.id)
+                )
               }
-              Future.successful(Ok(view(
-                form.copy(errors = Seq(FormError("itemNumber", "itemNo.error.notTheSameNumber"))),
-                formAction,
-                backLink))
-              )
-            } else {
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonItemNumberPage, submittedItemNumber))
-                _ <- sessionRepository.set(updatedAnswers)
-              } yield {
-                Redirect(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(currentBoxNumber.id))
-              }
-            }
-          case _ =>
-            Future.successful(InternalServerError("Couldn't find current box number"))
-        }
-      }
-    )
+            case _                      =>
+              Future.successful(InternalServerError("Couldn't find current box number"))
+          }
+      )
   }
 
-  private[controllers] def existsSameBoxItem(currentBoxNumber: BoxNumber,
-                                             submittedItemNumber: Int,
-                                             userAnswers: UserAnswers) = {
-    lazy val currentUnderpayments: Seq[UnderpaymentReason] = userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
-    currentUnderpayments.exists(
-      box => box.boxNumber == currentBoxNumber && box.itemNumber == submittedItemNumber
-    )
+  private[controllers] def existsSameBoxItem(
+    currentBoxNumber: BoxNumber,
+    submittedItemNumber: Int,
+    userAnswers: UserAnswers
+  ) = {
+    lazy val currentUnderpayments: Seq[UnderpaymentReason] =
+      userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
+    currentUnderpayments.exists(box => box.boxNumber == currentBoxNumber && box.itemNumber == submittedItemNumber)
   }
 
 }

@@ -74,25 +74,25 @@ trait ReusableValues {
 
   val detailsJson: JsObject = Json.obj(
     "responseDetail" -> Json.obj(
-      "EORINo" -> "GB987654321000",
-      "CDSFullName" -> "Fast Food ltd",
+      "EORINo"                  -> "GB987654321000",
+      "CDSFullName"             -> "Fast Food ltd",
       "CDSEstablishmentAddress" -> Json.obj(
         "streetAndNumber" -> "99 Avenue Road",
-        "city" -> "Anyold Town",
-        "postalCode" -> "99JZ 1AA",
-        "countryCode" -> "GB"
+        "city"            -> "Anyold Town",
+        "postalCode"      -> "99JZ 1AA",
+        "countryCode"     -> "GB"
       )
     )
   )
 
   val cleanedDetailsJson: JsObject = Json.obj(
-    "eori" -> "GB987654321000",
-    "vatNumber" -> "987654321000",
-    "name" -> "Fast Food ltd",
+    "eori"            -> "GB987654321000",
+    "vatNumber"       -> "987654321000",
+    "name"            -> "Fast Food ltd",
     "streetAndNumber" -> "99 Avenue Road",
-    "city" -> "Anyold Town",
-    "postalCode" -> "99JZ 1AA",
-    "countryCode" -> "GB"
+    "city"            -> "Anyold Town",
+    "postalCode"      -> "99JZ 1AA",
+    "countryCode"     -> "GB"
   )
 
   val underpaymentTypeRadioButtons = Seq(
@@ -108,14 +108,14 @@ trait ReusableValues {
     createRadioButton("D10", UnderpaymentTypeMessages.compensatoryDuty)
   )
 
-  val importer: UserType = UserType.Importer
-  val representative: UserType = UserType.Representative
-  val entryDetails: Option[EntryDetails] = Some(EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12")))
-  val oneEntry: NumberOfEntries = NumberOfEntries.OneEntry
-  val bulkEntry: NumberOfEntries = NumberOfEntries.MoreThanOneEntry
-  val contactDetails: ContactDetails = ContactDetails("John Smith", "test@test.com", "0123456789")
-  val cpc: String = "4000C09"
-  val supportingDocuments: Seq[FileUploadInfo] = Seq(
+  val importer: UserType                                 = UserType.Importer
+  val representative: UserType                           = UserType.Representative
+  val entryDetails: Option[EntryDetails]                 = Some(EntryDetails("123", "123456Q", LocalDate.parse("2020-12-12")))
+  val oneEntry: NumberOfEntries                          = NumberOfEntries.OneEntry
+  val bulkEntry: NumberOfEntries                         = NumberOfEntries.MoreThanOneEntry
+  val contactDetails: ContactDetails                     = ContactDetails("John Smith", "test@test.com", "0123456789")
+  val cpc: String                                        = "4000C09"
+  val supportingDocuments: Seq[FileUploadInfo]           = Seq(
     FileUploadInfo(
       reference = "file-ref-1",
       fileName = "TestDocument.pdf",
@@ -125,7 +125,7 @@ trait ReusableValues {
       fileMimeType = "application/pdf"
     )
   )
-  val authorityDocuments: Seq[UploadAuthority] = Seq(
+  val authorityDocuments: Seq[UploadAuthority]           = Seq(
     UploadAuthority(
       defermentAccountNumber,
       SelectedDutyTypes.Duty,
@@ -137,8 +137,9 @@ trait ReusableValues {
         checksum = "the file checksum",
         fileMimeType = "application/pdf"
       )
-    ))
-  val vatAuthorityDocuments: Seq[UploadAuthority] = Seq(
+    )
+  )
+  val vatAuthorityDocuments: Seq[UploadAuthority]        = Seq(
     UploadAuthority(
       defermentAccountNumber,
       SelectedDutyTypes.Vat,
@@ -150,34 +151,35 @@ trait ReusableValues {
         checksum = "the file checksum",
         fileMimeType = "application/pdf"
       )
-    ))
-  val defermentAccountNumber: String = "1234567"
-  val underpaymentReasons = Some(Seq(
-    UnderpaymentReason(BoxNumber.Box22, 0, "GBP100", "GBP200"),
-    UnderpaymentReason(BoxNumber.Box33, 1, "2204109400X411", "2204109400X412")
-  ))
+    )
+  )
+  val defermentAccountNumber: String                     = "1234567"
+  val underpaymentReasons                                = Some(
+    Seq(
+      UnderpaymentReason(BoxNumber.Box22, 0, "GBP100", "GBP200"),
+      UnderpaymentReason(BoxNumber.Box33, 1, "2204109400X411", "2204109400X412")
+    )
+  )
   val optionalSupportingDocuments: Seq[OptionalDocument] = Seq(
-    ImportAndEntry, AirwayBill, OriginProof, Other
+    ImportAndEntry,
+    AirwayBill,
+    OriginProof,
+    Other
   )
 
-  def createRadioButton(value: String, message: String): RadioItem = {
+  def createRadioButton(value: String, message: String): RadioItem =
     RadioItem(
       value = Some(value),
       content = Text(message),
       checked = false
     )
-  }
 
-  def allUnderpaymentDetailsSelected(): Seq[UnderpaymentDetail] = {
+  def allUnderpaymentDetailsSelected(): Seq[UnderpaymentDetail] =
     Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10").map(underpayment =>
       UnderpaymentDetail(underpayment, 0.0, 1.0)
     )
-  }
 
-  def someUnderpaymentDetailsSelected(): Seq[UnderpaymentDetail] = {
-    Seq("B00", "A00", "E00").map(underpayment =>
-      UnderpaymentDetail(underpayment, 0.0, 1.0)
-    )
-  }
+  def someUnderpaymentDetailsSelected(): Seq[UnderpaymentDetail] =
+    Seq("B00", "A00", "E00").map(underpayment => UnderpaymentDetail(underpayment, 0.0, 1.0))
 
 }

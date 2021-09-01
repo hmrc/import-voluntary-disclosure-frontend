@@ -30,7 +30,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the box guidance page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxGuidanceMessages.title)
@@ -38,7 +38,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "when in check mode" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), false)(fakeRequest, appConfig, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), false)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "no back link displayed" in {
@@ -47,7 +47,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "it" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${BoxGuidanceMessages.heading}'" in {
         elementText("h1") mustBe BoxGuidanceMessages.heading
@@ -62,7 +62,9 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render a continue button with the correct URL " in {
-        elementAttributes(".govuk-button") must contain("href" -> controllers.reasons.routes.BoxNumberController.onLoad().url)
+        elementAttributes(".govuk-button") must contain(
+          "href" -> controllers.reasons.routes.BoxNumberController.onLoad().url
+        )
       }
 
       "render a back link with the correct URL" in {

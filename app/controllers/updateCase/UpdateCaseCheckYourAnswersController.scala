@@ -33,43 +33,44 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     mcc: MessagesControllerComponents,
-                                                     sessionRepository: SessionRepository,
-                                                     updateCaseService: UpdateCaseService,
-                                                     view: UpdateCaseCheckYourAnswersView,
-                                                     confirmationView: UpdateCaseConfirmationView,
-                                                     errorHandler: ErrorHandler,
-                                                     implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYAUpdateCaseSummaryListHelper {
+class UpdateCaseCheckYourAnswersController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  updateCaseService: UpdateCaseService,
+  view: UpdateCaseCheckYourAnswersView,
+  confirmationView: UpdateCaseConfirmationView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with CYAUpdateCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Ok(view(buildUpdateCaseSummaryList))
-    }
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Ok(view(buildUpdateCaseSummaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
-          case Left(UpdateCaseError.InvalidCaseId) =>
+          case Left(UpdateCaseError.InvalidCaseId)     =>
             Future.successful(Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad()))
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
             Future.successful(Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad()))
-          case Left(_) =>
+          case Left(_)                                 =>
             Future.successful(errorHandler.showInternalServerError)
-          case Right(_) =>
+          case Right(_)                                =>
             sessionRepository
               .remove(request.credId)
               .map(_ => Ok(confirmationView(caseId)))
         }
-      case None =>
+      case None         =>
         Future.successful(errorHandler.showInternalServerError)
     }
   }

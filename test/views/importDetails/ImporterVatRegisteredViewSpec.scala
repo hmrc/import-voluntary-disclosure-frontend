@@ -35,8 +35,11 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the ImporterVATRegistered page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(
+        form,
+        Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterVatRegisteredMessages.title)
@@ -51,8 +54,11 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
+        form,
+        Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + ImporterVatRegisteredMessages.title)
@@ -70,8 +76,11 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(
+      form,
+      Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+    )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterVatRegisteredMessages.h1}'" in {

@@ -28,21 +28,22 @@ object UpScanInitiateHttpParser extends Logging {
 
   implicit object UpScanInitiateResponseReads extends HttpReads[UpscanInitiateResponse] {
 
-    def read(method: String, url: String, response: HttpResponse): UpscanInitiateResponse = {
+    def read(method: String, url: String, response: HttpResponse): UpscanInitiateResponse =
       response.status match {
-        case OK =>
-          response.json.validate[UpScanInitiateResponse](UpScanInitiateResponse.jsonReadsForUpScanInitiateResponse) match {
+        case OK          =>
+          response.json.validate[UpScanInitiateResponse](
+            UpScanInitiateResponse.jsonReadsForUpScanInitiateResponse
+          ) match {
             case JsSuccess(model, _) => Right(model)
-            case _ => Left(InvalidJson)
+            case _                   => Left(InvalidJson)
           }
         case BAD_REQUEST =>
           logger.warn(s"Bad request returned with reason: ${response.body}")
           Left(BadRequest)
-        case status =>
+        case status      =>
           logger.warn(s"Unexpected response, status $status returned")
           Left(UnexpectedFailure(status, s"Unexpected response, status $status returned"))
       }
-    }
   }
 
 }

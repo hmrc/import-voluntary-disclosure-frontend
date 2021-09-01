@@ -30,13 +30,15 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class SupportingDocController @Inject()(identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        mcc: MessagesControllerComponents,
-                                        requireData: DataRequiredAction,
-                                        view: SupportingDocView,
-                                        implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class SupportingDocController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  view: SupportingDocView,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty).nonEmpty) {
@@ -46,14 +48,13 @@ class SupportingDocController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
+  private[controllers] def backLink(userAnswers: UserAnswers): Call =
     if (appConfig.otherItemEnabled) {
       controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
     } else {
       userAnswers.get(HasFurtherInformationPage) match {
         case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
-        case _ => controllers.reasons.routes.HasFurtherInformationController.onLoad()
+        case _                    => controllers.reasons.routes.HasFurtherInformationController.onLoad()
       }
     }
-  }
 }

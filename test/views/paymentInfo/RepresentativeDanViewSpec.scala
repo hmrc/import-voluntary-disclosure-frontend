@@ -41,8 +41,8 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the RepresentativeDan page" when {
 
     "no errors exist" should {
-      val form: Form[RepresentativeDan] = formProvider.apply()
-      lazy val view: Html = injectedView(
+      val form: Form[RepresentativeDan]    = formProvider.apply()
+      lazy val view: Html                  = injectedView(
         form,
         backLink
       )(fakeRequest, messages)
@@ -65,11 +65,11 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no value has been specified for the account number)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues(emptyString, "A")
-      lazy val view: Html = injectedView(
+      lazy val view: Html                    = injectedView(
         form,
         backLink
       )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
@@ -78,17 +78,19 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#accountNumber-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberRequiredError
+        elementText(
+          "#accountNumber-error"
+        ) mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberRequiredError
       }
     }
 
     "an error exists (account number value is an invalid format)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("!234567", "A")
-      lazy val view: Html = injectedView(
+      lazy val view: Html                    = injectedView(
         form,
         backLink
       )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
@@ -97,17 +99,19 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#accountNumber-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberFormatError
+        elementText(
+          "#accountNumber-error"
+        ) mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.accountNumberFormatError
       }
     }
 
     "an error exists (dan type radio selection has not been provided)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("1234567", emptyString)
-      lazy val view: Html = injectedView(
+      lazy val view: Html                    = injectedView(
         form,
         backLink
       )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
@@ -116,7 +120,9 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.danTypeRequiredError
+        elementText(
+          "#value-error"
+        ) mustBe RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.danTypeRequiredError
       }
     }
 
@@ -124,8 +130,8 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy val view: Html                    = injectedView(form, backLink)(fakeRequest, messages)
+    lazy implicit val document: Document   = Jsoup.parse(view.body)
 
     checkPageTitle(RepresentativeDanMessages.title)
 
@@ -138,19 +144,27 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct danType label of '${RepresentativeDanMessages.radioButtonLabel}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > legend") mustBe RepresentativeDanMessages.radioButtonLabel
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > legend"
+      ) mustBe RepresentativeDanMessages.radioButtonLabel
     }
 
     s"have the correct value for the first radio button of '${RepresentativeDanMessages.radio1}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label") mustBe RepresentativeDanMessages.radio1
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label"
+      ) mustBe RepresentativeDanMessages.radio1
     }
 
     s"have the correct value for the second radio button of '${RepresentativeDanMessages.radio2}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(2) > label") mustBe RepresentativeDanMessages.radio2
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(2) > label"
+      ) mustBe RepresentativeDanMessages.radio2
     }
 
     s"have the correct value for the third radio button of '${RepresentativeDanMessages.radio3}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(3) > label") mustBe RepresentativeDanMessages.radio3
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(3) > label"
+      ) mustBe RepresentativeDanMessages.radio3
     }
 
     s"have the correct radio 2 hint of '${RepresentativeDanMessages.radio2Hint}'" in {

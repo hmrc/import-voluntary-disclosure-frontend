@@ -30,7 +30,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
-      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${answers.size + 1} sub-headings" in {
@@ -39,8 +39,8 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
       "have correct sub-headings" in {
         val subHeadings = document.select("main h2")
-        answers.zipWithIndex.map {
-          case (answer, index) => subHeadings.get(index).text mustBe answer.heading
+        answers.zipWithIndex.map { case (answer, index) =>
+          subHeadings.get(index).text mustBe answer.heading
         }
       }
 
@@ -53,7 +53,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(CYAMessages.title)

@@ -54,19 +54,31 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
     )
 
     val formProvider: WhatDoYouWantToDoFormProvider = injector.instanceOf[WhatDoYouWantToDoFormProvider]
-    val form: WhatDoYouWantToDoFormProvider = formProvider
+    val form: WhatDoYouWantToDoFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new WhatDoYouWantToDoController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view, ec)
+    lazy val controller = new WhatDoYouWantToDoController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" should {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(WhatDoYouWantToDoPage, CreateCase).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(WhatDoYouWantToDoPage, CreateCase)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -81,13 +93,13 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER when the current saved value is the same as submitted value" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
+        override val userAnswers: Option[UserAnswers]        = Some(
           UserAnswers("some-cred-id").set(WhatDoYouWantToDoPage, CreateCase).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "createCase"
         )
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
@@ -96,7 +108,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "createCase"
         )
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.UserTypeController.onLoad().url)
       }
@@ -105,18 +117,22 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "updateCase"
         )
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url
+        )
       }
 
       "return a SEE OTHER when there's no current saved value and submitted is CancelCase" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody(
           "value" -> "cancelCase"
         )
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url
+        )
       }
 
     }
@@ -125,7 +141,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
       "return a bad request when no data is sent" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody()
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.BAD_REQUEST
       }
     }

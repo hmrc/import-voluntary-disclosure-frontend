@@ -23,10 +23,12 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.GuidanceView
 import javax.inject.Inject
 
-class GuidanceController @Inject()(view: GuidanceView,
-                                   mcc: MessagesControllerComponents,
-                                   implicit val appConfig: AppConfig
-                                  ) extends FrontendController(mcc) with I18nSupport {
+class GuidanceController @Inject() (
+  view: GuidanceView,
+  mcc: MessagesControllerComponents,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action { implicit request =>
     Ok(view())

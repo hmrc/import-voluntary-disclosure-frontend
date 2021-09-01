@@ -30,17 +30,17 @@ import views.html.importDetails.ImporterEORIExistsView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             sessionRepository: SessionRepository,
-                                             mcc: MessagesControllerComponents,
-                                             formProvider: ImporterEORIExistsFormProvider,
-                                             view: ImporterEORIExistsView,
-                                             implicit val ec: ExecutionContext
-                                            )
-  extends FrontendController(mcc) with I18nSupport {
-
+class ImporterEORIExistsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: ImporterEORIExistsFormProvider,
+  view: ImporterEORIExistsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterEORIExistsPage).fold(formProvider()) {
@@ -51,43 +51,38 @@ class ImporterEORIExistsController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      eoriExists => {
-        if (eoriExists) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-            _ <- sessionRepository.set(updatedAnswers)
-          }
-          yield {
-            Redirect(controllers.importDetails.routes.ImporterEORINumberController.onLoad())
-          }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
-            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
-            updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
-            _ <- sessionRepository.set(updatedAnswers)
-          }
-          yield {
-            if (request.checkMode) {
-              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-            } else {
-              Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        eoriExists =>
+          if (eoriExists) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(controllers.importDetails.routes.ImporterEORINumberController.onLoad())
+          } else {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORIExistsPage, eoriExists))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterEORINumberPage))
+              updatedAnswers <- Future.fromTry(updatedAnswers.remove(ImporterVatRegisteredPage))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield
+              if (request.checkMode) {
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
 
-            }
+              }
           }
-        }
-      }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.importDetails.routes.ImporterNameController.onLoad()
     }
-  }
 
 }

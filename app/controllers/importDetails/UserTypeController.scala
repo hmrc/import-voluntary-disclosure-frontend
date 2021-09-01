@@ -35,66 +35,67 @@ import views.html.importDetails.UserTypeView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class UserTypeController @Inject()(identify: IdentifierAction,
-                                   getData: DataRetrievalAction,
-                                   sessionRepository: SessionRepository,
-                                   mcc: MessagesControllerComponents,
-                                   formProvider: UserTypeFormProvider,
-                                   view: UserTypeView,
-                                   appConfig: AppConfig,
-                                   implicit val ec: ExecutionContext
-                                  ) extends FrontendController(mcc) with I18nSupport {
+class UserTypeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: UserTypeFormProvider,
+  view: UserTypeView,
+  appConfig: AppConfig,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-
     val form = for {
       userAnswers <- request.userAnswers
-      data <- userAnswers.get(UserTypePage)
-    } yield {
-      formProvider().fill(data)
-    }
+      data        <- userAnswers.get(UserTypePage)
+    } yield formProvider().fill(data)
 
     Future.successful(Ok(view(form.getOrElse(formProvider()), backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      newUserType => {
-        val prevUserType = userAnswers.get(UserTypePage).getOrElse(newUserType)
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        newUserType => {
+          val prevUserType = userAnswers.get(UserTypePage).getOrElse(newUserType)
 
-        val cleanedUserAnswers = if (prevUserType != newUserType) {
-          userAnswers.preserve(Seq(KnownEoriDetailsPage))
-        } else {
-          userAnswers
-        }
-
-        for {
-          updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(UserTypePage, newUserType))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          val checkMode = updatedAnswers.get(CheckModePage).getOrElse(false)
-          if (prevUserType == newUserType && checkMode) {
-            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+          val cleanedUserAnswers = if (prevUserType != newUserType) {
+            userAnswers.preserve(Seq(KnownEoriDetailsPage))
           } else {
-            newUserType match {
-              case UserType.Importer => Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
-              case UserType.Representative => Redirect(controllers.importDetails.routes.ImporterNameController.onLoad())
+            userAnswers
+          }
+
+          for {
+            updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(UserTypePage, newUserType))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield {
+            val checkMode = updatedAnswers.get(CheckModePage).getOrElse(false)
+            if (prevUserType == newUserType && checkMode) {
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+            } else {
+              newUserType match {
+                case UserType.Importer       => Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
+                case UserType.Representative =>
+                  Redirect(controllers.importDetails.routes.ImporterNameController.onLoad())
+              }
             }
           }
         }
-      }
-    )
+      )
   }
 
   private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
     val cyaMode = {
       for {
         answers <- request.userAnswers
-        mode <- answers.get(CheckModePage)
+        mode    <- answers.get(CheckModePage)
       } yield mode
     }.getOrElse(false)
 

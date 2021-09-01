@@ -25,7 +25,7 @@ class UnderpaymentDetailSummaryFormProviderSpec extends FormSpecBase {
     "the no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new UnderpaymentDetailSummaryFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailSummaryFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -52,4 +52,3 @@ class UnderpaymentDetailSummaryFormProviderSpec extends FormSpecBase {
 
   }
 }
-

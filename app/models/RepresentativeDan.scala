@@ -23,4 +23,3 @@ case class RepresentativeDan(accountNumber: String, danType: String)
 object RepresentativeDan {
   implicit val format = Json.format[RepresentativeDan]
 }
-

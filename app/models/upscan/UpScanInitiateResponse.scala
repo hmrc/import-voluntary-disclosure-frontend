@@ -32,19 +32,16 @@ object UpScanInitiateResponse {
 
     override def reads(json: JsValue): JsResult[Reference] = json.validate[String] match {
       case JsSuccess(reference, _) => JsSuccess(Reference(reference))
-      case error: JsError => error
+      case error: JsError          => error
     }
   }
   implicit val jsonFormatUploadForm: Format[UploadFormTemplate] = Json.format[UploadFormTemplate]
 
   implicit val jsonReadsForUpScanInitiateResponse: Reads[UpScanInitiateResponse] = new Reads[UpScanInitiateResponse] {
-    override def reads(json: JsValue): JsResult[UpScanInitiateResponse] = {
+    override def reads(json: JsValue): JsResult[UpScanInitiateResponse] =
       for {
-        reference <- (json \ "reference").validate[Reference](referenceFormat)
+        reference     <- (json \ "reference").validate[Reference](referenceFormat)
         fieldsAndHref <- (json \ "uploadRequest").validate[UploadFormTemplate](jsonFormatUploadForm)
-      } yield {
-        UpScanInitiateResponse(reference, fieldsAndHref)
-      }
-    }
+      } yield UpScanInitiateResponse(reference, fieldsAndHref)
   }
 }

@@ -30,28 +30,41 @@ import views.html.cancelCase.AnyOtherSupportingCancellationDocsView
 
 import scala.concurrent.Future
 
-
 class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val anyOtherSupportingDocsView: AnyOtherSupportingCancellationDocsView = app.injector.instanceOf[AnyOtherSupportingCancellationDocsView]
+    private lazy val anyOtherSupportingDocsView: AnyOtherSupportingCancellationDocsView =
+      app.injector.instanceOf[AnyOtherSupportingCancellationDocsView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val form: AnyOtherSupportingCancellationDocsFormProvider = injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
+    val form: AnyOtherSupportingCancellationDocsFormProvider =
+      injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new AnyOtherSupportingCancellationDocsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, anyOtherSupportingDocsView, ec)
+    lazy val controller = new AnyOtherSupportingCancellationDocsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      anyOtherSupportingDocsView,
+      ec
+    )
   }
 
   "GET AnyOtherSupportingCancellationDocs Page" should {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(AnyOtherSupportingDocsPage, false).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(AnyOtherSupportingDocsPage, false)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -67,20 +80,24 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
 
       "return a SEE OTHER response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header when value is set to true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
       }
 
       "return the correct location header when value is set to false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
@@ -99,6 +116,3 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
   }
 
 }
-
-
-

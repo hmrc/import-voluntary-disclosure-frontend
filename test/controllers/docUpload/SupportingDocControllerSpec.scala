@@ -36,11 +36,17 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
-    val testConfig = appConfig
-    lazy val controller = new SupportingDocController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, testConfig)
+    val testConfig                       = appConfig
+    lazy val controller                  = new SupportingDocController(
+      authenticatedAction,
+      dataRetrievalAction,
+      messagesControllerComponents,
+      dataRequiredAction,
+      view,
+      testConfig
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view = injector.instanceOf[SupportingDocView]
+    val view                             = injector.instanceOf[SupportingDocView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
@@ -59,9 +65,16 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
     "redirect to the summary page when uploaded file already exists" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(FileUploadPage, Seq(FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType"))).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType")
+            )
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
 
@@ -70,20 +83,24 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
   "Back link" should {
     "return to Has further information page if further information not required" in new Test {
-      override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
+      override val testConfig: AppConfig            = new MockAppConfig(otherItemEnabled = false)
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(HasFurtherInformationPage, false).success.value
+          .set(HasFurtherInformationPage, false)
+          .success
+          .value
       )
 
       controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.HasFurtherInformationController.onLoad()
     }
 
     "return to More information page if further information is required" in new Test {
-      override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
+      override val testConfig: AppConfig            = new MockAppConfig(otherItemEnabled = false)
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(HasFurtherInformationPage, true).success.value
+          .set(HasFurtherInformationPage, true)
+          .success
+          .value
       )
 
       controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.MoreInformationController.onLoad()
@@ -91,7 +108,8 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
 
     "return to Underpayment Reason Summary if otherItemEnabled feature switch is on" in new Test {
       override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
-      controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
+      controller.backLink(userAnswers.get) mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController
+        .onLoad()
     }
   }
 }

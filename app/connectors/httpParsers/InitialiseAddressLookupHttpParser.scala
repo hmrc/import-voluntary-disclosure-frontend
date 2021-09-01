@@ -23,23 +23,20 @@ import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-
 object InitialiseAddressLookupHttpParser {
 
   implicit object InitialiseAddressLookupReads extends HttpReads[HttpPostResult[AddressLookupOnRampModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[AddressLookupOnRampModel] = {
-
+    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[AddressLookupOnRampModel] =
       response.status match {
         case Status.ACCEPTED =>
           response.header(LOCATION) match {
             case Some(redirectUrl) => Right(AddressLookupOnRampModel(redirectUrl))
-            case _ =>
+            case _                 =>
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
           }
-        case status =>
+        case status          =>
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
-    }
   }
 }

@@ -28,16 +28,17 @@ import views.html.docUpload.OptionalSupportingDocsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
-                                                 getData: DataRetrievalAction,
-                                                 requireData: DataRequiredAction,
-                                                 sessionRepository: SessionRepository,
-                                                 mcc: MessagesControllerComponents,
-                                                 view: OptionalSupportingDocsView,
-                                                 formProvider: OptionalSupportingDocsFormProvider,
-                                                 implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class OptionalSupportingDocsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: OptionalSupportingDocsView,
+  formProvider: OptionalSupportingDocsFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink = controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad()
 
@@ -47,20 +48,20 @@ class OptionalSupportingDocsController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val form = formWithErrors.discardingErrors.withError("importAndEntry", "optionalSupportingDocuments.error.required", Seq.empty)
-        Future.successful(BadRequest(view(form, backLink, Seq.empty)))
-      },
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
-        }
-      }
-    )
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => {
+          val form = formWithErrors.discardingErrors
+            .withError("importAndEntry", "optionalSupportingDocuments.error.required", Seq.empty)
+          Future.successful(BadRequest(view(form, backLink, Seq.empty)))
+        },
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
+      )
   }
 
 }

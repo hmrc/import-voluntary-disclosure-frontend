@@ -35,8 +35,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Deferment page" when {
 
     "no errors exist VAT only" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT"
@@ -55,8 +55,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "no errors exist duty only" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly"
@@ -75,8 +75,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "no errors exist duty and VAT" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty"
@@ -95,8 +95,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected) duty only" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingDutyOnly"
@@ -115,8 +115,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected) VAT only" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingOnlyVAT"
@@ -135,8 +135,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected) VAT and duty" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
         form,
         controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad(),
         "deferment.headingVATandDuty"
@@ -158,8 +158,8 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(
       form,
       Call("GET", controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url),
       "deferment.headingDutyOnly"
@@ -167,11 +167,15 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${DefermentMessages.payingByDeferment}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe DefermentMessages.payingByDeferment
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe DefermentMessages.payingByDeferment
     }
 
     s"have the correct value for the second radio button of '${DefermentMessages.payingByOther}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe DefermentMessages.payingByOther
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe DefermentMessages.payingByOther
     }
 
     s"have the correct value for the second radio button of '${DefermentMessages.payingByOther}' hint" in {
@@ -179,7 +183,9 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url
+      )
     }
 
     s"have the correct Continue button" in {

@@ -31,17 +31,18 @@ import views.html.updateCase.MoreDocumentationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class MoreDocumentationController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            mcc: MessagesControllerComponents,
-                                            formProvider: MoreDocumentationFormProvider,
-                                            view: MoreDocumentationView,
-                                            implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class MoreDocumentationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: MoreDocumentationFormProvider,
+  view: MoreDocumentationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
@@ -51,36 +52,37 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      moreDocuments =>
-        for {
-          answersWithMoreDocumentation <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
-          answersWithUpdatedFiles <-
-            if (!moreDocuments) Future.fromTry(answersWithMoreDocumentation.remove(UploadSupportingDocumentationPage))
-            else Future.successful(answersWithMoreDocumentation)
-          existingAnswers = request.userAnswers.get(MoreDocumentationPage)
-          _ <- sessionRepository.set(answersWithUpdatedFiles)
-        } yield {
-          val hasNotChanged = existingAnswers.contains(moreDocuments)
-          if (request.checkMode && (!moreDocuments || hasNotChanged)) {
-            Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
-          } else if (moreDocuments) {
-            Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
-          } else {
-            Redirect(controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad())
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        moreDocuments =>
+          for {
+            answersWithMoreDocumentation <-
+              Future.fromTry(request.userAnswers.set(MoreDocumentationPage, moreDocuments))
+            answersWithUpdatedFiles      <-
+              if (!moreDocuments) Future.fromTry(answersWithMoreDocumentation.remove(UploadSupportingDocumentationPage))
+              else Future.successful(answersWithMoreDocumentation)
+            existingAnswers               = request.userAnswers.get(MoreDocumentationPage)
+            _                            <- sessionRepository.set(answersWithUpdatedFiles)
+          } yield {
+            val hasNotChanged = existingAnswers.contains(moreDocuments)
+            if (request.checkMode && (!moreDocuments || hasNotChanged)) {
+              Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
+            } else if (moreDocuments) {
+              Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
+            } else {
+              Redirect(controllers.updateCase.routes.UpdateAdditionalInformationController.onLoad())
+            }
           }
-        }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad()
     }
-  }
 
 }
-

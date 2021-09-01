@@ -30,14 +30,14 @@ import views.html.underpayments.UnderpaymentDetailsView
 class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: UnderpaymentDetailsView = app.injector.instanceOf[UnderpaymentDetailsView]
-  val formProvider: UnderpaymentDetailsFormProvider = injector.instanceOf[UnderpaymentDetailsFormProvider]
-  private lazy val backLink = controllers.underpayments.routes.UnderpaymentTypeController.onLoad()
-  private final val validValue = "871.12"
-  private final val invalidValue = "11.111"
-  private final val underpaymentType = "B00"
-  private final val originalErrorId = "#original-error"
-  private final val amendedErrorId = "#amended-error"
-  private final val invalidValue2 = "3adp4"
+  val formProvider: UnderpaymentDetailsFormProvider      = injector.instanceOf[UnderpaymentDetailsFormProvider]
+  private lazy val backLink                              = controllers.underpayments.routes.UnderpaymentTypeController.onLoad()
+  private final val validValue                           = "871.12"
+  private final val invalidValue                         = "11.111"
+  private final val underpaymentType                     = "B00"
+  private final val originalErrorId                      = "#original-error"
+  private final val amendedErrorId                       = "#amended-error"
+  private final val invalidValue2                        = "3adp4"
 
   def underpaymentReasonFormWithValues(originalValue: String, amendedValue: String): Form[UnderpaymentAmount] =
     formProvider().bind(Map("original" -> originalValue, "amended" -> amendedValue))
@@ -45,8 +45,8 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Underpayment Reason Amendment page" when {
 
     "no errors exist" should {
-      val form: Form[UnderpaymentAmount] = formProvider.apply()
-      lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+      val form: Form[UnderpaymentAmount]   = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailsMessages.B00pageTitle)
@@ -66,8 +66,8 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no value has been specified for original amount)" should {
       lazy val form: Form[UnderpaymentAmount] = underpaymentReasonFormWithValues(emptyString, validValue)
-      lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                     = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+      lazy implicit val document: Document    = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
@@ -76,14 +76,16 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText(originalErrorId) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.originalNonEmpty
+        elementText(
+          originalErrorId
+        ) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.originalNonEmpty
       }
     }
 
     "an error exists (no value has been specified for amended amount)" should {
       lazy val form: Form[UnderpaymentAmount] = underpaymentReasonFormWithValues(validValue, emptyString)
-      lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                     = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+      lazy implicit val document: Document    = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
@@ -92,16 +94,18 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedNonEmpty
+        elementText(
+          amendedErrorId
+        ) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedNonEmpty
       }
     }
 
     "an error exists (same value has been entered for original and amended amount)" should {
-      lazy val form: Form[UnderpaymentAmount] = underpaymentReasonFormWithValues(validValue, validValue)
-        .discardingErrors
-        .withError(FormError("amended", UnderpaymentDetailsMessages.amendedDifferent))
-      lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val form: Form[UnderpaymentAmount] =
+        underpaymentReasonFormWithValues(validValue, validValue).discardingErrors
+          .withError(FormError("amended", UnderpaymentDetailsMessages.amendedDifferent))
+      lazy val view: Html                     = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+      lazy implicit val document: Document    = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
@@ -110,34 +114,42 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText(amendedErrorId) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedDifferent
+        elementText(
+          amendedErrorId
+        ) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedDifferent
       }
     }
 
     "an error exists (value has been entered in an invalid format for both original and amended)" should {
       lazy val form: Form[UnderpaymentAmount] = underpaymentReasonFormWithValues(invalidValue, invalidValue2)
-      lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                     = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+      lazy implicit val document: Document    = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.B00pageTitle)
 
       "render an error summary with the correct message " in {
-        elementText(govErrorSummaryListClass) mustBe UnderpaymentDetailsMessages.originalNonNumber + " " + UnderpaymentDetailsMessages.amendedNonNumber
+        elementText(
+          govErrorSummaryListClass
+        ) mustBe UnderpaymentDetailsMessages.originalNonNumber + " " + UnderpaymentDetailsMessages.amendedNonNumber
       }
 
       "render an error message against the original field" in {
-        elementText(originalErrorId) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.originalNonNumber
+        elementText(
+          originalErrorId
+        ) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.originalNonNumber
       }
 
       "render an error message against the amended field" in {
-        elementText(amendedErrorId) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedNonNumber
+        elementText(
+          amendedErrorId
+        ) mustBe UnderpaymentDetailsMessages.errorPrefix + UnderpaymentDetailsMessages.amendedNonNumber
       }
     }
 
     "Dynamic content - message should appear for bulk entry" should {
       lazy val form: Form[UnderpaymentAmount] = formProvider.apply()
-      lazy val view: Html = injectedView(form, "A00", backLink, false)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                     = injectedView(form, "A00", backLink, false)(fakeRequest, messages)
+      lazy implicit val document: Document    = Jsoup.parse(view.body)
 
       s"have correct message for bulk entry" in {
         elementText("#main-content > div > div > p") mustBe UnderpaymentDetailsMessages.bulkMessage
@@ -151,10 +163,10 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkContent(testType)
     }
 
-    def checkContent(underpaymentType: String): Unit = {
+    def checkContent(underpaymentType: String): Unit =
       s"rendered for type $underpaymentType" should {
-        val form: Form[UnderpaymentAmount] = formProvider.apply()
-        lazy val view: Html = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
+        val form: Form[UnderpaymentAmount]   = formProvider.apply()
+        lazy val view: Html                  = injectedView(form, underpaymentType, backLink, true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(UnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
@@ -164,15 +176,14 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
       }
-    }
 
   }
 
   it should {
 
     lazy val form: Form[UnderpaymentAmount] = formProvider.apply()
-    lazy val view: Html = injectedView(form, "A00", backLink, true)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy val view: Html                     = injectedView(form, "A00", backLink, true)(fakeRequest, messages)
+    lazy implicit val document: Document    = Jsoup.parse(view.body)
 
     s"have correct legend for the original amount" in {
       elementText("#original-fieldset-legend") mustBe UnderpaymentDetailsMessages.originalAmount

@@ -28,19 +28,23 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class EoriDetailsService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector,
-                                   auditService: AuditService,
-                                   implicit val messagesApi: MessagesApi,
-                                   implicit val appConfig: AppConfig) {
+class EoriDetailsService @Inject() (
+  ivdSubmissionConnector: IvdSubmissionConnector,
+  auditService: AuditService,
+  implicit val messagesApi: MessagesApi,
+  implicit val appConfig: AppConfig
+) {
 
-  def retrieveEoriDetails(eori: String)
-                         (implicit req: OptionalDataRequest[_], hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, EoriDetails]] = {
+  def retrieveEoriDetails(eori: String)(implicit
+    req: OptionalDataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Either[ErrorModel, EoriDetails]] =
     ivdSubmissionConnector.getEoriDetails(eori).map {
-      case Left(err) => Left(err)
+      case Left(err)    => Left(err)
       case Right(value) =>
         auditService.audit(EoriDetailsAuditEvent(eori, req.credId))
         Right(value)
     }
-  }
 
 }

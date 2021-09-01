@@ -30,15 +30,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ChangeItemNumberController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           sessionRepository: SessionRepository,
-                                           mcc: MessagesControllerComponents,
-                                           view: ItemNumberView,
-                                           formProvider: ItemNumberFormProvider,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class ChangeItemNumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: ItemNumberView,
+  formProvider: ItemNumberFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink: Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()
 
@@ -52,38 +54,40 @@ class ChangeItemNumberController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, backLink))),
-      value => {
-        request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
-          case Some(data) =>
-            val currentUnderpayments = request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
-            if (currentUnderpayments.nonEmpty) {
-              val alreadyExistsBoxAndItem = currentUnderpayments.exists(underpayment =>
-                underpayment.boxNumber == data.changed.boxNumber &&
-                  underpayment.itemNumber == value &&
-                  data.original.itemNumber != value
-              )
-              if (alreadyExistsBoxAndItem) {
-                val form = formProvider().fill(data.changed.itemNumber)
-                val formError = FormError("itemNumber", "itemNo.error.notTheSameNumber")
-                Future.successful(Ok(view(form.copy(errors = Seq(formError)), formAction, backLink)))
-              } else {
-                val changed = data.changed.copy(itemNumber = value)
-                val reason = data.copy(changed = changed)
-                for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentReasonPage, reason))
-                  _ <- sessionRepository.set(updatedAnswers)
-                } yield {
-                  Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(data.original.boxNumber.id))
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, backLink))),
+        value =>
+          request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
+            case Some(data) =>
+              val currentUnderpayments = request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty)
+              if (currentUnderpayments.nonEmpty) {
+                val alreadyExistsBoxAndItem = currentUnderpayments.exists(underpayment =>
+                  underpayment.boxNumber == data.changed.boxNumber &&
+                    underpayment.itemNumber == value &&
+                    data.original.itemNumber != value
+                )
+                if (alreadyExistsBoxAndItem) {
+                  val form      = formProvider().fill(data.changed.itemNumber)
+                  val formError = FormError("itemNumber", "itemNo.error.notTheSameNumber")
+                  Future.successful(Ok(view(form.copy(errors = Seq(formError)), formAction, backLink)))
+                } else {
+                  val changed = data.changed.copy(itemNumber = value)
+                  val reason  = data.copy(changed = changed)
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentReasonPage, reason))
+                    _              <- sessionRepository.set(updatedAnswers)
+                  } yield Redirect(
+                    controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController
+                      .onLoad(data.original.boxNumber.id)
+                  )
                 }
+              } else {
+                Future.successful(InternalServerError("List of underpayment reasons is empty"))
               }
-            } else {
-              Future.successful(InternalServerError("List of underpayment reasons is empty"))
-            }
-          case _ => Future.successful(InternalServerError("Changed item number not found"))
-        }
-      }
-    )
+            case _          => Future.successful(InternalServerError("Changed item number not found"))
+          }
+      )
   }
 }

@@ -20,7 +20,6 @@ import forms.mappings.Mappings
 import javax.inject.Inject
 import play.api.data.Form
 
-
 class RemoveUnderpaymentDetailsFormProvider @Inject() extends Mappings {
 
   def apply(underpaymentType: String): Form[Boolean] =
@@ -28,4 +27,3 @@ class RemoveUnderpaymentDetailsFormProvider @Inject() extends Mappings {
       "value" -> boolean(s"removeUnderpaymentDetails.$underpaymentType.error.message")
     )
 }
-

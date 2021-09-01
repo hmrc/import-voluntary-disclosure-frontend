@@ -28,23 +28,31 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector,
-                                     implicit val messagesApi: MessagesApi,
-                                     implicit val appConfig: AppConfig) {
+class AddressLookupService @Inject() (
+  addressLookupConnector: AddressLookupConnector,
+  implicit val messagesApi: MessagesApi,
+  implicit val appConfig: AppConfig
+) {
 
-  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext):
-  Future[Either[ErrorModel, AddressLookupOnRampModel]] =
+  def initialiseJourney(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Either[ErrorModel, AddressLookupOnRampModel]] =
     addressLookupConnector.initialiseJourney(
       Json.toJson(AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl))
     )
 
-  def initialiseImporterJourney(implicit hc: HeaderCarrier, ec: ExecutionContext):
-  Future[Either[ErrorModel, AddressLookupOnRampModel]] =
+  def initialiseImporterJourney(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Either[ErrorModel, AddressLookupOnRampModel]] =
     addressLookupConnector.initialiseJourney(
       Json.toJson(ImporterAddressLookupJsonBuilder(appConfig.importerAddressLookupCallbackUrl))
     )
 
-  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] =
+  def retrieveAddress(
+    id: String
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] =
     addressLookupConnector.getAddress(id)
 
 }

@@ -22,22 +22,22 @@ import play.api.data.Form
 
 class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
 
-  private final val nonNumericValue = "Hello!@£$%^&8"
-  private final val fifty = "50"
-  private final val outOfRangeValue = "99999999999.99"
-  private final val originalKey = "original"
-  private final val amendedKey = "amended"
-  private final val originalNonEmptyErrorKey = "underpaymentDetails.error.originalNonEmpty"
-  private final val amendedNonEmptyErrorKey = "underpaymentDetails.error.amendedNonEmpty"
-  private final val originalNonNumberErrorKey = "underpaymentDetails.error.originalNonNumber"
-  private final val amendedNonNumberErrorKey = "underpaymentDetails.error.amendedNonNumber"
-  private final val originalOutOfRangeErrorKey = "underpaymentDetails.error.originalOutOfRange"
-  private final val amendedOutOfRangeErrorKey = "underpaymentDetails.error.amendedOutOfRange"
+  private final val nonNumericValue                    = "Hello!@£$%^&8"
+  private final val fifty                              = "50"
+  private final val outOfRangeValue                    = "99999999999.99"
+  private final val originalKey                        = "original"
+  private final val amendedKey                         = "amended"
+  private final val originalNonEmptyErrorKey           = "underpaymentDetails.error.originalNonEmpty"
+  private final val amendedNonEmptyErrorKey            = "underpaymentDetails.error.amendedNonEmpty"
+  private final val originalNonNumberErrorKey          = "underpaymentDetails.error.originalNonNumber"
+  private final val amendedNonNumberErrorKey           = "underpaymentDetails.error.amendedNonNumber"
+  private final val originalOutOfRangeErrorKey         = "underpaymentDetails.error.originalOutOfRange"
+  private final val amendedOutOfRangeErrorKey          = "underpaymentDetails.error.amendedOutOfRange"
   private final val originalGreaterThanAmendedErrorKey = "underpaymentDetails.error.positiveAmountOwed"
 
   def formBuilder(original: String = "", amended: String = ""): Map[String, String] = Map(
     originalKey -> original,
-    amendedKey -> amended
+    amendedKey  -> amended
   )
 
   def formBinder(formValues: Map[String, String] = Map(originalKey -> "", amendedKey -> "")): Form[UnderpaymentAmount] =
@@ -48,7 +48,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with no data present for original and amended amount" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -67,7 +67,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with no data present for original amount" should {
 
       val missingOption: Map[String, String] = formBuilder(amended = fifty)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -85,7 +85,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with no data present for amended amount" should {
 
       val missingOption: Map[String, String] = formBuilder(original = fifty)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -103,7 +103,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with non number data present for original amount" should {
 
       val missingOption: Map[String, String] = formBuilder(original = nonNumericValue, amended = fifty)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -121,7 +121,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with non number data present for amended amount" should {
 
       val missingOption: Map[String, String] = formBuilder(original = fifty, amended = nonNumericValue)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -139,7 +139,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with out of range data present for original amount" should {
 
       val missingOption: Map[String, String] = formBuilder(original = outOfRangeValue, amended = fifty)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -157,7 +157,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with out of range data present for amended amount" should {
 
       val missingOption: Map[String, String] = formBuilder(original = fifty, amended = outOfRangeValue)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -175,7 +175,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with original amount being greater than amended" should {
 
       val missingOption: Map[String, String] = formBuilder(original = fifty, amended = "40")
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -197,7 +197,7 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     "with original and amended values being correct" should {
 
       val missingOption: Map[String, String] = formBuilder(original = "35", amended = fifty)
-      val form = new UnderpaymentDetailsFormProvider()().bind(missingOption)
+      val form                               = new UnderpaymentDetailsFormProvider()().bind(missingOption)
 
       "result in a form with no errors" in {
         form.hasErrors mustBe false
@@ -206,6 +206,5 @@ class UnderpaymentDetailsFormProviderSpec extends FormSpecBase {
     }
 
   }
-
 
 }

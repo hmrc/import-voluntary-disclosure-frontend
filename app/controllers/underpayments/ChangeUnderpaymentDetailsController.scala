@@ -31,78 +31,98 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ChangeUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: UnderpaymentDetailsFormProvider,
-                                                    view: ChangeUnderpaymentDetailsView,
-                                                    implicit val ec: ExecutionContext)
+class ChangeUnderpaymentDetailsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: UnderpaymentDetailsFormProvider,
+  view: ChangeUnderpaymentDetailsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  extends FrontendController(mcc) with I18nSupport {
+  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+        case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
+        case None                => false
+      }
 
-  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
-      case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
-      case None => false
-    }
-
-    val form = request.userAnswers.get(UnderpaymentDetailsPage) match {
-      case Some(details) => formProvider().fill(details)
-      case None =>
-        request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
-          case Some(value) => {
-            val underpayment = value.filter(underpayment => underpayment.duty == underpaymentType).head
-            formProvider().fill(UnderpaymentAmount(underpayment.original, underpayment.amended))
+      val form = request.userAnswers.get(UnderpaymentDetailsPage) match {
+        case Some(details) => formProvider().fill(details)
+        case None          =>
+          request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+            case Some(value) =>
+              val underpayment = value.filter(underpayment => underpayment.duty == underpaymentType).head
+              formProvider().fill(UnderpaymentAmount(underpayment.original, underpayment.amended))
+            case None        => formProvider()
           }
-          case None => formProvider()
-        }
-    }
+      }
 
-    Future.successful(Ok(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
+      Future.successful(
+        Ok(
+          view(
+            form,
+            underpaymentType,
+            backLink(underpaymentType, summaryPageChange),
+            summaryPageChange,
+            request.isOneEntry
+          )
+        )
+      )
   }
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val summaryPageChange = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
         case Some(underpayments) => !underpayments.filter(underpayment => underpayment.duty == underpaymentType).isEmpty
-        case None => false
+        case None                => false
       }
 
-      formProvider().bindFromRequest().fold(
-        formWithErrors => {
-          val newErrors = formWithErrors.errors.map { error =>
-            if (error.key.isEmpty) {
-              FormError("amended", error.message)
-            } else {
-              error
+      formProvider()
+        .bindFromRequest()
+        .fold(
+          formWithErrors => {
+            val newErrors = formWithErrors.errors.map { error =>
+              if (error.key.isEmpty) {
+                FormError("amended", error.message)
+              } else {
+                error
+              }
             }
-          }
-          val form = formWithErrors.copy(errors = newErrors)
-          Future.successful(BadRequest(view(form, underpaymentType, backLink(underpaymentType, summaryPageChange), summaryPageChange, request.isOneEntry)))
-        },
-        value => {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(
-              UnderpaymentDetailsPage, UnderpaymentAmount(value.original, value.amended))
+            val form      = formWithErrors.copy(errors = newErrors)
+            Future.successful(
+              BadRequest(
+                view(
+                  form,
+                  underpaymentType,
+                  backLink(underpaymentType, summaryPageChange),
+                  summaryPageChange,
+                  request.isOneEntry
+                )
+              )
             )
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(
-              underpaymentType = underpaymentType,
-              change = summaryPageChange)
+          },
+          value =>
+            for {
+              updatedAnswers <-
+                Future.fromTry(
+                  request.userAnswers.set(UnderpaymentDetailsPage, UnderpaymentAmount(value.original, value.amended))
+                )
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(
+              controllers.underpayments.routes.UnderpaymentDetailConfirmController
+                .onLoad(underpaymentType = underpaymentType, change = summaryPageChange)
             )
-          }
-        }
-      )
+        )
   }
 
-  private[controllers] def backLink(underpaymentType: String, summaryPageChange: Boolean) = {
+  private[controllers] def backLink(underpaymentType: String, summaryPageChange: Boolean) =
     if (summaryPageChange) {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
     } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, summaryPageChange)
     }
-  }
 }

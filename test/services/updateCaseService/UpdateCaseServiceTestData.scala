@@ -62,39 +62,39 @@ trait UpdateCaseServiceTestData extends ReusableValues {
 
   val updateCaseJson: JsObject =
     Json.obj(
-      "caseId" -> "C18",
-      "additionalInfo" -> additionalInfo,
+      "caseId"              -> "C18",
+      "additionalInfo"      -> additionalInfo,
       "supportingDocuments" -> Json.arr(
         Json.obj(
-          "reference" -> "file-ref-1",
-          "fileName" -> "TestDocument.pdf",
-          "downloadUrl" -> "http://some/location",
+          "reference"       -> "file-ref-1",
+          "fileName"        -> "TestDocument.pdf",
+          "downloadUrl"     -> "http://some/location",
           "uploadTimestamp" -> "2021-05-14T20:15:13.807",
-          "checksum" -> "the file checksum",
-          "fileMimeType" -> "application/pdf"
+          "checksum"        -> "the file checksum",
+          "fileMimeType"    -> "application/pdf"
         )
       )
     )
 
   val cancelCaseJson: JsObject =
     Json.obj(
-      "caseId" -> "C18",
-      "additionalInfo" -> additionalInfoWithPrependedText,
+      "caseId"              -> "C18",
+      "additionalInfo"      -> additionalInfoWithPrependedText,
       "supportingDocuments" -> Json.arr(
         Json.obj(
-          "reference" -> "file-ref-1",
-          "fileName" -> "TestDocument.pdf",
-          "downloadUrl" -> "http://some/location",
+          "reference"       -> "file-ref-1",
+          "fileName"        -> "TestDocument.pdf",
+          "downloadUrl"     -> "http://some/location",
           "uploadTimestamp" -> "2021-05-14T20:15:13.807",
-          "checksum" -> "the file checksum",
-          "fileMimeType" -> "application/pdf"
+          "checksum"        -> "the file checksum",
+          "fileMimeType"    -> "application/pdf"
         )
       )
     )
 
   val updateCaseJsonWithoutDocs: JsObject =
     Json.obj(
-      "caseId" -> "C18",
+      "caseId"         -> "C18",
       "additionalInfo" -> additionalInfoWithPrependedText
     )
 }

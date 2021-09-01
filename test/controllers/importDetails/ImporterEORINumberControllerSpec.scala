@@ -36,10 +36,14 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
   val importerEORINumber = "GB345834921000"
 
-  val userAnswersWithImporterEORINumber: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-    .set(
-      ImporterEORINumberPage, importerEORINumber
-    ).success.value
+  val userAnswersWithImporterEORINumber: Option[UserAnswers] = Some(
+    UserAnswers("some-cred-id")
+      .set(
+        ImporterEORINumberPage,
+        importerEORINumber
+      )
+      .success
+      .value
   )
 
   private def fakeRequestGenerator(importerEORI: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -48,7 +52,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new ImporterEORINumberController(
+    lazy val controller                                                = new ImporterEORINumberController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -58,8 +62,8 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       ImporterEORINumberView,
       ec
     )
-    private lazy val ImporterEORINumberView = app.injector.instanceOf[ImporterEORINumberView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    private lazy val ImporterEORINumberView                            = app.injector.instanceOf[ImporterEORINumberView]
+    private lazy val dataRetrievalAction                               = new FakeDataRetrievalAction(userAnswers)
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -71,10 +75,10 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    val formProvider: ImporterEORINumberFormProvider = injector.instanceOf[ImporterEORINumberFormProvider]
+    val userAnswers: Option[UserAnswers]                               = Some(UserAnswers("some-cred-id"))
+    val formProvider: ImporterEORINumberFormProvider                   = injector.instanceOf[ImporterEORINumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: ImporterEORINumberFormProvider = formProvider
+    val form: ImporterEORINumberFormProvider                           = formProvider
   }
 
   "GET onLoad" should {
@@ -85,7 +89,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = userAnswersWithImporterEORINumber
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -98,7 +102,9 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER response when correct data with character values" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator(importerEORINumber))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url
+        )
 
       }
       "update the UserAnswers in session" in new Test {
@@ -137,10 +143,13 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to eori number exists page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call]                 = controller.backLink()
         result mustBe Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
       }
     }
@@ -148,10 +157,13 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call]                 = controller.backLink()
         result mustBe None
       }
     }

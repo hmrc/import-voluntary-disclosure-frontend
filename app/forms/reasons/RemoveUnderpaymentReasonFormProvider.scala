@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class RemoveUnderpaymentReasonFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
@@ -29,4 +28,3 @@ class RemoveUnderpaymentReasonFormProvider @Inject() extends Mappings {
       "value" -> boolean("removeUnderpaymentReason.error.required")
     )
 }
-

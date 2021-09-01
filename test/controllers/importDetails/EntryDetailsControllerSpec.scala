@@ -36,18 +36,18 @@ import scala.concurrent.Future
 
 class EntryDetailsControllerSpec extends ControllerSpecBase {
 
-  def buildForm(epu: Option[String] = Some("123"),
-                entryNumber: Option[String] = Some("123456Q"),
-                day: Option[String] = Some("31"),
-                month: Option[String] = Some("12"),
-                year: Option[String] = Some("2020")): Seq[(String, String)] =
-    (
-      (epu.map(_ => "epu" -> epu.get) ++
-        entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
-        day.map(_ => "entryDate.day" -> day.get) ++
-        month.map(_ => "entryDate.month" -> month.get) ++
-        year.map(_ => "entryDate.year" -> year.get)).toSeq
-      )
+  def buildForm(
+    epu: Option[String] = Some("123"),
+    entryNumber: Option[String] = Some("123456Q"),
+    day: Option[String] = Some("31"),
+    month: Option[String] = Some("12"),
+    year: Option[String] = Some("2020")
+  ): Seq[(String, String)] =
+    (epu.map(_ => "epu" -> epu.get) ++
+      entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
+      day.map(_ => "entryDate.day" -> day.get) ++
+      month.map(_ => "entryDate.month" -> month.get) ++
+      year.map(_ => "entryDate.year" -> year.get)).toSeq
 
   trait Test extends MockSessionRepository {
     private lazy val entryDetailsView: EntryDetailsView = app.injector.instanceOf[EntryDetailsView]
@@ -55,8 +55,8 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val formProvider: EntryDetailsFormProvider = injector.instanceOf[EntryDetailsFormProvider]
-    val form: EntryDetailsFormProvider = formProvider
+    val formProvider: EntryDetailsFormProvider                         = injector.instanceOf[EntryDetailsFormProvider]
+    val form: EntryDetailsFormProvider                                 = formProvider
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -70,8 +70,16 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     )
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new EntryDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, entryDetailsView, ec)
+    lazy val controller = new EntryDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      entryDetailsView,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -82,8 +90,10 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] =
-        Some(UserAnswers("some-cred-id").set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+        Some(
+          UserAnswers("some-cred-id").set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
+        )
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -93,27 +103,35 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response and redirect to correct location for date BEFORE EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("31"), month = Some("12"), year = Some("2020")): _*)
+        private val request             =
+          fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("31"), month = Some("12"), year = Some("2020")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.AcceptanceDateController.onLoad().url)
       }
 
       "return a SEE OTHER response and redirect to correct location for date AFTER EU exit" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
+        private val request             =
+          fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.AcceptanceDateController.onLoad().url)
       }
 
       "redirect to Check your answers page" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
+        private val request                           =
+          fakeRequest.withFormUrlEncodedBody(buildForm(day = Some("02"), month = Some("01"), year = Some("2021")): _*)
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now))
+              .success
+              .value
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]               = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
@@ -138,11 +156,16 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to Acceptance date page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now))
+              .success
+              .value
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.importDetails.routes.NumberOfEntriesController.onLoad()
       }
     }
@@ -150,11 +173,16 @@ class EntryDetailsControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now)).success.value
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now))
+              .success
+              .value
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

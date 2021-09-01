@@ -30,15 +30,17 @@ import views.html.serviceEntry.WhatDoYouWantToDoView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            mcc: MessagesControllerComponents,
-                                            formProvider: WhatDoYouWantToDoFormProvider,
-                                            view: WhatDoYouWantToDoView,
-                                            implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class WhatDoYouWantToDoController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: WhatDoYouWantToDoFormProvider,
+  view: WhatDoYouWantToDoView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
@@ -48,40 +50,36 @@ class WhatDoYouWantToDoController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
-      userCase => {
-        val currentValue = request.userAnswers.get(WhatDoYouWantToDoPage).getOrElse(userCase)
-        if (currentValue == userCase) {
-          for {
-            userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, userCase))
-            _ <- sessionRepository.set(userAnswers)
-          } yield {
-            submitRedirect(userCase)
-          }
-        } else {
-          val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))
-          for {
-            userAnswers <- Future.fromTry(cleanedUserAnswers.set(WhatDoYouWantToDoPage, userCase))
-            _ <- sessionRepository.set(userAnswers)
-          } yield {
-            submitRedirect(userCase)
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+        userCase => {
+          val currentValue = request.userAnswers.get(WhatDoYouWantToDoPage).getOrElse(userCase)
+          if (currentValue == userCase) {
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, userCase))
+              _           <- sessionRepository.set(userAnswers)
+            } yield submitRedirect(userCase)
+          } else {
+            val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))
+            for {
+              userAnswers <- Future.fromTry(cleanedUserAnswers.set(WhatDoYouWantToDoPage, userCase))
+              _           <- sessionRepository.set(userAnswers)
+            } yield submitRedirect(userCase)
           }
         }
-      }
-    )
+      )
   }
 
-  private[serviceEntry] def submitRedirect(submittedValue: SubmissionType): Result = {
+  private[serviceEntry] def submitRedirect(submittedValue: SubmissionType): Result =
     submittedValue match {
       case CreateCase => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
       case UpdateCase => Redirect(controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad())
-      case _ => Redirect(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
+      case _          => Redirect(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }
-  }
 
-  private[serviceEntry] def backLink(): Call = {
+  private[serviceEntry] def backLink(): Call =
     controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
-  }
 
 }

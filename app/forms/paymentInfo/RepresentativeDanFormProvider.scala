@@ -25,14 +25,13 @@ import javax.inject.Inject
 
 class RepresentativeDanFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[RepresentativeDan] = {
-
-    Form(mapping(
-      "accountNumber" -> text("repDan.error.input.required")
-        .transform(_.replace(" ", ""), identity[String])
-        .verifying(regexp("[0-9]{7}", "repDan.error.input.format")),
-      "value" -> text("repDan.error.radio.required")
-    )(RepresentativeDan.apply)(RepresentativeDan.unapply)
+  def apply(): Form[RepresentativeDan] =
+    Form(
+      mapping(
+        "accountNumber" -> text("repDan.error.input.required")
+          .transform(_.replace(" ", ""), identity[String])
+          .verifying(regexp("[0-9]{7}", "repDan.error.input.format")),
+        "value"         -> text("repDan.error.radio.required")
+      )(RepresentativeDan.apply)(RepresentativeDan.unapply)
     )
-  }
 }

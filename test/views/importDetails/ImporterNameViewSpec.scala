@@ -35,8 +35,11 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Importer's Name page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(
+        form,
+        Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterNameMessages.title)
@@ -53,8 +56,11 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("fullName" -> ""))
-        lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("fullName" -> ""))
+        lazy val view: Html                  = injectedView(
+          form,
+          Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
@@ -72,8 +78,11 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
     "too short data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("fullName" -> "a"))
-        lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("fullName" -> "a"))
+        lazy val view: Html                  = injectedView(
+          form,
+          Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
@@ -91,8 +100,12 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
     "too long data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("fullName" -> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
-        lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+        lazy val form: Form[String]          =
+          formProvider().bind(Map("fullName" -> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+        lazy val view: Html                  = injectedView(
+          form,
+          Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
@@ -110,8 +123,11 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
     "emoji data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("fullName" -> "\uD83D\uDE0E\uD83E\uDD14\uD83E\uDD16"))
-        lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("fullName" -> "\uD83D\uDE0E\uD83E\uDD14\uD83E\uDD16"))
+        lazy val view: Html                  = injectedView(
+          form,
+          Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
@@ -129,8 +145,11 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url))(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(
+      form,
+      Call("GET", controllers.importDetails.routes.UserTypeController.onLoad().url)
+    )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterNameMessages.h1}'" in {
@@ -141,7 +160,9 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#fullName-hint") mustBe ImporterNameMessages.hint
     }
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.importDetails.routes.UserTypeController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.importDetails.routes.UserTypeController.onLoad().url
+      )
     }
 
     s"the input field is rendered" in {

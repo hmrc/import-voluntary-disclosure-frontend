@@ -37,17 +37,16 @@ import views.html.paymentInfo.DefermentView
 
 import scala.concurrent.Future
 
-
 class DefermentControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val defermentView: DefermentView = app.injector.instanceOf[DefermentView]
 
-    val userAnswers: Option[UserAnswers] = Some(
+    val userAnswers: Option[UserAnswers]    = Some(
       UserAnswers("credId")
     )
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    implicit lazy val dataRequest = new DataRequest(
+    private lazy val dataRetrievalAction    = new FakeDataRetrievalAction(userAnswers)
+    implicit lazy val dataRequest           = new DataRequest(
       new OptionalDataRequest(
         new IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
@@ -59,12 +58,20 @@ class DefermentControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
     val formProvider: DefermentFormProvider = injector.instanceOf[DefermentFormProvider]
-    val form: DefermentFormProvider = formProvider
+    val form: DefermentFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new DefermentController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, defermentView, ec)
+    lazy val controller = new DefermentController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      defermentView,
+      ec
+    )
   }
 
   val acceptanceDateYes: Boolean = true
@@ -78,10 +85,14 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(DefermentPage, true).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+          .set(DefermentPage, true)
+          .success
+          .value
+          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0)))
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -93,8 +104,12 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "return VAT only header and title" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(DefermentPage, true).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+          .set(DefermentPage, true)
+          .success
+          .value
+          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0)))
+          .success
+          .value
       )
       messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingOnlyVAT
     }
@@ -102,8 +117,12 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "return duty only header and title" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(DefermentPage, true).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          .set(DefermentPage, true)
+          .success
+          .value
+          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0)))
+          .success
+          .value
       )
       messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingDutyOnly
     }
@@ -111,12 +130,18 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "return duty and VAT header and title" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(DefermentPage, true).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(
-            UnderpaymentDetail("B00", 0.0, 1.0),
-            UnderpaymentDetail("A00", 0.0, 1.0)
+          .set(DefermentPage, true)
+          .success
+          .value
+          .set(
+            UnderpaymentDetailSummaryPage,
+            Seq(
+              UnderpaymentDetail("B00", 0.0, 1.0),
+              UnderpaymentDetail("A00", 0.0, 1.0)
+            )
           )
-          ).success.value
+          .success
+          .value
       )
       messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingVATandDuty
     }
@@ -128,101 +153,144 @@ class DefermentControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Importer).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Importer)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header when user is importer and has import VAT and custom duties" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Importer).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Importer)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.ImporterDanController.onLoad().url)
       }
 
       "return the correct location header when user is representative and has import VAT and excise duty" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(
-            UnderpaymentDetail("B00", 0.0, 1.0),
-            UnderpaymentDetail("A00", 0.0, 1.0))
-          ).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+            )
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.SplitPaymentController.onLoad().url)
       }
 
       "return the correct location header when pay by deferment is selected but data held in user answers is pay by other" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(
-            UnderpaymentDetail("B00", 0.0, 1.0),
-            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(DefermentPage, false).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+            )
+            .success
+            .value
+            .set(DefermentPage, false)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.SplitPaymentController.onLoad().url)
       }
 
       "return the correct location header when pay by other is selected but data held in user answers is pay by deferment" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(
-            UnderpaymentDetail("B00", 0.0, 1.0),
-            UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(DefermentPage, true).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+            )
+            .success
+            .value
+            .set(DefermentPage, true)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "return the correct location header when user is representative only has import VAT" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0)))
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url)
       }
 
       "return the correct location header when user is representative and other duties and no import VAT" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0)))
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url)
       }
 
       "return an internal server error when user is representative only has no underpayment type" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Representative).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Representative)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UserTypePage, UserType.Importer).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UserTypePage, UserType.Importer)
+            .success
+            .value
         )
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        private val request                           = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()
       }
@@ -232,10 +300,14 @@ class DefermentControllerSpec extends ControllerSpecBase {
       "return a BAD REQUEST" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
-            .set(DefermentPage, true).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(DefermentPage, true)
+            .success
+            .value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0)))
+            .success
+            .value
         )
-        val result: Future[Result] = controller.onSubmit(fakeRequest)
+        val result: Future[Result]                    = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
     }
@@ -245,10 +317,13 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to acceptance date page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
 
       }
@@ -257,16 +332,16 @@ class DefermentControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }
   }
 
 }
-
-
-

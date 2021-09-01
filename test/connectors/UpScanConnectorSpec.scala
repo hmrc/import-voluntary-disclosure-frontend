@@ -34,7 +34,7 @@ class UpScanConnectorSpec extends ConnectorSpecBase with MockHttp {
     MockAppConfig.upScanMinFileSize,
     MockAppConfig.upScanMaxFileSize
   )
-  val response: UpScanInitiateResponse = UpScanInitiateResponse(
+  val response: UpScanInitiateResponse    = UpScanInitiateResponse(
     Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
     UploadFormTemplate(
       "https://bucketName.s3.eu-west-2.amazonaws.com",

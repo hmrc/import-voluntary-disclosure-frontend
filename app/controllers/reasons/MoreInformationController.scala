@@ -30,21 +30,22 @@ import views.html.reasons.MoreInformationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class MoreInformationController @Inject()(identify: IdentifierAction,
-                                          getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          sessionRepository: SessionRepository,
-                                          mcc: MessagesControllerComponents,
-                                          formProvider: MoreInformationFormProvider,
-                                          view: MoreInformationView,
-                                          implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class MoreInformationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: MoreInformationFormProvider,
+  view: MoreInformationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val isOneEntry = request.isOneEntry
-    val form = request.userAnswers.get(MoreInformationPage).fold(formProvider(isOneEntry)) {
+    val form       = request.userAnswers.get(MoreInformationPage).fold(formProvider(isOneEntry)) {
       formProvider(isOneEntry).fill
     }
     Future.successful(Ok(view(form, backLink, isOneEntry)))
@@ -52,28 +53,28 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val isOneEntry = request.isOneEntry
-    formProvider(isOneEntry).bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, isOneEntry))),
-      moreInfo => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (request.checkMode) {
-            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-          } else {
-            if (request.isOneEntry) {
-              Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
+    formProvider(isOneEntry)
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink, isOneEntry))),
+        moreInfo =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (request.checkMode) {
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {
-              Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad())
+              if (request.isOneEntry) {
+                Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
+              } else {
+                Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad())
+              }
             }
-          }
-        }
-      }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] =
     if (request.checkMode) {
       None
     } else {
@@ -83,6 +84,5 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
         Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
       }
     }
-  }
 
 }

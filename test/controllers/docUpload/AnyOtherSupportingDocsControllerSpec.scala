@@ -30,29 +30,41 @@ import views.html.docUpload.AnyOtherSupportingDocsView
 
 import scala.concurrent.Future
 
-
 class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val anyOtherSupportingDocsView: AnyOtherSupportingDocsView = app.injector.instanceOf[AnyOtherSupportingDocsView]
+    private lazy val anyOtherSupportingDocsView: AnyOtherSupportingDocsView =
+      app.injector.instanceOf[AnyOtherSupportingDocsView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: AnyOtherSupportingDocsFormProvider = injector.instanceOf[AnyOtherSupportingDocsFormProvider]
-    val form: AnyOtherSupportingDocsFormProvider = formProvider
+    val form: AnyOtherSupportingDocsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new AnyOtherSupportingDocsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, anyOtherSupportingDocsView, ec)
+    lazy val controller = new AnyOtherSupportingDocsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      anyOtherSupportingDocsView,
+      ec
+    )
   }
 
   "GET AnyOtherSupportingDocs Page" should {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(AnyOtherSupportingDocsPage, false).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(AnyOtherSupportingDocsPage, false)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -68,19 +80,19 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header when value is set to true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad().url)
       }
 
       "return the correct location header when value is set to false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
 
@@ -100,6 +112,3 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
   }
 
 }
-
-
-

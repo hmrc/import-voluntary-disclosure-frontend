@@ -36,15 +36,19 @@ import scala.concurrent.Future
 
 class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
 
-  private def fakeRequestGenerator(fullName: String, email: String, phoneNumber: String): FakeRequest[AnyContentAsFormUrlEncoded] =
+  private def fakeRequestGenerator(
+    fullName: String,
+    email: String,
+    phoneNumber: String
+  ): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
-      "fullName" -> fullName,
-      "email" -> email,
+      "fullName"    -> fullName,
+      "email"       -> email,
       "phoneNumber" -> phoneNumber
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new DeclarantContactDetailsController(
+    lazy val controller                                                = new DeclarantContactDetailsController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -54,9 +58,9 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       declarantContactDetailsView,
       ec
     )
-    private lazy val declarantContactDetailsView = app.injector.instanceOf[DeclarantContactDetailsView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+    private lazy val declarantContactDetailsView                       = app.injector.instanceOf[DeclarantContactDetailsView]
+    private lazy val dataRetrievalAction                               = new FakeDataRetrievalAction(userAnswers)
+    val userAnswers: Option[UserAnswers]                               = Some(UserAnswers("some-cred-id"))
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -68,9 +72,9 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-    val formProvider: DeclarantContactDetailsFormProvider = injector.instanceOf[DeclarantContactDetailsFormProvider]
+    val formProvider: DeclarantContactDetailsFormProvider              = injector.instanceOf[DeclarantContactDetailsFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: DeclarantContactDetailsFormProvider = formProvider
+    val form: DeclarantContactDetailsFormProvider                      = formProvider
   }
 
   "GET onLoad" when {
@@ -81,12 +85,15 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
 
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Option(
-        UserAnswers("some-cred-id").set(
-          DeclarantContactDetailsPage,
-          ContactDetails("First Second", "email@email.com", "+1234567890")
-        ).success.value
+        UserAnswers("some-cred-id")
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "+1234567890")
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -105,14 +112,16 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
           )
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url
+        )
       }
 
       "return a SEE OTHER to Check Your Answers page response when correct data is sent and in checkMode" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id").set(CheckModePage, true).success.value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequestGenerator(
             fullName = "First",
             email = "email@email.com",
@@ -124,12 +133,14 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit()(
-          fakeRequestGenerator(
-            fullName = "First",
-            email = "email@email.com",
-            phoneNumber = "0123456789"
-          ))
+        await(
+          controller.onSubmit()(
+            fakeRequestGenerator(
+              fullName = "First",
+              email = "email@email.com",
+              phoneNumber = "0123456789"
+            )
+          )
         )
         verifyCalls()
       }
@@ -163,11 +174,16 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
     "one entry and not in change mode" should {
       "when loading page back button should take you to Trader address page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(NumberOfEntriesPage, OneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false)
+              .success
+              .value
+              .set(NumberOfEntriesPage, OneEntry)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.docUpload.routes.UploadAnotherFileController.onLoad()
       }
     }
@@ -175,11 +191,16 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
     "bulk entry and not in change mode" should {
       "when loading page back button should take you to Trader address page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false)
+              .success
+              .value
+              .set(NumberOfEntriesPage, MoreThanOneEntry)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.reasons.routes.MoreInformationController.onLoad()
       }
     }
@@ -187,10 +208,13 @@ class DeclarantContactDetailsControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "when loading page back button should take you to Check your answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

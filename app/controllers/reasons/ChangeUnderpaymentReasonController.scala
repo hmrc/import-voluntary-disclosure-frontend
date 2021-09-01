@@ -34,15 +34,16 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
-                                                   getData: DataRetrievalAction,
-                                                   requireData: DataRequiredAction,
-                                                   sessionRepository: SessionRepository,
-                                                   mcc: MessagesControllerComponents,
-                                                   view: ChangeUnderpaymentReasonView,
-                                                   implicit val ec: ExecutionContext
-                                                  )
-  extends FrontendController(mcc) with I18nSupport {
+class ChangeUnderpaymentReasonController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: ChangeUnderpaymentReasonView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink: Call = controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
 
@@ -50,24 +51,29 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
       case Some(reason) =>
         val boxNumber = reason.original.boxNumber
-        Future.successful(Ok(view(backLink, summaryList(reason.original), pageTitle(boxNumber), pageHeading(boxNumber))))
-      case _ => Future.successful(InternalServerError("No change underpayment reasons found"))
+        Future.successful(
+          Ok(view(backLink, summaryList(reason.original), pageTitle(boxNumber), pageHeading(boxNumber)))
+        )
+      case _            => Future.successful(InternalServerError("No change underpayment reasons found"))
     }
   }
 
-  def change(boxNumber: Int, itemNumber: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    request.userAnswers.get(UnderpaymentReasonsPage) match {
-      case Some(reasons) =>
-        val originalReason = reasons.filter(x => x.boxNumber.id == boxNumber && x.itemNumber == itemNumber).head
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(originalReason, originalReason)))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad())
-        }
-      case _ => Future.successful(InternalServerError("No underpayment reason list found"))
+  def change(boxNumber: Int, itemNumber: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      request.userAnswers.get(UnderpaymentReasonsPage) match {
+        case Some(reasons) =>
+          val originalReason = reasons.filter(x => x.boxNumber.id == boxNumber && x.itemNumber == itemNumber).head
+          for {
+            updatedAnswers <-
+              Future.fromTry(
+                request.userAnswers
+                  .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(originalReason, originalReason))
+              )
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad())
+        case _             => Future.successful(InternalServerError("No underpayment reason list found"))
+      }
     }
-  }
 
   def summaryList(underpaymentReason: UnderpaymentReason)(implicit messages: Messages): SummaryList = {
 
@@ -77,14 +83,16 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
           SummaryListRow(
             key = Key(content = Text(messages("changeUnderpaymentReason.itemNumber"))),
             value = Value(content = HtmlContent(underpaymentReason.itemNumber.toString)),
-            actions = Some(Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
-                  messages("changeUnderpaymentReason.item.change")
+            actions = Some(
+              Actions(
+                items = Seq(
+                  ActionItemHelper.createChangeActionItem(
+                    controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
+                    messages("changeUnderpaymentReason.item.change")
+                  )
                 )
               )
-            ))
+            )
           )
         )
       } else {
@@ -96,26 +104,33 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
       SummaryListRow(
         key = Key(content = Text(messages("changeUnderpaymentReason.original"))),
         value = Value(content = HtmlContent(underpaymentReason.original)),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItemHelper.createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber.id).url,
-              messages("changeUnderpaymentReason.values.original.change")
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createChangeActionItem(
+                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController
+                  .onLoad(underpaymentReason.boxNumber.id)
+                  .url,
+                messages("changeUnderpaymentReason.values.original.change")
+              )
             )
           )
-        )
         )
       ),
       SummaryListRow(
         key = Key(content = Text(messages("changeUnderpaymentReason.amended")), classes = "govuk-!-width-two-thirds"),
         value = Value(content = HtmlContent(underpaymentReason.amended)),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItemHelper.createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(underpaymentReason.boxNumber.id).url,
-              messages("changeUnderpaymentReason.values.amended.change")
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItemHelper.createChangeActionItem(
+                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController
+                  .onLoad(underpaymentReason.boxNumber.id)
+                  .url,
+                messages("changeUnderpaymentReason.values.amended.change")
+              )
             )
-          ))
+          )
         )
       )
     )
@@ -131,26 +146,27 @@ class ChangeUnderpaymentReasonController @Inject()(identify: IdentifierAction,
     SummaryListRow(
       key = Key(content = Text(messages("changeUnderpaymentReason.otherReason"))),
       value = Value(content = HtmlContent(value)),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItemHelper.createChangeActionItem(
-            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
-            messages("changeUnderpaymentReason.values.otherReason.change")
+      actions = Some(
+        Actions(
+          items = Seq(
+            ActionItemHelper.createChangeActionItem(
+              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
+              messages("changeUnderpaymentReason.values.otherReason.change")
+            )
           )
-        ))
+        )
       )
     )
 
-  private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String = {
+  private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
       case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonTitle")
-      case _ => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
+      case _                   => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
     }
-  }
 
   private[controllers] def pageHeading(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
       case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonHeading")
-      case _ => messages("changeUnderpaymentReason.heading", boxNumber.id)
+      case _                   => messages("changeUnderpaymentReason.heading", boxNumber.id)
     }
 }

@@ -34,10 +34,14 @@ import scala.concurrent.Future
 
 class ImporterNameControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithImporterName: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-    .set(
-      ImporterNamePage, "test"
-    ).success.value
+  val userAnswersWithImporterName: Option[UserAnswers] = Some(
+    UserAnswers("some-cred-id")
+      .set(
+        ImporterNamePage,
+        "test"
+      )
+      .success
+      .value
   )
 
   private def fakeRequestGenerator(importerName: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -46,7 +50,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
     )
 
   trait Test extends MockSessionRepository {
-    lazy val controller = new ImporterNameController(
+    lazy val controller                                                = new ImporterNameController(
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -56,9 +60,9 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       ImporterNameView,
       ec
     )
-    private lazy val ImporterNameView = app.injector.instanceOf[ImporterNameView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+    private lazy val ImporterNameView                                  = app.injector.instanceOf[ImporterNameView]
+    private lazy val dataRetrievalAction                               = new FakeDataRetrievalAction(userAnswers)
+    val userAnswers: Option[UserAnswers]                               = Some(UserAnswers("some-cred-id"))
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -70,15 +74,15 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-    val formProvider: ImporterNameFormProvider = injector.instanceOf[ImporterNameFormProvider]
+    val formProvider: ImporterNameFormProvider                         = injector.instanceOf[ImporterNameFormProvider]
     MockedSessionRepository.set(Future.successful(true))
-    val form: ImporterNameFormProvider = formProvider
+    val form: ImporterNameFormProvider                                 = formProvider
   }
 
   "GET onLoad" should {
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -86,7 +90,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id").set(ImporterNamePage, "test").success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -98,17 +102,21 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response to Address lookup when correct data with character values" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url)
+        redirectLocation(result) mustBe Some(
+          controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url
+        )
       }
 
       "return a SEE OTHER response to Check Your Answers when correct data with character values" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(CheckModePage, true).success.value
+            .set(CheckModePage, true)
+            .success
+            .value
         )
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator("test"))
+        lazy val result: Future[Result]               = controller.onSubmit()(fakeRequestGenerator("test"))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
@@ -133,8 +141,9 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       }
 
       "return BAD REQUEST when data is greater than 50 in length" in new Test {
-        lazy val result: Future[Result] = controller.onSubmit()(fakeRequestGenerator
-        ("huihruidoshhgufidoshgufdishgfudisohgfuidoshgufidoshgfidoshgfudioshgf"))
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequestGenerator("huihruidoshhgufidoshgufdishgfudisohgfuidoshgufidoshgfidoshgfudioshgf")
+        )
         status(result) mustBe Status.BAD_REQUEST
       }
 
@@ -155,10 +164,13 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to User type page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.importDetails.routes.UserTypeController.onLoad()
 
       }
@@ -167,10 +179,13 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true)
+              .success
+              .value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call                         = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

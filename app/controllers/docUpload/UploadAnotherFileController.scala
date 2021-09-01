@@ -33,18 +33,21 @@ import views.html.docUpload.UploadAnotherFileView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UploadAnotherFileController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            mcc: MessagesControllerComponents,
-                                            formProvider: UploadAnotherFileFormProvider,
-                                            view: UploadAnotherFileView,
-                                            implicit val ec: ExecutionContext
-                                           ) extends FrontendController(mcc) with I18nSupport {
+class UploadAnotherFileController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  formProvider: UploadAnotherFileFormProvider,
+  view: UploadAnotherFileView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad().url))) { files =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    request.userAnswers
+      .get(FileUploadPage)
+      .fold(Future(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad().url))) { files =>
         if (files.isEmpty) {
           Future.successful(Redirect(controllers.docUpload.routes.UploadFileController.onLoad()))
         } else {
@@ -54,27 +57,33 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => resultWithErrors(formWithErrors),
-      addAnotherFile => {
-        if (addAnotherFile) {
-          Future.successful(Redirect(controllers.docUpload.routes.UploadFileController.onLoad()))
-        } else {
-          if (request.checkMode) {
-            Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => resultWithErrors(formWithErrors),
+        addAnotherFile =>
+          if (addAnotherFile) {
+            Future.successful(Redirect(controllers.docUpload.routes.UploadFileController.onLoad()))
           } else {
-            Future.successful(Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()))
+            if (request.checkMode) {
+              Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+            } else {
+              Future.successful(Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()))
+            }
           }
-        }
-      }
-    )
+      )
   }
 
-  private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
-    request.userAnswers.get(FileUploadPage).fold(Future(Redirect(controllers.docUpload.routes.UploadFileController.onLoad().url))) { files =>
-      Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files), getOptionalDocs(request.userAnswers))))
-    }
-  }
+  private def resultWithErrors(
+    formWithErrors: Form[Boolean]
+  )(implicit request: DataRequest[AnyContent]): Future[Result] =
+    request.userAnswers
+      .get(FileUploadPage)
+      .fold(Future(Redirect(controllers.docUpload.routes.UploadFileController.onLoad().url))) { files =>
+        Future.successful(
+          BadRequest(view(formWithErrors, buildSummaryList(files), getOptionalDocs(request.userAnswers)))
+        )
+      }
 
   private def getOptionalDocs(userAnswers: UserAnswers): Seq[OptionalDocument] = {
     val anyOptionalDocs = userAnswers.get(AnyOtherSupportingDocsPage).getOrElse(false)
@@ -86,8 +95,8 @@ class UploadAnotherFileController @Inject()(identify: IdentifierAction,
   }
 
   private def buildSummaryList(files: Seq[FileUploadInfo])(implicit request: DataRequest[AnyContent]) = {
-    val summaryListRows = files.zipWithIndex.map {
-      case (file, index) => SummaryListRow(
+    val summaryListRows = files.zipWithIndex.map { case (file, index) =>
+      SummaryListRow(
         key = Key(content = Text(file.fileName), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
         actions = Some(
           Actions(

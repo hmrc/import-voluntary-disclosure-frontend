@@ -31,7 +31,7 @@ class UpdateCaseAuditEventSpec extends ModelSpecBase with AuditTestData with Reu
 
   val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo")
-  implicit lazy val dataRequest = DataRequest(
+  implicit lazy val dataRequest                        = DataRequest(
     OptionalDataRequest(
       IdentifierRequest(fakeRequest, "credId", "eori"),
       "credId",
@@ -42,7 +42,6 @@ class UpdateCaseAuditEventSpec extends ModelSpecBase with AuditTestData with Reu
     "eori",
     userAnswers
   )
-
 
   "A valid UpdateCaseAuditEvent model" should {
     "contain correct details" in {

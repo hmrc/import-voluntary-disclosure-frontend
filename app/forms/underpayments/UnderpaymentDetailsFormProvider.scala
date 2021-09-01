@@ -36,7 +36,7 @@ class UnderpaymentDetailsFormProvider extends Mappings {
           invalidDecimalPlacesKey = "underpaymentDetails.error.originalNonNumber",
           nonNumericKey = "underpaymentDetails.error.originalNonNumber"
         ).verifying(inRange[BigDecimal](minimum, maximum, "underpaymentDetails.error.originalOutOfRange")),
-        "amended" -> numeric(
+        "amended"  -> numeric(
           isCurrency = true,
           requiredKey = "underpaymentDetails.error.amendedNonEmpty",
           invalidDecimalPlacesKey = "underpaymentDetails.error.amendedNonNumber",
@@ -47,13 +47,12 @@ class UnderpaymentDetailsFormProvider extends Mappings {
     )
 
   private[forms] def positiveAmountOwing(): Constraint[UnderpaymentAmount] =
-    Constraint {
-      input =>
-        if (input.original < input.amended) {
-          Valid
-        } else {
-          Invalid("underpaymentDetails.error.positiveAmountOwed")
-        }
+    Constraint { input =>
+      if (input.original < input.amended) {
+        Valid
+      } else {
+        Invalid("underpaymentDetails.error.positiveAmountOwed")
+      }
     }
 
 }

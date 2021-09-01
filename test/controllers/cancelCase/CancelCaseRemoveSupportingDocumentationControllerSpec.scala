@@ -31,26 +31,35 @@ import views.html.cancelCase.CancelCaseRemoveUploadedFileView
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-
 class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val cancelCaseRemoveUploadedFileView: CancelCaseRemoveUploadedFileView = app.injector.instanceOf[CancelCaseRemoveUploadedFileView]
+    private lazy val cancelCaseRemoveUploadedFileView: CancelCaseRemoveUploadedFileView =
+      app.injector.instanceOf[CancelCaseRemoveUploadedFileView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val formProvider: CancelCaseRemoveUploadedFileFormProvider = injector.instanceOf[CancelCaseRemoveUploadedFileFormProvider]
-    val form: CancelCaseRemoveUploadedFileFormProvider = formProvider
+    val formProvider: CancelCaseRemoveUploadedFileFormProvider =
+      injector.instanceOf[CancelCaseRemoveUploadedFileFormProvider]
+    val form: CancelCaseRemoveUploadedFileFormProvider         = formProvider
 
     val index: Index = Index.apply(0)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new CancelCaseRemoveSupportingDocumentationController(messagesApi, mockSessionRepository, authenticatedAction,
-      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, cancelCaseRemoveUploadedFileView, ec)
+    lazy val controller = new CancelCaseRemoveSupportingDocumentationController(
+      messagesApi,
+      mockSessionRepository,
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      form,
+      messagesControllerComponents,
+      cancelCaseRemoveUploadedFileView,
+      ec
+    )
   }
-
 
   "GET onLoad" should {
     "redirect to UploadSupportingDocumentation page if no uploaded-files in user answers" in new Test {
@@ -64,9 +73,11 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
           .set(
             UploadSupportingDocumentationPage,
             Seq.empty
-          ).success.value
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(index)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(index)(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -75,17 +86,21 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
         UserAnswers("credId")
           .set(
             UploadSupportingDocumentationPage,
-            Seq(FileUploadInfo(
-              reference = "file-ref-1",
-              fileName = "file.txt",
-              downloadUrl = "url",
-              uploadTimestamp = LocalDateTime.now,
-              checksum = "checksum",
-              fileMimeType = "application/txt"
-            ))
-          ).success.value
+            Seq(
+              FileUploadInfo(
+                reference = "file-ref-1",
+                fileName = "file.txt",
+                downloadUrl = "url",
+                uploadTimestamp = LocalDateTime.now,
+                checksum = "checksum",
+                fileMimeType = "application/txt"
+              )
+            )
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(index)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(index)(fakeRequest)
       status(result) mustBe Status.OK
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -97,20 +112,22 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
@@ -126,17 +143,21 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
           UserAnswers("credId")
             .set(
               UploadSupportingDocumentationPage,
-              Seq(FileUploadInfo(
-                reference = "file-ref-1",
-                fileName = "file.txt",
-                downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
-                checksum = "checksum",
-                fileMimeType = "application/txt"
-              ))
-            ).success.value
+              Seq(
+                FileUploadInfo(
+                  reference = "file-ref-1",
+                  fileName = "file.txt",
+                  downloadUrl = "url",
+                  uploadTimestamp = LocalDateTime.now,
+                  checksum = "checksum",
+                  fileMimeType = "application/txt"
+                )
+              )
+            )
+            .success
+            .value
         )
-        val result: Future[Result] = controller.onSubmit(index)(fakeRequest)
+        val result: Future[Result]                    = controller.onSubmit(index)(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
       "return a Internal Server Error if data lost" in new Test {
@@ -147,6 +168,3 @@ class CancelCaseRemoveSupportingDocumentationControllerSpec extends ControllerSp
   }
 
 }
-
-
-

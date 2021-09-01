@@ -30,21 +30,23 @@ import play.twirl.api.Html
 import views.html.importDetails.EntryDetailsView
 
 class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
-  val today: LocalDate = LocalDate.now()
+  val today: LocalDate    = LocalDate.now()
   val tomorrow: LocalDate = LocalDate.now().plusDays(1)
 
-  def formDataSetup(epu: Option[String] = Some("123"),
-                    entryNumber: Option[String] = Some("123456Q"),
-                    day: Option[String] = Some(s"${today.getDayOfMonth}"),
-                    month: Option[String] = Some(s"${today.getMonthValue}"),
-                    year: Option[String] = Some(s"${today.getYear}")): Map[String, String] =
+  def formDataSetup(
+    epu: Option[String] = Some("123"),
+    entryNumber: Option[String] = Some("123456Q"),
+    day: Option[String] = Some(s"${today.getDayOfMonth}"),
+    month: Option[String] = Some(s"${today.getMonthValue}"),
+    year: Option[String] = Some(s"${today.getYear}")
+  ): Map[String, String] =
     (
       epu.map(_ => "epu" -> epu.get) ++
         entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
         day.map(_ => "entryDate.day" -> day.get) ++
         month.map(_ => "entryDate.month" -> month.get) ++
         year.map(_ => "entryDate.year" -> year.get)
-      ).toMap
+    ).toMap
 
   private lazy val injectedView: EntryDetailsView = app.injector.instanceOf[EntryDetailsView]
 
@@ -54,53 +56,57 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Entry Details view" when {
 
-    val missingEpu = formDataSetup(epu = None)
-    val missingEntryNumber = formDataSetup(entryNumber = None)
-    val missingEntryDate = formDataSetup(day = None, month = None, year = None)
-    val missingEntryDateDay = formDataSetup(day = None)
-    val missingEntryDateDayAndMonth = formDataSetup(day = None, month = None)
-    val missingEntryDateDayAndYear = formDataSetup(day = None, year = None)
-    val missingEntryDateMonth = formDataSetup(month = None)
+    val missingEpu                   = formDataSetup(epu = None)
+    val missingEntryNumber           = formDataSetup(entryNumber = None)
+    val missingEntryDate             = formDataSetup(day = None, month = None, year = None)
+    val missingEntryDateDay          = formDataSetup(day = None)
+    val missingEntryDateDayAndMonth  = formDataSetup(day = None, month = None)
+    val missingEntryDateDayAndYear   = formDataSetup(day = None, year = None)
+    val missingEntryDateMonth        = formDataSetup(month = None)
     val missingEntryDateMonthAndYear = formDataSetup(month = None, year = None)
-    val missingEntryDateYear = formDataSetup(year = None)
-    val formatEpu = formDataSetup(epu = Some("12"))
-    val formatEntryNumber = formDataSetup(entryNumber = Some("12"))
-    val realEntryDateError = formDataSetup(day = Some("34"))
-    val pastEntryDateError = formDataSetup(
+    val missingEntryDateYear         = formDataSetup(year = None)
+    val formatEpu                    = formDataSetup(epu = Some("12"))
+    val formatEntryNumber            = formDataSetup(entryNumber = Some("12"))
+    val realEntryDateError           = formDataSetup(day = Some("34"))
+    val pastEntryDateError           = formDataSetup(
       day = Some(s"${tomorrow.getDayOfMonth}"),
       month = Some(s"${tomorrow.getMonthValue}"),
       year = Some(s"${tomorrow.getYear}")
     )
-    val twoDigitEntryDateYearError = formDataSetup(year = Some("20"))
-    val afterDateYearError = formDataSetup(
-      epu = Some("123"), entryNumber = Some("123456a"), day = Some("1"), month = Some("1"), year = Some("1900")
+    val twoDigitEntryDateYearError   = formDataSetup(year = Some("20"))
+    val afterDateYearError           = formDataSetup(
+      epu = Some("123"),
+      entryNumber = Some("123456a"),
+      day = Some("1"),
+      month = Some("1"),
+      year = Some("1900")
     )
 
     // represents error scenario description, data and expected error message
     val testScenarios: Map[String, (Map[String, String], String)] = Map(
-      "EPU is missing" -> (missingEpu -> EntryDetailsMessages.epuRequiredError),
-      "Entry number is missing" -> (missingEntryNumber -> EntryDetailsMessages.entryNumberRequiredError),
-      "Entry date is missing" -> (missingEntryDate -> EntryDetailsMessages.entryDateAllRequiredError),
-      "Entry date day is missing" -> (missingEntryDateDay -> EntryDetailsMessages.entryDateDayRequiredError),
-      "Entry date day and month are missing" -> (missingEntryDateDayAndMonth -> EntryDetailsMessages.entryDateDayMonthRequiredError),
-      "Entry date day and year are missing" -> (missingEntryDateDayAndYear -> EntryDetailsMessages.entryDateDayYearRequiredError),
-      "Entry date month is missing" -> (missingEntryDateMonth -> EntryDetailsMessages.entryDateMonthRequiredError),
-      "Entry date month and year are missing" -> (missingEntryDateMonthAndYear -> EntryDetailsMessages.entryDateMonthYearRequiredError),
-      "Entry date year is missing" -> (missingEntryDateYear -> EntryDetailsMessages.entryDateYearRequiredError),
-      "EPU format is incorrect" -> (formatEpu -> EntryDetailsMessages.epuFormatError),
-      "Entry number format is incorrect" -> (formatEntryNumber -> EntryDetailsMessages.entryNumberFormatError),
-      "Entry date is not a real date" -> (realEntryDateError -> EntryDetailsMessages.entryDateRealError),
-      "Entry date is in the future" -> (pastEntryDateError -> EntryDetailsMessages.entryDatePastError),
-      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError -> EntryDetailsMessages.entryDateRealError),
-      "Entry date must be after 1 January 1900" -> (afterDateYearError -> EntryDetailsMessages.afterDateYearError)
+      "EPU is missing"                             -> (missingEpu                   -> EntryDetailsMessages.epuRequiredError),
+      "Entry number is missing"                    -> (missingEntryNumber           -> EntryDetailsMessages.entryNumberRequiredError),
+      "Entry date is missing"                      -> (missingEntryDate             -> EntryDetailsMessages.entryDateAllRequiredError),
+      "Entry date day is missing"                  -> (missingEntryDateDay          -> EntryDetailsMessages.entryDateDayRequiredError),
+      "Entry date day and month are missing"       -> (missingEntryDateDayAndMonth  -> EntryDetailsMessages.entryDateDayMonthRequiredError),
+      "Entry date day and year are missing"        -> (missingEntryDateDayAndYear   -> EntryDetailsMessages.entryDateDayYearRequiredError),
+      "Entry date month is missing"                -> (missingEntryDateMonth        -> EntryDetailsMessages.entryDateMonthRequiredError),
+      "Entry date month and year are missing"      -> (missingEntryDateMonthAndYear -> EntryDetailsMessages.entryDateMonthYearRequiredError),
+      "Entry date year is missing"                 -> (missingEntryDateYear         -> EntryDetailsMessages.entryDateYearRequiredError),
+      "EPU format is incorrect"                    -> (formatEpu                    -> EntryDetailsMessages.epuFormatError),
+      "Entry number format is incorrect"           -> (formatEntryNumber            -> EntryDetailsMessages.entryNumberFormatError),
+      "Entry date is not a real date"              -> (realEntryDateError           -> EntryDetailsMessages.entryDateRealError),
+      "Entry date is in the future"                -> (pastEntryDateError           -> EntryDetailsMessages.entryDatePastError),
+      "Entry date has too many digits in the year" -> (twoDigitEntryDateYearError   -> EntryDetailsMessages.entryDateRealError),
+      "Entry date must be after 1 January 1900"    -> (afterDateYearError           -> EntryDetailsMessages.afterDateYearError)
     )
 
     testScenarios.foreach { scenario =>
       val (description, (formData, errorMessage)) = scenario
 
       description should {
-        lazy val form: Form[EntryDetails] = formProvider().bind(formData)
-        lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
+        lazy val form: Form[EntryDetails]    = formProvider().bind(formData)
+        lazy val view: Html                  = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
@@ -118,8 +124,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "multiple errors" should {
 
-      lazy val form: Form[EntryDetails] = formProvider().bind(Map("entryNumber" -> "123456Q"))
-      lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
+      lazy val form: Form[EntryDetails]    = formProvider().bind(Map("entryNumber" -> "123456Q"))
+      lazy val view: Html                  = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(EntryDetailsMessages.errorPrefix + EntryDetailsMessages.title)
@@ -132,8 +138,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "page for the importer" should {
-      lazy val form: Form[EntryDetails] = formProvider()
-      lazy val view: Html = injectedView(form, backLink, isRepFlow = false)(fakeRequest, messages)
+      lazy val form: Form[EntryDetails]    = formProvider()
+      lazy val view: Html                  = injectedView(form, backLink, isRepFlow = false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "contain the expected top paragraph" in {
@@ -142,8 +148,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "page for the representative" should {
-      lazy val form: Form[EntryDetails] = formProvider()
-      lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
+      lazy val form: Form[EntryDetails]    = formProvider()
+      lazy val view: Html                  = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "contain the expected top paragraph" in {
@@ -153,8 +159,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   it should {
-    lazy val form: Form[EntryDetails] = formProvider()
-    lazy val view: Html = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
+    lazy val form: Form[EntryDetails]    = formProvider()
+    lazy val view: Html                  = injectedView(form, backLink, isRepFlow = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(EntryDetailsMessages.title)

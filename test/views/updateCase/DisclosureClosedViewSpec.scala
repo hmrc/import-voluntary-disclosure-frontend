@@ -30,16 +30,15 @@ class DisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages {
 
   val caseId: String = "C182107152124AQYVM6E34"
 
-
   "Rendering the Disclosure Closed page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(caseId)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(DisclosureClosedMessages.pageTitle)
 
       "it" should {
-        lazy val view: Html = injectedView(caseId)(fakeRequest, messages)
+        lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page title of '${DisclosureClosedMessages.heading}'" in {
           elementText("h1") mustBe DisclosureClosedMessages.heading
@@ -52,7 +51,6 @@ class DisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages {
         s"have the correct page text of '${DisclosureClosedMessages.p2}'" in {
           elementText("#main-content p:nth-of-type(2)") mustBe DisclosureClosedMessages.p2
         }
-
 
       }
     }

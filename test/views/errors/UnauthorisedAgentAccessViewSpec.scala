@@ -29,7 +29,7 @@ class UnauthorisedAgentAccessViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: UnauthorisedAgentAccessView = app.injector.instanceOf[UnauthorisedAgentAccessView]
 
   "Rendering the UnauthorisedAgentAccess page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages, appConfig)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UnauthorisedAgentAccessMessages.title)

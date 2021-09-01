@@ -30,14 +30,12 @@ object UpdateCaseError {
   implicit val reads: Reads[UpdateCaseError] =
     Reads { json =>
       for {
-        code <- (json \ "errorCode").validate[Int]
+        code    <- (json \ "errorCode").validate[Int]
         message <- (json \ "errorMessage").validateOpt[String]
-      } yield {
-        code match {
-          case 1 => UpdateCaseError.InvalidCaseId
-          case 2 => UpdateCaseError.CaseAlreadyClosed
-          case 3 => UpdateCaseError.UnexpectedError(code, message)
-        }
+      } yield code match {
+        case 1 => UpdateCaseError.InvalidCaseId
+        case 2 => UpdateCaseError.CaseAlreadyClosed
+        case 3 => UpdateCaseError.UnexpectedError(code, message)
       }
     }
 }

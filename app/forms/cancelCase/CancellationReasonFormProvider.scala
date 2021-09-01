@@ -25,11 +25,10 @@ class CancellationReasonFormProvider @Inject() extends Mappings {
 
   val maxLength: Int = 1400
 
-  def apply(): Form[String] = {
+  def apply(): Form[String] =
     Form(
       "value" -> text("cancellationReason.error.required")
         .verifying(maxLength(maxLength, "cancellationReason.error.maxLength"))
         .verifying(emojiConstraint("cancellationReason.error.noEmoji"))
     )
-  }
 }

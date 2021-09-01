@@ -27,7 +27,7 @@ class LanguageSwitchControllerSpec extends ControllerSpecBase {
   lazy val controller = new LanguageSwitchController(appConfig, languageUtils, messagesControllerComponents)
 
   lazy val emptyFakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-  lazy val fRequest: FakeRequest[AnyContentAsEmpty.type] =
+  lazy val fRequest: FakeRequest[AnyContentAsEmpty.type]         =
     FakeRequest("get", "aurl").withHeaders(REFERER -> "thisIsMyNextLocation")
 
   "switchToLanguage" should {

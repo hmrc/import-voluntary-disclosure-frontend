@@ -32,16 +32,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AnyOtherSupportingCancellationDocsController @Inject()(identify: IdentifierAction,
-                                                             getData: DataRetrievalAction,
-                                                             requireData: DataRequiredAction,
-                                                             sessionRepository: SessionRepository,
-                                                             mcc: MessagesControllerComponents,
-                                                             formProvider: AnyOtherSupportingCancellationDocsFormProvider,
-                                                             view: AnyOtherSupportingCancellationDocsView,
-                                                             implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
-
+class AnyOtherSupportingCancellationDocsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: AnyOtherSupportingCancellationDocsFormProvider,
+  view: AnyOtherSupportingCancellationDocsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
@@ -51,34 +52,35 @@ class AnyOtherSupportingCancellationDocsController @Inject()(identify: Identifie
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value =>
-        for {
-          answersWithSupportingDocumentation <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, value))
-          answersWithUpdatedFiles <-
-            if (!value) Future.fromTry(answersWithSupportingDocumentation.remove(UploadSupportingDocumentationPage))
-            else Future.successful(answersWithSupportingDocumentation)
-          existingAnswers = request.userAnswers.get(MoreDocumentationPage)
-          _ <- sessionRepository.set(answersWithUpdatedFiles)
-        } yield {
-          val hasNotChanged = existingAnswers.contains(value)
-          if (request.checkMode && (!value || hasNotChanged)) {
-            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
-          } else if (value) {
-            Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
-          } else {
-            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        value =>
+          for {
+            answersWithSupportingDocumentation <- Future.fromTry(request.userAnswers.set(MoreDocumentationPage, value))
+            answersWithUpdatedFiles            <-
+              if (!value) Future.fromTry(answersWithSupportingDocumentation.remove(UploadSupportingDocumentationPage))
+              else Future.successful(answersWithSupportingDocumentation)
+            existingAnswers                     = request.userAnswers.get(MoreDocumentationPage)
+            _                                  <- sessionRepository.set(answersWithUpdatedFiles)
+          } yield {
+            val hasNotChanged = existingAnswers.contains(value)
+            if (request.checkMode && (!value || hasNotChanged)) {
+              Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+            } else if (value) {
+              Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
+            } else {
+              Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+            }
           }
-        }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.cancelCase.routes.CancellationReasonController.onLoad()
     }
-  }
 }

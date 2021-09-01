@@ -21,11 +21,13 @@ import models.requests.DataRequest
 import play.api.libs.json.{JsObject, JsValue, Json}
 import services.JsonAuditModel
 
-case class CreateCaseAuditEvent(submissionResponse: SubmissionResponse, submissionData: JsValue)(implicit request: DataRequest[_]) extends JsonAuditModel {
-  override val auditType: String = "VoluntaryDisclosureSubmitted"
+case class CreateCaseAuditEvent(submissionResponse: SubmissionResponse, submissionData: JsValue)(implicit
+  request: DataRequest[_]
+) extends JsonAuditModel {
+  override val auditType: String       = "VoluntaryDisclosureSubmitted"
   override val transactionName: String = "create-case"
-  override val detail: JsValue = Json.obj(
-    "caseId" -> submissionResponse.id,
+  override val detail: JsValue         = Json.obj(
+    "caseId"       -> submissionResponse.id,
     "credentialId" -> request.credId
   ) ++ Json.toJson(submissionData).asInstanceOf[JsObject]
 }

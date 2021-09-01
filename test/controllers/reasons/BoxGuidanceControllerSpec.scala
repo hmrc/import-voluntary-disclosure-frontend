@@ -33,10 +33,16 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
-    lazy val controller = new BoxGuidanceController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view, appConfig)
+    lazy val controller                  = new BoxGuidanceController(
+      authenticatedAction,
+      dataRetrievalAction,
+      messagesControllerComponents,
+      dataRequiredAction,
+      view,
+      appConfig
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view = injector.instanceOf[BoxGuidanceView]
+    val view                             = injector.instanceOf[BoxGuidanceView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
@@ -55,9 +61,11 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
     "redirect to the summary page when underpayment reasons already exist" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "100", "350"))).success.value
+          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "100", "350")))
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
 

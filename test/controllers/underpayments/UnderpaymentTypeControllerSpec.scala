@@ -39,12 +39,20 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
-    val form: UnderpaymentTypeFormProvider = formProvider
+    val form: UnderpaymentTypeFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentTypeController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentTypeView, form, ec)
+    lazy val controller = new UnderpaymentTypeController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentTypeView,
+      form,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -57,7 +65,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, allUnderpaymentDetailsSelected()).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -65,7 +73,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, someUnderpaymentDetailsSelected()).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -78,7 +86,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq.empty).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -86,7 +94,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("credId").set(UnderpaymentTypePage, "A00").success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -98,7 +106,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
 
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-        lazy val result: Future[Result] = controller.onSubmit()(
+        lazy val result: Future[Result]               = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "A00")
         )
         status(result) mustBe Status.SEE_OTHER
@@ -126,7 +134,8 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
 
     "there are no existing underpayment types back button" should {
       "take you to the underpayments start page" in new Test {
-        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentStartController.onLoad()
+        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentStartController
+          .onLoad()
       }
     }
 
@@ -135,7 +144,8 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId").set(UnderpaymentDetailSummaryPage, allUnderpaymentDetailsSelected()).success.value
         )
-        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController
+          .onLoad()
       }
     }
 

@@ -30,9 +30,9 @@ import views.html.reasons.RemoveUnderpaymentReasonView
 class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: RemoveUnderpaymentReasonView = app.injector.instanceOf[RemoveUnderpaymentReasonView]
-  val backLink = Call("GET", "backLink/url")
+  val backLink                                                = Call("GET", "backLink/url")
 
-  val boxNumber = BoxNumber.Box35
+  val boxNumber  = BoxNumber.Box35
   val itemNumber = 1
 
   val formProvider: RemoveUnderpaymentReasonFormProvider = injector.instanceOf[RemoveUnderpaymentReasonFormProvider]
@@ -40,8 +40,8 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
   "Rendering the Remove Underpayment Reason page" when {
 
     "no errors exist" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(
         form,
         backLink,
         boxNumber,
@@ -52,7 +52,9 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
       checkPageTitle(RemoveUnderpaymentReasonMessages.title)
 
       s"have the correct paragraph" in {
-        document.select("#main-content > div > div > p").text() mustBe RemoveUnderpaymentReasonMessages.box35Paragraph(itemNumber)
+        document.select("#main-content > div > div > p").text() mustBe RemoveUnderpaymentReasonMessages.box35Paragraph(
+          itemNumber
+        )
       }
 
       "not render an error summary" in {
@@ -65,8 +67,8 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
     }
 
     "an error exists" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(
         form,
         backLink,
         boxNumber,
@@ -81,7 +83,9 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe RemoveUnderpaymentReasonMessages.errorPrefix + RemoveUnderpaymentReasonMessages.requiredError
+        elementText(
+          "#value-error"
+        ) mustBe RemoveUnderpaymentReasonMessages.errorPrefix + RemoveUnderpaymentReasonMessages.requiredError
       }
     }
 
@@ -89,8 +93,8 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(
       form,
       backLink,
       boxNumber,
@@ -99,11 +103,15 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${RemoveUnderpaymentReasonMessages.radioYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe RemoveUnderpaymentReasonMessages.radioYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe RemoveUnderpaymentReasonMessages.radioYes
     }
 
     s"have the correct value for the second radio button of '${RemoveUnderpaymentReasonMessages.radioNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe RemoveUnderpaymentReasonMessages.radioNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe RemoveUnderpaymentReasonMessages.radioNo
     }
 
     "render a back link with the correct URL" in {

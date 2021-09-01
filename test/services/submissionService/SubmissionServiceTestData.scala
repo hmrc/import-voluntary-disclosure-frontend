@@ -90,15 +90,22 @@ trait SubmissionServiceTestData extends ReusableValues {
     answers <- answers.set(ImporterAddressPage, completeSubmission.importerAddress.getOrElse(addressDetails))
     answers <- answers.set(DefermentPage, completeSubmission.paymentByDeferment)
     answers <- answers.set(DefermentTypePage, completeSubmission.defermentType.getOrElse("B"))
-    answers <- answers.set(DefermentAccountPage, completeSubmission.defermentAccountNumber.getOrElse(defermentAccountNumber))
+    answers <-
+      answers.set(DefermentAccountPage, completeSubmission.defermentAccountNumber.getOrElse(defermentAccountNumber))
     answers <- answers.set(AdditionalDefermentTypePage, completeSubmission.additionalDefermentType.getOrElse("B"))
-    answers <- answers.set(AdditionalDefermentNumberPage, completeSubmission.additionalDefermentAccountNumber.getOrElse(defermentAccountNumber))
+    answers <- answers.set(
+                 AdditionalDefermentNumberPage,
+                 completeSubmission.additionalDefermentAccountNumber.getOrElse(defermentAccountNumber)
+               )
     answers <- answers.set(UnderpaymentReasonsPage, completeSubmission.amendedItems.get)
     answers <- answers.set(HasFurtherInformationPage, completeSubmission.hasAdditionalInfo.get)
     answers <- answers.set(MoreInformationPage, completeSubmission.additionalInfo.getOrElse("Additional information"))
     answers <- answers.set(UnderpaymentDetailSummaryPage, completeSubmission.underpaymentDetails)
     answers <- answers.set(AnyOtherSupportingDocsPage, completeSubmission.anyOtherSupportingDocs.get)
-    answers <- answers.set(OptionalSupportingDocsPage, completeSubmission.optionalDocumentsSupplied.getOrElse(optionalSupportingDocuments))
+    answers <- answers.set(
+                 OptionalSupportingDocsPage,
+                 completeSubmission.optionalDocumentsSupplied.getOrElse(optionalSupportingDocuments)
+               )
     answers <- answers.set(FileUploadPage, completeSubmission.supportingDocuments)
     answers <- answers.set(SplitPaymentPage, completeSubmission.splitDeferment.get)
     answers <- answers.set(UploadAuthorityPage, completeSubmission.authorityDocuments.getOrElse(Seq.empty))

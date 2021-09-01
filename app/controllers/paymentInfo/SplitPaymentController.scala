@@ -31,17 +31,18 @@ import views.html.paymentInfo.SplitPaymentView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class SplitPaymentController @Inject()(identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       sessionRepository: SessionRepository,
-                                       mcc: MessagesControllerComponents,
-                                       formProvider: SplitPaymentFormProvider,
-                                       view: SplitPaymentView,
-                                       implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class SplitPaymentController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: SplitPaymentFormProvider,
+  view: SplitPaymentView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(SplitPaymentPage).fold(formProvider()) {
@@ -51,61 +52,60 @@ class SplitPaymentController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(
-        BadRequest(
-          view(
-            formWithErrors,
-            backLink)
-        )
-      ),
-      splitPayment => {
-        val previousSplitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(splitPayment)
-        if (splitPayment != previousSplitPayment) {
-          val userAnswers = request.userAnswers.removeMany(Seq(
-            DefermentTypePage,
-            DefermentAccountPage,
-            AdditionalDefermentTypePage,
-            AdditionalDefermentNumberPage,
-            UploadAuthorityPage))
-          for {
-            otherUpdatedAnswers <- Future.successful(userAnswers)
-            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
-            updatedAnswers <- Future.fromTry(checkMode.set(SplitPaymentPage, splitPayment))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            redirectTo(splitPayment)
-          }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, splitPayment))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if (request.checkMode) {
-              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-            } else {
-              redirectTo(splitPayment)
-            }
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors =>
+          Future.successful(
+            BadRequest(
+              view(formWithErrors, backLink)
+            )
+          ),
+        splitPayment => {
+          val previousSplitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(splitPayment)
+          if (splitPayment != previousSplitPayment) {
+            val userAnswers = request.userAnswers.removeMany(
+              Seq(
+                DefermentTypePage,
+                DefermentAccountPage,
+                AdditionalDefermentTypePage,
+                AdditionalDefermentNumberPage,
+                UploadAuthorityPage
+              )
+            )
+            for {
+              otherUpdatedAnswers <- Future.successful(userAnswers)
+              checkMode           <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+              updatedAnswers      <- Future.fromTry(checkMode.set(SplitPaymentPage, splitPayment))
+              _                   <- sessionRepository.set(updatedAnswers)
+            } yield redirectTo(splitPayment)
+          } else {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SplitPaymentPage, splitPayment))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield
+              if (request.checkMode) {
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+              } else {
+                redirectTo(splitPayment)
+              }
           }
         }
-      }
-    )
+      )
   }
 
-  def redirectTo(value: Boolean): Result = {
+  def redirectTo(value: Boolean): Result =
     if (value) {
       Redirect(controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad())
     } else {
       Redirect(controllers.paymentInfo.routes.RepresentativeDanController.onLoad())
     }
-  }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.paymentInfo.routes.DefermentController.onLoad()
     }
-  }
 
 }

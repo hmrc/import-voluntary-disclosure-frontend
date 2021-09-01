@@ -38,25 +38,37 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
   trait Test {
 
-    val testConfig = appConfig
-    private lazy val view: UnderpaymentReasonSummaryView = app.injector.instanceOf[UnderpaymentReasonSummaryView]
-    private lazy val formProvider: UnderpaymentReasonSummaryFormProvider = app.injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
+    val testConfig                                                       = appConfig
+    private lazy val view: UnderpaymentReasonSummaryView                 = app.injector.instanceOf[UnderpaymentReasonSummaryView]
+    private lazy val formProvider: UnderpaymentReasonSummaryFormProvider =
+      app.injector.instanceOf[UnderpaymentReasonSummaryFormProvider]
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
-        .set(CheckModePage, false).success.value
+        .set(CheckModePage, false)
+        .success
+        .value
         .set(
           UnderpaymentReasonsPage,
           Seq(
             UnderpaymentReason(boxNumber = BoxNumber.Box33, itemNumber = 15, original = "50", amended = "60"),
             UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60")
           )
-        ).success.value
+        )
+        .success
+        .value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new UnderpaymentReasonSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, view, formProvider, testConfig)
+    lazy val controller = new UnderpaymentReasonSummaryController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      view,
+      formProvider,
+      testConfig
+    )
   }
 
   "GET onLoad" when {
@@ -80,23 +92,23 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER on yes" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad().url)
       }
 
       "return a SEE OTHER on no" in new Test {
-        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = false)
+        override val testConfig: AppConfig                   = new MockAppConfig(otherItemEnabled = false)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad().url)
       }
 
       "return a SEE OTHER on Other Reason feature switch enabled" in new Test {
-        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
+        override val testConfig: AppConfig                   = new MockAppConfig(otherItemEnabled = true)
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.SupportingDocController.onLoad().url)
       }
@@ -106,21 +118,27 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
     "payload contains valid data when check mode is true" should {
 
       "return a SEE OTHER on yes" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, true)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad().url)
       }
 
       "return a SEE OTHER on no" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers]        = Some(
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, true)
+            .success
+            .value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
@@ -140,13 +158,17 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
     "single item is passed" should {
       "produce summary list with one item" in new Test {
-        controller.summaryList(UnderpaymentReasonSummaryData.singleItemReason) mustBe UnderpaymentReasonSummaryData.singleItemSummaryList
+        controller.summaryList(
+          UnderpaymentReasonSummaryData.singleItemReason
+        ) mustBe UnderpaymentReasonSummaryData.singleItemSummaryList
       }
     }
 
     "multiple items are passed" should {
       "produce summary list with multiple items" in new Test {
-        controller.summaryList(UnderpaymentReasonSummaryData.multipleItemReason) mustBe UnderpaymentReasonSummaryData.multipleItemSummaryList
+        controller.summaryList(
+          UnderpaymentReasonSummaryData.multipleItemReason
+        ) mustBe UnderpaymentReasonSummaryData.multipleItemSummaryList
       }
     }
 

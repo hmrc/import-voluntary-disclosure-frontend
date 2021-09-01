@@ -25,8 +25,11 @@ import models.requests.{IdentifierRequest, OptionalDataRequest}
 import play.api.mvc.AnyContentAsEmpty
 import utils.ReusableValues
 
-
-class EoriDetailsServiceSpec extends SpecBase with MockIvdSubmissionConnector with MockAuditService with ReusableValues {
+class EoriDetailsServiceSpec
+    extends SpecBase
+    with MockIvdSubmissionConnector
+    with MockAuditService
+    with ReusableValues {
 
   def setup(eoriDetailsResponse: EoriDetailsResponse): EoriDetailsService = {
     setupMockGetEoriDetails(eoriDetailsResponse)
@@ -43,7 +46,7 @@ class EoriDetailsServiceSpec extends SpecBase with MockIvdSubmissionConnector wi
 
   "connector call is successful" should {
     lazy val service = setup(Right(eoriDetails))
-    lazy val result = service.retrieveEoriDetails("eori")
+    lazy val result  = service.retrieveEoriDetails("eori")
 
     "return successful RetrieveEoriDetailsResponse" in {
       await(result) mustBe Right(eoriDetails)

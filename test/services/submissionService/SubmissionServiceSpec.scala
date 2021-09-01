@@ -29,17 +29,17 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import services.SubmissionService
 
-class SubmissionServiceSpec extends ServiceSpecBase
-  with TryValues
-  with MockIvdSubmissionConnector
-  with MockAuditService
-  with SubmissionServiceTestData
-  with SubmissionServiceTestJson {
+class SubmissionServiceSpec
+    extends ServiceSpecBase
+    with TryValues
+    with MockIvdSubmissionConnector
+    with MockAuditService
+    with SubmissionServiceTestData
+    with SubmissionServiceTestJson {
 
   trait Test {
-    def setupMock(response: Either[ErrorModel, SubmissionResponse]): Unit = {
+    def setupMock(response: Either[ErrorModel, SubmissionResponse]): Unit =
       setupMockCreateCase(response)
-    }
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
@@ -53,12 +53,14 @@ class SubmissionServiceSpec extends ServiceSpecBase
       userAnswers
     )
 
-    val successfulCreateCase: SubmissionResponse = SubmissionResponse("case-Id")
-    val failedCreateCaseConnectorCall: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
-    val invalidUserAnswersError: ErrorModel = ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model")
+    val successfulCreateCase: SubmissionResponse  = SubmissionResponse("case-Id")
+    val failedCreateCaseConnectorCall: ErrorModel =
+      ErrorModel(Status.BAD_REQUEST, "Downstream error returned when retrieving SubmissionResponse from back end")
+    val invalidUserAnswersError: ErrorModel       =
+      ErrorModel(-1, "Invalid User Answers data. Failed to read into SubmissionData model")
 
     val submission: SubmissionData = completeSubmission
-    val userAnswers: UserAnswers = completeUserAnswers
+    val userAnswers: UserAnswers   = completeUserAnswers
 
     val outputJson: String = completeOutputJson
 
@@ -87,7 +89,7 @@ class SubmissionServiceSpec extends ServiceSpecBase
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.createCase())
+        private val result                    = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result
@@ -109,7 +111,7 @@ class SubmissionServiceSpec extends ServiceSpecBase
     "called with an invalid User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.createCase())
+        private val result                    = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result
@@ -119,7 +121,7 @@ class SubmissionServiceSpec extends ServiceSpecBase
       "return error - parsed model is not valid" in new Test {
         override val userAnswers: UserAnswers =
           completeUserAnswers.remove(EnterCustomsProcedureCodePage).success.value
-        private val result = await(service.createCase())
+        private val result                    = await(service.createCase())
 
         result.isLeft mustBe true
         val Left(error) = result

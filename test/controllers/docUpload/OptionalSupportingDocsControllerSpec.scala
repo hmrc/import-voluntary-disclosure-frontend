@@ -32,20 +32,28 @@ import scala.concurrent.Future
 
 class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
 
-
   trait Test extends MockSessionRepository {
-    private lazy val optionalSupportingDocsView: OptionalSupportingDocsView = app.injector.instanceOf[OptionalSupportingDocsView]
+    private lazy val optionalSupportingDocsView: OptionalSupportingDocsView =
+      app.injector.instanceOf[OptionalSupportingDocsView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: OptionalSupportingDocsFormProvider = injector.instanceOf[OptionalSupportingDocsFormProvider]
-    val form: OptionalSupportingDocsFormProvider = formProvider
+    val form: OptionalSupportingDocsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new OptionalSupportingDocsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, optionalSupportingDocsView, form, ec)
+    lazy val controller = new OptionalSupportingDocsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      optionalSupportingDocsView,
+      form,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -57,9 +65,11 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
     "return HTML" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
-          .set(OptionalSupportingDocsPage, Seq(ImportAndEntry)).success.value
+          .set(OptionalSupportingDocsPage, Seq(ImportAndEntry))
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -70,7 +80,7 @@ class OptionalSupportingDocsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response and redirect to correct location at least one option is selected" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("optionalDocumentsList[]" -> "importAndEntry")
+        private val request             = fakeRequest.withFormUrlEncodedBody("optionalDocumentsList[]" -> "importAndEntry")
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)

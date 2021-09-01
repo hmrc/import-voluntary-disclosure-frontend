@@ -31,7 +31,6 @@ import views.html.shared.RemoveUploadedFileView
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-
 class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
@@ -41,16 +40,24 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: RemoveUploadedFileFormProvider = injector.instanceOf[RemoveUploadedFileFormProvider]
-    val form: RemoveUploadedFileFormProvider = formProvider
+    val form: RemoveUploadedFileFormProvider         = formProvider
 
     val index: Index = Index.apply(0)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new RemoveUploadedFileController(messagesApi, mockSessionRepository, authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      form, messagesControllerComponents, RemoveUploadedFileView, ec)
+    lazy val controller = new RemoveUploadedFileController(
+      messagesApi,
+      mockSessionRepository,
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      form,
+      messagesControllerComponents,
+      RemoveUploadedFileView,
+      ec
+    )
   }
-
 
   "GET onLoad" should {
     "redirect to SupportingDoc page if no uploaded-files in user answers" in new Test {
@@ -64,9 +71,11 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
           .set(
             FileUploadPage,
             Seq.empty
-          ).success.value
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(index)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(index)(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -75,17 +84,21 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
         UserAnswers("credId")
           .set(
             FileUploadPage,
-            Seq(FileUploadInfo(
-              reference = "file-ref-1",
-              fileName = "file.txt",
-              downloadUrl = "url",
-              uploadTimestamp = LocalDateTime.now,
-              checksum = "checksum",
-              fileMimeType = "application/txt"
-            ))
-          ).success.value
+            Seq(
+              FileUploadInfo(
+                reference = "file-ref-1",
+                fileName = "file.txt",
+                downloadUrl = "url",
+                uploadTimestamp = LocalDateTime.now,
+                checksum = "checksum",
+                fileMimeType = "application/txt"
+              )
+            )
+          )
+          .success
+          .value
       )
-      val result: Future[Result] = controller.onLoad(index)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(index)(fakeRequest)
       status(result) mustBe Status.OK
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -97,19 +110,19 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
       }
 
@@ -126,17 +139,21 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
           UserAnswers("credId")
             .set(
               FileUploadPage,
-              Seq(FileUploadInfo(
-                reference = "file-ref-1",
-                fileName = "file.txt",
-                downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
-                checksum = "checksum",
-                fileMimeType = "application/txt"
-              ))
-            ).success.value
+              Seq(
+                FileUploadInfo(
+                  reference = "file-ref-1",
+                  fileName = "file.txt",
+                  downloadUrl = "url",
+                  uploadTimestamp = LocalDateTime.now,
+                  checksum = "checksum",
+                  fileMimeType = "application/txt"
+                )
+              )
+            )
+            .success
+            .value
         )
-        val result: Future[Result] = controller.onSubmit(index)(fakeRequest)
+        val result: Future[Result]                    = controller.onSubmit(index)(fakeRequest)
         status(result) mustBe Status.BAD_REQUEST
       }
       "return a Internal Server Error if data lost" in new Test {
@@ -147,6 +164,3 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
   }
 
 }
-
-
-

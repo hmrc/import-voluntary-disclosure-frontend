@@ -30,19 +30,21 @@ import views.html.updateCase.UploadSupportingDocumentationView
 
 class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: UploadSupportingDocumentationView = app.injector.instanceOf[UploadSupportingDocumentationView]
-  private lazy val initiateResponse: UpScanInitiateResponse =
+  private lazy val injectedView: UploadSupportingDocumentationView =
+    app.injector.instanceOf[UploadSupportingDocumentationView]
+  private lazy val initiateResponse: UpScanInitiateResponse        =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
-  private val backLink: Call = Call("GET", "url")
+  private val backLink: Call                                       = Call("GET", "url")
 
   val zeroFilesUploaded = 0
-  val oneFileUploaded = 1
+  val oneFileUploaded   = 1
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
 
   "Rendering the UploadSupportingDocumentation page" when {
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, oneFileUploaded, false)(fakeRequest, MockAppConfig, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  =
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, false)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {
@@ -62,8 +64,9 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no file has been uploaded)" should {
-      lazy val form: Form[String] = formProvider().withError("file", UploadSupportingDocumentationMessages.fileUnknown)
-      lazy val view: Html = injectedView(form, initiateResponse, backLink, zeroFilesUploaded, false)(fakeRequest, MockAppConfig, messages)
+      lazy val form: Form[String]          = formProvider().withError("file", UploadSupportingDocumentationMessages.fileUnknown)
+      lazy val view: Html                  =
+        injectedView(form, initiateResponse, backLink, zeroFilesUploaded, false)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadSupportingDocumentationMessages.errorPrefix + UploadSupportingDocumentationMessages.title)
@@ -73,7 +76,9 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
       }
 
       "render an error message against the field" in {
-        elementText("#file-error") mustBe UploadSupportingDocumentationMessages.errorPrefix + UploadSupportingDocumentationMessages.fileUnknown
+        elementText(
+          "#file-error"
+        ) mustBe UploadSupportingDocumentationMessages.errorPrefix + UploadSupportingDocumentationMessages.fileUnknown
       }
 
     }
@@ -81,8 +86,9 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, oneFileUploaded, true)(fakeRequest, MockAppConfig, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  =
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, true)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadSupportingDocumentationMessages.title)

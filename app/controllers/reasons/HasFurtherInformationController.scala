@@ -30,17 +30,18 @@ import views.html.reasons.HasFurtherInformationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class HasFurtherInformationController @Inject()(identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                sessionRepository: SessionRepository,
-                                                mcc: MessagesControllerComponents,
-                                                formProvider: HasFurtherInformationFormProvider,
-                                                view: HasFurtherInformationView,
-                                                implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class HasFurtherInformationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: HasFurtherInformationFormProvider,
+  view: HasFurtherInformationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(HasFurtherInformationPage).fold(formProvider()) {
@@ -50,32 +51,32 @@ class HasFurtherInformationController @Inject()(identify: IdentifierAction,
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      hasFurtherInfo =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (hasFurtherInfo) {
-            Redirect(controllers.reasons.routes.MoreInformationController.onLoad())
-          } else {
-            if (request.checkMode) {
-              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+        hasFurtherInfo =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(HasFurtherInformationPage, hasFurtherInfo))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield
+            if (hasFurtherInfo) {
+              Redirect(controllers.reasons.routes.MoreInformationController.onLoad())
             } else {
-              Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
+              if (request.checkMode) {
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
+              }
             }
-          }
-        }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
     }
-  }
 
 }

@@ -24,10 +24,10 @@ object ServiceJsonUtils {
     def dropNullValues: JsValue = json match {
       case JsObject(fields) =>
         JsObject(fields.flatMap {
-          case (_, JsNull) => None
+          case (_, JsNull)  => None
           case (key, value) => Some(key -> value.dropNullValues)
         })
-      case other => other
+      case other            => other
     }
   }
 }

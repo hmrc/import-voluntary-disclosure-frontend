@@ -27,17 +27,34 @@ trait MockHttp extends MockFactory {
   val mockHttp: HttpClient = mock[HttpClient]
 
   def setupMockHttpGet[T](url: String)(response: T): Unit =
-    (mockHttp.GET[T](_: String, _: Seq[(String, String)], _: Seq[(String, String)])(_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
+    (mockHttp
+      .GET[T](_: String, _: Seq[(String, String)], _: Seq[(String, String)])(
+        _: HttpReads[T],
+        _: HeaderCarrier,
+        _: ExecutionContext
+      ))
       .expects(url, *, *, *, *, *)
       .returns(Future.successful(response))
 
   def setupMockHttpPost[I, O](url: String)(response: O): Unit =
-    (mockHttp.POST[I, O](_: String, _: I, _: Seq[(String, String)])(_: Writes[I], _: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
+    (mockHttp
+      .POST[I, O](_: String, _: I, _: Seq[(String, String)])(
+        _: Writes[I],
+        _: HttpReads[O],
+        _: HeaderCarrier,
+        _: ExecutionContext
+      ))
       .expects(url, *, *, *, *, *, *)
       .returns(Future.successful(response))
 
   def setupMockHttpPostWithBody[I, O](url: String, body: I)(response: O): Unit =
-    (mockHttp.POST[I, O](_: String, _: I, _: Seq[(String, String)])(_: Writes[I], _: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
+    (mockHttp
+      .POST[I, O](_: String, _: I, _: Seq[(String, String)])(
+        _: Writes[I],
+        _: HttpReads[O],
+        _: HeaderCarrier,
+        _: ExecutionContext
+      ))
       .expects(url, body, *, *, *, *, *)
       .returns(Future.successful(response))
 }

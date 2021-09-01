@@ -35,17 +35,18 @@ import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               sessionRepository: SessionRepository,
-                                               val errorHandler: ErrorHandler,
-                                               mcc: MessagesControllerComponents,
-                                               formProvider: TraderAddressCorrectFormProvider,
-                                               view: TraderAddressCorrectView,
-                                               implicit val ec: ExecutionContext
-                                              )
-  extends FrontendController(mcc) with I18nSupport {
+class TraderAddressCorrectController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  val errorHandler: ErrorHandler,
+  mcc: MessagesControllerComponents,
+  formProvider: TraderAddressCorrectFormProvider,
+  view: TraderAddressCorrectView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
@@ -56,7 +57,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
     request.userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) =>
         Future.successful(Ok(view(form, eoriDetails.address, backLink())))
-      case None =>
+      case None              =>
         logger.error("Requested the trader address page without EORI details")
         Future.successful(errorHandler.showInternalServerError)
     }
@@ -64,39 +65,36 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetailsPage).get.address
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress, backLink()))),
-      value => {
-        if (value) {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if (request.checkMode) {
-              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-            } else {
-              Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
-            }
+    formProvider()
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress, backLink()))),
+        value =>
+          if (value) {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
+              updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield
+              if (request.checkMode) {
+                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+              } else {
+                Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+              }
+          } else {
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseJourney())
           }
-        } else {
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseJourney())
-          }
-        }
-      }
-    )
+      )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink()(implicit request: DataRequest[_]): Call =
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()
     }
-  }
 
 }

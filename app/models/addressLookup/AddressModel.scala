@@ -18,32 +18,34 @@ package models.addressLookup
 
 import play.api.libs.json._
 
-case class AddressModel(line1: Option[String],
-                        line2: Option[String],
-                        line3: Option[String],
-                        line4: Option[String],
-                        postcode: Option[String],
-                        countryCode: Option[String])
+case class AddressModel(
+  line1: Option[String],
+  line2: Option[String],
+  line3: Option[String],
+  line4: Option[String],
+  postcode: Option[String],
+  countryCode: Option[String]
+)
 
 object AddressModel {
 
   implicit val customerAddressReads: Reads[AddressModel] = for {
-    lines <- (__ \\ "lines").readNullable[Seq[String]]
-    postcode <- (__ \\ "postcode").readNullable[String]
+    lines       <- (__ \\ "lines").readNullable[Seq[String]]
+    postcode    <- (__ \\ "postcode").readNullable[String]
     countryCode <- (__ \\ "code").readNullable[String]
-  } yield {
-    lines match {
-      case Some(someSequence) => AddressModel(
+  } yield lines match {
+    case Some(someSequence) =>
+      AddressModel(
         someSequence.headOption,
         someSequence.lift(1),
         someSequence.lift(2),
         someSequence.lift(3),
-        postcode, countryCode)
-      case None => AddressModel(None, None, None, None, postcode, countryCode)
-    }
+        postcode,
+        countryCode
+      )
+    case None               => AddressModel(None, None, None, None, postcode, countryCode)
   }
 
   implicit val format: Format[AddressModel] = Json.format[AddressModel]
 
 }
-

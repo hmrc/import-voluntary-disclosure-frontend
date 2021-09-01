@@ -40,8 +40,7 @@ import scala.concurrent.Future
 
 class UploadFileControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(
-    s"""
+  private val callbackReadyJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "READY",
@@ -54,8 +53,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
        |   }
        | }""".stripMargin)
 
-  private val callbackFailedRejectedJson: JsValue = Json.parse(
-    s"""
+  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "FAILED",
@@ -65,9 +63,8 @@ class UploadFileControllerSpec extends ControllerSpecBase {
        |    }
        | }""".stripMargin)
 
-
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
-    private lazy val uploadFileView: UploadFileView = app.injector.instanceOf[UploadFileView]
+    private lazy val uploadFileView: UploadFileView             = app.injector.instanceOf[UploadFileView]
     private lazy val uploadProgressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -79,26 +76,39 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       MockedSessionRepository.set(Future.successful(true))
 
       MockedUpScanService.initiateNewJourney(
-        Future.successful(UpScanInitiateResponse(
-          Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
-          UploadFormTemplate(
-            "https://bucketName.s3.eu-west-2.amazonaws.com",
-            Map("Content-Type" -> "application/xml")
+        Future.successful(
+          UpScanInitiateResponse(
+            Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
+            UploadFormTemplate(
+              "https://bucketName.s3.eu-west-2.amazonaws.com",
+              Map("Content-Type" -> "application/xml")
+            )
           )
-        ))
+        )
       )
     }
 
     lazy val controller = {
       setupMocks()
-      new UploadFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
-        mockFileUploadRepository, mockSessionRepository, mockUpScanService, uploadFileView, uploadProgressView, form,
-        MockAppConfig, ec)
+      new UploadFileController(
+        authenticatedAction,
+        dataRetrievalAction,
+        dataRequiredAction,
+        messagesControllerComponents,
+        mockFileUploadRepository,
+        mockSessionRepository,
+        mockUpScanService,
+        uploadFileView,
+        uploadProgressView,
+        form,
+        MockAppConfig,
+        ec
+      )
     }
   }
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
-  val form: UploadFileFormProvider = formProvider
+  val form: UploadFileFormProvider         = formProvider
 
   "GET onLoad" should {
     "return OK" in new Test {
@@ -113,37 +123,62 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     }
 
     "return correct back link for no additional documents" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(AnyOtherSupportingDocsPage, false).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad.url) mustBe true
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(AnyOtherSupportingDocsPage, false)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
+      contentAsString(result).contains(
+        controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad.url
+      ) mustBe true
     }
 
     "return correct back link for additional documents" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(AnyOtherSupportingDocsPage, true).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.docUpload.routes.OptionalSupportingDocsController.onLoad.url) mustBe true
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(AnyOtherSupportingDocsPage, true)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
+      contentAsString(result).contains(
+        controllers.docUpload.routes.OptionalSupportingDocsController.onLoad.url
+      ) mustBe true
     }
 
     "return correct back link if come from Summary screen" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(FileUploadPage, Seq(FileUploadInfo(
-          reference = "file-ref-1",
-          fileName = "file1",
-          downloadUrl = "url",
-          uploadTimestamp = LocalDateTime.now(),
-          checksum = "checksum",
-          fileMimeType = "mime"
-        ))).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                reference = "file-ref-1",
+                fileName = "file1",
+                downloadUrl = "url",
+                uploadTimestamp = LocalDateTime.now(),
+                checksum = "checksum",
+                fileMimeType = "mime"
+              )
+            )
+          )
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(controllers.docUpload.routes.UploadAnotherFileController.onLoad.url) mustBe true
     }
 
     "return no back link if in check mode and all files removed" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(CheckModePage, true).success.value)
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(CheckModePage, true)
+          .success
+          .value
+      )
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       contentAsString(result).contains("govuk-back-link") mustBe false
     }
 
@@ -182,7 +217,11 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     "upscan returns an error on upload" should {
       "redirect to error page" in new Test {
         val result = controller.upscanResponseHandler(
-          Some("key"), Some("errorCode"), Some("errorMessage"), Some("errorResource"), Some("errorRequestId")
+          Some("key"),
+          Some("errorCode"),
+          Some("errorMessage"),
+          Some("errorResource"),
+          Some("errorRequestId")
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
@@ -193,7 +232,11 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     "upscan returns an error on upload when only an error code is returned" should {
       "redirect to error page" in new Test {
         val result = controller.upscanResponseHandler(
-          Some("key"), Some("errorCode"), None, None, None
+          Some("key"),
+          Some("errorCode"),
+          None,
+          None,
+          None
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
@@ -204,28 +247,47 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     "upscan returns success on upload" should {
       "for a valid key, redirect to holding page" in new Test {
         val result = controller.upscanResponseHandler(
-          Some("key"), None, None, None, None
+          Some("key"),
+          None,
+          None,
+          None,
+          None
         )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.uploadProgress("key").url)
+        redirectLocation(result) mustBe Some(
+          controllers.docUpload.routes.UploadFileController.uploadProgress("key").url
+        )
       }
       "for a valid key, create record in file Repository" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.updateRecord(Future.successful(true))
-        }
 
-        await(controller.upscanResponseHandler(
-          Some("key"), None, None, None, None
-        )(fakeRequest))
+        await(
+          controller.upscanResponseHandler(
+            Some("key"),
+            None,
+            None,
+            None,
+            None
+          )(fakeRequest)
+        )
 
         verifyCalls()
       }
 
       "for an invalid key" in new Test {
-        val result = intercept[RuntimeException](await(controller.upscanResponseHandler(
-          None, None, None, None, None
-        )(fakeRequest)))
+        val result = intercept[RuntimeException](
+          await(
+            controller.upscanResponseHandler(
+              None,
+              None,
+              None,
+              None,
+              None
+            )(fakeRequest)
+          )
+        )
 
         assert(result.getMessage.contains("No key returned for successful upload"))
       }
@@ -233,10 +295,12 @@ class UploadFileControllerSpec extends ControllerSpecBase {
   }
 
   "GET uploadProgress" when {
-    "called following a successful file upload callback" should {
+    "called following a successful file upload callback"    should {
       "update UserAnswers and redirect to the Summary Page" in new Test {
         override def setupMocks(): Unit = {
-          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
+          MockedFileUploadRepository.getRecord(
+            Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get))
+          )
           MockedSessionRepository.set(Future.successful(true))
         }
 
@@ -250,9 +314,10 @@ class UploadFileControllerSpec extends ControllerSpecBase {
     }
     "called following a file upload callback for a failure" should {
       "NOT update userAnswers and redirect to the Error Page" in new Test {
-        override def setupMocks(): Unit = {
-          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get)))
-        }
+        override def setupMocks(): Unit =
+          MockedFileUploadRepository.getRecord(
+            Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get))
+          )
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
@@ -262,11 +327,10 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         verifyCalls()
       }
     }
-    "called before any file upload callback" should {
+    "called before any file upload callback"                should {
       "NOT update userAnswers and redirect to the Progress Page" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(Some(FileUpload("reference"))))
-        }
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
@@ -274,11 +338,10 @@ class UploadFileControllerSpec extends ControllerSpecBase {
         verifyCalls()
       }
     }
-    "called for a Key no longer in repository" should {
+    "called for a Key no longer in repository"              should {
       "return 500 Internal Server Error" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(None))
-        }
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 

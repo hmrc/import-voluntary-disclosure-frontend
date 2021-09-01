@@ -25,11 +25,14 @@ import play.api.{Configuration, Logging}
 
 import scala.concurrent.Future
 
-class AllowListFilter @Inject()(configuration: Configuration,
-                                handler: config.ErrorHandler,
-                                val messagesApi: MessagesApi)
-                               (implicit val mat: Materializer)
-  extends Filter with I18nSupport with Logging {
+class AllowListFilter @Inject() (
+  configuration: Configuration,
+  handler: config.ErrorHandler,
+  val messagesApi: MessagesApi
+)(implicit val mat: Materializer)
+    extends Filter
+    with I18nSupport
+    with Logging {
 
   private val allowedPaths = Seq(
     "/disclose-import-taxes-underpayment/assets/", // assets (.css & .js)
@@ -41,7 +44,7 @@ class AllowListFilter @Inject()(configuration: Configuration,
     implicit val request: Request[_] = Request(rh, "")
 
     val enabled: Boolean = configuration.get[Boolean]("features.allowListActive")
-    val allowedList = allowedPaths.exists(rh.path.startsWith)
+    val allowedList      = allowedPaths.exists(rh.path.startsWith)
 
     if (enabled && !allowedList) {
       logger.info(s"Restricted access to path: ${rh.path}")

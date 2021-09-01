@@ -21,13 +21,12 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class MoreInformationFormProvider @Inject() extends Mappings {
 
   val maxLength: Int = 1500
 
   def apply(isOneEntry: Boolean = true): Form[String] = {
-    val requiredErrorMessage = if (isOneEntry) {
+    val requiredErrorMessage      = if (isOneEntry) {
       "moreInformation.single.error.required"
     } else {
       "moreInformation.bulk.error.required"
@@ -37,7 +36,7 @@ class MoreInformationFormProvider @Inject() extends Mappings {
     } else {
       "moreInformation.bulk.error.maxLength"
     }
-    val noEmojiErrorMessage = if (isOneEntry) {
+    val noEmojiErrorMessage       = if (isOneEntry) {
       "moreInformation.single.error.noEmoji"
     } else {
       "moreInformation.bulk.error.noEmoji"

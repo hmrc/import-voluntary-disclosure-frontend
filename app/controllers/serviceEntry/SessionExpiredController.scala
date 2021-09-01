@@ -27,20 +27,24 @@ import views.html.errors.SessionTimeoutView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-
-class SessionExpiredController @Inject()(identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         sessionRepository: SessionRepository,
-                                         mcc: MessagesControllerComponents,
-                                         view: SessionTimeoutView,
-                                         implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+class SessionExpiredController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: SessionTimeoutView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def keepAlive(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     extendUserAnswersTimeout(request.userAnswers).map(_ => NoContent)
   }
 
   def timeout: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    sessionRepository.remove(request.credId).map(_ => Redirect(controllers.serviceEntry.routes.SessionExpiredController.showView()))
+    sessionRepository
+      .remove(request.credId)
+      .map(_ => Redirect(controllers.serviceEntry.routes.SessionExpiredController.showView()))
   }
 
   def showView: Action[AnyContent] = Action.async { implicit request =>
@@ -49,6 +53,6 @@ class SessionExpiredController @Inject()(identify: IdentifierAction,
 
   private def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {
     case Some(answers) => sessionRepository.set(answers)
-    case None => Future.successful(false)
+    case None          => Future.successful(false)
   }
 }
