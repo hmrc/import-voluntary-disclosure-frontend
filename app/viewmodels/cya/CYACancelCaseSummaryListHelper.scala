@@ -18,8 +18,8 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
-import pages.shared.AnyOtherSupportingDocsPage
+import pages.shared.MoreDocumentationPage
+import pages.updateCase._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -79,7 +79,7 @@ trait CYACancelCaseSummaryListHelper {
   }
 
   private def buildSupportingDocumentationListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(AnyOtherSupportingDocsPage).map { supportingDocumentation =>
+    answers.get(MoreDocumentationPage).map { supportingDocumentation =>
       val anySupportingDocumentation = if (supportingDocumentation) messages("site.yes") else messages("site.no")
       createRow(
         keyText = Text(messages("cancelCase.cya.supportingDocumentation")),

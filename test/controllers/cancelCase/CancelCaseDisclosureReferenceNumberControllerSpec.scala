@@ -23,7 +23,8 @@ import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests._
 import org.scalamock.handlers.CallHandler
-import pages.{CheckModePage, DisclosureReferenceNumberPage}
+import pages.CheckModePage
+import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest

@@ -18,7 +18,7 @@ package services
 
 import connectors.IvdSubmissionConnector
 import models._
-import models.audit.UpdateCaseAuditEvent
+import models.audit.{CancelCaseAuditEvent, UpdateCaseAuditEvent}
 import models.requests.DataRequest
 import play.api.Logger
 import play.api.libs.json._
@@ -40,7 +40,11 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
       case Right(submission) =>
         ivdSubmissionConnector.updateCase(submission).map {
           case Right(confirmationResponse) =>
-            auditService.audit(UpdateCaseAuditEvent(submission))
+            if (request.isUpdateCase) {
+              auditService.audit(UpdateCaseAuditEvent(submission))
+            } else {
+              auditService.audit(CancelCaseAuditEvent(submission))
+            }
             Right(confirmationResponse)
           case Left(errorResponse) => Left(errorResponse)
         }

@@ -19,9 +19,9 @@ package services.updateCaseService
 import base.ServiceSpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
-import models.audit.UpdateCaseAuditEvent
+import models.audit.{CancelCaseAuditEvent, UpdateCaseAuditEvent}
 import models.requests._
-import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
+import models._
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -69,7 +69,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
         override val userAnswers: UserAnswers = cancelCaseCompleteUserAnswers
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
-        verifyAudit(UpdateCaseAuditEvent(cancelCaseJson))
+        verifyAudit(CancelCaseAuditEvent(cancelCaseJson))
         private val result = await(service.updateCase())
         result mustBe Right(response)
       }
