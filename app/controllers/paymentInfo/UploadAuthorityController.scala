@@ -111,12 +111,7 @@ class UploadAuthorityController @Inject() (
       val uploadCompleteRoute =
         Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType, dan))
       val uploadFailedRoute = Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan))
-      val uploadInProgressRoute = Ok(
-        progressView(
-          key = key,
-          action = controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url
-        )
-      )
+      val uploadInProgressRoute = Ok(progressView())
       val updateFilesList: FileUpload => Seq[UploadAuthority] = { file =>
         val upload                        = extractFileDetails(file, key)
         val newAuthority: UploadAuthority = UploadAuthority(dan, dutyType, upload)

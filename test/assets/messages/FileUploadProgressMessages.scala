@@ -18,9 +18,6 @@ package messages
 
 object FileUploadProgressMessages extends BaseMessages {
 
-  val title: String   = "Upload progress"
-  val h1: String      = "Upload progress"
-  val waiting: String = "Waiting for uploaded file to be scanned."
-  val request: String = "Please refresh to view latest progress."
-  val refresh: String = "Refresh"
+  val title: String = "Your document is being uploaded. You’ll be redirected once the file has been processed."
+  val h1: String    = "Your document is being uploaded. You’ll be redirected once the file has been processed."
 }

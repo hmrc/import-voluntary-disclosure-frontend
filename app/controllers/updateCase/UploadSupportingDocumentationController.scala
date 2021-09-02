@@ -97,12 +97,7 @@ class UploadSupportingDocumentationController @Inject() (
       val uploadCompleteRoute =
         Redirect(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
       val uploadFailedRoute = Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad())
-      val uploadInProgressRoute = Ok(
-        progressView(
-          key = key,
-          action = controllers.updateCase.routes.UploadSupportingDocumentationController.uploadProgress(key).url
-        )
-      )
+      val uploadInProgressRoute = Ok(progressView())
       val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
         val upload = extractFileDetails(file, key)
         request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty) :+ upload

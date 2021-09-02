@@ -16,11 +16,9 @@
 
 @this(layout: templates.Layout,
         h1: components.h1,
-        p: components.p,
-        linkButton: components.linkButton
 )
 
-@(key: String, action: String)(implicit request: Request[_], messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("fileUploadProgress.pageTitle"),

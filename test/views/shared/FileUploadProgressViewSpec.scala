@@ -24,43 +24,26 @@ import play.twirl.api.Html
 import views.html.shared.FileUploadProgressView
 
 class FileUploadProgressViewSpec extends ViewBaseSpec {
-
   private lazy val injectedView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
-  private val reference: String                         = "11370e18-6e24-453e-b45a-76d3e32ea33d"
-  private val action: String                            = "action/url"
 
   "Rendering the Progress page" when {
-
-    "called normally" should {
-      "have the correct button link" in {
-        lazy val view: Html                  = injectedView(reference, action)(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementAttributes("#main-content .govuk-button").get("href").get mustBe action
-      }
-    }
-  }
-
-  it should {
-    lazy val view: Html                  = injectedView(reference, action)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    checkPageTitle(FileUploadProgressMessages.title)
+    "called normally" should {
+      checkPageTitle(FileUploadProgressMessages.title)
 
-    s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
-      elementText("h1") mustBe FileUploadProgressMessages.h1
+      s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
+        elementText("h1") mustBe FileUploadProgressMessages.h1
+      }
+
+      s"have the loading spinner" in {
+        element(".ccms-loader").tagName mustBe "div"
+      }
+
+      s"have the auto-refresh element" in {
+        element("head > meta[http-equiv=\"refresh\"]").attr("content") mustBe "3"
+      }
     }
-
-    s"have the correct text of '${FileUploadProgressMessages.waiting}'" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe FileUploadProgressMessages.waiting
-    }
-
-    s"have the correct text of '${FileUploadProgressMessages.refresh}'" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe FileUploadProgressMessages.request
-    }
-
-    s"have the correct continue button text" in {
-      elementText("#main-content .govuk-button") mustBe FileUploadProgressMessages.refresh
-    }
-
   }
 }

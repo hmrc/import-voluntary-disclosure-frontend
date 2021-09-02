@@ -106,12 +106,7 @@ class UploadFileController @Inject() (
     implicit request =>
       val uploadCompleteRoute = Redirect(controllers.docUpload.routes.UploadAnotherFileController.onLoad())
       val uploadFailedRoute   = Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
-      val uploadInProgressRoute = Ok(
-        progressView(
-          key,
-          action = controllers.docUpload.routes.UploadFileController.uploadProgress(key).url
-        )
-      )
+      val uploadInProgressRoute = Ok(progressView())
       val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
         val upload = extractFileDetails(file, key)
         request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty) :+ upload

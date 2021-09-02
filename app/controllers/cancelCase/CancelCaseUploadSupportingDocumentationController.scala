@@ -98,13 +98,7 @@ class CancelCaseUploadSupportingDocumentationController @Inject() (
         Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad())
       val uploadFailedRoute =
         Redirect(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad())
-      val uploadInProgressRoute = Ok(
-        progressView(
-          key = key,
-          action =
-            controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.uploadProgress(key).url
-        )
-      )
+      val uploadInProgressRoute = Ok(progressView())
       val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
         val upload = extractFileDetails(file, key)
         request.userAnswers.get(UploadSupportingDocumentationPage).getOrElse(Seq.empty) :+ upload
