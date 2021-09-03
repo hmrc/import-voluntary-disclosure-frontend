@@ -18,7 +18,9 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         inputText: components.inputText,
-        button: components.button)
+        button: components.button,
+        govukDetails: GovukDetails
+)
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
@@ -38,6 +40,17 @@
                 isPageHeading = true,
                 hint = Some(Html(messages("disclosureReference.hint"))),
                 classes = Some("govuk-!-width-one-half")
+            )
+
+            @govukDetails(
+                Details(
+                    summary = HtmlContent(messages("disclosureReference.detailsHeader")),
+                    content = HtmlContent(
+                        messages("disclosureReference.details_p1") +
+                        """<a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>""" +
+                        messages("disclosureReference.details_p2")
+                    )
+                )
             )
 
             @button("common.button.continue")
