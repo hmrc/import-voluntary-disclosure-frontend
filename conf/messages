@@ -1077,11 +1077,15 @@ updateCase.disclosureNotFound.li2.part1 = 'email us at '
 updateCase.disclosureNotFound.li2.part2 = ' including the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed), the EORI number and name of the importer, and the information you want to add to the disclosure'
 
 # Update Case - Information Cannot Be Added
-updateCase.disclosureClosed.pageTitle = The information cannot be added to the disclosure
-updateCase.disclosureClosed.heading = The information cannot be added to the disclosure
-updateCase.disclosureClosed.p1 = We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued.
-updateCase.disclosureClosed.p2.part1 = 'You can email us at '
-updateCase.disclosureClosed.p2.part2 = , including the additional information and the disclosure reference number {0}.
+updateCase.disclosureClosed.pageTitle = You cannot add information to this disclosure
+updateCase.disclosureClosed.heading = You cannot add information to this disclosure
+updateCase.disclosureClosed.p1 = This is because we may have already issued the C18 Post Clearance Demand Note.
+updateCase.disclosureClosed.p2.part1 = 'Instead, you need to email '
+updateCase.disclosureClosed.p2.part2 = and include:
+updateCase.disclosureClosed.bullet1 = the disclosure reference number {0}
+updateCase.disclosureClosed.bullet2 = the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed)
+updateCase.disclosureClosed.bullet3 = the EORI number and name of the importer
+updateCase.disclosureClosed.bullet4 = the information you wanted to add to this disclosure
 
 # Private Citizen - Customs Declaration Page
 privateCitizen.customsDeclaration.title = Have you underpaid tax or duty on an import that was declared to customs?

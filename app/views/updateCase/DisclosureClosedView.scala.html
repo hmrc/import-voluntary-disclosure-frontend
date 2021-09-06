@@ -16,33 +16,40 @@
 
 
 @this(layout: templates.Layout,
-      h1: components.h1,
-      p: components.p
-      )
+        h1: components.h1,
+        p: components.p,
+        bullets: components.bullets
+)
 
 @(caseId: String)(implicit request: Request[_], messages: Messages)
 
-    @layout(
-        pageTitle = messages("updateCase.disclosureClosed.pageTitle"),
-        showBackLink = false) {
+@layout(
+    pageTitle = messages("updateCase.disclosureClosed.pageTitle"),
+    showBackLink = false) {
 
-        @h1(messages("updateCase.disclosureClosed.pageTitle"))
+    @h1(messages("updateCase.disclosureClosed.pageTitle"))
 
-        @p{ @messages("updateCase.disclosureClosed.p1") }
+    @p{ @messages("updateCase.disclosureClosed.p1") }
 
-        @p(
-            Html(
-             <span>
-              {messages("updateCase.disclosureClosed.p2.part1")}
-              <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
-              {messages("updateCase.disclosureClosed.p2.part2", caseId)}
-             </span>.toString()
-            )
-         )
+    @p(
+        Html(
+                <span>
+                {messages("updateCase.disclosureClosed.p2.part1")}
+                <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>,
+                {messages("updateCase.disclosureClosed.p2.part2", caseId)}
+                </span>.toString()
+        )
+    )
 
-    }
+    @bullets(Seq(
+        Html(messages("updateCase.disclosureClosed.bullet1", caseId)),
+        Html(messages("updateCase.disclosureClosed.bullet2")),
+        Html(messages("updateCase.disclosureClosed.bullet3")),
+        Html(messages("updateCase.disclosureClosed.bullet4"))
+    ))
 
+}
 
-    @{
+@{
     //$COVERAGE-OFF$
-    }
+}
