@@ -99,7 +99,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
     "return Redirect to the confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
-        MockedSessionRepository.remove(Future.successful("some-cred-id"))
+        MockedSessionRepository.set(Future.successful(true))
       }
 
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
@@ -125,7 +125,7 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
       override def repositoryExpectation(): Unit = {
-        MockedSessionRepository.remove(Future.successful("some-cred-id"))
+        MockedSessionRepository.set(Future.successful(true))
       }
 
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))

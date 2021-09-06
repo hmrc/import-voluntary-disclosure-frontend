@@ -44,6 +44,13 @@
         <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
     }
 
+    @p{
+        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
+        id="discloseAnotherUnderpayment" class="govuk-link">
+            @{messages("updateCase.confirmation.startNewUnderpaymentLink")}
+        </a>
+    }
+
     <div id="helpImproveServiceLink">
         @p{
             <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("updateCase.confirmation.helpImproveServiceLink")}</a>
