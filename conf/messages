@@ -1071,7 +1071,7 @@ updateCase.disclosureNotFound.p2 = You can:
 updateCase.disclosureNotFound.li1 = 'check and '
 updateCase.disclosureNotFound.link = enter the disclosure reference number again
 updateCase.disclosureNotFound.li2.part1 = 'email us at '
-updateCase.disclosureNotFound.li2.part2 = with the additional information, the entry details and the EORI number and name of the importer
+updateCase.disclosureNotFound.li2.part2 = ' including the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed), the EORI number and name of the importer, and the information you want to add to the disclosure'
 
 # Update Case - Information Cannot Be Added
 updateCase.disclosureClosed.pageTitle = The information cannot be added to the disclosure
