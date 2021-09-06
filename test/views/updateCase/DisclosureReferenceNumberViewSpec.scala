@@ -18,7 +18,7 @@ package views.updateCase
 
 import base.ViewBaseSpec
 import forms.updateCase.DisclosureReferenceNumberFormProvider
-import messages.{BaseMessages, DisclosureReferenceNumberMessages}
+import messages.DisclosureReferenceNumberMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -26,7 +26,7 @@ import play.api.mvc.Call
 import play.twirl.api.Html
 import views.html.updateCase.DisclosureReferenceNumberView
 
-class DisclosureReferenceNumberViewSpec extends ViewBaseSpec with BaseMessages {
+class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: DisclosureReferenceNumberView = app.injector.instanceOf[DisclosureReferenceNumberView]
 
@@ -108,12 +108,24 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec with BaseMessages {
       elementAttributes("#back-link") must contain("href" -> controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url)
     }
 
-    s"the input field is rendered" in {
+    s"render the input field" in {
       document.select("#value").size mustBe 1
     }
 
+    s"render the details block" in {
+      document.select("#main-content > div > div > form > details > summary > span").size mustBe 1
+    }
+
+    s"render the details block text" in {
+      elementText("#main-content > div > div > form > details > div") mustBe DisclosureReferenceNumberMessages.details
+    }
+
+    s"render the mailto link" in {
+      element("#main-content .govuk-link").attr("href") mustBe DisclosureReferenceNumberMessages.mailLink
+    }
+
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe continue
+      elementText(".govuk-button") mustBe DisclosureReferenceNumberMessages.continue
     }
   }
 }

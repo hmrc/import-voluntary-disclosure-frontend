@@ -110,16 +110,16 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
       elementAttributes("#back-link") must contain("href" -> controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url)
     }
 
-    s"the input field is rendered" in {
+    s"render the input field" in {
       document.select("#value").size mustBe 1
     }
 
-    s"the details block is rendered" in {
-      document.select("#main-content > div > div > details > summary > span").size mustBe 1
+    s"render the details block" in {
+      document.select("#main-content > div > div > form > details > summary > span").size mustBe 1
     }
 
-    s"the details block text" in {
-      elementText("#main-content > div > div > details > div") mustBe details
+    s"render the details block text" in {
+      elementText("#main-content > div > div > form > details > div") mustBe details
     }
 
     s"have the correct Continue button" in {

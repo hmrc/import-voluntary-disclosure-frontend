@@ -41,20 +41,19 @@
                 classes = Some("govuk-!-width-one-half")
             )
 
-        @button("common.button.continue")
-    }
-
-    @govukDetails(
-        Details(
-            summary = HtmlContent(messages("cancelCase.disclosureReference.detailsHeader")),
-            content = HtmlContent(
-                messages("cancelCase.disclosureReference.details_p1") +
-                        """<a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>"""
-                        + messages("cancelCase.disclosureReference.details_p2")
+        @govukDetails(
+            Details(
+                summary = HtmlContent(messages("cancelCase.disclosureReference.detailsHeader")),
+                content = HtmlContent(
+                    messages("cancelCase.disclosureReference.details_p1") +
+                    """<a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>""" +
+                    messages("cancelCase.disclosureReference.details_p2")
+                )
             )
         )
-    )
 
+        @button("common.button.continue")
+    }
 }
 
 @{
