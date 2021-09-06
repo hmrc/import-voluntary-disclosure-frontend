@@ -29,5 +29,6 @@ object UpdateCaseConfirmationMessages extends BaseMessages {
   val whatYouShouldDoNext = "What you should do next"
   val whatYouShouldDoNextParagraph = "If you have not received the demand note or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk."
   val helpImproveServiceLink = "What did you think of this service?"
+  val startNewUnderpaymentLink = "Start a new, add to, or cancel a disclosure"
 
 }

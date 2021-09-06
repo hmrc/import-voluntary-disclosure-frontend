@@ -69,6 +69,15 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
           elementText("#main-content > div > div > p:nth-child(6)") mustBe UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph
         }
 
+        s"have the correct text for link '${UpdateCaseConfirmationMessages.startNewUnderpaymentLink}'" in {
+          elementText("#discloseAnotherUnderpayment") mustBe UpdateCaseConfirmationMessages.startNewUnderpaymentLink
+        }
+
+        s"have the correct link to WhatDoYouWantToDoNext page" in {
+          elementAttributes("#discloseAnotherUnderpayment")
+            .get("href") mustBe Some(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url)
+        }
+
         s"have the correct email link" in {
           elementAttributes("#main-content > div > div > p:nth-child(6) > a")
             .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
