@@ -65,8 +65,8 @@ class CancelCaseCheckYourAnswersController @Inject() (
             ) // TODO - update the page content
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
             Future.successful(
-              Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad())
-            ) // TODO - update the page content
+              Redirect(controllers.cancelCase.routes.CancelCaseDisclosureClosedController.onLoad())
+            )
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

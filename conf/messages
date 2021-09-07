@@ -1143,3 +1143,14 @@ cancelCase.confirmation.whatHappensNext = What happens next
 cancelCase.confirmation.whatHappensNext.p = We will check the information you have provided. If we accept the reason for cancellation, we will cancel the underpayment disclosure. Otherwise, we will continue to issue the C18 Post Clearance Demand Note.
 cancelCase.confirmation.anotherDisclosure = Start a new, add to, or cancel a disclosure
 cancelCase.confirmation.helpImproveServiceLink = What did you think of this service?
+
+# Cancel Case - Disclosure Closed
+cancelCase.disclosureClosed.pageTitle = This disclosure cannot be cancelled
+cancelCase.disclosureClosed.heading = This disclosure cannot be cancelled
+cancelCase.disclosureClosed.p1 = This is because we may have already issued the C18 Post Clearance Demand Note.
+cancelCase.disclosureClosed.p2.part1 = 'Instead, you need to email '
+cancelCase.disclosureClosed.p2.part2 = ', and include:'
+cancelCase.disclosureClosed.li1 = the disclosure reference number {0}
+cancelCase.disclosureClosed.li2 = the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed)
+cancelCase.disclosureClosed.li3 = the EORI number and name of the importer
+cancelCase.disclosureClosed.li4 = the reason for requesting the cancellation of this disclosure
