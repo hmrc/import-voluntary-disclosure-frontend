@@ -53,6 +53,21 @@ class DisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages {
           elementText("#main-content p:nth-of-type(2)") mustBe DisclosureClosedMessages.p2
         }
 
+        s"have the correct page text of '${DisclosureClosedMessages.bullet1}'" in {
+          elementText("#main-content li:nth-of-type(1)") mustBe DisclosureClosedMessages.bullet1
+        }
+
+        s"have the correct page text of '${DisclosureClosedMessages.bullet2}'" in {
+          elementText("#main-content li:nth-of-type(2)") mustBe DisclosureClosedMessages.bullet2
+        }
+
+        s"have the correct page text of '${DisclosureClosedMessages.bullet3}'" in {
+          elementText("#main-content li:nth-of-type(3)") mustBe DisclosureClosedMessages.bullet3
+        }
+
+        s"have the correct page text of '${DisclosureClosedMessages.bullet4}'" in {
+          elementText("#main-content li:nth-of-type(4)") mustBe DisclosureClosedMessages.bullet4
+        }
 
       }
     }
