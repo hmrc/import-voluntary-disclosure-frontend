@@ -55,9 +55,9 @@ class MappingsSpec extends FormSpecBase with OptionValues with Mappings {
     }
 
     "strip out null characters from a string" in {
-      val input = "a" + "\u0000" + "b"
+      val input        = "a" + "\u0000" + "b"
       val cleanedInput = "ab"
-      val result = testForm.bind(Map("value" -> input))
+      val result       = testForm.bind(Map("value" -> input))
       result.get mustEqual cleanedInput
     }
 
@@ -77,7 +77,7 @@ class MappingsSpec extends FormSpecBase with OptionValues with Mappings {
     }
 
     "return a custom error message" in {
-      val form = Form("value" -> text("custom.error"))
+      val form   = Form("value" -> text("custom.error"))
       val result = form.bind(Map("value" -> ""))
       result.errors must contain(FormError("value", "custom.error"))
     }

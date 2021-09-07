@@ -32,7 +32,10 @@ import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper {
 
-  def buildUnderpaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildUnderpaymentDetailsSummaryList()(implicit
+    messages: Messages,
+    request: DataRequest[_]
+  ): Seq[CYASummaryList] = {
     val answers = request.userAnswers
     val rows = if (request.isOneEntry) {
       Seq(
@@ -68,30 +71,39 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
 
   private def buildUploadedFilesRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(FileUploadPage).map { files =>
-      val fileNames = files map (file => file.fileName)
+      val fileNames     = files map (file => file.fileName)
       val numberOfFiles = if (fileNames.length == 1) "cya.filesUploadedSingle" else "cya.filesUploadedPlural"
       createRow(
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
-          messages("cya.supportingDocuments.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
+            messages("cya.supportingDocuments.change")
+          )
+        )
       )
     }
   }
 
-  private def buildExtraInformationRow(answers: UserAnswers)(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
-    val keyTextMessage = if (request.isOneEntry) messages("cya.extraInformation") else messages("cya.bulk.reasonForUnderpayment")
-    val changeTextMessage = if (request.isOneEntry) messages("cya.extraInformation.change") else messages("cya.bulk.reasonForUnderpayment.change")
+  private def buildExtraInformationRow(
+    answers: UserAnswers
+  )(implicit messages: Messages, request: DataRequest[_]): Option[SummaryListRow] = {
+    val keyTextMessage =
+      if (request.isOneEntry) messages("cya.extraInformation") else messages("cya.bulk.reasonForUnderpayment")
+    val changeTextMessage =
+      if (request.isOneEntry) messages("cya.extraInformation.change")
+      else messages("cya.bulk.reasonForUnderpayment.change")
     answers.get(MoreInformationPage).map { extraInformation =>
       createRow(
         keyText = Text(keyTextMessage),
         valueContent = Text(extraInformation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.reasons.routes.MoreInformationController.onLoad().url,
-          changeTextMessage
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.reasons.routes.MoreInformationController.onLoad().url,
+            changeTextMessage
+          )
+        )
       )
     }
   }
@@ -102,24 +114,31 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.hasFurtherInformation")),
         valueContent = Text(furtherInformation),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
-          messages("cya.hasFurtherInformation.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
+            messages("cya.hasFurtherInformation.change")
+          )
+        )
       )
     }
   }
 
-  private def buildReasonForUnderpaymentRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildReasonForUnderpaymentRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] = {
     answers.get(UnderpaymentReasonsPage).map { underpaymentReason =>
-      val numberOfReasons = if (underpaymentReason.size == 1) "cya.numberOfUnderpaymentsSingle" else "cya.numberOfUnderpaymentsPlural"
+      val numberOfReasons =
+        if (underpaymentReason.size == 1) "cya.numberOfUnderpaymentsSingle" else "cya.numberOfUnderpaymentsPlural"
       createRow(
         Text(messages("cya.reasonForUnderpayment")),
         Text(messages(numberOfReasons, underpaymentReason.size)),
-        Some(ActionItemHelper.createViewSummaryActionItem(
-          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url,
-          messages("cya.reasonForUnderpayment.change")
-        ))
+        Some(
+          ActionItemHelper.createViewSummaryActionItem(
+            controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url,
+            messages("cya.reasonForUnderpayment.change")
+          )
+        )
       )
     }
   }
@@ -130,36 +149,45 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         Text(messages("cya.underpaymentDetails.owedToHmrc")),
         Text(displayMoney(amountOwed)),
-        Some(ActionItemHelper.createViewSummaryActionItem(
-          controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
-          messages("cya.underpaymentDetails.owedToHmrc.change")
-        ))
+        Some(
+          ActionItemHelper.createViewSummaryActionItem(
+            controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
+            messages("cya.underpaymentDetails.owedToHmrc.change")
+          )
+        )
       )
     }
   }
 
-  private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildNumberOfEntriesSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(NumberOfEntriesPage).map { _ =>
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(messages("cya.bulkEntry")),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
-          messages("cya.numberOfEntries.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
+            messages("cya.numberOfEntries.change")
+          )
+        )
       )
     }
 
   private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(AcceptanceDatePage).map { acceptanceDate =>
-      val acceptanceDateValue = if (acceptanceDate) messages("cya.bulk.acceptanceDate.before") else messages("cya.bulk.acceptanceDate.after")
+      val acceptanceDateValue =
+        if (acceptanceDate) messages("cya.bulk.acceptanceDate.before") else messages("cya.bulk.acceptanceDate.after")
       createRow(
         keyText = Text(messages("cya.bulk.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
-          messages("cya.bulk.acceptanceDate.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
+            messages("cya.bulk.acceptanceDate.change")
+          )
+        )
       )
     }
 
@@ -169,10 +197,12 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.bulk.multipleEntriesFile")),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
-          messages("cya.bulk.multipleEntriesFile.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
+            messages("cya.bulk.multipleEntriesFile.change")
+          )
+        )
       )
     }
   }

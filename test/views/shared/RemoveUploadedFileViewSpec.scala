@@ -37,12 +37,12 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
 
   val index: Index = Index.apply(1)
 
-
   "Rendering the Remove Uploaded File page" when {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RemoveUploadedFileMessages.title)
@@ -58,7 +58,8 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(DefermentMessages.errorPrefix + RemoveUploadedFileMessages.title)
@@ -68,7 +69,9 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe RemoveUploadedFileMessages.errorPrefix + RemoveUploadedFileMessages.requiredError
+        elementText(
+          "#value-error"
+        ) mustBe RemoveUploadedFileMessages.errorPrefix + RemoveUploadedFileMessages.requiredError
       }
 
     }
@@ -77,7 +80,8 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+    lazy val view: Html =
+      injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${RemoveUploadedFileMessages.h1}'" in {
@@ -89,11 +93,15 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the first radio button of '${RemoveUploadedFileMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe RemoveUploadedFileMessages.siteYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe RemoveUploadedFileMessages.siteYes
     }
 
     s"have the correct value for the second radio button of '${RemoveUploadedFileMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe RemoveUploadedFileMessages.siteNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe RemoveUploadedFileMessages.siteNo
     }
 
     "render a back link with the correct URL" in {

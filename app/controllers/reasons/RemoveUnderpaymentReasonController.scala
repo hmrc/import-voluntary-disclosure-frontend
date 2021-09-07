@@ -31,26 +31,26 @@ import views.html.reasons.RemoveUnderpaymentReasonView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class RemoveUnderpaymentReasonController @Inject()(identify: IdentifierAction,
-                                                   getData: DataRetrievalAction,
-                                                   requireData: DataRequiredAction,
-                                                   sessionRepository: SessionRepository,
-                                                   mcc: MessagesControllerComponents,
-                                                   formProvider: RemoveUnderpaymentReasonFormProvider,
-                                                   view: RemoveUnderpaymentReasonView,
-                                                   implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class RemoveUnderpaymentReasonController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: RemoveUnderpaymentReasonFormProvider,
+  view: RemoveUnderpaymentReasonView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   lazy val backLink: Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()
 
-  private def getChangeReason(userAnswers: UserAnswers): UnderpaymentReason = {
+  private def getChangeReason(userAnswers: UserAnswers): UnderpaymentReason =
     userAnswers.get(ChangeUnderpaymentReasonPage) match {
       case Some(reason) => reason.original
-      case _ => throw new RuntimeException("No change reason found for remove")
+      case _            => throw new RuntimeException("No change reason found for remove")
     }
-  }
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val changeReason = getChangeReason(request.userAnswers)
@@ -60,23 +60,22 @@ class RemoveUnderpaymentReasonController @Inject()(identify: IdentifierAction,
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val changeReason = getChangeReason(request.userAnswers)
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(
-        BadRequest(view(formWithErrors, backLink, changeReason.boxNumber, changeReason.itemNumber))
-      ),
+      formWithErrors =>
+        Future.successful(
+          BadRequest(view(formWithErrors, backLink, changeReason.boxNumber, changeReason.itemNumber))
+        ),
       value => {
         if (value) {
           val newReasonsOpt = for {
-            allReasons <- request.userAnswers.get(UnderpaymentReasonsPage)
+            allReasons   <- request.userAnswers.get(UnderpaymentReasonsPage)
             removeReason <- request.userAnswers.get(ChangeUnderpaymentReasonPage)
-          } yield {
-            allReasons.filterNot(x => x == removeReason.original)
-          }
+          } yield allReasons.filterNot(x => x == removeReason.original)
 
           newReasonsOpt match {
             case Some(newReasons) =>
               for {
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonsPage, newReasons))
-                _ <- sessionRepository.set(updatedAnswers)
+                _              <- sessionRepository.set(updatedAnswers)
               } yield {
                 if (newReasons.isEmpty) {
                   Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad())

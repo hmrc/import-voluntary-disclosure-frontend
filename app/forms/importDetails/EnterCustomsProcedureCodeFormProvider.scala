@@ -21,7 +21,6 @@ import forms.utils.FormHelpers
 import javax.inject.Inject
 import play.api.data.Form
 
-
 class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply(): Form[String] =
@@ -30,6 +29,5 @@ class EnterCustomsProcedureCodeFormProvider @Inject() extends Mappings with Form
         .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
         .verifying(regexp("^[0-9]{4}[A-Za-z0-9][0-9]{2}$", "enterCustomsProcedureCode.cpc.error.format"))
     )
-
 
 }

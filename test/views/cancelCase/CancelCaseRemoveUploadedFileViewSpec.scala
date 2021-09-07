@@ -29,20 +29,22 @@ import views.html.cancelCase.CancelCaseRemoveUploadedFileView
 
 class CancelCaseRemoveUploadedFileViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: CancelCaseRemoveUploadedFileView = app.injector.instanceOf[CancelCaseRemoveUploadedFileView]
+  private lazy val injectedView: CancelCaseRemoveUploadedFileView =
+    app.injector.instanceOf[CancelCaseRemoveUploadedFileView]
 
-  val formProvider: CancelCaseRemoveUploadedFileFormProvider = injector.instanceOf[CancelCaseRemoveUploadedFileFormProvider]
+  val formProvider: CancelCaseRemoveUploadedFileFormProvider =
+    injector.instanceOf[CancelCaseRemoveUploadedFileFormProvider]
 
   val filename: String = "Filename"
 
   val index: Index = Index.apply(1)
 
-
   "Rendering the Cancel Case Remove Uploaded File page" when {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(title)
@@ -58,7 +60,8 @@ class CancelCaseRemoveUploadedFileViewSpec extends ViewBaseSpec {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + title)
@@ -77,10 +80,11 @@ class CancelCaseRemoveUploadedFileViewSpec extends ViewBaseSpec {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
+    lazy val view: Html =
+      injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${h1}'" in {
+    s"have the correct h1 of '$h1'" in {
       elementText("h1") mustBe h1
     }
 
@@ -88,11 +92,11 @@ class CancelCaseRemoveUploadedFileViewSpec extends ViewBaseSpec {
       elementText("p:nth-child(2)") mustBe filename
     }
 
-    s"have the correct value for the first radio button of '${siteYes}'" in {
+    s"have the correct value for the first radio button of '$siteYes'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe siteYes
     }
 
-    s"have the correct value for the second radio button of '${siteNo}'" in {
+    s"have the correct value for the second radio button of '$siteNo'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe siteNo
     }
 

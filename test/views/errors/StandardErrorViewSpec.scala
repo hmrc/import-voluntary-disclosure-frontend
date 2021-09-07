@@ -29,7 +29,7 @@ class StandardErrorViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: StandardErrorView = app.injector.instanceOf[StandardErrorView]
 
   "Rendering the Standard error view page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(StandardErrorViewMessages.title)

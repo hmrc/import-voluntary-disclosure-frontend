@@ -40,8 +40,8 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[Seq[OptionalDocument]] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                   = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
+      lazy implicit val document: Document  = Jsoup.parse(view.body)
 
       checkPageTitle(OptionalDocumentsMessages.pageTitle)
 
@@ -61,8 +61,8 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
     "error exist when no option selected exist" should {
 
       val form: Form[Seq[OptionalDocument]] = formProvider().bind(Map("" -> ""))
-      lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                   = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
+      lazy implicit val document: Document  = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + OptionalDocumentsMessages.pageTitle)
 
@@ -80,8 +80,8 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Seq[OptionalDocument]] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy val view: Html                   = injectedView(form, backLink, Seq.empty)(fakeRequest, messages)
+    lazy implicit val document: Document  = Jsoup.parse(view.body)
 
     s"have the correct hint" in {
       elementText("#optionalDocumentsList-hint") mustBe OptionalDocumentsMessages.hint

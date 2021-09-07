@@ -49,13 +49,14 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
       ec
     )
 
-    private lazy val traderAddressCorrectView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
+    private lazy val traderAddressCorrectView: TraderAddressCorrectView =
+      app.injector.instanceOf[TraderAddressCorrectView]
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
 
     val userAnswers: UserAnswers =
       UserAnswers("credId").set(KnownEoriDetailsPage, eoriDetails).success.value
     val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
-    val form: TraderAddressCorrectFormProvider = formProvider
+    val form: TraderAddressCorrectFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
@@ -102,7 +103,7 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
 
       "redirect to the deferment page if choosing to use the known address and checkMode is false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
@@ -113,16 +114,18 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
             .set(KnownEoriDetailsPage, eoriDetails).success.value
             .set(CheckModePage, true).success.value
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "handoff to the address lookup frontend if choosing to use a different address" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.AddressLookupController.initialiseJourney().url)
+        redirectLocation(result) mustBe Some(
+          controllers.contactDetails.routes.AddressLookupController.initialiseJourney().url
+        )
       }
 
       "update the UserAnswers in session when Trader Address is correct" in new Test {

@@ -22,17 +22,18 @@ import play.api.data.FormError
 
 class RepresentativeDanFormProviderSpec extends FormSpecBase {
 
-  def buildFormData(accountNumber: Option[String] = Some("1234567"),
-                    danType: Option[String] = Some("A")): Map[String, String] =
-    (
-      accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
-        danType.map(_ => "value" -> danType.get)).toMap
+  def buildFormData(
+    accountNumber: Option[String] = Some("1234567"),
+    danType: Option[String] = Some("A")
+  ): Map[String, String] =
+    (accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
+      danType.map(_ => "value" -> danType.get)).toMap
 
   "Binding a form with invalid data" when {
 
     "no values provided" should {
       val missingOption: Map[String, String] = Map.empty
-      val form = new RepresentativeDanFormProvider().apply().bind(missingOption)
+      val form                               = new RepresentativeDanFormProvider().apply().bind(missingOption)
 
       "result in a form with errors" in {
         form.errors mustBe Seq(
@@ -79,10 +80,9 @@ class RepresentativeDanFormProviderSpec extends FormSpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = RepresentativeDan("1234567", "A")
-      val form = new RepresentativeDanFormProvider().apply().fill(model)
+      val form  = new RepresentativeDanFormProvider().apply().fill(model)
       form.data mustBe buildFormData()
     }
   }
 
 }
-

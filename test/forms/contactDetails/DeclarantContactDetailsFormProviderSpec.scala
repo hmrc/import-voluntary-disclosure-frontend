@@ -22,31 +22,33 @@ import play.api.data.{Form, FormError}
 
 class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
 
-  private final val fullName = "fullName"
-  private final val email = "email"
-  private final val phoneNumber = "phoneNumber"
-  private final val exampleName = "First Second"
-  private final val exampleEmail = "email@email.com"
-  private final val examplePhoneNumber = "0123456789"
-  private final val fullNameNonEmptyKey = "declarantContactDetails.error.nameNonEmpty"
-  private final val emailNonEmptyKey = "declarantContactDetails.error.emailNonEmpty"
-  private final val phoneNumberNonEmptyKey = "declarantContactDetails.error.phoneNumberNonEmpty"
-  private final val fullNameTooShortKey = "declarantContactDetails.error.nameMinLength"
-  private final val fullNameTooLongKey = "declarantContactDetails.error.nameMaxLength"
+  private final val fullName                     = "fullName"
+  private final val email                        = "email"
+  private final val phoneNumber                  = "phoneNumber"
+  private final val exampleName                  = "First Second"
+  private final val exampleEmail                 = "email@email.com"
+  private final val examplePhoneNumber           = "0123456789"
+  private final val fullNameNonEmptyKey          = "declarantContactDetails.error.nameNonEmpty"
+  private final val emailNonEmptyKey             = "declarantContactDetails.error.emailNonEmpty"
+  private final val phoneNumberNonEmptyKey       = "declarantContactDetails.error.phoneNumberNonEmpty"
+  private final val fullNameTooShortKey          = "declarantContactDetails.error.nameMinLength"
+  private final val fullNameTooLongKey           = "declarantContactDetails.error.nameMaxLength"
   private final val fullNameInvalidCharactersKey = "declarantContactDetails.error.nameAllowableCharacters"
-  private final val emailInvalidFormatKey = "declarantContactDetails.error.emailInvalidFormat"
-  private final val phoneNumberInvalidFormatKey = "declarantContactDetails.error.phoneNumberInvalidFormat"
-  private final val emailRegex = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
-  private final val phoneRegex = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
-  private final val nameRegex = "^[a-zA-Z '-]+$"
+  private final val emailInvalidFormatKey        = "declarantContactDetails.error.emailInvalidFormat"
+  private final val phoneNumberInvalidFormatKey  = "declarantContactDetails.error.phoneNumberInvalidFormat"
+  private final val emailRegex                   = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
+  private final val phoneRegex                   = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
+  private final val nameRegex                    = "^[a-zA-Z '-]+$"
 
   def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
-    "fullName" -> fullName,
-    "email" -> email,
+    "fullName"    -> fullName,
+    "email"       -> email,
     "phoneNumber" -> phoneNumber
   )
 
-  def formBinder(formValues: Map[String, String] = Map(fullName -> "", email -> "", phoneNumber -> "")): Form[ContactDetails] =
+  def formBinder(
+    formValues: Map[String, String] = Map(fullName -> "", email -> "", phoneNumber -> "")
+  ): Form[ContactDetails] =
     new DeclarantContactDetailsFormProvider().apply().bind(formValues)
 
   "Binding a form with invalid data" when {
@@ -134,7 +136,6 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
     }
   }
 
-
   "Binding a form with valid data" should {
     val form = formBinder(formBuilder(fullName = exampleName, email = exampleEmail, phoneNumber = examplePhoneNumber))
 
@@ -151,7 +152,7 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = ContactDetails(exampleName, exampleEmail, examplePhoneNumber)
-      val form = new DeclarantContactDetailsFormProvider().apply().fill(model)
+      val form  = new DeclarantContactDetailsFormProvider().apply().fill(model)
       form.data mustBe formBuilder("First Second", "email@email.com", "0123456789")
     }
   }

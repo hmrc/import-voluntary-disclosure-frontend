@@ -33,14 +33,14 @@ import views.html.updateCase.UpdateAdditionalInformationView
 
 import scala.concurrent.Future
 
-
 class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val view: UpdateAdditionalInformationView = app.injector.instanceOf[UpdateAdditionalInformationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(CheckModePage, false).success.value
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(CheckModePage, false).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -56,13 +56,22 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
 
-    val formProvider: UpdateAdditionalInformationFormProvider = injector.instanceOf[UpdateAdditionalInformationFormProvider]
+    val formProvider: UpdateAdditionalInformationFormProvider =
+      injector.instanceOf[UpdateAdditionalInformationFormProvider]
     val form: UpdateAdditionalInformationFormProvider = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UpdateAdditionalInformationController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view, ec)
+    lazy val controller = new UpdateAdditionalInformationController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -72,7 +81,8 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(UpdateAdditionalInformationPage, "some text").success.value)
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(UpdateAdditionalInformationPage, "some text").success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -83,7 +93,8 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     "payload contains valid data when check mode is false" should {
 
       "return a SEE OTHER response" in new Test {
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
@@ -94,9 +105,12 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
             .set(UpdateAdditionalInformationPage, "some text").success.value
             .set(CheckModePage, false).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
@@ -114,15 +128,15 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     }
   }
 
-
   "backLink" when {
 
     "not in change mode and user selected yes on More Documentation page" should {
       "point to upload summary page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(MoreDocumentationPage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
+              .set(MoreDocumentationPage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
@@ -133,9 +147,10 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     "not in change mode and user selected no on More Documentation page" should {
       "point to upload summary page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(MoreDocumentationPage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
+              .set(MoreDocumentationPage, false).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.updateCase.routes.MoreDocumentationController.onLoad())
@@ -146,8 +161,9 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())

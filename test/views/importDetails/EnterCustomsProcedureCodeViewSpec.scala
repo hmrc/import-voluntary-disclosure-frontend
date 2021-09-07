@@ -36,7 +36,10 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url)))(fakeRequest, messages)
+      lazy val view: Html = injectedView(
+        form,
+        Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url))
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(EnterCustomsProcedureCodeMessages.title)
@@ -54,7 +57,10 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("cpc" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url)))(fakeRequest, messages)
+        lazy val view: Html = injectedView(
+          form,
+          Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url))
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
@@ -64,7 +70,9 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#cpc-error") mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.requiredError
+          elementText(
+            "#cpc-error"
+          ) mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.requiredError
         }
 
       }
@@ -74,7 +82,10 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String] = formProvider().bind(Map("cpc" -> "A1234567"))
-        lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url)))(fakeRequest, messages)
+        lazy val view: Html = injectedView(
+          form,
+          Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url))
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
@@ -84,7 +95,9 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#cpc-error") mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.formatError
+          elementText(
+            "#cpc-error"
+          ) mustBe EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.formatError
         }
 
       }
@@ -94,7 +107,10 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url)))(fakeRequest, messages)
+    lazy val view: Html = injectedView(
+      form,
+      Some(Call("GET", controllers.importDetails.routes.EntryDetailsController.onLoad().url))
+    )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${EnterCustomsProcedureCodeMessages.h1}'" in {
@@ -106,7 +122,9 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.importDetails.routes.EntryDetailsController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.importDetails.routes.EntryDetailsController.onLoad().url
+      )
     }
 
     s"have the correct Continue button" in {

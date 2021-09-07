@@ -21,11 +21,11 @@ import play.api.data.Form
 
 class ImporterNameFormProviderSpec extends FormSpecBase {
 
-  private final val fullName1 = "fullName"
+  private final val fullName1           = "fullName"
   private final val fullNameNonEmptyKey = "importerName.error.nameNonEmpty"
   private final val fullNameTooShortKey = "importerName.error.nameMinLength"
-  private final val fullNameTooLongKey = "importerName.error.nameMaxLength"
-  private final val fullNameEmojiKey = "importerName.error.noEmoji"
+  private final val fullNameTooLongKey  = "importerName.error.nameMaxLength"
+  private final val fullNameEmojiKey    = "importerName.error.noEmoji"
 
   def formBuilder(fullName: String = ""): Map[String, String] = Map(
     "fullName" -> fullName
@@ -39,7 +39,7 @@ class ImporterNameFormProviderSpec extends FormSpecBase {
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ImporterNameFormProvider()().bind(missingOption)
+      val form                               = new ImporterNameFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

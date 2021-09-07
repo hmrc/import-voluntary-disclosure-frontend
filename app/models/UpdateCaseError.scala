@@ -30,7 +30,7 @@ object UpdateCaseError {
   implicit val reads: Reads[UpdateCaseError] =
     Reads { json =>
       for {
-        code <- (json \ "errorCode").validate[Int]
+        code    <- (json \ "errorCode").validate[Int]
         message <- (json \ "errorMessage").validateOpt[String]
       } yield {
         code match {

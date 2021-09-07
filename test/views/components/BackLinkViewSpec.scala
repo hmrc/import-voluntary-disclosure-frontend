@@ -31,7 +31,7 @@ class BackLinkViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the back link" when {
     "no URL is specified" should {
 
-      lazy val markup: Html = target(None)
+      lazy val markup: Html                = target(None)
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
       s"have the default URL" in {
@@ -41,8 +41,8 @@ class BackLinkViewSpec extends ViewBaseSpec with BaseMessages {
 
     "a URL is specified" should {
 
-      val url: String = "/some-relative-url/here"
-      lazy val markup: Html = target(Some(Call("GET", url)))
+      val url: String                      = "/some-relative-url/here"
+      lazy val markup: Html                = target(Some(Call("GET", url)))
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
       s"have the include the specified URL" in {
@@ -52,7 +52,7 @@ class BackLinkViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   it should {
-    lazy val markup: Html = target(None)
+    lazy val markup: Html                = target(None)
     lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
     "render the correct link text" in {

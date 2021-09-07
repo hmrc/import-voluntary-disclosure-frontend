@@ -167,11 +167,15 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${DefermentMessages.payingByDeferment}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe DefermentMessages.payingByDeferment
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe DefermentMessages.payingByDeferment
     }
 
     s"have the correct value for the second radio button of '${DefermentMessages.payingByOther}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe DefermentMessages.payingByOther
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe DefermentMessages.payingByOther
     }
 
     s"have the correct value for the second radio button of '${DefermentMessages.payingByOther}' hint" in {
@@ -179,7 +183,9 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url
+      )
     }
 
     s"have the correct Continue button" in {

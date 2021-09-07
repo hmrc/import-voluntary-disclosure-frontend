@@ -21,37 +21,37 @@ import messages.{BaseMessages, ExpectedContent}
 object UnderpaymentDetailsMessages extends BaseMessages {
 
   val originalAmount = "Amount that was paid"
-  val amendedAmount = "Amount that should have been paid"
-  val bulkMessage = "This must be the total across all the entries included in this disclosure."
+  val amendedAmount  = "Amount that should have been paid"
+  val bulkMessage    = "This must be the total across all the entries included in this disclosure."
 
-  val B00pageTitle = "Import VAT underpayment details, in pounds"
+  val B00pageTitle  = "Import VAT underpayment details, in pounds"
   val B00pageHeader = "Import VAT underpayment details, in pounds"
-  val A00pageTitle = "Customs Duty underpayment details, in pounds"
+  val A00pageTitle  = "Customs Duty underpayment details, in pounds"
   val A00pageHeader = "Customs Duty underpayment details, in pounds"
-  val E00pageTitle = "Excise duty underpayment details, in pounds"
+  val E00pageTitle  = "Excise duty underpayment details, in pounds"
   val E00pageHeader = "Excise duty underpayment details, in pounds"
-  val A20pageTitle = "Additional Duty underpayment details, in pounds"
+  val A20pageTitle  = "Additional Duty underpayment details, in pounds"
   val A20pageHeader = "Additional Duty underpayment details, in pounds"
-  val A30pageTitle = "Definitive Anti-Dumping Duty underpayment details, in pounds"
+  val A30pageTitle  = "Definitive Anti-Dumping Duty underpayment details, in pounds"
   val A30pageHeader = "Definitive Anti-Dumping Duty underpayment details, in pounds"
-  val A35pageTitle = "Provisional Anti-Dumping Duty underpayment details, in pounds"
+  val A35pageTitle  = "Provisional Anti-Dumping Duty underpayment details, in pounds"
   val A35pageHeader = "Provisional Anti-Dumping Duty underpayment details, in pounds"
-  val A40pageTitle = "Definitive Countervailing Duty underpayment details, in pounds"
+  val A40pageTitle  = "Definitive Countervailing Duty underpayment details, in pounds"
   val A40pageHeader = "Definitive Countervailing Duty underpayment details, in pounds"
-  val A45pageTitle = "Provisional Countervailing Duty underpayment details, in pounds"
+  val A45pageTitle  = "Provisional Countervailing Duty underpayment details, in pounds"
   val A45pageHeader = "Provisional Countervailing Duty underpayment details, in pounds"
-  val A10pageTitle = "Customs Duty on Agricultural Products underpayment details, in pounds"
+  val A10pageTitle  = "Customs Duty on Agricultural Products underpayment details, in pounds"
   val A10pageHeader = "Customs Duty on Agricultural Products underpayment details, in pounds"
-  val D10pageTitle = "Compensatory Duty underpayment details, in pounds"
+  val D10pageTitle  = "Compensatory Duty underpayment details, in pounds"
   val D10pageHeader = "Compensatory Duty underpayment details, in pounds"
 
-  val originalNonEmpty = "Enter the amount that was paid, in pounds"
-  val originalNonNumber = "Amount that was paid must be a number like 7235 or 67.39"
+  val originalNonEmpty   = "Enter the amount that was paid, in pounds"
+  val originalNonNumber  = "Amount that was paid must be a number like 7235 or 67.39"
   val originalOutOfRange = "Amount that was paid must be between £0 and £9,999,999,999.99"
-  val amendedNonEmpty = "Enter the amount that should have been paid, in pounds"
-  val amendedNonNumber = "Amount that should have been paid must be a number like 7235 or 67.39"
-  val amendedOutOfRange = "Amount that should have been paid must be between £0 and £9,999,999,999.99"
-  val amendedDifferent = "Amount that should have been paid must be more than amount that was paid"
+  val amendedNonEmpty    = "Enter the amount that should have been paid, in pounds"
+  val amendedNonNumber   = "Amount that should have been paid must be a number like 7235 or 67.39"
+  val amendedOutOfRange  = "Amount that should have been paid must be between £0 and £9,999,999,999.99"
+  val amendedDifferent   = "Amount that should have been paid must be more than amount that was paid"
 
   val underpaymentTypeContent: Map[String, ExpectedContent] = Map(
     "B00" -> ExpectedContent(
@@ -103,7 +103,7 @@ object UnderpaymentDetailsMessages extends BaseMessages {
       D10pageTitle,
       D10pageHeader,
       None
-    ),
+    )
   )
 
 }

@@ -37,30 +37,32 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
 
 @Singleton
-class BulkUploadFileController @Inject()(identify: IdentifierAction,
-                                         getData: DataRetrievalAction,
-                                         requireData: DataRequiredAction,
-                                         mcc: MessagesControllerComponents,
-                                         val fileUploadRepository: FileUploadRepository,
-                                         val sessionRepository: SessionRepository,
-                                         upScanService: UpScanService,
-                                         view: BulkUploadFileView,
-                                         progressView: FileUploadProgressView,
-                                         formProvider: UploadFileFormProvider,
-                                         successView: FileUploadSuccessView,
-                                         implicit val appConfig: AppConfig,
-                                         implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with FileUploadHandler[FileUploadInfo] {
+class BulkUploadFileController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  val fileUploadRepository: FileUploadRepository,
+  val sessionRepository: SessionRepository,
+  upScanService: UpScanService,
+  view: BulkUploadFileView,
+  progressView: FileUploadProgressView,
+  formProvider: UploadFileFormProvider,
+  successView: FileUploadSuccessView,
+  implicit val appConfig: AppConfig,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.flash.get("uploadError") match {
-      case Some("TooSmall") => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
-      case Some("TooBig") => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
-      case Some("Unknown") => formProvider().withError("file", Messages("uploadFile.error.unknown"))
-      case Some("Rejected") => formProvider().withError("file", Messages("uploadFile.error.rejected"))
+      case Some("TooSmall")    => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
+      case Some("TooBig")      => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
+      case Some("Unknown")     => formProvider().withError("file", Messages("uploadFile.error.unknown"))
+      case Some("Rejected")    => formProvider().withError("file", Messages("uploadFile.error.rejected"))
       case Some("Quarantined") => formProvider().withError("file", Messages("uploadFile.error.quarantined"))
-      case _ => formProvider()
+      case _                   => formProvider()
     }
 
     upScanService.initiateBulkJourney().map { response =>
@@ -70,48 +72,51 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
     }
   }
 
-  def upscanResponseHandler(key: Option[String] = None,
-                            errorCode: Option[String] = None,
-                            errorMessage: Option[String] = None,
-                            errorResource: Option[String] = None,
-                            errorRequestId: Option[String] = None
-                           ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
+  def upscanResponseHandler(
+    key: Option[String] = None,
+    errorCode: Option[String] = None,
+    errorMessage: Option[String] = None,
+    errorResource: Option[String] = None,
+    errorRequestId: Option[String] = None
+  ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
-    val errorRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
-    val successRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key.getOrElse("this will never be used")))
+    val errorRoute  = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
+    val successRoute = Redirect(
+      controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key.getOrElse("this will never be used"))
+    )
 
     handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
-  def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val uploadCompleteRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onSuccess())
-    val uploadFailedRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
-    val uploadInProgressRoute = Ok(
-      progressView(
-        key = key,
-        action = controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key).url
+  def uploadProgress(key: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val uploadCompleteRoute = Redirect(controllers.docUpload.routes.BulkUploadFileController.onSuccess())
+      val uploadFailedRoute   = Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
+      val uploadInProgressRoute = Ok(
+        progressView(
+          key = key,
+          action = controllers.docUpload.routes.BulkUploadFileController.uploadProgress(key).url
+        )
       )
-    )
-    val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
-      val upload = extractFileDetails(file, key)
-      Seq(upload)
-    }
-    val saveFilesList: Seq[FileUploadInfo] => Try[UserAnswers] = { list =>
-      request.userAnswers.set(FileUploadPage, list)(FileUploadPage.queryWrites)
-    }
+      val updateFilesList: FileUpload => Seq[FileUploadInfo] = { file =>
+        val upload = extractFileDetails(file, key)
+        Seq(upload)
+      }
+      val saveFilesList: Seq[FileUploadInfo] => Try[UserAnswers] = { list =>
+        request.userAnswers.set(FileUploadPage, list)(FileUploadPage.queryWrites)
+      }
 
-    handleUpscanFileProcessing(key,
-      uploadCompleteRoute,
-      uploadInProgressRoute,
-      uploadFailedRoute,
-      updateFilesList,
-      saveFilesList
-    )
+      handleUpscanFileProcessing(
+        key,
+        uploadCompleteRoute,
+        uploadInProgressRoute,
+        uploadFailedRoute,
+        updateFilesList,
+        saveFilesList
+      )
   }
 
   def onSuccess(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val action = if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad().url
     } else {
@@ -123,10 +128,7 @@ class BulkUploadFileController @Inject()(identify: IdentifierAction,
       .headOption.getOrElse("No filename")
 
     Future.successful(
-      Ok(successView(
-        fileName = filename,
-        action = action)
-      )
+      Ok(successView(fileName = filename, action = action))
     )
   }
 

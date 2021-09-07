@@ -29,13 +29,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector,
-                                  auditService: AuditService) {
+class UpdateCaseService @Inject() (ivdSubmissionConnector: IvdSubmissionConnector, auditService: AuditService) {
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def updateCase()(implicit request: DataRequest[_],
-                   hc: HeaderCarrier,
-                   ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
+  def updateCase()(implicit
+    request: DataRequest[_],
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[Either[UpdateCaseError, UpdateCaseResponse]] = {
     buildUpdate match {
       case Right(submission) =>
         ivdSubmissionConnector.updateCase(submission).map {
@@ -61,13 +62,13 @@ class UpdateCaseService @Inject()(ivdSubmissionConnector: IvdSubmissionConnector
           "Cancellation request:\n" + data.additionalInfo
         }
         val json = Json.obj(
-          "caseId" -> data.caseId,
-          "additionalInfo" -> additionalInfo,
+          "caseId"              -> data.caseId,
+          "additionalInfo"      -> additionalInfo,
           "supportingDocuments" -> data.supportingDocuments
         ).dropNullValues
         Right(json)
       case JsError(err) =>
-        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: ${err}")
+        logger.error(s"Invalid User Answers data. Failed to parse into UpdateCase model. Error: $err")
         Left(UpdateCaseError.UnexpectedError(-1, Some(err.toString())))
     }
   }

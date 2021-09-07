@@ -26,7 +26,7 @@ class NumberOfEntriesFormProviderSpec extends FormSpecBase {
     "the no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new NumberOfEntriesFormProvider()().bind(missingOption)
+      val form                               = new NumberOfEntriesFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -59,10 +59,9 @@ class NumberOfEntriesFormProviderSpec extends FormSpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = NumberOfEntries.OneEntry
-      val form = new NumberOfEntriesFormProvider()().fill(model)
+      val form  = new NumberOfEntriesFormProvider()().fill(model)
       form.data mustBe Map("value" -> "oneEntry")
     }
   }
 
 }
-

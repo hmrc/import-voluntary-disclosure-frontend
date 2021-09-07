@@ -21,12 +21,12 @@ import play.api.libs.json.{Format, Json}
 object UpscanErrors extends Enumeration {
   type UpscanError = Value
 
-  val Unknown: UpscanError = Value
-  val Rejected: UpscanError = Value
+  val Unknown: UpscanError     = Value
+  val Rejected: UpscanError    = Value
   val Quarantined: UpscanError = Value
-  val TooSmall: UpscanError = Value
-  val TooBig: UpscanError = Value
-  val Missing: UpscanError = Value
+  val TooSmall: UpscanError    = Value
+  val TooBig: UpscanError      = Value
+  val Missing: UpscanError     = Value
 
   implicit val formats: Format[UpscanError] = Json.formatEnum(this)
 }

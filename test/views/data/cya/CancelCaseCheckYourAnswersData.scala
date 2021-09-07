@@ -24,11 +24,11 @@ import viewmodels.cya.CYASummaryList
 
 object CancelCaseCheckYourAnswersData {
 
-  val changeUrl = "url"
-  val referenceNumber = "C184567898765333333333"
-  val yes = "Yes"
-  val no = "No"
-  val file = "Example.pdf"
+  val changeUrl             = "url"
+  val referenceNumber       = "C184567898765333333333"
+  val yes                   = "Yes"
+  val no                    = "No"
+  val file                  = "Example.pdf"
   val additionalInformation = "Hello World"
 
   def cancelCaseAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
@@ -39,7 +39,6 @@ object CancelCaseCheckYourAnswersData {
     )
   )
 
-
   val referenceNumberRow = SummaryListRow(
     key = Key(
       Text(CancelCaseCYAMessages.referenceNumber),
@@ -48,14 +47,17 @@ object CancelCaseCheckYourAnswersData {
     value = Value(
       Text(referenceNumber)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CancelCaseCYAMessages.changeReferenceNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CancelCaseCYAMessages.changeReferenceNumber)
+          )
+        )
       )
     )
-    ))
   )
 
   def supportingDocumentationRow(supportingDocuments: Boolean): SummaryListRow = SummaryListRow(
@@ -66,13 +68,17 @@ object CancelCaseCheckYourAnswersData {
     value = Value(
       Text(if (supportingDocuments) yes else no)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CancelCaseCYAMessages.changeSupportingDocumentation)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CancelCaseCYAMessages.changeSupportingDocumentation)
+          )
+        )
       )
-    )))
+    )
   )
 
   val reasonCancellation: SummaryListRow = SummaryListRow(
@@ -83,43 +89,49 @@ object CancelCaseCheckYourAnswersData {
     value = Value(
       Text(additionalInformation)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.cancelCase.routes.CancellationReasonController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CancelCaseCYAMessages.changeReasonCancellation)
-      )
-    )
-    ))
-  )
-
-    val fileUploadRow: SummaryListRow = SummaryListRow(
-      key = Key(
-        Text(CancelCaseCYAMessages.filesUploaded(1)),
-        classes = "govuk-!-width-one-third"
-      ),
-      value = Value(
-        HtmlContent(file)
-      ),
-      actions = Some(Actions(items = Seq(
-        ActionItem(
-          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
-          HtmlContent("""<span aria-hidden="true">Change</span>"""),
-          visuallyHiddenText = Some(CancelCaseCYAMessages.changeUploadedFiles)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.cancelCase.routes.CancellationReasonController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CancelCaseCYAMessages.changeReasonCancellation)
+          )
         )
       )
-      ))
     )
+  )
 
+  val fileUploadRow: SummaryListRow = SummaryListRow(
+    key = Key(
+      Text(CancelCaseCYAMessages.filesUploaded(1)),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      HtmlContent(file)
+    ),
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CancelCaseCYAMessages.changeUploadedFiles)
+          )
+        )
+      )
+    )
+  )
 
   val answers: Seq[CYASummaryList] = Seq(
-
-    cancelCaseAnswers(Seq(
-      referenceNumberRow,
-      supportingDocumentationRow(true),
-      reasonCancellation,
-      fileUploadRow
-    )),
+    cancelCaseAnswers(
+      Seq(
+        referenceNumberRow,
+        supportingDocumentationRow(true),
+        reasonCancellation,
+        fileUploadRow
+      )
+    )
   )
 
 }

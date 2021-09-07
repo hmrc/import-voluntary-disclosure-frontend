@@ -26,18 +26,20 @@ import views.html.updateCase.DisclosureNotFoundView
 
 import javax.inject.Inject
 
-class DisclosureNotFoundController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             mcc: MessagesControllerComponents,
-                                             view: DisclosureNotFoundView,
-                                             errorHandler: ErrorHandler)
-  extends FrontendController(mcc) with I18nSupport {
+class DisclosureNotFoundController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  view: DisclosureNotFoundView,
+  errorHandler: ErrorHandler
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) => Ok(view(caseId))
-      case None => errorHandler.showInternalServerError
+      case None         => errorHandler.showInternalServerError
     }
   }
 }

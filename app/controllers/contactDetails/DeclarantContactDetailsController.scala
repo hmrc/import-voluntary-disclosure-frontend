@@ -29,15 +29,17 @@ import views.html.contactDetails.DeclarantContactDetailsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  sessionRepository: SessionRepository,
-                                                  mcc: MessagesControllerComponents,
-                                                  formProvider: DeclarantContactDetailsFormProvider,
-                                                  view: DeclarantContactDetailsView,
-                                                  implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class DeclarantContactDetailsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: DeclarantContactDetailsFormProvider,
+  view: DeclarantContactDetailsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DeclarantContactDetailsPage).fold(formProvider()) {
@@ -52,7 +54,7 @@ class DeclarantContactDetailsController @Inject()(identify: IdentifierAction,
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DeclarantContactDetailsPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())

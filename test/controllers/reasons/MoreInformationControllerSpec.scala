@@ -34,14 +34,14 @@ import views.html.reasons.MoreInformationView
 
 import scala.concurrent.Future
 
-
 class MoreInformationControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val view: MoreInformationView = app.injector.instanceOf[MoreInformationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(CheckModePage, false).success.value
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(CheckModePage, false).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -58,12 +58,20 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     )
 
     val formProvider: MoreInformationFormProvider = injector.instanceOf[MoreInformationFormProvider]
-    val form: MoreInformationFormProvider = formProvider
+    val form: MoreInformationFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new MoreInformationController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, view, ec)
+    lazy val controller = new MoreInformationController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -73,7 +81,8 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(MoreInformationPage, "some text").success.value)
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(MoreInformationPage, "some text").success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -84,7 +93,8 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     "payload contains valid data when check mode is false" should {
 
       "return a SEE OTHER response" in new Test {
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
@@ -96,7 +106,8 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, false).success.value
             .set(NumberOfEntriesPage, OneEntry).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.SupportingDocController.onLoad().url)
       }
@@ -119,26 +130,29 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
   "payload contains valid data when check mode is true" should {
 
     "return a SEE OTHER response" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(CheckModePage, true).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
       )
       val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
-      lazy val result: Future[Result] = controller.onSubmit(request)
+      lazy val result: Future[Result]                      = controller.onSubmit(request)
       status(result) mustBe Status.SEE_OTHER
     }
 
     "return the correct location header for the response" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(CheckModePage, true).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
       )
       val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
-      lazy val result: Future[Result] = controller.onSubmit(request)
+      lazy val result: Future[Result]                      = controller.onSubmit(request)
       redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
     }
 
     "update the UserAnswers in session" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(CheckModePage, true).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(CheckModePage, true).success.value
       )
       private val request = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
       await(controller.onSubmit(request))
@@ -158,9 +172,10 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to has further information page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(NumberOfEntriesPage, OneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
+              .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad())
@@ -171,9 +186,10 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     "not in change mode bulk entry" should {
       "point to has further information page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
+              .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
@@ -184,8 +200,9 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe None

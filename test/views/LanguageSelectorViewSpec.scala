@@ -29,7 +29,7 @@ class LanguageSelectorViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the language toggle" should {
     "have a toggle for Welsh" in {
-      lazy val markup: Html = target()(messages)
+      lazy val markup: Html                = target()(messages)
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
       element("ul > li:nth-child(2) > a").attr("href") mustBe "/disclose-import-taxes-underpayment/language/cy"
@@ -37,7 +37,7 @@ class LanguageSelectorViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   it should {
-    lazy val markup: Html = target()(messages)
+    lazy val markup: Html                = target()(messages)
     lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
     "render the correct text" in {

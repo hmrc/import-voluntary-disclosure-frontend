@@ -26,26 +26,28 @@ import views.html.updateCase.UpdateCaseConfirmationView
 class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: UpdateCaseConfirmationView = app.injector.instanceOf[UpdateCaseConfirmationView]
-  private val referenceNumber: String = "C181234567890123456789"
+  private val referenceNumber: String                       = "C181234567890123456789"
 
   "Rendering the Update Case Confirmation page" when {
 
     "no errors exist" should {
-      lazy val view: Html = injectedView(referenceNumber)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(referenceNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UpdateCaseConfirmationMessages.pageTitle)
     }
 
     "it" should {
-      lazy val view: Html = injectedView(referenceNumber)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(referenceNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${UpdateCaseConfirmationMessages.heading}'" in {
         elementText("h1") mustBe UpdateCaseConfirmationMessages.heading
       }
 
       s"have the correct paragraph of '${UpdateCaseConfirmationMessages.paragraph(referenceNumber)}'" in {
-        elementText("#main-content > div > div > p:nth-child(2)") mustBe UpdateCaseConfirmationMessages.paragraph(referenceNumber)
+        elementText("#main-content > div > div > p:nth-child(2)") mustBe UpdateCaseConfirmationMessages.paragraph(
+          referenceNumber
+        )
       }
 
       "The what happens next section" should {
@@ -55,7 +57,9 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the paragraph of '${UpdateCaseConfirmationMessages.whatHappensNextParagraph}'" in {
-          elementText("#main-content > div > div > p:nth-child(4)") mustBe UpdateCaseConfirmationMessages.whatHappensNextParagraph
+          elementText(
+            "#main-content > div > div > p:nth-child(4)"
+          ) mustBe UpdateCaseConfirmationMessages.whatHappensNextParagraph
         }
       }
 
@@ -66,7 +70,9 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the paragraph of '${UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph}'" in {
-          elementText("#main-content > div > div > p:nth-child(6)") mustBe UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph
+          elementText(
+            "#main-content > div > div > p:nth-child(6)"
+          ) mustBe UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph
         }
 
         s"have the correct text for link '${UpdateCaseConfirmationMessages.startNewUnderpaymentLink}'" in {

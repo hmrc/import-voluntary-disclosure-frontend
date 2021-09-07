@@ -29,12 +29,14 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class UnderpaymentStartController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            mcc: MessagesControllerComponents,
-                                            requireData: DataRequiredAction,
-                                            view: UnderpaymentStartView)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentStartController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  view: UnderpaymentStartView
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {

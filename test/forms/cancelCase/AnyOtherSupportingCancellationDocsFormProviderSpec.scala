@@ -53,4 +53,3 @@ class AnyOtherSupportingCancellationDocsFormProviderSpec extends FormSpecBase {
   }
 
 }
-

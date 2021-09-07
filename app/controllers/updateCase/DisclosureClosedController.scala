@@ -29,20 +29,22 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class DisclosureClosedController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           mcc: MessagesControllerComponents,
-                                           sessionRepository: SessionRepository,
-                                           view: DisclosureClosedView,
-                                           errorHandler: ErrorHandler,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class DisclosureClosedController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  view: DisclosureClosedView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) => sessionRepository.remove(request.credId).map(_ => Ok(view(caseId)))
-      case _ => Future.successful(errorHandler.showInternalServerError)
+      case _            => Future.successful(errorHandler.showInternalServerError)
     }
   }
 

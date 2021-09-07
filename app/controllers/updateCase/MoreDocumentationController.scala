@@ -31,17 +31,18 @@ import views.html.updateCase.MoreDocumentationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class MoreDocumentationController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            mcc: MessagesControllerComponents,
-                                            formProvider: MoreDocumentationFormProvider,
-                                            view: MoreDocumentationView,
-                                            implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class MoreDocumentationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: MoreDocumentationFormProvider,
+  view: MoreDocumentationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {
@@ -83,4 +84,3 @@ class MoreDocumentationController @Inject()(identify: IdentifierAction,
   }
 
 }
-

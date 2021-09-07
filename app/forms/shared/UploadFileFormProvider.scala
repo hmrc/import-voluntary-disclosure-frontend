@@ -22,7 +22,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class UploadFileFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply(): Form[String] =

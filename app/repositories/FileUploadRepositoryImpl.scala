@@ -34,28 +34,32 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class FileUploadRepositoryImpl @Inject()(mongoComponent: MongoComponent, appConfig: AppConfig)
-                                        (implicit ec: ExecutionContext) extends
-  PlayMongoRepository[FileUpload](
-    collectionName = "file-upload",
-    mongoComponent = mongoComponent,
-    domainFormat = FileUpload.format,
-    indexes = Seq(
-      IndexModel(
-        ascending("reference"),
-        IndexOptions().name("reference-unique-index").unique(true).sparse(false).expireAfter(appConfig.fileRepositoryTtl, TimeUnit.SECONDS))
+class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appConfig: AppConfig)(implicit
+  ec: ExecutionContext
+) extends PlayMongoRepository[FileUpload](
+      collectionName = "file-upload",
+      mongoComponent = mongoComponent,
+      domainFormat = FileUpload.format,
+      indexes = Seq(
+        IndexModel(
+          ascending("reference"),
+          IndexOptions().name("reference-unique-index").unique(true).sparse(false).expireAfter(
+            appConfig.fileRepositoryTtl,
+            TimeUnit.SECONDS
+          )
+        )
+      )
     )
-  ) with FileUploadRepository {
+    with FileUploadRepository {
 
   private def getTime: Instant = Instant.now().atZone(ZoneId.of("UTC")).toInstant
 
   val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
 
-  override def insertRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
+  override def insertRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] =
     collection.insertOne(updateLastUpdatedTimestamp(fileUpload))
       .toFuture()
       .map(_.wasAcknowledged())
-  }
 
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())
@@ -65,17 +69,15 @@ class FileUploadRepositoryImpl @Inject()(mongoComponent: MongoComponent, appConf
       .map(_.wasAcknowledged())
   }
 
-  override def getRecord(reference: String)(implicit ec: ExecutionContext): Future[Option[FileUpload]] = {
+  override def getRecord(reference: String)(implicit ec: ExecutionContext): Future[Option[FileUpload]] =
     collection
       .find(equal("reference", reference))
       .headOption()
-  }
 
-  override def deleteRecord(reference: String)(implicit ec: ExecutionContext): Future[Boolean] = {
+  override def deleteRecord(reference: String)(implicit ec: ExecutionContext): Future[Boolean] =
     collection.deleteOne(equal("reference", reference))
       .toFuture()
       .map(_.wasAcknowledged())
-  }
 
   override def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]] =
     getRecord(reference).map(_.flatMap(fileUpload => fileUpload.uploadDetails.map(_.fileName)))
@@ -85,7 +87,6 @@ class FileUploadRepositoryImpl @Inject()(mongoComponent: MongoComponent, appConf
     collection.deleteMany(BsonDocument()).toFuture()
   }
 }
-
 
 trait FileUploadRepository {
 

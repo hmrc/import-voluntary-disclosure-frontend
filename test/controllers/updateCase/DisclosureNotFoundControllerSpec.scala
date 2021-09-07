@@ -26,11 +26,20 @@ import views.html.updateCase.DisclosureNotFoundView
 
 class DisclosureNotFoundControllerSpec extends ControllerSpecBase {
   val view: DisclosureNotFoundView = app.injector.instanceOf[DisclosureNotFoundView]
-  val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId").set(DisclosureReferenceNumberPage, "C18").success.value)
+  val userAnswers: Option[UserAnswers] = Some(
+    UserAnswers("credId").set(DisclosureReferenceNumberPage, "C18").success.value
+  )
   val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
   val controller =
-    new DisclosureNotFoundController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents, view, errorHandler)
+    new DisclosureNotFoundController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      view,
+      errorHandler
+    )
 
   "onLoad" should {
     "return 200" in {

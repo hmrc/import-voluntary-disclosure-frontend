@@ -19,13 +19,9 @@ package models
 import models.SelectedDutyTypes.SelectedDutyType
 import play.api.libs.json.{Json, Reads, Writes}
 
-case class UploadAuthority(dan: String,
-                           dutyType: SelectedDutyType,
-                           file: FileUploadInfo
-                          )
+case class UploadAuthority(dan: String, dutyType: SelectedDutyType, file: FileUploadInfo)
 
 object UploadAuthority {
-  implicit val reads: Reads[UploadAuthority] = Json.reads[UploadAuthority]
+  implicit val reads: Reads[UploadAuthority]   = Json.reads[UploadAuthority]
   implicit val writes: Writes[UploadAuthority] = Json.writes[UploadAuthority]
 }
-

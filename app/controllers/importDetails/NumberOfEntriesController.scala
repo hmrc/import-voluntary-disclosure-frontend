@@ -38,21 +38,22 @@ import views.html.importDetails.NumberOfEntriesView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class NumberOfEntriesController @Inject()(identify: IdentifierAction,
-                                          getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          sessionRepository: SessionRepository,
-                                          appConfig: AppConfig,
-                                          mcc: MessagesControllerComponents,
-                                          formProvider: NumberOfEntriesFormProvider,
-                                          view: NumberOfEntriesView,
-                                          implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class NumberOfEntriesController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  appConfig: AppConfig,
+  mcc: MessagesControllerComponents,
+  formProvider: NumberOfEntriesFormProvider,
+  view: NumberOfEntriesView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   implicit val config: AppConfig = appConfig
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val form = request.userAnswers.get(NumberOfEntriesPage).fold(formProvider()) {
       formProvider().fill
     }
@@ -66,24 +67,28 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       newNumberOfEntries => {
         val prevNumberOfEntries: Option[NumberOfEntries] = request.userAnswers.get(NumberOfEntriesPage)
         val cleanedUserAnswers: UserAnswers = prevNumberOfEntries match {
-          case Some(oldNumberOfEntries) => if (newNumberOfEntries == oldNumberOfEntries) {
-            request.userAnswers
-          } else {
-            request.userAnswers.preserve(
-              Seq(
-                ImporterAddressPage, UserTypePage, ImporterNamePage, KnownEoriDetailsPage, ImporterVatRegisteredPage,
-                ImporterEORINumberPage, ImporterEORIExistsPage
+          case Some(oldNumberOfEntries) =>
+            if (newNumberOfEntries == oldNumberOfEntries) {
+              request.userAnswers
+            } else {
+              request.userAnswers.preserve(
+                Seq(
+                  ImporterAddressPage,
+                  UserTypePage,
+                  ImporterNamePage,
+                  KnownEoriDetailsPage,
+                  ImporterVatRegisteredPage,
+                  ImporterEORINumberPage,
+                  ImporterEORIExistsPage
+                )
               )
-            )
-          }
+            }
           case _ => request.userAnswers
         }
         for {
           updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(NumberOfEntriesPage, newNumberOfEntries))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          redirect(newNumberOfEntries, cleanedUserAnswers)
-        }
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield redirect(newNumberOfEntries, cleanedUserAnswers)
       }
     )
   }
@@ -94,7 +99,7 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
     } else {
       entries match {
-        case OneEntry => Redirect(controllers.importDetails.routes.EntryDetailsController.onLoad())
+        case OneEntry         => Redirect(controllers.importDetails.routes.EntryDetailsController.onLoad())
         case MoreThanOneEntry => Redirect(controllers.importDetails.routes.AcceptanceDateController.onLoad())
       }
     }
@@ -105,9 +110,9 @@ class NumberOfEntriesController @Inject()(identify: IdentifierAction,
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
       (request.isRepFlow, request.doesImporterEORIExist) match {
-        case (true, true) => controllers.importDetails.routes.ImporterVatRegisteredController.onLoad()
+        case (true, true)  => controllers.importDetails.routes.ImporterVatRegisteredController.onLoad()
         case (true, false) => controllers.importDetails.routes.ImporterEORIExistsController.onLoad()
-        case _ => controllers.importDetails.routes.UserTypeController.onLoad()
+        case _             => controllers.importDetails.routes.UserTypeController.onLoad()
       }
     }
   }

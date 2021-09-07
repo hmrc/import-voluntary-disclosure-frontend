@@ -33,25 +33,26 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UpdateCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     mcc: MessagesControllerComponents,
-                                                     sessionRepository: SessionRepository,
-                                                     updateCaseService: UpdateCaseService,
-                                                     view: UpdateCaseCheckYourAnswersView,
-                                                     confirmationView: UpdateCaseConfirmationView,
-                                                     errorHandler: ErrorHandler,
-                                                     implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYAUpdateCaseSummaryListHelper {
+class UpdateCaseCheckYourAnswersController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  updateCaseService: UpdateCaseService,
+  view: UpdateCaseCheckYourAnswersView,
+  confirmationView: UpdateCaseConfirmationView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with CYAUpdateCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Ok(view(buildUpdateCaseSummaryList))
-    }
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Ok(view(buildUpdateCaseSummaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

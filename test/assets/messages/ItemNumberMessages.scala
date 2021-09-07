@@ -18,9 +18,9 @@ package messages
 
 object ItemNumberMessages extends BaseMessages {
 
-  val title: String = "What is the item number?"
-  val h1: String = "What is the item number?"
+  val title: String         = "What is the item number?"
+  val h1: String            = "What is the item number?"
   val requiredError: String = "Enter an item number"
-  val formatError: String = "Must be a number"
+  val formatError: String   = "Must be a number"
 
 }

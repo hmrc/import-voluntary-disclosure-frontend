@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class UploadAnotherFileFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =

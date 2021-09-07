@@ -41,18 +41,27 @@ import scala.concurrent.Future
 class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockSessionRepository {
-    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView = app.injector.instanceOf[UnderpaymentDetailSummaryView]
+    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView =
+      app.injector.instanceOf[UnderpaymentDetailSummaryView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailSummaryFormProvider = injector.instanceOf[UnderpaymentDetailSummaryFormProvider]
-    val form: UnderpaymentDetailSummaryFormProvider = formProvider
+    val form: UnderpaymentDetailSummaryFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form, ec)
+    lazy val controller = new UnderpaymentDetailSummaryController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentDetailSummaryView,
+      form,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -88,7 +97,10 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
 
       "return a SEE OTHER Underpayment Type page when true is selected" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          UserAnswers("credId").set(
+            UnderpaymentDetailSummaryPage,
+            Seq(UnderpaymentDetail("A00", 0.0, 1.0))
+          ).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "true")
@@ -111,7 +123,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         redirectLocation(result) mustBe
           Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
-
 
       "return a SEE OTHER Bulk Upload File page when false is selected and Bulk Entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
@@ -175,10 +186,13 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(TempUnderpaymentTypePage, Both).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            ).success.value
             .set(UserTypePage, Representative).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
@@ -193,10 +207,13 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(TempUnderpaymentTypePage, Vat).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            ).success.value
             .set(UserTypePage, Representative).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(

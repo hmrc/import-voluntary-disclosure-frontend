@@ -25,7 +25,7 @@ class AnyOtherSupportingDocsFormProviderSpec extends FormSpecBase {
     "with no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new AnyOtherSupportingDocsFormProvider()().bind(missingOption)
+      val form                               = new AnyOtherSupportingDocsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -53,4 +53,3 @@ class AnyOtherSupportingDocsFormProviderSpec extends FormSpecBase {
   }
 
 }
-

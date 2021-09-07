@@ -36,8 +36,8 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
 
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(CancellationReasonMessages.title)
@@ -56,12 +56,11 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
 
     }
 
-
     "no data supplied" should {
 
       "an error exists " should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(CancellationReasonMessages.errorPrefix + CancellationReasonMessages.title)
@@ -71,7 +70,9 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe CancellationReasonMessages.errorPrefix + CancellationReasonMessages.requiredError
+          elementText(
+            "#value-error"
+          ) mustBe CancellationReasonMessages.errorPrefix + CancellationReasonMessages.requiredError
         }
 
       }
@@ -82,8 +83,8 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct Continue button" in {

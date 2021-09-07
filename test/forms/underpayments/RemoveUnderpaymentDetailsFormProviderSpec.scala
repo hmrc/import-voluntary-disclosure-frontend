@@ -55,4 +55,3 @@ class RemoveUnderpaymentDetailsFormProviderSpec extends FormSpecBase {
   }
 
 }
-

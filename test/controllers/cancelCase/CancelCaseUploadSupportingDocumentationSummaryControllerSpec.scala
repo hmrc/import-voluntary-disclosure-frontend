@@ -30,31 +30,42 @@ import views.html.cancelCase.CancelCaseUploadSupportingDocumentationSummaryView
 
 import scala.concurrent.Future
 
-
 class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecBase {
 
   trait Test {
-    private lazy val view: CancelCaseUploadSupportingDocumentationSummaryView = app.injector.instanceOf[CancelCaseUploadSupportingDocumentationSummaryView]
+    private lazy val view: CancelCaseUploadSupportingDocumentationSummaryView =
+      app.injector.instanceOf[CancelCaseUploadSupportingDocumentationSummaryView]
 
-    val data: JsObject = Json.obj("uploaded-supporting-documentation" -> Json.arr(
-      Json.obj(
-        "reference" -> "file-ref-1",
-        "fileName" -> "text.txt",
-        "downloadUrl" -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
-        "uploadTimestamp" -> "2021-01-26T13:22:59.388",
-        "checksum" -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "fileMimeType" -> "application/txt"))
+    val data: JsObject = Json.obj(
+      "uploaded-supporting-documentation" -> Json.arr(
+        Json.obj(
+          "reference"       -> "file-ref-1",
+          "fileName"        -> "text.txt",
+          "downloadUrl"     -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
+          "uploadTimestamp" -> "2021-01-26T13:22:59.388",
+          "checksum"        -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "fileMimeType"    -> "application/txt"
+        )
+      )
     )
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId", data))
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val formProvider: CancelCaseUploadAnotherFileFormProvider = injector.instanceOf[CancelCaseUploadAnotherFileFormProvider]
+    val formProvider: CancelCaseUploadAnotherFileFormProvider =
+      injector.instanceOf[CancelCaseUploadAnotherFileFormProvider]
     val form: CancelCaseUploadAnotherFileFormProvider = formProvider
 
-    lazy val controller = new CancelCaseUploadSupportingDocumentationSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, form, view, ec)
+    lazy val controller = new CancelCaseUploadSupportingDocumentationSummaryController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      form,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -65,14 +76,14 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
 
     "return SEE OTHER when uploaded-files is empty" in new Test {
       override val data: JsObject = Json.obj("uploaded-supporting-documentation" -> Json.arr())
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]  = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
     "return OK when Cancel Case UploadSupportingDocumentationPage is not there" in new Test {
-      override val data: JsObject = Json.obj("data" -> "")
+      override val data: JsObject                   = Json.obj("data" -> "")
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -89,47 +100,57 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
       }
 
       "return the correct location header when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url
+        )
       }
 
       "return to check your answers when in check mode and false" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
-          .set(CheckModePage, true).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("cred-id", data)
+            .set(CheckModePage, true).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url
+        )
       }
     }
 
     "payload contains invalid data" should {
 
       "return a SEE OTHER when no user answers are present" in new Test {
-        override val data: JsObject = Json.obj("data" -> "")
+        override val data: JsObject                   = Json.obj("data" -> "")
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data))
 
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
       }
 
       "return a BAD REQUEST" in new Test {
@@ -138,10 +159,6 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
       }
     }
 
-
   }
 
 }
-
-
-

@@ -32,16 +32,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AnyOtherSupportingCancellationDocsController @Inject()(identify: IdentifierAction,
-                                                             getData: DataRetrievalAction,
-                                                             requireData: DataRequiredAction,
-                                                             sessionRepository: SessionRepository,
-                                                             mcc: MessagesControllerComponents,
-                                                             formProvider: AnyOtherSupportingCancellationDocsFormProvider,
-                                                             view: AnyOtherSupportingCancellationDocsView,
-                                                             implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
-
+class AnyOtherSupportingCancellationDocsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: AnyOtherSupportingCancellationDocsFormProvider,
+  view: AnyOtherSupportingCancellationDocsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(MoreDocumentationPage).fold(formProvider()) {

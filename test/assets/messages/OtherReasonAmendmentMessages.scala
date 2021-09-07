@@ -18,10 +18,10 @@ package messages
 
 object OtherReasonAmendmentMessages extends BaseMessages {
 
-  val title: String = "What was the reason for the underpayment?"
-  val h1: String = "What was the reason for the underpayment?"
-  val requiredError: String = "Enter the reason for the underpayment"
+  val title: String          = "What was the reason for the underpayment?"
+  val h1: String             = "What was the reason for the underpayment?"
+  val requiredError: String  = "Enter the reason for the underpayment"
   val maxLengthError: String = "The reason for the underpayment must be 1500 characters or fewer"
-  val noEmojiError: String = "The reason for the underpayment must not include emojis"
+  val noEmojiError: String   = "The reason for the underpayment must not include emojis"
 
 }

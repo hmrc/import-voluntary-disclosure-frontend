@@ -23,7 +23,11 @@ import play.api.libs.json.Json
 import services.SubmissionService
 
 class BuildDefermentDetailsSpec
-  extends ServiceSpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
+    extends ServiceSpecBase
+    with MockIvdSubmissionConnector
+    with MockAuditService
+    with SubmissionServiceTestData
+    with SubmissionServiceTestJson {
 
   val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
 

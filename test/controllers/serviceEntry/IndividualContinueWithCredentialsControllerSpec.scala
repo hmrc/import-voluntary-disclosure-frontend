@@ -32,9 +32,11 @@ import scala.concurrent.Future
 class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val view: IndividualContinueWithCredentialsView = app.injector.instanceOf[IndividualContinueWithCredentialsView]
+    private lazy val view: IndividualContinueWithCredentialsView =
+      app.injector.instanceOf[IndividualContinueWithCredentialsView]
 
-    val formProvider: IndividualContinueWithCredentialsFormProvider = injector.instanceOf[IndividualContinueWithCredentialsFormProvider]
+    val formProvider: IndividualContinueWithCredentialsFormProvider =
+      injector.instanceOf[IndividualContinueWithCredentialsFormProvider]
 
     MockedSessionRepository.set(Future.successful(true))
     MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
@@ -42,7 +44,13 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
 
     lazy val controller = new IndividualContinueWithCredentialsController(
-      mockSessionRepository, messagesControllerComponents, view, formProvider, appConfig, errorHandler, ec
+      mockSessionRepository,
+      messagesControllerComponents,
+      view,
+      formProvider,
+      appConfig,
+      errorHandler,
+      ec
     )
   }
 
@@ -58,8 +66,10 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
 
     "userAnswers exist" should {
       "return OK" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(IndividualContinueWithCredentialsPage, true).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(IndividualContinueWithCredentialsPage, true).success.value
+        )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
@@ -96,7 +106,7 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
 
       "return a bad request when no data is sent" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody()
-        lazy val result: Future[Result] = controller.onSubmit()(request)
+        lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.BAD_REQUEST
       }
     }

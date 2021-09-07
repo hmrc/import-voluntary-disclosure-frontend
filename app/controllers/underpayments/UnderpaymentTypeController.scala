@@ -33,15 +33,17 @@ import views.html.underpayments.UnderpaymentTypeView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           sessionRepository: SessionRepository,
-                                           mcc: MessagesControllerComponents,
-                                           underpaymentTypeView: UnderpaymentTypeView,
-                                           formProvider: UnderpaymentTypeFormProvider,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentTypeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  underpaymentTypeView: UnderpaymentTypeView,
+  formProvider: UnderpaymentTypeFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 
@@ -54,8 +56,9 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
         formProvider().fill
       }
       val availableUnderPaymentTypesOptions = createRadioButton(form, availableUnderpaymentTypes)
-      Future.successful(Ok(
-        underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime())))
+      Future.successful(
+        Ok(underpaymentTypeView(form, backLink(request.userAnswers), availableUnderPaymentTypesOptions, isFirstTime()))
+      )
     }
   }
 
@@ -63,7 +66,7 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val availableUnderPaymentTypes: Seq[String] = getAvailableUnderpayments()
-        val error = formWithErrors.errors.head
+        val error                                   = formWithErrors.errors.head
         val replacementFormError = formWithErrors.copy(errors = Seq(error.copy(key = availableUnderPaymentTypes.head)))
         Future.successful(
           BadRequest(
@@ -79,16 +82,15 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePage, value))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(value))
-        }
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(value))
       }
     )
   }
 
   private[underpayments] def getAvailableUnderpayments()(implicit request: DataRequest[_]): Seq[String] = {
-    val existingUnderpaymentDetails = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
+    val existingUnderpaymentDetails =
+      request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).map(item => item.duty)
     underpaymentTypes.filterNot(item => existingUnderpaymentDetails.contains(item))
   }
 
@@ -112,9 +114,10 @@ class UnderpaymentTypeController @Inject()(identify: IdentifierAction,
     }
   }
 
-  private def isFirstTime()(implicit request: DataRequest[_]): Boolean = request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
-    case Some(value) if value.nonEmpty => false
-    case _ => true
-  }
+  private def isFirstTime()(implicit request: DataRequest[_]): Boolean =
+    request.userAnswers.get(UnderpaymentDetailSummaryPage) match {
+      case Some(value) if value.nonEmpty => false
+      case _                             => true
+    }
 
 }

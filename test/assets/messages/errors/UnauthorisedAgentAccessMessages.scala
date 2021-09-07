@@ -22,5 +22,6 @@ object UnauthorisedAgentAccessMessages extends BaseMessages {
 
   val title = "You cannot access this service to disclose a Customs Duty or import VAT underpayment"
   val para1 = "You have signed in with an agent Government user ID that cannot access this service."
-  val para2 = "If you are an importer or an importer’s representative you need to sign in again with the Government Gateway user ID you use for your business."
+  val para2 =
+    "If you are an importer or an importer’s representative you need to sign in again with the Government Gateway user ID you use for your business."
 }

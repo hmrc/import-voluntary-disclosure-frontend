@@ -31,7 +31,6 @@ import views.html.shared.RemoveUploadedFileView
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-
 class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
@@ -41,16 +40,24 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: RemoveUploadedFileFormProvider = injector.instanceOf[RemoveUploadedFileFormProvider]
-    val form: RemoveUploadedFileFormProvider = formProvider
+    val form: RemoveUploadedFileFormProvider         = formProvider
 
     val index: Index = Index.apply(0)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new RemoveSupportingDocumentationController(messagesApi, mockSessionRepository, authenticatedAction,
-      dataRetrievalAction, dataRequiredAction, form, messagesControllerComponents, RemoveUploadedFileView, ec)
+    lazy val controller = new RemoveSupportingDocumentationController(
+      messagesApi,
+      mockSessionRepository,
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      form,
+      messagesControllerComponents,
+      RemoveUploadedFileView,
+      ec
+    )
   }
-
 
   "GET onLoad" should {
     "redirect to UploadSupportingDocumentation page if no uploaded-files in user answers" in new Test {
@@ -75,14 +82,16 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
         UserAnswers("credId")
           .set(
             UploadSupportingDocumentationPage,
-            Seq(FileUploadInfo(
-              reference = "file-ref-1",
-              fileName = "file.txt",
-              downloadUrl = "url",
-              uploadTimestamp = LocalDateTime.now,
-              checksum = "checksum",
-              fileMimeType = "application/txt"
-            ))
+            Seq(
+              FileUploadInfo(
+                reference = "file-ref-1",
+                fileName = "file.txt",
+                downloadUrl = "url",
+                uploadTimestamp = LocalDateTime.now,
+                checksum = "checksum",
+                fileMimeType = "application/txt"
+              )
+            )
           ).success.value
       )
       val result: Future[Result] = controller.onLoad(index)(fakeRequest)
@@ -97,20 +106,22 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(index)(request)
-        redirectLocation(result) mustBe Some(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(index)(request)
+        redirectLocation(result) mustBe Some(
+          controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
@@ -126,14 +137,16 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
           UserAnswers("credId")
             .set(
               UploadSupportingDocumentationPage,
-              Seq(FileUploadInfo(
-                reference = "file-ref-1",
-                fileName = "file.txt",
-                downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
-                checksum = "checksum",
-                fileMimeType = "application/txt"
-              ))
+              Seq(
+                FileUploadInfo(
+                  reference = "file-ref-1",
+                  fileName = "file.txt",
+                  downloadUrl = "url",
+                  uploadTimestamp = LocalDateTime.now,
+                  checksum = "checksum",
+                  fileMimeType = "application/txt"
+                )
+              )
             ).success.value
         )
         val result: Future[Result] = controller.onSubmit(index)(fakeRequest)
@@ -147,6 +160,3 @@ class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {
   }
 
 }
-
-
-

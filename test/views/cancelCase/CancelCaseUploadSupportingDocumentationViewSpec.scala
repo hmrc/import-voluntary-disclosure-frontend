@@ -30,19 +30,21 @@ import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 
 class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: CancelCaseUploadSupportingDocumentationView = app.injector.instanceOf[CancelCaseUploadSupportingDocumentationView]
+  private lazy val injectedView: CancelCaseUploadSupportingDocumentationView =
+    app.injector.instanceOf[CancelCaseUploadSupportingDocumentationView]
   private lazy val initiateResponse: UpScanInitiateResponse =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
   private val backLink: Call = Call("GET", "url")
 
   val zeroFilesUploaded = 0
-  val oneFileUploaded = 1
+  val oneFileUploaded   = 1
 
   val formProvider: CancelCaseUploadFileFormProvider = injector.instanceOf[CancelCaseUploadFileFormProvider]
 
   "Rendering the Cancel Case UploadSupportingDocumentation page" when {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, oneFileUploaded, false)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html =
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, false)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {
@@ -63,7 +65,8 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
     "an error exists (no file has been uploaded)" should {
       lazy val form: Form[String] = formProvider().withError("file", fileUnknown)
-      lazy val view: Html = injectedView(form, initiateResponse, backLink, zeroFilesUploaded, false)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html =
+        injectedView(form, initiateResponse, backLink, zeroFilesUploaded, false)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + title)
@@ -82,16 +85,17 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
   it should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink, oneFileUploaded, true)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html =
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, true)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(title)
 
-    s"have the correct h1 of '${h1}'" in {
+    s"have the correct h1 of '$h1'" in {
       elementText("h1") mustBe h1
     }
 
-    s"have the correct text of '${fileSizeText}'" in {
+    s"have the correct text of '$fileSizeText'" in {
       elementText("#main-content p:nth-of-type(1)") mustBe fileSizeText
     }
 
@@ -104,7 +108,7 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
       elementText(".govuk-list > li:nth-of-type(5)") mustBe fileImage
     }
 
-    s"have the '${uploadFile}' upload label" in {
+    s"have the '$uploadFile' upload label" in {
       elementText(".govuk-form-group > label") mustBe uploadFile
     }
 

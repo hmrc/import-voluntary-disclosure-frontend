@@ -16,21 +16,22 @@
 
 package assets
 
-import messages.{AddressLookupMessages, ImporterAddressLookupMessages, BaseMessages}
+import messages.{AddressLookupMessages, BaseMessages, ImporterAddressLookupMessages}
 import models.addressLookup.AddressModel
 import play.api.libs.json.{JsObject, Json}
 
 object AddressLookupTestConstants extends BaseMessages {
 
-  val phaseBannerHtml = "This is a new service – your <a id='beta-banner-feedback' href='TBC'>feedback</a> will help us to improve it."
+  val phaseBannerHtml =
+    "This is a new service – your <a id='beta-banner-feedback' href='TBC'>feedback</a> will help us to improve it."
 
   val addressLine1 = "line 1"
   val addressLine2 = "line 2"
   val addressLine3 = "line 3"
   val addressLine4 = "line 4"
-  val postcode = "aa1 1aa"
-  val countryName = "United Kingdom"
-  val countryCode = "UK"
+  val postcode     = "aa1 1aa"
+  val countryName  = "United Kingdom"
+  val countryCode  = "UK"
 
   val customerAddressMax: AddressModel = AddressModel(
     Some(addressLine1),
@@ -63,7 +64,7 @@ object AddressLookupTestConstants extends BaseMessages {
 
   val customerAddressJsonMax: JsObject = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1, addressLine2, addressLine3, addressLine4),
+      "lines"    -> Json.arr(addressLine1, addressLine2, addressLine3, addressLine4),
       "postcode" -> postcode,
       "country" -> Json.obj(
         "name" -> countryName,
@@ -74,7 +75,7 @@ object AddressLookupTestConstants extends BaseMessages {
 
   val customerAddressJsonSome: JsObject = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1, addressLine2, addressLine3),
+      "lines"    -> Json.arr(addressLine1, addressLine2, addressLine3),
       "postcode" -> postcode,
       "country" -> Json.obj(
         "name" -> countryName,
@@ -86,11 +87,11 @@ object AddressLookupTestConstants extends BaseMessages {
   val customerAddressJsonMin: JsObject = Json.obj()
 
   val customerAddressToJsonMax: JsObject = Json.obj(
-    "line1" -> addressLine1,
-    "line2" -> addressLine2,
-    "line3" -> addressLine3,
-    "line4" -> addressLine4,
-    "postcode" -> postcode,
+    "line1"       -> addressLine1,
+    "line2"       -> addressLine2,
+    "line3"       -> addressLine3,
+    "line4"       -> addressLine4,
+    "postcode"    -> postcode,
     "countryCode" -> countryCode
   )
 
@@ -102,164 +103,164 @@ object AddressLookupTestConstants extends BaseMessages {
     )
   )
 
-  val addressLookupV2Json: JsObject = Json.obj(fields =
-    "version" -> 2,
+  val addressLookupV2Json: JsObject = Json.obj(
+    fields = "version" -> 2,
     "options" -> Json.obj(
-      "continueUrl" -> "/lookup-address/confirmed",
-      "serviceHref" -> "/disclose-import-taxes-underpayment",
+      "continueUrl"            -> "/lookup-address/confirmed",
+      "serviceHref"            -> "/disclose-import-taxes-underpayment",
       "accessibilityFooterUrl" -> "/accessibility-statement/import-voluntary-disclosure",
-      "deskProServiceName" -> "TBC",
-      "showPhaseBanner" -> true,
-      "ukMode" -> false,
+      "deskProServiceName"     -> "TBC",
+      "showPhaseBanner"        -> true,
+      "ukMode"                 -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+        "timeoutUrl"    -> "/disclose-import-taxes-underpayment/timeout-signed-out"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,
-        "showSearchAgainLink" -> true
+        "showSearchAgainLink"   -> true
       )
     ),
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> AddressLookupMessages.navTitle,
+          "navTitle"        -> AddressLookupMessages.navTitle,
           "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.selectHeading,
-          "heading" -> AddressLookupMessages.selectHeading,
-          "submitLabel" -> continue,
+          "title"               -> AddressLookupMessages.selectHeading,
+          "heading"             -> AddressLookupMessages.selectHeading,
+          "submitLabel"         -> continue,
           "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
         ),
         "lookupPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.startHeading,
-          "heading" -> AddressLookupMessages.startHeading,
-          "filterLabel" -> AddressLookupMessages.filter,
+          "title"         -> AddressLookupMessages.startHeading,
+          "heading"       -> AddressLookupMessages.startHeading,
+          "filterLabel"   -> AddressLookupMessages.filter,
           "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel" -> AddressLookupMessages.submitLabel
+          "submitLabel"   -> AddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.confirmHeading,
-          "heading" -> AddressLookupMessages.confirmHeading,
-          "infoMessage" -> AddressLookupMessages.infoMessage,
+          "title"                 -> AddressLookupMessages.confirmHeading,
+          "heading"               -> AddressLookupMessages.confirmHeading,
+          "infoMessage"           -> AddressLookupMessages.infoMessage,
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "heading" -> AddressLookupMessages.editPageHeading,
+          "heading"     -> AddressLookupMessages.editPageHeading,
           "submitLabel" -> continue,
-          "townLabel" -> AddressLookupMessages.townOrCity
+          "townLabel"   -> AddressLookupMessages.townOrCity
         )
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> AddressLookupMessages.navTitle,
+          "navTitle"        -> AddressLookupMessages.navTitle,
           "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.selectHeading,
-          "heading" -> AddressLookupMessages.selectHeading,
-          "submitLabel" -> continue,
+          "title"               -> AddressLookupMessages.selectHeading,
+          "heading"             -> AddressLookupMessages.selectHeading,
+          "submitLabel"         -> continue,
           "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
         ),
         "lookupPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.startHeading,
-          "heading" -> AddressLookupMessages.startHeading,
-          "filterLabel" -> AddressLookupMessages.filter,
+          "title"         -> AddressLookupMessages.startHeading,
+          "heading"       -> AddressLookupMessages.startHeading,
+          "filterLabel"   -> AddressLookupMessages.filter,
           "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel" -> AddressLookupMessages.submitLabel
+          "submitLabel"   -> AddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
-          "title" -> AddressLookupMessages.confirmHeading,
-          "heading" -> AddressLookupMessages.confirmHeading,
-          "infoMessage" -> AddressLookupMessages.infoMessage,
+          "title"                 -> AddressLookupMessages.confirmHeading,
+          "heading"               -> AddressLookupMessages.confirmHeading,
+          "infoMessage"           -> AddressLookupMessages.infoMessage,
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "heading" -> AddressLookupMessages.editPageHeading,
+          "heading"     -> AddressLookupMessages.editPageHeading,
           "submitLabel" -> continue,
-          "townLabel" -> AddressLookupMessages.townOrCity
+          "townLabel"   -> AddressLookupMessages.townOrCity
         )
       )
     )
   )
 
-  val importerAddressLookupV2Json: JsObject = Json.obj(fields =
-    "version" -> 2,
+  val importerAddressLookupV2Json: JsObject = Json.obj(
+    fields = "version" -> 2,
     "options" -> Json.obj(
-      "continueUrl" -> "/lookup-address/confirmed",
-      "serviceHref" -> "/disclose-import-taxes-underpayment",
+      "continueUrl"            -> "/lookup-address/confirmed",
+      "serviceHref"            -> "/disclose-import-taxes-underpayment",
       "accessibilityFooterUrl" -> "/accessibility-statement/import-voluntary-disclosure",
-      "deskProServiceName" -> "TBC",
-      "showPhaseBanner" -> true,
-      "ukMode" -> false,
+      "deskProServiceName"     -> "TBC",
+      "showPhaseBanner"        -> true,
+      "ukMode"                 -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 900,
-        "timeoutUrl" -> "/disclose-import-taxes-underpayment/timeout-signed-out"
+        "timeoutUrl"    -> "/disclose-import-taxes-underpayment/timeout-signed-out"
       ),
       "confirmPageConfig" -> Json.obj(
         "showSubHeadingAndInfo" -> true,
-        "showSearchAgainLink" -> true
+        "showSearchAgainLink"   -> true
       )
     ),
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> ImporterAddressLookupMessages.navTitle,
+          "navTitle"        -> ImporterAddressLookupMessages.navTitle,
           "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.selectHeading,
-          "heading" -> ImporterAddressLookupMessages.selectHeading,
-          "submitLabel" -> continue,
+          "title"               -> ImporterAddressLookupMessages.selectHeading,
+          "heading"             -> ImporterAddressLookupMessages.selectHeading,
+          "submitLabel"         -> continue,
           "editAddressLinkText" -> ImporterAddressLookupMessages.editAddressLinkText
         ),
         "lookupPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.startHeading,
-          "heading" -> ImporterAddressLookupMessages.startHeading,
-          "filterLabel" -> ImporterAddressLookupMessages.filter,
+          "title"         -> ImporterAddressLookupMessages.startHeading,
+          "heading"       -> ImporterAddressLookupMessages.startHeading,
+          "filterLabel"   -> ImporterAddressLookupMessages.filter,
           "postcodeLabel" -> ImporterAddressLookupMessages.postcode,
-          "submitLabel" -> ImporterAddressLookupMessages.submitLabel
+          "submitLabel"   -> ImporterAddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.confirmHeading,
-          "heading" -> ImporterAddressLookupMessages.confirmHeading,
-          "infoMessage" -> ImporterAddressLookupMessages.confirmInfoMessage,
+          "title"                 -> ImporterAddressLookupMessages.confirmHeading,
+          "heading"               -> ImporterAddressLookupMessages.confirmHeading,
+          "infoMessage"           -> ImporterAddressLookupMessages.confirmInfoMessage,
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "heading" -> ImporterAddressLookupMessages.editHeading,
-          "townLabel" -> ImporterAddressLookupMessages.editTown,
+          "heading"     -> ImporterAddressLookupMessages.editHeading,
+          "townLabel"   -> ImporterAddressLookupMessages.editTown,
           "submitLabel" -> continue
         )
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> ImporterAddressLookupMessages.navTitle,
+          "navTitle"        -> ImporterAddressLookupMessages.navTitle,
           "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.selectHeading,
-          "heading" -> ImporterAddressLookupMessages.selectHeading,
-          "submitLabel" -> continue,
+          "title"               -> ImporterAddressLookupMessages.selectHeading,
+          "heading"             -> ImporterAddressLookupMessages.selectHeading,
+          "submitLabel"         -> continue,
           "editAddressLinkText" -> ImporterAddressLookupMessages.editAddressLinkText
         ),
         "lookupPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.startHeading,
-          "heading" -> ImporterAddressLookupMessages.startHeading,
-          "filterLabel" -> ImporterAddressLookupMessages.filter,
+          "title"         -> ImporterAddressLookupMessages.startHeading,
+          "heading"       -> ImporterAddressLookupMessages.startHeading,
+          "filterLabel"   -> ImporterAddressLookupMessages.filter,
           "postcodeLabel" -> ImporterAddressLookupMessages.postcode,
-          "submitLabel" -> ImporterAddressLookupMessages.submitLabel
+          "submitLabel"   -> ImporterAddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
-          "title" -> ImporterAddressLookupMessages.confirmHeading,
-          "heading" -> ImporterAddressLookupMessages.confirmHeading,
-          "infoMessage" -> ImporterAddressLookupMessages.confirmInfoMessage,
+          "title"                 -> ImporterAddressLookupMessages.confirmHeading,
+          "heading"               -> ImporterAddressLookupMessages.confirmHeading,
+          "infoMessage"           -> ImporterAddressLookupMessages.confirmInfoMessage,
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "heading" -> ImporterAddressLookupMessages.editHeading,
-          "townLabel" -> ImporterAddressLookupMessages.editTown,
+          "heading"     -> ImporterAddressLookupMessages.editHeading,
+          "townLabel"   -> ImporterAddressLookupMessages.editTown,
           "submitLabel" -> continue
         )
       )

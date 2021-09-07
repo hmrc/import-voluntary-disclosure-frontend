@@ -21,61 +21,53 @@ import play.api.data.validation.{Constraint, Invalid, Valid}
 
 trait Constraints extends InputFilter {
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
-    Constraint {
-      input =>
-        constraints
-          .map(_.apply(input))
-          .find(_ != Valid)
-          .getOrElse(Valid)
+    Constraint { input =>
+      constraints
+        .map(_.apply(input))
+        .find(_ != Valid)
+        .getOrElse(Valid)
     }
 
   protected def minimumValue[A](minimum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
-    Constraint {
-      input =>
+    Constraint { input =>
+      import ev._
 
-        import ev._
-
-        if (input >= minimum) {
-          Valid
-        } else {
-          Invalid(errorKey, minimum)
-        }
+      if (input >= minimum) {
+        Valid
+      } else {
+        Invalid(errorKey, minimum)
+      }
     }
 
   protected def maximumValue[A](maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
-    Constraint {
-      input =>
+    Constraint { input =>
+      import ev._
 
-        import ev._
-
-        if (input <= maximum) {
-          Valid
-        } else {
-          Invalid(errorKey, maximum)
-        }
+      if (input <= maximum) {
+        Valid
+      } else {
+        Invalid(errorKey, maximum)
+      }
     }
 
   protected def inRange[A](minimum: A, maximum: A, errorKey: String)(implicit ev: Ordering[A]): Constraint[A] =
-    Constraint {
-      input =>
+    Constraint { input =>
+      import ev._
 
-        import ev._
-
-        if (input >= minimum && input <= maximum) {
-          Valid
-        } else {
-          Invalid(errorKey, minimum, maximum)
-        }
+      if (input >= minimum && input <= maximum) {
+        Valid
+      } else {
+        Invalid(errorKey, minimum, maximum)
+      }
     }
 
   protected def lengthBetween(minimum: Int, maximum: Int, errorKey: String): Constraint[String] =
-    Constraint {
-      input =>
-        if (input.length >= minimum && input.length <= maximum) {
-          Valid
-        } else {
-          Invalid(errorKey, minimum, maximum)
-        }
+    Constraint { input =>
+      if (input.length >= minimum && input.length <= maximum) {
+        Valid
+      } else {
+        Invalid(errorKey, minimum, maximum)
+      }
     }
 
   protected def regexp(regex: String, errorKey: String): Constraint[String] =
@@ -123,14 +115,14 @@ trait Constraints extends InputFilter {
     }
 
   protected def emojiConstraint(errorKey: String): Constraint[String] =
-    Constraint {
-      text =>
-        if (containsEmoji(text)) Invalid(errorKey)
-        else Valid
+    Constraint { text =>
+      if (containsEmoji(text)) Invalid(errorKey)
+      else Valid
     }
 
   private def containsEmoji(valueToCheck: String): Boolean = {
-    val regex = "[\\u00a9|\\u00ae|[\\u2000-\\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff]]".r
+    val regex =
+      "[\\u00a9|\\u00ae|[\\u2000-\\u3300]|\\ud83c[\\ud000-\\udfff]|\\ud83d[\\ud000-\\udfff]|\\ud83e[\\ud000-\\udfff]]".r
     regex.findFirstIn(valueToCheck).isDefined
   }
 

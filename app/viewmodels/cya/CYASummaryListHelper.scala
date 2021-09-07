@@ -17,7 +17,7 @@
 package viewmodels.cya
 
 trait CYASummaryListHelper
-  extends CYAImporterDetailsSummaryListHelper
+    extends CYAImporterDetailsSummaryListHelper
     with CYAEntryDetailsSummaryListHelper
     with CYAUnderpaymentDetailsSummaryListHelper
     with CYAYourDetailsSummaryListHelper

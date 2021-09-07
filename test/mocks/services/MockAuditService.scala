@@ -36,9 +36,8 @@ trait MockAuditService extends MockFactory {
       .expects(model, *, *, *)
       .once()
 
-  def verifyNoAudit[T <: JsonAuditModel](): Unit = {
+  def verifyNoAudit[T <: JsonAuditModel](): Unit =
     (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
       .verify(*, *, *, *)
       .never()
-  }
 }

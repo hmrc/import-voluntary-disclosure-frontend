@@ -37,7 +37,7 @@ import scala.concurrent.Future
 class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
 
   trait Test extends MockSessionRepository {
-    private lazy val view: ConfirmEORIDetailsView = app.injector.instanceOf[ConfirmEORIDetailsView]
+    private lazy val view: ConfirmEORIDetailsView           = app.injector.instanceOf[ConfirmEORIDetailsView]
     private lazy val errorView: ConfirmEoriDetailsErrorView = app.injector.instanceOf[ConfirmEoriDetailsErrorView]
 
     MockedSessionRepository.set(Future.successful(true))
@@ -46,8 +46,17 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new ConfirmEORIDetailsController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, mockSessionRepository, mockEoriDetailsService, view, errorView, appConfig, ec)
+    lazy val controller = new ConfirmEORIDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      messagesControllerComponents,
+      mockSessionRepository,
+      mockEoriDetailsService,
+      view,
+      errorView,
+      appConfig,
+      ec
+    )
   }
 
   "GET onLoad" when {
@@ -82,28 +91,39 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
 
       "produce correct summary list" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetails)
-        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "987654321000")
+        val expectedResult: SummaryList =
+          ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "987654321000")
         result mustBe expectedResult
       }
 
       "produce correct summary list without vatNumber" in new Test {
         val result: SummaryList = controller.summaryList(eoriDetailsWithoutVatNumber)
-        val expectedResult: SummaryList = ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
+        val expectedResult: SummaryList =
+          ConfirmEORIDetailsData.details("GB987654321000", "Fast Food ltd", "Not VAT registered")
         result mustBe expectedResult
       }
 
     }
     "userAnswers exist" should {
       "return OK" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(KnownEoriDetailsPage, EoriDetails("GB987654321000", "Fast Food ltd", ContactAddress(
-            addressLine1 = "99 Avenue Road",
-            addressLine2 = None,
-            city = "Anyold Town",
-            postalCode = Some("99JZ 1AA"),
-            countryCode = "GB"
-          ),
-            Some("98765432100"))).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails(
+                "GB987654321000",
+                "Fast Food ltd",
+                ContactAddress(
+                  addressLine1 = "99 Avenue Road",
+                  addressLine2 = None,
+                  city = "Anyold Town",
+                  postalCode = Some("99JZ 1AA"),
+                  countryCode = "GB"
+                ),
+                Some("98765432100")
+              )
+            ).success.value
+        )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
@@ -111,6 +131,5 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
     }
 
   }
-
 
 }

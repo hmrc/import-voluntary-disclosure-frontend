@@ -38,8 +38,8 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the TraderContactDetails page" when {
     "no errors exist" should {
 
-      val form: Form[ContactDetails] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[ContactDetails]       = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.title)
@@ -56,38 +56,50 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no values have been entered)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "",
-          "email" -> "",
+          "fullName"    -> "",
+          "email"       -> "",
           "phoneNumber" -> ""
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText("#main-content > div > div > div > div > ul > li:nth-child(1) > a") mustBe TraderContactDetailsMessages.errorNameNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li:nth-child(1) > a"
+        ) mustBe TraderContactDetailsMessages.errorNameNonEmpty
       }
 
       "render an error message against the full name field" in {
-        elementText("#fullName-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameNonEmpty
+        elementText(
+          "#fullName-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameNonEmpty
       }
 
       "render an error summary with the correct message for email" in {
-        elementText("#main-content > div > div > div > div > ul > li:nth-child(2) > a") mustBe TraderContactDetailsMessages.errorEmailNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li:nth-child(2) > a"
+        ) mustBe TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
       "render an error message against the email field" in {
-        elementText("#email-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailNonEmpty
+        elementText(
+          "#email-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
       "render an error summary with the correct message for phone number" in {
-        elementText("#main-content > div > div > div > div > ul > li:nth-child(3) > a") mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li:nth-child(3) > a"
+        ) mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
       "render an error message against the phone number field" in {
-        elementText("#phoneNumber-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        elementText(
+          "#phoneNumber-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
     }
@@ -95,22 +107,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no value have been entered for full name)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "",
-          "email" -> "email@email.com",
+          "fullName"    -> "",
+          "email"       -> "email@email.com",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorNameNonEmpty
       }
 
       "render an error message against the full name field" in {
-        elementText("#fullName-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameNonEmpty
+        elementText(
+          "#fullName-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameNonEmpty
       }
 
     }
@@ -118,22 +134,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no value have been entered for email)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "first second",
-          "email" -> "",
+          "fullName"    -> "first second",
+          "email"       -> "",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorEmailNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
       "render an error message against the email field" in {
-        elementText("#email-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailNonEmpty
+        elementText(
+          "#email-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
     }
@@ -141,22 +161,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no value have been entered for phone number)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "first second",
-          "email" -> "email@email.com",
+          "fullName"    -> "first second",
+          "email"       -> "email@email.com",
           "phoneNumber" -> ""
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
       "render an error message against the phone number field" in {
-        elementText("#phoneNumber-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        elementText(
+          "#phoneNumber-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
     }
@@ -164,22 +188,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (full name entered too short)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "a",
-          "email" -> "email@email.com",
+          "fullName"    -> "a",
+          "email"       -> "email@email.com",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameMinLength
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorNameMinLength
       }
 
       "render an error message against the full name field" in {
-        elementText("#fullName-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameMinLength
+        elementText(
+          "#fullName-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameMinLength
       }
 
     }
@@ -187,22 +215,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (full name entered too long)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-          "email" -> "email@email.com",
+          "fullName"    -> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "email"       -> "email@email.com",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameMaxLength
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorNameMaxLength
       }
 
       "render an error message against the full name field" in {
-        elementText("#fullName-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameMaxLength
+        elementText(
+          "#fullName-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameMaxLength
       }
 
     }
@@ -210,22 +242,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (full name entered format invalid)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "first second*",
-          "email" -> "email@email.com",
+          "fullName"    -> "first second*",
+          "email"       -> "email@email.com",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorNameAllowableCharacters
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorNameAllowableCharacters
       }
 
       "render an error message against the full name field" in {
-        elementText("#fullName-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameAllowableCharacters
+        elementText(
+          "#fullName-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorNameAllowableCharacters
       }
 
     }
@@ -233,22 +269,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (email address entered format invalid)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "first second",
-          "email" -> "email",
+          "fullName"    -> "first second",
+          "email"       -> "email",
           "phoneNumber" -> "0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorEmailInvalidFormat
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorEmailInvalidFormat
       }
 
       "render an error message against the email field" in {
-        elementText("#email-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailInvalidFormat
+        elementText(
+          "#email-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorEmailInvalidFormat
       }
 
     }
@@ -256,22 +296,26 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (phone number entered format invalid)" should {
       lazy val form: Form[ContactDetails] = formProvider().bind(
         Map(
-          "fullName" -> "first second",
-          "email" -> "email@email.com",
+          "fullName"    -> "first second",
+          "email"       -> "email@email.com",
           "phoneNumber" -> "++0123456789"
         )
       )
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
-        elementText("#main-content > div > div > div > div > ul > li > a") mustBe TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
+        elementText(
+          "#main-content > div > div > div > div > ul > li > a"
+        ) mustBe TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
       }
 
       "render an error message against the phone number field" in {
-        elementText("#phoneNumber-error") mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
+        elementText(
+          "#phoneNumber-error"
+        ) mustBe TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
       }
 
     }
@@ -280,8 +324,8 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[ContactDetails] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[ContactDetails]       = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${TraderContactDetailsMessages.heading}'" in {
@@ -305,7 +349,9 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the Phone number hint" in {
-      elementText("#main-content > div > div > form > div:nth-child(4) > .govuk-hint") mustBe TraderContactDetailsMessages.phoneNumberHint
+      elementText(
+        "#main-content > div > div > form > div:nth-child(4) > .govuk-hint"
+      ) mustBe TraderContactDetailsMessages.phoneNumberHint
     }
 
     "render a back link with the correct URL" in {

@@ -24,13 +24,12 @@ import scala.collection.JavaConverters._
 
 trait ViewBaseSpec extends SpecBase {
 
-  final val emptyString = ""
+  final val emptyString              = ""
   final val govErrorSummaryListClass = ".govuk-error-summary__list"
-  final val titleSuffix = " - Disclose an underpayment of Customs Duty or import VAT - GOV.UK"
+  final val titleSuffix              = " - Disclose an underpayment of Customs Duty or import VAT - GOV.UK"
 
-  def elementText(selector: String)(implicit document: Document): String = {
+  def elementText(selector: String)(implicit document: Document): String =
     element(selector).text()
-  }
 
   def elementAttributes(cssSelector: String)(implicit document: Document): Map[String, String] = {
     val attributes = element(cssSelector).attributes.asList().asScala.toList
@@ -63,10 +62,9 @@ trait ViewBaseSpec extends SpecBase {
 
   def bullet(index: Int)(implicit document: Document): String = elementText(s"article li:nth-of-type($index)")
 
-  def checkPageTitle(title: String)(implicit document: Document): Unit = {
+  def checkPageTitle(title: String)(implicit document: Document): Unit =
     "have the correct page title" in {
       document.title mustBe title + titleSuffix
     }
-  }
 
 }

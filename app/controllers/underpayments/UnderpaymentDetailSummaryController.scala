@@ -37,35 +37,40 @@ import views.html.underpayments.UnderpaymentDetailSummaryView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    view: UnderpaymentDetailSummaryView,
-                                                    formProvider: UnderpaymentDetailSummaryFormProvider,
-                                                    implicit val ec: ExecutionContext
-                                                   )
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentDetailSummaryController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: UnderpaymentDetailSummaryView,
+  formProvider: UnderpaymentDetailSummaryFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, request.dutyType))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
-    }
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
   }
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     val fallbackResponse = Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
 
     val result = request.userAnswers.get(UnderpaymentDetailSummaryPage).map {
       case Nil => fallbackResponse
-      case underpayments => Ok(
-        view(formProvider(), summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length, request.isOneEntry)
-      )
+      case underpayments =>
+        Ok(
+          view(
+            formProvider(),
+            summaryList(underpayments),
+            amountOwedSummaryList(underpayments),
+            underpayments.length,
+            request.isOneEntry
+          )
+        )
     }.getOrElse(fallbackResponse)
 
     Future.successful(result)
@@ -75,7 +80,13 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val underpayments = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
-        val content = view(formWithErrors, summaryList(underpayments), amountOwedSummaryList(underpayments), underpayments.length, request.isOneEntry)
+        val content = view(
+          formWithErrors,
+          summaryList(underpayments),
+          amountOwedSummaryList(underpayments),
+          underpayments.length,
+          request.isOneEntry
+        )
         Future.successful(BadRequest(content))
       },
       addAnother => {
@@ -99,9 +110,9 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
 
   private[underpayments] def redirectForRepFlow()(implicit request: DataRequest[_]): Future[Result] = {
     val newUnderpaymentType: SelectedDutyType = request.dutyType
-    val oldUnderpaymentType = request.userAnswers.get(TempUnderpaymentTypePage)
-    val splitThePayment = request.userAnswers.get(SplitPaymentPage)
-    val dutyOrVatOnly = Seq(Duty, Vat)
+    val oldUnderpaymentType                   = request.userAnswers.get(TempUnderpaymentTypePage)
+    val splitThePayment                       = request.userAnswers.get(SplitPaymentPage)
+    val dutyOrVatOnly                         = Seq(Duty, Vat)
 
     (oldUnderpaymentType, newUnderpaymentType, splitThePayment) match {
       case (Some(oldType), Both, _) if dutyOrVatOnly.contains(oldType) =>
@@ -129,36 +140,36 @@ class UnderpaymentDetailSummaryController @Inject()(identify: IdentifierAction,
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentTypePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
-    }
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
   }
 
-  private[controllers] def summaryList(underpaymentDetail: Seq[UnderpaymentDetail])
-                                      (implicit messages: Messages): SummaryList = {
+  private[controllers] def summaryList(
+    underpaymentDetail: Seq[UnderpaymentDetail]
+  )(implicit messages: Messages): SummaryList = {
     SummaryList(
-      rows = for (underpayment <- underpaymentDetail.reverse) yield
-        SummaryListRow(
-          key = Key(
-            content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
-            classes = "govuk-summary-list__key govuk-!-width-two-thirds govuk-!-font-weight-regular"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
-            classes = "govuk-summary-list__value"
-          ),
-          actions = Some(
-            Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
-                  messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
+      rows =
+        for (underpayment <- underpaymentDetail.reverse)
+          yield SummaryListRow(
+            key = Key(
+              content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
+              classes = "govuk-summary-list__key govuk-!-width-two-thirds govuk-!-font-weight-regular"
+            ),
+            value = Value(
+              content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
+              classes = "govuk-summary-list__value"
+            ),
+            actions = Some(
+              Actions(
+                items = Seq(
+                  ActionItemHelper.createChangeActionItem(
+                    controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
+                    messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
+                  )
                 )
               )
             )
           )
-        )
     )
   }
 

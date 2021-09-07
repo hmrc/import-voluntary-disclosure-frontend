@@ -36,14 +36,22 @@ class DisclosureClosedControllerSpec extends ControllerSpecBase {
 
     val view = injector.instanceOf[DisclosureClosedView]
 
-    lazy val controller = new DisclosureClosedController(authenticatedAction, dataRetrievalAction,
-      dataRequiredAction, messagesControllerComponents, mockSessionRepository, view, errorHandler, ec)
+    lazy val controller = new DisclosureClosedController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      mockSessionRepository,
+      view,
+      errorHandler,
+      ec
+    )
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set
-    (DisclosureReferenceNumberPage, "C182107152124AQYVM6E34").success.value)
-
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, "C182107152124AQYVM6E34").success.value
+    )
 
   }
 

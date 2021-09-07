@@ -22,12 +22,10 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class WhatDoYouWantToDoFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[SubmissionType] = {
+  def apply(): Form[SubmissionType] =
     Form(
       "value" -> enumerable[SubmissionType]("whatDoYouWantToDo.error.required")
     )
-  }
 }

@@ -38,9 +38,9 @@ class AuditServiceSpec extends ServiceSpecBase with MockFactory {
       val service = new AuditService(MockAppConfig, mockAuditConnector)
 
       val auditModel: JsonAuditModel = new JsonAuditModel {
-        override val auditType: String = "SomeEvent"
+        override val auditType: String       = "SomeEvent"
         override val transactionName: String = "some-event"
-        override val detail: JsObject = Json.obj("name" -> "test name")
+        override val detail: JsObject        = Json.obj("name" -> "test name")
       }
 
       service.audit(auditModel)(implicitly, implicitly, fakeRequest)
@@ -54,9 +54,9 @@ class AuditServiceSpec extends ServiceSpecBase with MockFactory {
       val service = new AuditService(MockAppConfig, mockAuditConnector)
 
       val auditModel: JsonAuditModel = new JsonAuditModel {
-        override val auditType: String = "SomeEvent"
+        override val auditType: String       = "SomeEvent"
         override val transactionName: String = "some-event"
-        override val detail: JsObject = Json.obj("name" -> "test name")
+        override val detail: JsObject        = Json.obj("name" -> "test name")
       }
 
       val result = service.toExtendedDataEvent(auditModel, "/some-path")

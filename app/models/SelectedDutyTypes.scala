@@ -23,17 +23,17 @@ object SelectedDutyTypes extends Enumeration {
 
   type SelectedDutyType = Value
 
-  val Vat: SelectedDutyType = Value("vat")
-  val Duty: SelectedDutyType = Value("duty")
-  val Both: SelectedDutyType = Value("both")
+  val Vat: SelectedDutyType     = Value("vat")
+  val Duty: SelectedDutyType    = Value("duty")
+  val Both: SelectedDutyType    = Value("both")
   val Neither: SelectedDutyType = Value("neither")
 
   implicit object selectedDutyTypePathBinder
-    extends PathBindable.Parsing[SelectedDutyTypes.SelectedDutyType](
-      withName(_),
-      _.toString,
-      (k: String, e: Exception) => "Cannot parse %s as SelectedDutyTypes: %s".format(k, e.getMessage())
-    )
+      extends PathBindable.Parsing[SelectedDutyTypes.SelectedDutyType](
+        withName(_),
+        _.toString,
+        (k: String, e: Exception) => "Cannot parse %s as SelectedDutyTypes: %s".format(k, e.getMessage())
+      )
 
   implicit val format: Format[SelectedDutyType] = Json.formatEnum(this)
 

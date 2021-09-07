@@ -29,22 +29,22 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupConnector @Inject()(val http: HttpClient,
-                                       implicit val config: AppConfig) {
+class AddressLookupConnector @Inject() (val http: HttpClient, implicit val config: AppConfig) {
 
-  def initialiseJourney(addressLookupJsonBuilder: JsValue)
-                       (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
+  def initialiseJourney(
+    addressLookupJsonBuilder: JsValue
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
     val url = s"${config.addressLookupFrontend}${config.addressLookupInitialise}"
 
     http.POST[JsValue, HttpPostResult[AddressLookupOnRampModel]](
-      url, addressLookupJsonBuilder
+      url,
+      addressLookupJsonBuilder
     )(implicitly, InitialiseAddressLookupReads, hc, ec)
   }
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupFrontend}/api/confirmed?id=$id"
 
-  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] = {
+  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] =
     http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))
-  }
 }

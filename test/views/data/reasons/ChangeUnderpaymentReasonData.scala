@@ -27,7 +27,8 @@ object ChangeUnderpaymentReasonData {
 
   private lazy val changeItemAction: Call = controllers.reasons.routes.ChangeItemNumberController.onLoad()
 
-  private def changeDetailsAction(boxNumber: BoxNumber): Call = controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber.id)
+  private def changeDetailsAction(boxNumber: BoxNumber): Call =
+    controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber.id)
 
   val singleItemReason: ChangeUnderpaymentReason = ChangeUnderpaymentReason(
     original = UnderpaymentReason(BoxNumber.Box35, 1, "50", "60"),
@@ -43,7 +44,6 @@ object ChangeUnderpaymentReasonData {
     original = UnderpaymentReason(BoxNumber.Box22, 0, "50", "60"),
     changed = UnderpaymentReason(BoxNumber.Box22, 0, "50", "60")
   )
-
 
   def summaryList(boxNumber: BoxNumber): SummaryList =
     SummaryList(

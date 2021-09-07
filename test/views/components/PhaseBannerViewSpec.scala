@@ -32,15 +32,17 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the phase banner" should {
     s"have the feedback url" in {
 
-      lazy val markup: Html = target()(fakeRequest, messages)
+      lazy val markup: Html                = target()(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
-      element("a").attr("href").contains(feedbackUrl(fakeRequest) + s"&backUrl=${SafeRedirectUrl(appConfig.host + fakeRequest.uri).encodedUrl}") mustBe true
+      element("a").attr("href").contains(
+        feedbackUrl(fakeRequest) + s"&backUrl=${SafeRedirectUrl(appConfig.host + fakeRequest.uri).encodedUrl}"
+      ) mustBe true
     }
   }
 
   it should {
-    lazy val markup: Html = target()(fakeRequest, messages)
+    lazy val markup: Html                = target()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
     "render the correct banner text" in {

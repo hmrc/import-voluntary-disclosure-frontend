@@ -32,14 +32,15 @@ import views.html.importDetails.OneCustomsProcedureCodeView
 
 import scala.concurrent.Future
 
-
 class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val oneCustomsProcedureCodeView: OneCustomsProcedureCodeView = app.injector.instanceOf[OneCustomsProcedureCodeView]
+    private lazy val oneCustomsProcedureCodeView: OneCustomsProcedureCodeView =
+      app.injector.instanceOf[OneCustomsProcedureCodeView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(CheckModePage, false).success.value
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(CheckModePage, false).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -56,12 +57,20 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     )
 
     val formProvider: OneCustomsProcedureCodeFormProvider = injector.instanceOf[OneCustomsProcedureCodeFormProvider]
-    val form: OneCustomsProcedureCodeFormProvider = formProvider
+    val form: OneCustomsProcedureCodeFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new OneCustomsProcedureCodeController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, oneCustomsProcedureCodeView, ec)
+    lazy val controller = new OneCustomsProcedureCodeController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      oneCustomsProcedureCodeView,
+      ec
+    )
   }
 
   val oneCPCYes: Boolean = true
@@ -73,7 +82,8 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(OneCustomsProcedureCodePage, oneCPCYes).success.value)
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(OneCustomsProcedureCodePage, oneCPCYes).success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -86,25 +96,27 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER for true request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header for true request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url
+        )
       }
 
       "return a SEE OTHER for false request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header for false request" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentStartController.onLoad().url)
       }
 
@@ -119,48 +131,55 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER for true request" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header for true request" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url
+        )
       }
 
       "return a SEE OTHER for false request" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header for false request" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
@@ -181,8 +200,9 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to acceptance date page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.importDetails.routes.AcceptanceDateController.onLoad()
@@ -193,8 +213,9 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
@@ -204,6 +225,3 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
   }
 
 }
-
-
-

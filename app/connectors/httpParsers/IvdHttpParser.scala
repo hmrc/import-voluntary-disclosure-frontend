@@ -36,7 +36,12 @@ object IvdHttpParser {
           response.json.validate[EoriDetails](EoriDetails.reads).fold(
             invalid => {
               logger.error("Failed to validate JSON with errors: " + invalid)
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for EoriDetailsHttpParser"))
+              Left(
+                ErrorModel(
+                  Status.INTERNAL_SERVER_ERROR,
+                  "Invalid Json returned from SUB09 API for EoriDetailsHttpParser"
+                )
+              )
             },
             valid => Right(valid)
           )
@@ -73,7 +78,11 @@ object IvdHttpParser {
 
     private val logger = Logger("application." + getClass.getCanonicalName)
 
-    override def read(method: String, url: String, response: HttpResponse): Either[UpdateCaseError, UpdateCaseResponse] = {
+    override def read(
+      method: String,
+      url: String,
+      response: HttpResponse
+    ): Either[UpdateCaseError, UpdateCaseResponse] = {
 
       response.status match {
         case Status.OK =>
@@ -87,12 +96,19 @@ object IvdHttpParser {
           response.json.validate[UpdateCaseError] match {
             case JsSuccess(value, _) => Left(value)
             case JsError(err) =>
-              logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err")
+              logger.error(
+                s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}, cause: $err"
+              )
               Left(UpdateCaseError.UnexpectedError(response.status, Some("Received an unexpected error response")))
           }
         case status =>
           logger.error(s"Failed to validate error JSON with status: ${response.status}, body: ${response.body}")
-          Left(UpdateCaseError.UnexpectedError(status, Some("Downstream error returned when retrieving UpdateResponse from back end")))
+          Left(
+            UpdateCaseError.UnexpectedError(
+              status,
+              Some("Downstream error returned when retrieving UpdateResponse from back end")
+            )
+          )
       }
     }
   }

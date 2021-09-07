@@ -26,66 +26,76 @@ object ConfirmChangeReasonData {
 
   def itemNumber(item: Option[Int]): Option[Seq[SummaryListRow]] =
     item.map { itemNo =>
-      Seq(SummaryListRow(
-        key = Key(
-          content = Text(ConfirmReasonDetailMessages.itemNumber),
-          classes = "govuk-!-width-two-thirds"
-        ),
-        value = Value(
-          content = HtmlContent(itemNo.toString)
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
-              HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              Some(ConfirmReasonDetailMessages.itemChange)
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(ConfirmReasonDetailMessages.itemNumber),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(itemNo.toString)
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(ConfirmReasonDetailMessages.itemChange)
+                )
+              )
             )
           )
-        ))
-      ))
+        )
+      )
     }
 
   def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmReasonDetailMessages.originalValue),
-        classes = "govuk-!-width-two-thirds"
-      ),
-      value = Value(
-        content = HtmlContent(originalValue)
-      ),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItem(
-            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-            HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.originalAmountChange)
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmReasonDetailMessages.originalValue),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(originalValue)
+        ),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.originalAmountChange)
+              )
+            )
           )
-        ))
+        )
       )
-    )
     )
 
   def amendedAmount(amendedValue: String, boxNumber: Int): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmReasonDetailMessages.amendedValue),
-        classes = "govuk-!-width-two-thirds"
-      ),
-      value = Value(
-        content = HtmlContent(amendedValue)
-      ),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItem(
-            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-            HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.amendedAmountChange)
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmReasonDetailMessages.amendedValue),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(amendedValue)
+        ),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.amendedAmountChange)
+              )
+            )
           )
-        ))
+        )
       )
-    )
     )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): SummaryList =
@@ -98,20 +108,22 @@ object ConfirmChangeReasonData {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(ConfirmReasonDetailMessages.otherReason),
+            content = Text(ConfirmReasonDetailMessages.otherReason)
           ),
           value = Value(
             content = HtmlContent(value)
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem(
-                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(ConfirmReasonDetailMessages.otherReasonChange)
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(ConfirmReasonDetailMessages.otherReasonChange)
+                )
               )
             )
-          ))
+          )
         )
       )
     )

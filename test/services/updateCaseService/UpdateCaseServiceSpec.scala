@@ -30,10 +30,13 @@ import utils.ReusableValues
 
 class UpdateCaseServiceSpec extends ServiceSpecBase {
 
-  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData with ReusableValues {
-    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
+  trait Test
+      extends MockIvdSubmissionConnector
+      with MockAuditService
+      with UpdateCaseServiceTestData
+      with ReusableValues {
+    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
       setupMockUpdateCase(response)
-    }
 
     val userAnswers: UserAnswers = completeUserAnswers
 
@@ -50,7 +53,10 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     )
 
     val failedCreateCaseConnectorCall: UpdateCaseError =
-      UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, Some("Downstream error returned when retrieving SubmissionResponse from back end"))
+      UpdateCaseError.UnexpectedError(
+        Status.BAD_REQUEST,
+        Some("Downstream error returned when retrieving SubmissionResponse from back end")
+      )
 
     val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
   }
@@ -66,7 +72,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
       }
 
       "return successful UpdateCaseResponse for Cancel Case" in new Test {
-        override val userAnswers: UserAnswers = cancelCaseCompleteUserAnswers
+        override val userAnswers: UserAnswers    = cancelCaseCompleteUserAnswers
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
         verifyAudit(CancelCaseAuditEvent(cancelCaseJson))
@@ -85,10 +91,9 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called with incomplete User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.updateCase())
+        private val result                    = await(service.updateCase())
 
-        result must matchPattern {
-          case Left(UpdateCaseError.UnexpectedError(_, _)) =>
+        result must matchPattern { case Left(UpdateCaseError.UnexpectedError(_, _)) =>
         }
       }
     }
@@ -106,7 +111,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called without supporting documents" should {
       "return expected JSON" in new Test {
         override val userAnswers: UserAnswers = userAnswersWithoutDocs
-        private val result = service.buildUpdate()
+        private val result                    = service.buildUpdate()
 
         result mustBe Right(updateCaseJsonWithoutDocs)
       }

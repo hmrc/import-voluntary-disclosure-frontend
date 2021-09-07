@@ -26,12 +26,11 @@ import views.html.shared.FileUploadSuccessView
 class FileUploadSuccessViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: FileUploadSuccessView = app.injector.instanceOf[FileUploadSuccessView]
-  private val filename: String = FileUploadSuccessMessages.filename
-  private val action: String = "action/url"
-
+  private val filename: String                         = FileUploadSuccessMessages.filename
+  private val action: String                           = "action/url"
 
   "Rendering the success page" when {
-    lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
     "called normally" should {
       "have the correct button link" in {
@@ -40,9 +39,8 @@ class FileUploadSuccessViewSpec extends ViewBaseSpec {
     }
   }
 
-
   it should {
-    lazy val view: Html = injectedView(filename, action)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(filename, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(FileUploadSuccessMessages.title)

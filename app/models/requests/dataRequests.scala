@@ -27,79 +27,82 @@ import pages.serviceEntry.WhatDoYouWantToDoPage
 import pages.underpayments._
 import play.api.mvc.WrappedRequest
 
-case class OptionalDataRequest[A](request: IdentifierRequest[A], credId: String, eori: String, userAnswers: Option[UserAnswers])
-  extends WrappedRequest[A](request)
+case class OptionalDataRequest[A](
+  request: IdentifierRequest[A],
+  credId: String,
+  eori: String,
+  userAnswers: Option[UserAnswers]
+) extends WrappedRequest[A](request)
 
 case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori: String, userAnswers: UserAnswers)
-  extends WrappedRequest[A](request) {
+    extends WrappedRequest[A](request) {
 
   def isRepFlow: Boolean =
     userAnswers.get(UserTypePage) match {
       case Some(userType) => userType == UserType.Representative
-      case _ => false
+      case _              => false
     }
 
   def isCreateCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
       case Some(CreateCase) => true
-      case _ => false
+      case _                => false
     }
 
   def isUpdateCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
       case Some(UpdateCase) => true
-      case _ => false
+      case _                => false
     }
 
   def isCancelCase: Boolean =
     userAnswers.get(WhatDoYouWantToDoPage) match {
       case Some(CancelCase) => true
-      case _ => false
+      case _                => false
     }
 
   def isPayByDeferment: Boolean =
     userAnswers.get(DefermentPage) match {
       case Some(value) => value
-      case _ => false
+      case _           => false
     }
 
   def isSplitPayment: Boolean =
     userAnswers.get(SplitPaymentPage) match {
       case Some(value) => value
-      case _ => false
+      case _           => false
     }
 
   def doesImporterEORIExist: Boolean =
     userAnswers.get(ImporterEORIExistsPage) match {
       case Some(value) => value
-      case _ => false
+      case _           => false
     }
 
   def dutyType: SelectedDutyType = {
     val vatUnderpaymentType: String = "B00"
     userAnswers.get(UnderpaymentDetailSummaryPage).map { value =>
-      val vatExists = value.exists(_.duty == vatUnderpaymentType)
+      val vatExists  = value.exists(_.duty == vatUnderpaymentType)
       val dutyExists = value.exists(_.duty != vatUnderpaymentType)
       (vatExists, dutyExists) match {
         case (true, true) => Both
-        case (true, _) => Vat
-        case (_, true) => Duty
-        case _ => Neither
+        case (true, _)    => Vat
+        case (_, true)    => Duty
+        case _            => Neither
       }
     }.getOrElse(Neither)
   }
 
-  def checkMode: Boolean = {
+  def checkMode: Boolean =
     userAnswers.get(CheckModePage) match {
       case Some(value) => value
-      case _ => false
+      case _           => false
     }
-  }
 
   def isOneEntry: Boolean =
     userAnswers.get(NumberOfEntriesPage) match {
       case Some(oneEntry) => oneEntry == NumberOfEntries.OneEntry
-      case _ => false
+      case _              => false
     }
 
 }

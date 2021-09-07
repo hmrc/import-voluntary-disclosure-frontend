@@ -19,7 +19,6 @@ package forms.importDetails
 import forms.mappings.Mappings
 import play.api.data.Form
 
-
 class ImporterVatRegisteredFormProvider extends Mappings {
 
   def apply(): Form[Boolean] =

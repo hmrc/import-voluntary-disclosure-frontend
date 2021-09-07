@@ -21,7 +21,6 @@ import javax.inject.Inject
 import models.importDetails.UserType
 import play.api.data.Form
 
-
 class UserTypeFormProvider @Inject() extends Mappings {
 
   def apply(): Form[UserType] =

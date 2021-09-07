@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class SplitPaymentFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
@@ -29,4 +28,3 @@ class SplitPaymentFormProvider @Inject() extends Mappings {
       "value" -> boolean("splitPayment.error.required")
     )
 }
-

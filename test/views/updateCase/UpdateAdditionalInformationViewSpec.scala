@@ -28,16 +28,18 @@ import views.html.updateCase.UpdateAdditionalInformationView
 
 class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: UpdateAdditionalInformationView = app.injector.instanceOf[UpdateAdditionalInformationView]
+  private lazy val injectedView: UpdateAdditionalInformationView =
+    app.injector.instanceOf[UpdateAdditionalInformationView]
 
-  val formProvider: UpdateAdditionalInformationFormProvider = injector.instanceOf[UpdateAdditionalInformationFormProvider]
+  val formProvider: UpdateAdditionalInformationFormProvider =
+    injector.instanceOf[UpdateAdditionalInformationFormProvider]
 
   "Rendering the Update Additional Information page" when {
 
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UpdateAdditionalInformationMessages.title)
@@ -56,12 +58,11 @@ class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages
 
     }
 
-
     "no data supplied" should {
 
       "an error exists " should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(UpdateAdditionalInformationMessages.errorPrefix + UpdateAdditionalInformationMessages.title)
@@ -71,7 +72,9 @@ class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe UpdateAdditionalInformationMessages.errorPrefix + UpdateAdditionalInformationMessages.requiredError
+          elementText(
+            "#value-error"
+          ) mustBe UpdateAdditionalInformationMessages.errorPrefix + UpdateAdditionalInformationMessages.requiredError
         }
 
       }
@@ -82,8 +85,8 @@ class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, Some(Call("GET", "url")))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct Continue button" in {
