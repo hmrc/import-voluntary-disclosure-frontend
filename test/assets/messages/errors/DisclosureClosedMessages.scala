@@ -20,8 +20,12 @@ import messages.BaseMessages
 
 object DisclosureClosedMessages extends BaseMessages {
 
-  val pageTitle = "The information cannot be added to the disclosure"
-  val heading = "The information cannot be added to the disclosure"
-  val p1 = "We cannot add any information to this underpayment disclosure as it is closed and the demand for payment note has already been issued."
-  val p2 = "You can email us at customsaccountingrepayments@hmrc.gov.uk , including the additional information and the disclosure reference number C182107152124AQYVM6E34."
+  val pageTitle = "You cannot add information to this disclosure"
+  val heading = "You cannot add information to this disclosure"
+  val p1 = "This is because we may have already issued the C18 Post Clearance Demand Note."
+  val p2 = "Instead, you need to email customsaccountingrepayments@hmrc.gov.uk, and include:"
+  val bullet1 = "the disclosure reference number C182107152124AQYVM6E34"
+  val bullet2 = "the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed)"
+  val bullet3 = "the EORI number and name of the importer"
+  val bullet4 = "the information you wanted to add to this disclosure"
 }
