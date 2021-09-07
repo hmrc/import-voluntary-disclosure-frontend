@@ -441,3 +441,4 @@ POST        /cancel-disclosure/confirm-file-removal/:index                      
 
 GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad
 GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit
+GET         /cancel-disclosure/cannot-add-information                                          controllers.cancelCase.CancelCaseDisclosureClosedController.onLoad
