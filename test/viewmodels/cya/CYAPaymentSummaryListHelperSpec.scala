@@ -34,7 +34,12 @@ import pages.importDetails._
 import pages.paymentInfo._
 import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
-class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
+class CYAPaymentSummaryListHelperSpec
+    extends SpecBase
+    with Matchers
+    with TryValues
+    with OptionValues
+    with CYASummaryListHelper {
 
   trait Test {
 
@@ -42,17 +47,20 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
       .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
       .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
       .set(AcceptanceDatePage, true).success.value
-      .set(FileUploadPage, Seq(FileUploadInfo(
-        "file-ref-1",
-        "Example.pdf",
-        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        LocalDateTime.now,
-        "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "application/pdf"))).success.value
-      .set(DeclarantContactDetailsPage, ContactDetails(
-        "First Second",
-        "email@email.com",
-        "1234567890")).success.value
+      .set(
+        FileUploadPage,
+        Seq(
+          FileUploadInfo(
+            "file-ref-1",
+            "Example.pdf",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            LocalDateTime.now,
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "application/pdf"
+          )
+        )
+      ).success.value
+      .set(DeclarantContactDetailsPage, ContactDetails("First Second", "email@email.com", "1234567890")).success.value
       .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
       .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -62,42 +70,51 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
       .set(ImporterVatRegisteredPage, true).success.value
       .set(UserTypePage, UserType.Representative).success.value
       .set(ImporterNamePage, "First Second").success.value
-      .set(ImporterAddressPage, ContactAddress(
-        "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-      .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-      .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-        boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-      )).success.value
+      .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+      .set(
+        UnderpaymentDetailSummaryPage,
+        Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+      ).success.value
+      .set(
+        UnderpaymentReasonsPage,
+        Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+      ).success.value
       .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
       .set(SplitPaymentPage, true).success.value
       .set(DefermentAccountPage, "1284958").success.value
       .set(DefermentTypePage, "B").success.value
-      .set(UploadAuthorityPage, Seq(
-        UploadAuthority(
-          "1284958",
-          SelectedDutyTypes.Duty,
-          FileUploadInfo(
-            "file-ref-1",
-            "DutyFileExample.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf")),
-        UploadAuthority(
-          "5293747",
-          SelectedDutyTypes.Vat,
-          FileUploadInfo(
-            "file-ref-1",
-            "VATFileExample.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf")))
+      .set(
+        UploadAuthorityPage,
+        Seq(
+          UploadAuthority(
+            "1284958",
+            SelectedDutyTypes.Duty,
+            FileUploadInfo(
+              "file-ref-1",
+              "DutyFileExample.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          ),
+          UploadAuthority(
+            "5293747",
+            SelectedDutyTypes.Vat,
+            FileUploadInfo(
+              "file-ref-1",
+              "VATFileExample.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          )
+        )
       ).success.value
       .set(AdditionalDefermentNumberPage, "5293747").success.value
       .set(AdditionalDefermentTypePage, "B").success.value
-
 
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
@@ -118,21 +135,27 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
     "buildPaymentDetails" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow))
+        )
       }
     }
 
     "buildDefermentDuty" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBDutyRow, proofOfAuthorityDuty)))
+        buildDefermentDutySummaryList mustBe Seq(
+          defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBDutyRow, proofOfAuthorityDuty))
+        )
       }
     }
 
     "buildDefermentVAT" should {
 
       "produce a valid model when all answers are provided" in new Test {
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBVATRow, proofOfAuthorityVat)))
+        buildDefermentImportVatSummaryList mustBe Seq(
+          defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBVATRow, proofOfAuthorityVat))
+        )
       }
     }
 
@@ -162,17 +185,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"))).success.value
-          .set(DeclarantContactDetailsPage, ContactDetails(
-            "First Second",
-            "email@email.com",
-            "1234567890")).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                "file-ref-1",
+                "Example.pdf",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                LocalDateTime.now,
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "application/pdf"
+              )
+            )
+          ).success.value
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "1234567890")
+          ).success.value
           .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(OneCustomsProcedureCodePage, true).success.value
           .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -182,12 +211,15 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(ImporterVatRegisteredPage, true).success.value
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "First Second").success.value
-          .set(ImporterAddressPage, ContactAddress(
-            "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-          )).success.value
+          .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+          .set(
+            UnderpaymentDetailSummaryPage,
+            Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+          ).success.value
+          .set(
+            UnderpaymentReasonsPage,
+            Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+          ).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, true).success.value
@@ -196,9 +228,15 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(AdditionalDefermentNumberPage, "5293747").success.value
           .set(AdditionalDefermentTypePage, "C").success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeADutyRow)))
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCVATRow)))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow))
+        )
+        buildDefermentDutySummaryList mustBe Seq(
+          defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeADutyRow))
+        )
+        buildDefermentImportVatSummaryList mustBe Seq(
+          defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeCVATRow))
+        )
       }
     }
 
@@ -213,17 +251,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"))).success.value
-          .set(DeclarantContactDetailsPage, ContactDetails(
-            "First Second",
-            "email@email.com",
-            "1234567890")).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                "file-ref-1",
+                "Example.pdf",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                LocalDateTime.now,
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "application/pdf"
+              )
+            )
+          ).success.value
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "1234567890")
+          ).success.value
           .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(OneCustomsProcedureCodePage, true).success.value
           .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -233,12 +277,15 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(ImporterVatRegisteredPage, true).success.value
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "First Second").success.value
-          .set(ImporterAddressPage, ContactAddress(
-            "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-          )).success.value
+          .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+          .set(
+            UnderpaymentDetailSummaryPage,
+            Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+          ).success.value
+          .set(
+            UnderpaymentReasonsPage,
+            Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+          ).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, true).success.value
@@ -247,9 +294,15 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(AdditionalDefermentNumberPage, "5293747").success.value
           .set(AdditionalDefermentTypePage, "A").success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)))
-        buildDefermentDutySummaryList mustBe Seq(defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeCDutyRow)))
-        buildDefermentImportVatSummaryList mustBe Seq(defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeAVATRow)))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow))
+        )
+        buildDefermentDutySummaryList mustBe Seq(
+          defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeCDutyRow))
+        )
+        buildDefermentImportVatSummaryList mustBe Seq(
+          defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeAVATRow))
+        )
       }
     }
 
@@ -264,17 +317,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"))).success.value
-          .set(DeclarantContactDetailsPage, ContactDetails(
-            "First Second",
-            "email@email.com",
-            "1234567890")).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                "file-ref-1",
+                "Example.pdf",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                LocalDateTime.now,
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "application/pdf"
+              )
+            )
+          ).success.value
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "1234567890")
+          ).success.value
           .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(OneCustomsProcedureCodePage, true).success.value
           .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -284,36 +343,44 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(ImporterVatRegisteredPage, true).success.value
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "First Second").success.value
-          .set(ImporterAddressPage, ContactAddress(
-            "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+          .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-          )).success.value
+          .set(
+            UnderpaymentReasonsPage,
+            Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+          ).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(DefermentAccountPage, "1284958").success.value
           .set(DefermentTypePage, "B").success.value
-          .set(UploadAuthorityPage, Seq(
-            UploadAuthority(
-              "1284958",
-              SelectedDutyTypes.Duty,
-              FileUploadInfo(
-                "file-ref-1",
-                "DutyFileExample.pdf",
-                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
-                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-                "application/pdf"))
-          )
+          .set(
+            UploadAuthorityPage,
+            Seq(
+              UploadAuthority(
+                "1284958",
+                SelectedDutyTypes.Duty,
+                FileUploadInfo(
+                  "file-ref-1",
+                  "DutyFileExample.pdf",
+                  "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                  LocalDateTime.now,
+                  "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                  "application/pdf"
+                )
+              )
+            )
           ).success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(
-          paymentMethodDefermentRow,
-          repAccountNumberRow,
-          accountOwnerRow,
-          proofOfAuthority
-        )))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(
+            Seq(
+              paymentMethodDefermentRow,
+              repAccountNumberRow,
+              accountOwnerRow,
+              proofOfAuthority
+            )
+          )
+        )
 
       }
     }
@@ -329,17 +396,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"))).success.value
-          .set(DeclarantContactDetailsPage, ContactDetails(
-            "First Second",
-            "email@email.com",
-            "1234567890")).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                "file-ref-1",
+                "Example.pdf",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                LocalDateTime.now,
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "application/pdf"
+              )
+            )
+          ).success.value
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "1234567890")
+          ).success.value
           .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(OneCustomsProcedureCodePage, true).success.value
           .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -349,37 +422,49 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(ImporterVatRegisteredPage, true).success.value
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "First Second").success.value
-          .set(ImporterAddressPage, ContactAddress(
-            "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-          )).success.value
+          .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+          .set(
+            UnderpaymentDetailSummaryPage,
+            Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
+          ).success.value
+          .set(
+            UnderpaymentReasonsPage,
+            Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+          ).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, false).success.value
           .set(DefermentAccountPage, "1284958").success.value
           .set(DefermentTypePage, "B").success.value
-          .set(UploadAuthorityPage, Seq(
-            UploadAuthority(
-              "1284958",
-              SelectedDutyTypes.Both,
-              FileUploadInfo(
-                "file-ref-1",
-                "FileExample.pdf",
-                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
-                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-                "application/pdf"))
-          )
+          .set(
+            UploadAuthorityPage,
+            Seq(
+              UploadAuthority(
+                "1284958",
+                SelectedDutyTypes.Both,
+                FileUploadInfo(
+                  "file-ref-1",
+                  "FileExample.pdf",
+                  "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                  LocalDateTime.now,
+                  "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                  "application/pdf"
+                )
+              )
+            )
           ).success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow,
-          splitDefermentNoRow,
-          repAccountNumberRow,
-          accountOwnerRow,
-          proofOfAuthorityBoth
-        )))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(
+            Seq(
+              paymentMethodDefermentRow,
+              splitDefermentNoRow,
+              repAccountNumberRow,
+              accountOwnerRow,
+              proofOfAuthorityBoth
+            )
+          )
+        )
 
       }
     }
@@ -395,9 +480,13 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(UserTypePage, UserType.Importer).success.value
           .set(DefermentPage, false).success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(
-          paymentMethodOtherRow
-        )))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(
+            Seq(
+              paymentMethodOtherRow
+            )
+          )
+        )
 
       }
     }
@@ -413,17 +502,23 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
           .set(AcceptanceDatePage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"))).success.value
-          .set(DeclarantContactDetailsPage, ContactDetails(
-            "First Second",
-            "email@email.com",
-            "1234567890")).success.value
+          .set(
+            FileUploadPage,
+            Seq(
+              FileUploadInfo(
+                "file-ref-1",
+                "Example.pdf",
+                "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                LocalDateTime.now,
+                "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                "application/pdf"
+              )
+            )
+          ).success.value
+          .set(
+            DeclarantContactDetailsPage,
+            ContactDetails("First Second", "email@email.com", "1234567890")
+          ).success.value
           .set(TraderAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(OneCustomsProcedureCodePage, true).success.value
           .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -433,17 +528,19 @@ class CYAPaymentSummaryListHelperSpec extends SpecBase with Matchers with TryVal
           .set(ImporterVatRegisteredPage, true).success.value
           .set(UserTypePage, UserType.Importer).success.value
           .set(ImporterNamePage, "First Second").success.value
-          .set(ImporterAddressPage, ContactAddress(
-            "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+          .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-            boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-          )).success.value
+          .set(
+            UnderpaymentReasonsPage,
+            Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+          ).success.value
           .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(DefermentAccountPage, "1284958").success.value
 
-        buildPaymentDetailsSummaryList mustBe Seq(paymentDetailsAnswers(Seq(paymentMethodDefermentRow, importerAccountNumberRow)))
+        buildPaymentDetailsSummaryList mustBe Seq(
+          paymentDetailsAnswers(Seq(paymentMethodDefermentRow, importerAccountNumberRow))
+        )
       }
 
       "produce a valid model when no answers are provided" in new Test {

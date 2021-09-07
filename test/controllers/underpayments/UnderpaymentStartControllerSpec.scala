@@ -48,10 +48,15 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
       userAnswers.get
     )
 
-    lazy val controller = new UnderpaymentStartController(authenticatedAction, dataRetrievalAction,
-      messagesControllerComponents, dataRequiredAction, view)
+    lazy val controller = new UnderpaymentStartController(
+      authenticatedAction,
+      dataRetrievalAction,
+      messagesControllerComponents,
+      dataRequiredAction,
+      view
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view: UnderpaymentStartView = injector.instanceOf[UnderpaymentStartView]
+    val view: UnderpaymentStartView      = injector.instanceOf[UnderpaymentStartView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
@@ -81,17 +86,19 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     "in Single Entry mode" should {
       "point to Enter CPC page if it is defined" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(NumberOfEntriesPage, OneEntry).success.value
-            .set(EnterCustomsProcedureCodePage, "cpc").success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(NumberOfEntriesPage, OneEntry).success.value
+              .set(EnterCustomsProcedureCodePage, "cpc").success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad()
       }
       "point to One CPC page if no CPC previously captured" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(NumberOfEntriesPage, OneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad()
@@ -101,8 +108,9 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     "in Bulk Entry mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.importDetails.routes.AcceptanceDateController.onLoad()

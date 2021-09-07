@@ -35,7 +35,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
   private lazy val injectedView: UploadFileView = app.injector.instanceOf[UploadFileView]
   private lazy val initiateResponse: UpScanInitiateResponse =
     UpScanInitiateResponse(Reference("Upscan Ref"), UploadFormTemplate("url", Map.empty))
-  private val backLink: Call = Call("GET", "url")
+  private val backLink: Call                    = Call("GET", "url")
   private val maxOptDocs: Seq[OptionalDocument] = Seq(ImportAndEntry, AirwayBill, OriginProof, Other)
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
@@ -43,7 +43,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
   "Rendering the UploadFile page" when {
     "Optional Documents have been selected" should {
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html =
+        injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -80,7 +81,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
       "an error exists (no file has been uploaded)" should {
         lazy val form: Form[String] = formProvider().withError("file", UploadFileMessages.fileUnknown)
-        lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+        lazy val view: Html =
+          injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
@@ -99,7 +101,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
     "Optional Documents have not been selected" should {
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
+      lazy val view: Html =
+        injectedView(form, initiateResponse, Some(backLink), Seq.empty)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct form action" in {
@@ -130,7 +133,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
 
   it should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html =
+      injectedView(form, initiateResponse, Some(backLink), maxOptDocs)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadFileMessages.title)
@@ -164,29 +168,38 @@ class UploadFileViewSpec extends ViewBaseSpec {
     }
 
     s"have correct bullet points within the expandable text '${UploadFileMessages.PDF}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)") mustBe UploadFileMessages.PDF
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)"
+      ) mustBe UploadFileMessages.PDF
     }
 
     s"have correct bullet points within the expandable text '${UploadFileMessages.CSV}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)") mustBe UploadFileMessages.CSV
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)"
+      ) mustBe UploadFileMessages.CSV
     }
 
     s"have correct bullet points within the expandable text '${UploadFileMessages.ms}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)") mustBe UploadFileMessages.ms
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)"
+      ) mustBe UploadFileMessages.ms
     }
 
     s"have correct bullet points within the expandable text '${UploadFileMessages.openDocumentFormat}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)") mustBe UploadFileMessages.openDocumentFormat
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)"
+      ) mustBe UploadFileMessages.openDocumentFormat
     }
 
     s"have correct bullet points within the expandable text '${UploadFileMessages.image}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)") mustBe UploadFileMessages.image
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)"
+      ) mustBe UploadFileMessages.image
     }
 
     s"have the correct text of '${UploadFileMessages.fileSize}'" in {
       elementText("#main-content p:nth-of-type(3)") mustBe UploadFileMessages.fileSize
     }
-
 
     "have the correct Continue button" in {
       elementText(".govuk-button") mustBe UploadFileMessages.uploadChosenFile

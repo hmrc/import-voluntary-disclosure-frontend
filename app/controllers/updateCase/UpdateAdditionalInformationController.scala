@@ -31,18 +31,18 @@ import views.html.updateCase.UpdateAdditionalInformationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction,
-                                                      getData: DataRetrievalAction,
-                                                      requireData: DataRequiredAction,
-                                                      sessionRepository: SessionRepository,
-                                                      mcc: MessagesControllerComponents,
-                                                      formProvider: UpdateAdditionalInformationFormProvider,
-                                                      view: UpdateAdditionalInformationView,
-                                                      implicit val ec: ExecutionContext
-                                                     )
-  extends FrontendController(mcc) with I18nSupport {
+class UpdateAdditionalInformationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: UpdateAdditionalInformationFormProvider,
+  view: UpdateAdditionalInformationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UpdateAdditionalInformationPage).fold(formProvider()) {
@@ -57,10 +57,8 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
       additionalInfo => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
-        }
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
       }
     )
   }
@@ -71,7 +69,7 @@ class UpdateAdditionalInformationController @Inject()(identify: IdentifierAction
     } else {
       request.userAnswers.get(MoreDocumentationPage) match {
         case Some(true) => Some(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
-        case _ => Some(controllers.updateCase.routes.MoreDocumentationController.onLoad())
+        case _          => Some(controllers.updateCase.routes.MoreDocumentationController.onLoad())
       }
     }
 

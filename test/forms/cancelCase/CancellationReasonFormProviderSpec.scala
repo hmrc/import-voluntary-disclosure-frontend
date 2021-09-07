@@ -25,7 +25,7 @@ class CancellationReasonFormProviderSpec extends FormSpecBase {
     "no data entered" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new CancellationReasonFormProvider()().bind(missingOption)
+      val form                               = new CancellationReasonFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -40,11 +40,10 @@ class CancellationReasonFormProviderSpec extends FormSpecBase {
       }
     }
 
-
     "maxLength data entered" should {
 
       val maxLengthData: Map[String, String] = Map("value" -> "c" * 1401)
-      val form = new CancellationReasonFormProvider()().bind(maxLengthData)
+      val form                               = new CancellationReasonFormProvider()().bind(maxLengthData)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -59,11 +58,10 @@ class CancellationReasonFormProviderSpec extends FormSpecBase {
       }
     }
 
-
     "emoji entered" should {
 
       val emoji: Map[String, String] = Map("value" -> "😀")
-      val form = new CancellationReasonFormProvider()().bind(emoji)
+      val form                       = new CancellationReasonFormProvider()().bind(emoji)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

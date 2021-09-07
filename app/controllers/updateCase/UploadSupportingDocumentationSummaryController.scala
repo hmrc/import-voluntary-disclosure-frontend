@@ -32,23 +32,26 @@ import views.html.updateCase.UploadSupportingDocumentationSummaryView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class UploadSupportingDocumentationSummaryController @Inject()(identify: IdentifierAction,
-                                                               getData: DataRetrievalAction,
-                                                               requireData: DataRequiredAction,
-                                                               mcc: MessagesControllerComponents,
-                                                               formProvider: UploadAnotherFileFormProvider,
-                                                               view: UploadSupportingDocumentationSummaryView,
-                                                               implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class UploadSupportingDocumentationSummaryController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  formProvider: UploadAnotherFileFormProvider,
+  view: UploadSupportingDocumentationSummaryView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(UploadSupportingDocumentationPage)
-      .fold(Future(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad().url))) { files =>
-        if (files.isEmpty) {
-          Future.successful(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad()))
-        } else {
-          Future.successful(Ok(view(formProvider(), buildSummaryList(files))))
-        }
+      .fold(Future(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad().url))) {
+        files =>
+          if (files.isEmpty) {
+            Future.successful(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad()))
+          } else {
+            Future.successful(Ok(view(formProvider(), buildSummaryList(files))))
+          }
       }
   }
 
@@ -69,16 +72,18 @@ class UploadSupportingDocumentationSummaryController @Inject()(identify: Identif
     )
   }
 
-  private def resultWithErrors(formWithErrors: Form[Boolean])(implicit request: DataRequest[AnyContent]): Future[Result] = {
+  private def resultWithErrors(
+    formWithErrors: Form[Boolean]
+  )(implicit request: DataRequest[AnyContent]): Future[Result] =
     request.userAnswers.get(UploadSupportingDocumentationPage)
-      .fold(Future(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad().url))) { files =>
-        Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files))))
+      .fold(Future(Redirect(controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad().url))) {
+        files =>
+          Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files))))
       }
-  }
 
   private def buildSummaryList(files: Seq[FileUploadInfo])(implicit request: DataRequest[AnyContent]) = {
-    val summaryListRows = files.zipWithIndex.map {
-      case (file, index) => SummaryListRow(
+    val summaryListRows = files.zipWithIndex.map { case (file, index) =>
+      SummaryListRow(
         key = Key(content = Text(file.fileName), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
         actions = Some(
           Actions(

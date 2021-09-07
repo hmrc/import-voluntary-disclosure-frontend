@@ -23,13 +23,11 @@ case class EoriDetails(eori: String, name: String, address: ContactAddress, vatN
 object EoriDetails {
 
   implicit val reads: Reads[EoriDetails] = for {
-    eori <- (__ \\ "eori").read[String]
-    name <- (__ \\ "name").read[String]
-    address <- __.read[ContactAddress](ContactAddress.sub09Reads)
+    eori      <- (__ \\ "eori").read[String]
+    name      <- (__ \\ "name").read[String]
+    address   <- __.read[ContactAddress](ContactAddress.sub09Reads)
     vatNumber <- (__ \\ "vatNumber").readNullable[String]
-  } yield {
-    EoriDetails(eori, name, address, vatNumber)
-  }
+  } yield EoriDetails(eori, name, address, vatNumber)
 
   implicit val format = Json.format[EoriDetails]
 

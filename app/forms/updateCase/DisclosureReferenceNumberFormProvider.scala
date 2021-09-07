@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class DisclosureReferenceNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =

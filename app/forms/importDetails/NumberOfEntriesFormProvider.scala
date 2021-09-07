@@ -21,7 +21,6 @@ import javax.inject.Inject
 import models.importDetails.NumberOfEntries
 import play.api.data.Form
 
-
 class NumberOfEntriesFormProvider @Inject() extends Mappings {
 
   def apply(): Form[NumberOfEntries] =

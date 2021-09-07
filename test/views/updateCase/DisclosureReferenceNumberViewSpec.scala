@@ -32,13 +32,14 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
 
   val formProvider: DisclosureReferenceNumberFormProvider = injector.instanceOf[DisclosureReferenceNumberFormProvider]
 
-  private val backlink: Call = Call("GET", controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url)
+  private val backlink: Call =
+    Call("GET", controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url)
 
   "Rendering the Disclosure Reference Number page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(DisclosureReferenceNumberMessages.title)
@@ -55,8 +56,8 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.title)
@@ -66,7 +67,9 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.requiredError
+          elementText(
+            "#value-error"
+          ) mustBe DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.requiredError
         }
       }
     }
@@ -74,8 +77,8 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
     "data in invalid format supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> "invalid"))
-        lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> "invalid"))
+        lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.title)
@@ -85,7 +88,9 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.formatError
+          elementText(
+            "#value-error"
+          ) mustBe DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.formatError
         }
       }
     }
@@ -93,8 +98,8 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${DisclosureReferenceNumberMessages.label}'" in {
@@ -105,7 +110,9 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
       elementText("#value-hint") mustBe DisclosureReferenceNumberMessages.hint
     }
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad().url
+      )
     }
 
     s"render the input field" in {

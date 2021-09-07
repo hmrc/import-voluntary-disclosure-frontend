@@ -27,7 +27,8 @@ import uk.gov.hmrc.http.HttpResponse
 
 class InitialiseAddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
 
-  val errorModel: ErrorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect")
+  val errorModel: ErrorModel =
+    ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect")
 
   "The InitialiseAddressLookupHttpParser" when {
 
@@ -54,8 +55,11 @@ class InitialiseAddressLookupHttpParserSpec extends AnyWordSpec with Matchers {
     "the http response status is INTERNAL_SERVER_ERROR when UNAUTHORISED is returned" should {
 
       "return an ErrorModel" in {
-        InitialiseAddressLookupReads.read("", "",
-          HttpResponse(Status.UNAUTHORIZED, customerAddressJsonError, Map.empty[String, Seq[String]])) mustBe
+        InitialiseAddressLookupReads.read(
+          "",
+          "",
+          HttpResponse(Status.UNAUTHORIZED, customerAddressJsonError, Map.empty[String, Seq[String]])
+        ) mustBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }

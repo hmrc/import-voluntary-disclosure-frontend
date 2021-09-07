@@ -43,7 +43,6 @@ class UpdateCaseAuditEventSpec extends ModelSpecBase with AuditTestData with Reu
     userAnswers
   )
 
-
   "A valid UpdateCaseAuditEvent model" should {
     "contain correct details" in {
       val event = UpdateCaseAuditEvent(Json.parse(updateSubmissionJson))

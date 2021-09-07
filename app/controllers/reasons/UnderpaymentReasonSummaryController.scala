@@ -34,32 +34,35 @@ import views.html.reasons.UnderpaymentReasonSummaryView
 
 import scala.concurrent.Future
 
-class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    mcc: MessagesControllerComponents,
-                                                    view: UnderpaymentReasonSummaryView,
-                                                    formProvider: UnderpaymentReasonSummaryFormProvider,
-                                                    appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentReasonSummaryController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  view: UnderpaymentReasonSummaryView,
+  formProvider: UnderpaymentReasonSummaryFormProvider,
+  appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     summaryList(request.userAnswers.get(UnderpaymentReasonsPage)) match {
       case Some(value) => Future.successful(Ok(view(formProvider.apply(), Some(value))))
-      case None => Future.successful(InternalServerError("Couldn't find Underpayment reasons"))
+      case None        => Future.successful(InternalServerError("Couldn't find Underpayment reasons"))
     }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(
-        BadRequest(
-          view(
-            formWithErrors,
-            summaryList(request.userAnswers.get(UnderpaymentReasonsPage))
+      formWithErrors =>
+        Future.successful(
+          BadRequest(
+            view(
+              formWithErrors,
+              summaryList(request.userAnswers.get(UnderpaymentReasonsPage))
+            )
           )
-        )
-      ),
+        ),
       anotherReason => {
         if (anotherReason) {
           Future.successful(Redirect(controllers.reasons.routes.BoxNumberController.onLoad()))
@@ -76,8 +79,9 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
     )
   }
 
-  private[controllers] def summaryList(underpaymentReason: Option[Seq[UnderpaymentReason]]
-                                      )(implicit messages: Messages): Option[SummaryList] = {
+  private[controllers] def summaryList(
+    underpaymentReason: Option[Seq[UnderpaymentReason]]
+  )(implicit messages: Messages): Option[SummaryList] = {
     def changeAction(boxNumber: BoxNumber, itemNumber: Int): Call =
       controllers.reasons.routes.ChangeUnderpaymentReasonController.change(boxNumber.id, itemNumber)
 
@@ -91,23 +95,22 @@ class UnderpaymentReasonSummaryController @Inject()(identify: IdentifierAction,
           }
           val hiddenLabel = underpayment.boxNumber match {
             case BoxNumber.OtherItem => messages("underpaymentReasonSummary.otherReason.change")
-            case BoxNumber.Box33 | BoxNumber.Box34 | BoxNumber.Box35 | BoxNumber.Box36 | BoxNumber.Box37 | BoxNumber.Box38 | BoxNumber.Box39 |
-                 BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 | BoxNumber.Box45 | BoxNumber.Box46 =>
+            case BoxNumber.Box33 | BoxNumber.Box34 | BoxNumber.Box35 | BoxNumber.Box36 | BoxNumber.Box37 |
+                BoxNumber.Box38 | BoxNumber.Box39 | BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 |
+                BoxNumber.Box45 | BoxNumber.Box46 =>
               messages("underpaymentReasonSummary.itemLevel.change", underpayment.boxNumber.id, underpayment.itemNumber)
             case _ => messages("underpaymentReasonSummary.entryLevel.change", underpayment.boxNumber.id)
           }
           SummaryListRow(
             key = Key(content = label),
             value = Value(
-              content =
-                if (underpayment.boxNumber == BoxNumber.OtherItem) {
-                  HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
-                }
-                else if (underpayment.itemNumber == 0) {
-                  HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
-                } else {
-                  HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
-                }
+              content = if (underpayment.boxNumber == BoxNumber.OtherItem) {
+                HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
+              } else if (underpayment.itemNumber == 0) {
+                HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
+              } else {
+                HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
+              }
             ),
             actions = Some(
               Actions(

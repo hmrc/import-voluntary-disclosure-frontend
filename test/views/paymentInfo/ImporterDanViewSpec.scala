@@ -29,15 +29,15 @@ import views.html.paymentInfo.ImporterDanView
 class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: ImporterDanView = app.injector.instanceOf[ImporterDanView]
-  val backLink = Some(Call("GET", "backLinkUrl"))
+  val backLink                                   = Some(Call("GET", "backLinkUrl"))
 
   val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
 
   "Rendering the Importer DAN page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterDanMessages.title)
@@ -54,8 +54,8 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
@@ -74,8 +74,8 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
     "invalid data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> "A1234567"))
-        lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> "A1234567"))
+        lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
@@ -94,8 +94,8 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterDanMessages.h1}'" in {

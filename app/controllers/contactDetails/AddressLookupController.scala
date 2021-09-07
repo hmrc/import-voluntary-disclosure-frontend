@@ -31,78 +31,85 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupController @Inject()(identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        sessionRepository: SessionRepository,
-                                        addressLookupService: AddressLookupService,
-                                        val errorHandler: ErrorHandler,
-                                        val mcc: MessagesControllerComponents,
-                                        implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+class AddressLookupController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  addressLookupService: AddressLookupService,
+  val errorHandler: ErrorHandler,
+  val mcc: MessagesControllerComponents,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  def initialiseJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    addressLookupService.initialiseJourney map {
-      case Right(response) =>
-        Redirect(response.redirectUrl)
-      case Left(_) =>
-        errorHandler.showInternalServerError
-    }
+  def initialiseJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      addressLookupService.initialiseJourney map {
+        case Right(response) =>
+          Redirect(response.redirectUrl)
+        case Left(_) =>
+          errorHandler.showInternalServerError
+      }
   }
 
-  def initialiseImporterJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    addressLookupService.initialiseImporterJourney map {
-      case Right(response) =>
-        Redirect(response.redirectUrl)
-      case Left(_) =>
-        errorHandler.showInternalServerError
-    }
+  def initialiseImporterJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      addressLookupService.initialiseImporterJourney map {
+        case Right(response) =>
+          Redirect(response.redirectUrl)
+        case Left(_) =>
+          errorHandler.showInternalServerError
+      }
   }
 
-  def callback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    addressLookupService.retrieveAddress(id) flatMap {
-      case Right(address) =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressPage, formatAddress(address)))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (request.checkMode) {
-            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-          } else {
-            Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+  def callback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      addressLookupService.retrieveAddress(id) flatMap {
+        case Right(address) =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressPage, formatAddress(address)))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+            }
           }
-        }
 
-      case Left(_) =>
-        Future.successful(errorHandler.showInternalServerError)
-    }
+        case Left(_) =>
+          Future.successful(errorHandler.showInternalServerError)
+      }
   }
 
-  def importerCallback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    addressLookupService.retrieveAddress(id) flatMap {
-      case Right(address) =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, formatAddress(address)))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (request.checkMode) {
-            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-          } else {
-            Redirect(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
+  def importerCallback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      addressLookupService.retrieveAddress(id) flatMap {
+        case Right(address) =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterAddressPage, formatAddress(address)))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.importDetails.routes.ImporterEORIExistsController.onLoad())
+            }
           }
-        }
 
-      case Left(_) =>
-        Future.successful(errorHandler.showInternalServerError)
-    }
+        case Left(_) =>
+          Future.successful(errorHandler.showInternalServerError)
+      }
   }
 
   private def formatAddress(address: AddressModel): ContactAddress = {
     val city = address.line4.getOrElse(address.line3.getOrElse(address.line2.getOrElse("")))
     val addressLine2: Option[String] = (address.line2, address.line3) match {
-      case (Some(line2), _) if line2 == city => None
+      case (Some(line2), _) if line2 == city           => None
       case (Some(line2), Some(line3)) if line3 == city => Some(line2)
-      case (Some(line2), Some(line3)) => Some(line2 + ", " + line3)
-      case _ => None
+      case (Some(line2), Some(line3))                  => Some(line2 + ", " + line3)
+      case _                                           => None
     }
 
     ContactAddress(

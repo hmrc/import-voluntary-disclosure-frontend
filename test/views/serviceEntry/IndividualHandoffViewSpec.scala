@@ -30,7 +30,7 @@ class IndividualHandoffViewSpec extends ViewBaseSpec {
   "Rendering the Deferment page" when {
 
     "no errors exist VAT only" should {
-      lazy val view: Html = injectedView()(fakeRequest, messages)
+      lazy val view: Html                  = injectedView()(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(title)
@@ -48,14 +48,14 @@ class IndividualHandoffViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView()(fakeRequest, messages)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
       elementText("h1") mustBe heading
     }
 
-    s"have the correct value for '${p1}'" in {
+    s"have the correct value for '$p1'" in {
       elementText("#main-content > div > div > p:nth-child(2)") mustBe p1
     }
 

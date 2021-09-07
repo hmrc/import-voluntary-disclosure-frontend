@@ -24,12 +24,14 @@ import views.html.errors._
 
 import javax.inject.Inject
 
-class UnauthorisedController @Inject()(mcc: MessagesControllerComponents,
-                                       view: UnauthorisedView,
-                                       unauthorisedAgentAccessView: UnauthorisedAgentAccessView,
-                                       unauthorisedPrivateBetaView: UnauthorisedPrivateBetaAccessView,
-                                       implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class UnauthorisedController @Inject() (
+  mcc: MessagesControllerComponents,
+  view: UnauthorisedView,
+  unauthorisedAgentAccessView: UnauthorisedAgentAccessView,
+  unauthorisedPrivateBetaView: UnauthorisedPrivateBetaAccessView,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = Action { implicit request =>
     Ok(view())

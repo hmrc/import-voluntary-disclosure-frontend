@@ -22,21 +22,23 @@ import play.api.data.format.Formatter
 import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
 
-
-private[mappings] class LocalDateFormatter(invalidKey: String,
-                                           allRequiredKey: String,
-                                           twoRequiredKey: String,
-                                           requiredKey: String,
-                                           dayMonthLengthKey: String,
-                                           yearLengthKey: String,
-                                           validatePastKey: Option[String],
-                                           validateAfterKey: Option[String],
-                                           args: Seq[String] = Seq.empty)
-  extends Formatter[LocalDate] with Formatters with Constraints {
+private[mappings] class LocalDateFormatter(
+  invalidKey: String,
+  allRequiredKey: String,
+  twoRequiredKey: String,
+  requiredKey: String,
+  dayMonthLengthKey: String,
+  yearLengthKey: String,
+  validatePastKey: Option[String],
+  validateAfterKey: Option[String],
+  args: Seq[String] = Seq.empty
+) extends Formatter[LocalDate]
+    with Formatters
+    with Constraints {
 
   private val fieldKeys: List[String] = List("day", "month", "year")
 
-  private val yearLength = 4
+  private val yearLength        = 4
   private val dayMonthLengthMax = 2
 
   private def toDate(key: String, day: Int, month: Int, year: Int): Either[Seq[FormError], LocalDate] =
@@ -63,7 +65,7 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
     val sanitizedFields = data.mapValues(filter).filter(_._2.nonEmpty)
-    val missingKeys = fieldKeys.toSet -- sanitizedFields.keys.map(_.stripPrefix(s"$key."))
+    val missingKeys     = fieldKeys.toSet -- sanitizedFields.keys.map(_.stripPrefix(s"$key."))
 
     def int(field: String, validate: Int => Boolean, errorKey: String) = {
       val formatter = intFormatter(
@@ -77,9 +79,9 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
         .filterOrElse(validate, Seq(FormError(s"$key.$field", errorKey, Seq(field))))
     }
 
-    val day = int("day", d => d > 0 && d.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
+    val day   = int("day", d => d > 0 && d.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
     val month = int("month", m => m > 0 && m.toString.length <= dayMonthLengthMax, dayMonthLengthKey)
-    val year = int("year", y => y > 0 && y.toString.length == yearLength, yearLengthKey)
+    val year  = int("year", y => y > 0 && y.toString.length == yearLength, yearLengthKey)
 
     missingKeys.size match {
       case 0 =>
@@ -101,8 +103,8 @@ private[mappings] class LocalDateFormatter(invalidKey: String,
 
   override def unbind(key: String, value: LocalDate): Map[String, String] =
     Map(
-      s"$key.day" -> value.getDayOfMonth.toString,
+      s"$key.day"   -> value.getDayOfMonth.toString,
       s"$key.month" -> value.getMonthValue.toString,
-      s"$key.year" -> value.getYear.toString
+      s"$key.year"  -> value.getYear.toString
     )
 }

@@ -39,7 +39,7 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
   "Rendering the UploadFile page" should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html    = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct form action" in {
@@ -58,7 +58,7 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
   it should {
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
+    lazy val view: Html    = injectedView(form, initiateResponse, backLink)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(BulkUploadFileMessages.title)
@@ -96,23 +96,33 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
     }
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.PDF}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)") mustBe BulkUploadFileMessages.PDF
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)"
+      ) mustBe BulkUploadFileMessages.PDF
     }
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.CSV}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)") mustBe BulkUploadFileMessages.CSV
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)"
+      ) mustBe BulkUploadFileMessages.CSV
     }
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.excel}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)") mustBe BulkUploadFileMessages.excel
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)"
+      ) mustBe BulkUploadFileMessages.excel
     }
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.openDocumentFormat}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)") mustBe BulkUploadFileMessages.openDocumentFormat
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)"
+      ) mustBe BulkUploadFileMessages.openDocumentFormat
     }
 
     s"have correct link within the expandable text '${BulkUploadFileMessages.image}'" in {
-      elementText("#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)") mustBe BulkUploadFileMessages.image
+      elementText(
+        "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)"
+      ) mustBe BulkUploadFileMessages.image
     }
 
     "have the correct Continue button" in {

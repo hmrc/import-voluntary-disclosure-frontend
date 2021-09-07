@@ -24,11 +24,11 @@ import views.html.serviceEntry.IndividualHandoffView
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class IndividualHandoffController @Inject()(
-                                             mcc: MessagesControllerComponents,
-                                             view: IndividualHandoffView
-                                           ) extends FrontendController(mcc) with I18nSupport {
-
+class IndividualHandoffController @Inject() (
+  mcc: MessagesControllerComponents,
+  view: IndividualHandoffView
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
     Future.successful(Ok(view()))

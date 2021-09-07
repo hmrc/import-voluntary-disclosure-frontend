@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class CancelCaseDisclosureReferenceNumberFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
@@ -30,4 +29,3 @@ class CancelCaseDisclosureReferenceNumberFormProvider @Inject() extends Mappings
         .verifying(regexp("^[cC]18[a-zA-Z0-9]{19}$", "cancelCase.disclosureReference.error.format"))
     )
 }
-

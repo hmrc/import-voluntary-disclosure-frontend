@@ -30,7 +30,6 @@ import views.html.reasons.ConfirmReasonDetailView
 
 import scala.concurrent.Future
 
-
 class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
@@ -38,14 +37,22 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box22).success.value
-      .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box22).success.value
+        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    lazy val controller = new ConfirmReasonDetailController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, view, ec)
+    lazy val controller = new ConfirmReasonDetailController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      view,
+      ec
+    )
   }
 
   "GET onLoad " should {
@@ -62,10 +69,11 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
-        .set(UnderpaymentReasonItemNumberPage, 1).success.value
-        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value,
+      val result = controller.summaryList(
+        UserAnswers("some-cred-id")
+          .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
+          .set(UnderpaymentReasonItemNumberPage, 1).success.value
+          .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value,
         boxNumber = BoxNumber.Box33
       )
 
@@ -74,9 +82,10 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list for Other Reason" in new Test {
-      val result = controller.summaryList(UserAnswers("some-cred-id")
-        .set(UnderpaymentReasonBoxNumberPage, BoxNumber.OtherItem).success.value
-        .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("Other Reason", "")).success.value,
+      val result = controller.summaryList(
+        UserAnswers("some-cred-id")
+          .set(UnderpaymentReasonBoxNumberPage, BoxNumber.OtherItem).success.value
+          .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("Other Reason", "")).success.value,
         boxNumber = BoxNumber.OtherItem
       )
 
@@ -94,7 +103,9 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER entry level response when correct data is sent" in new Test {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
+        )
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
@@ -106,7 +117,9 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
+        )
         verifyCalls()
       }
 
@@ -116,11 +129,16 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
             .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
             .set(UnderpaymentReasonItemNumberPage, 1).success.value
             .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("1806321000", "2204109400X411")).success.value
-            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box22, 0, "GBP871.12", "EUR2908946"))).success.value
+            .set(
+              UnderpaymentReasonsPage,
+              Seq(UnderpaymentReason(BoxNumber.Box22, 0, "GBP871.12", "EUR2908946"))
+            ).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
+        )
         verifyCalls()
       }
 

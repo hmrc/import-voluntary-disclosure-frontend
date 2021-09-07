@@ -58,9 +58,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       boxNumberView,
       ec
     )
-    val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-    private lazy val boxNumberView = app.injector.instanceOf[BoxNumberView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
+    val userAnswers: UserAnswers            = UserAnswers("some-cred-id")
+    private lazy val boxNumberView          = app.injector.instanceOf[BoxNumberView]
+    private lazy val dataRetrievalAction    = new FakeDataRetrievalAction(Some(userAnswers))
     val formProvider: BoxNumberFormProvider = injector.instanceOf[BoxNumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: BoxNumberFormProvider = formProvider
@@ -93,7 +93,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
           fakeRequestGenerator("62")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(62).url
+        )
       }
 
       "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
@@ -102,7 +104,9 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
           fakeRequestGenerator("99")
         )
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url)
+        redirectLocation(result) mustBe Some(
+          controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(99).url
+        )
       }
 
       "return a SEE OTHER item level response when correct data is sent" in new Test {
@@ -119,7 +123,6 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         await(controller.onSubmit(fakeRequestGenerator("22")))
         verifyCalls()
       }
-
 
     }
 

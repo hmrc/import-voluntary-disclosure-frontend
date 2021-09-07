@@ -29,17 +29,20 @@ import views.html.cancelCase.CancelCaseDisclosureReferenceNumberView
 
 class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: CancelCaseDisclosureReferenceNumberView = app.injector.instanceOf[CancelCaseDisclosureReferenceNumberView]
+  private lazy val injectedView: CancelCaseDisclosureReferenceNumberView =
+    app.injector.instanceOf[CancelCaseDisclosureReferenceNumberView]
 
-  val formProvider: CancelCaseDisclosureReferenceNumberFormProvider = injector.instanceOf[CancelCaseDisclosureReferenceNumberFormProvider]
+  val formProvider: CancelCaseDisclosureReferenceNumberFormProvider =
+    injector.instanceOf[CancelCaseDisclosureReferenceNumberFormProvider]
 
-  private val backlink: Call = Call("GET", controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url)
+  private val backlink: Call =
+    Call("GET", controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url)
 
   "Rendering the Cancel Case Disclosure Reference Number page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+      val form: Form[String]               = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(title)
@@ -56,8 +59,8 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
+        lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(errorPrefix + title)
@@ -75,8 +78,8 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
     "data in invalid format supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("value" -> "invalid"))
-        lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+        lazy val form: Form[String]          = formProvider().bind(Map("value" -> "invalid"))
+        lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(errorPrefix + title)
@@ -94,11 +97,11 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backlink)(fakeRequest, messages)
+    val form: Form[String]               = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${label}'" in {
+    s"have the correct h1 of '$label'" in {
       elementText("h1") mustBe label
     }
 
@@ -107,7 +110,9 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url
+      )
     }
 
     s"render the input field" in {

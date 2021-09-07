@@ -29,7 +29,10 @@ object OptionalDocument extends Enumerable.Implicits[OptionalDocument] {
   case object Other extends WithName("other") with OptionalDocument
 
   val values: Seq[OptionalDocument] = Seq(
-    ImportAndEntry, AirwayBill, OriginProof, Other
+    ImportAndEntry,
+    AirwayBill,
+    OriginProof,
+    Other
   )
 
   implicit val enumerable: Enumerable[OptionalDocument] =

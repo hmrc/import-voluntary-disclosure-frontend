@@ -30,14 +30,16 @@ trait CYADefermentDutyDetailsSummaryListHelper {
 
   def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val paymentMethod = request.userAnswers.get(DefermentPage)
-    val splitPayment = request.userAnswers.get(SplitPaymentPage)
+    val splitPayment  = request.userAnswers.get(SplitPaymentPage)
 
     val answers = request.userAnswers
     val rows = (request.isRepFlow, paymentMethod, splitPayment, request.dutyType) match {
       case (true, Some(true), Some(true), SelectedDutyTypes.Both) =>
-        Seq(buildAccountNumberSummaryListRow(answers),
+        Seq(
+          buildAccountNumberSummaryListRow(answers),
           buildAccountOwnerSummaryListRow(answers),
-          buildProofOfAuthSummaryListRow(answers)).flatten
+          buildProofOfAuthSummaryListRow(answers)
+        ).flatten
       case _ => Seq.empty
     }
 
@@ -56,53 +58,65 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     }
   }
 
-  private def buildAccountNumberSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildAccountNumberSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DefermentAccountPage).map { accountNumber =>
       createRow(
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
-        Some(ActionItemHelper.createChangeActionItem(
-          controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-          messages("cya.repDutyAccountNumber.change")
-        ))
+        Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            messages("cya.repDutyAccountNumber.change")
+          )
+        )
       )
     }
 
-  private def buildAccountOwnerSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildAccountOwnerSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] = {
     val accountOwnerContent = answers.get(DefermentTypePage) match {
       case Some("A") => messages("cya.myDefermentAccount")
       case Some("B") => messages("cya.importerAuthority")
-      case _ => messages("cya.importerStandingAuthority")
+      case _         => messages("cya.importerStandingAuthority")
     }
     answers.get(DefermentTypePage).map { _ =>
       createRow(
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
-        Some(ActionItemHelper.createChangeActionItem(
-          controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-          messages("cya.repDutyAccountOwner.change")
-        ))
+        Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            messages("cya.repDutyAccountOwner.change")
+          )
+        )
       )
     }
   }
 
-  private def buildProofOfAuthSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
+  private def buildProofOfAuthSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] = {
     (answers.get(UploadAuthorityPage), answers.get(DefermentTypePage), answers.get(DefermentAccountPage)) match {
       case (Some(files), Some("B"), Some(dan)) =>
-        val fileName = files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
+        val fileName =
+          files.filter(file => file.dan == dan).map(_.file.fileName).headOption.getOrElse("No authority file found")
         Some(
           createRow(
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
-            action = Some(ActionItemHelper.createChangeActionItem(
-              controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty, dan).url,
-              messages("cya.proofOfAuth.duty.change")
-            ))
+            action = Some(
+              ActionItemHelper.createChangeActionItem(
+                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty, dan).url,
+                messages("cya.proofOfAuth.duty.change")
+              )
+            )
           )
         )
       case _ => None
     }
   }
-
 
 }

@@ -37,13 +37,14 @@ import uk.gov.hmrc.play.language.LanguageUtils
 import scala.concurrent.duration.{Duration, FiniteDuration, _}
 import scala.concurrent.{Await, ExecutionContext, Future}
 
-trait SpecBase extends PlaySpec
-  with GuiceOneAppPerSuite
-  with TryValues
-  with ScalaFutures
-  with IntegrationPatience
-  with MaterializerSupport
-  with MockFactory {
+trait SpecBase
+    extends PlaySpec
+    with GuiceOneAppPerSuite
+    with TryValues
+    with ScalaFutures
+    with IntegrationPatience
+    with MaterializerSupport
+    with MockFactory {
 
   override lazy val app: Application = GuiceApplicationBuilder()
     .overrides(bind[FileUploadRepository].toInstance(mock[FileUploadRepository]))
@@ -53,7 +54,10 @@ trait SpecBase extends PlaySpec
     .build()
 
   lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest("GET", "/foo").withSession(SessionKeys.sessionId -> "foo", "credId" -> "credId").withCSRFToken.asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
+    FakeRequest("GET", "/foo").withSession(
+      SessionKeys.sessionId -> "foo",
+      "credId"              -> "credId"
+    ).withCSRFToken.asInstanceOf[FakeRequest[AnyContentAsEmpty.type]]
 
   implicit val defaultTimeout: FiniteDuration = 5.seconds
 
@@ -65,12 +69,13 @@ trait SpecBase extends PlaySpec
 
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
-  lazy val messagesControllerComponents: MessagesControllerComponents = injector.instanceOf[MessagesControllerComponents]
+  lazy val messagesControllerComponents: MessagesControllerComponents =
+    injector.instanceOf[MessagesControllerComponents]
 
   lazy val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
 
   implicit lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val messages: Messages = messagesApi.preferred(fakeRequest)
+  implicit val messages: Messages            = messagesApi.preferred(fakeRequest)
 
   implicit lazy val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
 

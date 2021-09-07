@@ -35,17 +35,18 @@ import javax.inject.Singleton
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
-                                               getData: DataRetrievalAction,
-                                               requireData: DataRequiredAction,
-                                               sessionRepository: SessionRepository,
-                                               val errorHandler: ErrorHandler,
-                                               mcc: MessagesControllerComponents,
-                                               formProvider: TraderAddressCorrectFormProvider,
-                                               view: TraderAddressCorrectView,
-                                               implicit val ec: ExecutionContext
-                                              )
-  extends FrontendController(mcc) with I18nSupport {
+class TraderAddressCorrectController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  val errorHandler: ErrorHandler,
+  mcc: MessagesControllerComponents,
+  formProvider: TraderAddressCorrectFormProvider,
+  view: TraderAddressCorrectView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
@@ -71,7 +72,7 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {
               Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
@@ -82,10 +83,8 @@ class TraderAddressCorrectController @Inject()(identify: IdentifierAction,
         } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseJourney())
-          }
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.contactDetails.routes.AddressLookupController.initialiseJourney())
         }
       }
     )

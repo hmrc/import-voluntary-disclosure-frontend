@@ -37,8 +37,7 @@ import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(
-    s"""
+  private val callbackReadyJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "READY",
@@ -51,8 +50,7 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
        |   }
        | }""".stripMargin)
 
-  private val callbackFailedRejectedJson: JsValue = Json.parse(
-    s"""
+  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "FAILED",
@@ -62,9 +60,9 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
        |    }
        | }""".stripMargin)
 
-
   trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
-    private lazy val cancelCaseUploadSupportingDocumentationView: CancelCaseUploadSupportingDocumentationView = app.injector.instanceOf[CancelCaseUploadSupportingDocumentationView]
+    private lazy val cancelCaseUploadSupportingDocumentationView: CancelCaseUploadSupportingDocumentationView =
+      app.injector.instanceOf[CancelCaseUploadSupportingDocumentationView]
     private lazy val progressView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -88,26 +86,39 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
       MockedSessionRepository.set(Future.successful(true))
 
       MockedUpScanService.initiateCancelCaseJourney(
-        Future.successful(UpScanInitiateResponse(
-          Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
-          UploadFormTemplate(
-            "https://bucketName.s3.eu-west-2.amazonaws.com",
-            Map("Content-Type" -> "application/xml")
+        Future.successful(
+          UpScanInitiateResponse(
+            Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
+            UploadFormTemplate(
+              "https://bucketName.s3.eu-west-2.amazonaws.com",
+              Map("Content-Type" -> "application/xml")
+            )
           )
-        ))
+        )
       )
     }
 
     lazy val controller = {
       setupMocks()
-      new CancelCaseUploadSupportingDocumentationController(authenticatedAction, dataRetrievalAction, dataRequiredAction, messagesControllerComponents,
-        mockFileUploadRepository, mockSessionRepository, mockUpScanService, cancelCaseUploadSupportingDocumentationView,
-        progressView, form, MockAppConfig, ec)
+      new CancelCaseUploadSupportingDocumentationController(
+        authenticatedAction,
+        dataRetrievalAction,
+        dataRequiredAction,
+        messagesControllerComponents,
+        mockFileUploadRepository,
+        mockSessionRepository,
+        mockUpScanService,
+        cancelCaseUploadSupportingDocumentationView,
+        progressView,
+        form,
+        MockAppConfig,
+        ec
+      )
     }
   }
 
   val formProvider: CancelCaseUploadFileFormProvider = injector.instanceOf[CancelCaseUploadFileFormProvider]
-  val form: CancelCaseUploadFileFormProvider = formProvider
+  val form: CancelCaseUploadFileFormProvider         = formProvider
 
   "GET onLoad" should {
     "return OK with HTML when called" in new Test {
@@ -153,10 +164,18 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
     "upscan returns an error on upload" should {
       "redirect to error page" in new Test {
         val result =
-          controller.upscanResponseHandler(Some("key"), Some("errorCode"), Some("errorMessage"), Some("errorResource"), Some("errorRequestId"))(fakeRequest)
+          controller.upscanResponseHandler(
+            Some("key"),
+            Some("errorCode"),
+            Some("errorMessage"),
+            Some("errorResource"),
+            Some("errorRequestId")
+          )(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
       }
     }
 
@@ -165,7 +184,9 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
         val result = controller.upscanResponseHandler(Some("key"), Some("errorCode"), None, None, None)(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
       }
     }
 
@@ -174,12 +195,13 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
         val result = controller.upscanResponseHandler(Some("key"), None, None, None, None)(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.uploadProgress("key").url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.uploadProgress("key").url
+        )
       }
       "for a valid key, create record in file Repository" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.updateRecord(Future.successful(true))
-        }
 
         await(controller.upscanResponseHandler(Some("key"), None, None, None, None)(fakeRequest))
 
@@ -187,7 +209,9 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
       }
 
       "for an invalid key" in new Test {
-        val result = intercept[RuntimeException](await(controller.upscanResponseHandler(None, None, None, None, None)(fakeRequest)))
+        val result = intercept[RuntimeException](
+          await(controller.upscanResponseHandler(None, None, None, None, None)(fakeRequest))
+        )
 
         assert(result.getMessage.contains("No key returned for successful upload"))
       }
@@ -198,37 +222,43 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
     "called following a successful file upload callback" should {
       "update UserAnswers and redirect to the Summary Page" in new Test {
         override def setupMocks(): Unit = {
-          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
+          MockedFileUploadRepository.getRecord(
+            Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get))
+          )
           MockedSessionRepository.set(Future.successful(true))
         }
 
         val result: Future[Result] = controller.uploadProgress(key = "key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url
+        )
 
         verifyCalls()
       }
     }
     "called following a file upload callback for a failure" should {
       "NOT update userAnswers and redirect to the Error Page" in new Test {
-        override def setupMocks(): Unit = {
-          MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get)))
-        }
+        override def setupMocks(): Unit =
+          MockedFileUploadRepository.getRecord(
+            Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get))
+          )
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+        )
 
         verifyCalls()
       }
     }
     "called before any file upload callback" should {
       "NOT update userAnswers and redirect to the Progress Page" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(Some(FileUpload("reference"))))
-        }
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
@@ -238,9 +268,8 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
     }
     "called for a Key no longer in repository" should {
       "return 500 Internal Server Error" in new Test {
-        override def setupMocks(): Unit = {
+        override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(None))
-        }
 
         val result: Future[Result] = controller.uploadProgress("key")(fakeRequest)
 
@@ -252,7 +281,7 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
   "backLink" should {
     "return link to Do You Need To Send Us Any other supporting documentation Documentation" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-      val result: Call = controller.backLink()(dataRequest)
+      val result: Call                              = controller.backLink()(dataRequest)
       result mustBe controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad()
     }
   }

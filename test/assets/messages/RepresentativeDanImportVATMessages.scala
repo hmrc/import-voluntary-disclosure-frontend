@@ -19,18 +19,18 @@ package messages
 object RepresentativeDanImportVATMessages extends BaseMessages {
 
   val title: String = "Deferment account details for the import VAT owed"
-  val h1: String = "Deferment account details for the import VAT owed"
+  val h1: String    = "Deferment account details for the import VAT owed"
 
   val accountNumberLabel: String = "Deferment account number"
-  val radioButtonLabel: String = "Whose deferment account is this?"
+  val radioButtonLabel: String   = "Whose deferment account is this?"
 
-  val radio1: String = "My deferment account"
-  val radio2: String = "The importer’s account and I have authority to use it"
+  val radio1: String     = "My deferment account"
+  val radio2: String     = "The importer’s account and I have authority to use it"
   val radio2Hint: String = "You will be asked to upload proof of authority"
-  val radio3: String = "The importer’s account and I have standing authority to use it"
+  val radio3: String     = "The importer’s account and I have standing authority to use it"
 
   val accountNumberRequiredError: String = "Enter the deferment account number"
-  val danTypeRequiredError: String = "Select whose deferment account this is"
-  val accountNumberFormatError: String = "Enter the deferment account number in the correct format, like 1234567"
+  val danTypeRequiredError: String       = "Select whose deferment account this is"
+  val accountNumberFormatError: String   = "Enter the deferment account number in the correct format, like 1234567"
 
 }

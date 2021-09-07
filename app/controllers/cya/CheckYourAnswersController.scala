@@ -34,33 +34,38 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CheckYourAnswersController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           mcc: MessagesControllerComponents,
-                                           sessionRepository: SessionRepository,
-                                           submissionService: SubmissionService,
-                                           view: CheckYourAnswersView,
-                                           importerConfirmationView: ImporterConfirmationView,
-                                           repConfirmationView: RepresentativeConfirmationView,
-                                           errorHandler: ErrorHandler,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
+class CheckYourAnswersController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  submissionService: SubmissionService,
+  view: CheckYourAnswersView,
+  importerConfirmationView: ImporterConfirmationView,
+  repConfirmationView: RepresentativeConfirmationView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
-      _ <- sessionRepository.set(updatedAnswers)
+      _              <- sessionRepository.set(updatedAnswers)
     } yield {
-      Ok(view(
-        buildImporterDetailsSummaryList ++
-          buildEntryDetailsSummaryList ++
-          buildUnderpaymentDetailsSummaryList ++
-          buildYourDetailsSummaryList ++
-          buildPaymentDetailsSummaryList ++
-          buildDefermentDutySummaryList ++
-          buildDefermentImportVatSummaryList
-      ))
+      Ok(
+        view(
+          buildImporterDetailsSummaryList ++
+            buildEntryDetailsSummaryList ++
+            buildUnderpaymentDetailsSummaryList ++
+            buildYourDetailsSummaryList ++
+            buildPaymentDetailsSummaryList ++
+            buildDefermentDutySummaryList ++
+            buildDefermentImportVatSummaryList
+        )
+      )
     }
   }
 
@@ -69,11 +74,11 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Right(value) =>
         val confirmationData = {
           for {
-            eoriDetails <- request.userAnswers.get(KnownEoriDetailsPage)
+            eoriDetails  <- request.userAnswers.get(KnownEoriDetailsPage)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
-            eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+            eoriNumber   <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
-            _ <- Some(sessionRepository.remove(request.credId))
+            _            <- Some(sessionRepository.remove(request.credId))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
               case Some(entryDetails) =>

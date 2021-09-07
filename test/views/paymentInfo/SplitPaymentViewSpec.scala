@@ -84,15 +84,21 @@ class SplitPaymentViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${SplitPaymentMessages.radioYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe SplitPaymentMessages.radioYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe SplitPaymentMessages.radioYes
     }
 
     s"have the correct value for the second radio button of '${SplitPaymentMessages.radioNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe SplitPaymentMessages.radioNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe SplitPaymentMessages.radioNo
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.paymentInfo.routes.DefermentController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.paymentInfo.routes.DefermentController.onLoad().url
+      )
     }
 
     s"have the correct Continue button" in {

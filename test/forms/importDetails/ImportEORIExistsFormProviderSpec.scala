@@ -25,7 +25,7 @@ class ImportEORIExistsFormProviderSpec extends FormSpecBase {
     "the no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ImporterEORIExistsFormProvider()().bind(missingOption)
+      val form                               = new ImporterEORIExistsFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -53,4 +53,3 @@ class ImportEORIExistsFormProviderSpec extends FormSpecBase {
   }
 
 }
-

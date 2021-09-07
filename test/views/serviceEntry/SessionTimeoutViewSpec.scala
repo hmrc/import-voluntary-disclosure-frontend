@@ -28,7 +28,7 @@ class SessionTimeoutViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
 
   "Rendering the SessionTimeoutView page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct page title of '${SessionTimeoutMessages.pageTitle}'" in {

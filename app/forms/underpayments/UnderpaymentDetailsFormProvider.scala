@@ -47,13 +47,12 @@ class UnderpaymentDetailsFormProvider extends Mappings {
     )
 
   private[forms] def positiveAmountOwing(): Constraint[UnderpaymentAmount] =
-    Constraint {
-      input =>
-        if (input.original < input.amended) {
-          Valid
-        } else {
-          Invalid("underpaymentDetails.error.positiveAmountOwed")
-        }
+    Constraint { input =>
+      if (input.original < input.amended) {
+        Valid
+      } else {
+        Invalid("underpaymentDetails.error.positiveAmountOwed")
+      }
     }
 
 }

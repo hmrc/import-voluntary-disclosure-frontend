@@ -26,12 +26,12 @@ import views.html.cancelCase.CancelCaseConfirmationView
 class CancelCaseConfirmationViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: CancelCaseConfirmationView = app.injector.instanceOf[CancelCaseConfirmationView]
-  private val referenceNumber: String = "C181234567890123456789"
+  private val referenceNumber: String                       = "C181234567890123456789"
 
   "Rendering the Cancel Case Confirmation page" when {
 
     "it" should {
-      lazy val view: Html = injectedView(referenceNumber)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(referenceNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(CancelCaseConfirmationMessages.pageTitle)
@@ -50,7 +50,9 @@ class CancelCaseConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the paragraph of '${CancelCaseConfirmationMessages.whatHappensNextParagraph}'" in {
-          elementText("#main-content > div > div > p:nth-child(3)") mustBe CancelCaseConfirmationMessages.whatHappensNextParagraph
+          elementText(
+            "#main-content > div > div > p:nth-child(3)"
+          ) mustBe CancelCaseConfirmationMessages.whatHappensNextParagraph
         }
       }
 

@@ -34,8 +34,8 @@ class CustomsDeclarationViewSpec extends ViewBaseSpec {
   "Rendering the Deferment page" when {
 
     "no errors exist VAT only" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(title)
@@ -50,8 +50,8 @@ class CustomsDeclarationViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + heading)
@@ -69,19 +69,19 @@ class CustomsDeclarationViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
       elementText("h1") mustBe heading
     }
 
-    s"have the correct value for the first radio button of '${siteYes}'" in {
+    s"have the correct value for the first radio button of '$siteYes'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe siteYes
     }
 
-    s"have the correct value for the second radio button of '${siteNo}'" in {
+    s"have the correct value for the second radio button of '$siteNo'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe siteNo
     }
 

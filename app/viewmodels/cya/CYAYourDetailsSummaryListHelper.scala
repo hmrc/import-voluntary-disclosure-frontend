@@ -55,28 +55,34 @@ trait CYAYourDetailsSummaryListHelper {
 
   private def buildUserTypeSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(UserTypePage).map { details =>
-      val userTypeValue = if (details.equals(UserType.Importer)) messages("cya.importer") else messages("cya.representative")
+      val userTypeValue =
+        if (details.equals(UserType.Importer)) messages("cya.importer") else messages("cya.representative")
       createRow(
         keyText = Text(messages("cya.userType")),
         valueContent = Text(userTypeValue),
         action = Some(
           ActionItemHelper.createChangeActionItem(
-            controllers.importDetails.routes.UserTypeController.onLoad().url, messages("cya.userType.change")
+            controllers.importDetails.routes.UserTypeController.onLoad().url,
+            messages("cya.userType.change")
           )
         )
       )
     }
 
-  private def buildContactDetailsSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildContactDetailsSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(DeclarantContactDetailsPage).map { details =>
       val contactDetailsValue = Seq(details.fullName, details.email, details.phoneNumber)
       createRow(
         keyText = Text(messages("cya.contactDetails")),
         valueContent = HtmlContent(encodeMultilineText(contactDetailsValue)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url,
-          messages("cya.contactDetails.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url,
+            messages("cya.contactDetails.change")
+          )
+        )
       )
     }
 
@@ -101,9 +107,12 @@ trait CYAYourDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressString)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url, messages("cya.address.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url,
+            messages("cya.address.change")
+          )
+        )
       )
     }
 

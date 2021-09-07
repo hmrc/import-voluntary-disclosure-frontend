@@ -31,15 +31,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: CancelCaseDisclosureReferenceNumberFormProvider,
-                                                    view: CancelCaseDisclosureReferenceNumberView,
-                                                    implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class CancelCaseReferenceNumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: CancelCaseDisclosureReferenceNumberFormProvider,
+  view: CancelCaseDisclosureReferenceNumberView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DisclosureReferenceNumberPage).fold(formProvider()) {
@@ -53,7 +55,9 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       reference =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
+          updatedAnswers <- Future.fromTry(
+            request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase)
+          )
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {

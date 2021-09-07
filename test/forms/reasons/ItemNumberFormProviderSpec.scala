@@ -21,7 +21,6 @@ import play.api.data.Form
 
 class ItemNumberFormProviderSpec extends FormSpecBase {
 
-
   private final val itemNumberKey = "itemNumber"
 
   def formBuilder(itemNumber: String = ""): Map[String, String] = Map(
@@ -31,13 +30,12 @@ class ItemNumberFormProviderSpec extends FormSpecBase {
   def formBinder(formValues: Map[String, String] = Map(itemNumberKey -> "")): Form[Int] =
     new ItemNumberFormProvider()().bind(formValues)
 
-
   "Binding a form with invalid data" when {
 
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ItemNumberFormProvider()().bind(missingOption)
+      val form                               = new ItemNumberFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

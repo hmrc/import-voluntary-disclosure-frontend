@@ -26,15 +26,14 @@ import views.html.shared.FileUploadProgressView
 class FileUploadProgressViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: FileUploadProgressView = app.injector.instanceOf[FileUploadProgressView]
-  private val reference: String = "11370e18-6e24-453e-b45a-76d3e32ea33d"
-  private val action: String = "action/url"
-
+  private val reference: String                         = "11370e18-6e24-453e-b45a-76d3e32ea33d"
+  private val action: String                            = "action/url"
 
   "Rendering the Progress page" when {
 
     "called normally" should {
       "have the correct button link" in {
-        lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
+        lazy val view: Html                  = injectedView(reference, action)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementAttributes("#main-content .govuk-button").get("href").get mustBe action
       }
@@ -42,7 +41,7 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
   }
 
   it should {
-    lazy val view: Html = injectedView(reference, action)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(reference, action)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(FileUploadProgressMessages.title)

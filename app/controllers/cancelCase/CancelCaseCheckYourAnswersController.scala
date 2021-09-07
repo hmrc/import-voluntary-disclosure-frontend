@@ -33,25 +33,26 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
-                                                     getData: DataRetrievalAction,
-                                                     requireData: DataRequiredAction,
-                                                     mcc: MessagesControllerComponents,
-                                                     sessionRepository: SessionRepository,
-                                                     updateCaseService: UpdateCaseService,
-                                                     view: CancelCaseCheckYourAnswersView,
-                                                     confirmationView: CancelCaseConfirmationView,
-                                                     errorHandler: ErrorHandler,
-                                                     implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYACancelCaseSummaryListHelper {
+class CancelCaseCheckYourAnswersController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  updateCaseService: UpdateCaseService,
+  view: CancelCaseCheckYourAnswersView,
+  confirmationView: CancelCaseConfirmationView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with CYACancelCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Ok(view(buildCancelCaseSummaryList))
-    }
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Ok(view(buildCancelCaseSummaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -59,9 +60,13 @@ class CancelCaseCheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Some(caseId) =>
         updateCaseService.updateCase().flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
-            Future.successful(Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad())) // TODO - update the page content
+            Future.successful(
+              Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad())
+            ) // TODO - update the page content
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
-            Future.successful(Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad())) // TODO - update the page content
+            Future.successful(
+              Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad())
+            ) // TODO - update the page content
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>

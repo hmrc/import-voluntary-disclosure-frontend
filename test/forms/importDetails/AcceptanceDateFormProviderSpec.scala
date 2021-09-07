@@ -25,7 +25,7 @@ class AcceptanceDateFormProviderSpec extends FormSpecBase {
     "the no value selected error for single entry" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new AcceptanceDateFormProvider()(true).bind(missingOption)
+      val form                               = new AcceptanceDateFormProvider()(true).bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -43,7 +43,7 @@ class AcceptanceDateFormProviderSpec extends FormSpecBase {
     "the no value selected error for bulk entry" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new AcceptanceDateFormProvider()(false).bind(missingOption)
+      val form                               = new AcceptanceDateFormProvider()(false).bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -71,4 +71,3 @@ class AcceptanceDateFormProviderSpec extends FormSpecBase {
   }
 
 }
-

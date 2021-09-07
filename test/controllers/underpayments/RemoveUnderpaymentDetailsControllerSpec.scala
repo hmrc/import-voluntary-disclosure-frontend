@@ -31,12 +31,11 @@ import views.html.underpayments.RemoveUnderpaymentDetailsView
 
 import scala.concurrent.Future
 
-
 class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
-
   trait Test extends MockSessionRepository {
-    private lazy val removeUnderpaymentDetailsView: RemoveUnderpaymentDetailsView = app.injector.instanceOf[RemoveUnderpaymentDetailsView]
+    private lazy val removeUnderpaymentDetailsView: RemoveUnderpaymentDetailsView =
+      app.injector.instanceOf[RemoveUnderpaymentDetailsView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -44,12 +43,20 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     val underpaymentType = "B00"
 
     val formProvider: RemoveUnderpaymentDetailsFormProvider = injector.instanceOf[RemoveUnderpaymentDetailsFormProvider]
-    val form: RemoveUnderpaymentDetailsFormProvider = formProvider
+    val form: RemoveUnderpaymentDetailsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new RemoveUnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, removeUnderpaymentDetailsView, ec)
+    lazy val controller = new RemoveUnderpaymentDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      removeUnderpaymentDetailsView,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -70,44 +77,52 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when false" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(underpaymentType)(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url)
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url
+        )
       }
 
       "redirect to Details Underpayment Summary page" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A35", 50, 60))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A35", 50, 60))).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(request)
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(underpaymentType)(request)
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+        )
       }
 
       "redirect to Details Underpayment Start page" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(UnderpaymentDetailSummaryPage, Seq.empty).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq.empty).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(underpaymentType)(request)
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentStartController.onLoad().url)
       }
 
       "return an Internal Server Error" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(underpaymentType)(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(underpaymentType)(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
-          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A35", 50, 60))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 50, 60))).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A35", 50, 60))).success.value
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(underpaymentType)(request))
@@ -123,9 +138,3 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     }
   }
 }
-
-
-
-
-
-

@@ -28,18 +28,19 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class BoxGuidanceController @Inject()(identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      mcc: MessagesControllerComponents,
-                                      requireData: DataRequiredAction,
-                                      view: BoxGuidanceView,
-                                      implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class BoxGuidanceController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  view: BoxGuidanceView,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     if (request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()))
     } else {

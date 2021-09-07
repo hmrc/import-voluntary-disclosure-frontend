@@ -31,7 +31,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
   val backLink = Call("GET", "backLinkUrl")
 
-  private lazy val injectedView: RepresentativeDanImportVATView = app.injector.instanceOf[RepresentativeDanImportVATView]
+  private lazy val injectedView: RepresentativeDanImportVATView =
+    app.injector.instanceOf[RepresentativeDanImportVATView]
 
   val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
 
@@ -74,11 +75,15 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanImportVATMessages.accountNumberRequiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe RepresentativeDanImportVATMessages.accountNumberRequiredError
       }
 
       "render an error message against the field" in {
-        elementText("#accountNumber-error") mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.accountNumberRequiredError
+        elementText(
+          "#accountNumber-error"
+        ) mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.accountNumberRequiredError
       }
     }
 
@@ -97,7 +102,9 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       }
 
       "render an error message against the field" in {
-        elementText("#accountNumber-error") mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.accountNumberFormatError
+        elementText(
+          "#accountNumber-error"
+        ) mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.accountNumberFormatError
       }
     }
 
@@ -116,7 +123,9 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.danTypeRequiredError
+        elementText(
+          "#value-error"
+        ) mustBe RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.danTypeRequiredError
       }
     }
 
@@ -124,8 +133,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    lazy val view: Html                    = injectedView(form, backLink)(fakeRequest, messages)
+    lazy implicit val document: Document   = Jsoup.parse(view.body)
 
     checkPageTitle(RepresentativeDanImportVATMessages.title)
 
@@ -138,19 +147,27 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
     }
 
     s"have the correct danType label of '${RepresentativeDanImportVATMessages.radioButtonLabel}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > legend") mustBe RepresentativeDanImportVATMessages.radioButtonLabel
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > legend"
+      ) mustBe RepresentativeDanImportVATMessages.radioButtonLabel
     }
 
     s"have the correct value for the first radio button of '${RepresentativeDanImportVATMessages.radio1}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label") mustBe RepresentativeDanImportVATMessages.radio1
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label"
+      ) mustBe RepresentativeDanImportVATMessages.radio1
     }
 
     s"have the correct value for the second radio button of '${RepresentativeDanImportVATMessages.radio2}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(2) > label") mustBe RepresentativeDanImportVATMessages.radio2
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(2) > label"
+      ) mustBe RepresentativeDanImportVATMessages.radio2
     }
 
     s"have the correct value for the third radio button of '${RepresentativeDanImportVATMessages.radio3}'" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(3) > label") mustBe RepresentativeDanImportVATMessages.radio3
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(3) > label"
+      ) mustBe RepresentativeDanImportVATMessages.radio3
     }
 
     s"have the correct radio 2 hint of '${RepresentativeDanImportVATMessages.radio2Hint}'" in {

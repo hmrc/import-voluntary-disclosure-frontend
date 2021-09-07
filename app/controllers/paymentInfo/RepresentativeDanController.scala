@@ -31,69 +31,73 @@ import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class RepresentativeDanController @Inject()(identify: IdentifierAction,
-                                            getData: DataRetrievalAction,
-                                            requireData: DataRequiredAction,
-                                            sessionRepository: SessionRepository,
-                                            mcc: MessagesControllerComponents,
-                                            view: RepresentativeDanView,
-                                            formProvider: RepresentativeDanFormProvider,
-                                            implicit val ec: ExecutionContext
-                                           )
-  extends FrontendController(mcc) with I18nSupport {
+class RepresentativeDanController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: RepresentativeDanView,
+  formProvider: RepresentativeDanFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = (for {
-      danType <- request.userAnswers.get(DefermentTypePage)
+      danType       <- request.userAnswers.get(DefermentTypePage)
       accountNumber <- request.userAnswers.get(DefermentAccountPage)
-    } yield {
-      formProvider().fill(RepresentativeDan(accountNumber, danType))
-    }).getOrElse(formProvider())
+    } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
     Future.successful(Ok(view(form, backLink(request.userAnswers))))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors,
-        backLink(request.userAnswers)
-      ))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
       dan => {
         val previousAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
-        val previousAccountType = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
+        val previousAccountType   = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
         if (dan.accountNumber != previousAccountNumber || dan.danType != previousAccountType) {
-          val userAnswers = request.userAnswers.removeMany(Seq(
-            DefermentTypePage,
-            DefermentAccountPage,
-            AdditionalDefermentTypePage,
-            AdditionalDefermentNumberPage,
-            UploadAuthorityPage))
+          val userAnswers = request.userAnswers.removeMany(
+            Seq(
+              DefermentTypePage,
+              DefermentAccountPage,
+              AdditionalDefermentTypePage,
+              AdditionalDefermentNumberPage,
+              UploadAuthorityPage
+            )
+          )
           for {
             otherUpdatedAnswers <- Future.successful(userAnswers)
-            checkMode <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
-            updatedAnswers <- Future.fromTry(checkMode.set(DefermentTypePage, dan.danType))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            dan.danType match {
-              case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-              case _ => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
-            }
+            checkMode           <- Future.fromTry(otherUpdatedAnswers.set(CheckModePage, false))
+            updatedAnswers      <- Future.fromTry(checkMode.set(DefermentTypePage, dan.danType))
+            updatedAnswers      <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
+            _                   <- sessionRepository.set(updatedAnswers)
+          } yield dan.danType match {
+            case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+            case _ =>
+              Redirect(
+                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber)
+              )
           }
         } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentTypePage, dan.danType))
             updatedAnswers <- Future.fromTry(updatedAnswers.set(DefermentAccountPage, dan.accountNumber))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield {
             dan.danType match {
               case "A" | "C" =>
                 Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-              case _ => if (request.checkMode) {
-                Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-              } else {
-                Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber))
-              }
+              case _ =>
+                if (request.checkMode) {
+                  Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+                } else {
+                  Redirect(
+                    controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber)
+                  )
+                }
             }
           }
         }

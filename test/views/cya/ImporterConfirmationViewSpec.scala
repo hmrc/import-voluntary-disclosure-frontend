@@ -27,14 +27,14 @@ import views.html.cya.ImporterConfirmationView
 class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
-  private val referenceNumber: String = "C18-101"
+  private val referenceNumber: String                     = "C18-101"
   val data: ConfirmationViewData = ConfirmationViewData("123-123456Q-01/01/2021", "Test User", "GB123456789", "")
 
   "Rendering the Confirmation page" when {
 
     "no errors exist" should {
-      lazy val view: Html = injectedView(
-        referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterConfirmationMessages.pageTitle)
@@ -46,7 +46,8 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
     "it" should {
 
-      lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${ImporterConfirmationMessages.heading}'" in {
         elementText("h1") mustBe ImporterConfirmationMessages.heading
@@ -61,7 +62,8 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"have the p1 message for bulk entry of '${ImporterConfirmationMessages.p1BulkEntry}'" in {
-        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
+        lazy val view: Html =
+          injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#main-content > div > div > p:nth-child(2)") mustBe ImporterConfirmationMessages.p1BulkEntry
       }
@@ -82,7 +84,8 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
       }
 
       "The what happens next section - Other payment selected" should {
-        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
+        lazy val view: Html =
+          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2OtherPayment}'" in {

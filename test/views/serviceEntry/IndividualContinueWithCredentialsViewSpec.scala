@@ -28,17 +28,19 @@ import views.html.serviceEntry.IndividualContinueWithCredentialsView
 
 class IndividualContinueWithCredentialsViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: IndividualContinueWithCredentialsView = app.injector.instanceOf[IndividualContinueWithCredentialsView]
+  private lazy val injectedView: IndividualContinueWithCredentialsView =
+    app.injector.instanceOf[IndividualContinueWithCredentialsView]
 
-  val formProvider: IndividualContinueWithCredentialsFormProvider = injector.instanceOf[IndividualContinueWithCredentialsFormProvider]
+  val formProvider: IndividualContinueWithCredentialsFormProvider =
+    injector.instanceOf[IndividualContinueWithCredentialsFormProvider]
 
   lazy val backLink: Option[Call] = Some(Call("GET", "url"))
 
   "Rendering the Individual Continue With Credentials page" when {
 
     "no errors exist VAT only" should {
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(title)
@@ -53,8 +55,8 @@ class IndividualContinueWithCredentialsViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + title)
@@ -72,19 +74,21 @@ class IndividualContinueWithCredentialsViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
       elementText("h1") mustBe heading
     }
 
-    s"have the correct value for the first radio button of '${yesMessage}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe yesMessage
+    s"have the correct value for the first radio button of '$yesMessage'" in {
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe yesMessage
     }
 
-    s"have the correct value for the second radio button of '${noMessage}'" in {
+    s"have the correct value for the second radio button of '$noMessage'" in {
       elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe noMessage
     }
 

@@ -34,20 +34,22 @@ import views.html.docUpload.UploadAnotherFileView
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
-
 class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
   trait Test {
     private lazy val uploadAnotherFileView: UploadAnotherFileView = app.injector.instanceOf[UploadAnotherFileView]
 
-    val data: JsObject = Json.obj("uploaded-files" -> Json.arr(
-      Json.obj(
-        "reference" -> "file-ref-1",
-        "fileName" -> "text.txt",
-        "downloadUrl" -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
-        "uploadTimestamp" -> "2021-01-26T13:22:59.388",
-        "checksum" -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "fileMimeType" -> "application/txt"))
+    val data: JsObject = Json.obj(
+      "uploaded-files" -> Json.arr(
+        Json.obj(
+          "reference"       -> "file-ref-1",
+          "fileName"        -> "text.txt",
+          "downloadUrl"     -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
+          "uploadTimestamp" -> "2021-01-26T13:22:59.388",
+          "checksum"        -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+          "fileMimeType"    -> "application/txt"
+        )
+      )
     )
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId", data))
@@ -55,10 +57,17 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UploadAnotherFileFormProvider = injector.instanceOf[UploadAnotherFileFormProvider]
-    val form: UploadAnotherFileFormProvider = formProvider
+    val form: UploadAnotherFileFormProvider         = formProvider
 
-    lazy val controller = new UploadAnotherFileController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      messagesControllerComponents, form, uploadAnotherFileView, ec)
+    lazy val controller = new UploadAnotherFileController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      form,
+      uploadAnotherFileView,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -69,25 +78,29 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
     "return SEE OTHER when uploaded-files is empty" in new Test {
       override val data: JsObject = Json.obj("uploaded-files" -> Json.arr())
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
-        .set(AnyOtherSupportingDocsPage, true).success.value)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("cred-id", data)
+          .set(AnyOtherSupportingDocsPage, true).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
     "return OK when FileUploadPage is there with AnyOtherSupportingDocsPage" in new Test {
       override val data: JsObject = Json.obj("data" -> "")
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
-        .set(AnyOtherSupportingDocsPage, true).success.value
-        .set(FileUploadPage, Seq(FileUploadInfo("", "", "", LocalDateTime.now(), "", ""))).success.value)
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("cred-id", data)
+          .set(AnyOtherSupportingDocsPage, true).success.value
+          .set(FileUploadPage, Seq(FileUploadInfo("", "", "", LocalDateTime.now(), "", ""))).success.value
+      )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return OK when FileUploadPage is not there" in new Test {
-      override val data: JsObject = Json.obj("data" -> "")
+      override val data: JsObject                   = Json.obj("data" -> "")
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 
@@ -104,33 +117,37 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a SEE OTHER response when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return the correct location header when true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadFileController.onLoad().url)
       }
 
       "return the correct location header when false" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url
+        )
       }
 
       "return to check your answers when in check mode and false" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data)
-          .set(CheckModePage, true).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("cred-id", data)
+            .set(CheckModePage, true).success.value
+        )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
@@ -139,7 +156,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     "payload contains invalid data" should {
 
       "return a SEE OTHER when no user answers are present" in new Test {
-        override val data: JsObject = Json.obj("data" -> "")
+        override val data: JsObject                   = Json.obj("data" -> "")
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data))
 
         val result: Future[Result] = controller.onSubmit(fakeRequest)
@@ -149,9 +166,11 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
 
       "return a page with errors when no data is submitted and there are other files to upload" in new Test {
         override val data: JsObject = Json.obj("data" -> "")
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id", data)
-          .set(AnyOtherSupportingDocsPage, true).success.value
-          .set(OptionalSupportingDocsPage, Seq(ImportAndEntry, AirwayBill, OriginProof, Other)).success.value)
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id", data)
+            .set(AnyOtherSupportingDocsPage, true).success.value
+            .set(OptionalSupportingDocsPage, Seq(ImportAndEntry, AirwayBill, OriginProof, Other)).success.value
+        )
         val result: Future[Result] = controller.onSubmit(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
       }
@@ -162,10 +181,6 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
       }
     }
 
-
   }
 
 }
-
-
-

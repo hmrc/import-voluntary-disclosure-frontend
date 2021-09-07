@@ -46,7 +46,8 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
       mockAddressLookupService,
       errorHandler,
       messagesControllerComponents,
-      ec)
+      ec
+    )
   }
 
   "Calling .callback" must {
@@ -65,8 +66,9 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
         "redirect the user to the check your answers page if checkMode is true" in new Test {
           override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
-            Some(UserAnswers("some-cred-id")
-              .set(CheckModePage, true).success.value
+            Some(
+              UserAnswers("some-cred-id")
+                .set(CheckModePage, true).success.value
             )
           )
           MockedSessionRepository.set(Future.successful(true))
@@ -96,8 +98,9 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
       "for a Representative entering partial address for Importer" should {
         "redirect the user to the deferment page" in new Test {
           override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
-            Some(UserAnswers("some-cred-id")
-              .set(UserTypePage, UserType.Representative).success.value
+            Some(
+              UserAnswers("some-cred-id")
+                .set(UserTypePage, UserType.Representative).success.value
             )
           )
           MockedSessionRepository.set(Future.successful(true))
@@ -110,9 +113,10 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
         "redirect the user to the check your answer page in check mode" in new Test {
           override lazy val dataRetrievalAction = new FakeDataRetrievalAction(
-            Some(UserAnswers("some-cred-id")
-              .set(CheckModePage, true).success.value
-              .set(UserTypePage, UserType.Representative).success.value
+            Some(
+              UserAnswers("some-cred-id")
+                .set(CheckModePage, true).success.value
+                .set(UserTypePage, UserType.Representative).success.value
             )
           )
           MockedSessionRepository.set(Future.successful(true))

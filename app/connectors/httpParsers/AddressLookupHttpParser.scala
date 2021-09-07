@@ -23,7 +23,6 @@ import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-
 object AddressLookupHttpParser {
 
   implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
@@ -33,7 +32,7 @@ object AddressLookupHttpParser {
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[AddressModel] = {
 
       response.status match {
-        case Status.OK => {
+        case Status.OK =>
           response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
               logger.error("Failed to validate JSON with errors: " + invalid)
@@ -41,7 +40,6 @@ object AddressLookupHttpParser {
             },
             valid => Right(valid)
           )
-        }
         case status =>
           logger.error("Failed to validate JSON with status: " + status + " body: " + response.body)
           Left(ErrorModel(status, "Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))

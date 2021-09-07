@@ -35,15 +35,15 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmReasonDetailController @Inject() (
-                                                identify: IdentifierAction,
-                                                getData: DataRetrievalAction,
-                                                requireData: DataRequiredAction,
-                                                sessionRepository: SessionRepository,
-                                                mcc: MessagesControllerComponents,
-                                                view: ConfirmReasonDetailView,
-                                                implicit val ec: ExecutionContext
-                                              ) extends FrontendController(mcc)
-  with I18nSupport {
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: ConfirmReasonDetailView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(BoxNumber.Box22)
@@ -121,7 +121,7 @@ class ConfirmReasonDetailController @Inject() (
     }
 
   def originalAmountSummaryListRow(userAnswers: UserAnswers, boxNumber: BoxNumber)(implicit
-                                                                                   messages: Messages
+    messages: Messages
   ): Option[Seq[SummaryListRow]] =
     userAnswers.get(UnderpaymentReasonAmendmentPage) map { underPaymentReasonValue =>
       Seq(
@@ -167,7 +167,7 @@ class ConfirmReasonDetailController @Inject() (
     }
 
   def summaryList(userAnswers: UserAnswers, boxNumber: BoxNumber)(implicit
-                                                                  messages: Messages
+    messages: Messages
   ): Option[Seq[SummaryList]] = {
     val rows =
       if (boxNumber == BoxNumber.OtherItem) {

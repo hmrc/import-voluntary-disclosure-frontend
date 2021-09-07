@@ -30,23 +30,26 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
-                                              getData: DataRetrievalAction,
-                                              requireData: DataRequiredAction,
-                                              sessionRepository: SessionRepository,
-                                              mcc: MessagesControllerComponents,
-                                              formProvider: UnderpaymentDetailsFormProvider,
-                                              view: UnderpaymentDetailsView,
-                                              implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class UnderpaymentDetailsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: UnderpaymentDetailsFormProvider,
+  view: UnderpaymentDetailsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   private lazy val backLink = controllers.underpayments.routes.UnderpaymentTypeController.onLoad()
 
-  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(UnderpaymentDetailsPage).fold(formProvider()) {
-      formProvider().fill
-    }
-    Future.successful(Ok(view(form, underpaymentType, backLink, request.isOneEntry)))
+  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val form = request.userAnswers.get(UnderpaymentDetailsPage).fold(formProvider()) {
+        formProvider().fill
+      }
+      Future.successful(Ok(view(form, underpaymentType, backLink, request.isOneEntry)))
   }
 
   def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -60,15 +63,20 @@ class UnderpaymentDetailsController @Inject()(identify: IdentifierAction,
               error
             }
           }
-          Future.successful(BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink, request.isOneEntry)))
+          Future.successful(
+            BadRequest(view(formWithErrors.copy(errors = newErrors), underpaymentType, backLink, request.isOneEntry))
+          )
         },
         value => {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailsPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            Redirect(controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(underpaymentType, change = false))
-          }
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(
+            controllers.underpayments.routes.UnderpaymentDetailConfirmController.onLoad(
+              underpaymentType,
+              change = false
+            )
+          )
         }
       )
   }

@@ -36,17 +36,17 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: CurrencyAmendmentView = app.injector.instanceOf[CurrencyAmendmentView]
 
-  val formProvider: UnderpaymentReasonAmendmentFormProvider = injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
+  val formProvider: UnderpaymentReasonAmendmentFormProvider =
+    injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
 
   private final val boxNumber: BoxNumber = BoxNumber.Box46
-  private final val itemNumber: Int = 1
-  private final val validValue = "100.45"
-  private final val originalErrorId = "#original-error"
-  private final val amendedErrorId = "#amended-error"
-  private final val invalidValue1 = "3adp4"
-  private final val invalidValue2 = "50.837"
-  private final val invalidValue3 = "1283749383429.50"
-
+  private final val itemNumber: Int      = 1
+  private final val validValue           = "100.45"
+  private final val originalErrorId      = "#original-error"
+  private final val amendedErrorId       = "#amended-error"
+  private final val invalidValue1        = "3adp4"
+  private final val invalidValue2        = "50.837"
+  private final val invalidValue3        = "1283749383429.50"
 
   def underpaymentReasonFormWithValues(originalValue: String, amendedValue: String): Form[UnderpaymentReasonValue] =
     formProvider(boxNumber).bind(Map("original" -> originalValue, "amended" -> amendedValue))
@@ -56,7 +56,11 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
       val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
       lazy val view: Html = injectedView(
-        form, formAction, boxNumber, itemNumber, backLink
+        form,
+        formAction,
+        boxNumber,
+        itemNumber,
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -74,7 +78,11 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     "an error exists (no value has been specified for original amount)" should {
       lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(emptyString, validValue)
       lazy val view: Html = injectedView(
-        form, formAction, boxNumber, itemNumber, backLink
+        form,
+        formAction,
+        boxNumber,
+        itemNumber,
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -85,7 +93,9 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalCurrencyNonEmpty
+        elementText(
+          originalErrorId
+        ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalCurrencyNonEmpty
       }
     }
   }
@@ -93,7 +103,11 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   "an error exists (no value has been specified for amended amount)" should {
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -104,7 +118,9 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render an error message against the field" in {
-      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedCurrencyNonEmpty
+      elementText(
+        amendedErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedCurrencyNonEmpty
     }
   }
 
@@ -113,7 +129,11 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       .discardingErrors
       .withError(FormError("amended", AmendReasonValuesMessages.amendedDifferent))
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -124,73 +144,105 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render an error message against the field" in {
-      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedDifferent
+      elementText(
+        amendedErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedDifferent
     }
   }
 
   "an error exists (value has been entered in an none numeric format for both original and amended)" should {
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue1, invalidValue1)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
-      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyFormat + " " + AmendReasonValuesMessages.amendedInvalidCurrencyFormat
+      elementText(
+        govErrorSummaryListClass
+      ) mustBe AmendReasonValuesMessages.originalInvalidCurrencyFormat + " " + AmendReasonValuesMessages.amendedInvalidCurrencyFormat
     }
 
     "render an error message against the original field" in {
-      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyFormat
+      elementText(
+        originalErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyFormat
     }
 
     "render an error message against the amended field" in {
-      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyFormat
+      elementText(
+        amendedErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyFormat
     }
   }
 
   "an error exists (value has been entered with too many decimal points for both original and amended)" should {
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue2, invalidValue2)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
-      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyDecimal + " " + AmendReasonValuesMessages.amendedInvalidCurrencyDecimal
+      elementText(
+        govErrorSummaryListClass
+      ) mustBe AmendReasonValuesMessages.originalInvalidCurrencyDecimal + " " + AmendReasonValuesMessages.amendedInvalidCurrencyDecimal
     }
 
     "render an error message against the original field" in {
-      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyDecimal
+      elementText(
+        originalErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyDecimal
     }
 
     "render an error message against the amended field" in {
-      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyDecimal
+      elementText(
+        amendedErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyDecimal
     }
   }
 
   "an error exists (value has been entered out of range for both original and amended)" should {
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(invalidValue3, invalidValue3)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.box46PageTitle)
 
     "render an error summary with the correct message " in {
-      elementText(govErrorSummaryListClass) mustBe AmendReasonValuesMessages.originalInvalidCurrencyOutOfRange + " " + AmendReasonValuesMessages.amendedInvalidCurrencyOutOfRange
+      elementText(
+        govErrorSummaryListClass
+      ) mustBe AmendReasonValuesMessages.originalInvalidCurrencyOutOfRange + " " + AmendReasonValuesMessages.amendedInvalidCurrencyOutOfRange
     }
 
     "render an error message against the original field" in {
-      elementText(originalErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyOutOfRange
+      elementText(
+        originalErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.originalInvalidCurrencyOutOfRange
     }
 
     "render an error message against the amended field" in {
-      elementText(amendedErrorId) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyOutOfRange
+      elementText(
+        amendedErrorId
+      ) mustBe AmendReasonValuesMessages.errorPrefix + AmendReasonValuesMessages.amendedInvalidCurrencyOutOfRange
     }
   }
 
@@ -200,10 +252,14 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     def checkContent(boxNumber: BoxNumber): Unit = {
-      s"rendered for box ${boxNumber}" should {
+      s"rendered for box $boxNumber" should {
         val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
         lazy val view: Html = injectedView(
-          form, formAction, boxNumber, itemNumber, backLink
+          form,
+          formAction,
+          boxNumber,
+          itemNumber,
+          backLink
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -221,16 +277,24 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
     lazy val form: Form[UnderpaymentReasonValue] = underpaymentReasonFormWithValues(validValue, emptyString)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have correct legend for the original amount" in {
-      elementText("#main-content > div > div > form > div:nth-child(2) > label") mustBe AmendReasonValuesMessages.originalAmount
+      elementText(
+        "#main-content > div > div > form > div:nth-child(2) > label"
+      ) mustBe AmendReasonValuesMessages.originalAmount
     }
 
     s"have correct legend for the amended amount" in {
-      elementText("#main-content > div > div > form > div:nth-child(3) > label") mustBe AmendReasonValuesMessages.amendedAmount
+      elementText(
+        "#main-content > div > div > form > div:nth-child(3) > label"
+      ) mustBe AmendReasonValuesMessages.amendedAmount
     }
 
     s"the original input field is rendered" in {
@@ -256,4 +320,3 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
 }
-

@@ -28,28 +28,28 @@ import javax.inject.{Inject, Singleton}
 import scala.util.Try
 
 @Singleton
-class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
-  private val contactHost = servicesConfig.getString("contact-frontend.host")
+class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
+  private val contactHost  = servicesConfig.getString("contact-frontend.host")
   private val feedbackHost = servicesConfig.getString("feedback-frontend.host")
-  lazy val surveyUrl = feedbackHost + servicesConfig.getString("feedback-frontend.url")
+  lazy val surveyUrl       = feedbackHost + servicesConfig.getString("feedback-frontend.url")
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
   val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
-  lazy val contactUrl = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
-  lazy val host = servicesConfig.getString("urls.host")
+  lazy val contactUrl              = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
+  lazy val host                    = servicesConfig.getString("urls.host")
 
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
 
-  lazy val appName: String = servicesConfig.getString("appName")
-  lazy val loginUrl: String = servicesConfig.getString("urls.login")
-  lazy val signOutUrl: String = servicesConfig.getString("urls.signOut")
-  lazy val loginContinueUrl: String = servicesConfig.getString("urls.loginContinue")
-  lazy val addressLookupFrontend: String = servicesConfig.baseUrl("address-lookup-frontend")
-  lazy val addressLookupCallback: String = servicesConfig.getString("urls.addressCallbackUrl")
+  lazy val appName: String                       = servicesConfig.getString("appName")
+  lazy val loginUrl: String                      = servicesConfig.getString("urls.login")
+  lazy val signOutUrl: String                    = servicesConfig.getString("urls.signOut")
+  lazy val loginContinueUrl: String              = servicesConfig.getString("urls.loginContinue")
+  lazy val addressLookupFrontend: String         = servicesConfig.baseUrl("address-lookup-frontend")
+  lazy val addressLookupCallback: String         = servicesConfig.getString("urls.addressCallbackUrl")
   lazy val importerAddressLookupCallback: String = servicesConfig.getString("urls.importerAddressCallbackUrl")
-  lazy val c2001Url: String = servicesConfig.getString("urls.c2001Url")
+  lazy val c2001Url: String                      = servicesConfig.getString("urls.c2001Url")
 
   lazy val addressLookupInitialise: String = servicesConfig.getString("urls.addressLookupInitialiseUri")
   val addressLookupFeedbackUrl: String =
@@ -61,30 +61,38 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
   lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
-  lazy val countdown: Int = servicesConfig.getInt("timeout.countdown")
+  lazy val countdown: Int     = servicesConfig.getInt("timeout.countdown")
 
-  lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String = servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
+  lazy val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String =
+    servicesConfig.getString("upscan.callbackUrlForSuccessOrFailureOfFileUpload")
   lazy val upScanSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.successRedirectForUser")
-  lazy val upScanErrorRedirectForUser: String = host + servicesConfig.getString("upscan.errorRedirectForUser")
+  lazy val upScanErrorRedirectForUser: String   = host + servicesConfig.getString("upscan.errorRedirectForUser")
   lazy val upScanSuccessRedirectForBulk: String = host + servicesConfig.getString("upscan.successRedirectForBulk")
-  lazy val upScanErrorRedirectForBulk: String = host + servicesConfig.getString("upscan.errorRedirectForBulk")
-  lazy val upScanSupportingDocSuccessRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocSuccessRedirectForUser")
-  lazy val upScanSupportingDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.supportingDocErrorRedirectForUser")
-  lazy val upScanMinFileSize: Int = servicesConfig.getInt("upscan.minFileSize")
-  lazy val upScanMaxFileSize: Int = servicesConfig.getInt("upscan.maxFileSize")
+  lazy val upScanErrorRedirectForBulk: String   = host + servicesConfig.getString("upscan.errorRedirectForBulk")
+  lazy val upScanSupportingDocSuccessRedirectForUser: String =
+    host + servicesConfig.getString("upscan.supportingDocSuccessRedirectForUser")
+  lazy val upScanSupportingDocErrorRedirectForUser: String =
+    host + servicesConfig.getString("upscan.supportingDocErrorRedirectForUser")
+  lazy val upScanMinFileSize: Int              = servicesConfig.getInt("upscan.minFileSize")
+  lazy val upScanMaxFileSize: Int              = servicesConfig.getInt("upscan.maxFileSize")
   lazy val upScanPollingDelayMilliSeconds: Int = servicesConfig.getInt("upscan.upScanPollingDelayMilliSeconds")
-  lazy val upScanInitiateBaseUrl: String = servicesConfig.baseUrl("upscan-initiate")
-  lazy val upScanAcceptedFileTypes: String = servicesConfig.getString("upscan.acceptedFileTypes")
+  lazy val upScanInitiateBaseUrl: String       = servicesConfig.baseUrl("upscan-initiate")
+  lazy val upScanAcceptedFileTypes: String     = servicesConfig.getString("upscan.acceptedFileTypes")
 
-  lazy val upScanAuthoritySuccessRedirectForUser: String = host + servicesConfig.getString("upscan.authoritySuccessRedirectForUser")
-  lazy val upScanAuthorityErrorRedirectForUser: String = host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
+  lazy val upScanAuthoritySuccessRedirectForUser: String =
+    host + servicesConfig.getString("upscan.authoritySuccessRedirectForUser")
+  lazy val upScanAuthorityErrorRedirectForUser: String =
+    host + servicesConfig.getString("upscan.authorityErrorRedirectForUser")
 
-  lazy val upScanCancelCaseRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocSuccessRedirectForUser")
-  lazy val upScanCancelCaseDocErrorRedirectForUser: String = host + servicesConfig.getString("upscan.cancelCaseDocErrorRedirectForUser")
+  lazy val upScanCancelCaseRedirectForUser: String =
+    host + servicesConfig.getString("upscan.cancelCaseDocSuccessRedirectForUser")
+  lazy val upScanCancelCaseDocErrorRedirectForUser: String =
+    host + servicesConfig.getString("upscan.cancelCaseDocErrorRedirectForUser")
 
   lazy val fileRepositoryTtl: Int = servicesConfig.getInt("upscan.fileRepositoryTtl")
 
-  lazy val importVoluntaryDisclosureSubmission: String = servicesConfig.baseUrl("import-voluntary-disclosure-submission")
+  lazy val importVoluntaryDisclosureSubmission: String =
+    servicesConfig.baseUrl("import-voluntary-disclosure-submission")
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
@@ -97,7 +105,7 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 
-  val updateCaseEnabled: Boolean = servicesConfig.getBoolean("features.updateCaseEnabled")
+  val updateCaseEnabled: Boolean  = servicesConfig.getBoolean("features.updateCaseEnabled")
   val welshToggleEnabled: Boolean = servicesConfig.getBoolean("features.welshToggleEnabled")
 
   val privateCitizenEnabled: Boolean = servicesConfig.getBoolean("features.privateCitizenEnabled")
@@ -106,8 +114,8 @@ class AppConfigImpl @Inject()(config: Configuration, servicesConfig: ServicesCon
 
   val cancelCaseEnabled: Boolean = servicesConfig.getBoolean("features.cancelCaseEnabled")
 
-  val en: Lang = Lang("en")
-  val cy: Lang = Lang("cy")
+  val en: Lang              = Lang("en")
+  val cy: Lang              = Lang("cy")
   val defaultLanguage: Lang = en
 
   lazy val vatReturnAdjustmentsUrl: String = servicesConfig.getString("urls.vatReturnAdjustmentsUrl")

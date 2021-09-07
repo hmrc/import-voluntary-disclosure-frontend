@@ -36,8 +36,8 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the view" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreDocumentationMessages.title)
@@ -52,8 +52,8 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreDocumentationMessages.errorPrefix + MoreDocumentationMessages.title)
@@ -63,7 +63,9 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe MoreDocumentationMessages.errorPrefix + MoreDocumentationMessages.requiredError
+        elementText(
+          "#value-error"
+        ) mustBe MoreDocumentationMessages.errorPrefix + MoreDocumentationMessages.requiredError
       }
 
     }
@@ -71,8 +73,8 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${MoreDocumentationMessages.h1}'" in {
@@ -80,11 +82,15 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the first radio button of '${MoreDocumentationMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe MoreDocumentationMessages.siteYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe MoreDocumentationMessages.siteYes
     }
 
     s"have the correct value for the second radio button of '${MoreDocumentationMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe MoreDocumentationMessages.siteNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe MoreDocumentationMessages.siteNo
     }
 
     "render a back link with the correct URL" in {

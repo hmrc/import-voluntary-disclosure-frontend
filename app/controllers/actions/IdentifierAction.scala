@@ -31,22 +31,27 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with ActionFunction[Request, IdentifierRequest]
+trait IdentifierAction
+    extends ActionBuilder[IdentifierRequest, AnyContent]
+    with ActionFunction[Request, IdentifierRequest]
 
-class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthConnector,
-                                              unauthorisedView: views.html.errors.UnauthorisedView,
-                                              config: AppConfig,
-                                              val parser: BodyParsers.Default,
-                                              val messagesApi: MessagesApi,
-                                              val http: HttpClient
-                                             )(implicit val executionContext: ExecutionContext)
-  extends IdentifierAction with AuthorisedFunctions with I18nSupport {
+class AuthenticatedIdentifierAction @Inject() (
+  override val authConnector: AuthConnector,
+  unauthorisedView: views.html.errors.UnauthorisedView,
+  config: AppConfig,
+  val parser: BodyParsers.Default,
+  val messagesApi: MessagesApi,
+  val http: HttpClient
+)(implicit val executionContext: ExecutionContext)
+    extends IdentifierAction
+    with AuthorisedFunctions
+    with I18nSupport {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   private def isValidUser(enrolments: Enrolments) = enrolments.getEnrolment("HMRC-CTS-ORG") match {
     case Some(enrolment) => enrolment.isActivated
-    case None => false
+    case None            => false
   }
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
@@ -57,19 +62,22 @@ class AuthenticatedIdentifierAction @Inject()(override val authConnector: AuthCo
       case Some(userId) ~ enrolments ~ _ if isValidUser(enrolments) =>
         val Some(eori) =
           for {
-            enrolment <- enrolments.getEnrolment("HMRC-CTS-ORG")
+            enrolment  <- enrolments.getEnrolment("HMRC-CTS-ORG")
             identifier <- enrolment.getIdentifier("EORINumber")
-          } yield {
-            identifier.value
-          }
+          } yield identifier.value
         if (config.privateBetaAllowListEnabled && !config.privateBetaAllowList.contains(eori)) {
           Future.successful(Redirect(controllers.errors.routes.UnauthorisedController.unauthorisedPrivateBetaAccess()))
         } else {
           val req = IdentifierRequest(request, userId, eori)
           block(req)
         }
-      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual) if !isValidUser(enrolments) && config.privateCitizenEnabled =>
-        Future.successful(Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad()).withSession("credId" -> userId))
+      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual)
+          if !isValidUser(enrolments) && config.privateCitizenEnabled =>
+        Future.successful(
+          Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad()).withSession(
+            "credId" -> userId
+          )
+        )
       case Some(userId) ~ enrolments ~ _ if !isValidUser(enrolments) =>
         Future.successful(Redirect(config.eccSubscribeUrl))
       case _ =>

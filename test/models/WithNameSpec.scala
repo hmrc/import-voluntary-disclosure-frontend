@@ -18,7 +18,6 @@ package models
 
 import base.ModelSpecBase
 
-
 class WithNameSpec extends ModelSpecBase {
 
   object Foo extends WithName("bar")

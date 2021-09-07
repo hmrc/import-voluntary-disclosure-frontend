@@ -91,7 +91,11 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        checkPageTitle(RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).title)
+        checkPageTitle(
+          RemoveUnderpaymentDetailsMessages.errorPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(
+            underpaymentType
+          ).title
+        )
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe
@@ -113,11 +117,15 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${RemoveUnderpaymentDetailsMessages.radioYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe RemoveUnderpaymentDetailsMessages.radioYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe RemoveUnderpaymentDetailsMessages.radioYes
     }
 
     s"have the correct value for the second radio button of '${RemoveUnderpaymentDetailsMessages.radioNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe RemoveUnderpaymentDetailsMessages.radioNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe RemoveUnderpaymentDetailsMessages.radioNo
     }
 
     "render a back link with the correct URL" in {
@@ -130,5 +138,3 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
 
   }
 }
-
-

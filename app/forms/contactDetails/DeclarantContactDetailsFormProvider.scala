@@ -23,12 +23,11 @@ import play.api.data.Forms.mapping
 
 import javax.inject.Inject
 
-
 class DeclarantContactDetailsFormProvider @Inject() extends Mappings {
 
-  val fullNameRegex = "^[a-zA-Z '-]+$"
+  val fullNameRegex    = "^[a-zA-Z '-]+$"
   val phoneNumberRegex = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
-  val emailRegex = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
+  val emailRegex       = "^\\w+[.]?[a-zA-Z0-9_-]*@\\w+[.]?\\w*[.]{1}[a-zA-Z]{2,10}$"
 
   def apply(): Form[ContactDetails] =
     Form(

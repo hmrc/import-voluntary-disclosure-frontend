@@ -22,10 +22,12 @@ import views.ViewUtils.displayMoney
 
 object UnderpaymentDetailConfirmData {
 
-  def underpaymentDetailSummaryList(underpaymentType: String,
-                                    bodyMessage: String,
-                                    changeLinkMessageOriginal: String,
-                                    changeLinkMessageAmended: String): SummaryList =
+  def underpaymentDetailSummaryList(
+    underpaymentType: String,
+    bodyMessage: String,
+    changeLinkMessageOriginal: String,
+    changeLinkMessageAmended: String
+  ): SummaryList =
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -37,15 +39,16 @@ object UnderpaymentDetailConfirmData {
           value = Value(
             content = HtmlContent(displayMoney(0))
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem(
-                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(changeLinkMessageOriginal)
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(changeLinkMessageOriginal)
+                )
               )
             )
-          )
           )
         ),
         SummaryListRow(
@@ -56,15 +59,17 @@ object UnderpaymentDetailConfirmData {
           value = Value(
             content = HtmlContent(displayMoney(1))
           ),
-          actions = Some(Actions(
-            items = Seq(
-              ActionItem(
-                controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                Some(changeLinkMessageAmended)
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(changeLinkMessageAmended)
+                )
               )
-            ))
-          ),
+            )
+          )
         ),
         SummaryListRow(
           key = Key(

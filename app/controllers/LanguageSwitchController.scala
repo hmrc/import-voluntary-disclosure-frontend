@@ -24,18 +24,14 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LanguageSwitchController @Inject()(
-                                          appConfig: AppConfig,
-                                          languageUtils: LanguageUtils,
-                                          cc: ControllerComponents)
-  extends LanguageController(languageUtils, cc) {
+class LanguageSwitchController @Inject() (appConfig: AppConfig, languageUtils: LanguageUtils, cc: ControllerComponents)
+    extends LanguageController(languageUtils, cc) {
   import appConfig._
 
   override def fallbackURL: String = s"$host/disclose-import-taxes-underpayment"
 
-  override protected def languageMap: Map[String, Lang] = {
+  override protected def languageMap: Map[String, Lang] =
     if (appConfig.welshToggleEnabled) Map(en.code -> en, cy.code -> cy)
-    else Map(en.code -> en)
-  }
+    else Map(en.code                              -> en)
 
 }

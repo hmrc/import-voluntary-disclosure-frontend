@@ -28,13 +28,12 @@ class ImporterDanFormProviderSpec extends FormSpecBase {
   def formBinder(formValues: Map[String, String] = Map("value" -> "")): Form[String] =
     new ImporterDanFormProvider()().bind(formValues)
 
-
   "Binding a form with invalid data" when {
 
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ImporterDanFormProvider()().bind(missingOption)
+      val form                               = new ImporterDanFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -91,4 +90,3 @@ class ImporterDanFormProviderSpec extends FormSpecBase {
     }
   }
 }
-

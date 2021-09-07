@@ -41,9 +41,13 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
-    def underpayment(boxNumber: BoxNumber, itemNumber: Int = 0, original: String = "60", amended: String = "70"): UnderpaymentReason = {
+    def underpayment(
+      boxNumber: BoxNumber,
+      itemNumber: Int = 0,
+      original: String = "60",
+      amended: String = "70"
+    ): UnderpaymentReason =
       UnderpaymentReason(boxNumber, itemNumber, original, amended)
-    }
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
 
@@ -57,8 +61,8 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
       form,
       ec
     )
-    private lazy val itemNumberView = app.injector.instanceOf[ItemNumberView]
-    lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    private lazy val itemNumberView          = app.injector.instanceOf[ItemNumberView]
+    lazy val dataRetrievalAction             = new FakeDataRetrievalAction(userAnswers)
     val formProvider: ItemNumberFormProvider = injector.instanceOf[ItemNumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ItemNumberFormProvider = formProvider
@@ -66,19 +70,23 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" when {
     "return OK" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-          underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
-          underpayment(boxNumber = BoxNumber.Box33, itemNumber = 1))).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(
+            ChangeUnderpaymentReasonPage,
+            ChangeUnderpaymentReason(
+              underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
+              underpayment(boxNumber = BoxNumber.Box33, itemNumber = 1)
+            )
+          ).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-
     "return HTML" in new Test {
       override lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]            = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -90,52 +98,72 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
     "payload contains valid data" should {
 
       "return a SEE OTHER response when correct data with numeric only values" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "20", "21"))).success.value
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "20", "21"))).success.value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1)
+              )
+            ).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("2"))
         status(result) mustBe Status.SEE_OTHER
       }
 
       "return a OK response when correct data with numeric only values" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "60", "60"))).success.value
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 2),
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "60", "60"))).success.value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 2),
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1)
+              )
+            ).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1"))
         status(result) mustBe Status.OK
       }
 
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "20", "21"))).success.value
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BoxNumber.Box35, 1, "20", "21"))).success.value
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1)
+              )
+            ).success.value
         )
         await(controller.onSubmit(fakeRequestGenerator("2")))
         verifyCalls()
       }
 
       "return an Internal Server Error" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(ChangeUnderpaymentReasonPage, ChangeUnderpaymentReason(
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
-            underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1))).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(
+              ChangeUnderpaymentReasonPage,
+              ChangeUnderpaymentReason(
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1),
+                underpayment(boxNumber = BoxNumber.Box35, itemNumber = 1)
+              )
+            ).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("itemNumber" -> "1")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return an Internal Server Error when no ChangeUnderpaymentReasonPage exists" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("itemNumber" -> "1")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 

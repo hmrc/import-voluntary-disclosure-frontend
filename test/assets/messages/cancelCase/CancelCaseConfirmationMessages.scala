@@ -21,13 +21,14 @@ import messages.BaseMessages
 object CancelCaseConfirmationMessages extends BaseMessages {
 
   val pageTitle = "Confirmation"
-  val heading = "Cancellation requested"
+  val heading   = "Cancellation requested"
 
   def panelText(caseId: String): String =
     s"for disclosure reference number $caseId"
 
   val whatHappensNext = "What happens next"
-  val whatHappensNextParagraph = "We will check the information you have provided. If we accept the reason for cancellation, we will cancel the underpayment disclosure. Otherwise, we will continue to issue the C18 Post Clearance Demand Note."
-  val anotherDisclosure = "Start a new, add to, or cancel a disclosure"
+  val whatHappensNextParagraph =
+    "We will check the information you have provided. If we accept the reason for cancellation, we will cancel the underpayment disclosure. Otherwise, we will continue to issue the C18 Post Clearance Demand Note."
+  val anotherDisclosure      = "Start a new, add to, or cancel a disclosure"
   val helpImproveServiceLink = "What did you think of this service?"
 }

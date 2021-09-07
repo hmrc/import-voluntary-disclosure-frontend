@@ -26,19 +26,18 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext
 
-
-class SignOutController @Inject()(identify: IdentifierAction,
-                                  getData: DataRetrievalAction,
-                                  mcc: MessagesControllerComponents,
-                                  requireData: DataRequiredAction,
-                                  sessionRepository: SessionRepository,
-                                  implicit val ec: ExecutionContext,
-                                  implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class SignOutController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  implicit val ec: ExecutionContext,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def signOut(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     sessionRepository.remove(request.credId).map(_ => Redirect(appConfig.surveyUrl))
   }
 }
-
-

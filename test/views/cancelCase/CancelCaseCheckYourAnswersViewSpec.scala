@@ -26,11 +26,12 @@ import views.html.cancelCase.CancelCaseCheckYourAnswersView
 
 class CancelCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: CancelCaseCheckYourAnswersView = app.injector.instanceOf[CancelCaseCheckYourAnswersView]
+  private lazy val injectedView: CancelCaseCheckYourAnswersView =
+    app.injector.instanceOf[CancelCaseCheckYourAnswersView]
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
-      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${answers.size} sub-headings" in {
@@ -46,7 +47,7 @@ class CancelCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(CancelCaseCYAMessages.title)

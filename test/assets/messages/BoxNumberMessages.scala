@@ -18,8 +18,8 @@ package messages
 
 object BoxNumberMessages extends BaseMessages {
 
-  val pageTitle = "What was the reason for the underpayment?"
-  val heading = "What was the reason for the underpayment?"
+  val pageTitle             = "What was the reason for the underpayment?"
+  val heading               = "What was the reason for the underpayment?"
   val headingFirstIteration = "Which reason for the underpayment do you want to tell us about first?"
   val hint = "If more than one box caused the underpayment you will be able to tell us about further boxes later."
   val errorRequired = "Select which value caused the underpayment"

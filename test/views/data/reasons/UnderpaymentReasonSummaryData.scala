@@ -24,7 +24,8 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
 object UnderpaymentReasonSummaryData {
 
-  private def changeAction(boxNumber: Int, itemNumber: Int): Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.change(boxNumber, itemNumber)
+  private def changeAction(boxNumber: Int, itemNumber: Int): Call =
+    controllers.reasons.routes.ChangeUnderpaymentReasonController.change(boxNumber, itemNumber)
 
   val singleItemReason: Option[Seq[UnderpaymentReason]] = Some(
     Seq(

@@ -25,7 +25,7 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
     "no data entered" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new UpdateAdditionalInformationFormProvider()().bind(missingOption)
+      val form                               = new UpdateAdditionalInformationFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -40,11 +40,10 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
       }
     }
 
-
     "maxLength data entered" should {
 
       val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
-      val form = new UpdateAdditionalInformationFormProvider()().bind(maxLengthData)
+      val form                               = new UpdateAdditionalInformationFormProvider()().bind(maxLengthData)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -59,11 +58,10 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
       }
     }
 
-
     "emoji entered" should {
 
       val emoji: Map[String, String] = Map("value" -> "😀")
-      val form = new UpdateAdditionalInformationFormProvider()().bind(emoji)
+      val form                       = new UpdateAdditionalInformationFormProvider()().bind(emoji)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -93,10 +91,12 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
 
   "Binding a form with valid punctuation characters" should {
 
-    val data = Map("value" ->
-      """"!?@£$%^&*(na
+    val data = Map(
+      "value" ->
+        """"!?@£$%^&*(na
         |
-        |sd671263-'][./,"""".stripMargin)
+        |sd671263-'][./,"""".stripMargin
+    )
     val form = new UpdateAdditionalInformationFormProvider()().bind(data)
 
     "result in a form with no errors" in {
@@ -105,4 +105,3 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
   }
 
 }
-

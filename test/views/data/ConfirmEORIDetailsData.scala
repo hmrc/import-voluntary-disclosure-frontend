@@ -21,7 +21,6 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
-
 object ConfirmEORIDetailsData {
   private final val classStyling = "govuk-summary-list__key govuk-!-width-one-half"
 

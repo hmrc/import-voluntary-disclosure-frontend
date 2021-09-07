@@ -33,19 +33,20 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class UserAnswersRepository @Inject()(mongoComponent: MongoComponent, appConfig: AppConfig)
-                                     (implicit ec: ExecutionContext)
-  extends PlayMongoRepository[UserAnswers](
-    collectionName = "user-answers",
-    mongoComponent = mongoComponent,
-    domainFormat = UserAnswers.format,
-    indexes = Seq(
-      IndexModel(
-        ascending("lastUpdated"),
-        IndexOptions().name("user-answers-last-updated-index").expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+class UserAnswersRepository @Inject() (mongoComponent: MongoComponent, appConfig: AppConfig)(implicit
+  ec: ExecutionContext
+) extends PlayMongoRepository[UserAnswers](
+      collectionName = "user-answers",
+      mongoComponent = mongoComponent,
+      domainFormat = UserAnswers.format,
+      indexes = Seq(
+        IndexModel(
+          ascending("lastUpdated"),
+          IndexOptions().name("user-answers-last-updated-index").expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+        )
       )
     )
-  ) with SessionRepository {
+    with SessionRepository {
 
   override def get(id: String)(implicit ec: ExecutionContext): Future[Option[UserAnswers]] =
     collection
@@ -54,26 +55,24 @@ class UserAnswersRepository @Inject()(mongoComponent: MongoComponent, appConfig:
 
   override def set(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
     val modifier = userAnswers copy (lastUpdated = LocalDateTime.now())
-    val update = BsonDocument("$set" -> modifier.toDocument())
+    val update   = BsonDocument("$set" -> modifier.toDocument())
     collection
       .updateOne(equal("_id", userAnswers.id), update, UpdateOptions().upsert(true))
       .toFuture()
       .map(_.wasAcknowledged())
   }
 
-  override def delete(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
+  override def delete(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] =
     collection
       .deleteOne(equal("_id", userAnswers.id))
       .toFuture()
       .map(_.wasAcknowledged())
-  }
 
-  override def remove(id: String)(implicit ec: ExecutionContext): Future[String] = {
+  override def remove(id: String)(implicit ec: ExecutionContext): Future[String] =
     collection
       .deleteOne(equal("_id", id))
       .toFuture()
       .map(_ => id)
-  }
 }
 
 trait SessionRepository {

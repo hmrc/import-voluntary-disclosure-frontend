@@ -28,66 +28,63 @@ import views.html.underpayments.RemoveUnderpaymentDetailsView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class RemoveUnderpaymentDetailsController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: RemoveUnderpaymentDetailsFormProvider,
-                                                    view: RemoveUnderpaymentDetailsView,
-                                                    implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class RemoveUnderpaymentDetailsController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: RemoveUnderpaymentDetailsFormProvider,
+  view: RemoveUnderpaymentDetailsView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-
-  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    Future.successful(Ok(view(formProvider(underpaymentType), underpaymentType, backLink(underpaymentType))))
+  def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      Future.successful(Ok(view(formProvider(underpaymentType), underpaymentType, backLink(underpaymentType))))
   }
 
-  def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider(underpaymentType).bindFromRequest().fold(
-      formWithErrors => Future.successful(
-        BadRequest(
-          view(
-            formWithErrors,
-            underpaymentType,
-            backLink(underpaymentType))
-        )
-      ),
-      value => {
-        if (value) {
-          val newReasonsOpt = for {
-            allReasons <- request.userAnswers.get(UnderpaymentDetailSummaryPage)
-          } yield {
-            allReasons.filterNot(x => x.duty == underpaymentType)
-          }
+  def onSubmit(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      formProvider(underpaymentType).bindFromRequest().fold(
+        formWithErrors =>
+          Future.successful(
+            BadRequest(
+              view(formWithErrors, underpaymentType, backLink(underpaymentType))
+            )
+          ),
+        value => {
+          if (value) {
+            val newReasonsOpt = for {
+              allReasons <- request.userAnswers.get(UnderpaymentDetailSummaryPage)
+            } yield allReasons.filterNot(x => x.duty == underpaymentType)
 
-          newReasonsOpt match {
-            case Some(newReasons) =>
-              for {
-                updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailSummaryPage, newReasons))
-                _ <- sessionRepository.set(updatedAnswers)
-              } yield {
-                if (newReasons.isEmpty) {
-                  Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
-                } else {
-                  Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
+            newReasonsOpt match {
+              case Some(newReasons) =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentDetailSummaryPage, newReasons))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield {
+                  if (newReasons.isEmpty) {
+                    Redirect(controllers.underpayments.routes.UnderpaymentStartController.onLoad())
+                  } else {
+                    Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
+                  }
                 }
-              }
-            case _ => Future.successful(InternalServerError("Invalid sequence of reasons"))
+              case _ => Future.successful(InternalServerError("Invalid sequence of reasons"))
+            }
+          } else {
+            Future.successful(
+              Redirect(controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType))
+            )
           }
-        } else {
-          Future.successful(Redirect(controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType)))
         }
-      }
-    )
+      )
   }
 
-  private[controllers] def backLink(underpaymentType: String): Call = {
+  private[controllers] def backLink(underpaymentType: String): Call =
     controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType)
-  }
 
 }
-
-

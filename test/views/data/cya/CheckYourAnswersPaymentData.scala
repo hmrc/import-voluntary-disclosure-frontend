@@ -24,18 +24,17 @@ import viewmodels.cya
 import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersPaymentData {
-  val changeUrl = "Url"
-  val payingByOther = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
+  val changeUrl         = "Url"
+  val payingByOther     = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
   val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
-  val accountNumberVAT = "5293747"
-  val danTypeA = "My deferment account"
-  val danTypeB = "The importer’s account and I have authority to use it"
-  val danTypeC = "The importer’s account and I have standing authority to use it"
-  val FileExample = "FileExample.pdf"
-  val dutyFileExample = "DutyFileExample.pdf"
-  val vatFileExample = "VATFileExample.pdf"
-
+  val accountNumberVAT  = "5293747"
+  val danTypeA          = "My deferment account"
+  val danTypeB          = "The importer’s account and I have authority to use it"
+  val danTypeC          = "The importer’s account and I have standing authority to use it"
+  val FileExample       = "FileExample.pdf"
+  val dutyFileExample   = "DutyFileExample.pdf"
+  val vatFileExample    = "VATFileExample.pdf"
 
   val paymentMethodOtherRow = SummaryListRow(
     key = Key(
@@ -45,14 +44,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(payingByOther)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.DefermentController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.DefermentController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+          )
+        )
       )
     )
-    ))
   )
 
   val paymentMethodDefermentRow = SummaryListRow(
@@ -63,14 +65,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(payingByDeferment)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.DefermentController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.DefermentController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changePaymentMethod)
+          )
+        )
       )
     )
-    ))
   )
 
   val splitDefermentYesRow = SummaryListRow(
@@ -81,13 +86,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text("Yes")
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        Some(CYAMessages.changeSplitDeferment)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(CYAMessages.changeSplitDeferment)
+          )
+        )
       )
-    )))
+    )
   )
 
   val splitDefermentNoRow = SummaryListRow(
@@ -98,13 +107,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text("No")
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        Some(CYAMessages.changeSplitDeferment)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.SplitPaymentController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            Some(CYAMessages.changeSplitDeferment)
+          )
+        )
       )
-    )))
+    )
   )
 
   val importerAccountNumberRow = SummaryListRow(
@@ -115,14 +128,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(accountNumberDuty)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.ImporterDanController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.ImporterDanController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeImporterAccountNumber)
+          )
+        )
       )
-    )
-    )),
+    ),
     classes = "govuk-summary-list__row"
   )
 
@@ -142,14 +158,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(accountNumberDuty)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDanAccountNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeRepDanAccountNumber)
+          )
+        )
       )
     )
-    )),
   )
 
   val repAccountNumberDutyRow = SummaryListRow(
@@ -160,14 +179,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(accountNumberDuty)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
+          )
+        )
       )
-    ),
-    ))
+    )
   )
 
   val accountOwnerTypeAVATRow = SummaryListRow(
@@ -178,14 +200,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeA)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+          )
+        )
       )
     )
-    )),
   )
 
   val accountOwnerTypeADutyRow = SummaryListRow(
@@ -196,14 +221,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeA)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+          )
+        )
       )
     )
-    )),
   )
 
   val accountOwnerRow = SummaryListRow(
@@ -214,14 +242,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeRepDanAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeRepDanAccountOwner)
+          )
+        )
       )
     )
-    ))
   )
 
   val accountOwnerTypeBVATRow = SummaryListRow(
@@ -232,14 +263,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+          )
+        )
       )
     )
-    ))
   )
 
   val accountOwnerTypeBDutyRow = SummaryListRow(
@@ -250,14 +284,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+          )
+        )
       )
     )
-    ))
   )
 
   val accountOwnerTypeBRow = SummaryListRow(
@@ -268,14 +305,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeB)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repDutyAccountNumber)
+          )
+        )
       )
     )
-    ))
   )
 
   val accountOwnerTypeCVATRow = SummaryListRow(
@@ -286,14 +326,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeC)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repVATAccountOwner)
+          )
+        )
       )
     )
-    ))
   )
 
   val accountOwnerTypeCDutyRow = SummaryListRow(
@@ -304,14 +347,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(danTypeC)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repDutyAccountOwner)
+          )
+        )
       )
     )
-    ))
   )
   val proofOfAuthority = SummaryListRow(
     key = Key(
@@ -321,14 +367,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(dutyFileExample)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
+          )
+        )
       )
     )
-    ))
   )
 
   val proofOfAuthorityBoth = SummaryListRow(
@@ -339,14 +388,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(FileExample)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
+          )
+        )
       )
     )
-    ))
   )
 
   def defermentDutyAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
@@ -365,14 +417,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(accountNumberVAT)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.repVATAccountNumber)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.repVATAccountNumber)
+          )
+        )
       )
     )
-    ))
   )
 
   val proofOfAuthorityDuty = SummaryListRow(
@@ -383,14 +438,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(dutyFileExample)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
+          )
+        )
       )
     )
-    ))
   )
 
   val proofOfAuthorityVat = SummaryListRow(
@@ -401,14 +459,17 @@ object CheckYourAnswersPaymentData {
     value = Value(
       Text(vatFileExample)
     ),
-    actions = Some(Actions(items = Seq(
-      ActionItem(
-        controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
-        HtmlContent("""<span aria-hidden="true">Change</span>"""),
-        visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
+          )
+        )
       )
     )
-    ))
   )
 
   def defermentVATAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
@@ -420,7 +481,6 @@ object CheckYourAnswersPaymentData {
   )
 
   val answers: Seq[CYASummaryList] = Seq(
-
     paymentDetailsAnswers(Seq(paymentMethodDefermentRow, splitDefermentYesRow)),
     defermentDutyAnswers(Seq(repAccountNumberDutyRow, accountOwnerTypeBDutyRow)),
     defermentVATAnswers(Seq(repAccountNumberVATRow, accountOwnerTypeBVATRow))
