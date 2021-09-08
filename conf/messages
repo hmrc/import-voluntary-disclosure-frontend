@@ -1154,3 +1154,13 @@ cancelCase.disclosureClosed.li1 = the disclosure reference number {0}
 cancelCase.disclosureClosed.li2 = the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed)
 cancelCase.disclosureClosed.li3 = the EORI number and name of the importer
 cancelCase.disclosureClosed.li4 = the reason for requesting the cancellation of this disclosure
+
+# Cancel Case - Disclosure Not Found
+cancelCase.disclosureNotFound.pageTitle = No disclosure found
+cancelCase.disclosureNotFound.heading = No disclosure found
+cancelCase.disclosureNotFound.p1 = We cannot find a disclosure with the reference number {0}.
+cancelCase.disclosureNotFound.p2 = You can:
+cancelCase.disclosureNotFound.li1 = 'check and '
+cancelCase.disclosureNotFound.link = enter the disclosure reference number again
+cancelCase.disclosureNotFound.li2.part1 = 'email us at '
+cancelCase.disclosureNotFound.li2.part2 = ' including the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed), the EORI number and name of the importer, and the information you want to add to the disclosure'
