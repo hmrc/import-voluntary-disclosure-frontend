@@ -1163,4 +1163,4 @@ cancelCase.disclosureNotFound.p2 = You can:
 cancelCase.disclosureNotFound.li1 = 'check and '
 cancelCase.disclosureNotFound.link = enter the disclosure reference number again
 cancelCase.disclosureNotFound.li2.part1 = 'email us at '
-cancelCase.disclosureNotFound.li2.part2 = ' including the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed), the EORI number and name of the importer, and the information you want to add to the disclosure'
+cancelCase.disclosureNotFound.li2.part2 = ' including the entry details (or where there are multiple entry details, the total amount of tax or duty that is owed), the EORI number and name of the importer, and the reason for cancelling the disclosure'
