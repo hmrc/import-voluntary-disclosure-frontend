@@ -61,8 +61,8 @@ class CancelCaseCheckYourAnswersController @Inject() (
         updateCaseService.updateCase().flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
             Future.successful(
-              Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad())
-            ) // TODO - update the page content
+              Redirect(controllers.cancelCase.routes.CancelCaseDisclosureNotFoundController.onLoad())
+            )
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
             Future.successful(
               Redirect(controllers.cancelCase.routes.CancelCaseDisclosureClosedController.onLoad())

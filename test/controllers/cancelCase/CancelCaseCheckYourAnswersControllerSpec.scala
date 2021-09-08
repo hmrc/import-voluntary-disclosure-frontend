@@ -119,7 +119,9 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
-      redirectLocation(result) mustBe Some(controllers.updateCase.routes.DisclosureNotFoundController.onLoad().url)
+      redirectLocation(result) mustBe Some(
+        controllers.cancelCase.routes.CancelCaseDisclosureNotFoundController.onLoad().url
+      )
     }
 
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {

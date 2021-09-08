@@ -249,7 +249,7 @@ POST        /disclosure/deferment-account-details-vat                           
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
 
-GET         /update-disclosure/cannot-add-information                                         controllers.updateCase.DisclosureClosedController.onLoad()
+GET         /update-disclosure/cannot-add-information                                          controllers.updateCase.DisclosureClosedController.onLoad()
 
 # Underpayments
 
@@ -371,65 +371,65 @@ GET         /disclosure/remove-provisional-add-underpayment-confirm             
 POST        /disclosure/remove-provisional-add-underpayment-confirm                            controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A35")
 
 GET         /disclosure/remove-definitive-countervailing-duty-underpayment-confirm             controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "A40")
-POST        /disclosure/remove-definitive-countervailing-duty-underpayment-confirm            controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A40")
+POST        /disclosure/remove-definitive-countervailing-duty-underpayment-confirm             controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A40")
 
-GET         /disclosure/remove-provisional-countervailing-duty-underpayment-confirm           controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "A45")
-POST        /disclosure/remove-provisional-countervailing-duty-underpayment-confirm           controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A45")
+GET         /disclosure/remove-provisional-countervailing-duty-underpayment-confirm            controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "A45")
+POST        /disclosure/remove-provisional-countervailing-duty-underpayment-confirm            controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A45")
 
-GET         /disclosure/remove-customs-duty-agricultural-products-underpayment-confirm        controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "A10")
-POST        /disclosure/remove-customs-duty-agricultural-products-underpayment-confirm        controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A10")
+GET         /disclosure/remove-customs-duty-agricultural-products-underpayment-confirm         controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "A10")
+POST        /disclosure/remove-customs-duty-agricultural-products-underpayment-confirm         controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "A10")
 
-GET         /disclosure/remove-compensatory-duty-underpayment-confirm                         controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "D10")
-POST        /disclosure/remove-compensatory-duty-underpayment-confirm                         controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "D10")
+GET         /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "D10")
+POST        /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "D10")
 
-GET         /disclosure/which-documents-upload                                                controllers.docUpload.OptionalSupportingDocsController.onLoad
-POST        /disclosure/which-documents-upload                                                controllers.docUpload.OptionalSupportingDocsController.onSubmit
+GET         /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onLoad
+POST        /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onSubmit
 
-GET         /disclosure/importer-vat-registered                                               controllers.importDetails.ImporterVatRegisteredController.onLoad
-POST        /disclosure/importer-vat-registered                                               controllers.importDetails.ImporterVatRegisteredController.onSubmit
+GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad
+POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit
 
-GET         /start-new-or-update                                                              controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
-POST        /start-new-or-update                                                              controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
+GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
+POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
 
-GET         /update-disclosure/reference-number                                               controllers.updateCase.DisclosureReferenceNumberController.onLoad
-POST        /update-disclosure/reference-number                                               controllers.updateCase.DisclosureReferenceNumberController.onSubmit
+GET         /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onLoad
+POST        /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onSubmit
 
-GET         /update-disclosure/need-to-upload                                                 controllers.updateCase.MoreDocumentationController.onLoad
-POST        /update-disclosure/need-to-upload                                                 controllers.updateCase.MoreDocumentationController.onSubmit
+GET         /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onLoad
+POST        /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onSubmit
 
-GET         /update-disclosure/upload-file                                                    controllers.updateCase.UploadSupportingDocumentationController.onLoad
-GET         /update-disclosure/upload-file/upscan-response                                    controllers.updateCase.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
-GET         /update-disclosure/upload-file/polling                                            controllers.updateCase.UploadSupportingDocumentationController.uploadProgress(key: String)
-GET         /update-disclosure/upload-another-file                                            controllers.updateCase.UploadSupportingDocumentationSummaryController.onLoad
-POST        /update-disclosure/upload-another-file                                            controllers.updateCase.UploadSupportingDocumentationSummaryController.onSubmit
-GET         /update-disclosure/confirm-file-removal/:index                                    controllers.updateCase.RemoveSupportingDocumentationController.onLoad(index: models.Index)
-POST        /update-disclosure/confirm-file-removal/:index                                    controllers.updateCase.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
+GET         /update-disclosure/upload-file                                                     controllers.updateCase.UploadSupportingDocumentationController.onLoad
+GET         /update-disclosure/upload-file/upscan-response                                     controllers.updateCase.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /update-disclosure/upload-file/polling                                             controllers.updateCase.UploadSupportingDocumentationController.uploadProgress(key: String)
+GET         /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onLoad
+POST        /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onSubmit
+GET         /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onLoad(index: models.Index)
+POST        /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
 
-GET         /update-disclosure/additional-information                                         controllers.updateCase.UpdateAdditionalInformationController.onLoad
-POST        /update-disclosure/additional-information                                         controllers.updateCase.UpdateAdditionalInformationController.onSubmit
+GET         /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onLoad
+POST        /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onSubmit
 
-GET         /update-disclosure/check-your-answers                                             controllers.updateCase.UpdateCaseCheckYourAnswersController.onLoad()
-GET         /update-disclosure/confirmation                                                   controllers.updateCase.UpdateCaseCheckYourAnswersController.onSubmit()
-GET         /update-disclosure/disclosure-not-found                                           controllers.updateCase.DisclosureNotFoundController.onLoad
+GET         /update-disclosure/check-your-answers                                              controllers.updateCase.UpdateCaseCheckYourAnswersController.onLoad()
+GET         /update-disclosure/confirmation                                                    controllers.updateCase.UpdateCaseCheckYourAnswersController.onSubmit()
+GET         /update-disclosure/disclosure-not-found                                            controllers.updateCase.DisclosureNotFoundController.onLoad
 
-GET         /language/:lang                                                                   controllers.LanguageSwitchController.switchToLanguage(lang: String)
+GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
-GET         /import-declaration-exists                                                        controllers.serviceEntry.CustomsDeclarationController.onLoad()
-POST        /import-declaration-exists                                                        controllers.serviceEntry.CustomsDeclarationController.onSubmit()
+GET         /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onLoad()
+POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
 
-GET         /not-eligible/no-access-for-individual-user-id                                    controllers.serviceEntry.IndividualHandoffController.onLoad
+GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad
 
-GET         /continue-with-user-id                                                            controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
-POST        /continue-with-user-id                                                            controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
+GET         /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
+POST        /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
 
-GET         /cancel-disclosure/reference-number                                               controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
-POST        /cancel-disclosure/reference-number                                               controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
+GET         /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
+POST        /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
 
-GET         /cancel-disclosure/cancellation-reason                                            controllers.cancelCase.CancellationReasonController.onLoad
-POST        /cancel-disclosure/cancellation-reason                                            controllers.cancelCase.CancellationReasonController.onSubmit
+GET         /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onLoad
+POST        /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onSubmit
 
-GET         /cancel-disclosure/need-to-upload                                                 controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
-POST        /cancel-disclosure/need-to-upload                                                 controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
+GET         /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
+POST        /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
 
 GET         /cancel-disclosure/upload-file                                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.onLoad
 GET         /cancel-disclosure/upload-file/upscan-response                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
@@ -442,3 +442,5 @@ POST        /cancel-disclosure/confirm-file-removal/:index                      
 GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad
 GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit
 GET         /cancel-disclosure/cannot-add-information                                          controllers.cancelCase.CancelCaseDisclosureClosedController.onLoad
+
+GET         /cancel-disclosure/disclosure-not-found                                            controllers.cancelCase.CancelCaseDisclosureNotFoundController.onLoad
