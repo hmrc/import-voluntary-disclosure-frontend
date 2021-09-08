@@ -25,7 +25,7 @@ import models.reasons.BoxNumber.BoxNumber
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -49,7 +49,6 @@ class BoxNumberController @Inject() (
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  private lazy val backLink: Call = controllers.reasons.routes.BoxGuidanceController.onLoad()
   private val boxNumbers = {
     if (appConfig.otherItemEnabled) BoxNumber.values
     else BoxNumber.values - BoxNumber.OtherItem
@@ -63,7 +62,7 @@ class BoxNumberController @Inject() (
     val filteredBoxNumbers =
       boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber))
     val isFirstBox = filteredBoxNumbers.size == boxNumbers.size
-    Future.successful(Ok(view(form, backLink, createRadioButtons(form, filteredBoxNumbers), isFirstBox)))
+    Future.successful(Ok(view(form, createRadioButtons(form, filteredBoxNumbers), isFirstBox)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -73,7 +72,7 @@ class BoxNumberController @Inject() (
           boxNumbers.filterNot(boxNumber => underpaymentReasonSelected(request.userAnswers, boxNumber))
         val isFirstBox = filteredBoxNumbers.size == boxNumbers.size
         Future.successful(
-          BadRequest(view(formWithErrors, backLink, createRadioButtons(formWithErrors, filteredBoxNumbers), isFirstBox))
+          BadRequest(view(formWithErrors, createRadioButtons(formWithErrors, filteredBoxNumbers), isFirstBox))
         )
       },
       value => {

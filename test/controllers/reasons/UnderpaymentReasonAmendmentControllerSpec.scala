@@ -90,14 +90,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
       val result: RuntimeException = intercept[RuntimeException](await(controller.onLoad(0)(fakeRequest)))
       assert(result.getMessage.contains("Invalid Box Number"))
     }
-
-    "should redirect the back button to Box Number Controller" in new Test {
-      controller.backLink(BoxNumber.Box22) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad())
-    }
-
-    "should redirect the back button to Item Number Controller" in new Test {
-      controller.backLink(BoxNumber.Box33) mustBe Some(controllers.reasons.routes.ItemNumberController.onLoad())
-    }
   }
 
   "POST onSubmit" when {
@@ -170,29 +162,29 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
     "called with entry level box 22" should {
-      checkRoute(BoxNumber.Box22, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box22, 0, None)
     }
     "called with entry level box 62" should {
-      checkRoute(BoxNumber.Box62, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box62, 0, None)
     }
     "called with entry level box 63" should {
-      checkRoute(BoxNumber.Box63, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box63, 0, None)
     }
     "called with entry level box 66" should {
-      checkRoute(BoxNumber.Box66, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box66, 0, None)
     }
     "called with entry level box 67" should {
-      checkRoute(BoxNumber.Box67, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box67, 0, None)
     }
     "called with entry level box 68" should {
-      checkRoute(BoxNumber.Box68, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.Box68, 0, None)
     }
 
     "called with item level box 33" should {
       checkRoute(
         BoxNumber.Box33,
         1,
-        Some(controllers.reasons.routes.ItemNumberController.onLoad()),
+        None,
         Some("govuk-input--width-20")
       )
     }
@@ -200,7 +192,7 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
       checkRoute(
         BoxNumber.Box34,
         1,
-        Some(controllers.reasons.routes.ItemNumberController.onLoad()),
+        None,
         Some("govuk-input--width-3")
       )
     }
@@ -208,24 +200,24 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
       checkRoute(
         BoxNumber.Box36,
         1,
-        Some(controllers.reasons.routes.ItemNumberController.onLoad()),
+        None,
         Some("govuk-input--width-3")
       )
     }
     "called with item level box 37" should {
-      checkRoute(BoxNumber.Box37, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box37, 1, None)
     }
     "called with item level box 39" should {
-      checkRoute(BoxNumber.Box39, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box39, 1, None)
     }
     "called with item level box 41" should {
-      checkRoute(BoxNumber.Box41, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box41, 1, None)
     }
     "called with item level box 45" should {
       checkRoute(
         BoxNumber.Box45,
         1,
-        Some(controllers.reasons.routes.ItemNumberController.onLoad()),
+        None,
         Some("govuk-input--width-4")
       )
     }
@@ -253,10 +245,10 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
     "called with item level box 35" should {
-      checkRoute(BoxNumber.Box35, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box35, 1, None)
     }
     "called with item level box 38" should {
-      checkRoute(BoxNumber.Box38, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box38, 1, None)
     }
   }
 
@@ -282,7 +274,7 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
     "called with item level box 46" should {
-      checkRoute(BoxNumber.Box46, 1, Some(controllers.reasons.routes.ItemNumberController.onLoad()))
+      checkRoute(BoxNumber.Box46, 1, None)
     }
   }
 
@@ -308,7 +300,7 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     }
 
     "called with item level box 99" should {
-      checkRoute(BoxNumber.OtherItem, 0, Some(controllers.reasons.routes.BoxNumberController.onLoad()))
+      checkRoute(BoxNumber.OtherItem, 0, None)
     }
   }
 }

@@ -49,7 +49,7 @@ class ConfirmReasonDetailController @Inject() (
     val boxNumber = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).getOrElse(BoxNumber.Box22)
     val summary   = summaryList(request.userAnswers, boxNumber).getOrElse(Seq.empty)
     Future.successful(
-      Ok(view(summary, controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber.id)))
+      Ok(view(summary))
     )
   }
 

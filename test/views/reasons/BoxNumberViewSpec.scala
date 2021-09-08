@@ -61,7 +61,6 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       val form: Form[BoxNumber] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
         true
       )(fakeRequest, messages)
@@ -92,7 +91,6 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       val form: Form[BoxNumber] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
-        controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
         false
       )(fakeRequest, messages)
@@ -117,7 +115,6 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       val form: Form[BoxNumber] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
-        controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
         false
       )(fakeRequest, messages)
@@ -142,7 +139,6 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     val form: Form[BoxNumber] = formProvider.apply()
     lazy val view: Html = injectedView(
       form,
-      controllers.reasons.routes.BoxGuidanceController.onLoad(),
       boxNumberRadioButtons,
       false
     )(fakeRequest, messages)
@@ -243,9 +239,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain(
-        "href" -> controllers.reasons.routes.BoxGuidanceController.onLoad().url
-      )
+      elementAttributes("#back-link") must contain("href" -> "#")
     }
 
     s"the input field is rendered" in {

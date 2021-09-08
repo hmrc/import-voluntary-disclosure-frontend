@@ -22,12 +22,11 @@
         inputRadio: components.inputRadio
 )
 
-@(form: Form[_], backLink: Call, boxNumbers: Seq[RadioItem], isFirstBox: Boolean)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], boxNumbers: Seq[RadioItem], isFirstBox: Boolean)(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("boxNumber.pageTitle"),
-        form = Some(form),
-        customBackLinkUrl = Some(backLink)
+        form = Some(form)
     ) {
 
         @errorSummary(form.errors)

@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import messages.ConfirmReasonDetailMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.mvc.Call
 import play.twirl.api.Html
 import views.data.reasons.ConfirmReasonData.reasons
 import views.html.reasons.ConfirmReasonDetailView
@@ -29,13 +28,11 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: ConfirmReasonDetailView = app.injector.instanceOf[ConfirmReasonDetailView]
 
-  private val backLink: Call = Call("GET", "url")
-
   "Rendering the Confirm Reason Detail page" when {
     "when an item level box is selected" should {
 
       lazy val view: Html =
-        injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), backLink)(fakeRequest, messages)
+        injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -135,7 +132,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
   "Rendering the Confirm Reason Detail page" when {
     "when an entry level box is selected" should {
 
-      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+      lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"))(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -214,7 +211,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), backLink)(fakeRequest, messages)
+    lazy val view: Html = injectedView(reasons(22, None, "EUR125.00", "GBP190.50"))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmReasonDetailMessages.title)
@@ -224,7 +221,7 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> "url")
+      elementAttributes("#back-link") must contain("href" -> "#")
     }
 
     s"have the correct Continue button" in {
