@@ -44,20 +44,18 @@ class ItemNumberController @Inject() (
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  private lazy val backLink: Call = controllers.reasons.routes.BoxNumberController.onLoad()
-
   private lazy val formAction: Call = controllers.reasons.routes.ItemNumberController.onSubmit()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UnderpaymentReasonItemNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, formAction, backLink)))
+    Future.successful(Ok(view(form, formAction, None)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, backLink))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, None))),
       submittedItemNumber => {
         request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
           case Some(currentBoxNumber) =>
@@ -70,7 +68,7 @@ class ItemNumberController @Inject() (
                   view(
                     form.copy(errors = Seq(FormError("itemNumber", "itemNo.error.notTheSameNumber"))),
                     formAction,
-                    backLink
+                    None
                   )
                 )
               )
