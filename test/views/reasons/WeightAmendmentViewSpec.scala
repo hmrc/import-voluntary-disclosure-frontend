@@ -32,8 +32,6 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   private val formAction = Call("POST", "formActionUrl")
 
-  private val backLink = Some(Call("GET", "backLinkUrl"))
-
   private lazy val injectedView: WeightAmendmentView = app.injector.instanceOf[WeightAmendmentView]
 
   val formProvider: UnderpaymentReasonAmendmentFormProvider =
@@ -59,8 +57,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         form,
         formAction,
         boxNumber,
-        itemNumber,
-        backLink
+        itemNumber
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -85,8 +82,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         form,
         formAction,
         boxNumber,
-        itemNumber,
-        backLink
+        itemNumber
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -110,8 +106,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -136,8 +131,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -160,8 +154,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -192,8 +185,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -224,8 +216,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -262,8 +253,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
           form,
           formAction,
           boxNumber,
-          itemNumber,
-          backLink
+          itemNumber
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -294,8 +284,7 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -321,10 +310,6 @@ class WeightAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
     "have the correct Continue button" in {
       elementText(".govuk-button") mustBe continue
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> backLink.get.url)
     }
 
     "have the correct formAction" in {

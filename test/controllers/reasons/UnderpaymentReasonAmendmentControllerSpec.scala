@@ -155,7 +155,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
@@ -238,7 +237,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
@@ -267,7 +265,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
@@ -293,7 +290,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }

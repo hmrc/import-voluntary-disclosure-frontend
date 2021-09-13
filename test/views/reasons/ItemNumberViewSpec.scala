@@ -33,13 +33,12 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
   val formProvider: ItemNumberFormProvider = injector.instanceOf[ItemNumberFormProvider]
 
   lazy val formAction: Call = Call("GET", "formActionUrl")
-  lazy val backLink: Call   = Call("GET", "backLinkUrl")
 
   "Rendering the Item Number page" when {
     "no errors exist" should {
 
       val form: Form[Int]                  = formProvider.apply()
-      lazy val view: Html                  = injectedView(form, formAction, Some(backLink))(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, formAction)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ItemNumberMessages.title)
@@ -57,7 +56,7 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[Int]             = formProvider().bind(Map("itemNumber" -> ""))
-        lazy val view: Html                  = injectedView(form, formAction, Some(backLink))(fakeRequest, messages)
+        lazy val view: Html                  = injectedView(form, formAction)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ItemNumberMessages.errorPrefix + ItemNumberMessages.title)
@@ -77,15 +76,11 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Int]                  = formProvider.apply()
-    lazy val view: Html                  = injectedView(form, formAction, Some(backLink))(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(form, formAction)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ItemNumberMessages.h1}'" in {
       elementText("h1") mustBe ItemNumberMessages.h1
-    }
-
-    "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> backLink.url)
     }
 
     s"have the correct Continue button" in {

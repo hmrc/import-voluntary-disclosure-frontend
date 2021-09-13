@@ -25,7 +25,7 @@
         inputTextArea: components.inputTextArea
 )
 
-@(form: Form[_], formAction: Call, boxNumber: BoxNumber, itemNumber: Int, backLink: Option[Call], inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
+@(form: Form[_], formAction: Call, boxNumber: BoxNumber, itemNumber: Int, inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
 @bodyMessage=@{
     if (messages.isDefinedAt(s"box${boxNumber.id}.pageBody")) {
         Some(messages(s"box${boxNumber.id}.pageBody"))
@@ -37,7 +37,7 @@
     @layout(
         pageTitle = messages(s"box${boxNumber.id}.pageTitle", itemNumber),
         form = Some(form),
-        customBackLinkUrl = backLink) {
+        showBackLink = false) {
 
         @errorSummary(form.errors)
 

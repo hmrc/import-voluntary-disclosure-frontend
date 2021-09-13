@@ -42,20 +42,18 @@ class ChangeItemNumberController @Inject() (
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  private lazy val backLink: Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()
-
   private lazy val formAction: Call = controllers.reasons.routes.ChangeItemNumberController.onSubmit()
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ChangeUnderpaymentReasonPage).fold(formProvider()) { reason =>
       formProvider().fill(reason.changed.itemNumber)
     }
-    Future.successful(Ok(view(form, formAction, Some(backLink))))
+    Future.successful(Ok(view(form, formAction)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, Some(backLink)))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction))),
       value => {
         request.userAnswers.get(ChangeUnderpaymentReasonPage) match {
           case Some(data) =>
@@ -69,7 +67,7 @@ class ChangeItemNumberController @Inject() (
               if (alreadyExistsBoxAndItem) {
                 val form      = formProvider().fill(data.changed.itemNumber)
                 val formError = FormError("itemNumber", "itemNo.error.notTheSameNumber")
-                Future.successful(Ok(view(form.copy(errors = Seq(formError)), formAction, Some(backLink))))
+                Future.successful(Ok(view(form.copy(errors = Seq(formError)), formAction)))
               } else {
                 val changed = data.changed.copy(itemNumber = value)
                 val reason  = data.copy(changed = changed)

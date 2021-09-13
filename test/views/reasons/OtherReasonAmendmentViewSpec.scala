@@ -38,7 +38,6 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   private final val boxNumber: BoxNumber = BoxNumber.OtherItem
   private final val itemNumber: Int      = 0
   private val formAction                 = Call("POST", "formActionUrl")
-  private val backLink                   = Some(Call("GET", "backLinkUrl"))
 
   "Rendering the Other reason amendment page" when {
 
@@ -49,8 +48,7 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         form,
         formAction,
         boxNumber,
-        itemNumber,
-        backLink
+        itemNumber
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -77,8 +75,7 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         form,
         formAction,
         boxNumber,
-        itemNumber,
-        backLink
+        itemNumber
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -105,8 +102,7 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       form,
       formAction,
       boxNumber,
-      itemNumber,
-      backLink
+      itemNumber
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

@@ -77,12 +77,11 @@ class UnderpaymentReasonAmendmentController @Inject() (
           }
           Future.successful(BadRequest(routeToView(boxNumber, itemNumber, formWithErrors.copy(errors = newErrors))))
         },
-        value => {
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonAmendmentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(controllers.reasons.routes.ConfirmReasonDetailController.onLoad())
-        }
       )
   }
 
@@ -101,14 +100,13 @@ class UnderpaymentReasonAmendmentController @Inject() (
     boxNumber match {
       case BoxNumber.Box22 | BoxNumber.Box37 | BoxNumber.Box39 | BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box62 |
           BoxNumber.Box63 | BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 =>
-        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, None)
+        textAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber)
       case BoxNumber.Box33 =>
         textAmendmentView(
           form,
           formAction(boxNumber),
           boxNumber,
           itemNumber,
-          None,
           inputClass = Some("govuk-input--width-20")
         )
       case BoxNumber.Box34 | BoxNumber.Box36 | BoxNumber.Box43 =>
@@ -117,24 +115,22 @@ class UnderpaymentReasonAmendmentController @Inject() (
           formAction(boxNumber),
           boxNumber,
           itemNumber,
-          None,
           inputClass = Some("govuk-input--width-3")
         )
       case BoxNumber.Box35 | BoxNumber.Box38 =>
-        weightAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, None)
+        weightAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber)
       case BoxNumber.Box45 =>
         textAmendmentView(
           form,
           formAction(boxNumber),
           boxNumber,
           itemNumber,
-          None,
           inputClass = Some("govuk-input--width-4")
         )
       case BoxNumber.Box46 =>
-        currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, None)
+        currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber)
       case BoxNumber.OtherItem =>
-        otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, None)
+        otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber)
       case _ => throw new RuntimeException("Invalid Box Number")
     }
   }

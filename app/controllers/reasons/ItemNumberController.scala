@@ -50,12 +50,12 @@ class ItemNumberController @Inject() (
     val form = request.userAnswers.get(UnderpaymentReasonItemNumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, formAction, None)))
+    Future.successful(Ok(view(form, formAction)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction, None))),
+      formWithErrors => Future.successful(BadRequest(view(formWithErrors, formAction))),
       submittedItemNumber => {
         request.userAnswers.get(UnderpaymentReasonBoxNumberPage) match {
           case Some(currentBoxNumber) =>
@@ -67,8 +67,7 @@ class ItemNumberController @Inject() (
                 Ok(
                   view(
                     form.copy(errors = Seq(FormError("itemNumber", "itemNo.error.notTheSameNumber"))),
-                    formAction,
-                    None
+                    formAction
                   )
                 )
               )

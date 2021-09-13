@@ -25,7 +25,7 @@ import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
 import pages.reasons.ChangeUnderpaymentReasonPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.reasons._
@@ -168,7 +168,6 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     def checkRoute(
       boxNumber: BoxNumber,
       itemNumber: Int,
-      back: Option[Call],
       expectedInputClass: Option[String] = Some("govuk-input--width-10")
     ) = {
       s"render the view using the textAmendmentView for box $boxNumber" in new Test {
@@ -179,51 +178,50 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
     }
 
     "called with entry level box 22" should {
-      checkRoute(BoxNumber.Box22, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box22, 0)
     }
     "called with entry level box 62" should {
-      checkRoute(BoxNumber.Box62, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box62, 0)
     }
     "called with entry level box 63" should {
-      checkRoute(BoxNumber.Box63, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box63, 0)
     }
     "called with entry level box 66" should {
-      checkRoute(BoxNumber.Box66, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box66, 0)
     }
     "called with entry level box 67" should {
-      checkRoute(BoxNumber.Box67, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box67, 0)
     }
     "called with entry level box 68" should {
-      checkRoute(BoxNumber.Box68, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.Box68, 0)
     }
     //
     "called with item level box 33" should {
-      checkRoute(BoxNumber.Box33, 1, None, Some("govuk-input--width-20"))
+      checkRoute(BoxNumber.Box33, 1, Some("govuk-input--width-20"))
     }
     "called with item level box 34" should {
-      checkRoute(BoxNumber.Box34, 1, None, Some("govuk-input--width-3"))
+      checkRoute(BoxNumber.Box34, 1, Some("govuk-input--width-3"))
     }
     "called with item level box 36" should {
-      checkRoute(BoxNumber.Box36, 1, None, Some("govuk-input--width-3"))
+      checkRoute(BoxNumber.Box36, 1, Some("govuk-input--width-3"))
     }
     "called with item level box 37" should {
-      checkRoute(BoxNumber.Box37, 1, None)
+      checkRoute(BoxNumber.Box37, 1)
     }
     "called with item level box 39" should {
-      checkRoute(BoxNumber.Box39, 1, None)
+      checkRoute(BoxNumber.Box39, 1)
     }
     "called with item level box 41" should {
-      checkRoute(BoxNumber.Box41, 1, None)
+      checkRoute(BoxNumber.Box41, 1)
     }
     "called with item level box 45" should {
-      checkRoute(BoxNumber.Box45, 1, None, Some("govuk-input--width-4"))
+      checkRoute(BoxNumber.Box45, 1, Some("govuk-input--width-4"))
     }
   }
 
@@ -231,7 +229,6 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     def checkRoute(
       boxNumber: BoxNumber,
       itemNumber: Int,
-      back: Option[Call],
       expectedInputClass: Option[String] = Some("govuk-input--width-10")
     ) = {
       s"render the view using the weightAmendmentView for box $boxNumber" in new Test {
@@ -242,17 +239,16 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
     }
 
     "called with item level box 35" should {
-      checkRoute(BoxNumber.Box35, 1, None)
+      checkRoute(BoxNumber.Box35, 1)
     }
     "called with item level box 38" should {
-      checkRoute(BoxNumber.Box38, 1, None)
+      checkRoute(BoxNumber.Box38, 1)
     }
   }
 
@@ -260,7 +256,6 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     def checkRoute(
       boxNumber: BoxNumber,
       itemNumber: Int,
-      back: Option[Call],
       expectedInputClass: Option[String] = Some("govuk-input--width-10")
     ) = {
       s"render the view using the currencyAmendmentView for box $boxNumber" in new Test {
@@ -271,14 +266,13 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
     }
 
     "called with item level box 46" should {
-      checkRoute(BoxNumber.Box46, 1, None)
+      checkRoute(BoxNumber.Box46, 1)
     }
   }
 
@@ -286,7 +280,6 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
     def checkRoute(
       boxNumber: BoxNumber,
       itemNumber: Int,
-      back: Option[Call],
       expectedInputClass: Option[String] = Some("govuk-input--width-10")
     ) = {
       s"render the view using the otherReasonAmendmentView for box $boxNumber" in new Test {
@@ -297,14 +290,13 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
           formAction,
           boxNumber,
           itemNumber,
-          back,
           inputClass = expectedInputClass
         )(fakeRequest, messages)
       }
     }
 
     "called with entry level box 99" should {
-      checkRoute(BoxNumber.OtherItem, 0, Some(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+      checkRoute(BoxNumber.OtherItem, 0)
     }
   }
 

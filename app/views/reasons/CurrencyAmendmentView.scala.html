@@ -23,12 +23,12 @@
         currencyInput: components.currencyInput
 )
 
-@(form: Form[_], formAction: Call, boxNumber: BoxNumber, itemNumber: Int, backLink: Option[Call], inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
+@(form: Form[_], formAction: Call, boxNumber: BoxNumber, itemNumber: Int, inputClass: Option[String] = Some("govuk-input--width-10"))(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages(s"box${boxNumber.id}.pageTitle", itemNumber),
     form = Some(form),
-    customBackLinkUrl = backLink) {
+    showBackLink = false) {
 
     @errorSummary(form.errors)
 
