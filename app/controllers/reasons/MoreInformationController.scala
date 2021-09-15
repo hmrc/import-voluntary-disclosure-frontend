@@ -16,7 +16,7 @@
 
 package controllers.reasons
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.reasons.MoreInformationFormProvider
 import models.requests.DataRequest
 import pages.reasons.MoreInformationPage
@@ -78,11 +78,7 @@ class MoreInformationController @Inject() (
     if (request.checkMode) {
       None
     } else {
-      if (request.isOneEntry) {
-        Some(controllers.reasons.routes.HasFurtherInformationController.onLoad())
-      } else {
-        Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
-      }
+      Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
     }
   }
 

@@ -16,12 +16,9 @@
 
 package controllers.reasons
 
-import config.AppConfig
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
 import models.reasons.BoxNumber.BoxNumber
-
-import javax.inject.Inject
 import models.reasons.{BoxNumber, UnderpaymentReason}
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.{I18nSupport, Messages}
@@ -32,6 +29,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.ActionItemHelper
 import views.html.reasons.UnderpaymentReasonSummaryView
 
+import javax.inject.Inject
 import scala.concurrent.Future
 
 class UnderpaymentReasonSummaryController @Inject() (
@@ -40,8 +38,7 @@ class UnderpaymentReasonSummaryController @Inject() (
   requireData: DataRequiredAction,
   mcc: MessagesControllerComponents,
   view: UnderpaymentReasonSummaryView,
-  formProvider: UnderpaymentReasonSummaryFormProvider,
-  appConfig: AppConfig
+  formProvider: UnderpaymentReasonSummaryFormProvider
 ) extends FrontendController(mcc)
     with I18nSupport {
 
@@ -69,10 +66,8 @@ class UnderpaymentReasonSummaryController @Inject() (
         } else {
           if (request.checkMode) {
             Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
-          } else if (appConfig.otherItemEnabled) {
-            Future.successful(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad()))
           } else {
-            Future.successful(Redirect(controllers.reasons.routes.HasFurtherInformationController.onLoad()))
+            Future.successful(Redirect(controllers.docUpload.routes.SupportingDocController.onLoad()))
           }
         }
       }

@@ -53,7 +53,6 @@ class AuthActionSpec extends SpecBase {
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
       privateCitizenEnabled = false,
-      otherItemEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -149,7 +148,6 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -169,7 +167,6 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -192,7 +189,6 @@ class AuthActionSpec extends SpecBase {
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = false,
           privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )

@@ -41,7 +41,6 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       Seq(
         buildOwedToHmrcRow(answers),
         buildReasonForUnderpaymentRow(answers),
-        buildTellUsAnythingElseRow(answers),
         buildExtraInformationRow(answers),
         buildUploadedFilesRow(answers)
       ).flatten
@@ -102,22 +101,6 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
           ActionItemHelper.createChangeActionItem(
             controllers.reasons.routes.MoreInformationController.onLoad().url,
             changeTextMessage
-          )
-        )
-      )
-    }
-  }
-
-  private def buildTellUsAnythingElseRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] = {
-    answers.get(HasFurtherInformationPage).map { hasFurtherInformation =>
-      val furtherInformation = if (hasFurtherInformation) messages("site.yes") else messages("site.no")
-      createRow(
-        keyText = Text(messages("cya.hasFurtherInformation")),
-        valueContent = Text(furtherInformation),
-        action = Some(
-          ActionItemHelper.createChangeActionItem(
-            controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
-            messages("cya.hasFurtherInformation.change")
           )
         )
       )

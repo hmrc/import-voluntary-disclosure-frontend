@@ -31,7 +31,6 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
       lazy val view: Html = injectedView(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())(
         fakeRequest,
-        appConfig,
         messages
       )
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -41,7 +40,7 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
       "it" should {
         lazy val view: Html = injectedView(
           controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-        )(fakeRequest, appConfig, messages)
+        )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         s"have the correct page heading of '${SupportingDocMessages.heading}'" in {
           elementText("h1") mustBe SupportingDocMessages.heading
