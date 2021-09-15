@@ -50,7 +50,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
     )
     val selectPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"               -> message("address_lookupPage.selectPage.heading"),
+        "title"               -> message("address_lookupPage.selectPage.title"),
         "heading"             -> message("address_lookupPage.selectPage.heading"),
         "submitLabel"         -> message("common.continue"),
         "editAddressLinkText" -> message("address_lookupPage.selectPage.editLink")
@@ -58,7 +58,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
 
     val lookupPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"         -> message("address_lookupPage.heading"),
+        "title"         -> message("address_lookupPage.title"),
         "heading"       -> message("address_lookupPage.heading"),
         "filterLabel"   -> message("address_lookupPage.filter"),
         "postcodeLabel" -> message("address_lookupPage.postcode"),
@@ -67,7 +67,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
 
     val confirmPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"                 -> message("address_lookupPage.confirmPage.heading"),
+        "title"                 -> message("address_lookupPage.confirmPage.title"),
         "heading"               -> message("address_lookupPage.confirmPage.heading"),
         "infoMessage"           -> message("address_lookupPage.confirmPage.infoMessage"),
         "showConfirmChangeText" -> false

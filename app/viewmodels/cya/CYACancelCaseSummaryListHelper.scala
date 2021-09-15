@@ -111,7 +111,7 @@ trait CYACancelCaseSummaryListHelper {
         action = Some(
           ActionItemHelper.createChangeActionItem(
             controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
-            messages("updateCase.cya.uploadedFiles.change")
+            messages("cancelCase.cya.uploadedFiles.change")
           )
         )
       )

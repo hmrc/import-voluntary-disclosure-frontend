@@ -50,7 +50,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
     )
     val selectPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"               -> message("importerAddress_lookupPage.selectPage.heading"),
+        "title"               -> message("importerAddress_lookupPage.selectPage.title"),
         "heading"             -> message("importerAddress_lookupPage.selectPage.heading"),
         "submitLabel"         -> message("common.continue"),
         "editAddressLinkText" -> message("importerAddress_lookupPage.selectPage.editLink")
@@ -58,7 +58,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val lookupPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"         -> message("importerAddress_lookupPage.heading"),
+        "title"         -> message("importerAddress_lookupPage.title"),
         "heading"       -> message("importerAddress_lookupPage.heading"),
         "filterLabel"   -> message("importerAddress_lookupPage.filter"),
         "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
@@ -67,7 +67,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val confirmPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"                 -> message("importerAddress_lookupPage.confirmPage.heading"),
+        "title"                 -> message("importerAddress_lookupPage.confirmPage.title"),
         "heading"               -> message("importerAddress_lookupPage.confirmPage.heading"),
         "infoMessage"           -> message("importerAddress_lookupPage.confirmPage.infoMessage"),
         "showConfirmChangeText" -> false
