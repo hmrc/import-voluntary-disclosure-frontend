@@ -17,22 +17,22 @@
 package viewmodels.cya
 
 import base.SpecBase
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.importDetails._
+import models.reasons.{BoxNumber, UnderpaymentReason}
+import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.{ContactAddress, ContactDetails, FileUploadInfo, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
+import pages.contactDetails._
+import pages.docUpload.FileUploadPage
+import pages.importDetails._
+import pages.paymentInfo.DefermentPage
+import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.CheckYourAnswersData._
 
 import java.time.{LocalDate, LocalDateTime}
-import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.{BoxNumber, UnderpaymentReason}
-import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressPage}
-import pages.docUpload.FileUploadPage
-import pages.importDetails._
-import pages.paymentInfo.DefermentPage
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
 class CYASummaryListHelperSpec
     extends SpecBase
@@ -76,7 +76,6 @@ class CYASummaryListHelperSpec
         UnderpaymentReasonsPage,
         Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
       ).success.value
-      .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
 
     implicit lazy val dataRequest = DataRequest(

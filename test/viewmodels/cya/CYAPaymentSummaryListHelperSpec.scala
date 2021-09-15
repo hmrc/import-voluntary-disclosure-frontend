@@ -18,21 +18,21 @@ package viewmodels.cya
 
 import base.SpecBase
 import models._
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.importDetails._
+import models.reasons.{BoxNumber, UnderpaymentReason}
+import models.requests._
 import models.underpayments.UnderpaymentDetail
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
+import pages.contactDetails._
+import pages.docUpload.FileUploadPage
+import pages.importDetails._
+import pages.paymentInfo._
+import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.cya.CheckYourAnswersPaymentData._
 
 import java.time.{LocalDate, LocalDateTime}
-import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.{BoxNumber, UnderpaymentReason}
-import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressPage}
-import pages.docUpload.FileUploadPage
-import pages.importDetails._
-import pages.paymentInfo._
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
 class CYAPaymentSummaryListHelperSpec
     extends SpecBase
@@ -79,7 +79,6 @@ class CYAPaymentSummaryListHelperSpec
         UnderpaymentReasonsPage,
         Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
       ).success.value
-      .set(HasFurtherInformationPage, true).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
       .set(SplitPaymentPage, true).success.value
       .set(DefermentAccountPage, "1284958").success.value
@@ -220,7 +219,6 @@ class CYAPaymentSummaryListHelperSpec
             UnderpaymentReasonsPage,
             Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
           ).success.value
-          .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, true).success.value
           .set(DefermentAccountPage, "1284958").success.value
@@ -286,7 +284,6 @@ class CYAPaymentSummaryListHelperSpec
             UnderpaymentReasonsPage,
             Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
           ).success.value
-          .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, true).success.value
           .set(DefermentAccountPage, "1284958").success.value
@@ -349,7 +346,6 @@ class CYAPaymentSummaryListHelperSpec
             UnderpaymentReasonsPage,
             Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
           ).success.value
-          .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(DefermentAccountPage, "1284958").success.value
           .set(DefermentTypePage, "B").success.value
@@ -431,7 +427,6 @@ class CYAPaymentSummaryListHelperSpec
             UnderpaymentReasonsPage,
             Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
           ).success.value
-          .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(SplitPaymentPage, false).success.value
           .set(DefermentAccountPage, "1284958").success.value
@@ -534,7 +529,6 @@ class CYAPaymentSummaryListHelperSpec
             UnderpaymentReasonsPage,
             Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
           ).success.value
-          .set(HasFurtherInformationPage, true).success.value
           .set(MoreInformationPage, "Stock losses in warehouse.").success.value
           .set(DefermentAccountPage, "1284958").success.value
 
