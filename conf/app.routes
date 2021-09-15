@@ -215,12 +215,6 @@ POST        /disclosure/change/confirm-reason-details                           
 GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad
 GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit
 
-GET         /disclosure/provide-information-option                                             controllers.reasons.HasFurtherInformationController.onLoad
-POST        /disclosure/provide-information-option                                             controllers.reasons.HasFurtherInformationController.onSubmit
-
-GET         /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onLoad
-POST        /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onSubmit
-
 GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad
 POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit
 
