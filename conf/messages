@@ -650,8 +650,8 @@ confirmReason.values.amended.change = Change amended value
 confirmReason.values.otherReason.change = Change other reason
 
 # Underpayment Reason Summary
-underpaymentReasonSummary.pageHeader = You have added {0} reasons for the underpayment
-underpaymentReasonSummary.pageHeaderSingleReason = You have added 1 reason for the underpayment
+underpaymentReasonSummary.pageTitle = You have added {0} reasons for the underpayment
+underpaymentReasonSummary.pageTitleSingleReason = You have added 1 reason for the underpayment
 underpaymentReasonSummary.box = Box
 underpaymentReasonSummary.entryLevel = Entry level
 underpaymentReasonSummary.item = Item
