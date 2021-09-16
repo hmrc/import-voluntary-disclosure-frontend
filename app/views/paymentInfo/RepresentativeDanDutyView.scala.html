@@ -34,7 +34,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("repDuty.heading"))
+        @h1(messages("repDuty.pageTitle"))
 
         @formHelper(action = controllers.paymentInfo.routes.RepresentativeDanDutyController.onSubmit()) {
             @inputText(form, "accountNumber", "accountNumber", messages("repDan.accountNumberLabel"), false, classes = Some("govuk-fieldset__legend govuk-input--width-10"))

@@ -35,7 +35,7 @@
    @formHelper(action = controllers.paymentInfo.routes.SplitPaymentController.onSubmit()) {
        @inputRadio(
            form = form,
-           legend = Some(messages("splitPayment.heading")),
+           legend = Some(messages("splitPayment.pageTitle")),
            items = Seq(
                     RadioItem(
                         value = Some("true"),

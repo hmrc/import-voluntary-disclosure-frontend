@@ -50,16 +50,16 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
     )
     val selectPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"               -> message("address_lookupPage.selectPage.title"),
-        "heading"             -> message("address_lookupPage.selectPage.heading"),
+        "title"               -> message("address_lookupPage.selectPage.pageTitle"),
+        "heading"             -> message("address_lookupPage.selectPage.pageTitle"),
         "submitLabel"         -> message("common.continue"),
         "editAddressLinkText" -> message("address_lookupPage.selectPage.editLink")
       )
 
     val lookupPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"         -> message("address_lookupPage.title"),
-        "heading"       -> message("address_lookupPage.heading"),
+        "title"         -> message("address_lookupPage.pageTitle"),
+        "heading"       -> message("address_lookupPage.pageTitle"),
         "filterLabel"   -> message("address_lookupPage.filter"),
         "postcodeLabel" -> message("address_lookupPage.postcode"),
         "submitLabel"   -> message("address_lookupPage.lookupPage.submit")
@@ -67,15 +67,15 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: M
 
     val confirmPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"                 -> message("address_lookupPage.confirmPage.title"),
-        "heading"               -> message("address_lookupPage.confirmPage.heading"),
+        "title"                 -> message("address_lookupPage.confirmPage.pageTitle"),
+        "heading"               -> message("address_lookupPage.confirmPage.pageTitle"),
         "infoMessage"           -> message("address_lookupPage.confirmPage.infoMessage"),
         "showConfirmChangeText" -> false
       )
 
     val editPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "heading"     -> message("address_lookupPage.editPage.heading"),
+        "heading"     -> message("address_lookupPage.editPage.pageTitle"),
         "townLabel"   -> message("address_lookupPage.editPage.townOrCity"),
         "submitLabel" -> message("common.continue")
       )

@@ -30,12 +30,12 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("anyOtherSupportingCancellationDocs.heading"))
+        @h1(messages("anyOtherSupportingCancellationDocs.pageTitle"))
 
         @formHelper(action = controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onSubmit()) {
             @yesNoRadio(
                 form,
-                headingKey = "anyOtherSupportingCancellationDocs.heading",
+                headingKey = "anyOtherSupportingCancellationDocs.pageTitle",
                 isPageHeading = false,
                 classes = "govuk-visually-hidden"
             )

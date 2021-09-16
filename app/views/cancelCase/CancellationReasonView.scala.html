@@ -31,14 +31,14 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages("cancellationReason.heading"))
+    @h1(messages("cancellationReason.pageTitle"))
 
     @formHelper(action = controllers.cancelCase.routes.CancellationReasonController.onSubmit()) {
         @inputTextArea(
             form,
             "value",
             "value",
-            messages("cancellationReason.heading"),
+            messages("cancellationReason.pageTitle"),
             true,
             false,
             classes = Some("govuk-fieldset__legend")

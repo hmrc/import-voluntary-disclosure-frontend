@@ -167,7 +167,7 @@ class ChangeUnderpaymentReasonController @Inject() (
 
   private[controllers] def pageHeading(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
-      case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonHeading")
-      case _                   => messages("changeUnderpaymentReason.heading", boxNumber.id)
+      case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonTitle")
+      case _                   => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
     }
 }

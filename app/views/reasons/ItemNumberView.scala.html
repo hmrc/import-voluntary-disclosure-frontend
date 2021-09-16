@@ -31,7 +31,7 @@
     @errorSummary(form.errors)
 
     @formHelper(action = formAction) {
-      @inputNumber(form = form, id = "itemNumber", name = "itemNumber", label = messages("itemNo.pageHeader"), isPageHeading = true, classes = Some("govuk-fieldset__legend govuk-input--width-5"))
+      @inputNumber(form = form, id = "itemNumber", name = "itemNumber", label = messages("itemNo.pageTitle"), isPageHeading = true, classes = Some("govuk-fieldset__legend govuk-input--width-5"))
       @button("common.button.continue")
 
     }

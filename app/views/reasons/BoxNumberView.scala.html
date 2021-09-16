@@ -36,7 +36,7 @@
 
             @inputRadio(
                 form = form,
-                legend = Some(if (isFirstBox) messages("boxNumber.heading.isFirstBox") else messages("boxNumber.heading")),
+                legend = Some(if (isFirstBox) messages("boxNumber.heading.isFirstBox") else messages("boxNumber.pageTitle")),
                 items = boxNumbers,
                 legendAsHeading = true,
                 hint = if (isFirstBox) Some(Html(messages("boxNumber.hint.isFirstBox"))) else None

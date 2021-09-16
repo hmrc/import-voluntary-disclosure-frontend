@@ -179,13 +179,13 @@ class ConfirmChangeReasonDetailController @Inject() (
 
   private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
-      case BoxNumber.OtherItem => messages("confirmChangeReason.otherReason.title")
+      case BoxNumber.OtherItem => messages("confirmChangeReason.otherReason.pageTitle")
       case _                   => messages("confirmChangeReason.pageTitle", boxNumber.id)
     }
 
   private[controllers] def pageHeading(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
-      case BoxNumber.OtherItem => messages("confirmChangeReason.otherReason.heading")
-      case _                   => messages("confirmChangeReason.heading", boxNumber.id)
+      case BoxNumber.OtherItem => messages("confirmChangeReason.otherReason.pageTitle")
+      case _                   => messages("confirmChangeReason.pageTitle", boxNumber.id)
     }
 }
