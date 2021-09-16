@@ -22,12 +22,12 @@ import forms.reasons.MoreInformationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.requests._
 import pages.CheckModePage
 import pages.importDetails.NumberOfEntriesPage
 import pages.reasons.MoreInformationPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
 import views.html.reasons.MoreInformationView
@@ -178,7 +178,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
               .set(NumberOfEntriesPage, OneEntry).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad())
+        result mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
 
       }
     }

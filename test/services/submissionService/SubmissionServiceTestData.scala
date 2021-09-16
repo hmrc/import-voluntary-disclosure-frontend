@@ -18,7 +18,7 @@ package services.submissionService
 
 import models.importDetails.NumberOfEntries.MoreThanOneEntry
 import models.{SubmissionData, UserAnswers}
-import pages.contactDetails.{DeclarantContactDetailsPage, ImporterAddressPage, TraderAddressCorrectPage, TraderAddressPage}
+import pages.contactDetails._
 import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.importDetails._
 import pages.paymentInfo._
@@ -51,7 +51,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(true),
@@ -67,7 +66,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = MoreThanOneEntry,
     entryDetails = None,
     amendedItems = None,
-    hasAdditionalInfo = None,
     anyOtherSupportingDocs = None,
     additionalInfo = Some("This is a bulk submission"),
     optionalDocumentsSupplied = None
@@ -100,7 +98,6 @@ trait SubmissionServiceTestData extends ReusableValues {
       completeSubmission.additionalDefermentAccountNumber.getOrElse(defermentAccountNumber)
     )
     answers <- answers.set(UnderpaymentReasonsPage, completeSubmission.amendedItems.get)
-    answers <- answers.set(HasFurtherInformationPage, completeSubmission.hasAdditionalInfo.get)
     answers <- answers.set(MoreInformationPage, completeSubmission.additionalInfo.getOrElse("Additional information"))
     answers <- answers.set(UnderpaymentDetailSummaryPage, completeSubmission.underpaymentDetails)
     answers <- answers.set(AnyOtherSupportingDocsPage, completeSubmission.anyOtherSupportingDocs.get)
@@ -135,7 +132,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(false),
     additionalInfo = None,
     underpaymentDetails = allUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(false),
@@ -151,7 +147,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     numEntries = MoreThanOneEntry,
     entryDetails = None,
     amendedItems = None,
-    hasAdditionalInfo = None,
     anyOtherSupportingDocs = None,
     additionalInfo = Some("This is a bulk submission")
   )
@@ -177,7 +172,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(true),
@@ -209,7 +203,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(false),
     additionalInfo = None,
     underpaymentDetails = allUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(false),
@@ -241,7 +234,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(true),
@@ -273,7 +265,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = None,
     additionalDefermentType = None,
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(true),
@@ -305,7 +296,6 @@ trait SubmissionServiceTestData extends ReusableValues {
     additionalDefermentAccountNumber = Some(defermentAccountNumber),
     additionalDefermentType = Some("B"),
     amendedItems = underpaymentReasons,
-    hasAdditionalInfo = Some(true),
     additionalInfo = Some("Additional information"),
     underpaymentDetails = someUnderpaymentDetailsSelected,
     anyOtherSupportingDocs = Some(true),

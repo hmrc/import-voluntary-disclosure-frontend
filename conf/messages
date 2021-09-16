@@ -743,8 +743,6 @@ cya.reasonForUnderpayment = Reason for underpayment
 cya.reasonForUnderpayment.change = View Reason for underpayment
 cya.numberOfUnderpaymentsSingle = 1 reason given
 cya.numberOfUnderpaymentsPlural = {0} reasons given
-cya.hasFurtherInformation = Tell us anything else?
-cya.hasFurtherInformation.change = Change Tell us anything else?
 cya.extraInformation = Extra information
 cya.bulk.reasonForUnderpayment = Reason for underpayment
 cya.extraInformation.change = Change Extra information
@@ -792,12 +790,6 @@ underpaymentReasonSummary.otherReason = Other reason
 underpaymentReasonSummary.itemLevel.change = Change box {0} item {1} reason for underpayment details
 underpaymentReasonSummary.entryLevel.change = Change box {0} reason for underpayment details
 underpaymentReasonSummary.otherReason.change = Change other reason for underpayment details
-
-# Has Further Information
-hasFurtherInformation.pageTitle = Do you want to tell us anything else about the underpayment?
-hasFurtherInformation.heading = Do you want to tell us anything else about the underpayment?
-hasFurtherInformation.hint = That you have not told us about already.
-hasFurtherInformation.error.required = Select yes if you want to provide more information about the underpayment
 
 # More Information
 moreInformation.single.pageTitle = Tell us the extra information about the underpayment

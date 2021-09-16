@@ -16,16 +16,15 @@
 
 package controllers.reasons
 
-import config.AppConfig
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.reasons.BoxNumberFormProvider
 import models.UserAnswers
 import models.reasons.BoxNumber
 import models.reasons.BoxNumber.BoxNumber
-import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
+import pages.reasons._
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -37,7 +36,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BoxNumberController @Inject() (
-  appConfig: AppConfig,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -50,10 +48,7 @@ class BoxNumberController @Inject() (
     with I18nSupport {
 
   private lazy val backLink: Call = controllers.reasons.routes.BoxGuidanceController.onLoad()
-  private val boxNumbers = {
-    if (appConfig.otherItemEnabled) BoxNumber.values
-    else BoxNumber.values - BoxNumber.OtherItem
-  }
+  private val boxNumbers          = BoxNumber.values
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UnderpaymentReasonBoxNumberPage).fold(formProvider()) {

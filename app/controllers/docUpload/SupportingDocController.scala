@@ -16,11 +16,9 @@
 
 package controllers.docUpload
 
-import config.AppConfig
 import controllers.actions._
 import models.UserAnswers
 import pages.docUpload.FileUploadPage
-import pages.reasons.HasFurtherInformationPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -35,8 +33,7 @@ class SupportingDocController @Inject() (
   getData: DataRetrievalAction,
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
-  view: SupportingDocView,
-  implicit val appConfig: AppConfig
+  view: SupportingDocView
 ) extends FrontendController(mcc)
     with I18nSupport {
 
@@ -48,14 +45,7 @@ class SupportingDocController @Inject() (
     }
   }
 
-  private[controllers] def backLink(userAnswers: UserAnswers): Call = {
-    if (appConfig.otherItemEnabled) {
-      controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
-    } else {
-      userAnswers.get(HasFurtherInformationPage) match {
-        case Some(value) if value => controllers.reasons.routes.MoreInformationController.onLoad()
-        case _                    => controllers.reasons.routes.HasFurtherInformationController.onLoad()
-      }
-    }
-  }
+  private[controllers] def backLink(userAnswers: UserAnswers): Call =
+    controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
+
 }

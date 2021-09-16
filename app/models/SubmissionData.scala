@@ -17,17 +17,17 @@
 package models
 
 import config.FixedConfig
-import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import models.importDetails._
 import models.reasons.UnderpaymentReason
 import models.underpayments.UnderpaymentDetail
-import pages.underpayments.UnderpaymentDetailSummaryPage
 import pages.contactDetails._
 import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.importDetails._
 import pages.paymentInfo._
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
+import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.shared.AnyOtherSupportingDocsPage
+import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.libs.json.Reads
 
 case class SubmissionData(
@@ -35,7 +35,6 @@ case class SubmissionData(
   knownDetails: EoriDetails,
   numEntries: NumberOfEntries,
   acceptedBeforeBrexit: Boolean,
-  hasAdditionalInfo: Option[Boolean],
   additionalInfo: Option[String],
   entryDetails: Option[EntryDetails],
   oneCpc: Option[Boolean],
@@ -87,7 +86,6 @@ object SubmissionData extends FixedConfig {
       defermentAccountNumber    <- DefermentAccountPage.path.readNullable[String]
       additionalDefermentNumber <- AdditionalDefermentNumberPage.path.readNullable[String]
       additionalDefermentType   <- AdditionalDefermentTypePage.path.readNullable[String]
-      hasAdditionalInfo         <- HasFurtherInformationPage.path.readNullable[Boolean]
       additionalInfo            <- MoreInformationPage.path.readNullable[String]
       amendedItems              <- UnderpaymentReasonsPage.path.readNullable[Seq[UnderpaymentReason]]
       splitDeferment            <- SplitPaymentPage.path.readNullable[Boolean]
@@ -118,7 +116,6 @@ object SubmissionData extends FixedConfig {
         defermentAccountNumber = defermentAccountNumber,
         additionalDefermentAccountNumber = additionalDefermentNumber,
         additionalDefermentType = additionalDefermentType,
-        hasAdditionalInfo = hasAdditionalInfo,
         additionalInfo = additionalInfo,
         amendedItems = amendedItems,
         splitDeferment = splitDeferment,

@@ -48,7 +48,6 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     val testConfig: AppConfig = appConfig
     lazy val controller = new BoxNumberController(
-      testConfig,
       authenticatedAction,
       dataRetrievalAction,
       dataRequiredAction,
@@ -99,7 +98,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       }
 
       "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
-        override val testConfig: AppConfig = new MockAppConfig(otherItemEnabled = true)
+        override val testConfig: AppConfig = new MockAppConfig()
         lazy val result: Future[Result] = controller.onSubmit(
           fakeRequestGenerator("99")
         )

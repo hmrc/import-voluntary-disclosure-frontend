@@ -206,26 +206,6 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.tellUsAnythingElse),
-            classes = "govuk-!-width-one-third"
-          ),
-          value = Value(
-            Text(yes)
-          ),
-          actions = Some(
-            Actions(items =
-              Seq(
-                ActionItem(
-                  controllers.reasons.routes.HasFurtherInformationController.onLoad().url,
-                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
-                  visuallyHiddenText = Some(CYAMessages.changeHasFurtherInformation)
-                )
-              )
-            )
-          )
-        ),
-        SummaryListRow(
-          key = Key(
             Text(CYAMessages.extraInformation),
             classes = "govuk-!-width-one-third"
           ),

@@ -62,8 +62,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       messagesControllerComponents,
       view,
-      formProvider,
-      testConfig
+      formProvider
     )
   }
 
@@ -93,16 +92,8 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.reasons.routes.BoxNumberController.onLoad().url)
       }
 
-      "return a SEE OTHER on no" in new Test {
-        override val testConfig: AppConfig                   = new MockAppConfig(otherItemEnabled = false)
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result]                      = controller.onSubmit()(request)
-        status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.reasons.routes.HasFurtherInformationController.onLoad().url)
-      }
-
       "return a SEE OTHER on Other Reason feature switch enabled" in new Test {
-        override val testConfig: AppConfig                   = new MockAppConfig(otherItemEnabled = true)
+        override val testConfig: AppConfig                   = new MockAppConfig()
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
