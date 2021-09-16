@@ -56,7 +56,6 @@ address_lookupPage.filter = Property name or number (optional)
 address_lookupPage.postcode = UK postcode
 address_lookupPage.selectPage.pageTitle = Select the address
 address_lookupPage.selectPage.editLink = Edit the address manually
-address_lookupPage.confirmPage.title = Confirm the address
 address_lookupPage.confirmPage.pageTitle = Confirm the address
 address_lookupPage.lookupPage.submit = Find Address
 address_lookupPage.editPage.pageTitle = Enter the address
@@ -116,7 +115,6 @@ numberOfEntries.error.required = Select if you are disclosing an underpayment fo
 acceptanceDate.single.pageTitle = Was the entry acceptance date before 1 January 2021?
 acceptanceDate.single.error.required = Select yes if the entry acceptance date was before 1 January 2021
 acceptanceDate.bulk.pageTitle = When were the entry acceptance dates for all the entries?
-acceptanceDate.bulk.heading = When were the entry acceptance dates for all the entries?
 acceptanceDate.bulk.info = You must not include entries where some have an entry acceptance date before and some after 1 January 2021. If the entries cross this date you will need to separate them and make two disclosures.
 acceptanceDate.bulk.radio.before = On or before 31 December 2020
 acceptanceDate.bulk.radio.after = From 1 January 2021
@@ -130,7 +128,7 @@ SupportDoc.bullet2 = the entry acceptance also known as the E2
 SupportDoc.bullet3 = a document or scanned image showing how you calculated the tax or duty that should have been paid
 
 # Error Summary
-error.summary.title = There is a problem
+error.summary.pageTitle = There is a problem
 
 # Underpayment Type
 underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
