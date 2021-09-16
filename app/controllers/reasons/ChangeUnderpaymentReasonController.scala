@@ -52,7 +52,7 @@ class ChangeUnderpaymentReasonController @Inject() (
       case Some(reason) =>
         val boxNumber = reason.original.boxNumber
         Future.successful(
-          Ok(view(backLink, summaryList(reason.original), pageTitle(boxNumber), pageHeading(boxNumber)))
+          Ok(view(backLink, summaryList(reason.original), pageTitle(boxNumber)))
         )
       case _ => Future.successful(InternalServerError("No change underpayment reasons found"))
     }
@@ -160,12 +160,6 @@ class ChangeUnderpaymentReasonController @Inject() (
     )
 
   private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String =
-    boxNumber match {
-      case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonTitle")
-      case _                   => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
-    }
-
-  private[controllers] def pageHeading(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {
       case BoxNumber.OtherItem => messages("changeUnderpaymentReason.otherReasonTitle")
       case _                   => messages("changeUnderpaymentReason.pageTitle", boxNumber.id)
