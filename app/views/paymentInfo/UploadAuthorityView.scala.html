@@ -50,21 +50,21 @@
 
     @govukDetails(
         Details(
-            summary = HtmlContent(messages("uploadAuthority.typesOfFile")),
+            summary = HtmlContent(messages("common.uploadFile.typesOfFile")),
             content = HtmlContent(
                 bullets(Seq(
-                    Html(messages("uploadAuthority.PDF")),
-                    Html(messages("uploadAuthority.CSV")),
-                    Html(messages("uploadAuthority.ms")),
-                    Html(messages("uploadAuthority.openDocumentFormat")),
-                    Html(messages("uploadAuthority.image"))
+                    Html(messages("common.uploadFile.PDF")),
+                    Html(messages("common.uploadFile.CSV")),
+                    Html(messages("common.uploadFile.ms")),
+                    Html(messages("common.uploadFile.openDocumentFormat")),
+                    Html(messages("common.uploadFile.image"))
                 ))
             )
         )
     )
 
     @p {
-        @messages("uploadAuthority.fileSizeText")
+        @messages("common.uploadFile.fileSize")
     }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
@@ -89,7 +89,7 @@
         )
        </div>
 
-        @button("uploadAuthority.uploadChosenFile")
+        @button("common.uploadFile.uploadChosenFile")
 
     </form>
 }

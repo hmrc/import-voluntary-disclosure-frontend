@@ -357,6 +357,17 @@ enterCustomsProcedureCode.hint = This can be 7 numbers, or 6 numbers and a lette
 enterCustomsProcedureCode.cpc.error.required = Enter the customs procedure code
 enterCustomsProcedureCode.cpc.error.format = Enter the customs procedure code in the correct format
 
+# Upload File common
+common.uploadFile.uploadAFile = Upload a file
+common.uploadFile.uploadChosenFile = Upload chosen file
+common.uploadFile.typesOfFile = Types of file you can upload
+common.uploadFile.PDF = PDF (.pdf)
+common.uploadFile.CSV = CSV (.csv)
+common.uploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
+common.uploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
+common.uploadFile.image = image (.jpeg, .jpg, .png or .tiff)
+common.uploadFile.fileSize = Each file must be 6MB or less and you can only upload one file at a time.
+
 # Upload File page
 uploadFile.pageTitle = Upload supporting documentation
 uploadFile.pageHeader = Upload supporting documentation
@@ -369,21 +380,12 @@ uploadFile.importAndEntry = the amendment import declaration (C88) and entry acc
 uploadFile.airwayBill = the airway bill
 uploadFile.originProof = a proof of origin
 uploadFile.other = other documentation relevant to this underpayment disclosure
-uploadFile.uploadAFile = Upload a file
 uploadFile.error.noFileSelected = Select a file to upload
 uploadFile.error.tooSmall = Select a file to upload
 uploadFile.error.tooBig = The selected file must be smaller than 6MB
 uploadFile.error.unknown = The selected file could not be uploaded – try again
 uploadFile.error.rejected = The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF
 uploadFile.error.quarantined = The selected file contains a virus
-uploadFile.uploadChosenFile = Upload chosen file
-uploadFile.typesOfFile = Types of file you can upload
-uploadFile.PDF = PDF (.pdf)
-uploadFile.CSV = CSV (.csv)
-uploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
-uploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadFile.image = image (.jpeg, .jpg, .png or .tiff)
-uploadFile.fileSize = Each file must be 6MB or less and you can only upload one file at a time.
 
 # Bulk Upload File page
 bulkUploadFile.pageTitle = Upload a file containing the underpayment details for each entry
@@ -394,13 +396,6 @@ bulkUploadFile.bullet2 = all item numbers
 bulkUploadFile.bullet3 = the type of tax or duty that was paid
 bulkUploadFile.bullet4 = the amount of tax or duty that was paid and the amount that should have been paid
 bulkUploadFile.bullet5 = the original and amended values of any information that was wrong in the original import declaration (for example, commodity codes or invoice values)
-bulkUploadFile.uploadFile = Upload chosen file
-bulkUploadFile.typesOfFile = Types of file you can upload
-bulkUploadFile.PDF = PDF (.pdf)
-bulkUploadFile.CSV = CSV (.csv)
-bulkUploadFile.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
-bulkUploadFile.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-bulkUploadFile.image = image (.jpeg, .jpg, .png or .tiff)
 bulkUploadFile.fileSize = The file must be 6MB or less.
 
 # File Upload Success page
@@ -887,15 +882,7 @@ uploadAuthority.vat = import VAT
 uploadAuthority.duty = duty
 uploadAuthority.both = import VAT and duty
 uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the deferment account. The date must be after the date of the original import declaration.
-uploadAuthority.typesOfFile = Types of file you can upload
-uploadAuthority.PDF = PDF (.pdf)
-uploadAuthority.CSV = CSV (.csv)
-uploadAuthority.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
-uploadAuthority.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadAuthority.image = image (.jpeg, .jpg, .png or .tiff)
-uploadAuthority.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
 uploadAuthority.uploadFile = Upload file
-uploadAuthority.uploadChosenFile = Upload chosen file
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
@@ -973,28 +960,10 @@ moreDocumentation.error.required = Select yes to send us more documentation
 # Upload Supporting Documentation page
 uploadSupportingDocumentation.pageTitle = Upload documentation
 uploadSupportingDocumentation.pageHeader = Upload documentation
-uploadSupportingDocumentation.typesOfFile = Types of file you can upload
-uploadSupportingDocumentation.PDF = PDF (.pdf)
-uploadSupportingDocumentation.CSV = CSV (.csv)
-uploadSupportingDocumentation.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
-uploadSupportingDocumentation.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadSupportingDocumentation.image = image (.jpeg, .jpg, .png or .tiff)
-uploadSupportingDocumentation.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
-uploadSupportingDocumentation.uploadFile = Upload a file
-uploadSupportingDocumentation.uploadChosenFile = Upload chosen file
 
 # Cancel Case Upload Supporting Documentation page
 uploadSupportingDocumentation.cancelCase.pageTitle = Upload documentation
 uploadSupportingDocumentation.cancelCase.pageHeader = Upload documentation
-uploadSupportingDocumentation.cancelCase.typesOfFile = Types of file you can upload
-uploadSupportingDocumentation.cancelCase.PDF = PDF (.pdf)
-uploadSupportingDocumentation.cancelCase.CSV = CSV (.csv)
-uploadSupportingDocumentation.cancelCase.ms = Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)
-uploadSupportingDocumentation.cancelCase.openDocumentFormat = Open Document Format (.odt, .ods or .odp)
-uploadSupportingDocumentation.cancelCase.image = image (.jpeg, .jpg, .png or .tiff)
-uploadSupportingDocumentation.cancelCase.fileSizeText = Each file must be 6MB or less and you can only upload one file at a time.
-uploadSupportingDocumentation.cancelCase.uploadFile = Upload a file
-uploadSupportingDocumentation.cancelCase.uploadChosenFile = Upload chosen file
 
 # Update Case - Check Your Answers Page
 updateCase.cya.pageTitle = Check your information before adding it to the disclosure

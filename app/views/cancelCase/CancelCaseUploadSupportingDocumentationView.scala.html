@@ -38,18 +38,18 @@
 
         @h1(messages("uploadSupportingDocumentation.cancelCase.pageHeader"))
 
-        <h2 class="govuk-heading-s">@messages("uploadSupportingDocumentation.cancelCase.typesOfFile")</h2>
+        <h2 class="govuk-heading-s">@messages("common.uploadFile.typesOfFile")</h2>
 
         @bullets(Seq(
-            Html(messages("uploadSupportingDocumentation.cancelCase.PDF")),
-            Html(messages("uploadSupportingDocumentation.cancelCase.CSV")),
-            Html(messages("uploadSupportingDocumentation.cancelCase.ms")),
-            Html(messages("uploadSupportingDocumentation.cancelCase.openDocumentFormat")),
-            Html(messages("uploadSupportingDocumentation.cancelCase.image"))
+            Html(messages("common.uploadFile.PDF")),
+            Html(messages("common.uploadFile.CSV")),
+            Html(messages("common.uploadFile.ms")),
+            Html(messages("common.uploadFile.openDocumentFormat")),
+            Html(messages("common.uploadFile.image"))
         ))
 
         @p {
-            @messages("uploadSupportingDocumentation.cancelCase.fileSizeText")
+            @messages("common.uploadFile.fileSize")
         }
 
         <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
@@ -66,7 +66,7 @@
                 form = form,
                 name = "file",
                 id = "file",
-                label = messages("uploadSupportingDocumentation.cancelCase.uploadFile"),
+                label = messages("common.uploadFile.uploadAFile"),
                 isPageHeading = false,
                 attributes = Map(
                     "accept" -> appConfig.upScanAcceptedFileTypes,
@@ -76,7 +76,7 @@
             )
             </div>
 
-            @button("uploadSupportingDocumentation.cancelCase.uploadChosenFile")
+            @button("common.uploadFile.uploadChosenFile")
 
         </form>
     }

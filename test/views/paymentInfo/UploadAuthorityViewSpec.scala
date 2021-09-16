@@ -128,8 +128,8 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       elementText("#main-content p:nth-of-type(2)") mustBe UploadAuthorityMessages.para2
     }
 
-    s"have the correct text of '${UploadAuthorityMessages.fileSizeText}'" in {
-      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.fileSizeText
+    s"have the correct text of '${UploadAuthorityMessages.fileSize}'" in {
+      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.fileSize
     }
 
     s"have the correct list of allowed file types" in {
@@ -146,7 +146,7 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe UploadAuthorityMessages.button
+      elementText(".govuk-button") mustBe UploadAuthorityMessages.uploadChosenFile
     }
 
   }

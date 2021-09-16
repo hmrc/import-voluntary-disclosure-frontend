@@ -16,24 +16,10 @@
 
 package messages
 
-object UploadSupportingDocumentationMessages extends BaseMessages {
+import assets.messages.UploadFileCommonMessages
+
+object UploadSupportingDocumentationMessages extends UploadFileCommonMessages {
 
   val title: String        = "Upload documentation"
   val h1: String           = "Upload documentation"
-  val fileSizeText: String = "Each file must be 6MB or less and you can only upload one file at a time."
-  val typesOfFile          = "Types of file you can upload"
-  val filePdf              = "PDF (.pdf)"
-  val fileCsv              = "CSV (.csv)"
-  val fileMs               = "Microsoft Excel, Word or PowerPoint (.xls, .xlsx, .doc, .docx, .ppt or .pptx)"
-  val fileOd               = "Open Document Format (.odt, .ods or .odp)"
-  val fileImage            = "image (.jpeg, .jpg, .png or .tiff)"
-  val uploadFile: String   = "Upload a file"
-  val button: String       = "Upload chosen file"
-  val fileUploadId: String = "file"
-  val fileTooSmall         = "Select a file to upload"
-  val fileTooBig           = "The selected file must be smaller than 6MB"
-  val fileUnknown          = "The selected file could not be uploaded – try again"
-  val fileRejected =
-    "The selected file must be a PDF, XLS, XLSX, DOC, DOCX, PPT, PPTX, ODT, ODS, ODP, JPG, PNG, or TIFF"
-  val fileQuarantined = "The selected file contains a virus"
 }

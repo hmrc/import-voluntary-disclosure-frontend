@@ -53,14 +53,14 @@
 
     @govukDetails(
         Details(
-            summary = HtmlContent(messages("bulkUploadFile.typesOfFile")),
+            summary = HtmlContent(messages("common.uploadFile.typesOfFile")),
             content = HtmlContent(
                  bullets(Seq(
-                 Html(messages("bulkUploadFile.PDF")),
-                 Html(messages("bulkUploadFile.CSV")),
-                 Html(messages("bulkUploadFile.ms")),
-                 Html(messages("bulkUploadFile.openDocumentFormat")),
-                 Html(messages("bulkUploadFile.image"))
+                 Html(messages("common.uploadFile.PDF")),
+                 Html(messages("common.uploadFile.CSV")),
+                 Html(messages("common.uploadFile.ms")),
+                 Html(messages("common.uploadFile.openDocumentFormat")),
+                 Html(messages("common.uploadFile.image"))
                 ))
             )
         )
@@ -81,7 +81,7 @@
                 form = form,
                 name = "file",
                 id = "file",
-                label = messages("uploadFile.uploadAFile"),
+                label = messages("common.uploadFile.uploadAFile"),
                 isPageHeading = false,
                 attributes = Map(
                     "accept" -> appConfig.upScanAcceptedFileTypes,
@@ -92,7 +92,7 @@
 
        </div>
 
-        @button("bulkUploadFile.uploadFile")
+        @button("common.uploadFile.uploadChosenFile")
     </form>
 }
 
