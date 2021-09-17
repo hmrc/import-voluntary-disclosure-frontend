@@ -84,8 +84,8 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
       injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${RemoveUploadedFileMessages.h1}'" in {
-      elementText("h1") mustBe RemoveUploadedFileMessages.h1
+    s"have the correct h1 of '${RemoveUploadedFileMessages.title}'" in {
+      elementText("h1") mustBe RemoveUploadedFileMessages.title
     }
 
     s"have the correct filename in the body" in {

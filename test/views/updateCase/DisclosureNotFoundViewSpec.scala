@@ -37,8 +37,8 @@ class DisclosureNotFoundViewSpec extends ViewBaseSpec with BaseMessages {
     "it" should {
       lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the correct page heading of '${DisclosureNotFoundMessages.heading}'" in {
-        elementText("h1") mustBe DisclosureNotFoundMessages.heading
+      s"have the correct page heading of '${DisclosureNotFoundMessages.pageTitle}'" in {
+        elementText("h1") mustBe DisclosureNotFoundMessages.pageTitle
       }
 
       s"have the correct page text of '${DisclosureNotFoundMessages.p1(caseId)}'" in {

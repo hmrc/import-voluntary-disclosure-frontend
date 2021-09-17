@@ -64,8 +64,8 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${OtherReasonAmendmentMessages.h1}'" in {
-        elementText("h1") mustBe OtherReasonAmendmentMessages.h1
+      s"have the correct h1 of '${OtherReasonAmendmentMessages.title}'" in {
+        elementText("h1") mustBe OtherReasonAmendmentMessages.title
       }
 
     }

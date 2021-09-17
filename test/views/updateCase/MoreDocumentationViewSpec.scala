@@ -77,8 +77,8 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${MoreDocumentationMessages.h1}'" in {
-      elementText("h1") mustBe MoreDocumentationMessages.h1
+    s"have the correct h1 of '${MoreDocumentationMessages.title}'" in {
+      elementText("h1") mustBe MoreDocumentationMessages.title
     }
 
     s"have the correct value for the first radio button of '${MoreDocumentationMessages.siteYes}'" in {

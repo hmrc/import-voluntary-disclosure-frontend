@@ -46,7 +46,7 @@ class OptionalSupportingDocsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(OptionalDocumentsMessages.pageTitle)
 
       s"have the correct page header" in {
-        elementText("h1") mustBe OptionalDocumentsMessages.pageHeader
+        elementText("h1") mustBe OptionalDocumentsMessages.pageTitle
       }
 
       "not render an error summary" in {

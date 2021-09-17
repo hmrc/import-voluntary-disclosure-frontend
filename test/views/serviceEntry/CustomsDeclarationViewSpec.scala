@@ -54,7 +54,7 @@ class CustomsDeclarationViewSpec extends ViewBaseSpec {
       lazy val view: Html                  = injectedView(form)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      checkPageTitle(errorPrefix + heading)
+      checkPageTitle(errorPrefix + title)
 
       "render an error summary with the correct message" in {
         elementText("div.govuk-error-summary > div") mustBe errorRequired
@@ -74,7 +74,7 @@ class CustomsDeclarationViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe heading
+      elementText("h1") mustBe title
     }
 
     s"have the correct value for the first radio button of '$siteYes'" in {

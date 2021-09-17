@@ -19,7 +19,6 @@ package messages
 object UnderpaymentStartMessages extends BaseMessages {
 
   val pageTitle: String       = "Tell us what was underpaid"
-  val heading: String         = "Tell us what was underpaid"
   val p1: String              = "For each type of tax or duty, you will need to provide:"
   val oneEntryBullet1: String = "the amount that was originally paid"
   val oneEntryBullet2: String = "the amount that should have been paid"

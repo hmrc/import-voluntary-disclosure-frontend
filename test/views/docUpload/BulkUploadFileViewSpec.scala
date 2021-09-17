@@ -63,8 +63,8 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
     checkPageTitle(BulkUploadFileMessages.title)
 
-    s"have the correct h1 of '${BulkUploadFileMessages.h1}'" in {
-      elementText("h1") mustBe BulkUploadFileMessages.h1
+    s"have the correct h1 of '${BulkUploadFileMessages.title}'" in {
+      elementText("h1") mustBe BulkUploadFileMessages.title
     }
 
     s"have the correct text of '${BulkUploadFileMessages.mustContain}'" in {

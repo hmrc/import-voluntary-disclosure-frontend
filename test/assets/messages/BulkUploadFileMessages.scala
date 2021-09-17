@@ -16,12 +16,9 @@
 
 package messages
 
-import assets.messages.UploadFileCommonMessages
-
 object BulkUploadFileMessages extends UploadFileCommonMessages {
 
   val title: String = "Upload a file containing the underpayment details for each entry"
-  val h1: String    = "Upload a file containing the underpayment details for each entry"
   val mustContain: String =
     "Your file must contain a list of all the entries you are including in this underpayment disclosure. For each entry you must provide:"
   val bullet1: String = "the EPU number, entry number and entry date"

@@ -143,8 +143,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
 
-    s"have the correct h1 of '${UploadFileMessages.h1}'" in {
-      elementText("h1") mustBe UploadFileMessages.h1
+    s"have the correct h1 of '${UploadFileMessages.title}'" in {
+      elementText("h1") mustBe UploadFileMessages.title
     }
 
     s"have the correct text of '${UploadFileMessages.mustInclude}'" in {

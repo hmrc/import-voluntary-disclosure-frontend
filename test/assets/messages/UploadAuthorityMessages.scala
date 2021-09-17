@@ -16,12 +16,9 @@
 
 package messages
 
-import assets.messages.UploadFileCommonMessages
-
 object UploadAuthorityMessages extends UploadFileCommonMessages {
 
   val title: String = "Upload proof of authority to use this deferment account"
-  val h1: String    = "Upload proof of authority to use this deferment account"
 
   def para1(dan: String, dutyType: String): String =
     s"You must provide proof that you have one-off authority to use this deferment account $dan to pay for the $dutyType owed."

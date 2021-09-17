@@ -76,8 +76,8 @@ class AcceptanceDateViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${AcceptanceDateMessages.h1}'" in {
-      elementText("h1") mustBe AcceptanceDateMessages.h1
+    s"have the correct h1 of '${AcceptanceDateMessages.title}'" in {
+      elementText("h1") mustBe AcceptanceDateMessages.title
     }
 
     s"have the correct value for the first radio button of '${AcceptanceDateMessages.siteYes}'" in {

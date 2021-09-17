@@ -93,8 +93,8 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
     checkPageTitle(UploadSupportingDocumentationMessages.title)
 
-    s"have the correct h1 of '${UploadSupportingDocumentationMessages.h1}'" in {
-      elementText("h1") mustBe UploadSupportingDocumentationMessages.h1
+    s"have the correct h1 of '${UploadSupportingDocumentationMessages.title}'" in {
+      elementText("h1") mustBe UploadSupportingDocumentationMessages.title
     }
 
     s"have the correct text of '${UploadSupportingDocumentationMessages.fileSize}'" in {

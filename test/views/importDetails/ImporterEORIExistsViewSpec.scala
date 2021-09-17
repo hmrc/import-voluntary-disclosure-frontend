@@ -78,8 +78,8 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterEORIExistsMessages.h1}'" in {
-      elementText("h1") mustBe ImporterEORIExistsMessages.h1
+    s"have the correct h1 of '${ImporterEORIExistsMessages.title}'" in {
+      elementText("h1") mustBe ImporterEORIExistsMessages.title
     }
 
     s"have the correct hint of '${ImporterEORIExistsMessages.hint}'" in {

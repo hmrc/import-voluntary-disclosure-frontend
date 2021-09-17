@@ -41,8 +41,8 @@ class CancelCaseDisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages 
       "it" should {
         lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page title of '${CancelCaseDisclosureClosedMessages.heading}'" in {
-          elementText("h1") mustBe CancelCaseDisclosureClosedMessages.heading
+        s"have the correct page title of '${CancelCaseDisclosureClosedMessages.pageTitle}'" in {
+          elementText("h1") mustBe CancelCaseDisclosureClosedMessages.pageTitle
         }
 
         s"have the correct page text of '${CancelCaseDisclosureClosedMessages.p1}'" in {

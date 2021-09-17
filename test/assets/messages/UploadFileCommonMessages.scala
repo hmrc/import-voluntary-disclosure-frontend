@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package assets.messages
-
-import messages.BaseMessages
+package messages
 
 trait UploadFileCommonMessages extends BaseMessages {
 

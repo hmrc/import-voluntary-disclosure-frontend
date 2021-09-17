@@ -91,8 +91,8 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
     checkPageTitle(title)
 
-    s"have the correct h1 of '$h1'" in {
-      elementText("h1") mustBe h1
+    s"have the correct h1 of '$title'" in {
+      elementText("h1") mustBe title
     }
 
     s"have the correct text of '$fileSize'" in {

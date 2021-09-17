@@ -16,10 +16,9 @@
 
 package messages.cancelCase
 
-import assets.messages.UploadFileCommonMessages
+import messages.UploadFileCommonMessages
 
 object CancelCaseUploadSupportingDocumentationMessages extends UploadFileCommonMessages {
 
   val title: String = "Upload documentation"
-  val h1: String    = "Upload documentation"
 }

@@ -261,8 +261,8 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, singleFileSummaryList, maxOptDocs)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${UploadAnotherFileMessages.h1("1", "file")}'" in {
-      elementText("h1") mustBe UploadAnotherFileMessages.h1("1", "file")
+    s"have the correct h1 of '${UploadAnotherFileMessages.title("1", "file")}'" in {
+      elementText("h1") mustBe UploadAnotherFileMessages.title("1", "file")
     }
 
     s"have the correct value for the first radio button of '${UploadAnotherFileMessages.siteYes}'" in {

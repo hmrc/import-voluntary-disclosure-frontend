@@ -19,7 +19,6 @@ package messages
 object EntryDetailsMessages extends BaseMessages {
 
   val title: String         = "Entry details"
-  val h1: String            = "Entry details"
   val paragraph             = "These can be found on the E2."
   val paragraphWhenImporter = "These can be found on the E2 or by asking your shipping agent or courier."
 

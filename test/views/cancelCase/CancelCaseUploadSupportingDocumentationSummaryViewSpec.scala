@@ -187,8 +187,8 @@ class CancelCaseUploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpe
     lazy val view: Html                  = injectedView(form, singleFileSummaryList)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${h1("1", "file")}'" in {
-      elementText("h1") mustBe h1("1", "file")
+    s"have the correct h1 of '${title("1", "file")}'" in {
+      elementText("h1") mustBe title("1", "file")
     }
 
     s"have the correct value for the first radio button of '$siteYes'" in {

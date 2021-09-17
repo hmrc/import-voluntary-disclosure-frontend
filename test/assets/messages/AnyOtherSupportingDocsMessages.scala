@@ -19,7 +19,6 @@ package messages
 object AnyOtherSupportingDocsMessages extends BaseMessages {
 
   val pageTitle: String = "Do you have any of these documents?"
-  val heading: String   = "Do you have any of these documents?"
   val p1: String        = "You must upload the following documents if they apply:"
   val bullet1: String =
     "the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry"

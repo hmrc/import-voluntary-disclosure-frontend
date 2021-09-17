@@ -19,7 +19,6 @@ package messages
 object NumberOfEntriesMessages extends BaseMessages {
 
   val title: String          = "How many entries are you disclosing an underpayment for?"
-  val h1: String             = "How many entries are you disclosing an underpayment for?"
   val radioButtonOne: String = "One entry"
   val radioButtonTwo: String = "More than one entry"
   val hint: String           = "All the entries must be for the same importer."

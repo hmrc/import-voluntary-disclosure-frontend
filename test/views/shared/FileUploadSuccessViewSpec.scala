@@ -49,8 +49,8 @@ class FileUploadSuccessViewSpec extends ViewBaseSpec {
       elementExtinct("#back-link")
     }
 
-    s"have the correct h1 of '${FileUploadSuccessMessages.h1}'" in {
-      elementText("h1") mustBe FileUploadSuccessMessages.h1
+    s"have the correct h1 of '${FileUploadSuccessMessages.title}'" in {
+      elementText("h1") mustBe FileUploadSuccessMessages.title
     }
 
     s"have the correct text of '${FileUploadSuccessMessages.bodyText}'" in {

@@ -52,8 +52,8 @@ class CancelCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
     checkPageTitle(CancelCaseCYAMessages.title)
 
-    s"have the correct h1 of '${CancelCaseCYAMessages.heading}'" in {
-      elementText("h1") mustBe CancelCaseCYAMessages.heading
+    s"have the correct h1 of '${CancelCaseCYAMessages.title}'" in {
+      elementText("h1") mustBe CancelCaseCYAMessages.title
     }
 
     "have Now send your cancellation request sub-heading " in {

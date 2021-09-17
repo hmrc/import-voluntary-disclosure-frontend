@@ -16,10 +16,7 @@
 
 package messages
 
-import assets.messages.UploadFileCommonMessages
-
 object UploadSupportingDocumentationMessages extends UploadFileCommonMessages {
 
-  val title: String        = "Upload documentation"
-  val h1: String           = "Upload documentation"
+  val title: String = "Upload documentation"
 }

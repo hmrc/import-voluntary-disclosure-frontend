@@ -100,7 +100,7 @@ class ChangeUnderpaymentReasonViewSpec extends ViewBaseSpec {
 
     "showing underpayment without item number" should {
 
-      val title   = messages("changeUnderpaymentReason.pageTitle", singleEntryLevelReason.original.boxNumber.id)
+      val title = messages("changeUnderpaymentReason.pageTitle", singleEntryLevelReason.original.boxNumber.id)
       lazy val view: Html =
         injectedView(backLink, entryLevelSummaryList(BoxNumber.Box35), title)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)

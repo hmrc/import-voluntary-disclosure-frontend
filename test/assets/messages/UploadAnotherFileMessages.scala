@@ -20,8 +20,6 @@ object UploadAnotherFileMessages extends BaseMessages {
 
   def title(size: String, singularFile: String) = s"You have uploaded $size $singularFile"
 
-  def h1(size: String, singularFile: String) = s"You have uploaded $size $singularFile"
-
   val requiredError: String    = "Select yes to upload another file"
   val remove: String           = "Remove fileName"
   val remove2: String          = "Remove fileName2"

@@ -16,12 +16,9 @@
 
 package messages
 
-import assets.messages.UploadFileCommonMessages
-
 object UploadFileMessages extends UploadFileCommonMessages {
 
   val title: String            = "Upload supporting documentation"
-  val h1: String               = "Upload supporting documentation"
   val mustInclude: String      = "You must upload:"
   val mayInclude: String       = "You have told us you will upload:"
   val mustIncludeFile1: String = "the import declaration, also known as the C88 or SAD"

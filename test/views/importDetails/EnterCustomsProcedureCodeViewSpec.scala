@@ -113,8 +113,8 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${EnterCustomsProcedureCodeMessages.h1}'" in {
-      elementText("h1") mustBe EnterCustomsProcedureCodeMessages.h1
+    s"have the correct h1 of '${EnterCustomsProcedureCodeMessages.title}'" in {
+      elementText("h1") mustBe EnterCustomsProcedureCodeMessages.title
     }
 
     s"have the correct p of '${EnterCustomsProcedureCodeMessages.hint}'" in {

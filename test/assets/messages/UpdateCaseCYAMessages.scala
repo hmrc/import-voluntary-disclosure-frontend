@@ -19,7 +19,6 @@ package messages
 object UpdateCaseCYAMessages extends BaseMessages {
 
   val title: String           = "Check your information before adding it to the disclosure"
-  val heading: String         = "Check your information before adding it to the disclosure"
   val sendInformation: String = "Now add your information"
   val disclosureConfirmation: String =
     "By adding this information you are confirming that, to the best of your knowledge, the details you are providing are correct."

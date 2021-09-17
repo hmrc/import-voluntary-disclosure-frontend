@@ -120,8 +120,8 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
 
-    s"have the correct h1 of '${UploadAuthorityMessages.h1}'" in {
-      elementText("h1") mustBe UploadAuthorityMessages.h1
+    s"have the correct h1 of '${UploadAuthorityMessages.title}'" in {
+      elementText("h1") mustBe UploadAuthorityMessages.title
     }
 
     s"have the correct text of '${UploadAuthorityMessages.para2}'" in {

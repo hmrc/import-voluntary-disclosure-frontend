@@ -46,8 +46,8 @@ class FileUploadProgressViewSpec extends ViewBaseSpec {
 
     checkPageTitle(FileUploadProgressMessages.title)
 
-    s"have the correct h1 of '${FileUploadProgressMessages.h1}'" in {
-      elementText("h1") mustBe FileUploadProgressMessages.h1
+    s"have the correct h1 of '${FileUploadProgressMessages.title}'" in {
+      elementText("h1") mustBe FileUploadProgressMessages.title
     }
 
     s"have the correct text of '${FileUploadProgressMessages.waiting}'" in {

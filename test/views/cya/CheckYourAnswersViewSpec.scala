@@ -58,8 +58,8 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
     checkPageTitle(CYAMessages.title)
 
-    s"have the correct h1 of '${CYAMessages.heading}'" in {
-      elementText("h1") mustBe CYAMessages.heading
+    s"have the correct h1 of '${CYAMessages.title}'" in {
+      elementText("h1") mustBe CYAMessages.title
     }
 
     "have Now Send Disclosure sub-heading " in {
