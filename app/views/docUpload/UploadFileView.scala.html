@@ -32,8 +32,6 @@
 
 @(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Option[Call], optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
-@CSRF.formField
-
 @layout(
     pageTitle = messages("uploadFile.pageTitle"),
     customBackLinkUrl = backLink,
@@ -85,6 +83,8 @@
     }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
+
+        @CSRF.formField
 
         <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
            @upScanResponse.uploadFormTemplate.fields.map { row =>
