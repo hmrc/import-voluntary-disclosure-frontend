@@ -17,6 +17,8 @@
 @import config.AppConfig
 @import models.upscan.UpScanInitiateResponse
 
+@import views.html.helper.CSRF
+
 @this(layout: templates.Layout,
         inputFileUpload: components.inputFileUpload,
         h1: components.h1,
@@ -61,7 +63,9 @@
                <input type="hidden" name="@row._1" value="@row._2">
            }
 
-        @inputFileUpload(
+            @CSRF.formField
+
+            @inputFileUpload(
             form = form,
             name = "file",
             id = "file",
