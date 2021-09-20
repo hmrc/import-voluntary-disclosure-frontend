@@ -84,12 +84,12 @@
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
-        @CSRF.formField
-
         <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
            @upScanResponse.uploadFormTemplate.fields.map { row =>
                <input type="hidden" name="@row._1" value="@row._2">
            }
+
+            @CSRF.formField
 
             @inputFileUpload(
                 form = form,
