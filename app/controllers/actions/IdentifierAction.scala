@@ -72,7 +72,7 @@ class AuthenticatedIdentifierAction @Inject() (
           block(req)
         }
       case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual)
-          if !isValidUser(enrolments) && config.privateCitizenEnabled =>
+          if !isValidUser(enrolments) =>
         val updatedSession = request.session + ("credId" -> userId)
         Future.successful(
           Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad()).withSession(updatedSession)

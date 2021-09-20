@@ -46,7 +46,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -206,7 +205,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
           privateBetaAllowList = List.empty,
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = true,
-          privateCitizenEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
