@@ -21,7 +21,6 @@ import messages.BaseMessages
 object CancelCaseDisclosureNotFoundMessages extends BaseMessages {
 
   val pageTitle: String = "No disclosure found"
-  val heading: String   = "No disclosure found"
 
   def p1(caseId: String): String = s"We cannot find a disclosure with the reference number $caseId."
 

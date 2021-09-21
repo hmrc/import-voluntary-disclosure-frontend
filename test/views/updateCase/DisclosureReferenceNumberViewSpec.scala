@@ -102,8 +102,8 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
     lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${DisclosureReferenceNumberMessages.label}'" in {
-      elementText("h1") mustBe DisclosureReferenceNumberMessages.label
+    s"have the correct h1 of '${DisclosureReferenceNumberMessages.title}'" in {
+      elementText("h1") mustBe DisclosureReferenceNumberMessages.title
     }
 
     s"have the correct hint" in {

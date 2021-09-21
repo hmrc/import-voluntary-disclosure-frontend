@@ -28,9 +28,9 @@
 @titleAndHeader = {
 @summaryList.map { sl =>
     @if(sl.rows.size == 1) {
-        @messages("underpaymentReasonSummary.pageHeaderSingleReason")
+        @messages("underpaymentReasonSummary.pageTitleSingleReason")
     } else {
-        @messages("underpaymentReasonSummary.pageHeader", sl.rows.size)
+        @messages("underpaymentReasonSummary.pageTitle", sl.rows.size)
     }
 }
 }

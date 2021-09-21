@@ -32,7 +32,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"))
+        @h1(if(isSingleEntry) messages("moreInformation.single.pageTitle") else messages("moreInformation.bulk.pageTitle"))
 
         @if(!isSingleEntry) {
             @p(Html(messages("moreInformation.bulk.p1")))
@@ -47,7 +47,7 @@
                 form,
                 "value",
                 "value",
-                if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.heading"),
+                if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.pageTitle"),
                 true,
                 false,
                 classes = Some("govuk-fieldset__legend")

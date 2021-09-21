@@ -19,7 +19,6 @@ package messages
 object DisclosureReferenceNumberMessages extends BaseMessages {
 
   val title: String = "What is the disclosure reference number?"
-  val label: String = "What is the disclosure reference number?"
   val hint =
     "This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information."
   val details =

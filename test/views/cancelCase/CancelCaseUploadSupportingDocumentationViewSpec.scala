@@ -91,12 +91,12 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
     checkPageTitle(title)
 
-    s"have the correct h1 of '$h1'" in {
-      elementText("h1") mustBe h1
+    s"have the correct h1 of '$title'" in {
+      elementText("h1") mustBe title
     }
 
-    s"have the correct text of '$fileSizeText'" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe fileSizeText
+    s"have the correct text of '$fileSize'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe fileSize
     }
 
     s"have the correct list of allowed file types" in {
@@ -108,12 +108,12 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
       elementText(".govuk-list > li:nth-of-type(5)") mustBe fileImage
     }
 
-    s"have the '$uploadFile' upload label" in {
-      elementText(".govuk-form-group > label") mustBe uploadFile
+    s"have the '$uploadAFile' upload label" in {
+      elementText(".govuk-form-group > label") mustBe uploadAFile
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe button
+      elementText(".govuk-button") mustBe uploadChosenFile
     }
 
   }

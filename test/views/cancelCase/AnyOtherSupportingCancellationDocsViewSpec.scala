@@ -49,8 +49,8 @@ class AnyOtherSupportingCancellationDocsViewSpec extends ViewBaseSpec with BaseM
         val form: Form[Boolean]              = formProvider.apply()
         lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page heading of '${AnyOtherSupportingCancellationDocsMessages.heading}'" in {
-          elementText("h1") mustBe AnyOtherSupportingCancellationDocsMessages.heading
+        s"have the correct page heading of '${AnyOtherSupportingCancellationDocsMessages.pageTitle}'" in {
+          elementText("h1") mustBe AnyOtherSupportingCancellationDocsMessages.pageTitle
         }
 
         s"have the correct value for the first radio button of '${AnyOtherSupportingCancellationDocsMessages.yes}'" in {

@@ -63,8 +63,8 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
 
     checkPageTitle(BulkUploadFileMessages.title)
 
-    s"have the correct h1 of '${BulkUploadFileMessages.h1}'" in {
-      elementText("h1") mustBe BulkUploadFileMessages.h1
+    s"have the correct h1 of '${BulkUploadFileMessages.title}'" in {
+      elementText("h1") mustBe BulkUploadFileMessages.title
     }
 
     s"have the correct text of '${BulkUploadFileMessages.mustContain}'" in {
@@ -95,38 +95,38 @@ class BulkUploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > details > summary > span") mustBe BulkUploadFileMessages.typesOfFile
     }
 
-    s"have correct link within the expandable text '${BulkUploadFileMessages.PDF}'" in {
+    s"have correct link within the expandable text '${BulkUploadFileMessages.filePdf}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)"
-      ) mustBe BulkUploadFileMessages.PDF
+      ) mustBe BulkUploadFileMessages.filePdf
     }
 
-    s"have correct link within the expandable text '${BulkUploadFileMessages.CSV}'" in {
+    s"have correct link within the expandable text '${BulkUploadFileMessages.fileCsv}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)"
-      ) mustBe BulkUploadFileMessages.CSV
+      ) mustBe BulkUploadFileMessages.fileCsv
     }
 
-    s"have correct link within the expandable text '${BulkUploadFileMessages.excel}'" in {
+    s"have correct link within the expandable text '${BulkUploadFileMessages.fileMs}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)"
-      ) mustBe BulkUploadFileMessages.excel
+      ) mustBe BulkUploadFileMessages.fileMs
     }
 
-    s"have correct link within the expandable text '${BulkUploadFileMessages.openDocumentFormat}'" in {
+    s"have correct link within the expandable text '${BulkUploadFileMessages.fileOd}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)"
-      ) mustBe BulkUploadFileMessages.openDocumentFormat
+      ) mustBe BulkUploadFileMessages.fileOd
     }
 
-    s"have correct link within the expandable text '${BulkUploadFileMessages.image}'" in {
+    s"have correct link within the expandable text '${BulkUploadFileMessages.fileImage}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)"
-      ) mustBe BulkUploadFileMessages.image
+      ) mustBe BulkUploadFileMessages.fileImage
     }
 
     "have the correct Continue button" in {
-      elementText(".govuk-button") mustBe BulkUploadFileMessages.uploadFile
+      elementText(".govuk-button") mustBe BulkUploadFileMessages.uploadChosenFile
     }
 
   }

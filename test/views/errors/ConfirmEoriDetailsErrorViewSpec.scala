@@ -35,7 +35,7 @@ class ConfirmEoriDetailsErrorViewSpec extends ViewBaseSpec with BaseMessages {
     checkPageTitle(ConfirmEoriDetailsErrorMessages.title)
 
     s"have the correct page heading" in {
-      elementText("h1") mustBe ConfirmEoriDetailsErrorMessages.heading
+      elementText("h1") mustBe ConfirmEoriDetailsErrorMessages.title
     }
 
     s"have the correct instructions" in {

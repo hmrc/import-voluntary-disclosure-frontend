@@ -42,8 +42,8 @@ class SupportingDocViewSpec extends ViewBaseSpec with BaseMessages {
           controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page heading of '${SupportingDocMessages.heading}'" in {
-          elementText("h1") mustBe SupportingDocMessages.heading
+        s"have the correct page heading of '${SupportingDocMessages.pageTitle}'" in {
+          elementText("h1") mustBe SupportingDocMessages.pageTitle
         }
 
         s"have the correct page text of '${SupportingDocMessages.disclosure}'" in {

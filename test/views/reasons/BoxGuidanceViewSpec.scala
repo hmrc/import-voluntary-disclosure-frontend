@@ -49,8 +49,8 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     "it" should {
       lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the correct page heading of '${BoxGuidanceMessages.heading}'" in {
-        elementText("h1") mustBe BoxGuidanceMessages.heading
+      s"have the correct page heading of '${BoxGuidanceMessages.title}'" in {
+        elementText("h1") mustBe BoxGuidanceMessages.title
       }
 
       s"have the correct p1 page text of '${BoxGuidanceMessages.p1}'" in {

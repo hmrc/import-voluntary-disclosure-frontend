@@ -40,8 +40,8 @@ class DisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages {
       "it" should {
         lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        s"have the correct page title of '${DisclosureClosedMessages.heading}'" in {
-          elementText("h1") mustBe DisclosureClosedMessages.heading
+        s"have the correct page title of '${DisclosureClosedMessages.pageTitle}'" in {
+          elementText("h1") mustBe DisclosureClosedMessages.pageTitle
         }
 
         s"have the correct page text of '${DisclosureClosedMessages.p1}'" in {

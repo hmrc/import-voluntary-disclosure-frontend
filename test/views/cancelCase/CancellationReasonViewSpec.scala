@@ -50,8 +50,8 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${CancellationReasonMessages.h1}'" in {
-        elementText("h1") mustBe CancellationReasonMessages.h1
+      s"have the correct h1 of '${CancellationReasonMessages.title}'" in {
+        elementText("h1") mustBe CancellationReasonMessages.title
       }
 
     }

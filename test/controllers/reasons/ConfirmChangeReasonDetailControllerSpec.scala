@@ -214,14 +214,12 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     "Other Item is selected" should {
       "render dedicated messages" in new Test {
         controller.pageTitle(BoxNumber.OtherItem) mustBe ConfirmChangeReasonDetailMessages.otherReasonTitle
-        controller.pageHeading(BoxNumber.OtherItem) mustBe ConfirmChangeReasonDetailMessages.otherReasonHeading
       }
     }
 
     "Other Item is not selected" should {
       "render regular messages" in new Test {
         controller.pageTitle(BoxNumber.Box33) mustBe ConfirmChangeReasonDetailMessages.title(33)
-        controller.pageHeading(BoxNumber.Box33) mustBe ConfirmChangeReasonDetailMessages.heading(33)
       }
     }
   }

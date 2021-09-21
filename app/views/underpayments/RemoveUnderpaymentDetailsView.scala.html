@@ -33,7 +33,7 @@
 
    @errorSummary(form.errors)
 
-   @h1(messages(s"removeUnderpaymentDetails.$underpaymentType.pageHeader"))
+   @h1(messages(s"removeUnderpaymentDetails.$underpaymentType.pageTitle"))
 
    @formHelper(action = controllers.underpayments.routes.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType)) {
        @inputRadio(

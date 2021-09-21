@@ -78,7 +78,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe WhatDoYouWantToDoMessages.h1
+      elementText("h1") mustBe WhatDoYouWantToDoMessages.title
     }
 
     "have the correct value for the first radio button" in {

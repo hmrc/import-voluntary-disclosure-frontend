@@ -219,8 +219,8 @@ class ConfirmReasonDetailViewSpec extends ViewBaseSpec {
 
     checkPageTitle(ConfirmReasonDetailMessages.title)
 
-    s"have the correct h1 of '${ConfirmReasonDetailMessages.h1}'" in {
-      elementText("h1") mustBe ConfirmReasonDetailMessages.h1
+    s"have the correct h1 of '${ConfirmReasonDetailMessages.title}'" in {
+      elementText("h1") mustBe ConfirmReasonDetailMessages.title
     }
 
     "render a back link with the correct URL" in {

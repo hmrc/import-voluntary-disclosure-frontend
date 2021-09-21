@@ -21,11 +21,11 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("privateCitizen.handOff.title"),
+    pageTitle = messages("privateCitizen.handOff.pageTitle"),
     form = None,
     showBackLink = false) {
 
-    @h1(messages("privateCitizen.handOff.heading"))
+    @h1(messages("privateCitizen.handOff.pageTitle"))
 
     @p(Html(messages("privateCitizen.handOff.p1")))
 

@@ -35,7 +35,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = true,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -93,7 +92,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = true,
-      privateCitizenEnabled = true,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -153,8 +151,8 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     checkPageTitle(ConfirmEORIDetailsMessages.title)
 
-    s"have the correct h1 of '${ConfirmEORIDetailsMessages.h1}'" in {
-      elementText("h1") mustBe ConfirmEORIDetailsMessages.h1
+    s"have the correct h1 of '${ConfirmEORIDetailsMessages.title}'" in {
+      elementText("h1") mustBe ConfirmEORIDetailsMessages.title
     }
 
     s"have correct EORI number title of '${ConfirmEORIDetailsMessages.eoriNumber}'" in {

@@ -52,7 +52,6 @@ class AuthActionSpec extends SpecBase {
       List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -107,7 +106,9 @@ class AuthActionSpec extends SpecBase {
         MockedAuthConnector.authorise(Future.successful(Some("abc") and noEnrolment and Some(AffinityGroup.Individual)))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.SEE_OTHER
-        redirectLocation(response) mustBe Some(config.eccSubscribeUrl)
+        redirectLocation(response) mustBe Some(
+          controllers.serviceEntry.routes.CustomsDeclarationController.onLoad().url
+        )
       }
     }
 
@@ -147,7 +148,6 @@ class AuthActionSpec extends SpecBase {
           List(testEori),
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -166,7 +166,6 @@ class AuthActionSpec extends SpecBase {
           List(),
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -188,7 +187,6 @@ class AuthActionSpec extends SpecBase {
           List(testEori),
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )

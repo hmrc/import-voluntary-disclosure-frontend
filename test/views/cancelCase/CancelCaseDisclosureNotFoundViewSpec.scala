@@ -38,8 +38,8 @@ class CancelCaseDisclosureNotFoundViewSpec extends ViewBaseSpec {
     "it" should {
       lazy val view: Html                  = injectedView(caseId)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the correct page heading of '$heading'" in {
-        elementText("h1") mustBe heading
+      s"have the correct page heading of '$pageTitle'" in {
+        elementText("h1") mustBe pageTitle
       }
 
       s"have the correct page text of '${p1(caseId)}'" in {

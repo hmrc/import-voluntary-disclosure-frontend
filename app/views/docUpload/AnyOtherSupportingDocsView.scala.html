@@ -32,7 +32,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("anyOtherSupportingDocs.heading"))
+        @h1(messages("anyOtherSupportingDocs.pageTitle"))
 
         @p{ @messages("anyOtherSupportingDocs.p1") }
 
@@ -49,7 +49,7 @@
         @formHelper(action = controllers.docUpload.routes.AnyOtherSupportingDocsController.onSubmit()) {
             @yesNoRadio(
                 form,
-                headingKey = "anyOtherSupportingDocs.heading",
+                headingKey = "anyOtherSupportingDocs.pageTitle",
                 isPageHeading = false,
                 classes = "govuk-visually-hidden"
             )

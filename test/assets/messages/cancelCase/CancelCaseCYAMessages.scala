@@ -21,7 +21,6 @@ import messages.BaseMessages
 object CancelCaseCYAMessages extends BaseMessages {
 
   val title: String           = "Check your answers before sending your cancellation request"
-  val heading: String         = "Check your answers before sending your cancellation request"
   val sendInformation: String = "Now send your cancellation request"
   val disclosureConfirmation: String =
     "By submitting this request you are confirming that, to the best of your knowledge, the details you are providing are correct."

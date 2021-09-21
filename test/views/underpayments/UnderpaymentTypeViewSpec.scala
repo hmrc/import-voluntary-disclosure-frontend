@@ -81,8 +81,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
         injectedView(form, backLink, underpaymentTypeRadioButtons, isFirstTime = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct h1 of '${UnderpaymentTypeMessages.firstTimePageHeader}'" in {
-        elementText("h1") mustBe UnderpaymentTypeMessages.firstTimePageHeader
+      s"have the correct h1 of '${UnderpaymentTypeMessages.firstTimePageTitle}'" in {
+        elementText("h1") mustBe UnderpaymentTypeMessages.firstTimePageTitle
       }
 
       s"have the correct hint of '${UnderpaymentTypeMessages.hint}'" in {
@@ -152,8 +152,8 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
 
       checkPageTitle(UnderpaymentTypeMessages.secondTimePageTitle)
 
-      s"have the correct h1 of '${UnderpaymentTypeMessages.secondTimePageHeader}'" in {
-        elementText("h1") mustBe UnderpaymentTypeMessages.secondTimePageHeader
+      s"have the correct h1 of '${UnderpaymentTypeMessages.secondTimePageTitle}'" in {
+        elementText("h1") mustBe UnderpaymentTypeMessages.secondTimePageTitle
       }
     }
   }

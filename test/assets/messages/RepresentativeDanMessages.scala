@@ -19,7 +19,6 @@ package messages
 object RepresentativeDanMessages extends BaseMessages {
 
   val title: String = "Deferment account details"
-  val h1: String    = "Deferment account details"
 
   val accountNumberLabel: String = "Deferment account number"
   val radioButtonLabel: String   = "Whose deferment account is this?"

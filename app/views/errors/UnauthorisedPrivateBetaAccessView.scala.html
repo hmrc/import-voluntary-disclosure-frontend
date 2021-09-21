@@ -24,11 +24,11 @@
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
 @layout(
-    pageTitle = messages("unauthorised.privateBeta.title"),
+    pageTitle = messages("unauthorised.privateBeta.pageTitle"),
     showBackLink = false
 ) {
 
-    @h1(messages("unauthorised.privateBeta.title"))
+    @h1(messages("unauthorised.privateBeta.pageTitle"))
 
     @p {
        @messages("unauthorised.privateBeta.para1")

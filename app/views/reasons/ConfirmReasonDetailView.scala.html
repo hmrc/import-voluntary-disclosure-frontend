@@ -28,7 +28,7 @@
     customBackLinkUrl = Some(backLink)
 ) {
 
-    @h1(messages("confirmReason.heading"))
+    @h1(messages("confirmReason.pageTitle"))
 
     @reasons.map { reason =>
         @govukSummaryList(reason)

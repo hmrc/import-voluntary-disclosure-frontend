@@ -19,7 +19,6 @@ package messages
 object SupportingDocMessages extends BaseMessages {
 
   val pageTitle: String  = "Documents you must upload"
-  val heading: String    = "Documents you must upload"
   val disclosure: String = "We will ask you for the following documents to support your disclosure:"
   val bullet1: String    = "the import declaration also known as the C88 or SAD"
   val bullet2: String    = "the entry acceptance also known as the E2"

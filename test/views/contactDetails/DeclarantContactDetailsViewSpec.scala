@@ -328,8 +328,8 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${TraderContactDetailsMessages.heading}'" in {
-      elementText("h1") mustBe TraderContactDetailsMessages.heading
+    s"have the correct h1 of '${TraderContactDetailsMessages.title}'" in {
+      elementText("h1") mustBe TraderContactDetailsMessages.title
     }
 
     s"have the correct paragraph of '${TraderContactDetailsMessages.text}'" in {
