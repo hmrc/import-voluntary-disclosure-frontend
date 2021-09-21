@@ -35,7 +35,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = true,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -93,7 +92,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = true,
-      privateCitizenEnabled = true,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )

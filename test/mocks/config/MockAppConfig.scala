@@ -25,7 +25,6 @@ object MockAppConfig
       List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -35,7 +34,6 @@ class MockAppConfig(
   override val privateBetaAllowListEnabled: Boolean = false,
   override val updateCaseEnabled: Boolean = false,
   override val welshToggleEnabled: Boolean = false,
-  override val privateCitizenEnabled: Boolean = false,
   override val cancelCaseEnabled: Boolean = false
 ) extends AppConfig {
   override val footerLinkItems: Seq[String]         = Seq("TBC")
