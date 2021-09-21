@@ -1,21 +1,22 @@
 @*
- * Copyright 2021 HM Revenue & Customs
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *@
-
+* Copyright 2021 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
 @import config.AppConfig
 @import models.upscan.UpScanInitiateResponse
+
+@import views.html.helper.CSRF
 
 @this(layout: templates.Layout,
         inputFileUpload: components.inputFileUpload,
@@ -66,11 +67,11 @@
             summary = HtmlContent(messages("common.uploadFile.typesOfFile")),
             content = HtmlContent(
                 bullets(Seq(
-                Html(messages("common.uploadFile.PDF")),
-                Html(messages("common.uploadFile.CSV")),
-                Html(messages("common.uploadFile.ms")),
-                Html(messages("common.uploadFile.openDocumentFormat")),
-                Html(messages("common.uploadFile.image"))
+                    Html(messages("common.uploadFile.PDF")),
+                    Html(messages("common.uploadFile.CSV")),
+                    Html(messages("common.uploadFile.ms")),
+                    Html(messages("common.uploadFile.openDocumentFormat")),
+                    Html(messages("common.uploadFile.image"))
                 ))
             )
         )
@@ -82,10 +83,14 @@
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
 
-        <div id="file-upload-form-group" class="govuk-form-group @{if(form.hasErrors) "govuk-form-group--error"}">
-           @upScanResponse.uploadFormTemplate.fields.map { row =>
-               <input type="hidden" name="@row._1" value="@row._2">
-           }
+        <div id="file-upload-form-group" class="govuk-form-group @{
+            if(form.hasErrors) "govuk-form-group--error"
+        }">
+            @upScanResponse.uploadFormTemplate.fields.map { row =>
+                <input type="hidden" name="@row._1" value="@row._2">
+            }
+
+            @CSRF.formField
 
             @inputFileUpload(
                 form = form,
@@ -99,7 +104,7 @@
                     "data-min-file-size" -> appConfig.upScanMinFileSize.toString
                 )
             )
-       </div>
+        </div>
 
         @button("common.uploadFile.uploadChosenFile")
     </form>
