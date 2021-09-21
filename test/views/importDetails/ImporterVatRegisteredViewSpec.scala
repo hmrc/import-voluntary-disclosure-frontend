@@ -83,8 +83,8 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterVatRegisteredMessages.h1}'" in {
-      elementText("h1") mustBe ImporterVatRegisteredMessages.h1
+    s"have the correct h1 of '${ImporterVatRegisteredMessages.title}'" in {
+      elementText("h1") mustBe ImporterVatRegisteredMessages.title
     }
 
     s"have the correct value for the first radio button of '$siteYes'" in {

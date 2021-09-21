@@ -165,8 +165,8 @@ class EntryDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
     checkPageTitle(EntryDetailsMessages.title)
 
-    s"have the correct h1 of '${EntryDetailsMessages.h1}'" in {
-      elementText("h1") mustBe EntryDetailsMessages.h1
+    s"have the correct h1 of '${EntryDetailsMessages.title}'" in {
+      elementText("h1") mustBe EntryDetailsMessages.title
     }
 
     s"have the correct EPU label of '${EntryDetailsMessages.epuLabel}'" in {

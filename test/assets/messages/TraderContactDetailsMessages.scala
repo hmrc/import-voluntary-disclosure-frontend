@@ -18,9 +18,8 @@ package messages
 
 object TraderContactDetailsMessages extends BaseMessages {
 
-  val title: String   = "What are your contact details?"
-  val heading: String = "What are your contact details?"
-  val text: String    = "We will only use these details if we have questions about this underpayment disclosure."
+  val title: String = "What are your contact details?"
+  val text: String  = "We will only use these details if we have questions about this underpayment disclosure."
   val phoneNumberHint: String = "For international numbers include the country code."
 
   val errorNameNonEmpty: String            = "Enter a name"

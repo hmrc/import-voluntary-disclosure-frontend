@@ -97,8 +97,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
     lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterAddressMessages.h1}'" in {
-      elementText("h1") mustBe ImporterAddressMessages.h1
+    s"have the correct h1 of '${ImporterAddressMessages.pageTitle}'" in {
+      elementText("h1") mustBe ImporterAddressMessages.pageTitle
     }
 
     s"have the correct value for the first radio button of '${ImporterAddressMessages.siteYes}'" in {

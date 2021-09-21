@@ -79,7 +79,7 @@ class IndividualContinueWithCredentialsViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe heading
+      elementText("h1") mustBe title
     }
 
     s"have the correct value for the first radio button of '$yesMessage'" in {

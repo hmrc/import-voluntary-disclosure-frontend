@@ -21,7 +21,6 @@ import messages.BaseMessages
 object IndividualContinueWithCredentialsMessages extends BaseMessages {
 
   val title         = "Are you sure you want to use this Government Gateway user ID to set up access to the service?"
-  val heading       = "Are you sure you want to use this Government Gateway user ID to set up access to the service?"
   val legend        = "Ensure you have signed in with the Government Gateway user ID you use for your business."
   val yesMessage    = "Yes I want to use this user ID to set up access"
   val noMessage     = "No I want to sign in with a different user ID"

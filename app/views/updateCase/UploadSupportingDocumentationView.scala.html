@@ -37,20 +37,20 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages("uploadSupportingDocumentation.pageHeader"))
+    @h1(messages("uploadSupportingDocumentation.pageTitle"))
 
-    <h2 class="govuk-heading-s">@messages("uploadSupportingDocumentation.typesOfFile")</h2>
+    <h2 class="govuk-heading-s">@messages("common.uploadFile.typesOfFile")</h2>
 
     @bullets(Seq(
-        Html(messages("uploadSupportingDocumentation.PDF")),
-        Html(messages("uploadSupportingDocumentation.CSV")),
-        Html(messages("uploadSupportingDocumentation.ms")),
-        Html(messages("uploadSupportingDocumentation.openDocumentFormat")),
-        Html(messages("uploadSupportingDocumentation.image"))
+        Html(messages("common.uploadFile.PDF")),
+        Html(messages("common.uploadFile.CSV")),
+        Html(messages("common.uploadFile.ms")),
+        Html(messages("common.uploadFile.openDocumentFormat")),
+        Html(messages("common.uploadFile.image"))
     ))
 
     @p {
-        @messages("uploadSupportingDocumentation.fileSizeText")
+        @messages("common.uploadFile.fileSize")
     }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
@@ -65,7 +65,7 @@
             form = form,
             name = "file",
             id = "file",
-            label = messages("uploadSupportingDocumentation.uploadFile"),
+            label = messages("common.uploadFile.uploadAFile"),
             isPageHeading = false,
             attributes = Map(
                 "accept" -> appConfig.upScanAcceptedFileTypes,
@@ -75,7 +75,7 @@
         )
        </div>
 
-            @button("uploadSupportingDocumentation.uploadChosenFile")
+            @button("common.uploadFile.uploadChosenFile")
 
         </form>
     }

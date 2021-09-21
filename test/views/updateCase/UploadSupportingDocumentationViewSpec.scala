@@ -93,12 +93,12 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
 
     checkPageTitle(UploadSupportingDocumentationMessages.title)
 
-    s"have the correct h1 of '${UploadSupportingDocumentationMessages.h1}'" in {
-      elementText("h1") mustBe UploadSupportingDocumentationMessages.h1
+    s"have the correct h1 of '${UploadSupportingDocumentationMessages.title}'" in {
+      elementText("h1") mustBe UploadSupportingDocumentationMessages.title
     }
 
-    s"have the correct text of '${UploadSupportingDocumentationMessages.fileSizeText}'" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadSupportingDocumentationMessages.fileSizeText
+    s"have the correct text of '${UploadSupportingDocumentationMessages.fileSize}'" in {
+      elementText("#main-content p:nth-of-type(1)") mustBe UploadSupportingDocumentationMessages.fileSize
     }
 
     s"have the correct list of allowed file types" in {
@@ -110,12 +110,12 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
       elementText(".govuk-list > li:nth-of-type(5)") mustBe UploadSupportingDocumentationMessages.fileImage
     }
 
-    s"have the '${UploadSupportingDocumentationMessages.uploadFile}' upload label" in {
-      elementText(".govuk-form-group > label") mustBe UploadSupportingDocumentationMessages.uploadFile
+    s"have the '${UploadSupportingDocumentationMessages.uploadAFile}' upload label" in {
+      elementText(".govuk-form-group > label") mustBe UploadSupportingDocumentationMessages.uploadAFile
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe UploadSupportingDocumentationMessages.button
+      elementText(".govuk-button") mustBe UploadSupportingDocumentationMessages.uploadChosenFile
     }
 
   }

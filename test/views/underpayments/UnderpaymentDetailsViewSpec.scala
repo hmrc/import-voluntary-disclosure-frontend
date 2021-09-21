@@ -51,8 +51,8 @@ class UnderpaymentDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
       checkPageTitle(UnderpaymentDetailsMessages.B00pageTitle)
 
-      s"have the correct H1 text of '${UnderpaymentDetailsMessages.B00pageHeader}'" in {
-        elementText("h1") mustBe UnderpaymentDetailsMessages.B00pageHeader
+      s"have the correct H1 text of '${UnderpaymentDetailsMessages.B00pageTitle}'" in {
+        elementText("h1") mustBe UnderpaymentDetailsMessages.B00pageTitle
       }
 
       "not render an error summary" in {

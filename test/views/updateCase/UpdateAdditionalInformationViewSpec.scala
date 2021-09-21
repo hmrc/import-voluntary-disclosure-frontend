@@ -52,8 +52,8 @@ class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${UpdateAdditionalInformationMessages.h1}'" in {
-        elementText("h1") mustBe UpdateAdditionalInformationMessages.h1
+      s"have the correct h1 of '${UpdateAdditionalInformationMessages.title}'" in {
+        elementText("h1") mustBe UpdateAdditionalInformationMessages.title
       }
 
     }

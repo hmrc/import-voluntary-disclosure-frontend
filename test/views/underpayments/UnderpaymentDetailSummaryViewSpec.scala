@@ -147,8 +147,8 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html     = injectedView(form, summaryList, amountOwedSummaryList, 1, true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${UnderpaymentDetailSummaryMessages.pageHeader}'" in {
-      elementText("h1") mustBe UnderpaymentDetailSummaryMessages.pageHeader
+    s"have the correct h1 of '${UnderpaymentDetailSummaryMessages.pageTitle}'" in {
+      elementText("h1") mustBe UnderpaymentDetailSummaryMessages.pageTitle
     }
 
     s"have the correct h2 of '${UnderpaymentDetailSummaryMessages.pageHeaderSmall}'" in {

@@ -50,16 +50,16 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
     )
     val selectPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"               -> message("importerAddress_lookupPage.selectPage.title"),
-        "heading"             -> message("importerAddress_lookupPage.selectPage.heading"),
+        "title"               -> message("importerAddress_lookupPage.selectPage.pageTitle"),
+        "heading"             -> message("importerAddress_lookupPage.selectPage.pageTitle"),
         "submitLabel"         -> message("common.continue"),
         "editAddressLinkText" -> message("importerAddress_lookupPage.selectPage.editLink")
       )
 
     val lookupPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"         -> message("importerAddress_lookupPage.title"),
-        "heading"       -> message("importerAddress_lookupPage.heading"),
+        "title"         -> message("importerAddress_lookupPage.pageTitle"),
+        "heading"       -> message("importerAddress_lookupPage.pageTitle"),
         "filterLabel"   -> message("importerAddress_lookupPage.filter"),
         "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
         "submitLabel"   -> message("importerAddress_lookupPage.lookupPage.submit")
@@ -67,15 +67,15 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val confirmPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"                 -> message("importerAddress_lookupPage.confirmPage.title"),
-        "heading"               -> message("importerAddress_lookupPage.confirmPage.heading"),
+        "title"                 -> message("importerAddress_lookupPage.confirmPage.pageTitle"),
+        "heading"               -> message("importerAddress_lookupPage.confirmPage.pageTitle"),
         "infoMessage"           -> message("importerAddress_lookupPage.confirmPage.infoMessage"),
         "showConfirmChangeText" -> false
       )
 
     val editPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "heading"     -> message("importerAddress_lookupPage.editPage.heading"),
+        "heading"     -> message("importerAddress_lookupPage.editPage.pageTitle"),
         "townLabel"   -> message("importerAddress_lookupPage.editPage.townOrCity"),
         "submitLabel" -> message("common.continue")
       )

@@ -39,7 +39,7 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages("uploadFile.pageHeader"))
+    @h1(messages("uploadFile.pageTitle"))
 
     @p {
         @messages("uploadFile.mustInclude")
@@ -63,21 +63,21 @@
 
     @govukDetails(
         Details(
-            summary = HtmlContent(messages("uploadFile.typesOfFile")),
+            summary = HtmlContent(messages("common.uploadFile.typesOfFile")),
             content = HtmlContent(
                 bullets(Seq(
-                Html(messages("uploadFile.PDF")),
-                Html(messages("uploadFile.CSV")),
-                Html(messages("uploadFile.ms")),
-                Html(messages("uploadFile.openDocumentFormat")),
-                Html(messages("uploadFile.image"))
+                Html(messages("common.uploadFile.PDF")),
+                Html(messages("common.uploadFile.CSV")),
+                Html(messages("common.uploadFile.ms")),
+                Html(messages("common.uploadFile.openDocumentFormat")),
+                Html(messages("common.uploadFile.image"))
                 ))
             )
         )
     )
 
     @p {
-        @messages("uploadFile.fileSize")
+        @messages("common.uploadFile.fileSize")
     }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
@@ -91,7 +91,7 @@
                 form = form,
                 name = "file",
                 id = "file",
-                label = messages("uploadFile.uploadAFile"),
+                label = messages("common.uploadFile.uploadAFile"),
                 isPageHeading = false,
                 attributes = Map(
                     "accept" -> appConfig.upScanAcceptedFileTypes,
@@ -101,7 +101,7 @@
             )
        </div>
 
-        @button("uploadFile.uploadChosenFile")
+        @button("common.uploadFile.uploadChosenFile")
     </form>
 }
 

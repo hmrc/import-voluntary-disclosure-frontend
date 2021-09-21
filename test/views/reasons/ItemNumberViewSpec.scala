@@ -80,8 +80,8 @@ class ItemNumberViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, formAction, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ItemNumberMessages.h1}'" in {
-      elementText("h1") mustBe ItemNumberMessages.h1
+    s"have the correct h1 of '${ItemNumberMessages.title}'" in {
+      elementText("h1") mustBe ItemNumberMessages.title
     }
 
     "render a back link with the correct URL" in {

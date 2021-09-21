@@ -29,7 +29,7 @@
     pageTitle = messages("cancelCase.cya.pageTitle"),
     showBackLink = false
 ) {
-    @h1(messages("cancelCase.cya.heading"))
+    @h1(messages("cancelCase.cya.pageTitle"))
 
     @answers.map { answer =>
         @govukSummaryList(answer.summaryList)

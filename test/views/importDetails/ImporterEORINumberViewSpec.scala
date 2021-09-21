@@ -111,8 +111,8 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterEORINumberMessages.h1}'" in {
-      elementText("h1") mustBe ImporterEORINumberMessages.h1
+    s"have the correct h1 of '${ImporterEORINumberMessages.title}'" in {
+      elementText("h1") mustBe ImporterEORINumberMessages.title
     }
 
     s"have the correct hint" in {

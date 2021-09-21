@@ -21,7 +21,7 @@
         button: components.button
 )
 
-@(changeReason: SummaryList, pageTitle: String, heading: String)(implicit request: Request[_], messages: Messages)
+@(changeReason: SummaryList, pageTitle: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = pageTitle,
@@ -29,7 +29,7 @@
     showBackLink = false
 ) {
 
-    @h1(heading)
+    @h1(pageTitle)
 
     @govukSummaryList(changeReason)
 
