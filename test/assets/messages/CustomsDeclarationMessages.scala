@@ -19,7 +19,6 @@ package messages
 object CustomsDeclarationMessages extends BaseMessages {
 
   val title         = "Have you underpaid tax or duty on an import that was declared to customs?"
-  val heading       = "Have you underpaid tax or duty on an import that was declared to customs?"
   val errorRequired = "Select yes if you underpaid tax or duty on an import that was declared to customs"
 
 }

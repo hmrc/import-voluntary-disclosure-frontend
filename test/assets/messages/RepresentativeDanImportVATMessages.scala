@@ -19,7 +19,6 @@ package messages
 object RepresentativeDanImportVATMessages extends BaseMessages {
 
   val title: String = "Deferment account details for the import VAT owed"
-  val h1: String    = "Deferment account details for the import VAT owed"
 
   val accountNumberLabel: String = "Deferment account number"
   val radioButtonLabel: String   = "Whose deferment account is this?"

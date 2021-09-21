@@ -50,8 +50,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${MoreInformationMessages.singleEntryH1}'" in {
-        elementText("h1") mustBe MoreInformationMessages.singleEntryH1
+      s"have the correct h1 of '${MoreInformationMessages.singleEntryTitle}'" in {
+        elementText("h1") mustBe MoreInformationMessages.singleEntryTitle
       }
 
     }
@@ -72,15 +72,15 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${MoreInformationMessages.bulkEntryH1}'" in {
-        elementText("h1") mustBe MoreInformationMessages.bulkEntryH1
+      s"have the correct h1 of '${MoreInformationMessages.bulkEntryTitle}'" in {
+        elementText("h1") mustBe MoreInformationMessages.bulkEntryTitle
       }
 
-      s"have the correct p1 of '${MoreInformationMessages.bulkEntryH1}'" in {
+      s"have the correct p1 of '${MoreInformationMessages.bulkEntryTitle}'" in {
         elementText("#main-content > div > div > p:nth-child(2)") mustBe MoreInformationMessages.bulkP1
       }
 
-      s"have the correct p2 of '${MoreInformationMessages.bulkEntryH1}'" in {
+      s"have the correct p2 of '${MoreInformationMessages.bulkEntryTitle}'" in {
         elementText("#main-content > div > div > p:nth-child(3)") mustBe MoreInformationMessages.bulkP2
       }
 

@@ -52,8 +52,8 @@ class UpdateCaseCheckYourAnswersViewSpec extends ViewBaseSpec {
 
     checkPageTitle(UpdateCaseCYAMessages.title)
 
-    s"have the correct h1 of '${UpdateCaseCYAMessages.heading}'" in {
-      elementText("h1") mustBe UpdateCaseCYAMessages.heading
+    s"have the correct h1 of '${UpdateCaseCYAMessages.title}'" in {
+      elementText("h1") mustBe UpdateCaseCYAMessages.title
     }
 
     "have Now add your information sub-heading " in {

@@ -79,7 +79,7 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe AcceptanceDateBulkMessages.h1
+      elementText("h1") mustBe AcceptanceDateBulkMessages.title
     }
 
     "have the correct page info" in {

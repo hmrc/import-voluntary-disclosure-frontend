@@ -98,8 +98,8 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterDanMessages.h1}'" in {
-      elementText("h1") mustBe ImporterDanMessages.h1
+    s"have the correct h1 of '${ImporterDanMessages.title}'" in {
+      elementText("h1") mustBe ImporterDanMessages.title
     }
 
     "render a back link with the correct URL" in {

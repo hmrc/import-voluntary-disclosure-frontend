@@ -138,8 +138,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     checkPageTitle(RepresentativeDanImportVATMessages.title)
 
-    s"have the correct h1 of '${RepresentativeDanImportVATMessages.h1}'" in {
-      elementText("h1") mustBe RepresentativeDanImportVATMessages.h1
+    s"have the correct h1 of '${RepresentativeDanImportVATMessages.title}'" in {
+      elementText("h1") mustBe RepresentativeDanImportVATMessages.title
     }
 
     s"have the correct accountNumber label of '${RepresentativeDanImportVATMessages.accountNumberLabel}'" in {

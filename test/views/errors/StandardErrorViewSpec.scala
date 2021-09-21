@@ -35,7 +35,7 @@ class StandardErrorViewSpec extends ViewBaseSpec with BaseMessages {
     checkPageTitle(StandardErrorViewMessages.title)
 
     s"have the correct page heading" in {
-      elementText("h1") mustBe StandardErrorViewMessages.heading
+      elementText("h1") mustBe StandardErrorViewMessages.title
     }
 
     s"have the correct instructions part one" in {

@@ -21,7 +21,6 @@ import messages.BaseMessages
 object CancelCaseDisclosureClosedMessages extends BaseMessages {
 
   val pageTitle = "This disclosure cannot be cancelled"
-  val heading   = "This disclosure cannot be cancelled"
   val p1 =
     "This is because we may have already issued the C18 Post Clearance Demand Note."
   val p2 =

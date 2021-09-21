@@ -40,7 +40,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages(s"box${boxNumber.id}.pageHeader", itemNumber))
+        @h1(messages(s"box${boxNumber.id}.pageTitle", itemNumber))
 
         @bodyMessage.map{msg => @p{ @msg } }
 

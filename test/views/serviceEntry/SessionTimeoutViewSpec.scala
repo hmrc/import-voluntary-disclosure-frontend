@@ -34,8 +34,8 @@ class SessionTimeoutViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the correct page title of '${SessionTimeoutMessages.pageTitle}'" in {
       elementText("h1") mustBe SessionTimeoutMessages.pageTitle
     }
-    s"have the correct page heading of '${SessionTimeoutMessages.heading}'" in {
-      elementText("h1") mustBe SessionTimeoutMessages.heading
+    s"have the correct page heading of '${SessionTimeoutMessages.pageTitle}'" in {
+      elementText("h1") mustBe SessionTimeoutMessages.pageTitle
     }
 
     s"have the correct page text of '${SessionTimeoutMessages.p}'" in {

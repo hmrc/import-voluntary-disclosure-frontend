@@ -135,8 +135,8 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
     checkPageTitle(RepresentativeDanMessages.title)
 
-    s"have the correct h1 of '${RepresentativeDanMessages.h1}'" in {
-      elementText("h1") mustBe RepresentativeDanMessages.h1
+    s"have the correct h1 of '${RepresentativeDanMessages.title}'" in {
+      elementText("h1") mustBe RepresentativeDanMessages.title
     }
 
     s"have the correct accountNumber label of '${RepresentativeDanMessages.accountNumberLabel}'" in {

@@ -84,8 +84,8 @@ class CancelCaseRemoveUploadedFileViewSpec extends ViewBaseSpec {
       injectedView(form, index, filename, Call("GET", "backlink"), Call("GET", "submit"))(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '$h1'" in {
-      elementText("h1") mustBe h1
+    s"have the correct h1 of '$title'" in {
+      elementText("h1") mustBe title
     }
 
     s"have the correct filename in the body" in {

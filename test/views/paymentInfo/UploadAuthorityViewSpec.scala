@@ -120,16 +120,16 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
 
-    s"have the correct h1 of '${UploadAuthorityMessages.h1}'" in {
-      elementText("h1") mustBe UploadAuthorityMessages.h1
+    s"have the correct h1 of '${UploadAuthorityMessages.title}'" in {
+      elementText("h1") mustBe UploadAuthorityMessages.title
     }
 
     s"have the correct text of '${UploadAuthorityMessages.para2}'" in {
       elementText("#main-content p:nth-of-type(2)") mustBe UploadAuthorityMessages.para2
     }
 
-    s"have the correct text of '${UploadAuthorityMessages.fileSizeText}'" in {
-      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.fileSizeText
+    s"have the correct text of '${UploadAuthorityMessages.fileSize}'" in {
+      elementText("#main-content p:nth-of-type(3)") mustBe UploadAuthorityMessages.fileSize
     }
 
     s"have the correct list of allowed file types" in {
@@ -146,7 +146,7 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct Continue button" in {
-      elementText(".govuk-button") mustBe UploadAuthorityMessages.button
+      elementText(".govuk-button") mustBe UploadAuthorityMessages.uploadChosenFile
     }
 
   }

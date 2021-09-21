@@ -19,7 +19,6 @@ package messages
 object CYAMessages extends BaseMessages {
 
   val title          = "Check your answers before sending your disclosure"
-  val heading        = "Check your answers before sending your disclosure"
   val sendDisclosure = "Now send your disclosure"
   val disclosureConfirmation =
     "By sending this disclosure you are confirming that, to the best of your knowledge, the details you are providing are correct."

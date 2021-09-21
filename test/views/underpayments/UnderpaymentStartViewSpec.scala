@@ -98,8 +98,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       true
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
-    s"have the correct page heading of '${UnderpaymentStartMessages.heading}'" in {
-      elementText("h1") mustBe UnderpaymentStartMessages.heading
+    s"have the correct page heading of '${UnderpaymentStartMessages.pageTitle}'" in {
+      elementText("h1") mustBe UnderpaymentStartMessages.pageTitle
     }
 
     s"have the correct page text of '${UnderpaymentStartMessages.p1}'" in {

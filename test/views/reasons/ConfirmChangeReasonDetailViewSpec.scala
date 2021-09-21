@@ -32,7 +32,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
     "when an item level box is selected" should {
 
       lazy val view: Html =
-        injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), "title", "heading")(fakeRequest, messages)
+        injectedView(reasons(33, Some(1), "1806321000", "2204109400X411"), "title")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -114,7 +114,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
     "when an entry level box is selected" should {
 
       lazy val view: Html =
-        injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title", "heading")(fakeRequest, messages)
+        injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -172,7 +172,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
 
     "when Other Item is selected" should {
 
-      lazy val view: Html = injectedView(otherItemReasons("Other reason"), "title", "heading")(fakeRequest, messages)
+      lazy val view: Html = injectedView(otherItemReasons("Other reason"), "title")(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have only 1 Summary List" in {
@@ -210,7 +210,7 @@ class ConfirmChangeReasonDetailViewSpec extends ViewBaseSpec {
   it should {
 
     lazy val view: Html =
-      injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title", "heading")(fakeRequest, messages)
+      injectedView(reasons(22, None, "EUR125.00", "GBP190.50"), "title")(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct Confirm button" in {

@@ -108,8 +108,8 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${BoxNumberMessages.heading}'" in {
-        elementText("h1") mustBe BoxNumberMessages.heading
+      s"have the correct h1 of '${BoxNumberMessages.pageTitle}'" in {
+        elementText("h1") mustBe BoxNumberMessages.pageTitle
       }
     }
 

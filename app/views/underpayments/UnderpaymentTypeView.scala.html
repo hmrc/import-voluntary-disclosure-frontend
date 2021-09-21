@@ -38,7 +38,7 @@
 
             @inputRadio(
                 form = form,
-                legend = Some(if(isFirstTime) messages("underpaymentType.firstTime.pageHeader") else messages("underpaymentType.secondTime.pageHeader")),
+                legend = Some(if(isFirstTime) messages("underpaymentType.firstTime.pageTitle") else messages("underpaymentType.secondTime.pageTitle")),
                 items = radioItems,
                 hint = if(isFirstTime) Some(Html(messages("underpaymentType.firstTime.hint"))) else None,
                 errorKey = radioItems.head.id

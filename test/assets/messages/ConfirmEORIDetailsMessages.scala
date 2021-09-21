@@ -19,7 +19,6 @@ package messages
 object ConfirmEORIDetailsMessages {
 
   val title                       = "Confirm you want to disclose an underpayment using this EORI number"
-  val h1                          = "Confirm you want to disclose an underpayment using this EORI number"
   val eoriNumber                  = "EORI number"
   val name                        = "Name"
   val vatNumber                   = "VAT number"

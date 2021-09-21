@@ -32,7 +32,7 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages(s"underpaymentDetails.$underpaymentType.pageHeader") + " " + messages("underpaymentDetails.dutyMessageEnding"))
+    @h1(messages(s"underpaymentDetails.$underpaymentType.pageTitle") + " " + messages("underpaymentDetails.dutyMessageEnding"))
 
     @if(!oneEntry) {
         @p{ @messages("underpaymentDetails.bulkMessage") }

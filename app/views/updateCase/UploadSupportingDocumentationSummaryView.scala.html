@@ -36,7 +36,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("uploadAnotherFile.heading", files.rows.size, singularFile))
+        @h1(messages("uploadAnotherFile.pageTitle", files.rows.size, singularFile))
 
         @formHelper(action = controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onSubmit()) {
 

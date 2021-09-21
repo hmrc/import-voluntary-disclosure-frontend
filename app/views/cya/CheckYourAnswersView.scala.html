@@ -30,7 +30,7 @@
     pageTitle = messages("cya.pageTitle"),
     showBackLink = false
 ) {
-    @h1(messages("cya.heading"))
+    @h1(messages("cya.pageTitle"))
     @answers.map { answer =>
 
         @if(answer.heading.startsWith("Deferment")) {

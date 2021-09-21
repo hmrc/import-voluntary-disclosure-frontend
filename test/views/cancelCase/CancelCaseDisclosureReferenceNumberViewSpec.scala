@@ -101,8 +101,8 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
     lazy val view: Html                  = injectedView(form, backlink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '$label'" in {
-      elementText("h1") mustBe label
+    s"have the correct h1 of '$title'" in {
+      elementText("h1") mustBe title
     }
 
     s"have the correct hint" in {

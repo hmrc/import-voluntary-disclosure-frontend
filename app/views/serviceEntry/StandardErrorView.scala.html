@@ -21,11 +21,11 @@
 @()(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("common.error.title"),
+    pageTitle = messages("common.error.pageTitle"),
     form = None,
     showBackLink = false) {
 
-    @h1(messages("common.error.header"))
+    @h1(messages("common.error.pageTitle"))
 
     @p(Html(messages("common.error.p1")))
 

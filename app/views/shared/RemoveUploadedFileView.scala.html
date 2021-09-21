@@ -27,7 +27,7 @@
 @(form: Form[_], index: Index, filename: String, backlink: Call, action: Call)(implicit request: Request[_], messages: Messages)
 
 @legendContent = {
-    @h1("removeUploadedFile.heading")
+    @h1("removeUploadedFile.pageTitle")
     @p(Html(filename))
 }
 
@@ -46,7 +46,7 @@
         }) { legend =>
             @yesNoRadio(
                 form,
-                headingKey = "removeUploadedFile.heading",
+                headingKey = "removeUploadedFile.pageTitle",
                 classes = "govuk-visually-hidden",
                 inline = true,
                 customLegend = legend

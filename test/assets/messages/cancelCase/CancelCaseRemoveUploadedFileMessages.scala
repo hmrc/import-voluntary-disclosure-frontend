@@ -21,7 +21,6 @@ import messages.BaseMessages
 object CancelCaseRemoveUploadedFileMessages extends BaseMessages {
 
   val title: String         = "Are you sure you want to remove this file?"
-  val h1: String            = "Are you sure you want to remove this file?"
   val requiredError: String = "Select yes if you want to remove this file"
 
 }

@@ -21,7 +21,6 @@ import messages.BaseMessages
 object UnderpaymentDetailSummaryMessages extends BaseMessages {
 
   val pageTitle       = "Underpayment summary"
-  val pageHeader      = "Underpayment summary"
   val pageHeaderSmall = "Amount owed for each type of duty or tax"
   val owedToHMRC      = "Total owed to HMRC"
   val radioMessage    = "Add another underpayment?"

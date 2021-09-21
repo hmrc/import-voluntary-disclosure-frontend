@@ -143,8 +143,8 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementAttributes("#back-link") must contain("href" -> "url")
     }
 
-    s"have the correct h1 of '${UploadFileMessages.h1}'" in {
-      elementText("h1") mustBe UploadFileMessages.h1
+    s"have the correct h1 of '${UploadFileMessages.title}'" in {
+      elementText("h1") mustBe UploadFileMessages.title
     }
 
     s"have the correct text of '${UploadFileMessages.mustInclude}'" in {
@@ -167,34 +167,34 @@ class UploadFileViewSpec extends ViewBaseSpec {
       elementText("#main-content > div > div > details > summary > span") mustBe UploadFileMessages.typesOfFile
     }
 
-    s"have correct bullet points within the expandable text '${UploadFileMessages.PDF}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.filePdf}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(1)"
-      ) mustBe UploadFileMessages.PDF
+      ) mustBe UploadFileMessages.filePdf
     }
 
-    s"have correct bullet points within the expandable text '${UploadFileMessages.CSV}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.fileCsv}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(2)"
-      ) mustBe UploadFileMessages.CSV
+      ) mustBe UploadFileMessages.fileCsv
     }
 
-    s"have correct bullet points within the expandable text '${UploadFileMessages.ms}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.fileMs}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(3)"
-      ) mustBe UploadFileMessages.ms
+      ) mustBe UploadFileMessages.fileMs
     }
 
-    s"have correct bullet points within the expandable text '${UploadFileMessages.openDocumentFormat}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.fileOd}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(4)"
-      ) mustBe UploadFileMessages.openDocumentFormat
+      ) mustBe UploadFileMessages.fileOd
     }
 
-    s"have correct bullet points within the expandable text '${UploadFileMessages.image}'" in {
+    s"have correct bullet points within the expandable text '${UploadFileMessages.fileImage}'" in {
       elementText(
         "#main-content > div > div > details > div > ul:nth-of-type(1) li:nth-of-type(5)"
-      ) mustBe UploadFileMessages.image
+      ) mustBe UploadFileMessages.fileImage
     }
 
     s"have the correct text of '${UploadFileMessages.fileSize}'" in {
