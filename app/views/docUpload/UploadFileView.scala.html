@@ -16,8 +16,6 @@
 @import config.AppConfig
 @import models.upscan.UpScanInitiateResponse
 
-@import views.html.helper.CSRF
-
 @this(layout: templates.Layout,
         inputFileUpload: components.inputFileUpload,
         h1: components.h1,
@@ -89,8 +87,6 @@
             @upScanResponse.uploadFormTemplate.fields.map { row =>
                 <input type="hidden" name="@row._1" value="@row._2">
             }
-
-            @CSRF.formField
 
             @inputFileUpload(
                 form = form,
