@@ -50,7 +50,7 @@
         Details(
             summary = HtmlContent(messages("unauthorised.agent.details.linkText")),
             content = HtmlContent(
-                messages("unauthorised.agent.details.1") + "<br/>" + "<br/>" + messages("unauthorised.agent.details.2")
+                <p>{messages("unauthorised.agent.details.1")}</p>.toString + <p>{messages("unauthorised.agent.details.2")}</p>.toString
             )
         )
     )
