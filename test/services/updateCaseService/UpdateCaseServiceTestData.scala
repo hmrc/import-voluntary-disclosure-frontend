@@ -51,19 +51,21 @@ trait UpdateCaseServiceTestData extends ReusableValues {
 
   val userAnswersWithoutDocs: UserAnswers = (for {
     answers <- new UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, updateData.caseId)
+    answers <- answers.set(WhatDoYouWantToDoPage, UpdateCase)
     answers <- answers.set(MoreDocumentationPage, updateData.anyOtherSupportingDocs)
     answers <- answers.set(UpdateAdditionalInformationPage, updateData.additionalInfo)
   } yield answers).get
 
-  val additionalInfo: String = "Additional Information"
+  def additionalInfo(eori: String): String =
+    s"[EORINumber=$eori]\nAdditional Information"
 
-  val additionalInfoWithPrependedText: String =
-    "Cancellation request:\n" + "Additional Information"
+  def cancelCaseAdditionalInfo(eori: String): String =
+    s"[EORINumber=$eori]\nCancellation request:\nAdditional Information"
 
   val updateCaseJson: JsObject =
     Json.obj(
       "caseId"         -> "C18",
-      "additionalInfo" -> additionalInfo,
+      "additionalInfo" -> additionalInfo("eori"),
       "supportingDocuments" -> Json.arr(
         Json.obj(
           "reference"       -> "file-ref-1",
@@ -79,7 +81,7 @@ trait UpdateCaseServiceTestData extends ReusableValues {
   val cancelCaseJson: JsObject =
     Json.obj(
       "caseId"         -> "C18",
-      "additionalInfo" -> additionalInfoWithPrependedText,
+      "additionalInfo" -> cancelCaseAdditionalInfo("eori"),
       "supportingDocuments" -> Json.arr(
         Json.obj(
           "reference"       -> "file-ref-1",
@@ -95,6 +97,6 @@ trait UpdateCaseServiceTestData extends ReusableValues {
   val updateCaseJsonWithoutDocs: JsObject =
     Json.obj(
       "caseId"         -> "C18",
-      "additionalInfo" -> additionalInfoWithPrependedText
+      "additionalInfo" -> additionalInfo("eori")
     )
 }

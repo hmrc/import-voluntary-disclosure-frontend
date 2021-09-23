@@ -56,10 +56,11 @@ class UpdateCaseService @Inject() (ivdSubmissionConnector: IvdSubmissionConnecto
   private[services] def buildUpdate()(implicit request: DataRequest[_]): Either[UpdateCaseError, JsValue] = {
     Json.fromJson[UpdateCaseData](request.userAnswers.data) match {
       case JsSuccess(data, _) =>
+        val eoriPrefix = s"[EORINumber=${request.eori}]\n"
         val additionalInfo = if (request.isUpdateCase) {
-          data.additionalInfo
+          eoriPrefix + data.additionalInfo
         } else {
-          "Cancellation request:\n" + data.additionalInfo
+          eoriPrefix + "Cancellation request:\n" + data.additionalInfo
         }
         val json = Json.obj(
           "caseId"              -> data.caseId,
