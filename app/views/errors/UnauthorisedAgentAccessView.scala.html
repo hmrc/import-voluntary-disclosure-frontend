@@ -18,7 +18,9 @@
 
 @this(layout: Layout,
         h1: components.h1,
-        p: components.p
+        p: components.p,
+        bullets: components.bullets,
+        govukDetails: GovukDetails
 )
 
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -35,10 +37,23 @@
     }
 
     @p {
-       @messages("unauthorised.agent.para2.1")
-       <a href="@appConfig.signOutUrl">@messages("unauthorised.agent.signInAgain")</a>
-       @messages("unauthorised.agent.para2.2")
+        <a href="@appConfig.signOutUrl">@messages("unauthorised.agent.signInAgain.1")</a>
+        @messages("unauthorised.agent.signInAgain.2")
     }
+
+  @bullets(Seq(
+      messages("unauthorised.agent.bullet.1"),
+      messages("unauthorised.agent.bullet.2")
+  ).map(Html(_)))
+
+    @govukDetails(
+        Details(
+            summary = HtmlContent(messages("unauthorised.agent.details.linkText")),
+            content = HtmlContent(
+                messages("unauthorised.agent.details.1") + "<br/>" + "<br/>" + messages("unauthorised.agent.details.2")
+            )
+        )
+    )
 
 }
 
