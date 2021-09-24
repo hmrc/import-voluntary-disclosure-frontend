@@ -151,14 +151,14 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   }
 
   "email address has two fullstops before the @" should {
-    val form = formBinder(formBuilder(fullName = exampleName, email = "email..email@email.com", phoneNumber = examplePhoneNumber))
+    val form = formBinder(formBuilder(fullName = exampleName, email = "email.email.email@email.com", phoneNumber = examplePhoneNumber))
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
     }
 
     "generate the correct model" in {
-      form.value mustBe Some(ContactDetails(exampleName,  "email..email@email.com", examplePhoneNumber))
+      form.value mustBe Some(ContactDetails(exampleName,  "email.email.email@email.com", examplePhoneNumber))
     }
 
   }
