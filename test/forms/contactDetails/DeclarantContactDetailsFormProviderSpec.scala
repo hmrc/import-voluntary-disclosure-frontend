@@ -36,8 +36,8 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   private final val fullNameInvalidCharactersKey = "declarantContactDetails.error.nameAllowableCharacters"
   private final val emailInvalidFormatKey        = "declarantContactDetails.error.emailInvalidFormat"
   private final val phoneNumberInvalidFormatKey  = "declarantContactDetails.error.phoneNumberInvalidFormat"
-  private final val emailRegex                   = "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:" +
-    "\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+  private final val emailRegex                   =
+    "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
   private final val phoneRegex                   = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
   private final val nameRegex                    = "^[a-zA-Z '-]+$"
 
@@ -146,6 +146,19 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
 
     "generate the correct model" in {
       form.value mustBe Some(ContactDetails(exampleName, exampleEmail, examplePhoneNumber))
+    }
+
+  }
+
+  "email address has two fullstops before the @" should {
+    val form = formBinder(formBuilder(fullName = exampleName, email = "email..email@email.com", phoneNumber = examplePhoneNumber))
+
+    "result in a form with no errors" in {
+      form.hasErrors mustBe false
+    }
+
+    "generate the correct model" in {
+      form.value mustBe Some(ContactDetails(exampleName,  "email..email@email.com", examplePhoneNumber))
     }
 
   }
