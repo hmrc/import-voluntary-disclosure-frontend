@@ -1,11 +1,10 @@
 # microservice specific routes
 
-->          /govuk-frontend                                                                    govuk.Routes
 ->          /hmrc-frontend                                                                     hmrcfrontend.Routes
 GET         /assets/*file                                                                      controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET         /guidance                                                                          controllers.GuidanceController.onLoad
-GET         /                                                                                  controllers.IndexController.onPageLoad
+GET         /guidance                                                                          controllers.GuidanceController.onLoad()
+GET         /                                                                                  controllers.IndexController.onPageLoad()
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
 GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
@@ -13,13 +12,13 @@ GET         /language/:lang                                                     
 
 # Service Entry
 
-GET         /keep-alive                                                                        controllers.serviceEntry.SessionExpiredController.keepAlive
+GET         /keep-alive                                                                        controllers.serviceEntry.SessionExpiredController.keepAlive()
 
-GET         /timeout-remove-answers                                                            controllers.serviceEntry.SessionExpiredController.timeout
+GET         /timeout-remove-answers                                                            controllers.serviceEntry.SessionExpiredController.timeout()
 
-GET         /timeout-signed-out                                                                controllers.serviceEntry.SessionExpiredController.showView
+GET         /timeout-signed-out                                                                controllers.serviceEntry.SessionExpiredController.showView()
 
-GET         /confirm-eori                                                                      controllers.serviceEntry.ConfirmEORIDetailsController.onLoad
+GET         /confirm-eori                                                                      controllers.serviceEntry.ConfirmEORIDetailsController.onLoad()
 
 GET         /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onLoad()
 POST        /start-new-or-update                                                               controllers.serviceEntry.WhatDoYouWantToDoController.onSubmit()
@@ -27,7 +26,7 @@ POST        /start-new-or-update                                                
 GET         /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onLoad()
 POST        /import-declaration-exists                                                         controllers.serviceEntry.CustomsDeclarationController.onSubmit()
 
-GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad
+GET         /not-eligible/no-access-for-individual-user-id                                     controllers.serviceEntry.IndividualHandoffController.onLoad()
 
 GET         /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onLoad()
 POST        /continue-with-user-id                                                             controllers.serviceEntry.IndividualContinueWithCredentialsController.onSubmit()
@@ -35,43 +34,43 @@ POST        /continue-with-user-id                                              
 
 # Import Details
 
-GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad
-POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit
+GET         /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onLoad()
+POST        /who-is-disclosing                                                                 controllers.importDetails.UserTypeController.onSubmit()
 
-GET         /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onLoad
-POST        /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onSubmit
+GET         /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onLoad()
+POST        /one-or-more-entries                                                               controllers.importDetails.NumberOfEntriesController.onSubmit()
 
-GET         /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onLoad
-POST        /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onSubmit
+GET         /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onLoad()
+POST        /disclosure/entry-details                                                          controllers.importDetails.EntryDetailsController.onSubmit()
 
-GET         /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onLoad
-POST        /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onSubmit
+GET         /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onLoad()
+POST        /disclosure/when-entry-acceptance-date                                             controllers.importDetails.AcceptanceDateController.onSubmit()
 
-GET         /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onLoad
-POST        /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onSubmit
+GET         /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onLoad()
+POST        /disclosure/only-one-cpc                                                           controllers.importDetails.OneCustomsProcedureCodeController.onSubmit()
 
-GET         /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onLoad
-POST        /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onSubmit
+GET         /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onLoad()
+POST        /disclosure/enter-cpc                                                              controllers.importDetails.EnterCustomsProcedureCodeController.onSubmit()
 
-GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad
-POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit
+GET         /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onLoad()
+POST        /disclosure/importer-name                                                          controllers.importDetails.ImporterNameController.onSubmit()
 
-GET         /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onLoad
-POST        /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onSubmit
+GET         /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onLoad()
+POST        /disclosure/importer-eori-number-exists                                            controllers.importDetails.ImporterEORIExistsController.onSubmit()
 
-GET         /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onLoad
-POST        /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onSubmit
+GET         /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onLoad()
+POST        /disclosure/importer-eori-number                                                   controllers.importDetails.ImporterEORINumberController.onSubmit()
 
-GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad
-POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit
+GET         /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onLoad()
+POST        /disclosure/importer-vat-registered                                                controllers.importDetails.ImporterVatRegisteredController.onSubmit()
 
 
 # Underpayments
 
-GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad
+GET         /disclosure/underpayment-introduction                                              controllers.underpayments.UnderpaymentStartController.onLoad()
 
-GET         /disclosure/select-duty-type-underpaid                                             controllers.underpayments.UnderpaymentTypeController.onLoad
-POST        /disclosure/select-duty-type-underpaid                                             controllers.underpayments.UnderpaymentTypeController.onSubmit
+GET         /disclosure/select-duty-type-underpaid                                             controllers.underpayments.UnderpaymentTypeController.onLoad()
+POST        /disclosure/select-duty-type-underpaid                                             controllers.underpayments.UnderpaymentTypeController.onSubmit()
 
 GET         /disclosure/import-vat-underpayment-details                                        controllers.underpayments.UnderpaymentDetailsController.onLoad(underpaymentType: String = "B00")
 POST        /disclosure/import-vat-underpayment-details                                        controllers.underpayments.UnderpaymentDetailsController.onSubmit(underpaymentType: String = "B00")
@@ -133,9 +132,9 @@ POST        /disclosure/confirm-customs-duty-agricultural-products-underpayment-
 GET         /disclosure/confirm-compensatory-duty-underpayment-details                         controllers.underpayments.UnderpaymentDetailConfirmController.onLoad(underpaymentType: String = "D10", change: Boolean)
 POST        /disclosure/confirm-compensatory-duty-underpayment-details                         controllers.underpayments.UnderpaymentDetailConfirmController.onSubmit(underpaymentType: String = "D10", change: Boolean)
 
-GET         /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onLoad
+GET         /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onLoad()
 GET         /disclosure/underpayment-amount-summary/cya                                        controllers.underpayments.UnderpaymentDetailSummaryController.cya()
-POST        /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onSubmit
+POST        /disclosure/underpayment-amount-summary                                            controllers.underpayments.UnderpaymentDetailSummaryController.onSubmit()
 
 GET         /disclosure/change-import-vat-underpayment-details                                 controllers.underpayments.ChangeUnderpaymentDetailsController.onLoad(underpaymentType: String = "B00")
 POST        /disclosure/change-import-vat-underpayment-details                                 controllers.underpayments.ChangeUnderpaymentDetailsController.onSubmit(underpaymentType: String = "B00")
@@ -200,13 +199,13 @@ POST        /disclosure/remove-compensatory-duty-underpayment-confirm           
 
 # Reasons
 
-GET         /disclosure/reason-introduction                                                    controllers.reasons.BoxGuidanceController.onLoad
+GET         /disclosure/reason-introduction                                                    controllers.reasons.BoxGuidanceController.onLoad()
 
-GET         /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onLoad
-POST        /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onSubmit
+GET         /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onLoad()
+POST        /disclosure/box-number                                                             controllers.reasons.BoxNumberController.onSubmit()
 
-GET         /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onLoad
-POST        /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onSubmit
+GET         /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onLoad()
+POST        /disclosure/item-number                                                            controllers.reasons.ItemNumberController.onSubmit()
 
 GET         /disclosure/box-22-currency-total-invoice-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 22)
 POST        /disclosure/box-22-currency-total-invoice-amendment                                controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 22)
@@ -265,20 +264,20 @@ POST        /disclosure/box-68-adjustment-vat-value-amendment                   
 GET         /disclosure/other-reason-details                                                   controllers.reasons.UnderpaymentReasonAmendmentController.onLoad(boxNumber: Int = 99)
 POST        /disclosure/other-reason-details                                                   controllers.reasons.UnderpaymentReasonAmendmentController.onSubmit(boxNumber: Int = 99)
 
-GET         /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onLoad
-POST        /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onSubmit
+GET         /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onLoad()
+POST        /disclosure/confirm-reason-details                                                 controllers.reasons.ConfirmReasonDetailController.onSubmit()
 
-GET         /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onLoad
-POST        /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onSubmit
+GET         /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onLoad()
+POST        /disclosure/underpayment-reason-summary                                            controllers.reasons.UnderpaymentReasonSummaryController.onSubmit()
 
-GET         /disclosure/change/change-reason-details                                           controllers.reasons.ChangeUnderpaymentReasonController.onLoad
+GET         /disclosure/change/change-reason-details                                           controllers.reasons.ChangeUnderpaymentReasonController.onLoad()
 GET         /disclosure/change/change-reason-details/:boxNumber/:itemNumber                    controllers.reasons.ChangeUnderpaymentReasonController.change(boxNumber: Int, itemNumber: Int)
 
-GET         /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onLoad
-POST        /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onSubmit
+GET         /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onLoad()
+POST        /disclosure/remove-reason-confirm                                                  controllers.reasons.RemoveUnderpaymentReasonController.onSubmit()
 
-GET         /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onLoad
-POST        /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onSubmit
+GET         /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onLoad()
+POST        /disclosure/change/item-number                                                     controllers.reasons.ChangeItemNumberController.onSubmit()
 
 GET         /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 22)
 POST        /disclosure/change/box-22-currency-total-invoice-amendment                         controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 22)
@@ -337,54 +336,54 @@ POST        /disclosure/change/box-68-adjustment-vat-value-amendment            
 GET         /disclosure/change/change-other-reason-details                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber: Int = 99)
 POST        /disclosure/change/change-other-reason-details                                     controllers.reasons.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber: Int = 99)
 
-GET         /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onLoad
-POST        /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onSubmit
+GET         /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onLoad()
+POST        /disclosure/change/confirm-reason-details                                          controllers.reasons.ConfirmChangeReasonDetailController.onSubmit()
 
-GET         /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onLoad
-POST        /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onSubmit
+GET         /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onLoad()
+POST        /disclosure/more-information                                                       controllers.reasons.MoreInformationController.onSubmit()
 
 
 # Doc Upload
 
-GET         /disclosure/mandatory-documents                                                    controllers.docUpload.SupportingDocController.onLoad
+GET         /disclosure/mandatory-documents                                                    controllers.docUpload.SupportingDocController.onLoad()
 
-GET         /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onLoad
-POST        /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onSubmit
+GET         /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onLoad()
+POST        /disclosure/further-documents                                                      controllers.docUpload.AnyOtherSupportingDocsController.onSubmit()
 
-GET         /disclosure/upload-file                                                            controllers.docUpload.UploadFileController.onLoad
+GET         /disclosure/upload-file                                                            controllers.docUpload.UploadFileController.onLoad()
 GET         /disclosure/upload-file/upscan-response                                            controllers.docUpload.UploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 GET         /disclosure/upload-file/polling                                                    controllers.docUpload.UploadFileController.uploadProgress(key: String)
 
-GET         /disclosure/upload-multiple-entry-file                                             controllers.docUpload.BulkUploadFileController.onLoad
-GET         /disclosure/upload-multiple-entry-file/success                                     controllers.docUpload.BulkUploadFileController.onSuccess
+GET         /disclosure/upload-multiple-entry-file                                             controllers.docUpload.BulkUploadFileController.onLoad()
+GET         /disclosure/upload-multiple-entry-file/success                                     controllers.docUpload.BulkUploadFileController.onSuccess()
 GET         /disclosure/upload-multiple-entry-file/polling                                     controllers.docUpload.BulkUploadFileController.uploadProgress(key:String)
 GET         /disclosure/upload-multiple-entry-file/upscan-response                             controllers.docUpload.BulkUploadFileController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 
-GET         /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onLoad
-POST        /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onSubmit
+GET         /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onLoad()
+POST        /disclosure/upload-another-file                                                    controllers.docUpload.UploadAnotherFileController.onSubmit()
 
 GET         /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onLoad(index: models.Index)
 POST        /disclosure/confirm-file-removal/:index                                            controllers.docUpload.RemoveUploadedFileController.onSubmit(index: models.Index)
 
-GET         /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onLoad
-POST        /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onSubmit
+GET         /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onLoad()
+POST        /disclosure/which-documents-upload                                                 controllers.docUpload.OptionalSupportingDocsController.onSubmit()
 
 
 # Contact Details
 
-GET         /address-initialise                                                                controllers.contactDetails.AddressLookupController.initialiseJourney
+GET         /address-initialise                                                                controllers.contactDetails.AddressLookupController.initialiseJourney()
 
 GET         /address-callback                                                                  controllers.contactDetails.AddressLookupController.callback(id: String)
 
 GET         /importer-address-callback                                                         controllers.contactDetails.AddressLookupController.importerCallback(id: String)
 
-GET         /importer-address-initialise                                                       controllers.contactDetails.AddressLookupController.initialiseImporterJourney
+GET         /importer-address-initialise                                                       controllers.contactDetails.AddressLookupController.initialiseImporterJourney()
 
-GET         /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onLoad
-POST        /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onSubmit
+GET         /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onLoad()
+POST        /disclosure/your-contact-details                                                   controllers.contactDetails.DeclarantContactDetailsController.onSubmit()
 
-GET         /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onLoad
-POST        /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onSubmit
+GET         /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onLoad()
+POST        /disclosure/address-correct                                                        controllers.contactDetails.TraderAddressCorrectController.onSubmit()
 
 
 # Payment Info
@@ -394,86 +393,86 @@ GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-respons
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan/polling                      controllers.paymentInfo.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, dan: String, key: String)
 GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success                      controllers.paymentInfo.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType, dan: String)
 
-GET         /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onLoad
-POST        /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onSubmit
+GET         /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onLoad()
+POST        /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onSubmit()
 
-GET         /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onLoad
-POST        /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onSubmit
+GET         /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onLoad()
+POST        /disclosure/importer-deferment-account-number                                      controllers.paymentInfo.ImporterDanController.onSubmit()
 
-GET         /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onLoad
-POST        /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onSubmit
+GET         /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onLoad()
+POST        /disclosure/split-deferment-payment                                                controllers.paymentInfo.SplitPaymentController.onSubmit()
 
-GET         /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onLoad
-POST        /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onSubmit
+GET         /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onLoad()
+POST        /disclosure/deferment-account-details-all                                          controllers.paymentInfo.RepresentativeDanController.onSubmit()
 
-GET         /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onLoad
-POST        /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onSubmit
+GET         /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onLoad()
+POST        /disclosure/deferment-account-details-duties                                       controllers.paymentInfo.RepresentativeDanDutyController.onSubmit()
 
-GET         /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onLoad
-POST        /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onSubmit
+GET         /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onLoad()
+POST        /disclosure/deferment-account-details-vat                                          controllers.paymentInfo.RepresentativeDanImportVATController.onSubmit()
 
 
 # Check Your Answers
 
-GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad
-GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit
+GET         /disclosure/check-your-answers                                                     controllers.cya.CheckYourAnswersController.onLoad()
+GET         /disclosure/confirmation                                                           controllers.cya.CheckYourAnswersController.onSubmit()
 
 
 # Update Case
 
-GET         /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onLoad
-POST        /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onSubmit
+GET         /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onLoad()
+POST        /update-disclosure/reference-number                                                controllers.updateCase.DisclosureReferenceNumberController.onSubmit()
 
-GET         /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onLoad
-POST        /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onSubmit
+GET         /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onLoad()
+POST        /update-disclosure/need-to-upload                                                  controllers.updateCase.MoreDocumentationController.onSubmit()
 
-GET         /update-disclosure/upload-file                                                     controllers.updateCase.UploadSupportingDocumentationController.onLoad
+GET         /update-disclosure/upload-file                                                     controllers.updateCase.UploadSupportingDocumentationController.onLoad()
 GET         /update-disclosure/upload-file/upscan-response                                     controllers.updateCase.UploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 GET         /update-disclosure/upload-file/polling                                             controllers.updateCase.UploadSupportingDocumentationController.uploadProgress(key: String)
-GET         /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onLoad
-POST        /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onSubmit
+GET         /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onLoad()
+POST        /update-disclosure/upload-another-file                                             controllers.updateCase.UploadSupportingDocumentationSummaryController.onSubmit()
 GET         /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onLoad(index: models.Index)
 POST        /update-disclosure/confirm-file-removal/:index                                     controllers.updateCase.RemoveSupportingDocumentationController.onSubmit(index: models.Index)
 
-GET         /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onLoad
-POST        /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onSubmit
+GET         /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onLoad()
+POST        /update-disclosure/additional-information                                          controllers.updateCase.UpdateAdditionalInformationController.onSubmit()
 
 GET         /update-disclosure/check-your-answers                                              controllers.updateCase.UpdateCaseCheckYourAnswersController.onLoad()
 GET         /update-disclosure/confirmation                                                    controllers.updateCase.UpdateCaseCheckYourAnswersController.onSubmit()
-GET         /update-disclosure/disclosure-not-found                                            controllers.updateCase.DisclosureNotFoundController.onLoad
+GET         /update-disclosure/disclosure-not-found                                            controllers.updateCase.DisclosureNotFoundController.onLoad()
 
 GET         /update-disclosure/cannot-add-information                                          controllers.updateCase.DisclosureClosedController.onLoad()
 
 
 # Cancel Case
 
-GET         /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad
-POST        /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit
+GET         /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onLoad()
+POST        /cancel-disclosure/reference-number                                                controllers.cancelCase.CancelCaseReferenceNumberController.onSubmit()
 
-GET         /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onLoad
-POST        /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onSubmit
+GET         /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onLoad()
+POST        /cancel-disclosure/cancellation-reason                                             controllers.cancelCase.CancellationReasonController.onSubmit()
 
-GET         /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad
-POST        /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit
+GET         /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onLoad()
+POST        /cancel-disclosure/need-to-upload                                                  controllers.cancelCase.AnyOtherSupportingCancellationDocsController.onSubmit()
 
-GET         /cancel-disclosure/upload-file                                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.onLoad
+GET         /cancel-disclosure/upload-file                                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.onLoad()
 GET         /cancel-disclosure/upload-file/upscan-response                                     controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.upscanResponseHandler(key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
 GET         /cancel-disclosure/upload-file/polling                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationController.uploadProgress(key: String)
-GET         /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onLoad
-POST        /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onSubmit
+GET         /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()
+POST        /cancel-disclosure/upload-another-file                                             controllers.cancelCase.CancelCaseUploadSupportingDocumentationSummaryController.onSubmit()
 GET         /cancel-disclosure/confirm-file-removal/:index                                     controllers.cancelCase.CancelCaseRemoveSupportingDocumentationController.onLoad(index: models.Index)
 POST        /cancel-disclosure/confirm-file-removal/:index                                     controllers.cancelCase.CancelCaseRemoveSupportingDocumentationController.onSubmit(index: models.Index)
 
-GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad
-GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit
-GET         /cancel-disclosure/cannot-add-information                                          controllers.cancelCase.CancelCaseDisclosureClosedController.onLoad
+GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad()
+GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit()
+GET         /cancel-disclosure/cannot-add-information                                          controllers.cancelCase.CancelCaseDisclosureClosedController.onLoad()
 
-GET         /cancel-disclosure/disclosure-not-found                                            controllers.cancelCase.CancelCaseDisclosureNotFoundController.onLoad
+GET         /cancel-disclosure/disclosure-not-found                                            controllers.cancelCase.CancelCaseDisclosureNotFoundController.onLoad()
 
 
 # Errors
 
-GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad
-GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess
-GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess
+GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad()
+GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess()
+GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess()
 
