@@ -39,6 +39,7 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
       injector.instanceOf[IndividualContinueWithCredentialsFormProvider]
 
     MockedSessionRepository.set(Future.successful(true))
+    MockedSessionRepository.remove(Future.successful("OK"))
     MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -97,7 +98,7 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(request)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.routes.SignOutController.signOut().url)
+        redirectLocation(result) mustBe Some(appConfig.signOutUrl)
       }
 
     }

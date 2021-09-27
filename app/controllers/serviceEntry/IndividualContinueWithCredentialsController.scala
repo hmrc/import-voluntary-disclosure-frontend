@@ -57,12 +57,12 @@ class IndividualContinueWithCredentialsController @Inject() (
           case userAnswers: UserAnswers =>
             for {
               updatedAnswers <- Future.fromTry(userAnswers.set(IndividualContinueWithCredentialsPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              _ <- if (value) sessionRepository.set(updatedAnswers) else sessionRepository.remove(getCredId(request))
             } yield {
               if (value) {
                 Redirect(appConfig.eccSubscribeUrl)
               } else {
-                Redirect(controllers.routes.SignOutController.signOut())
+                Redirect(appConfig.signOutUrl)
               }
             }
           case _ => Future.successful(errorHandler.showInternalServerError)
