@@ -19,10 +19,12 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.importDetails.UserType.{Importer, Representative}
 import models.requests._
-import pages.importDetails.{EnterCustomsProcedureCodePage, NumberOfEntriesPage}
+import models.{ContactAddress, EoriDetails, UserAnswers}
+import pages.importDetails._
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{Call, Result}
@@ -36,9 +38,9 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
 
   trait Test extends MockSessionRepository {
 
-    implicit lazy val dataRequest = new DataRequest(
-      new OptionalDataRequest(
-        new IdentifierRequest(fakeRequest, "credId", "eori"),
+    implicit lazy val dataRequest = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
         userAnswers
@@ -61,7 +63,25 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
   }
 
   "GET onLoad" should {
-    "return 200" in new Test {
+    "return 200 for representative" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterNamePage, "Some Name").success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return 200 for importer" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, Importer).success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+          ).success.value
+      )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
@@ -76,6 +96,15 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     }
 
     "return HTML" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, Importer).success.value
+          .set(ImporterNamePage, "Some Name").success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails("name", "", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+          ).success.value
+      )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")

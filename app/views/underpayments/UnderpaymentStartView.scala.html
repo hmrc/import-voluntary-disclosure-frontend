@@ -21,7 +21,7 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call, oneEntry: Boolean, displayBackLink: Boolean)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, oneEntry: Boolean, displayBackLink: Boolean, isRepFlow: Boolean, nameOfImporterOrRep: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = messages("underpaymentStart.pageTitle"),
         customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
@@ -43,6 +43,12 @@
             Html(messages("underpaymentStart.bulkEntry.bullet2")),
         ))
     }
+
+      @if(isRepFlow){
+        @p(Html(messages("underpaymentStart.representative.p1", nameOfImporterOrRep)))
+      } else {
+        @p(Html(messages("underpaymentStart.importer.p1", nameOfImporterOrRep)))
+      }
 
         @linkButton(url = controllers.underpayments.routes.UnderpaymentTypeController.onLoad().url, messages("common.button.continue"))
 
