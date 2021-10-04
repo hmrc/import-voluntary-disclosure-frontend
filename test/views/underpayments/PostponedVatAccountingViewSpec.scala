@@ -32,7 +32,7 @@ class PostponedVatAccountingViewSpec extends ViewBaseSpec {
   val importerName = "importerName"
   val formProvider: PostponedVatAccountingFormProvider      = injector.instanceOf[PostponedVatAccountingFormProvider]
 
-  "Rendering the UserType page" when {
+  "Rendering the Postponed VAT Accounting page" when {
 
     "no errors exist" should {
       lazy val form: Form[Boolean] = formProvider(importerName)
