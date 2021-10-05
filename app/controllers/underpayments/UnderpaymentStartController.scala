@@ -19,8 +19,7 @@ package controllers.underpayments
 import config.ErrorHandler
 import controllers.actions._
 import models.requests.DataRequest
-import pages.importDetails.{EnterCustomsProcedureCodePage, ImporterNamePage}
-import pages.serviceEntry.KnownEoriDetailsPage
+import pages.importDetails.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -45,7 +44,7 @@ class UnderpaymentStartController @Inject() (
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      getImporterName match {
+      request.getImporterName match {
         case Some(nameOfImporterOrRep) =>
           Future.successful(
             Ok(view(backLink(), request.isOneEntry, !request.checkMode, request.isRepFlow, nameOfImporterOrRep))
@@ -54,13 +53,6 @@ class UnderpaymentStartController @Inject() (
       }
     }
   }
-
-  private[controllers] def getImporterName(implicit request: DataRequest[_]): Option[String] =
-    if (request.isRepFlow) {
-      request.userAnswers.get(ImporterNamePage)
-    } else {
-      request.userAnswers.get(KnownEoriDetailsPage).map(_.name)
-    }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.isOneEntry) {

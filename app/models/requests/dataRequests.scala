@@ -23,7 +23,7 @@ import models.importDetails.{NumberOfEntries, UserType}
 import pages._
 import pages.importDetails._
 import pages.paymentInfo.{DefermentPage, SplitPaymentPage}
-import pages.serviceEntry.WhatDoYouWantToDoPage
+import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import pages.underpayments._
 import play.api.mvc.WrappedRequest
 
@@ -103,6 +103,13 @@ case class DataRequest[A](request: OptionalDataRequest[A], credId: String, eori:
     userAnswers.get(NumberOfEntriesPage) match {
       case Some(oneEntry) => oneEntry == NumberOfEntries.OneEntry
       case _              => false
+    }
+
+  def getImporterName: Option[String] =
+    if (isRepFlow) {
+      userAnswers.get(ImporterNamePage)
+    } else {
+      userAnswers.get(KnownEoriDetailsPage).map(_.name)
     }
 
 }
