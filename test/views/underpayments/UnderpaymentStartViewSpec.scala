@@ -27,23 +27,52 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: UnderpaymentStartView = app.injector.instanceOf[UnderpaymentStartView]
 
+  val nameOfCompany = "ABC ltd"
+
   "Rendering the Underpayment start page" when {
-    "no errors exist" should {
+    "no errors exist for importer" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         true,
-        true
+        true,
+        false,
+        nameOfCompany
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
+
+      "have the correct paragraph with company name displayed" in {
+        elementText("#main-content > div > div > p:nth-child(4)") mustBe UnderpaymentStartMessages.importerParagraph
+      }
+    }
+
+    "no errors exist for representative" should {
+      lazy val view: Html = injectedView(
+        controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
+        true,
+        true,
+        true,
+        nameOfCompany
+      )(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      checkPageTitle(UnderpaymentStartMessages.pageTitle)
+
+      "have the correct paragraph with company name displayed" in {
+        elementText(
+          "#main-content > div > div > p:nth-child(4)"
+        ) mustBe UnderpaymentStartMessages.representativeParagraph
+      }
     }
 
     "when in change mode back button" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         true,
-        false
+        false,
+        true,
+        nameOfCompany
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -59,7 +88,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         true,
-        true
+        true,
+        true,
+        nameOfCompany
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -76,7 +107,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         false,
-        true
+        true,
+        true,
+        nameOfCompany
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -95,7 +128,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     lazy val view: Html = injectedView(
       controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
       true,
-      true
+      true,
+      true,
+      nameOfCompany
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
     s"have the correct page heading of '${UnderpaymentStartMessages.pageTitle}'" in {
