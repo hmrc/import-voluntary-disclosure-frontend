@@ -19,7 +19,10 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
+import models.{ContactAddress, EoriDetails, UserAnswers}
+import models.importDetails.UserType.{Importer, Representative}
+import pages.importDetails.{ImporterNamePage, UserTypePage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
@@ -42,6 +45,7 @@ class CannotDiscloseImportVATControllerSpec extends ControllerSpecBase {
       messagesControllerComponents,
       dataRequiredAction,
       mockSessionRepository,
+      errorHandler,
       view,
       ec
     )
@@ -55,7 +59,25 @@ class CannotDiscloseImportVATControllerSpec extends ControllerSpecBase {
   }
 
   "GET onLoad" should {
-    "return 200" in new Test {
+    "return 200 for representative" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, Representative).success.value
+          .set(ImporterNamePage, "Some Name").success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
+    "return 200 for importer" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, Importer).success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+          ).success.value
+      )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }

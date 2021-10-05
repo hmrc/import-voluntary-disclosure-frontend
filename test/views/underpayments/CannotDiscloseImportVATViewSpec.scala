@@ -26,7 +26,7 @@ import views.html.reasons.CannotDiscloseImportVATView
 class CannotDiscloseImportVATViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: CannotDiscloseImportVATView = app.injector.instanceOf[CannotDiscloseImportVATView]
-  private val importerName: Option[String]                   = Some("fewfew")
+  private val importerName: String                   = "fewfew"
 
   "Rendering the Cannot Disclose Import VAT page" when {
 

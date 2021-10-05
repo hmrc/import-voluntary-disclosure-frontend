@@ -16,8 +16,9 @@
 
 package controllers.underpayments
 
+import config.ErrorHandler
 import controllers.actions._
-import pages.importDetails.ImporterNamePage
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -25,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.CannotDiscloseImportVATView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CannotDiscloseImportVATController @Inject() (
@@ -34,16 +35,21 @@ class CannotDiscloseImportVATController @Inject() (
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
+  errorHandler: ErrorHandler,
   view: CannotDiscloseImportVATView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
+  private val logger = Logger("application." + getClass.getCanonicalName)
+
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    request.userAnswers.get(ImporterNamePage) match {
-      case Some(importerName) =>
-        sessionRepository.remove(request.credId).map(_ => Ok(view(request.isRepFlow, Some(importerName))))
-      case _ => sessionRepository.remove(request.credId).map(_ => Ok(view(request.isRepFlow, None)))
+    request.getImporterName match {
+      case Some(nameOfImporter) =>
+        sessionRepository.remove(request.credId).map(_ => Ok(view(request.isRepFlow, nameOfImporter)))
+      case None =>
+        logger.error("Failed to find Importer Name")
+        Future.successful(errorHandler.showInternalServerError)
     }
 
   }

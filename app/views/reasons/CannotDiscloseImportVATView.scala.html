@@ -22,32 +22,32 @@
       linkButton: components.linkButton
       )
 
-@(isRepFlow: Boolean, importerName: Option[String])(implicit request: Request[_], messages: Messages)
+@(isRepFlow: Boolean, importerName: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-        pageTitle = messages("CannotDiscloseImportVAT.pageTitle"),
+        pageTitle = messages("cannotDiscloseImportVAT.pageTitle"),
         customBackLinkUrl = None,
         showBackLink = false
         ) {
 
-    @h1(messages("CannotDiscloseImportVAT.pageTitle"))
+    @h1(messages("cannotDiscloseImportVAT.pageTitle"))
 
     @if(isRepFlow){
-        @p {
-            @messages("CannotDiscloseImportVAT.rep.p1", importerName.get)
-           }
-        }  else {
-        @p {
-            @messages("CannotDiscloseImportVAT.importer.p1")
-           }
-        }
+             @p {
+                @messages("cannotDiscloseImportVAT.rep.p1", importerName)
+            }
+        } else {
+             @p {
+                @messages("cannotDiscloseImportVAT.importer.p1")
+            }
+    }
 
     @p(
         Html(
             <span>
-                {messages("CannotDiscloseImportVAT.findOut")}
+                {messages("cannotDiscloseImportVAT.findOut")}
                     <a class="govuk-link" href="https://docs.google.com/document/d/1ckzwM_hzdxc5qugSFtrJR2Wv75xi5MoIW-LTXdc-x3c/edit?usp=sharing">
-                       {messages("CannotDiscloseImportVAT.p2")}</a>.
+                       {messages("cannotDiscloseImportVAT.p2")}</a>.
             </span>.toString()
             )
         )
