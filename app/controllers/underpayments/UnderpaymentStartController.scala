@@ -16,6 +16,7 @@
 
 package controllers.underpayments
 
+import config.ErrorHandler
 import controllers.actions._
 import models.requests.DataRequest
 import pages.importDetails.{EnterCustomsProcedureCodePage, ImporterNamePage}
@@ -35,6 +36,7 @@ class UnderpaymentStartController @Inject() (
   getData: DataRetrievalAction,
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
+  errorHandler: ErrorHandler,
   view: UnderpaymentStartView
 ) extends FrontendController(mcc)
     with I18nSupport {
@@ -43,14 +45,22 @@ class UnderpaymentStartController @Inject() (
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      val nameOfImporterOrRep = if (request.isRepFlow) {
-        request.userAnswers.get(ImporterNamePage).get
-      } else { request.userAnswers.get(KnownEoriDetailsPage).get.name }
-      Future.successful(
-        Ok(view(backLink(), request.isOneEntry, !request.checkMode, request.isRepFlow, nameOfImporterOrRep))
-      )
+      getImporterName match {
+        case Some(nameOfImporterOrRep) =>
+          Future.successful(
+            Ok(view(backLink(), request.isOneEntry, !request.checkMode, request.isRepFlow, nameOfImporterOrRep))
+          )
+        case None => Future.successful(errorHandler.showInternalServerError)
+      }
     }
   }
+
+  private[controllers] def getImporterName(implicit request: DataRequest[_]): Option[String] =
+    if (request.isRepFlow) {
+      request.userAnswers.get(ImporterNamePage)
+    } else {
+      request.userAnswers.get(KnownEoriDetailsPage).map(_.name)
+    }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.isOneEntry) {

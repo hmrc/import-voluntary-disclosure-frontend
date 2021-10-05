@@ -55,6 +55,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
       dataRetrievalAction,
       messagesControllerComponents,
       dataRequiredAction,
+      errorHandler,
       view
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
