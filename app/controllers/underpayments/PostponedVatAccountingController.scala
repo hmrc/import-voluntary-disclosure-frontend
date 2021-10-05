@@ -19,8 +19,6 @@ package controllers.underpayments
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.PostponedVatAccountingFormProvider
-import models.requests.DataRequest
-import pages.importDetails.ImporterNamePage
 import pages.underpayments.PostponedVatAccountingPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -30,7 +28,6 @@ import views.html.underpayments.PostponedVatAccountingView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import pages.serviceEntry.KnownEoriDetailsPage
 
 @Singleton
 class PostponedVatAccountingController @Inject() (
@@ -47,14 +44,14 @@ class PostponedVatAccountingController @Inject() (
     with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    getImporterName match {
+    request.getImporterName match {
       case Some(importerName) => Future.successful(Ok(view(formProvider(importerName), importerName, backLink())))
       case None               => Future.successful(errorHandler.showInternalServerError)
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    getImporterName match {
+    request.getImporterName match {
       case Some(importerName) =>
         formProvider(importerName).bindFromRequest().fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, importerName, backLink()))),
@@ -78,13 +75,6 @@ class PostponedVatAccountingController @Inject() (
       case None => Future.successful(errorHandler.showInternalServerError)
     }
   }
-
-  private[controllers] def getImporterName(implicit request: DataRequest[_]): Option[String] =
-    if (request.isRepFlow) {
-      request.userAnswers.get(ImporterNamePage)
-    } else {
-      request.userAnswers.get(KnownEoriDetailsPage).map(_.name)
-    }
 
   private[controllers] def backLink(): Call =
     controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
