@@ -21,8 +21,8 @@ import controllers.actions._
 import models.requests.DataRequest
 import pages.importDetails.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
+import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.i18n.Lang.logger
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentStartView
@@ -40,6 +40,8 @@ class UnderpaymentStartController @Inject() (
   view: UnderpaymentStartView
 ) extends FrontendController(mcc)
     with I18nSupport {
+
+  private val logger = Logger("application." + getClass.getCanonicalName)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
