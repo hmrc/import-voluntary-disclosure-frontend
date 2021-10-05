@@ -22,6 +22,7 @@ import models.requests.DataRequest
 import pages.importDetails.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.i18n.I18nSupport
+import play.api.i18n.Lang.logger
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentStartView
@@ -49,7 +50,9 @@ class UnderpaymentStartController @Inject() (
           Future.successful(
             Ok(view(backLink(), request.isOneEntry, !request.checkMode, request.isRepFlow, nameOfImporterOrRep))
           )
-        case None => Future.successful(errorHandler.showInternalServerError)
+        case None =>
+          logger.error("Failed to find Importer Name")
+          Future.successful(errorHandler.showInternalServerError)
       }
     }
   }
