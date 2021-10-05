@@ -16,10 +16,12 @@
 
 package controllers.underpayments
 
+import config.ErrorHandler
 import controllers.actions._
 import models.requests.DataRequest
 import pages.importDetails.EnterCustomsProcedureCodePage
 import pages.underpayments.UnderpaymentDetailSummaryPage
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -34,15 +36,26 @@ class UnderpaymentStartController @Inject() (
   getData: DataRetrievalAction,
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
+  errorHandler: ErrorHandler,
   view: UnderpaymentStartView
 ) extends FrontendController(mcc)
     with I18nSupport {
+
+  private val logger = Logger("application." + getClass.getCanonicalName)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink(), request.isOneEntry, !request.checkMode)))
+      request.getImporterName match {
+        case Some(nameOfImporterOrRep) =>
+          Future.successful(
+            Ok(view(backLink(), request.isOneEntry, !request.checkMode, request.isRepFlow, nameOfImporterOrRep))
+          )
+        case None =>
+          logger.error("Failed to find Importer Name")
+          Future.successful(errorHandler.showInternalServerError)
+      }
     }
   }
 
