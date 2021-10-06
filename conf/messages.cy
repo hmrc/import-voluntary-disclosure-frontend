@@ -130,6 +130,14 @@ SupportDoc.bullet3 = a document or scanned image showing how you calculated the 
 # Error Summary
 error.summary.pageTitle = There is a problem
 
+# Cannot Disclose Import VAT
+pvaHandoff.pageTitle = You cannot disclose underpaid import VAT using this service
+pvaHandoff.rep.p1 = As {0} uses Postponed VAT Accounting they will need to account for the underpaid import VAT on their next VAT return.
+pvaHandoff.importer.p1 = As you use Postponed VAT Accounting then you need to account for the underpaid import VAT on your next VAT return.
+pvaHandoff.findOut = Find out
+pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re using postponed VAT accounting (opens in new tab)
+
+
 # Underpayment Type
 underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
 underpaymentType.secondTime.pageTitle = Which type of tax or duty was underpaid?
