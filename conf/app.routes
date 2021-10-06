@@ -197,6 +197,8 @@ POST        /disclosure/remove-customs-duty-agricultural-products-underpayment-c
 GET         /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onLoad(underpaymentType: String = "D10")
 POST        /disclosure/remove-compensatory-duty-underpayment-confirm                          controllers.underpayments.RemoveUnderpaymentDetailsController.onSubmit(underpaymentType: String = "D10")
 
+GET         /pva-cant-use-service                                                              controllers.underpayments.PVAHandoffController.onLoad()
+
 
 # Reasons
 
