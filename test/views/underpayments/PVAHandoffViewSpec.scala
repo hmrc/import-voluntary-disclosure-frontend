@@ -21,12 +21,12 @@ import messages.underpayments.CannotDiscloseImportVATMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.html.reasons.CannotDiscloseImportVATView
+import views.html.reasons.PVAHandoffView
 
 class PVAHandoffViewSpec extends ViewBaseSpec {
 
-  private lazy val injectedView: CannotDiscloseImportVATView = app.injector.instanceOf[CannotDiscloseImportVATView]
-  private val importerName: String                   = "fewfew"
+  private lazy val injectedView: PVAHandoffView = app.injector.instanceOf[PVAHandoffView]
+  private val importerName: String              = "fewfew"
 
   "Rendering the Cannot Disclose Import VAT page" when {
 
@@ -64,6 +64,11 @@ class PVAHandoffViewSpec extends ViewBaseSpec {
 
     s"have the correct value for '${CannotDiscloseImportVATMessages.findOut}'" in {
       elementText("#main-content > div > div > p:nth-child(3)") mustBe CannotDiscloseImportVATMessages.findOut
+    }
+
+    s"have the '${CannotDiscloseImportVATMessages.findOut}' link" in {
+      elementAttributes("#accountForImportVAT").get("href") mustBe
+        Some("https://www.gov.uk/guidance/complete-your-vat-return-to-account-for-import-vat")
     }
 
   }

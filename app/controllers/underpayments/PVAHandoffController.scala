@@ -23,7 +23,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.reasons.CannotDiscloseImportVATView
+import views.html.reasons.PVAHandoffView
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +36,7 @@ class PVAHandoffController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   errorHandler: ErrorHandler,
-  view: CannotDiscloseImportVATView,
+  view: PVAHandoffView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {

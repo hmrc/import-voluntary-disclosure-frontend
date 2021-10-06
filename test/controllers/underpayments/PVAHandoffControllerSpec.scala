@@ -19,15 +19,15 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.{ContactAddress, EoriDetails, UserAnswers}
 import models.importDetails.UserType.{Importer, Representative}
+import models.{ContactAddress, EoriDetails, UserAnswers}
 import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import views.html.reasons.CannotDiscloseImportVATView
+import views.html.reasons.PVAHandoffView
 
 import scala.concurrent.Future
 
@@ -37,7 +37,7 @@ class PVAHandoffControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.remove(Future.successful("OK"))
 
-    val view = injector.instanceOf[CannotDiscloseImportVATView]
+    val view = injector.instanceOf[PVAHandoffView]
 
     lazy val controller = new PVAHandoffController(
       authenticatedAction,
