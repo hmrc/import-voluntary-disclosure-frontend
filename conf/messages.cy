@@ -903,7 +903,7 @@ privateCitizen.handOff.p2.part2 = and give brief details. We will take you throu
 
 # Private Citizen - Continue with the current creds
 privateCitizen.continueWithCreds.pageTitle = Are you sure you want to use this Government Gateway user ID to set up access to the service?
-privateCitizen.continueWithCreds.legend = Ensure you have signed in with the Government Gateway user ID you use for your business.
+privateCitizen.continueWithCreds.hint = Ensure you have signed in with the Government Gateway user ID you use for your business.
 privateCitizen.continueWithCreds.yesMessage = Yes I want to use this user ID to set up access
 privateCitizen.continueWithCreds.noMessage = No I want to sign in with a different user ID
 privateCitizen.continueWithCreds.error.required = Select yes if you want to use this user ID to set up access
