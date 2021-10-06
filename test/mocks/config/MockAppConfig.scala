@@ -87,6 +87,6 @@ class MockAppConfig(
   override val defaultLanguage: Lang   = en
 
   override val vatReturnAdjustmentsUrl: String = "url"
-  override val PVAHandoffUrl: String = "url"
+  override val pvaHandoffUrl: String = "url"
 
 }

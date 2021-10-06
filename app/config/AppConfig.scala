@@ -116,7 +116,7 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   lazy val vatReturnAdjustmentsUrl: String = servicesConfig.getString("urls.vatReturnAdjustmentsUrl")
 
-  lazy val PVAHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
+  lazy val pvaHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
 
 }
 
@@ -172,7 +172,7 @@ trait AppConfig extends FixedConfig {
   val cy: Lang
   val defaultLanguage: Lang
   val vatReturnAdjustmentsUrl: String
-  val PVAHandoffUrl: String
+  val pvaHandoffUrl: String
 }
 
 trait FixedConfig {
