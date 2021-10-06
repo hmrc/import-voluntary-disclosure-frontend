@@ -31,7 +31,7 @@ import views.html.reasons.CannotDiscloseImportVATView
 
 import scala.concurrent.Future
 
-class CannotDiscloseImportVATControllerSpec extends ControllerSpecBase {
+class PVAHandoffControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
 
@@ -39,7 +39,7 @@ class CannotDiscloseImportVATControllerSpec extends ControllerSpecBase {
 
     val view = injector.instanceOf[CannotDiscloseImportVATView]
 
-    lazy val controller = new CannotDiscloseImportVATController(
+    lazy val controller = new PVAHandoffController(
       authenticatedAction,
       dataRetrievalAction,
       messagesControllerComponents,

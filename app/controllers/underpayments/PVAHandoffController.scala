@@ -29,7 +29,7 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CannotDiscloseImportVATController @Inject() (
+class PVAHandoffController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   mcc: MessagesControllerComponents,

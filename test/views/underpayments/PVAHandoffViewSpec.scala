@@ -23,7 +23,7 @@ import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.html.reasons.CannotDiscloseImportVATView
 
-class CannotDiscloseImportVATViewSpec extends ViewBaseSpec {
+class PVAHandoffViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: CannotDiscloseImportVATView = app.injector.instanceOf[CannotDiscloseImportVATView]
   private val importerName: String                   = "fewfew"

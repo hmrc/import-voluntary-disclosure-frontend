@@ -108,7 +108,6 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
   val updateCaseEnabled: Boolean  = servicesConfig.getBoolean("features.updateCaseEnabled")
   val welshToggleEnabled: Boolean = servicesConfig.getBoolean("features.welshToggleEnabled")
 
-
   val cancelCaseEnabled: Boolean = servicesConfig.getBoolean("features.cancelCaseEnabled")
 
   val en: Lang              = Lang("en")
@@ -116,6 +115,8 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
   val defaultLanguage: Lang = en
 
   lazy val vatReturnAdjustmentsUrl: String = servicesConfig.getString("urls.vatReturnAdjustmentsUrl")
+
+  lazy val PVAHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
 
 }
 
@@ -171,6 +172,7 @@ trait AppConfig extends FixedConfig {
   val cy: Lang
   val defaultLanguage: Lang
   val vatReturnAdjustmentsUrl: String
+  val PVAHandoffUrl: String
 }
 
 trait FixedConfig {

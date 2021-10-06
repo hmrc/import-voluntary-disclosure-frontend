@@ -19,35 +19,36 @@
       h1: components.h1,
       p: components.p,
       bullets: components.bullets,
-      linkButton: components.linkButton
+      linkButton: components.linkButton,
+      appConfig: AppConfig
       )
 
 @(isRepFlow: Boolean, importerName: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
-        pageTitle = messages("cannotDiscloseImportVAT.pageTitle"),
+        pageTitle = messages("pvaHandoff.pageTitle"),
         customBackLinkUrl = None,
         showBackLink = false
         ) {
 
-    @h1(messages("cannotDiscloseImportVAT.pageTitle"))
+    @h1(messages("pvaHandoff.pageTitle"))
 
     @if(isRepFlow){
              @p {
-                @messages("cannotDiscloseImportVAT.rep.p1", importerName)
+                @messages("pvaHandoff.rep.p1", importerName)
             }
         } else {
              @p {
-                @messages("cannotDiscloseImportVAT.importer.p1")
+                @messages("pvaHandoff.importer.p1")
             }
     }
 
     @p(
         Html(
             <span>
-                {messages("cannotDiscloseImportVAT.findOut")}
-                    <a class="govuk-link" href="https://docs.google.com/document/d/1ckzwM_hzdxc5qugSFtrJR2Wv75xi5MoIW-LTXdc-x3c/edit?usp=sharing">
-                       {messages("cannotDiscloseImportVAT.p2")}</a>.
+                {messages("pvaHandoff.findOut")}
+                    <a class="govuk-link" href={appConfig.PVAHandoffUrl}>
+                       {messages("pvaHandoff.p2")}</a>.
             </span>.toString()
             )
         )
