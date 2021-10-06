@@ -199,6 +199,8 @@ POST        /disclosure/remove-compensatory-duty-underpayment-confirm           
 GET         /disclosure/uses-pva                                                               controllers.underpayments.PostponedVatAccountingController.onLoad()
 POST        /disclosure/uses-pva                                                               controllers.underpayments.PostponedVatAccountingController.onSubmit()
 
+GET         /pva-cant-use-service                                                              controllers.underpayments.PVAHandoffController.onLoad()
+
 
 # Reasons
 
