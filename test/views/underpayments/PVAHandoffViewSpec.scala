@@ -17,7 +17,7 @@
 package views.underpayments
 
 import base.ViewBaseSpec
-import messages.underpayments.CannotDiscloseImportVATMessages
+import messages.underpayments.PVAHandoffMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -33,20 +33,20 @@ class PVAHandoffViewSpec extends ViewBaseSpec {
     "importer flow" should {
       lazy val view: Html                  = injectedView(isRepFlow = false, importerName)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the paragraph of '${CannotDiscloseImportVATMessages.importerMessage}'" in {
+      s"have the paragraph of '${PVAHandoffMessages.importerMessage}'" in {
         elementText(
           "#main-content > div > div > p:nth-child(2)"
-        ) mustBe CannotDiscloseImportVATMessages.importerMessage
+        ) mustBe PVAHandoffMessages.importerMessage
       }
     }
 
     "rep flow" should {
       lazy val view: Html                  = injectedView(isRepFlow = true, importerName)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the paragraph of '${CannotDiscloseImportVATMessages.repMessage}'" in {
+      s"have the paragraph of '${PVAHandoffMessages.repMessage}'" in {
         elementText(
           "#main-content > div > div > p:nth-child(2)"
-        ) mustBe CannotDiscloseImportVATMessages.repMessage
+        ) mustBe PVAHandoffMessages.repMessage
       }
     }
 
@@ -56,17 +56,17 @@ class PVAHandoffViewSpec extends ViewBaseSpec {
     lazy val view: Html                  = injectedView(isRepFlow = true, importerName)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    checkPageTitle(CannotDiscloseImportVATMessages.title)
+    checkPageTitle(PVAHandoffMessages.title)
 
-    s"have the correct page heading of '${CannotDiscloseImportVATMessages.title}'" in {
-      elementText("h1") mustBe CannotDiscloseImportVATMessages.title
+    s"have the correct page heading of '${PVAHandoffMessages.title}'" in {
+      elementText("h1") mustBe PVAHandoffMessages.title
     }
 
-    s"have the correct value for '${CannotDiscloseImportVATMessages.findOut}'" in {
-      elementText("#main-content > div > div > p:nth-child(3)") mustBe CannotDiscloseImportVATMessages.findOut
+    s"have the correct value for '${PVAHandoffMessages.findOut}'" in {
+      elementText("#main-content > div > div > p:nth-child(3)") mustBe PVAHandoffMessages.findOut
     }
 
-    s"have the '${CannotDiscloseImportVATMessages.findOut}' link" in {
+    s"have the '${PVAHandoffMessages.findOut}' link" in {
       elementAttributes("#accountForImportVAT").get("href") mustBe
         Some("https://www.gov.uk/guidance/complete-your-vat-return-to-account-for-import-vat")
     }
