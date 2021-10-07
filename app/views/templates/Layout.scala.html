@@ -14,11 +14,10 @@
  * limitations under the License.
  *@
 
-@import views.helpers.FooterLinks
-@import views.html.components.phaseBanner
-@import views.html.components.languageSelector
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import views.helpers.FooterLinks
+@import views.html.components.{languageSelector, phaseBanner}
 
 @this(govukLayout: GovukLayout,
         appConfig: AppConfig,
@@ -37,7 +36,8 @@
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
-        enableTimeoutDialog: Boolean = true
+        enableTimeoutDialog: Boolean = true,
+        isAuthorised: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @scripts = {
@@ -48,11 +48,17 @@
 }
 
 @header = @{
-        hmrcHeader(Header(
+    hmrcHeader(
+        Header(
             serviceName = Some(messages("service.name")),
             serviceUrl = messages("service.homePageUrl"),
-            signOutHref = Some(controllers.routes.SignOutController.signOut().url)
-            ))
+            signOutHref = if(isAuthorised) {
+                Some(controllers.routes.SignOutController.signOut().url)
+            } else {
+                Some(controllers.routes.SignOutController.signOutUnidentified().url)
+            }
+        )
+    )
 }
 
 @beforeContentBlock = {
