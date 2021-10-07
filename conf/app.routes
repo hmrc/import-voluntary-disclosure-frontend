@@ -7,6 +7,7 @@ GET         /guidance                                                           
 GET         /                                                                                  controllers.IndexController.onPageLoad()
 
 GET         /sign-out                                                                          controllers.SignOutController.signOut()
+GET         /sign-out-unidentified                                                             controllers.SignOutController.signOutUnidentified()
 GET         /language/:lang                                                                    controllers.LanguageSwitchController.switchToLanguage(lang: String)
 
 
