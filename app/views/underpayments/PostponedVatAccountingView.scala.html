@@ -33,14 +33,11 @@
 
    @errorSummary(form.errors)
 
-   @h1(messages("postponedVatAccounting.pageTitle", importerName))
-
-   @formHelper(action = controllers.underpayments.routes.PostponedVatAccountingController.onSubmit()) {
-       @inputRadio(
-           form = form,
-           legend = None,
-           classes = "govuk-fieldset__legend",
-           items = Seq(
+    @formHelper(action = controllers.underpayments.routes.PostponedVatAccountingController.onSubmit()) {
+        @inputRadio(
+            form = form,
+            legend = Some(messages("postponedVatAccounting.pageTitle", importerName)),
+            items = Seq(
                     RadioItem(
                         id = Some("value"),
                         value = Some("true"),
@@ -54,12 +51,12 @@
                         checked = form("value").value.contains("false")
                     )
             ),
-           legendAsHeading = false,
-           inline = true
-       )
+            inline = true,
+            legendAsHeading = true
+        )
 
-   @button("common.button.confirm")
-   }
+        @button("common.button.confirm")
+    }
 }
 
 
