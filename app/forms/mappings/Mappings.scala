@@ -49,9 +49,10 @@ trait Mappings extends Formatters with Constraints {
 
   protected def boolean(
     requiredKey: String = "error.required",
-    invalidKey: String = "error.boolean"
+    invalidKey: String = "error.boolean",
+    args: Seq[Any] = Seq.empty
   ): FieldMapping[Boolean] =
-    of(booleanFormatter(requiredKey, invalidKey))
+    of(booleanFormatter(requiredKey, invalidKey, args))
 
   // scalastyle:off
   protected def localDate(

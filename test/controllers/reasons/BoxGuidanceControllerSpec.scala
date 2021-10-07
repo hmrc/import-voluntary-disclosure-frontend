@@ -19,12 +19,12 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
-import models.UserAnswers
 import models.reasons.{BoxNumber, UnderpaymentReason}
+import models.{SelectedDutyTypes, UserAnswers}
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{charset, contentType, status, _}
+import play.api.test.Helpers._
 import views.html.reasons.BoxGuidanceView
 
 import scala.concurrent.Future
@@ -67,6 +67,21 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url)
 
+    }
+
+  }
+
+  "backLink" should {
+    "point to Postponed VAT page when the duty is VAT only" in new Test {
+      controller.backLink(SelectedDutyTypes.Vat) mustBe
+        controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
+    }
+
+    "point to Underpayment Summary Page when the duty is not VAT only" in new Test {
+      controller.backLink(SelectedDutyTypes.Duty) mustBe
+        controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+      controller.backLink(SelectedDutyTypes.Both) mustBe
+        controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
     }
 
   }

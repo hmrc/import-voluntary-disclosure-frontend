@@ -34,11 +34,15 @@ footer.accessibility.text = Accessibility Statement
 footer.accessibility.url = /accessibility-statement/import-voluntary-disclosure
 
 #Unauthorised
-unauthorised.agent.pageTitle = You cannot access this service to disclose a Customs Duty or import VAT underpayment
-unauthorised.agent.para1 = You have signed in with an agent Government user ID that cannot access this service.
-unauthorised.agent.para2.1 = 'If you are an importer or an importer’s representative you need to '
-unauthorised.agent.para2.2 = ' with the Government Gateway user ID you use for your business.'
-unauthorised.agent.signInAgain = sign in again
+unauthorised.agent.pageTitle = You cannot access the service with this type of user ID
+unauthorised.agent.para1 = You have signed in with an Agent Government Gateway user ID (also known as an Agent Services account). Agent Government Gateway user IDs cannot be used to access this service.
+unauthorised.agent.signInAgain.1 = Sign in again
+unauthorised.agent.signInAgain.2 = with:
+unauthorised.agent.bullet.1 = the Government Gateway user ID used to apply for your EORI number online
+unauthorised.agent.bullet.2 = or, if you do not have this, another Government Gateway user ID you use for your business
+unauthorised.agent.details.linkText = I do not have another Government Gateway user ID
+unauthorised.agent.details.1 = You can use the link on the sign in page to create a new user ID. You should select organisation or individual (not agent) when asked for the type of account.
+unauthorised.agent.details.2 = The subscription will be unsuccessful if another Government Gateway user ID is already linked to your EORI number. Make sure you check one does not exist before creating a new user ID.
 unauthorised.privateBeta.pageTitle = Sorry, the service is unavailable
 unauthorised.privateBeta.para1 = We are working on updating this service.
 unauthorised.privateBeta.para2.1 = 'In the meantime you can '
@@ -132,8 +136,8 @@ error.summary.pageTitle = There is a problem
 
 # Cannot Disclose Import VAT
 pvaHandoff.pageTitle = You cannot disclose underpaid import VAT using this service
-pvaHandoff.rep.p1 = As {0} uses Postponed VAT Accounting they will need to account for the underpaid import VAT on their next VAT return.
-pvaHandoff.importer.p1 = As you use Postponed VAT Accounting then you need to account for the underpaid import VAT on your next VAT return.
+pvaHandoff.rep.p1 = As {0} uses postponed VAT Accounting they will need to account for the underpaid import VAT on their next VAT return.
+pvaHandoff.importer.p1 = As you use postponed VAT Accounting then you need to account for the underpaid import VAT on your next VAT return.
 pvaHandoff.findOut = Find out
 pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re using postponed VAT accounting (opens in new tab)
 
@@ -296,6 +300,10 @@ underpaymentDetailsConfirm.A10.original.change = Change the Customs Duty on Agri
 underpaymentDetailsConfirm.A10.amended.change = Change the Customs Duty on Agricultural Products underpayment details amount that should have been paid
 underpaymentDetailsConfirm.D10.original.change = Change the Compensatory Duty underpayment details amount that was paid
 underpaymentDetailsConfirm.D10.amended.change = Change the Compensatory Duty underpayment details amount that should have been paid
+
+# Postponed VAT Accounting page
+postponedVatAccounting.pageTitle = Does {0} use postponed VAT accounting?
+postponedVatAccounting.error.required = Select yes if {0} uses postponed VAT accounting
 
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
