@@ -90,9 +90,7 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
       "return the correct location header when value is set to true" in new Test {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(
-          controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url
-        )
+        redirectLocation(result) mustBe Some(controllers.underpayments.routes.PVAHandoffController.onLoad().url)
       }
 
       "return the correct location header when value is set to false and we're not in bulk flow" in new Test {

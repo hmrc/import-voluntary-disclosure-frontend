@@ -61,8 +61,7 @@ class PostponedVatAccountingController @Inject() (
               _              <- sessionRepository.set(updatedAnswers)
             } yield {
               if (value) {
-                // TODO: redirect to Postponed VAT handoff
-                Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad())
+                Redirect(controllers.underpayments.routes.PVAHandoffController.onLoad())
               } else if (request.isOneEntry) {
                 Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad())
               } else {
