@@ -28,7 +28,7 @@ object UnauthorisedAgentAccessMessages extends BaseMessages {
   val signInAgain2    = "with:"
   val bullet1         = "the Government Gateway user ID used to apply for your EORI number online"
   val bullet2         = "or, if you do not have this, another Government Gateway user ID you use for your business"
-  val detailsLinkText = "I do not have another Government Gateway user id"
+  val detailsLinkText = "I do not have another Government Gateway user ID"
   val details1 =
     "You can use the link on the sign in page to create a new user ID. You should select organisation or individual " +
       "(not agent) when asked for the type of account."
