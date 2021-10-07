@@ -45,8 +45,12 @@ class PostponedVatAccountingController @Inject() (
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.getImporterName match {
-      case Some(importerName) => Future.successful(Ok(view(formProvider(importerName), importerName, backLink())))
-      case None               => Future.successful(errorHandler.showInternalServerError)
+      case Some(importerName) =>
+        val form = request.userAnswers.get(PostponedVatAccountingPage)
+          .map(formProvider(importerName).fill)
+          .getOrElse(formProvider(importerName))
+        Future.successful(Ok(view(form, importerName, backLink())))
+      case None => Future.successful(errorHandler.showInternalServerError)
     }
   }
 
