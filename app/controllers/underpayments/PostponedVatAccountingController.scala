@@ -66,10 +66,8 @@ class PostponedVatAccountingController @Inject() (
             } yield {
               if (value) {
                 Redirect(controllers.underpayments.routes.PVAHandoffController.onLoad())
-              } else if (request.isOneEntry) {
-                Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad())
               } else {
-                Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad())
+                Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad())
               }
             }
           }

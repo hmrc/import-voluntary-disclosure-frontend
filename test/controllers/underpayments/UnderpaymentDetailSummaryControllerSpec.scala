@@ -145,6 +145,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
@@ -152,6 +153,20 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
           Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
+      }
+
+      "return a SEE OTHER Postponed VAT page when false is selected duty is VAT only but we're in bulk flow" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
 
       "return a SEE OTHER Check Your Answers page when false is selected" in new Test {
@@ -210,6 +225,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
               )
             ).success.value
             .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
@@ -272,6 +288,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
         )
 
         override def setupMock(): Unit = {

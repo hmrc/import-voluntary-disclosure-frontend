@@ -95,15 +95,9 @@ class UnderpaymentDetailSummaryController @Inject() (
         } else {
           cleanupVatAccounting(request).flatMap { updatedRequest =>
             if (request.isRepFlow) {
-              redirectForRepFlow(updatedRequest)
-            } else if (request.checkMode) {
-              Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
-            } else if (request.dutyType == Vat) {
-              Future.successful(Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad()))
-            } else if (request.isOneEntry) {
-              Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
+              redirectForRepFlow(updatedRequest).getOrElse(redirect(updatedRequest))
             } else {
-              Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
+              redirect(updatedRequest)
             }
           }
         }
@@ -122,7 +116,19 @@ class UnderpaymentDetailSummaryController @Inject() (
     }
   }
 
-  private[underpayments] def redirectForRepFlow(request: DataRequest[_]): Future[Result] = {
+  private[underpayments] def redirect(request: DataRequest[_]): Future[Result] = {
+    if (request.checkMode) {
+      Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+    } else if (!request.isOneEntry) {
+      Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
+    } else if (request.dutyType == Vat) {
+      Future.successful(Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad()))
+    } else {
+      Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
+    }
+  }
+
+  private[underpayments] def redirectForRepFlow(request: DataRequest[_]): Option[Future[Result]] = {
     val newUnderpaymentType: SelectedDutyType = request.dutyType
     val oldUnderpaymentType                   = request.userAnswers.get(TempUnderpaymentTypePage)
     val splitThePayment                       = request.userAnswers.get(SplitPaymentPage)
@@ -130,18 +136,10 @@ class UnderpaymentDetailSummaryController @Inject() (
 
     (oldUnderpaymentType, newUnderpaymentType, splitThePayment) match {
       case (Some(oldType), Both, _) if dutyOrVatOnly.contains(oldType) =>
-        removePaymentDataAndRedirect(request)
+        Some(removePaymentDataAndRedirect(request))
       case (Some(Both), newType, Some(true)) if dutyOrVatOnly.contains(newType) =>
-        removePaymentDataAndRedirect(request)
-      case (None, Vat, _) =>
-        Future.successful(Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad()))
-      case (None, _, _) =>
-        if (request.isOneEntry) {
-          Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
-        } else {
-          Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
-        }
-      case _ => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+        Some(removePaymentDataAndRedirect(request))
+      case _ => None
     }
   }
 

@@ -109,22 +109,6 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
 
-      "return the correct location header when value is set to false and we're in bulk flow" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("credId")
-            .set(ImporterNamePage, "importerName")
-            .success.value
-            .set(UserTypePage, UserType.Representative)
-            .success.value
-            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry)
-            .success.value
-        )
-
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result]                      = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
-      }
-
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
