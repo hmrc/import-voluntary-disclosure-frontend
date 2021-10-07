@@ -24,15 +24,15 @@ import scala.util.control.Exception.nonFatalCatch
 
 trait Formatters {
 
-  private[mappings] def stringFormatter(errorKey: String): Formatter[String] = new Formatter[String] {
+  private[mappings] def stringFormatter(errorKey: String, args: Seq[Any] = Seq.empty): Formatter[String] = new Formatter[String] {
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
       data.get(key) match {
-        case None => Left(Seq(FormError(key, errorKey)))
+        case None => Left(Seq(FormError(key, errorKey, args)))
         case Some(s) =>
           val sanitisedInput = s.replace("\u0000", "").trim
           if (sanitisedInput.isEmpty) {
-            Left(Seq(FormError(key, errorKey)))
+            Left(Seq(FormError(key, errorKey, args)))
           } else {
             Right(sanitisedInput)
           }
@@ -42,10 +42,10 @@ trait Formatters {
       Map(key -> value.trim)
   }
 
-  private[mappings] def booleanFormatter(requiredKey: String, invalidKey: String): Formatter[Boolean] =
+  private[mappings] def booleanFormatter(requiredKey: String, invalidKey: String, args: Seq[Any] = Seq.empty): Formatter[Boolean] =
     new Formatter[Boolean] {
 
-      private val baseFormatter = stringFormatter(requiredKey)
+      private val baseFormatter = stringFormatter(requiredKey, args)
 
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
@@ -53,7 +53,7 @@ trait Formatters {
           .right.flatMap {
             case "true"  => Right(true)
             case "false" => Right(false)
-            case _       => Left(Seq(FormError(key, invalidKey)))
+            case _       => Left(Seq(FormError(key, invalidKey, args)))
           }
 
       def unbind(key: String, value: Boolean) = Map(key -> value.toString)
