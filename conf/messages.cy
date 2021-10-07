@@ -297,6 +297,10 @@ underpaymentDetailsConfirm.A10.amended.change = Change the Customs Duty on Agric
 underpaymentDetailsConfirm.D10.original.change = Change the Compensatory Duty underpayment details amount that was paid
 underpaymentDetailsConfirm.D10.amended.change = Change the Compensatory Duty underpayment details amount that should have been paid
 
+# Postponed VAT Accounting page
+postponedVatAccounting.pageTitle = Does {0} use postponed VAT accounting?
+postponedVatAccounting.error.required = Select yes if {0} uses postponed VAT accounting
+
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
 oneCustomsProcedureCode.hint = The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the SAD or C88).
