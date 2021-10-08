@@ -32,8 +32,6 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("anyOtherSupportingDocs.pageTitle"))
-
         @p{ @messages("anyOtherSupportingDocs.p1") }
 
         @bullets(
@@ -50,7 +48,7 @@
             @yesNoRadio(
                 form,
                 headingKey = "anyOtherSupportingDocs.pageTitle",
-                isPageHeading = false,
+                isPageHeading = true,
                 classes = "govuk-visually-hidden"
             )
 

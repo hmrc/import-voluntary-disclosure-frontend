@@ -32,10 +32,6 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("updateAdditionalInformation.pageTitle"))
-
-        @p(Html(messages("updateAdditionalInformation.p1")))
-
         @formHelper(action = controllers.updateCase.routes.UpdateAdditionalInformationController.onSubmit()) {
             @inputTextArea(
                 form,
@@ -43,7 +39,8 @@
                 "value",
                 messages("updateAdditionalInformation.pageTitle"),
                 true,
-                false,
+                true,
+                Some(messages("updateAdditionalInformation.p1")),
                 classes = Some("govuk-fieldset__legend")
             )
             @button("common.button.continue")
