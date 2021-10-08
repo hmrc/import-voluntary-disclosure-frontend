@@ -20,7 +20,8 @@
         yesNoRadio: components.yesNoRadio,
         button: components.button,
         p: components.p,
-        bullets: components.bullets)
+        bullets: components.bullets,
+        h1: components.h1)
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
 
@@ -30,6 +31,8 @@
         customBackLinkUrl = Some(backLink)) {
 
         @errorSummary(form.errors)
+
+        @h1(messages("anyOtherSupportingDocs.pageTitle"))
 
         @p{ @messages("anyOtherSupportingDocs.p1") }
 
@@ -47,7 +50,7 @@
             @yesNoRadio(
                 form,
                 headingKey = "anyOtherSupportingDocs.pageTitle",
-                isPageHeading = true,
+                isPageHeading = false,
                 classes = "govuk-visually-hidden"
             )
 
