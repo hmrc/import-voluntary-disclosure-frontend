@@ -20,9 +20,9 @@ object PVAHandoffMessages {
 
   val title = "You cannot disclose underpaid import VAT using this service"
   val repMessage =
-    "As fewfew uses postponed VAT Accounting they will need to account for the underpaid import VAT on their next VAT return."
+    "As fewfew uses postponed VAT accounting they will need to account for the underpaid import VAT on their next VAT return."
   val importerMessage =
-    "As you use postponed VAT Accounting then you need to account for the underpaid import VAT on your next VAT return."
+    "As you use postponed VAT accounting then you need to account for the underpaid import VAT on your next VAT return."
   val findOut =
     "Find out how to account for import VAT on your VAT Return if you’re using postponed VAT accounting (opens in new tab)."
 

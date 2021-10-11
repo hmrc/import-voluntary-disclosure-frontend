@@ -136,8 +136,8 @@ error.summary.pageTitle = There is a problem
 
 # Cannot Disclose Import VAT
 pvaHandoff.pageTitle = You cannot disclose underpaid import VAT using this service
-pvaHandoff.rep.p1 = As {0} uses postponed VAT Accounting they will need to account for the underpaid import VAT on their next VAT return.
-pvaHandoff.importer.p1 = As you use postponed VAT Accounting then you need to account for the underpaid import VAT on your next VAT return.
+pvaHandoff.rep.p1 = As {0} uses postponed VAT accounting they will need to account for the underpaid import VAT on their next VAT return.
+pvaHandoff.importer.p1 = As you use postponed VAT accounting then you need to account for the underpaid import VAT on your next VAT return.
 pvaHandoff.findOut = Find out
 pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re using postponed VAT accounting (opens in new tab)
 
