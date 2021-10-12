@@ -247,6 +247,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
               )
             ).success.value
             .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
         )
 
         override def setupMock(): Unit = {
@@ -269,6 +270,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
             .set(UserTypePage, Representative).success.value
             .set(SplitPaymentPage, true).success.value
+            .set(CheckModePage, true).success.value
         )
 
         override def setupMock(): Unit = {
