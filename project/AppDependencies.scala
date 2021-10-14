@@ -8,7 +8,7 @@ object AppDependencies {
   val compile = Seq(
     "uk.gov.hmrc"                  %% "bootstrap-frontend-play-28" % "5.16.0",
     "uk.gov.hmrc"                  %% "play-frontend-hmrc"         % "1.19.0-play-28",
-    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-play-28"         % "0.54.0",
+    "uk.gov.hmrc.mongo"            %% "hmrc-mongo-play-28"         % "0.55.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"       % "2.12.5",
     "com.sun.mail"                  % "javax.mail"                 % "1.6.2"
   )
