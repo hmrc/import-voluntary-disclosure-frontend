@@ -75,7 +75,12 @@
         <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
     }
 
-    @p{<a href=@{controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("confirmation.whatYouShouldDoNext.link")}</a>}
+    @p{
+        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
+        id="discloseAnotherUnderpayment" class="govuk-link">
+        @{messages("confirmation.whatYouShouldDoNext.link")}
+        </a>
+    }
 
     <div id="helpImproveServiceLink">
         @p{

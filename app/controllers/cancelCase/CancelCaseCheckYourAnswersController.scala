@@ -20,6 +20,7 @@ import config.ErrorHandler
 import controllers.actions._
 import models.UpdateCaseError
 import pages._
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -71,7 +72,7 @@ class CancelCaseCheckYourAnswersController @Inject() (
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>
             sessionRepository
-              .remove(request.credId)
+              .set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage)))
               .map(_ => Ok(confirmationView(caseId)))
         }
       case None =>

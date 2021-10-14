@@ -59,7 +59,7 @@ class CancelCaseConfirmationViewSpec extends ViewBaseSpec {
       s"have the '${CancelCaseConfirmationMessages.anotherDisclosure}' link" in {
         elementText("#discloseAnotherUnderpayment") mustBe CancelCaseConfirmationMessages.anotherDisclosure
         elementAttributes("#discloseAnotherUnderpayment").get("href") mustBe
-          Some(controllers.routes.IndexController.onPageLoad().url)
+          Some(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url)
       }
 
       s"have the '${CancelCaseConfirmationMessages.helpImproveServiceLink}' link" in {

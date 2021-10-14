@@ -17,9 +17,9 @@
 package controllers.cya
 
 import config.ErrorHandler
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import pages._
-import pages.importDetails.{EntryDetailsPage, ImporterEORINumberPage, ImporterNamePage}
+import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -27,7 +27,7 @@ import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
-import views.html.cya.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
+import views.html.cya._
 
 import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
@@ -78,7 +78,7 @@ class CheckYourAnswersController @Inject() (
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber   <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
-            _            <- Some(sessionRepository.remove(request.credId))
+            _            <- Some(sessionRepository.set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage))))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
               case Some(entryDetails) =>
