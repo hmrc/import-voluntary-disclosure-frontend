@@ -96,9 +96,6 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
   "GET onSubmit" should {
 
     "return Redirect to the confirmation view" in new Test {
-      override def repositoryExpectation(): Unit =
-        MockedSessionRepository.remove(Future.successful("some-cred-id"))
-
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value

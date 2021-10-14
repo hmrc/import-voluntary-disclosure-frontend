@@ -38,7 +38,12 @@
 
     @p(Html(messages("cancelCase.confirmation.whatHappensNext.p")))
 
-    @p{<a href=@{controllers.routes.IndexController.onPageLoad.url} id="discloseAnotherUnderpayment" class="govuk-link">@{messages("cancelCase.confirmation.anotherDisclosure")}</a>}
+    @p{
+        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
+        id="discloseAnotherUnderpayment" class="govuk-link">
+        @{messages("cancelCase.confirmation.anotherDisclosure")}
+        </a>
+    }
 
     <div id="helpImproveServiceLink">
         @p{
