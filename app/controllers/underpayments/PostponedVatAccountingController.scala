@@ -82,7 +82,6 @@ class PostponedVatAccountingController @Inject() (
       if (request.isRepFlow && oldUnderpaymentType.contains(Both)) {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
-          updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
 

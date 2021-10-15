@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
 import pages._
 import pages.paymentInfo._
-import pages.underpayments.{PostponedVatAccountingPage, TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
+import pages.underpayments._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
@@ -52,6 +52,7 @@ class UnderpaymentDetailSummaryController @Inject() (
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, request.dutyType))
+      updatedAnswers <- Future.fromTry(updatedAnswers.set(UnderpaymentCheckModePage, true))
       _              <- sessionRepository.set(updatedAnswers)
     } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
   }
@@ -166,7 +167,6 @@ class UnderpaymentDetailSummaryController @Inject() (
   private def redirectForDeferment(request: DataRequest[_]): Future[Result] =
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
-      updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _              <- removePaymentData(request.copy(userAnswers = updatedAnswers))
     } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
 

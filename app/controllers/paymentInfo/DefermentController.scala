@@ -22,6 +22,7 @@ import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import pages._
 import pages.paymentInfo._
+import pages.underpayments.UnderpaymentCheckModePage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -130,6 +131,10 @@ class DefermentController @Inject() (
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
+    } else if (request.userAnswers.get(UnderpaymentCheckModePage).exists(identity) && request.dutyType == Vat) {
+      controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
+    } else if (request.userAnswers.get(UnderpaymentCheckModePage).exists(identity)) {
+      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
     } else {
       controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
     }
