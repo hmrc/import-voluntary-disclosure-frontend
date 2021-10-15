@@ -119,7 +119,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, "1234567").url
+          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat).url
         )
       }
 
@@ -205,7 +205,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
             fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
           lazy val result: Future[Result] = controller.onSubmit(request)
           redirectLocation(result) mustBe Some(
-            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, "1234567").url
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat).url
           )
         }
       }

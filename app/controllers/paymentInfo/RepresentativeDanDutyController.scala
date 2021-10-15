@@ -76,7 +76,7 @@ class RepresentativeDanDutyController @Inject() (
             _              <- sessionRepository.set(updatedAnswers)
           } yield dan.danType match {
             case "A" | "C" => Redirect(controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad())
-            case _ => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+            case _         => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty))
           }
         } else {
           for {
@@ -90,7 +90,7 @@ class RepresentativeDanDutyController @Inject() (
               dan.danType match {
                 case "A" | "C" => Redirect(controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad())
                 case _ =>
-                  Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, dan.accountNumber))
+                  Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty))
               }
             }
           }

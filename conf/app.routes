@@ -389,10 +389,10 @@ POST        /disclosure/address-correct                                         
 
 # Payment Info
 
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan                              controllers.paymentInfo.UploadAuthorityController.onLoad(dutyType: SelectedDutyType, dan: String)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/upscan-response              controllers.paymentInfo.UploadAuthorityController.upscanResponseHandler(dutyType: SelectedDutyType, dan: String, key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/polling                      controllers.paymentInfo.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, dan: String, key: String)
-GET         /disclosure/upload-deferment-authority/:dutyType/:dan/success                      controllers.paymentInfo.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType, dan: String)
+GET         /disclosure/upload-deferment-authority/:dutyType                                   controllers.paymentInfo.UploadAuthorityController.onLoad(dutyType: SelectedDutyType)
+GET         /disclosure/upload-deferment-authority/:dutyType/upscan-response                   controllers.paymentInfo.UploadAuthorityController.upscanResponseHandler(dutyType: SelectedDutyType, key: Option[String] ?= None, errorCode: Option[String] ?= None, errorMessage: Option[String] ?= None, errorResource: Option[String] ?= None, errorRequestId: Option[String] ?= None)
+GET         /disclosure/upload-deferment-authority/:dutyType/polling                           controllers.paymentInfo.UploadAuthorityController.uploadProgress(dutyType: SelectedDutyType, key: String)
+GET         /disclosure/upload-deferment-authority/:dutyType/success                           controllers.paymentInfo.UploadAuthorityController.onSuccess(dutyType: SelectedDutyType)
 
 GET         /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onLoad()
 POST        /disclosure/how-will-you-pay                                                       controllers.paymentInfo.DefermentController.onSubmit()

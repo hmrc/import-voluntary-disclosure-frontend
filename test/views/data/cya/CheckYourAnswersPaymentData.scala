@@ -371,7 +371,7 @@ object CheckYourAnswersPaymentData {
       Actions(items =
         Seq(
           ActionItem(
-            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
           )
@@ -392,7 +392,7 @@ object CheckYourAnswersPaymentData {
       Actions(items =
         Seq(
           ActionItem(
-            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Both, accountNumberDuty).url,
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Both).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             visuallyHiddenText = Some(CYAMessages.changeProofOfAuthority)
           )
@@ -442,7 +442,7 @@ object CheckYourAnswersPaymentData {
       Actions(items =
         Seq(
           ActionItem(
-            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty, accountNumberDuty).url,
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Duty).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityDutyOwed)
           )
@@ -463,7 +463,7 @@ object CheckYourAnswersPaymentData {
       Actions(items =
         Seq(
           ActionItem(
-            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, accountNumberVAT).url,
+            controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat).url,
             HtmlContent("""<span aria-hidden="true">Change</span>"""),
             visuallyHiddenText = Some(CYAMessages.changeProofOfAuthorityVatOwed)
           )

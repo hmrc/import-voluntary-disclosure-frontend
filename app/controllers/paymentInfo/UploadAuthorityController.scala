@@ -16,7 +16,7 @@
 
 package controllers.paymentInfo
 
-import config.AppConfig
+import config.{AppConfig, ErrorHandler}
 import controllers.FileUploadHandler
 import controllers.actions._
 import forms.shared.UploadFileFormProvider
@@ -24,7 +24,8 @@ import models.SelectedDutyTypes._
 import models.requests.DataRequest
 import models.upscan._
 import models.{UploadAuthority, UserAnswers}
-import pages.paymentInfo.{SplitPaymentPage, UploadAuthorityPage}
+import pages.paymentInfo._
+import play.api.Logger
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
@@ -50,13 +51,16 @@ class UploadAuthorityController @Inject() (
   progressView: FileUploadProgressView,
   formProvider: UploadFileFormProvider,
   successView: FileUploadSuccessView,
+  errorHandler: ErrorHandler,
   implicit val appConfig: AppConfig,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport
     with FileUploadHandler[UploadAuthority] {
 
-  def onLoad(dutyType: SelectedDutyType, dan: String): Action[AnyContent] =
+  private val logger = Logger("application." + getClass.getCanonicalName)
+
+  def onLoad(dutyType: SelectedDutyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
       val dutyTypeKey = dutyType match {
@@ -75,16 +79,22 @@ class UploadAuthorityController @Inject() (
         case _                   => formProvider()
       }
 
-      upScanService.initiateAuthorityJourney(dutyType.toString, dan).map { response =>
-        Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), dan, dutyTypeKey))
-          .removingFromSession("AuthorityUpscanReference")
-          .addingToSession("AuthorityUpscanReference" -> response.reference.value)
+      getDanNumber(dutyType) match {
+        case Some(danNumber) =>
+          upScanService.initiateAuthorityJourney(dutyType.toString).map { response =>
+            Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), danNumber, dutyTypeKey))
+              .removingFromSession("AuthorityUpscanReference")
+              .addingToSession("AuthorityUpscanReference" -> response.reference.value)
+          }
+        case None =>
+          logger.error(s"DAN not found for $dutyType")
+          Future.successful(errorHandler.showInternalServerError)
       }
+
     }
 
   def upscanResponseHandler(
     dutyType: SelectedDutyType,
-    dan: String,
     key: Option[String] = None,
     errorCode: Option[String] = None,
     errorMessage: Option[String] = None,
@@ -93,12 +103,11 @@ class UploadAuthorityController @Inject() (
   ): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val upscanError = buildUpscanError(errorCode, errorMessage, errorResource, errorRequestId)
     val errorRoute =
-      Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan))
+      Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType))
     val successRoute =
       Redirect(
         controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(
           dutyType,
-          dan,
           key.getOrElse("this will never be used")
         )
       )
@@ -106,39 +115,46 @@ class UploadAuthorityController @Inject() (
     handleUpscanResponse(key, upscanError, successRoute, errorRoute)
   }
 
-  def uploadProgress(dutyType: SelectedDutyType, dan: String, key: String): Action[AnyContent] =
+  def uploadProgress(dutyType: SelectedDutyType, key: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val uploadCompleteRoute =
-        Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType, dan))
-      val uploadFailedRoute = Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan))
+        Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType))
+      val uploadFailedRoute = Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType))
       val uploadInProgressRoute = Ok(
         progressView(
           key = key,
-          action = controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, dan, key).url
+          action = controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, key).url
         )
       )
-      val updateFilesList: FileUpload => Seq[UploadAuthority] = { file =>
-        val upload                        = extractFileDetails(file, key)
-        val newAuthority: UploadAuthority = UploadAuthority(dan, dutyType, upload)
-        request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(
-          _.dutyType == dutyType
-        ) :+ newAuthority
-      }
-      val saveFilesList: Seq[UploadAuthority] => Try[UserAnswers] = { list =>
-        request.userAnswers.set(UploadAuthorityPage, list)(UploadAuthorityPage.queryWrites)
+      getDanNumber(dutyType) match {
+        case Some(dan) =>
+          val updateFilesList: FileUpload => Seq[UploadAuthority] = { file =>
+            val upload                        = extractFileDetails(file, key)
+            val newAuthority: UploadAuthority = UploadAuthority(dan, dutyType, upload)
+            request.userAnswers.get(UploadAuthorityPage).getOrElse(Seq.empty).filterNot(
+              _.dutyType == dutyType
+            ) :+ newAuthority
+          }
+          val saveFilesList: Seq[UploadAuthority] => Try[UserAnswers] = { list =>
+            request.userAnswers.set(UploadAuthorityPage, list)(UploadAuthorityPage.queryWrites)
+          }
+
+          handleUpscanFileProcessing(
+            key,
+            uploadCompleteRoute,
+            uploadInProgressRoute,
+            uploadFailedRoute,
+            updateFilesList,
+            saveFilesList
+          )
+        case None =>
+          logger.error(s"DAN not found for $dutyType")
+          Future.successful(errorHandler.showInternalServerError)
       }
 
-      handleUpscanFileProcessing(
-        key,
-        uploadCompleteRoute,
-        uploadInProgressRoute,
-        uploadFailedRoute,
-        updateFilesList,
-        saveFilesList
-      )
     }
 
-  def onSuccess(dutyType: SelectedDutyType, dan: String): Action[AnyContent] =
+  def onSuccess(dutyType: SelectedDutyType): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
 
@@ -175,5 +191,11 @@ class UploadAuthorityController @Inject() (
       }
     }
   }
+
+  private def getDanNumber(dutyType: SelectedDutyType)(implicit request: DataRequest[_]): Option[String] =
+    dutyType match {
+      case Vat => request.userAnswers.get(AdditionalDefermentNumberPage)
+      case _   => request.userAnswers.get(DefermentAccountPage)
+    }
 
 }
