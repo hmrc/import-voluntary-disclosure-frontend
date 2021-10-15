@@ -804,7 +804,7 @@ importerVatRegistered.error.required = Select yes if the importer is VAT registe
 updateAdditionalInformation.pageTitle = Tell us any additional information
 updateAdditionalInformation.hint = You may have been asked to provide more information to help us progress the disclosure.
 updateAdditionalInformation.error.required = Enter the additional information about the underpayment
-updateAdditionalInformation.error.maxLength = The additional information must be 1500 characters or fewer
+updateAdditionalInformation.error.maxLength = The additional information must be 1400 characters or fewer
 updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
 
 # Session Timeout Page
@@ -911,7 +911,7 @@ privateCitizen.continueWithCreds.error.required = Select yes if you want to use 
 # Cancel Case - Cancellation Reason Page
 cancellationReason.pageTitle = Tell us why you want this disclosure cancelled
 cancellationReason.error.required = Enter why you want this disclosure cancelled
-cancellationReason.error.maxLength = Why you want this disclosure cancelled must be 1500 characters or fewer
+cancellationReason.error.maxLength = Why you want this disclosure cancelled must be 1400 characters or fewer
 cancellationReason.error.noEmoji = Why you want this disclosure cancelled must not include emojis
 
 # Any Other Supporting Cancellation Documentation
