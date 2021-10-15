@@ -18,8 +18,7 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputTextArea: components.inputTextArea,
-        h1: components.h1,
+        inputTextArea: components.inputTextArea
 )
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
@@ -31,8 +30,6 @@
 
     @errorSummary(form.errors)
 
-    @h1(messages("cancellationReason.pageTitle"))
-
     @formHelper(action = controllers.cancelCase.routes.CancellationReasonController.onSubmit()) {
         @inputTextArea(
             form,
@@ -40,7 +37,7 @@
             "value",
             messages("cancellationReason.pageTitle"),
             true,
-            false,
+            true,
             classes = Some("govuk-fieldset__legend")
         )
         @button("common.button.continue")

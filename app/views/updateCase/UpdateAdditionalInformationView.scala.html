@@ -18,9 +18,7 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputTextArea: components.inputTextArea,
-        h1: components.h1,
-        p: components.p
+        inputTextArea: components.inputTextArea
 )
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
@@ -32,10 +30,6 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages("updateAdditionalInformation.pageTitle"))
-
-        @p(Html(messages("updateAdditionalInformation.p1")))
-
         @formHelper(action = controllers.updateCase.routes.UpdateAdditionalInformationController.onSubmit()) {
             @inputTextArea(
                 form,
@@ -43,7 +37,8 @@
                 "value",
                 messages("updateAdditionalInformation.pageTitle"),
                 true,
-                false,
+                true,
+                Some(messages("updateAdditionalInformation.hint")),
                 classes = Some("govuk-fieldset__legend")
             )
             @button("common.button.continue")

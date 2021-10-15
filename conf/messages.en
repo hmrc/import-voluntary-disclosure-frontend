@@ -431,7 +431,7 @@ confirmation.whatYouShouldDoNext = What you should do next
 confirmation.whatYouShouldDoNext.printSave = Print or save this page
 confirmation.whatYouShouldDoNext.printSaveRestOfMessage = as we will not send you an email confirmation.
 confirmation.whatYouShouldDoNext.p5 = 'If you have not received the demand note or we have not contacted you within 14 days then email '
-confirmation.whatYouShouldDoNext.link = Disclose another underpayment
+confirmation.whatYouShouldDoNext.link = Start a new, add to, or cancel a disclosure
 confirmation.helpImproveService = Help us improve this service
 confirmation.helpImproveServiceLink = What did you think of this service?
 confirmation.helpImproveServiceLinkTime = ' (takes 30 seconds)'
@@ -819,7 +819,7 @@ importerVatRegistered.error.required = Select yes if the importer is VAT registe
 
 # Update Additional Information Page
 updateAdditionalInformation.pageTitle = Tell us any additional information
-updateAdditionalInformation.p1 = You may have been asked to provide more information to help us progress the disclosure.
+updateAdditionalInformation.hint = You may have been asked to provide more information to help us progress the disclosure.
 updateAdditionalInformation.error.required = Enter the additional information about the underpayment
 updateAdditionalInformation.error.maxLength = The additional information must be 1400 characters or fewer
 updateAdditionalInformation.error.noEmoji = The additional information must not include emojis

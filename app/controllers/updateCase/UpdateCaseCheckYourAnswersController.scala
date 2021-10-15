@@ -18,8 +18,9 @@ package controllers.updateCase
 
 import config.ErrorHandler
 import controllers.actions._
-import models.{UpdateCaseError, UserAnswers}
+import models.UpdateCaseError
 import pages._
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -67,7 +68,7 @@ class UpdateCaseCheckYourAnswersController @Inject() (
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>
             sessionRepository
-              .set(UserAnswers(request.credId))
+              .set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage)))
               .map(_ => Ok(confirmationView(caseId)))
         }
       case None =>
