@@ -79,7 +79,7 @@ class UploadAuthorityController @Inject() (
         case _                   => formProvider()
       }
 
-      getDanNumber(dutyType) match {
+      getDanNumber(dutyType, splitPayment) match {
         case Some(danNumber) =>
           upScanService.initiateAuthorityJourney(dutyType.toString).map { response =>
             Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), danNumber, dutyTypeKey))
@@ -117,6 +117,7 @@ class UploadAuthorityController @Inject() (
 
   def uploadProgress(dutyType: SelectedDutyType, key: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
+      val splitPayment = request.userAnswers.get(SplitPaymentPage).getOrElse(false)
       val uploadCompleteRoute =
         Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType))
       val uploadFailedRoute = Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType))
@@ -126,7 +127,7 @@ class UploadAuthorityController @Inject() (
           action = controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, key).url
         )
       )
-      getDanNumber(dutyType) match {
+      getDanNumber(dutyType, splitPayment) match {
         case Some(dan) =>
           val updateFilesList: FileUpload => Seq[UploadAuthority] = { file =>
             val upload                        = extractFileDetails(file, key)
@@ -192,10 +193,12 @@ class UploadAuthorityController @Inject() (
     }
   }
 
-  private def getDanNumber(dutyType: SelectedDutyType)(implicit request: DataRequest[_]): Option[String] =
+  private def getDanNumber(dutyType: SelectedDutyType, splitPayment: Boolean)(implicit
+    request: DataRequest[_]
+  ): Option[String] =
     dutyType match {
-      case Vat => request.userAnswers.get(AdditionalDefermentNumberPage)
-      case _   => request.userAnswers.get(DefermentAccountPage)
+      case Vat if splitPayment => request.userAnswers.get(AdditionalDefermentNumberPage)
+      case _                   => request.userAnswers.get(DefermentAccountPage)
     }
 
 }
