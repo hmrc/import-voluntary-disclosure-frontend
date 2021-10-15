@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class UpdateAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  val maxLength: Int = 1500
+  val maxLength: Int = 1400
 
   def apply(): Form[String] = {
     Form(

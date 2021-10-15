@@ -911,7 +911,7 @@ privateCitizen.continueWithCreds.error.required = Select yes if you want to use 
 # Cancel Case - Cancellation Reason Page
 cancellationReason.pageTitle = Tell us why you want this disclosure cancelled
 cancellationReason.error.required = Enter why you want this disclosure cancelled
-cancellationReason.error.maxLength = Why you want this disclosure cancelled must be 1400 characters or fewer
+cancellationReason.error.maxLength = Why you want this disclosure cancelled must be 1500 characters or fewer
 cancellationReason.error.noEmoji = Why you want this disclosure cancelled must not include emojis
 
 # Any Other Supporting Cancellation Documentation
