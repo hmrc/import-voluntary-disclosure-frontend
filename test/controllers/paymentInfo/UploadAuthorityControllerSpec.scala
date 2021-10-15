@@ -189,6 +189,13 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileQuarantined) mustBe true
     }
+
+    "return 500 when dan number is not present" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+      val result: Future[Result]                    = controller.onLoad(Vat)(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
   }
 
   "GET upscanResponseHandler" when {
@@ -339,6 +346,13 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
+
+    "return 500 when dan number is not present" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+      val result: Future[Result]                    = controller.uploadProgress(dutyType, "key")(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
   }
 
   "GET onSuccess" should {
