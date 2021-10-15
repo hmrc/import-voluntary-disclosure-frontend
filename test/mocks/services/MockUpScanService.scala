@@ -42,8 +42,8 @@ trait MockUpScanService extends MockFactory {
     def initiateAuthorityJourney(
       response: Future[UpScanInitiateResponse]
     ): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateAuthorityJourney(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *, *, *)
+      (mockUpScanService.initiateAuthorityJourney(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .expects(*, *, *)
         .returns(response)
 
     def initiateSupportingDocJourney(

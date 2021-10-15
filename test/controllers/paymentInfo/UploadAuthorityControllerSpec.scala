@@ -23,13 +23,13 @@ import messages.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
-import models.SelectedDutyTypes._
+import models.SelectedDutyTypes.{Vat, _}
 import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import pages._
-import pages.paymentInfo.{SplitPaymentPage, UploadAuthorityPage}
+import pages.paymentInfo._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
@@ -71,7 +71,11 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
     private lazy val progressView: FileUploadProgressView     = app.injector.instanceOf[FileUploadProgressView]
     private lazy val successView: FileUploadSuccessView       = app.injector.instanceOf[FileUploadSuccessView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(DefermentAccountPage, "1234567").success.value
+        .set(AdditionalDefermentNumberPage, "1234568").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val dan: String                = "1234567"
@@ -121,6 +125,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         progressView,
         form,
         successView,
+        errorHandler,
         MockAppConfig,
         ec
       )
@@ -132,58 +137,65 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   "GET onLoad" should {
     "return OK when called for combine duty and vat" in new Test {
-      val result: Future[Result] = controller.onLoad(Both, dan)(fakeRequest)
+      val result: Future[Result] = controller.onLoad(Both)(fakeRequest)
 
       status(result) mustBe Status.OK
     }
 
     "return OK when called for duty" in new Test {
-      val result: Future[Result] = controller.onLoad(Duty, dan)(fakeRequest)
+      val result: Future[Result] = controller.onLoad(Duty)(fakeRequest)
 
       status(result) mustBe Status.OK
     }
 
     "return OK when called for vat" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest)
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest)
 
       status(result) mustBe Status.OK
     }
 
     "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad(Neither, dan)(fakeRequest)
+      val result: Future[Result] = controller.onLoad(Neither)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
 
     "Display error when file uploaded is Too Small" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileTooSmall) mustBe true
     }
 
     "Display error when file uploaded is Too Big" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "TooBig")))
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest.withFlash(("uploadError" -> "TooBig")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileTooBig) mustBe true
     }
 
     "Display error when file uploaded is Unknown" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "Unknown")))
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest.withFlash(("uploadError" -> "Unknown")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileUnknown) mustBe true
     }
 
     "Display error when file uploaded is Rejected" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "Rejected")))
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest.withFlash(("uploadError" -> "Rejected")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileRejected) mustBe true
     }
 
     "Display error when file uploaded is Quarantined" in new Test {
-      val result: Future[Result] = controller.onLoad(Vat, dan)(fakeRequest.withFlash(("uploadError" -> "Quarantined")))
+      val result: Future[Result] = controller.onLoad(Vat)(fakeRequest.withFlash(("uploadError" -> "Quarantined")))
       status(result) mustBe Status.OK
       contentAsString(result).contains(UploadAuthorityMessages.fileQuarantined) mustBe true
     }
+
+    "return 500 when dan number is not present" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+      val result: Future[Result]                    = controller.onLoad(Vat)(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
   }
 
   "GET upscanResponseHandler" when {
@@ -191,7 +203,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       "redirect to error page" in new Test {
         val result = controller.upscanResponseHandler(
           dutyType,
-          dan,
           Some("key"),
           Some("errorCode"),
           Some("errorMessage"),
@@ -201,7 +212,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan).url
+          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType).url
         )
       }
     }
@@ -210,7 +221,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       "redirect to error page" in new Test {
         val result = controller.upscanResponseHandler(
           dutyType,
-          dan,
           Some("key"),
           Some("errorCode"),
           None,
@@ -220,7 +230,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan).url
+          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType).url
         )
       }
     }
@@ -229,7 +239,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       "for a valid key, redirect to holding page" in new Test {
         val result = controller.upscanResponseHandler(
           dutyType,
-          dan,
           Some("key"),
           None,
           None,
@@ -239,7 +248,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, dan, "key").url
+          controllers.paymentInfo.routes.UploadAuthorityController.uploadProgress(dutyType, "key").url
         )
       }
       "for a valid key, create record in file Repository" in new Test {
@@ -249,7 +258,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         await(
           controller.upscanResponseHandler(
             dutyType,
-            dan,
             Some("key"),
             None,
             None,
@@ -266,7 +274,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           await(
             controller.upscanResponseHandler(
               dutyType,
-              dan,
               None,
               None,
               None,
@@ -291,11 +298,11 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           MockedSessionRepository.set(Future.successful(true))
         }
 
-        val result: Future[Result] = controller.uploadProgress(dutyType, dan, key = "key")(fakeRequest)
+        val result: Future[Result] = controller.uploadProgress(dutyType, key = "key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType, dan).url
+          controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType).url
         )
 
         verifyCalls()
@@ -308,11 +315,11 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
             Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get))
           )
 
-        val result: Future[Result] = controller.uploadProgress(dutyType, dan, "key")(fakeRequest)
+        val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
-          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan).url
+          controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType).url
         )
 
         verifyCalls()
@@ -323,7 +330,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(Some(FileUpload("reference"))))
 
-        val result: Future[Result] = controller.uploadProgress(dutyType, dan, "key")(fakeRequest)
+        val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 
         status(result) mustBe Status.OK
         verifyCalls()
@@ -334,30 +341,37 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         override def setupMocks(): Unit =
           MockedFileUploadRepository.getRecord(Future.successful(None))
 
-        val result: Future[Result] = controller.uploadProgress(dutyType, dan, "key")(fakeRequest)
+        val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
+
+    "return 500 when dan number is not present" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+      val result: Future[Result]                    = controller.uploadProgress(dutyType, "key")(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
   }
 
   "GET onSuccess" should {
 
     "return OK" in new Test {
-      val result: Future[Result] = controller.onSuccess(dutyType, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(dutyType)(fakeRequest)
       status(result) mustBe Status.OK
     }
     "return HTML with Continue action to CYA" in new Test {
       override val userAnswers: Option[UserAnswers] =
         Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
-      val result: Future[Result] = controller.onSuccess(dutyType, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(dutyType)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
     "return HTML with Continue action to Representative VAT Dan" in new Test {
       override val userAnswers: Option[UserAnswers] =
         Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
-      val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(Duty)(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -372,7 +386,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(Duty)(fakeRequest)
       contentAsString(result).contains("filename.txt") mustBe true
     }
 
@@ -390,7 +404,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
             Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
           ).success.value
       )
-      val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(Duty)(fakeRequest)
       contentAsString(result).contains("/disclosure/deferment-account-details-vat") mustBe true
     }
 
@@ -410,7 +424,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
             Seq(UnderpaymentDetail("B00", 0.0, 1.0), UnderpaymentDetail("A00", 0.0, 1.0))
           ).success.value
       )
-      val result: Future[Result] = controller.onSuccess(Duty, dan)(fakeRequest)
+      val result: Future[Result] = controller.onSuccess(Duty)(fakeRequest)
       contentAsString(result).contains("/disclose-import-taxes-underpayment/disclosure/check-your-answers") mustBe true
     }
 

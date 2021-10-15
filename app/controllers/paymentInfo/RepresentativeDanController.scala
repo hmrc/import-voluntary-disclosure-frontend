@@ -78,7 +78,7 @@ class RepresentativeDanController @Inject() (
             case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             case _ =>
               Redirect(
-                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber)
+                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType)
               )
           }
         } else {
@@ -95,7 +95,7 @@ class RepresentativeDanController @Inject() (
                   Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
                 } else {
                   Redirect(
-                    controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType, dan.accountNumber)
+                    controllers.paymentInfo.routes.UploadAuthorityController.onLoad(request.dutyType)
                   )
                 }
             }

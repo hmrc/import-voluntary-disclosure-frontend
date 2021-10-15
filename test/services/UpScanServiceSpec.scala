@@ -30,7 +30,6 @@ import scala.concurrent.Future
 class UpScanServiceSpec extends ServiceSpecBase {
 
   private val dutyType = "duty"
-  private val dan      = "1234567"
 
   private val callBackUrl = MockAppConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
   private val success     = MockAppConfig.upScanSuccessRedirectForUser
@@ -39,10 +38,10 @@ class UpScanServiceSpec extends ServiceSpecBase {
   private val maxFileSize = MockAppConfig.upScanMaxFileSize
 
   private val upScanAuthoritySuccessRedirectForUser =
-    MockAppConfig.upScanAuthoritySuccessRedirectForUser ++ s"/$dutyType/$dan/upscan-response"
+    MockAppConfig.upScanAuthoritySuccessRedirectForUser ++ s"/$dutyType/upscan-response"
 
   private val upScanAuthorityErrorRedirectForUser =
-    MockAppConfig.upScanAuthorityErrorRedirectForUser ++ s"/$dutyType/$dan/upscan-response"
+    MockAppConfig.upScanAuthorityErrorRedirectForUser ++ s"/$dutyType/upscan-response"
 
   trait Test extends MockUpScanConnector {
     lazy val service = new UpScanService(mockUpScanConnector, MockAppConfig)
@@ -62,7 +61,7 @@ class UpScanServiceSpec extends ServiceSpecBase {
 
   "buildAuthorityInitiateRequest" should {
     "return all correct values from AppConfig including augmented callback" in new Test {
-      service.buildAuthorityInitiateRequest("duty", "1234567") mustBe UpScanInitiateRequest(
+      service.buildAuthorityInitiateRequest("duty") mustBe UpScanInitiateRequest(
         callBackUrl,
         upScanAuthoritySuccessRedirectForUser,
         upScanAuthorityErrorRedirectForUser,
@@ -105,14 +104,14 @@ class UpScanServiceSpec extends ServiceSpecBase {
       val res: UpscanInitiateResponse = Left(InvalidJson)
 
       MockedUpScanConnector.postToInitiate(request, Future.successful(res))
-      intercept[InternalServerException](await(service.initiateAuthorityJourney(dutyType, dan)))
+      intercept[InternalServerException](await(service.initiateAuthorityJourney(dutyType)))
     }
 
     "return model if Right model returned from connector" in new Test {
       val res: UpscanInitiateResponse = Right(model)
 
       MockedUpScanConnector.postToInitiate(request, Future.successful(res))
-      await(service.initiateAuthorityJourney(dutyType, dan)) mustBe model
+      await(service.initiateAuthorityJourney(dutyType)) mustBe model
     }
   }
 

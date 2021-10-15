@@ -193,7 +193,7 @@ trait CYAPaymentDetailsSummaryListHelper {
             Text(fileName),
             action = Some(
               ActionItemHelper.createChangeActionItem(
-                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType, dan).url,
+                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType).url,
                 messages("cya.proofOfAuth.change")
               )
             )

@@ -109,7 +109,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
             Text(fileName),
             action = Some(
               ActionItemHelper.createChangeActionItem(
-                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty, dan).url,
+                controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty).url,
                 messages("cya.proofOfAuth.duty.change")
               )
             )

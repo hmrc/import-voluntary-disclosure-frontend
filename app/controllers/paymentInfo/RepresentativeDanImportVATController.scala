@@ -106,7 +106,7 @@ class RepresentativeDanImportVATController @Inject() (
   private[controllers] def danTypeRedirect(accountNumber: String, accountType: String): Result =
     accountType match {
       case "A" | "C" => Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-      case _         => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat, accountNumber))
+      case _         => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat))
     }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
