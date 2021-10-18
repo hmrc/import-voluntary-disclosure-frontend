@@ -132,7 +132,7 @@ class UnderpaymentDetailSummaryController @Inject() (
     val dutyOrVatOnly                         = Seq(Duty, Vat)
 
     (oldUnderpaymentType, newUnderpaymentType) match {
-      case (Some(other), Vat) if other != Vat =>
+      case (Some(other), Vat) if other != Vat && request.isOneEntry =>
         val removePaymentDataIfChanged =
           if (request.isRepFlow && oldUnderpaymentType.contains(Both)) {
             removePaymentData(request)
