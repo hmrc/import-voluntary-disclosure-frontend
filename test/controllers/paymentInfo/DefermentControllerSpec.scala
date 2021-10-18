@@ -28,7 +28,7 @@ import models.underpayments.UnderpaymentDetail
 import pages._
 import pages.importDetails.UserTypePage
 import pages.paymentInfo.DefermentPage
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.underpayments.{UnderpaymentCheckModePage, UnderpaymentDetailSummaryPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -284,6 +284,28 @@ class DefermentControllerSpec extends ControllerSpecBase {
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
+      }
+
+      "point to PVA page when UnderpaymentCheckModePage and duty is Vat only" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(UnderpaymentCheckModePage, true).success.value
+              .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
+      }
+
+      "point to Underpayment Detail Summary when UnderpaymentCheckModePage and duty isn't Vat" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(UnderpaymentCheckModePage, true).success.value
+              .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
     }
   }

@@ -20,6 +20,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.PostponedVatAccountingFormProvider
 import mocks.repositories.MockSessionRepository
+import models.SelectedDutyTypes.Both
 import models.UserAnswers
 import models.importDetails.UserType
 import pages.importDetails.{ImporterNamePage, UserTypePage}
@@ -32,6 +33,7 @@ import views.html.underpayments.PostponedVatAccountingView
 import scala.concurrent.Future
 import pages.importDetails.NumberOfEntriesPage
 import models.importDetails.NumberOfEntries
+import pages.underpayments.TempUnderpaymentTypePage
 
 class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
 
@@ -50,7 +52,8 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
 
     val formProvider: PostponedVatAccountingFormProvider = injector.instanceOf[PostponedVatAccountingFormProvider]
 
-    MockedSessionRepository.set(Future.successful(true))
+    def setupMock(): Unit =
+      MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new PostponedVatAccountingController(
       authenticatedAction,
@@ -63,6 +66,8 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
       errorHandler,
       ec
     )
+
+    setupMock()
   }
 
   "GET PostponedVatAccounting Page" should {
@@ -107,6 +112,27 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
+      }
+
+      "return the correct location header when value is set to false and we need to update payment details" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(ImporterNamePage, "importerName")
+            .success.value
+            .set(UserTypePage, UserType.Representative)
+            .success.value
+            .set(TempUnderpaymentTypePage, Both)
+            .success.value
+        )
+
+        override def setupMock(): Unit = {
+          MockedSessionRepository.set(Future.successful(true))
+          MockedSessionRepository.set(Future.successful(true))
+        }
+
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
       "update the UserAnswers in session" in new Test {

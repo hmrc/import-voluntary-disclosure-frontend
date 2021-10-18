@@ -19,7 +19,10 @@ package controllers.underpayments
 import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.PostponedVatAccountingFormProvider
-import pages.underpayments.PostponedVatAccountingPage
+import models.SelectedDutyTypes.Both
+import models.requests.DataRequest
+import pages.CheckModePage
+import pages.underpayments.{PostponedVatAccountingPage, TempUnderpaymentTypePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -58,21 +61,35 @@ class PostponedVatAccountingController @Inject() (
       case Some(importerName) =>
         formProvider(importerName).bindFromRequest().fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, importerName, backLink()))),
-          value => {
+          value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(PostponedVatAccountingPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield {
-              if (value) {
-                Redirect(controllers.underpayments.routes.PVAHandoffController.onLoad())
-              } else {
-                Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad())
-              }
-            }
-          }
+              result         <- redirect(value)(request.copy(userAnswers = updatedAnswers))
+            } yield result
         )
 
       case None => Future.successful(errorHandler.showInternalServerError)
+    }
+  }
+
+  private def redirect(postponedVat: Boolean)(request: DataRequest[_]): Future[Result] = {
+    if (postponedVat) {
+      Future.successful(Redirect(controllers.underpayments.routes.PVAHandoffController.onLoad()))
+    } else {
+      val oldUnderpaymentType = request.userAnswers.get(TempUnderpaymentTypePage)
+
+      if (request.isRepFlow && oldUnderpaymentType.contains(Both)) {
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+
+      } else if (request.checkMode) {
+        Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+      } else {
+        Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
+      }
     }
   }
 

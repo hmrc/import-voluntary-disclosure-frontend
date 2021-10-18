@@ -186,6 +186,26 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
+            Text(CYAMessages.usesPVA),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(
+            Text("No")
+          ),
+          actions = Some(
+            Actions(items =
+              Seq(
+                ActionItem(
+                  controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(CYAMessages.changeUsesPVA)
+                )
+              )
+            )
+          )
+        ),
+        SummaryListRow(
+          key = Key(
             Text(CYAMessages.reasonForUnderpayment),
             classes = "govuk-!-width-one-third"
           ),
