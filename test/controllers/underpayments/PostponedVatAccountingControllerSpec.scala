@@ -22,8 +22,10 @@ import forms.underpayments.PostponedVatAccountingFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Both
 import models.UserAnswers
-import models.importDetails.UserType
-import pages.importDetails.{ImporterNamePage, UserTypePage}
+import models.importDetails.{NumberOfEntries, UserType}
+import pages.CheckModePage
+import pages.importDetails.{ImporterNamePage, NumberOfEntriesPage, UserTypePage}
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
@@ -31,9 +33,6 @@ import play.api.test.Helpers._
 import views.html.underpayments.PostponedVatAccountingView
 
 import scala.concurrent.Future
-import pages.importDetails.NumberOfEntriesPage
-import models.importDetails.NumberOfEntries
-import pages.underpayments.TempUnderpaymentTypePage
 
 class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
 
@@ -150,4 +149,39 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
     }
   }
 
+  "Back Link" when {
+    "we came directly from CYA" should {
+      "take us back to CYA" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(CheckModePage, true).success.value
+        )
+
+        controller.backLink(userAnswers.get) mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
+      }
+    }
+
+    "we came in check mode via Underpayment Summary" should {
+      "take us back to Underpayment Summary" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentCheckModePage, true).success.value
+        )
+
+        controller.backLink(
+          userAnswers.get
+        ) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+      }
+    }
+
+    "we are not in check mode" should {
+      "take us back to Underpayment Summary" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+
+        controller.backLink(
+          userAnswers.get
+        ) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+      }
+    }
+  }
 }

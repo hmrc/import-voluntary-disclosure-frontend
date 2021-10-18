@@ -22,11 +22,11 @@ import forms.paymentInfo.DefermentFormProvider
 import messages.DefermentMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.importDetails.UserType
+import models.importDetails.{NumberOfEntries, UserType}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.paymentInfo.DefermentPage
 import pages.underpayments.{UnderpaymentCheckModePage, UnderpaymentDetailSummaryPage}
 import play.api.http.Status
@@ -292,9 +292,22 @@ class DefermentControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(UnderpaymentCheckModePage, true).success.value
               .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+              .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
+      }
+
+      "point to Underpayment Summary page when UnderpaymentCheckModePage and duty is Vat only and Bulk flow" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(UnderpaymentCheckModePage, true).success.value
+              .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+              .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
 
       "point to Underpayment Detail Summary when UnderpaymentCheckModePage and duty isn't Vat" in new Test {
