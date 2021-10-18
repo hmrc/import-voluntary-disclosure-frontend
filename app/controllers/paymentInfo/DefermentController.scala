@@ -129,11 +129,12 @@ class DefermentController @Inject() (
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+    val isUnderpaymentCheckMode = request.userAnswers.get(UnderpaymentCheckModePage).exists(identity)
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
-    } else if (request.userAnswers.get(UnderpaymentCheckModePage).exists(identity) && request.dutyType == Vat) {
+    } else if (isUnderpaymentCheckMode && request.dutyType == Vat && request.isOneEntry) {
       controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
-    } else if (request.userAnswers.get(UnderpaymentCheckModePage).exists(identity)) {
+    } else if (isUnderpaymentCheckMode) {
       controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
     } else {
       controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()

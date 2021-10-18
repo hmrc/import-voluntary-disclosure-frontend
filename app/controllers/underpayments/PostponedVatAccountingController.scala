@@ -20,9 +20,10 @@ import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.PostponedVatAccountingFormProvider
 import models.SelectedDutyTypes.Both
+import models.UserAnswers
 import models.requests.DataRequest
 import pages.CheckModePage
-import pages.underpayments.{PostponedVatAccountingPage, TempUnderpaymentTypePage}
+import pages.underpayments.{PostponedVatAccountingPage, TempUnderpaymentTypePage, UnderpaymentCheckModePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -51,7 +52,7 @@ class PostponedVatAccountingController @Inject() (
       case Some(importerName) =>
         val form = request.userAnswers.get(PostponedVatAccountingPage)
           .fold(formProvider(importerName))(formProvider(importerName).fill)
-        Future.successful(Ok(view(form, importerName, backLink())))
+        Future.successful(Ok(view(form, importerName, backLink(request.userAnswers))))
       case None => Future.successful(errorHandler.showInternalServerError)
     }
   }
@@ -60,7 +61,8 @@ class PostponedVatAccountingController @Inject() (
     request.getImporterName match {
       case Some(importerName) =>
         formProvider(importerName).bindFromRequest().fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, importerName, backLink()))),
+          formWithErrors =>
+            Future.successful(BadRequest(view(formWithErrors, importerName, backLink(request.userAnswers)))),
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(PostponedVatAccountingPage, value))
@@ -93,7 +95,13 @@ class PostponedVatAccountingController @Inject() (
     }
   }
 
-  private[controllers] def backLink(): Call =
-    controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-
+  private[controllers] def backLink(answers: UserAnswers): Call = {
+    val isCheckMode             = answers.get(CheckModePage).exists(identity)
+    val isUnderpaymentCheckMode = answers.get(UnderpaymentCheckModePage).exists(identity)
+    if (isCheckMode && !isUnderpaymentCheckMode) {
+      controllers.cya.routes.CheckYourAnswersController.onLoad()
+    } else {
+      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+    }
+  }
 }
