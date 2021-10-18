@@ -21,6 +21,7 @@ import controllers.actions._
 import pages._
 import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -53,6 +54,8 @@ class CheckYourAnswersController @Inject() (
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentCheckModePage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _              <- sessionRepository.set(updatedAnswers)
     } yield {
       Ok(

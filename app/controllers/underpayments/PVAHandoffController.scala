@@ -14,45 +14,44 @@
  * limitations under the License.
  */
 
-package controllers.reasons
+package controllers.underpayments
 
-import config.AppConfig
+import config.ErrorHandler
 import controllers.actions._
-import models.SelectedDutyTypes.{SelectedDutyType, Vat}
-import pages.reasons.UnderpaymentReasonsPage
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.reasons.BoxGuidanceView
+import views.html.reasons.PVAHandoffView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BoxGuidanceController @Inject() (
+class PVAHandoffController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
-  view: BoxGuidanceView,
-  implicit val appConfig: AppConfig
+  sessionRepository: SessionRepository,
+  errorHandler: ErrorHandler,
+  view: PVAHandoffView,
+  implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  private[reasons] def backLink(dutyType: SelectedDutyType): Call = {
-    if (dutyType == Vat) {
-      controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
-    } else {
-      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
-    }
-  }
+  private val logger = Logger("application." + getClass.getCanonicalName)
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    if (request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty).nonEmpty) {
-      Future.successful(Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()))
-    } else {
-      Future.successful(Ok(view(backLink(request.dutyType), !request.checkMode)))
+    request.getImporterName match {
+      case Some(nameOfImporter) =>
+        sessionRepository.remove(request.credId).map(_ => Ok(view(request.isRepFlow, nameOfImporter)))
+      case None =>
+        logger.error("Failed to find Importer Name")
+        Future.successful(errorHandler.showInternalServerError)
     }
+
   }
 
 }

@@ -40,7 +40,7 @@ unauthorised.agent.signInAgain.1 = Sign in again
 unauthorised.agent.signInAgain.2 = with:
 unauthorised.agent.bullet.1 = the Government Gateway user ID used to apply for your EORI number online
 unauthorised.agent.bullet.2 = or, if you do not have this, another Government Gateway user ID you use for your business
-unauthorised.agent.details.linkText = I do not have another Government Gateway user id
+unauthorised.agent.details.linkText = I do not have another Government Gateway user ID
 unauthorised.agent.details.1 = You can use the link on the sign in page to create a new user ID. You should select organisation or individual (not agent) when asked for the type of account.
 unauthorised.agent.details.2 = The subscription will be unsuccessful if another Government Gateway user ID is already linked to your EORI number. Make sure you check one does not exist before creating a new user ID.
 unauthorised.privateBeta.pageTitle = Sorry, the service is unavailable
@@ -133,6 +133,13 @@ SupportDoc.bullet3 = a document or scanned image showing how you calculated the 
 
 # Error Summary
 error.summary.pageTitle = There is a problem
+
+# Cannot Disclose Import VAT
+pvaHandoff.pageTitle = You cannot disclose underpaid import VAT using this service
+pvaHandoff.rep.p1 = As {0} uses postponed VAT accounting they will need to account for the underpaid import VAT on their next VAT return.
+pvaHandoff.importer.p1 = As you use postponed VAT accounting then you need to account for the underpaid import VAT on your next VAT return.
+pvaHandoff.findOut = Find out
+pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re using postponed VAT accounting (opens in new tab)
 
 # Underpayment Type
 underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
@@ -292,6 +299,10 @@ underpaymentDetailsConfirm.A10.original.change = Change the Customs Duty on Agri
 underpaymentDetailsConfirm.A10.amended.change = Change the Customs Duty on Agricultural Products underpayment details amount that should have been paid
 underpaymentDetailsConfirm.D10.original.change = Change the Compensatory Duty underpayment details amount that was paid
 underpaymentDetailsConfirm.D10.amended.change = Change the Compensatory Duty underpayment details amount that should have been paid
+
+# Postponed VAT Accounting page
+postponedVatAccounting.pageTitle = Does {0} use postponed VAT accounting?
+postponedVatAccounting.error.required = Select yes if {0} uses postponed VAT accounting
 
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
@@ -617,6 +628,8 @@ cya.eoriNumber = Importer EORI number
 cya.underpaymentDetails = Underpayment details
 cya.underpaymentDetails.owedToHmrc = Total owed to HMRC
 cya.underpaymentDetails.owedToHmrc.change = View underpayments summary
+cya.underpaymentDetails.usesPVA.change = Change uses postponed VAT accounting?
+cya.underpaymentDetails.usesPVA = Uses postponed VAT accounting?
 cya.viewSummary = View summary
 cya.reasonForUnderpayment = Reason for underpayment
 cya.reasonForUnderpayment.change = View Reason for underpayment

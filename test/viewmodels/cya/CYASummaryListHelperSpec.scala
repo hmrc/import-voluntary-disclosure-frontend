@@ -29,7 +29,7 @@ import pages.docUpload.FileUploadPage
 import pages.importDetails._
 import pages.paymentInfo.DefermentPage
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.underpayments.{PostponedVatAccountingPage, UnderpaymentDetailSummaryPage}
 import views.data.CheckYourAnswersData._
 
 import java.time.{LocalDate, LocalDateTime}
@@ -77,6 +77,7 @@ class CYASummaryListHelperSpec
         Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
       ).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
+      .set(PostponedVatAccountingPage, false).success.value
 
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
@@ -142,6 +143,30 @@ class CYASummaryListHelperSpec
         .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
         .set(UserTypePage, UserType.Importer).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+        .set(DefermentPage, false).success.value
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
+    }
+
+    "produce a valid model when Duty is used and PVA is not an option" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("")
+        .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+        .set(AcceptanceDatePage, true).success.value
+        .set(
+          FileUploadPage,
+          Seq(
+            FileUploadInfo(
+              "file-ref-1",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          )
+        ).success.value
+        .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
         .set(DefermentPage, false).success.value
       buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
     }

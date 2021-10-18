@@ -21,7 +21,7 @@ import models.requests.DataRequest
 import pages.docUpload.FileUploadPage
 import pages.importDetails.{AcceptanceDatePage, NumberOfEntriesPage}
 import pages.reasons._
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.underpayments.{PostponedVatAccountingPage, UnderpaymentDetailSummaryPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
@@ -40,6 +40,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     val rows = if (request.isOneEntry) {
       Seq(
         buildOwedToHmrcRow(answers),
+        buildUsesPVARow(answers),
         buildReasonForUnderpaymentRow(answers),
         buildExtraInformationRow(answers),
         buildUploadedFilesRow(answers)
@@ -141,6 +142,22 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
       )
     }
   }
+
+  private def buildUsesPVARow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(PostponedVatAccountingPage).map { _ =>
+      createRow(
+        keyText = Text(messages("cya.underpaymentDetails.usesPVA")),
+        valueContent = Text(messages("site.no")),
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url,
+            messages("cya.underpaymentDetails.usesPVA.change")
+          )
+        )
+      )
+    }
 
   private def buildNumberOfEntriesSummaryListRow(
     answers: UserAnswers

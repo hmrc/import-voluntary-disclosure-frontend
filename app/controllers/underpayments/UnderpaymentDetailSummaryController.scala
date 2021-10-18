@@ -23,7 +23,7 @@ import models.requests.DataRequest
 import models.underpayments.UnderpaymentDetail
 import pages._
 import pages.paymentInfo._
-import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
+import pages.underpayments._
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
@@ -52,6 +52,7 @@ class UnderpaymentDetailSummaryController @Inject() (
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(TempUnderpaymentTypePage, request.dutyType))
+      updatedAnswers <- Future.fromTry(updatedAnswers.set(UnderpaymentCheckModePage, true))
       _              <- sessionRepository.set(updatedAnswers)
     } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad())
   }
@@ -93,56 +94,81 @@ class UnderpaymentDetailSummaryController @Inject() (
         if (addAnother) {
           Future.successful(Redirect(controllers.underpayments.routes.UnderpaymentTypeController.onLoad()))
         } else {
-          (request.isRepFlow, request.checkMode) match {
-            case (true, _) => redirectForRepFlow()
-            case (_, true) => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
-            case _ =>
-              if (request.isOneEntry) {
-                Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
-              } else {
-                Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
-              }
+          cleanupVatAccounting(request).flatMap { updatedRequest =>
+            redirect(updatedRequest)
           }
         }
       }
     )
   }
 
-  private[underpayments] def redirectForRepFlow()(implicit request: DataRequest[_]): Future[Result] = {
+  private[underpayments] def cleanupVatAccounting(request: DataRequest[_]): Future[DataRequest[_]] = {
+    if (request.dutyType != Vat) {
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.remove(PostponedVatAccountingPage))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield request.copy(userAnswers = updatedAnswers)
+    } else {
+      Future.successful(request)
+    }
+  }
+
+  private[underpayments] def redirect(request: DataRequest[_]): Future[Result] = {
+    if (request.checkMode) {
+      redirectForCheckMode(request)
+    } else if (!request.isOneEntry) {
+      Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
+    } else if (request.dutyType == Vat) {
+      Future.successful(Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad()))
+    } else {
+      Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
+    }
+  }
+
+  private[underpayments] def redirectForCheckMode(request: DataRequest[_]): Future[Result] = {
     val newUnderpaymentType: SelectedDutyType = request.dutyType
     val oldUnderpaymentType                   = request.userAnswers.get(TempUnderpaymentTypePage)
     val splitThePayment                       = request.userAnswers.get(SplitPaymentPage)
     val dutyOrVatOnly                         = Seq(Duty, Vat)
 
-    (oldUnderpaymentType, newUnderpaymentType, splitThePayment) match {
-      case (Some(oldType), Both, _) if dutyOrVatOnly.contains(oldType) =>
-        removePaymentDataAndRedirect()
-      case (Some(Both), newType, Some(true)) if dutyOrVatOnly.contains(newType) =>
-        removePaymentDataAndRedirect()
-      case (None, _, _) =>
-        if (request.isOneEntry) {
-          Future.successful(Redirect(controllers.reasons.routes.BoxGuidanceController.onLoad()))
-        } else {
-          Future.successful(Redirect(controllers.docUpload.routes.BulkUploadFileController.onLoad()))
+    (oldUnderpaymentType, newUnderpaymentType) match {
+      case (Some(other), Vat) if other != Vat && request.isOneEntry =>
+        val removePaymentDataIfChanged =
+          if (request.isRepFlow && oldUnderpaymentType.contains(Both)) {
+            removePaymentData(request)
+          } else Future.successful(())
+
+        removePaymentDataIfChanged.map { _ =>
+          Redirect(controllers.underpayments.routes.PostponedVatAccountingController.onLoad())
         }
-      case _ => Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
+      case (Some(oldType), Both) if request.isRepFlow && dutyOrVatOnly.contains(oldType) =>
+        redirectForDeferment(request)
+      case (Some(Both), newType)
+          if request.isRepFlow && dutyOrVatOnly.contains(newType) && splitThePayment.exists(identity) =>
+        redirectForDeferment(request)
+      case _ =>
+        Future.successful(Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad()))
     }
   }
 
-  private def removePaymentDataAndRedirect()(implicit request: DataRequest[_]): Future[Result] = {
+  private def removePaymentData(request: DataRequest[_]): Future[Unit] = {
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
-      updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentPage))
+      updatedAnswers <- Future.fromTry(request.userAnswers.remove(DefermentPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(SplitPaymentPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentTypePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(DefermentAccountPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(UploadAuthorityPage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentTypePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
-      updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _              <- sessionRepository.set(updatedAnswers)
-    } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+    } yield ()
   }
+
+  private def redirectForDeferment(request: DataRequest[_]): Future[Result] =
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
+      _              <- removePaymentData(request.copy(userAnswers = updatedAnswers))
+    } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
 
   private[controllers] def summaryList(
     underpaymentDetail: Seq[UnderpaymentDetail]
