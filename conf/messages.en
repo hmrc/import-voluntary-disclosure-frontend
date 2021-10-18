@@ -808,7 +808,7 @@ importerVatRegistered.error.required = Select yes if the importer is VAT registe
 updateAdditionalInformation.pageTitle = Tell us any additional information
 updateAdditionalInformation.hint = You may have been asked to provide more information to help us progress the disclosure.
 updateAdditionalInformation.error.required = Enter the additional information about the underpayment
-updateAdditionalInformation.error.maxLength = The additional information must be 1500 characters or fewer
+updateAdditionalInformation.error.maxLength = The additional information must be 1400 characters or fewer
 updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
 
 # Session Timeout Page

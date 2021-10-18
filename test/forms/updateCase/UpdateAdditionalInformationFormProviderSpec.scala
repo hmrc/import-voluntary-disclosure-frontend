@@ -42,7 +42,7 @@ class UpdateAdditionalInformationFormProviderSpec extends FormSpecBase {
 
     "maxLength data entered" should {
 
-      val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
+      val maxLengthData: Map[String, String] = Map("value" -> "c" * 1401)
       val form                               = new UpdateAdditionalInformationFormProvider()().bind(maxLengthData)
 
       "result in a form with errors" in {
