@@ -298,7 +298,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
         result mustBe controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
       }
 
-      "point to PVA page when UnderpaymentCheckModePage and duty is Vat only and Bulk flow" in new Test {
+      "point to Underpayment Summary page when UnderpaymentCheckModePage and duty is Vat only and Bulk flow" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(
             UserAnswers("some-cred-id")
