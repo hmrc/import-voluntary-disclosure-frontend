@@ -25,16 +25,16 @@
 
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
 
-    @layout(pageTitle = "Disclose an underpayment of Customs Duty or import VAT", form = None, showBackLink = false) {
+    @layout(pageTitle = "Tell HMRC about an underpayment of Customs Duty or import VAT", form = None, showBackLink = false) {
 
 
         <span class="govuk-caption-xl gem-c-title__context">
             Guidance
         </span>
 
-        @h1("Disclose an underpayment of Customs Duty or import VAT")
+        @h1("Tell HMRC about an underpayment of Customs Duty or import VAT")
 
-        @p(Html("Use this service to tell HMRC about an underpayment of Customs Duty, excise duty or import VAT on an import declaration (entry) made using CHIEF."))
+        @p(Html("Use this service to disclose an underpayment of Customs Duty, excise duty or import VAT on an import declaration (entry) made using CHIEF."))
 
         @h2("Contents", Some("0"))
 
@@ -45,11 +45,11 @@
             Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#5">After you've disclosed</a>.toString)
         ))
 
+        @p(Html("If you’ve previously told us about underpaid Customs Duty or import VAT and you need to send us more information about your disclosure you can use this service. You’ll need to have your disclosure reference number."))
+
         <div class="govuk-inset-text">
             If you are only disclosing underpaid import VAT and use postponed VAT accounting, you should make adjustments on your VAT return to account for the underpaid import VAT. Do not use this service.
         </div>
-
-        @p(Html("If you’ve previously told us about underpaid Customs Duty or import VAT and you need to send us more information about your disclosure you can use this service. You’ll need to have your disclosure reference number."))
 
         @p(
             Html(
@@ -93,6 +93,8 @@
             "Customs Duty on Agricultural Products (A10)",
             "Compensatory Duty (D10)").map(Html(_)))
 
+        @p(Html("You must also provide the calculations that show the amount of tax or duty that should have been paid."))
+
         @p(
             Html(
                     <span>
@@ -105,15 +107,6 @@
         @h3("Reason for the underpayment")
 
         @p(Html("For underpaid tax or duty, you’ll need to tell us what information was wrong on the import declaration."))
-
-        @h3("Supporting documents")
-
-        @p(Html("You must provide the:"))
-
-        @bullets(Seq(
-            "import declaration (C88 or SAD)",
-            "entry acceptance advice (E2)",
-            "calculations showing the tax or duty that should have been paid").map(Html(_)))
 
         @h3("Disclosing underpaid tax and duty for multiple import declarations")
 
@@ -148,26 +141,7 @@
 
         @p(Html("If you or your organisation does not have this User ID you can create a new user ID from the sign page. When asked for the account type select either 'organisation’ or ‘individual’, do not select ‘agent’."))
 
-        @h3("Subscribing to Customs Trader Services")
-
-        @p(Html("If this is the first time you have signed in, you may be asked to subscribe to Customs Trader Services. You’ll only be asked to do this once."))
-
-        @p(Html("This will give you access to:"))
-
-        <ul class="govuk-list govuk-list--bullet">
-            <li>Disclose an underpayment of Customs Duty or import VAT (this service)</li>
-            <li><a href="https://www.gov.uk/guidance/apply-for-repayment-of-import-duty-and-vat-chief" class="govuk-link">
-                Apply for repayment of import duty and import VAT</a></li>
-            <li><a href="https://www.gov.uk/guidance/send-documents-for-a-customs-check-for-declarations-made-in-chief" class="govuk-link">
-                Send documents for a customs check</a></li>
-        </ul>
-
-        @p(Html("You will need:"))
-
-        @bullets(Seq("your EORI number (If you do not have an EORI number we will direct you to the service to get one.)",
-            "details that identify you or your business so that we can verify your use of the EORI number",
-            "to be an administrator user to set up the subscription for an organisation."
-        ).map(Html(_)))
+        @p(Html("If this is the first time you have signed in, you may be asked to subscribe to Customs Trader Services. You’ll only be asked to do this once. You'll need to have an an administrator Government Gateway user to set up the subscription for an organisation."))
 
         <div class="govuk-inset-text">
             You need to complete the disclosure in one go. You cannot save your answers and return later.
@@ -183,9 +157,24 @@
 
         @p(Html("If we agree with the calculations you’ve provided, we’ll send a C18 Post Clearance Demand Note in the post within 14 days."))
 
-        @p(Html("This will confirm what you owe to HMRC and, if you have not paid by deferment, will tell you how to pay. Y ou must pay within 10 days of receiving the demand note otherwise you’ll be charged interest."))
+        @p(Html("This will confirm what you owe to HMRC and, if you have not paid by deferment, will tell you how to pay."))
 
-        @p(Html("If you’ve paid too much import VAT or customs duties apply for repayment of import duties or import VAT."))
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                You must pay within 10 days of receiving the demand note otherwise you’ll be charged interest.
+            </strong>
+        </div>
+
+        @p(
+            Html(
+                "If you’ve paid too much import VAT or customs duties " +
+                <a href="https://www.gov.uk/guidance/apply-for-repayment-of-import-duty-and-vat-chief">
+                apply for repayment of import duties or import VAT.
+                </a>.toString
+            )
+        )
 
         @p(
             Html(
