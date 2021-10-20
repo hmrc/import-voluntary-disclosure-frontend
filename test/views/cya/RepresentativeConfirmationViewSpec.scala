@@ -61,32 +61,6 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
         elementText("#entryNumber") mustBe RepresentativeConfirmationMessages.referenceNumber
       }
 
-      s"have the p1 message for single entry of '${RepresentativeConfirmationMessages.p1SingleEntry}'" in {
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1SingleEntry
-      }
-
-      s"have the p1 message for bulk entry and importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryEoriExists}'" in {
-        lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1BulkEntryEoriExists
-      }
-
-      s"have the p1 message for bulk entry and no importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryNoEori}'" in {
-        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, dataNoEori)(
-          fakeRequest,
-          messages
-        )
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1BulkEntryNoEori
-      }
-
       "The what happens next section - Deferment selected" should {
 
         s"have the h2 message of '${RepresentativeConfirmationMessages.whatHappensNext}'" in {
@@ -95,13 +69,13 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(5)"
+            "#main-content > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3Deferment
         }
       }
@@ -113,19 +87,19 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(5)"
+            "#main-content > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${RepresentativeConfirmationMessages.p4OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(6)"
+            "#main-content > div > div > p:nth-child(5)"
           ) mustBe RepresentativeConfirmationMessages.p4OtherPayment
         }
       }
@@ -144,12 +118,14 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
           elementText("#printSaveRestOfMessage") mustBe RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have the p5 message of '${RepresentativeConfirmationMessages.p5}'" in {
-          elementText("#main-content > div > div > p:nth-child(8)") mustBe RepresentativeConfirmationMessages.p5
+        s"have the p5 message of '${RepresentativeConfirmationMessages.contactInfo}'" in {
+          elementText(
+            "#main-content > div > div > p:nth-child(7)"
+          ) mustBe RepresentativeConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
+          elementAttributes("#main-content > div > div > p:nth-child(7) > a")
             .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
         }
 

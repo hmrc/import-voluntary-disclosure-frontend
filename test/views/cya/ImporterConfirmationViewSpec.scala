@@ -57,17 +57,6 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         elementText("#entryNumber") mustBe ImporterConfirmationMessages.referenceNumber
       }
 
-      s"have the p1 message for single entry of '${ImporterConfirmationMessages.p1SingleEntry}'" in {
-        elementText("#main-content > div > div > p:nth-child(2)") mustBe ImporterConfirmationMessages.p1SingleEntry
-      }
-
-      s"have the p1 message for bulk entry of '${ImporterConfirmationMessages.p1BulkEntry}'" in {
-        lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#main-content > div > div > p:nth-child(2)") mustBe ImporterConfirmationMessages.p1BulkEntry
-      }
-
       "The what happens next section - Deferment selected" should {
 
         s"have the h2 message of '${ImporterConfirmationMessages.whatHappensNext}'" in {
@@ -75,11 +64,11 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2Deferment}'" in {
-          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p2Deferment
+          elementText("#main-content > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3Deferment}'" in {
-          elementText("#main-content > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p3Deferment
+          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3Deferment
         }
       }
 
@@ -89,15 +78,15 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p2OtherPayment
+          elementText("#main-content > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p3OtherPayment
+          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${ImporterConfirmationMessages.p4OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(6)") mustBe ImporterConfirmationMessages.p4OtherPayment
+          elementText("#main-content > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p4OtherPayment
         }
       }
 
@@ -115,12 +104,12 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
           elementText("#printSaveRestOfMessage") mustBe ImporterConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have the p5 message of '${ImporterConfirmationMessages.p5}'" in {
-          elementText("#main-content > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.p5
+        s"have the p5 message of '${ImporterConfirmationMessages.contactInfo}'" in {
+          elementText("#main-content > div > div > p:nth-child(7)") mustBe ImporterConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
+          elementAttributes("#main-content > div > div > p:nth-child(7) > a")
             .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
         }
 

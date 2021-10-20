@@ -41,26 +41,15 @@
         <br>
     </div>
 
-    @if(isSingleEntry) {
-        @p(Html(messages("confirmation.singleEntry.p1", data.entryDetails)))
-    } else {
-        @if(data.importerEORI.isEmpty) {
-            @p(Html(messages("confirmation.bulkEntryNoEori.p1", data.importerName)))
-        } else {
-            @p(Html(messages("confirmation.bulkEntryEoriExists.p1", data.importerName, data.eori)))
-        }
-    }
-
-
     @h2(messages("confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
     @if(isPayByDeferment) {
-        <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p2") @messages("confirmation.whatHappensNext.deferment.rep.p2", data.importerName)</p>
-        @p(Html(messages("confirmation.whatHappensNext.deferment.p3")))
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.deferment.p1") @messages("confirmation.whatHappensNext.deferment.rep.p1", data.importerName)</p>
+        @p(Html(messages("confirmation.whatHappensNext.deferment.p2")))
     } else {
-        <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p2") @messages("confirmation.whatHappensNext.otherPayment.rep.p2", data.importerName)</p>
+        <p class="govuk-body">@messages("confirmation.whatHappensNext.otherPayment.p1") @messages("confirmation.whatHappensNext.otherPayment.rep.p1", data.importerName)</p>
+        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p2")))
         @p(Html(messages("confirmation.whatHappensNext.otherPayment.p3")))
-        @p(Html(messages("confirmation.whatHappensNext.otherPayment.p4")))
     }
 
     @h2(messages("confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
@@ -71,7 +60,7 @@
     }
 
     @p {
-        @Html(messages("confirmation.whatYouShouldDoNext.p5"))
+        @Html(messages("confirmation.whatYouShouldDoNext.contactInfo"))
         <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
     }
 
