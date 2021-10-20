@@ -41,7 +41,7 @@ trait CYAUpdateCaseSummaryListHelper {
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          "",
+          None,
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

@@ -16,11 +16,39 @@
 
 package viewmodels.cya
 
+import play.api.i18n.Messages
+import models.requests.DataRequest
+import org.joda.time.DateTime
+
 trait CYASummaryListHelper
-    extends CYAImporterDetailsSummaryListHelper
+    extends CYADisclosureSummaryListHelper
+    with CYAImporterDetailsSummaryListHelper
     with CYAEntryDetailsSummaryListHelper
     with CYAUnderpaymentDetailsSummaryListHelper
     with CYAYourDetailsSummaryListHelper
     with CYAPaymentDetailsSummaryListHelper
     with CYADefermentDutyDetailsSummaryListHelper
-    with CYADefermentImportVATDetailsSummaryListHelper
+    with CYADefermentImportVATDetailsSummaryListHelper {
+
+  def buildFullSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] =
+    buildImporterDetailsSummaryList ++
+      buildEntryDetailsSummaryList ++
+      buildUnderpaymentDetailsSummaryList ++
+      buildYourDetailsSummaryList ++
+      buildPaymentDetailsSummaryList ++
+      buildDefermentDutySummaryList ++
+      buildDefermentImportVatSummaryList
+
+  def buildSummaryListForPrint(caseId: String, date: DateTime)(implicit
+    messages: Messages,
+    request: DataRequest[_]
+  ): Seq[CYASummaryList] =
+    Seq(buildDisclosureSummaryList(caseId, date)) ++
+      buildImporterDetailsSummaryList ++
+      buildEntryDetailsSummaryList ++
+      buildUnderpaymentDetailsSummaryList ++
+      buildYourDetailsSummaryList ++
+      buildPaymentDetailsSummaryList ++
+      buildDefermentDutySummaryList ++
+      buildDefermentImportVatSummaryList
+}

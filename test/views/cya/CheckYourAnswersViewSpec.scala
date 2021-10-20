@@ -40,7 +40,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       "have correct sub-headings" in {
         val subHeadings = document.select("main h2")
         answers.zipWithIndex.map { case (answer, index) =>
-          subHeadings.get(index).text mustBe answer.heading
+          subHeadings.get(index).text mustBe answer.heading.get
         }
       }
 

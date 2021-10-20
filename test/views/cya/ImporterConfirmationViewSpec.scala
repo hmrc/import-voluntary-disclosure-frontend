@@ -34,7 +34,7 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
     "no errors exist" should {
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterConfirmationMessages.pageTitle)
@@ -47,7 +47,7 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
 
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${ImporterConfirmationMessages.heading}'" in {
         elementText("h1") mustBe ImporterConfirmationMessages.heading
@@ -74,7 +74,7 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
       "The what happens next section - Other payment selected" should {
         lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
+          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2OtherPayment}'" in {

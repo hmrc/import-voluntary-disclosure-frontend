@@ -38,7 +38,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
     "no errors exist" should {
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeConfirmationMessages.pageTitle)
@@ -51,7 +51,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
 
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${RepresentativeConfirmationMessages.heading}'" in {
         elementText("h1") mustBe RepresentativeConfirmationMessages.heading
@@ -82,7 +82,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
       "The what happens next section - Other payment selected" should {
         lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
+          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2OtherPayment}'" in {

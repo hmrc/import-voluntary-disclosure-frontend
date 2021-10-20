@@ -14,9 +14,12 @@
  * limitations under the License.
  *@
 
+@import views.html.cya.SummaryForPrint
 @import viewmodels.cya.ConfirmationViewData
+@import viewmodels.cya.CYASummaryList
 
 @this(layout: templates.Layout,
+        summaryForPrint: SummaryForPrint,
         h2: components.h2,
         p: components.p,
         appConfig: AppConfig
@@ -25,7 +28,8 @@
 @(reference: String = "",
     isPayByDeferment: Boolean,
     isSingleEntry: Boolean,
-    data: ConfirmationViewData
+    data: ConfirmationViewData,
+    answers: Seq[CYASummaryList]
 )(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
@@ -77,6 +81,8 @@
             @Html(messages("confirmation.helpImproveServiceLinkTime"))
         }
     </div>
+
+    @summaryForPrint(answers)
 }
 
 @{

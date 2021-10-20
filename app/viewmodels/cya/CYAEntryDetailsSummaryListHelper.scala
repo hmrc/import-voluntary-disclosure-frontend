@@ -47,7 +47,7 @@ trait CYAEntryDetailsSummaryListHelper {
       if (rows.nonEmpty) {
         Seq(
           cya.CYASummaryList(
-            messages("cya.entryDetails"),
+            Some(messages("cya.entryDetails")),
             SummaryList(
               classes = "govuk-!-margin-bottom-9",
               rows = rows

@@ -51,7 +51,7 @@ object CheckYourAnswersData {
   val contactDetails             = ContactDetails("First Second", "email@email.com", "1234567890")
 
   val importerDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
-    CYAMessages.aboutImporterDetails,
+    Some(CYAMessages.aboutImporterDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -160,7 +160,7 @@ object CheckYourAnswersData {
   )
 
   val underpaymentDetailsSingleAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
-    CYAMessages.underpaymentDetails,
+    Some(CYAMessages.underpaymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -269,7 +269,7 @@ object CheckYourAnswersData {
   )
 
   val underpaymentDetailsBulkAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
-    CYAMessages.underpaymentDetails,
+    Some(CYAMessages.underpaymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -378,7 +378,7 @@ object CheckYourAnswersData {
   )
 
   val yourDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
-    CYAMessages.yourDetails,
+    Some(CYAMessages.yourDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(
@@ -447,7 +447,7 @@ object CheckYourAnswersData {
   )
 
   val entryDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
-    CYAMessages.entryDetails,
+    Some(CYAMessages.entryDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(

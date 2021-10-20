@@ -18,4 +18,4 @@ package viewmodels.cya
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
-case class CYASummaryList(heading: String, summaryList: SummaryList)
+case class CYASummaryList(heading: Option[String], summaryList: SummaryList)
