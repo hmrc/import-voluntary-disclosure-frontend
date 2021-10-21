@@ -4,20 +4,20 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
 @import "lib/govuk-frontend/govuk/all";
 @import "lib/hmrc-frontend/hmrc/all";
 
-.printElement {
+.print-only {
     display: none;
 }
 
 @media print {
-    .printElement {
-        background-color: white;
-        position: absolute;
+    .print-only {
         display: block;
-        top: 0;
-        left: 0;
     }
 
-    footer {
+    .print-hidden {
         display: none;
+    }
+
+    .govuk-header {
+        margin-bottom: 32px;
     }
 }
