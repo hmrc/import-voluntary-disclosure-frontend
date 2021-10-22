@@ -118,15 +118,20 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
           elementText("#printSaveRestOfMessage") mustBe RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have the p5 message of '${RepresentativeConfirmationMessages.contactInfo}'" in {
+        s"have the paragraph message of '${RepresentativeConfirmationMessages.contactInfo}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(7)"
+            "#main-content > div > div > p:nth-child(8)"
           ) mustBe RepresentativeConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(7) > a")
+          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
             .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+        }
+
+        s"have the correct noscript paragraph" in {
+          elementText("#main-content > div > div > noscript") mustBe
+            RepresentativeConfirmationMessages.printSave + " " + RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
         s"have a link message of '${RepresentativeConfirmationMessages.discloseAnotherUnderpayment}'" in {

@@ -104,13 +104,18 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
           elementText("#printSaveRestOfMessage") mustBe ImporterConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have the p5 message of '${ImporterConfirmationMessages.contactInfo}'" in {
-          elementText("#main-content > div > div > p:nth-child(7)") mustBe ImporterConfirmationMessages.contactInfo
+        s"have the paragraph of '${ImporterConfirmationMessages.contactInfo}'" in {
+          elementText("#main-content > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(7) > a")
+          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
             .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+        }
+
+        s"have the noscript paragraph" in {
+          elementText("#main-content > div > div > noscript") mustBe
+            ImporterConfirmationMessages.printSave + " " + ImporterConfirmationMessages.printSaveRestOfMessage
         }
 
         s"have a link message of '${ImporterConfirmationMessages.discloseAnotherUnderpayment}'" in {
