@@ -34,6 +34,7 @@ import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 @Singleton
 class CheckYourAnswersController @Inject() (
@@ -92,7 +93,7 @@ class CheckYourAnswersController @Inject() (
           }
         }
 
-        val submittedDate = DateTime.now()
+        val submittedDate = DateTime.now(DateTimeZone.forID("Europe/London"))
         val summaryList   = buildSummaryListForPrint(value.id, submittedDate)
 
         confirmationData match {
