@@ -93,6 +93,16 @@ class CYASummaryListHelperSpec
 
   }
 
+  "buildSummaryListForPrint" should {
+    "produce rows without links" in new Test {
+      buildSummaryListForPrint(caseId, dateSubmitted).flatMap(_.summaryList.rows.flatMap(_.actions)) mustBe Seq.empty
+    }
+
+    "produce a valid model for disclosure summary" in new Test {
+      buildDisclosureSummaryList(caseId, dateSubmitted) mustBe disclosureSummaryList
+    }
+  }
+
   "buildEntryDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {

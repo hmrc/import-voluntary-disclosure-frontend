@@ -16,8 +16,10 @@
 
 package views.data
 
-import messages.CYAMessages
+import messages.{CYAMessages, SummaryForPrintMessages}
 import models.{ContactAddress, ContactDetails}
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYASummaryList
@@ -49,6 +51,33 @@ object CheckYourAnswersData {
   val reasonForUnderpaymentBulk  = "Stock losses in warehouse across multiple entries."
   val userType                   = "Representative"
   val contactDetails             = ContactDetails("First Second", "email@email.com", "1234567890")
+  val caseId                     = "18123"
+  val dateSubmitted              = DateTime.now()
+
+  val disclosureSummaryList: CYASummaryList = viewmodels.cya.CYASummaryList(
+    None,
+    SummaryList(
+      classes = "govuk-!-margin-bottom-9",
+      rows = Seq(
+        SummaryListRow(
+          key = Key(
+            Text(SummaryForPrintMessages.referenceNumber),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(Text(caseId)),
+          actions = None
+        ),
+        SummaryListRow(
+          key = Key(
+            Text(SummaryForPrintMessages.dateSubmitted),
+            classes = "govuk-!-width-one-third"
+          ),
+          value = Value(HtmlContent(DateTimeFormat.forPattern("d MMMM yyyy").print(dateSubmitted))),
+          actions = None
+        )
+      )
+    )
+  )
 
   val importerDetailsAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
     Some(CYAMessages.aboutImporterDetails),

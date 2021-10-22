@@ -42,13 +42,10 @@ trait CYASummaryListHelper
   def buildSummaryListForPrint(caseId: String, date: DateTime)(implicit
     messages: Messages,
     request: DataRequest[_]
-  ): Seq[CYASummaryList] =
-    Seq(buildDisclosureSummaryList(caseId, date)) ++
-      buildImporterDetailsSummaryList ++
-      buildEntryDetailsSummaryList ++
-      buildUnderpaymentDetailsSummaryList ++
-      buildYourDetailsSummaryList ++
-      buildPaymentDetailsSummaryList ++
-      buildDefermentDutySummaryList ++
-      buildDefermentImportVatSummaryList
+  ): Seq[CYASummaryList] = {
+    val existing = buildFullSummaryList().map { list =>
+      list.copy(summaryList = list.summaryList.copy(rows = list.summaryList.rows.map(row => row.copy(actions = None))))
+    }
+    buildDisclosureSummaryList(caseId, date) +: existing
+  }
 }

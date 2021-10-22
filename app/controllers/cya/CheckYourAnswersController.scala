@@ -93,35 +93,14 @@ class CheckYourAnswersController @Inject() (
         }
 
         val submittedDate = DateTime.now()
-
-        val summaryListForPrint = buildSummaryListForPrint(value.id, submittedDate).map { list =>
-          list.copy(summaryList =
-            list.summaryList.copy(rows = list.summaryList.rows.map(row => row.copy(actions = None)))
-          )
-        }
+        val summaryList   = buildSummaryListForPrint(value.id, submittedDate)
 
         confirmationData match {
-          case Some(confirmationData) =>
+          case Some(data) =>
             if (request.isRepFlow) {
-              Ok(
-                repConfirmationView(
-                  value.id,
-                  request.isPayByDeferment,
-                  request.isOneEntry,
-                  confirmationData,
-                  summaryListForPrint
-                )
-              )
+              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             } else {
-              Ok(
-                importerConfirmationView(
-                  value.id,
-                  request.isPayByDeferment,
-                  request.isOneEntry,
-                  confirmationData,
-                  summaryListForPrint
-                )
-              )
+              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             }
           case _ => errorHandler.showInternalServerError
         }
