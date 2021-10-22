@@ -13,11 +13,11 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
         display: block;
     }
 
-    .print-hidden {
-        display: none;
-    }
-
     .govuk-header {
         margin-bottom: 32px;
+    }
+
+    .hmrc-header__service-name {
+        color: black !important;
     }
 }
