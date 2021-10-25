@@ -64,7 +64,7 @@ class DisclosureNotFoundViewSpec extends ViewBaseSpec with BaseMessages {
 
       s"have the correct mail link" in {
         elementAttributes("#main-content li:nth-of-type(2) a").get("href") mustBe
-          Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+          Some("mailto:npcc@hmrc.gov.uk")
       }
     }
   }
