@@ -65,7 +65,7 @@ class CancelCaseDisclosureNotFoundViewSpec extends ViewBaseSpec {
 
       s"have the correct mail link" in {
         elementAttributes("#main-content li:nth-of-type(2) a").get("href") mustBe
-          Some("mailto:npcc@hmrc.gov.uk")
+          Some(s"mailto:${appConfig.c18EmailAddress}")
       }
     }
   }

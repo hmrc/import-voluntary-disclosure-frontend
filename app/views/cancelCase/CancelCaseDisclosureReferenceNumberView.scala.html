@@ -19,7 +19,8 @@
         errorSummary: components.errorSummary,
         inputText: components.inputText,
         button: components.button,
-        govukDetails: GovukDetails
+        govukDetails: GovukDetails,
+        appConfig: AppConfig
 )
 
 @(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
@@ -47,7 +48,7 @@
                 summary = HtmlContent(messages("cancelCase.disclosureReference.detailsHeader")),
                 content = HtmlContent(
                     messages("cancelCase.disclosureReference.details_p1") +
-                    """<a class="govuk-link" href="mailto:npcc@hmrc.gov.uk">npcc@hmrc.gov.uk</a>""" +
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>.toString() +
                     messages("cancelCase.disclosureReference.details_p2")
                 )
             )

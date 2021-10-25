@@ -88,5 +88,6 @@ class MockAppConfig(
 
   override val vatReturnAdjustmentsUrl: String = "url"
   override val pvaHandoffUrl: String = "url"
+  override val c18EmailAddress: String = "npcc@hmrc.gov.uk"
 
 }

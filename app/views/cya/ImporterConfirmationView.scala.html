@@ -73,10 +73,10 @@
 
         @p {
             @Html(messages("confirmation.whatYouShouldDoNext.contactInfo"))
-            <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+            <a class="govuk-link" href=@{s"mailto:${appConfig.c18EmailAddress}"}>@appConfig.c18EmailAddress</a>.
         }
 
-        @p{
+        @p {
             <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
             id="discloseAnotherUnderpayment" class="govuk-link">
             @{messages("confirmation.whatYouShouldDoNext.link")}

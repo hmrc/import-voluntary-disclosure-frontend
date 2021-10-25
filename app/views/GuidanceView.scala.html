@@ -57,7 +57,7 @@
             Html(
                     <span>
                     If you need to pay duty or taxes on goods that were not declared to customs, you cannot use this service. You should email
-                    <a class="govuk-link" href="mailto:npcc@hmrc.gov.uk">npcc@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     for advice.
                     </span>.toString()
             )
@@ -101,7 +101,7 @@
             Html(
                     <span>
                     If you are offsetting a Customs Duty (A00) overpayment against an Additional Duty (A20) underpayment (or the other way round), email the C18 team at
-                    <a class="govuk-link" href="mailto:npcc@hmrc.gov.uk">npcc@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     </span>.toString()
             )
         )
@@ -182,7 +182,7 @@
             Html(
                     <span>
                     If you have any questions or have not received the demand note within 14 days then email
-                    <a class="govuk-link" href="mailto:npcc@hmrc.gov.uk">npcc@hmrc.gov.uk</a>.
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>.
                     </span>.toString()
             )
         )

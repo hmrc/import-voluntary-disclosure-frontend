@@ -86,7 +86,7 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the correct email link" in {
           elementAttributes("#main-content > div > div > p:nth-child(6) > a")
-            .get("href") mustBe Some("mailto:npcc@hmrc.gov.uk")
+            .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
         }
       }
 
