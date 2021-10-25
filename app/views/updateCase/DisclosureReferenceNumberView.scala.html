@@ -48,7 +48,7 @@
                     summary = HtmlContent(messages("disclosureReference.detailsHeader")),
                     content = HtmlContent(
                         messages("disclosureReference.details_p1") +
-                        <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>npcc@hmrc.gov.uk</a>.toString() +
+                        <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>.toString() +
                         messages("disclosureReference.details_p2")
                     )
                 )

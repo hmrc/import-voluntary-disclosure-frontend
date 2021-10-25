@@ -42,7 +42,7 @@
             Html(
                     <span>
                     {messages("cancelCase.disclosureNotFound.li2.part1")}
-                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>npcc@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     {messages("cancelCase.disclosureNotFound.li2.part2")}
                     </span>.toString()
             )
