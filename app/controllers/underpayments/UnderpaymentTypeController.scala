@@ -20,7 +20,7 @@ import controllers.actions._
 import forms.underpayments.UnderpaymentTypeFormProvider
 import models.UserAnswers
 import models.requests.DataRequest
-import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage, UnderpaymentTypePage}
+import pages.underpayments._
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
