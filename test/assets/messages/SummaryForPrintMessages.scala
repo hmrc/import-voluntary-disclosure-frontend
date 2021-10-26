@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-package viewmodels.cya
+package messages
 
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+object SummaryForPrintMessages extends BaseMessages {
 
-case class CYASummaryList(heading: Option[String], summaryList: SummaryList)
+  val header          = "Disclose an underpayment of Customs Duty or import VAT"
+  val yourDisclosure  = "Your disclosure"
+  val referenceNumber = "Disclosure reference number"
+  val dateSubmitted   = "Date submitted"
+}

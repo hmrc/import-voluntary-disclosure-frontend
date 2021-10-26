@@ -143,7 +143,7 @@ object CheckYourAnswersPaymentData {
   )
 
   def paymentDetailsAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.paymentDetails,
+    Some(CYAMessages.paymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
@@ -402,7 +402,7 @@ object CheckYourAnswersPaymentData {
   )
 
   def defermentDutyAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.defermentInfoDuty,
+    Some(CYAMessages.defermentInfoDuty),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
@@ -473,7 +473,7 @@ object CheckYourAnswersPaymentData {
   )
 
   def defermentVATAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.defermentInfoVAT,
+    Some(CYAMessages.defermentInfoVAT),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows

@@ -46,7 +46,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.defermentInfoDuty")),
+          Some(messages(messages("cya.defermentInfoDuty"))),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

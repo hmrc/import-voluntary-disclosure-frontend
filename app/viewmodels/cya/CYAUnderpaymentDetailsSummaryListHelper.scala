@@ -57,7 +57,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.underpaymentDetails")),
+          Some(messages(messages("cya.underpaymentDetails"))),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

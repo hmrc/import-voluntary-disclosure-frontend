@@ -49,7 +49,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.defermentInfoImportVAT")),
+          Some(messages(messages("cya.defermentInfoImportVAT"))),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows

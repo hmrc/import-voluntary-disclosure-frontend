@@ -33,6 +33,8 @@ import views.html.cya._
 import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 @Singleton
 class CheckYourAnswersController @Inject() (
@@ -57,19 +59,7 @@ class CheckYourAnswersController @Inject() (
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentCheckModePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _              <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Ok(
-        view(
-          buildImporterDetailsSummaryList ++
-            buildEntryDetailsSummaryList ++
-            buildUnderpaymentDetailsSummaryList ++
-            buildYourDetailsSummaryList ++
-            buildPaymentDetailsSummaryList ++
-            buildDefermentDutySummaryList ++
-            buildDefermentImportVatSummaryList
-        )
-      )
-    }
+    } yield Ok(view(buildFullSummaryList()))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -103,12 +93,15 @@ class CheckYourAnswersController @Inject() (
           }
         }
 
+        val submittedDate = DateTime.now(DateTimeZone.forID("Europe/London"))
+        val summaryList   = buildSummaryListForPrint(value.id, submittedDate)
+
         confirmationData match {
-          case Some(confirmationData) =>
+          case Some(data) =>
             if (request.isRepFlow) {
-              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             } else {
-              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             }
           case _ => errorHandler.showInternalServerError
         }

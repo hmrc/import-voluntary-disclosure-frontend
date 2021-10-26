@@ -46,7 +46,7 @@ trait CYAPaymentDetailsSummaryListHelper {
     if (rows.nonEmpty) {
       Seq(
         cya.CYASummaryList(
-          messages(messages("cya.paymentInformation")),
+          Some(messages(messages("cya.paymentInformation"))),
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows
