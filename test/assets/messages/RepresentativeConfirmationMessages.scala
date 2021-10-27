@@ -42,7 +42,7 @@ object RepresentativeConfirmationMessages extends BaseMessages {
     "If we find that the amount owed differs from what you have told us we will contact you before sending the demand note."
   val whatYouShouldDoNext = "What you should do next"
   val contactInfo =
-    "If you have not received the demand note or we have not contacted you within 14 days then email customsaccountingrepayments@hmrc.gov.uk."
+    "If you have not received the demand note or we have not contacted you within 14 days then email npcc@hmrc.gov.uk."
   val discloseAnotherUnderpayment = "Start a new, add to, or cancel a disclosure"
   val printSave                   = "Print or save a summary of your disclosure"
   val printSaveRestOfMessage      = "as we will not send you an email confirmation."

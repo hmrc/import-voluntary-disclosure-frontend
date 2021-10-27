@@ -17,7 +17,8 @@
 @this(layout: templates.Layout,
         h1: components.h1,
         p: components.p,
-        bullets: components.bullets
+        bullets: components.bullets,
+        appConfig: AppConfig
 )
 
 @(caseId: String)(implicit request: Request[_], messages: Messages)
@@ -41,7 +42,7 @@
             Html(
                     <span>
                     {messages("updateCase.disclosureNotFound.li2.part1")}
-                    <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     {messages("updateCase.disclosureNotFound.li2.part2")}
                     </span>.toString()
             )

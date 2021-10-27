@@ -61,7 +61,7 @@ class IndividualHandoffViewSpec extends ViewBaseSpec {
 
     s"have the correct value for p2" in {
       elementText("#main-content > div > div > p:nth-child(3)") mustBe
-        p2Part1 + " " + "customsaccountingrepayments@hmrc.gov.uk" + " " + p2Part2
+        p2Part1 + " " + "npcc@hmrc.gov.uk" + " " + p2Part2
     }
   }
 
