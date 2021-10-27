@@ -118,7 +118,7 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   lazy val pvaHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
 
-  val c18EmailAddress: String = servicesConfig.getString("c18EmailAddress")
+  val c18EmailAddress: String = servicesConfig.getString("emails.c18Support")
 
 }
 
