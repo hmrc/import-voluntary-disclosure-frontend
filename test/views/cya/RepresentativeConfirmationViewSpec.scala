@@ -69,13 +69,13 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(3)"
+            "#main-content > div > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3Deferment
         }
       }
@@ -87,19 +87,19 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(3)"
+            "#main-content > div > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${RepresentativeConfirmationMessages.p4OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(5)"
+            "#main-content > div > div > div > p:nth-child(5)"
           ) mustBe RepresentativeConfirmationMessages.p4OtherPayment
         }
       }
@@ -120,17 +120,17 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the paragraph message of '${RepresentativeConfirmationMessages.contactInfo}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(8)"
+            "#main-content > div > div > div > p:nth-child(8)"
           ) mustBe RepresentativeConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
+          elementAttributes("#main-content > div > div > div > p:nth-child(8) > a")
             .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
         }
 
         s"have the correct noscript paragraph" in {
-          elementText("#main-content > div > div > noscript") mustBe
+          elementText("#main-content > div > div > div > noscript") mustBe
             RepresentativeConfirmationMessages.printSave + " " + RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 

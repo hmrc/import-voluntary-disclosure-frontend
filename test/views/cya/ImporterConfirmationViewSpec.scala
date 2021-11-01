@@ -64,11 +64,11 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2Deferment}'" in {
-          elementText("#main-content > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2Deferment
+          elementText("#main-content > div > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3Deferment}'" in {
-          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3Deferment
+          elementText("#main-content > div > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3Deferment
         }
       }
 
@@ -78,15 +78,15 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2OtherPayment
+          elementText("#main-content > div > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3OtherPayment
+          elementText("#main-content > div > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${ImporterConfirmationMessages.p4OtherPayment}'" in {
-          elementText("#main-content > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p4OtherPayment
+          elementText("#main-content > div > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p4OtherPayment
         }
       }
 
@@ -105,16 +105,16 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the paragraph of '${ImporterConfirmationMessages.contactInfo}'" in {
-          elementText("#main-content > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.contactInfo
+          elementText("#main-content > div > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
+          elementAttributes("#main-content > div > div > div > p:nth-child(8) > a")
             .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
         }
 
         s"have the noscript paragraph" in {
-          elementText("#main-content > div > div > noscript") mustBe
+          elementText("#main-content > div > div > div > noscript") mustBe
             ImporterConfirmationMessages.printSave + " " + ImporterConfirmationMessages.printSaveRestOfMessage
         }
 
