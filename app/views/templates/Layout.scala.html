@@ -38,7 +38,7 @@
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
-        containerClasses: String = "",
+        headerClasses: String = "",
         enableTimeoutDialog: Boolean = true,
         isAuthorised: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
@@ -60,35 +60,31 @@
             } else {
                 Some(controllers.routes.SignOutController.signOutUnidentified().url)
             },
-            classes = containerClasses
+            classes = headerClasses
         )
     )
 }
 
 @beforeContentBlock = {
-    <div class=@containerClasses>
-        @govukBetaBanner()
-        @if(appConfig.welshToggleEnabled) {@languageSelect()}
-        @if(showBackLink) {
-            @backLink(customBackLinkUrl)
-        }
-    </div>
+    @govukBetaBanner()
+    @if(appConfig.welshToggleEnabled) {@languageSelect()}
+    @if(showBackLink) {
+        @backLink(customBackLinkUrl)
+    }
 }
 
 @content = {
     @contentBlock
 
-    <div class=@containerClasses>
-        <div class="govuk-!-margin-top-6">
-            @hmrcReportTechnicalIssueHelper()
-        </div>
+    <div class="govuk-!-margin-top-6 govuk-!-display-none-print">
+        @hmrcReportTechnicalIssueHelper()
     </div>
 }
 
 @footer = {
     @govukFooter(Footer(
         meta = Some(Meta(items = Some(footerLinks.links()))),
-        classes = containerClasses
+        classes = "govuk-!-display-none-print"
     ))
 }
 

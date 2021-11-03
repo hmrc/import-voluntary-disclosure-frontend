@@ -64,7 +64,7 @@ class BackLinkViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct GDS CSS class" in {
-      elementAttributes("a") must contain("class" -> "govuk-back-link")
+      elementAttributes("a") must contain("class" -> "govuk-back-link govuk-!-display-none-print")
     }
   }
 }
