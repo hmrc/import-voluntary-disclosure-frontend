@@ -46,7 +46,7 @@ class UnauthorisedPrivateBetaAccessViewSpec extends ViewBaseSpec with BaseMessag
     s"have the correct second paragraph of text" in {
       elementText(
         "#main-content p:nth-of-type(2)"
-      ) mustBe s"${UnauthorisedPrivateBetaAccessMessages.para2_1}${UnauthorisedPrivateBetaAccessMessages.para2_2}."
+      ) mustBe s"${UnauthorisedPrivateBetaAccessMessages.para2_1}${UnauthorisedPrivateBetaAccessMessages.para2_2}"
     }
 
     s"have the correct link in the second paragraph of text" in {
