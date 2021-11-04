@@ -29,7 +29,8 @@
         s"""${messages("feedback.before")} """ +
         <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
         s""" ${messages("feedback.after")}"""
-    )
+    ),
+    classes = "govuk-!-display-none-print"
 ))
 
 @{

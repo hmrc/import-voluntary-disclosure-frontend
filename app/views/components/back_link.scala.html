@@ -20,7 +20,12 @@
 
 @(url: Option[Call] = None)(implicit messages: Messages)
 
-@govukBackLink(BackLink(href = url.map(_.url).getOrElse("#"), content = Text(messages("common.back")), attributes = Map("id" -> "back-link")))
+@govukBackLink(BackLink(
+  href = url.map(_.url).getOrElse("#"),
+  content = Text(messages("common.back")),
+  attributes = Map("id" -> "back-link"),
+  classes = "govuk-!-display-none-print"
+))
 
 @{
  //$COVERAGE-OFF$

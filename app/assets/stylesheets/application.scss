@@ -20,4 +20,8 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
     .hmrc-header__service-name {
         color: black !important;
     }
+
+    .govuk-grid-column-two-thirds {
+        width: 100%;
+    }
 }

@@ -32,9 +32,8 @@
     answers: Seq[CYASummaryList]
 )(implicit request: Request[_], messages: Messages)
 
-<div class="govuk-!-display-none-print">
-    @layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
-
+@layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false, headerClasses = "govuk-!-display-none-print") {
+    <div class="govuk-!-display-none-print">
         <div class="govuk-panel govuk-panel--confirmation">
             <h1 class="govuk-panel__title">
                 @messages("confirmation.heading")
@@ -89,10 +88,10 @@
                 @Html(messages("confirmation.helpImproveServiceLinkTime"))
             }
         </div>
-    }
-</div>
+    </div>
 
-@summaryForPrint(answers)
+    @summaryForPrint(answers)
+}
 
 @{
     //$COVERAGE-OFF$

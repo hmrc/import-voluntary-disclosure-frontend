@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import uk.gov.hmrc.govukfrontend.views.html.components.{Footer, Meta}
 @import views.helpers.FooterLinks
 @import views.html.components.{languageSelector, phaseBanner}
 
@@ -26,6 +27,7 @@
         backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
+        govukFooter: GovukFooter,
         govukBetaBanner : phaseBanner,
         languageSelect: languageSelector
 )
@@ -36,6 +38,7 @@
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
+        headerClasses: String = "",
         enableTimeoutDialog: Boolean = true,
         isAuthorised: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
@@ -56,7 +59,8 @@
                 Some(controllers.routes.SignOutController.signOut().url)
             } else {
                 Some(controllers.routes.SignOutController.signOutUnidentified().url)
-            }
+            },
+            classes = headerClasses
         )
     )
 }
@@ -70,12 +74,18 @@
 }
 
 @content = {
-
     @contentBlock
 
-  <div class="govuk-!-margin-top-6">
-    @hmrcReportTechnicalIssueHelper()
-  </div>
+    <div class="govuk-!-margin-top-6 govuk-!-display-none-print">
+        @hmrcReportTechnicalIssueHelper()
+    </div>
+}
+
+@footer = {
+    @govukFooter(Footer(
+        meta = Some(Meta(items = Some(footerLinks.links()))),
+        classes = "govuk-!-display-none-print"
+    ))
 }
 
 @defining({
@@ -89,7 +99,7 @@
         headerBlock = Some(header),
         scriptsBlock = Some(scripts),
         beforeContentBlock = Some(beforeContentBlock),
-        footerItems = footerLinks.links()
+        footerBlock = Some(footer)
     )(content)
 }
 @{
