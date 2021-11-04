@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.ImporterConfirmationMessages
+import messages.cya.ImporterConfirmationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -34,7 +34,10 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
     "no errors exist" should {
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(
+          fakeRequest,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterConfirmationMessages.pageTitle)
@@ -47,7 +50,10 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
 
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(
+          fakeRequest,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${ImporterConfirmationMessages.heading}'" in {
         elementText("h1") mustBe ImporterConfirmationMessages.heading
@@ -64,29 +70,42 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2Deferment}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2Deferment
+          elementText(
+            "#main-content > div > div > div > p:nth-child(3)"
+          ) mustBe ImporterConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3Deferment}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3Deferment
+          elementText(
+            "#main-content > div > div > div > p:nth-child(4)"
+          ) mustBe ImporterConfirmationMessages.p3Deferment
         }
       }
 
       "The what happens next section - Other payment selected" should {
         lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data, Seq.empty)(fakeRequest, messages)
+          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data, Seq.empty)(
+            fakeRequest,
+            messages
+          )
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${ImporterConfirmationMessages.p2OtherPayment}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(3)") mustBe ImporterConfirmationMessages.p2OtherPayment
+          elementText(
+            "#main-content > div > div > div > p:nth-child(3)"
+          ) mustBe ImporterConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${ImporterConfirmationMessages.p3OtherPayment}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(4)") mustBe ImporterConfirmationMessages.p3OtherPayment
+          elementText(
+            "#main-content > div > div > div > p:nth-child(4)"
+          ) mustBe ImporterConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${ImporterConfirmationMessages.p4OtherPayment}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(5)") mustBe ImporterConfirmationMessages.p4OtherPayment
+          elementText(
+            "#main-content > div > div > div > p:nth-child(5)"
+          ) mustBe ImporterConfirmationMessages.p4OtherPayment
         }
       }
 
@@ -105,7 +124,9 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the paragraph of '${ImporterConfirmationMessages.contactInfo}'" in {
-          elementText("#main-content > div > div > div > p:nth-child(8)") mustBe ImporterConfirmationMessages.contactInfo
+          elementText(
+            "#main-content > div > div > div > p:nth-child(8)"
+          ) mustBe ImporterConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {

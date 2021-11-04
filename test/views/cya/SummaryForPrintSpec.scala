@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.SummaryForPrintMessages
+import messages.cya.SummaryForPrintMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

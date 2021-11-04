@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.CYAMessages
+import messages.cya.CYAMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
