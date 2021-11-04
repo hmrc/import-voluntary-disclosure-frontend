@@ -932,7 +932,7 @@ cancellationReason.error.noEmoji = Why you want this disclosure cancelled must n
 
 # Any Other Supporting Cancellation Documentation
 anyOtherSupportingCancellationDocs.pageTitle = Do you have any documentation to support cancelling this disclosure?
-anyOtherSupportingCancellationDocs.error.required = Do you have any documentation to support cancelling this disclosure?
+anyOtherSupportingCancellationDocs.error.required = Select yes if you have any documentation to support cancelling this disclosure
 
 # Cancel Case - Check Your Answers page
 cancelCase.cya.pageTitle = Check your answers before sending your cancellation request
