@@ -18,7 +18,7 @@ package views.cancelCase
 
 import base.ViewBaseSpec
 import messages.BaseMessages
-import messages.errors.CancelCaseDisclosureClosedMessages
+import messages.cancelCase.CancelCaseDisclosureClosedMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
