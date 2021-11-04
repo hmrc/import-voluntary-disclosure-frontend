@@ -235,7 +235,6 @@ trait SubmissionServiceTestJson {
       |   "amendedItems": []
       |}""".stripMargin
 
-
   val supportingDocumentationJson =
     """{
       |   "supportingDocumentTypes":[
@@ -473,6 +472,5 @@ trait SubmissionServiceTestJson {
       |      }
       |   }
       |}""".stripMargin
-
 
 }

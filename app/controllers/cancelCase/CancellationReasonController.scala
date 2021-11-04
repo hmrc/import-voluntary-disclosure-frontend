@@ -16,10 +16,10 @@
 
 package controllers.cancelCase
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.cancelCase.CancellationReasonFormProvider
 import models.requests.DataRequest
-import pages.UpdateAdditionalInformationPage
+import pages.updateCase.UpdateAdditionalInformationPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -30,18 +30,18 @@ import views.html.cancelCase.CancellationReasonView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class CancellationReasonController @Inject()(identify: IdentifierAction,
-                                             getData: DataRetrievalAction,
-                                             requireData: DataRequiredAction,
-                                             sessionRepository: SessionRepository,
-                                             mcc: MessagesControllerComponents,
-                                             formProvider: CancellationReasonFormProvider,
-                                             view: CancellationReasonView,
-                                             implicit val ec: ExecutionContext
-                                            )
-  extends FrontendController(mcc) with I18nSupport {
+class CancellationReasonController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: CancellationReasonFormProvider,
+  view: CancellationReasonView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UpdateAdditionalInformationPage).fold(formProvider()) {
@@ -56,10 +56,13 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
       additionalInfo => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
-          // TODO: point at the More Documentation page
-          Redirect(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+          if (request.checkMode) {
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
+          } else {
+            Redirect(controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad())
+          }
         }
       }
     )
@@ -67,8 +70,7 @@ class CancellationReasonController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
-      // TODO: point at the Cancellation CYA page
-      Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+      Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
     } else {
       Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }

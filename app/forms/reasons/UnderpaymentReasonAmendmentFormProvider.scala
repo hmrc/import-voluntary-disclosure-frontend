@@ -32,53 +32,59 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         foreignCurrencyFormMapping
       case BoxNumber.Box33 => textFormMapping(regex = """^([0-9]{10})($|[0-9a-zA-Z]{4}$)""")
       case BoxNumber.Box34 => textFormMapping(regex = """^[a-zA-Z]{2}$""")
-      case BoxNumber.Box35 | BoxNumber.Box38 => decimalFormMapping(
-        isCurrency = false,
-        requiredKey = "weight.missing",
-        nonNumericKey = "weight.nonNumeric",
-        invalidDecimalPlacesKey = "weight.invalidDecimals",
-        outOfRangeKey = "weight.outOfRange",
-        numDecimalPlaces = 3,
-        rangeMin = Some(BigDecimal(0)),
-        rangeMax = Some(BigDecimal(9999999.999))
-      )
+      case BoxNumber.Box35 | BoxNumber.Box38 =>
+        decimalFormMapping(
+          isCurrency = false,
+          requiredKey = "weight.missing",
+          nonNumericKey = "weight.nonNumeric",
+          invalidDecimalPlacesKey = "weight.invalidDecimals",
+          outOfRangeKey = "weight.outOfRange",
+          numDecimalPlaces = 3,
+          rangeMin = Some(BigDecimal(0)),
+          rangeMax = Some(BigDecimal(9999999.999))
+        )
       case BoxNumber.Box36 => textFormMapping(regex = """^[0-9]{3}$""")
       case BoxNumber.Box37 => textFormMapping(regex = """^[0-9]{4}[A-Za-z0-9][0-9]{2}$""")
       case BoxNumber.Box39 => textFormMapping(regex = """^[0-9]{6}$""")
-      case BoxNumber.Box41 => decimalFormMapping(
-        isCurrency = false,
-        requiredKey = "unit.missing",
-        nonNumericKey = "unit.nonNumeric",
-        invalidDecimalPlacesKey = "unit.invalidDecimals",
-        outOfRangeKey = "unit.outOfRange",
-        numDecimalPlaces = 3,
-        rangeMin = Some(BigDecimal(0)),
-        rangeMax = Some(BigDecimal(9999999.999))
-      )
-      case BoxNumber.Box42 => decimalFormMapping(
-        isCurrency = false,
-        requiredKey = "decimal.missing",
-        nonNumericKey = "decimal.nonNumeric",
-        invalidDecimalPlacesKey = "decimal.invalidDecimals",
-        outOfRangeKey = "decimal.outOfRange",
-        numDecimalPlaces = 2,
-        rangeMin = Some(BigDecimal(0)),
-        rangeMax = Some(BigDecimal(999999999999.99))
-      )
+      case BoxNumber.Box41 =>
+        decimalFormMapping(
+          isCurrency = false,
+          requiredKey = "unit.missing",
+          nonNumericKey = "unit.nonNumeric",
+          invalidDecimalPlacesKey = "unit.invalidDecimals",
+          outOfRangeKey = "unit.outOfRange",
+          numDecimalPlaces = 3,
+          rangeMin = Some(BigDecimal(0)),
+          rangeMax = Some(BigDecimal(9999999.999))
+        )
+      case BoxNumber.Box42 =>
+        decimalFormMapping(
+          isCurrency = false,
+          requiredKey = "decimal.missing",
+          nonNumericKey = "decimal.nonNumeric",
+          invalidDecimalPlacesKey = "decimal.invalidDecimals",
+          outOfRangeKey = "decimal.outOfRange",
+          numDecimalPlaces = 2,
+          rangeMin = Some(BigDecimal(0)),
+          rangeMax = Some(BigDecimal(999999999999.99))
+        )
       case BoxNumber.Box43 =>
         textFormMapping(regex = """^[1-7]{1}$""")
       case BoxNumber.Box45 =>
-        textFormMapping(regex = """^[A-M]{1}$|^[A-M]{1}[0-9]{1,2}$|^[A-M]{1}[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}$""")
-      case BoxNumber.Box46 => decimalFormMapping(
-        isCurrency = true,
-        requiredKey = "currency.missing",
-        nonNumericKey = "currency.nonNumeric",
-        invalidDecimalPlacesKey = "currency.invalidDecimals",
-        outOfRangeKey = "currency.outOfRange",
-        numDecimalPlaces = 2,
-        rangeMin = Some(BigDecimal(0)),
-        rangeMax = Some(BigDecimal(999999999999.99))
-      )
+        textFormMapping(regex =
+          """^[A-M]{1}$|^[A-M]{1}[0-9]{1,2}$|^[A-M]{1}[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}[.][0-9]{1}$|^[0-9]{1,2}$"""
+        )
+      case BoxNumber.Box46 =>
+        decimalFormMapping(
+          isCurrency = true,
+          requiredKey = "currency.missing",
+          nonNumericKey = "currency.nonNumeric",
+          invalidDecimalPlacesKey = "currency.invalidDecimals",
+          outOfRangeKey = "currency.outOfRange",
+          numDecimalPlaces = 2,
+          rangeMin = Some(BigDecimal(0)),
+          rangeMax = Some(BigDecimal(999999999999.99))
+        )
       case BoxNumber.OtherItem => otherReason()
     }
   }
@@ -86,12 +92,8 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
   private def foreignCurrencyFormMapping: Form[UnderpaymentReasonValue] = {
     Form(
       mapping(
-        "original" -> foreignCurrency(
-          "amendmentValue.error.original.missing",
-          "amendmentValue.error.original.format"),
-        "amended" -> foreignCurrency(
-          "amendmentValue.error.amended.missing",
-          "amendmentValue.error.amended.format")
+        "original" -> foreignCurrency("amendmentValue.error.original.missing", "amendmentValue.error.original.format"),
+        "amended"  -> foreignCurrency("amendmentValue.error.amended.missing", "amendmentValue.error.amended.format")
       )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
         .verifying(different("amendmentValue.error.amended.different"))
     )
@@ -112,15 +114,15 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
   }
 
   private def decimalFormMapping(
-                                  isCurrency: Boolean,
-                                  requiredKey: String,
-                                  nonNumericKey: String,
-                                  invalidDecimalPlacesKey: String,
-                                  outOfRangeKey: String,
-                                  numDecimalPlaces: Int,
-                                  rangeMin: Option[BigDecimal],
-                                  rangeMax: Option[BigDecimal]
-                                ): Form[UnderpaymentReasonValue] = {
+    isCurrency: Boolean,
+    requiredKey: String,
+    nonNumericKey: String,
+    invalidDecimalPlacesKey: String,
+    outOfRangeKey: String,
+    numDecimalPlaces: Int,
+    rangeMin: Option[BigDecimal],
+    rangeMax: Option[BigDecimal]
+  ): Form[UnderpaymentReasonValue] = {
     Form(
       mapping(
         "original" -> numeric(
@@ -128,40 +130,43 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
           numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.original." + requiredKey,
           nonNumericKey = "amendmentValue.error.original." + nonNumericKey,
-          invalidDecimalPlacesKey = "amendmentValue.error.original." + invalidDecimalPlacesKey)
+          invalidDecimalPlacesKey = "amendmentValue.error.original." + invalidDecimalPlacesKey
+        )
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.original." + outOfRangeKey)),
         "amended" -> numeric(
           isCurrency = isCurrency,
           numDecimalPlaces = numDecimalPlaces,
           requiredKey = "amendmentValue.error.amended." + requiredKey,
           nonNumericKey = "amendmentValue.error.amended." + nonNumericKey,
-          invalidDecimalPlacesKey = "amendmentValue.error.amended." + invalidDecimalPlacesKey)
+          invalidDecimalPlacesKey = "amendmentValue.error.amended." + invalidDecimalPlacesKey
+        )
           .verifying(minMaxRange(rangeMin, rangeMax, "amendmentValue.error.amended." + outOfRangeKey))
+      )((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))(value =>
+        Some((BigDecimal(value.original), BigDecimal(value.amended)))
       )
-      ((original, amended) => UnderpaymentReasonValue.apply(original.toString(), amended.toString()))
-      (value => Some((BigDecimal(value.original), BigDecimal(value.amended))))
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
 
   private[forms] def different(errorKey: String): Constraint[UnderpaymentReasonValue] =
-    Constraint {
-      input =>
-        if (input.original.toUpperCase != input.amended.toUpperCase) {
-          Valid
-        } else {
-          Invalid(errorKey)
-        }
+    Constraint { input =>
+      if (input.original.toUpperCase != input.amended.toUpperCase) {
+        Valid
+      } else {
+        Invalid(errorKey)
+      }
     }
 
-  private[forms] def minMaxRange(rangeMin: Option[BigDecimal] = None,
-                                 rangeMax: Option[BigDecimal] = None,
-                                 errorKey: String): Constraint[BigDecimal] = {
+  private[forms] def minMaxRange(
+    rangeMin: Option[BigDecimal] = None,
+    rangeMax: Option[BigDecimal] = None,
+    errorKey: String
+  ): Constraint[BigDecimal] = {
     (rangeMin, rangeMax) match {
       case (Some(min), Some(max)) => inRange(min, max, errorKey)
-      case (Some(min), None) => minimumValue(min, errorKey)
-      case (None, Some(max)) => maximumValue(max, errorKey)
-      case _ => Constraint(_ => Valid)
+      case (Some(min), None)      => minimumValue(min, errorKey)
+      case (None, Some(max))      => maximumValue(max, errorKey)
+      case _                      => Constraint(_ => Valid)
     }
   }
 

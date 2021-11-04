@@ -23,9 +23,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import javax.inject.Inject
 import scala.concurrent.Future
 
-class IndexController @Inject()(appConfig: AppConfig,
-                                mcc: MessagesControllerComponents)
-  extends FrontendController(mcc) {
+class IndexController @Inject() (appConfig: AppConfig, mcc: MessagesControllerComponents)
+    extends FrontendController(mcc) {
 
   implicit val config: AppConfig = appConfig
 

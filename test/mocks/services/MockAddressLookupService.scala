@@ -28,24 +28,21 @@ trait MockAddressLookupService extends MockFactory {
 
   val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
 
-  type RetrieveAddressResponse = Either[ErrorModel, AddressModel]
+  type RetrieveAddressResponse   = Either[ErrorModel, AddressModel]
   type InitialiseJourneyResponse = Either[ErrorModel, AddressLookupOnRampModel]
 
-  def setupMockRetrieveAddress(response: RetrieveAddressResponse): Unit = {
+  def setupMockRetrieveAddress(response: RetrieveAddressResponse): Unit =
     (mockAddressLookupService.retrieveAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
-  }
 
-  def setupMockInitialiseJourney(response: InitialiseJourneyResponse): Unit = {
+  def setupMockInitialiseJourney(response: InitialiseJourneyResponse): Unit =
     (mockAddressLookupService.initialiseJourney(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *)
       .returns(Future.successful(response))
-  }
 
-  def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit = {
+  def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit =
     (mockAddressLookupService.initialiseImporterJourney(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *)
       .returns(Future.successful(response))
-  }
 }

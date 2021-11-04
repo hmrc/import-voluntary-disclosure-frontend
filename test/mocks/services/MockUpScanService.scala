@@ -29,29 +29,37 @@ trait MockUpScanService extends MockFactory {
   val mockUpScanService: UpScanService = mock[UpScanService]
 
   object MockedUpScanService {
-    def initiateNewJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] = {
+    def initiateNewJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] =
       (mockUpScanService.initiateNewJourney()(_: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
         .returns(response)
-    }
 
-    def initiateBulkJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] = {
+    def initiateBulkJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] =
       (mockUpScanService.initiateBulkJourney()(_: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
         .returns(response)
-    }
 
-    def initiateAuthorityJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] = {
-      (mockUpScanService.initiateAuthorityJourney(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *, *, *)
+    def initiateAuthorityJourney(
+      response: Future[UpScanInitiateResponse]
+    ): CallHandler[Future[UpScanInitiateResponse]] =
+      (mockUpScanService.initiateAuthorityJourney(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .expects(*, *, *)
         .returns(response)
-    }
 
-    def initiateSupportingDocJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] = {
+    def initiateSupportingDocJourney(
+      response: Future[UpScanInitiateResponse]
+    ): CallHandler[Future[UpScanInitiateResponse]] =
       (mockUpScanService.initiateSupportingDocJourney()(_: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
         .returns(response)
-    }
+
+    def initiateCancelCaseJourney(
+      response: Future[UpScanInitiateResponse]
+    ): CallHandler[Future[UpScanInitiateResponse]] =
+      (mockUpScanService.initiateCancelCaseJourney()(_: ExecutionContext, _: HeaderCarrier))
+        .expects(*, *)
+        .returns(response)
+
   }
 
 }

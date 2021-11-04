@@ -31,16 +31,16 @@ object UserType extends Enumerable.Implicits[UserType] {
   case object Representative extends WithName("representative") with UserType
 
   val values: Seq[UserType] = Seq(
-    Importer, Representative
+    Importer,
+    Representative
   )
 
-  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map {
-    value =>
-      RadioItem(
-        value = Some(value.toString),
-        content = Text(messages(s"userType.${value.toString}")),
-        checked = form("value").value.contains(value.toString)
-      )
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] = values.map { value =>
+    RadioItem(
+      value = Some(value.toString),
+      content = Text(messages(s"userType.${value.toString}")),
+      checked = form("value").value.contains(value.toString)
+    )
   }
 
   implicit val enumerable: Enumerable[UserType] =

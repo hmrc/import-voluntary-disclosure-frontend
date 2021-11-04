@@ -30,16 +30,17 @@ import views.html.importDetails.OneCustomsProcedureCodeView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  sessionRepository: SessionRepository,
-                                                  mcc: MessagesControllerComponents,
-                                                  formProvider: OneCustomsProcedureCodeFormProvider,
-                                                  view: OneCustomsProcedureCodeView,
-                                                  implicit val ec: ExecutionContext
-                                                 )
-  extends FrontendController(mcc) with I18nSupport {
+class OneCustomsProcedureCodeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: OneCustomsProcedureCodeFormProvider,
+  view: OneCustomsProcedureCodeView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(OneCustomsProcedureCodePage).fold(formProvider()) {
@@ -56,18 +57,14 @@ class OneCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
         if (oneCPCExists) {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
-            _ <- sessionRepository.set(updatedAnswers)
-          }
-          yield {
-            Redirect(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad())
-          }
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad())
         } else {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(OneCustomsProcedureCodePage, oneCPCExists))
             updatedAnswers <- Future.fromTry(updatedAnswers.remove(EnterCustomsProcedureCodePage))
-            _ <- sessionRepository.set(updatedAnswers)
-          }
-          yield {
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield {
             if (request.checkMode) {
               Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             } else {

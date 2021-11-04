@@ -39,12 +39,20 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
-    val form: UnderpaymentTypeFormProvider = formProvider
+    val form: UnderpaymentTypeFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentTypeController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentTypeView, form, ec)
+    lazy val controller = new UnderpaymentTypeController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentTypeView,
+      form,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -126,7 +134,9 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
 
     "there are no existing underpayment types back button" should {
       "take you to the underpayments start page" in new Test {
-        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentStartController.onLoad()
+        controller.backLink(
+          userAnswers.get
+        ) mustBe controllers.underpayments.routes.UnderpaymentStartController.onLoad()
       }
     }
 
@@ -135,7 +145,9 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId").set(UnderpaymentDetailSummaryPage, allUnderpaymentDetailsSelected()).success.value
         )
-        controller.backLink(userAnswers.get) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+        controller.backLink(
+          userAnswers.get
+        ) mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
     }
 

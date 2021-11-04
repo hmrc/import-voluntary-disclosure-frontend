@@ -29,14 +29,16 @@ import views.html.serviceEntry.IndividualContinueWithCredentialsView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class IndividualContinueWithCredentialsController @Inject()(sessionRepository: SessionRepository,
-                                                            mcc: MessagesControllerComponents,
-                                                            view: IndividualContinueWithCredentialsView,
-                                                            formProvider: IndividualContinueWithCredentialsFormProvider,
-                                                            appConfig: AppConfig,
-                                                            val errorHandler: ErrorHandler,
-                                                            implicit val ec: ExecutionContext
-                                                           ) extends FrontendController(mcc) with I18nSupport {
+class IndividualContinueWithCredentialsController @Inject() (
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: IndividualContinueWithCredentialsView,
+  formProvider: IndividualContinueWithCredentialsFormProvider,
+  appConfig: AppConfig,
+  val errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad(): Action[AnyContent] = Action.async { implicit request =>
     getUserAnswers(getCredId(request)).map { userAnswers =>
@@ -52,34 +54,32 @@ class IndividualContinueWithCredentialsController @Inject()(sessionRepository: S
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value =>
         getUserAnswers(getCredId(request)).flatMap {
-          case userAnswers: UserAnswers => for {
-            updatedAnswers <- Future.fromTry(userAnswers.set(IndividualContinueWithCredentialsPage, value))
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield {
-            if (value) {
-              Redirect(appConfig.eccSubscribeUrl)
-            } else {
-              Redirect(controllers.routes.SignOutController.signOut())
+          case userAnswers: UserAnswers =>
+            for {
+              updatedAnswers <- Future.fromTry(userAnswers.set(IndividualContinueWithCredentialsPage, value))
+              _ <- if (value) sessionRepository.set(updatedAnswers) else sessionRepository.remove(getCredId(request))
+            } yield {
+              if (value) {
+                Redirect(appConfig.eccSubscribeUrl)
+              } else {
+                Redirect(appConfig.signOutUrl)
+              }
             }
-          }
           case _ => Future.successful(errorHandler.showInternalServerError)
         }
     )
   }
 
-  private[serviceEntry] def backLink(): Option[Call] = {
+  private[serviceEntry] def backLink(): Option[Call] =
     Some(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad())
-  }
 
-  def getCredId(request: Request[_]): String = {
+  def getCredId(request: Request[_]): String =
     request.session.apply("credId")
-  }
 
-  def getUserAnswers(credId: String): Future[UserAnswers] = {
+  def getUserAnswers(credId: String): Future[UserAnswers] =
     sessionRepository.get(credId).map {
       case Some(existingUserAnswers) => existingUserAnswers
-      case None => UserAnswers(credId)
+      case None                      => UserAnswers(credId)
     }
-  }
 
 }

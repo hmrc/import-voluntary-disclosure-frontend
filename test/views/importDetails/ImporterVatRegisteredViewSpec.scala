@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.ImporterVatRegisteredFormProvider
-import messages.{BaseMessages, ImporterVatRegisteredMessages}
+import messages.BaseMessages
+import messages.importDetails.ImporterVatRegisteredMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -36,7 +37,10 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+      lazy val view: Html = injectedView(
+        form,
+        Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterVatRegisteredMessages.title)
@@ -52,7 +56,10 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+      lazy val view: Html = injectedView(
+        form,
+        Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+      )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(errorPrefix + ImporterVatRegisteredMessages.title)
@@ -71,11 +78,14 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)))(fakeRequest, messages)
+    lazy val view: Html = injectedView(
+      form,
+      Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
+    )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterVatRegisteredMessages.h1}'" in {
-      elementText("h1") mustBe ImporterVatRegisteredMessages.h1
+    s"have the correct h1 of '${ImporterVatRegisteredMessages.title}'" in {
+      elementText("h1") mustBe ImporterVatRegisteredMessages.title
     }
 
     s"have the correct value for the first radio button of '$siteYes'" in {

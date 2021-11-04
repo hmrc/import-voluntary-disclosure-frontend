@@ -29,13 +29,13 @@ class ConfirmEoriDetailsErrorViewSpec extends ViewBaseSpec with BaseMessages {
   private lazy val injectedView: ConfirmEoriDetailsErrorView = app.injector.instanceOf[ConfirmEoriDetailsErrorView]
 
   "Rendering the ConfirmEoriDetailsErrorView page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(ConfirmEoriDetailsErrorMessages.title)
 
     s"have the correct page heading" in {
-      elementText("h1") mustBe ConfirmEoriDetailsErrorMessages.heading
+      elementText("h1") mustBe ConfirmEoriDetailsErrorMessages.title
     }
 
     s"have the correct instructions" in {

@@ -20,8 +20,8 @@ import messages.BaseMessages
 
 object UnauthorisedPrivateBetaAccessMessages extends BaseMessages {
 
-  val title = "Sorry, the service is unavailable"
-  val para1 = "We are working on updating this service."
+  val title   = "Sorry, the service is unavailable"
+  val para1   = "We are working on updating this service."
   val para2_1 = "In the meantime you can "
   val para2_2 = "tell us about an underpayment of customs duty or import VAT using the existing C2001 form"
 }

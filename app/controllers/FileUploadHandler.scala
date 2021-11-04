@@ -41,16 +41,16 @@ trait FileUploadHandler[T] {
 
   val asyncErrorToUpscanErrorMapping: FileStatusEnum => UpscanError = {
     case FileStatusEnum.FAILED_QUARANTINE => Quarantined
-    case FileStatusEnum.FAILED_REJECTED => Rejected
-    case _ => Unknown
+    case FileStatusEnum.FAILED_REJECTED   => Rejected
+    case _                                => Unknown
   }
 
-  def handleUpscanResponse(key: Option[String],
-                           error: Option[UpscanInitiateError],
-                           successRoute: Result,
-                           errorRoute: Result)
-                          (implicit request: DataRequest[AnyContent],
-                           ec: ExecutionContext): Future[Result] = (key, error) match {
+  def handleUpscanResponse(
+    key: Option[String],
+    error: Option[UpscanInitiateError],
+    successRoute: Result,
+    errorRoute: Result
+  )(implicit request: DataRequest[AnyContent], ec: ExecutionContext): Future[Result] = (key, error) match {
     case (Some(key), None) =>
       fileUploadRepository.updateRecord(FileUpload(key, Some(request.credId))).map { _ =>
         Thread.sleep(appConfig.upScanPollingDelayMilliSeconds)
@@ -63,22 +63,21 @@ trait FileUploadHandler[T] {
       throw new RuntimeException("No key returned for successful upload")
   }
 
-  def handleUpscanFileProcessing(key: String,
-                                 uploadCompleteRoute: Result,
-                                 uploadInProgressRoute: Result,
-                                 uploadFailedRoute: Result,
-                                 updateFilesList: FileUpload => Seq[T],
-                                 saveFilesList: Seq[T] => Try[UserAnswers])
-                                (implicit ec: ExecutionContext): Future[Result] = {
+  def handleUpscanFileProcessing(
+    key: String,
+    uploadCompleteRoute: Result,
+    uploadInProgressRoute: Result,
+    uploadFailedRoute: Result,
+    updateFilesList: FileUpload => Seq[T],
+    saveFilesList: Seq[T] => Try[UserAnswers]
+  )(implicit ec: ExecutionContext): Future[Result] = {
     fileUploadRepository.getRecord(key).flatMap {
-      case Some(upload@FileUpload(_, _, _, Some(FileStatusEnum.READY), _, _, _)) =>
+      case Some(upload @ FileUpload(_, _, _, Some(FileStatusEnum.READY), _, _, _)) =>
         val updatedListFiles = updateFilesList(upload)
         for {
           updatedAnswers <- Future.fromTry(saveFilesList(updatedListFiles))
-          _ <- sessionRepository.set(updatedAnswers)
-        } yield {
-          uploadCompleteRoute
-        }
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield uploadCompleteRoute
       case Some(FileUpload(_, _, _, Some(errorStatus), _, _, _)) =>
         val uploadError = asyncErrorToUpscanErrorMapping(errorStatus)
         Future.successful(uploadFailedRoute.flashing("uploadError" -> uploadError.toString))
@@ -91,8 +90,8 @@ trait FileUploadHandler[T] {
 
   def extractFileDetails(doc: FileUpload, key: String): FileUploadInfo = {
     for {
-      filename <- doc.fileName
-      downloadUrl <- doc.downloadUrl
+      filename      <- doc.fileName
+      downloadUrl   <- doc.downloadUrl
       uploadDetails <- doc.uploadDetails
     } yield {
       FileUploadInfo(
@@ -106,17 +105,22 @@ trait FileUploadHandler[T] {
     }
   }.getOrElse(throw new RuntimeException(s"Unable to retrieve file upload details with the ID $key"))
 
-  def buildUpscanError(errorCode: Option[String],
-                       errorMessage: Option[String],
-                       errorResource: Option[String],
-                       errorRequestId: Option[String]): Option[UpscanInitiateError] =
+  def buildUpscanError(
+    errorCode: Option[String],
+    errorMessage: Option[String],
+    errorResource: Option[String],
+    errorRequestId: Option[String]
+  ): Option[UpscanInitiateError] =
     errorCode match {
       case Some(error) =>
-        Some(UpscanInitiateError(
-          error,
-          errorMessage.getOrElse("Not supplied"),
-          errorResource.getOrElse("Not supplied"),
-          errorRequestId.getOrElse("Not supplied")))
+        Some(
+          UpscanInitiateError(
+            error,
+            errorMessage.getOrElse("Not supplied"),
+            errorResource.getOrElse("Not supplied"),
+            errorRequestId.getOrElse("Not supplied")
+          )
+        )
       case _ => None
     }
 

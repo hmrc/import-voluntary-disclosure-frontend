@@ -24,8 +24,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, InternalServerException}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class UpScanService @Inject()(upScanConnector: UpScanConnector,
-                              appConfig: AppConfig) {
+class UpScanService @Inject() (upScanConnector: UpScanConnector, appConfig: AppConfig) {
 
   lazy val buildInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
     appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
@@ -43,13 +42,14 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
     appConfig.upScanMaxFileSize
   )
 
-  private[services] def buildAuthorityInitiateRequest(dutyType: String, dan: String): UpScanInitiateRequest = UpScanInitiateRequest(
-    appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
-    appConfig.upScanAuthoritySuccessRedirectForUser + s"/$dutyType/$dan/upscan-response",
-    appConfig.upScanAuthorityErrorRedirectForUser + s"/$dutyType/$dan/upscan-response",
-    appConfig.upScanMinFileSize,
-    appConfig.upScanMaxFileSize
-  )
+  private[services] def buildAuthorityInitiateRequest(dutyType: String): UpScanInitiateRequest =
+    UpScanInitiateRequest(
+      appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
+      appConfig.upScanAuthoritySuccessRedirectForUser + s"/$dutyType/upscan-response",
+      appConfig.upScanAuthorityErrorRedirectForUser + s"/$dutyType/upscan-response",
+      appConfig.upScanMinFileSize,
+      appConfig.upScanMaxFileSize
+    )
 
   lazy val buildSupportingDocInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
     appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
@@ -59,31 +59,45 @@ class UpScanService @Inject()(upScanConnector: UpScanConnector,
     appConfig.upScanMaxFileSize
   )
 
-  def initiateNewJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
+  lazy val buildCancelCaseInitiateRequest: UpScanInitiateRequest = UpScanInitiateRequest(
+    appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload,
+    appConfig.upScanCancelCaseRedirectForUser,
+    appConfig.upScanCancelCaseDocErrorRedirectForUser,
+    appConfig.upScanMinFileSize,
+    appConfig.upScanMaxFileSize
+  )
+
+  def initiateNewJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] =
     upScanConnector.postToInitiate(buildInitiateRequest).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
-      case Left(error) => throw new InternalServerException(error.message)
+      case Left(error)                   => throw new InternalServerException(error.message)
     }
-  }
 
-  def initiateBulkJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
+  def initiateBulkJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] =
     upScanConnector.postToInitiate(buildBulkInitiateRequest).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
-      case Left(error) => throw new InternalServerException(error.message)
+      case Left(error)                   => throw new InternalServerException(error.message)
     }
-  }
 
-  def initiateAuthorityJourney(dutyType: String, dan: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
-    upScanConnector.postToInitiate(buildAuthorityInitiateRequest(dutyType, dan)).map {
+  def initiateAuthorityJourney(dutyType: String)(implicit
+    ec: ExecutionContext,
+    hc: HeaderCarrier
+  ): Future[UpScanInitiateResponse] =
+    upScanConnector.postToInitiate(buildAuthorityInitiateRequest(dutyType)).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
-      case Left(error) => throw new InternalServerException(error.message)
+      case Left(error)                   => throw new InternalServerException(error.message)
     }
-  }
 
-  def initiateSupportingDocJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] = {
+  def initiateSupportingDocJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] =
     upScanConnector.postToInitiate(buildSupportingDocInitiateRequest).map {
       case Right(upScanInitiateResponse) => upScanInitiateResponse
-      case Left(error) => throw new InternalServerException(error.message)
+      case Left(error)                   => throw new InternalServerException(error.message)
     }
-  }
+
+  def initiateCancelCaseJourney()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[UpScanInitiateResponse] =
+    upScanConnector.postToInitiate(buildCancelCaseInitiateRequest).map {
+      case Right(upScanInitiateResponse) => upScanInitiateResponse
+      case Left(error)                   => throw new InternalServerException(error.message)
+    }
+
 }

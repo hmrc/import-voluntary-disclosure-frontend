@@ -30,10 +30,13 @@ trait MockEoriDetailsService extends MockFactory {
 
   type RetrieveEoriDetailsResponse = Either[ErrorModel, EoriDetails]
 
-  def setupMockRetrieveAddress(response: RetrieveEoriDetailsResponse): Unit = {
-    (mockEoriDetailsService.retrieveEoriDetails(_: String)(_: OptionalDataRequest[_], _: HeaderCarrier, _: ExecutionContext))
+  def setupMockRetrieveAddress(response: RetrieveEoriDetailsResponse): Unit =
+    (mockEoriDetailsService.retrieveEoriDetails(_: String)(
+      _: OptionalDataRequest[_],
+      _: HeaderCarrier,
+      _: ExecutionContext
+    ))
       .expects(*, *, *, *)
       .returns(Future.successful(response))
-  }
 
 }

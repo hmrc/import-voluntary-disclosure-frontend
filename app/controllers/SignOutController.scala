@@ -17,28 +17,32 @@
 package controllers
 
 import config.AppConfig
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import javax.inject.Inject
+import controllers.actions._
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
+import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-
-class SignOutController @Inject()(identify: IdentifierAction,
-                                  getData: DataRetrievalAction,
-                                  mcc: MessagesControllerComponents,
-                                  requireData: DataRequiredAction,
-                                  sessionRepository: SessionRepository,
-                                  implicit val ec: ExecutionContext,
-                                  implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class SignOutController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  implicit val ec: ExecutionContext,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def signOut(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     sessionRepository.remove(request.credId).map(_ => Redirect(appConfig.surveyUrl))
   }
+
+  def signOutUnidentified(): Action[AnyContent] = Action {
+    Redirect(appConfig.surveyUrl)
+  }
+
 }
-
-

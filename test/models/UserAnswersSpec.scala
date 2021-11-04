@@ -19,6 +19,7 @@ package models
 import base.ModelSpecBase
 import org.scalatest.TryValues
 import pages._
+import pages.contactDetails.TraderAddressCorrectPage
 import pages.importDetails._
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.serviceEntry.KnownEoriDetailsPage
@@ -63,8 +64,8 @@ class UserAnswersSpec extends ModelSpecBase with TryValues with SubmissionServic
     "NOT preserve pages if they are not present in user answers" in {
 
       val pagesToPreserve: Seq[QuestionPage[_]] = Seq(UnderpaymentReasonsPage)
-      val answersWithoutExpectedAnswer = completeUserAnswers.remove(UnderpaymentReasonsPage).success.value
-      val emptyAnswers: UserAnswers = UserAnswers(completeUserAnswers.id)
+      val answersWithoutExpectedAnswer          = completeUserAnswers.remove(UnderpaymentReasonsPage).success.value
+      val emptyAnswers: UserAnswers             = UserAnswers(completeUserAnswers.id)
 
       answersWithoutExpectedAnswer.preserve(pagesToPreserve).data mustBe emptyAnswers.data
     }
@@ -73,7 +74,7 @@ class UserAnswersSpec extends ModelSpecBase with TryValues with SubmissionServic
   "Calling removeMany" should {
     "remove the pages from userAnswers" in {
       val pagesToRemove: Seq[QuestionPage[_]] = Seq(ImporterNamePage, ImporterEORIExistsPage)
-      val result = completeUserAnswers.removeMany(pagesToRemove)
+      val result                              = completeUserAnswers.removeMany(pagesToRemove)
       result.get(ImporterNamePage) mustBe None
       result.get(ImporterEORIExistsPage) mustBe None
     }

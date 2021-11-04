@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.UserTypeFormProvider
-import messages.{BaseMessages, UserTypeMessages}
+import messages.BaseMessages
+import messages.importDetails.UserTypeMessages
 import models.importDetails.UserType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,13 +30,14 @@ import views.html.importDetails.UserTypeView
 class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: UserTypeView = app.injector.instanceOf[UserTypeView]
-  val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
+  val formProvider: UserTypeFormProvider      = injector.instanceOf[UserTypeFormProvider]
 
   "Rendering the UserType page" when {
 
     "no errors exist" should {
       lazy val form: Form[UserType] = formProvider()
-      lazy val view: Html = injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UserTypeMessages.title)
@@ -51,7 +53,8 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[UserType] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
+      lazy val view: Html =
+        injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UserTypeMessages.errorPrefix + UserTypeMessages.title)
@@ -69,7 +72,8 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
     lazy val form: Form[UserType] = formProvider()
-    lazy val view: Html = injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
+    lazy val view: Html =
+      injectedView(form, controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad())(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${UserTypeMessages.h1}'" in {
@@ -85,7 +89,9 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "render a back link with the correct URL" in {
-      elementAttributes("#back-link") must contain("href" -> controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad().url)
+      elementAttributes("#back-link") must contain(
+        "href" -> controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad().url
+      )
     }
   }
 }

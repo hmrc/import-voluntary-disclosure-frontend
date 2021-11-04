@@ -53,13 +53,14 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository with MockSubmissionService {
 
-    private def setupConnectorMock(response: Either[ErrorModel, SubmissionResponse]) = {
+    private def setupConnectorMock(response: Either[ErrorModel, SubmissionResponse]) =
       setupMockCreateCase(response)
-    }
 
     private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
-    private lazy val importerConfirmationView: ImporterConfirmationView = app.injector.instanceOf[ImporterConfirmationView]
-    private lazy val repConfirmationView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
+    private lazy val importerConfirmationView: ImporterConfirmationView =
+      app.injector.instanceOf[ImporterConfirmationView]
+    private lazy val repConfirmationView: RepresentativeConfirmationView =
+      app.injector.instanceOf[RepresentativeConfirmationView]
 
     val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
 
@@ -72,9 +73,19 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
     lazy val serviceMock: Either[ErrorModel, SubmissionResponse] = Right(SubmissionResponse("123"))
     lazy val controller = {
       setupConnectorMock(serviceMock)
-      new CheckYourAnswersController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-        messagesControllerComponents, mockSessionRepository, mockSubmissionService,
-        checkYourAnswersView, importerConfirmationView, repConfirmationView, errorHandler, ec)
+      new CheckYourAnswersController(
+        authenticatedAction,
+        dataRetrievalAction,
+        dataRequiredAction,
+        messagesControllerComponents,
+        mockSessionRepository,
+        mockSubmissionService,
+        checkYourAnswersView,
+        importerConfirmationView,
+        repConfirmationView,
+        errorHandler,
+        ec
+      )
     }
   }
 
@@ -94,51 +105,62 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
   "GET onSubmit" should {
 
     "return Redirect to the importer confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UserTypePage, UserType.Importer).success.value
-        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
-        .set(KnownEoriDetailsPage, EoriDetails(
-          "GB123456789",
-          "Test User",
-          ContactAddress(
-            addressLine1 = "address one",
-            countryCode = "GB",
-            city = "Test city",
-            postalCode = Some("AA00AA")
-          ),
-          Some("123456789"))).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Importer).success.value
+          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails(
+              "GB123456789",
+              "Test User",
+              ContactAddress(
+                addressLine1 = "address one",
+                countryCode = "GB",
+                city = "Test city",
+                postalCode = Some("AA00AA")
+              ),
+              Some("123456789")
+            )
+          ).success.value
       )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return Redirect to the representative confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UserTypePage, UserType.Representative).success.value
-        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
-        .set(ImporterNamePage, "Test User").success.value
-        .set(ImporterEORINumberPage, "GB123456789").success.value
-        .set(KnownEoriDetailsPage, EoriDetails(
-          "GB123456789",
-          "Test User",
-          ContactAddress(
-            addressLine1 = "address one",
-            countryCode = "GB",
-            city = "Test city",
-            postalCode = Some("AA00AA")
-          ),
-          Some("123456789"))).success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+          .set(ImporterNamePage, "Test User").success.value
+          .set(ImporterEORINumberPage, "GB123456789").success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails(
+              "GB123456789",
+              "Test User",
+              ContactAddress(
+                addressLine1 = "address one",
+                countryCode = "GB",
+                city = "Test city",
+                postalCode = Some("AA00AA")
+              ),
+              Some("123456789")
+            )
+          ).success.value
       )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-        .set(UserTypePage, UserType.Representative).success.value
-        .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
-        .set(ImporterNamePage, "Test User").success.value
-        .set(ImporterEORINumberPage, "GB123456789").success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
+          .set(ImporterNamePage, "Test User").success.value
+          .set(ImporterEORINumberPage, "GB123456789").success.value
       )
       val result: Future[Result] = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
@@ -146,7 +168,7 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
     "return Internal Server error is submission fails" in new Test {
       override lazy val serviceMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working"))
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result]    = controller.onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

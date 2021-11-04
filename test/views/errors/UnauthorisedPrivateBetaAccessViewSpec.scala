@@ -26,10 +26,11 @@ import views.html.errors.UnauthorisedPrivateBetaAccessView
 
 class UnauthorisedPrivateBetaAccessViewSpec extends ViewBaseSpec with BaseMessages {
 
-  private lazy val injectedView: UnauthorisedPrivateBetaAccessView = app.injector.instanceOf[UnauthorisedPrivateBetaAccessView]
+  private lazy val injectedView: UnauthorisedPrivateBetaAccessView =
+    app.injector.instanceOf[UnauthorisedPrivateBetaAccessView]
 
   "Rendering the UnauthorisedPrivateBetaAccessView page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages, appConfig)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UnauthorisedPrivateBetaAccessMessages.title)
@@ -43,7 +44,9 @@ class UnauthorisedPrivateBetaAccessViewSpec extends ViewBaseSpec with BaseMessag
     }
 
     s"have the correct second paragraph of text" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe s"${UnauthorisedPrivateBetaAccessMessages.para2_1}${UnauthorisedPrivateBetaAccessMessages.para2_2}."
+      elementText(
+        "#main-content p:nth-of-type(2)"
+      ) mustBe s"${UnauthorisedPrivateBetaAccessMessages.para2_1}${UnauthorisedPrivateBetaAccessMessages.para2_2}."
     }
 
     s"have the correct link in the second paragraph of text" in {

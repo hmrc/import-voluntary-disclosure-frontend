@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
-import messages.{BaseMessages, OtherReasonAmendmentMessages}
+import messages.BaseMessages
+import messages.reasons.OtherReasonAmendmentMessages
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import org.jsoup.Jsoup
@@ -32,12 +33,13 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: OtherReasonAmendmentView = app.injector.instanceOf[OtherReasonAmendmentView]
 
-  val formProvider: UnderpaymentReasonAmendmentFormProvider = injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
+  val formProvider: UnderpaymentReasonAmendmentFormProvider =
+    injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
 
   private final val boxNumber: BoxNumber = BoxNumber.OtherItem
-  private final val itemNumber: Int = 0
-  private val formAction = Call("POST", "formActionUrl")
-  private val backLink = Some(Call("GET", "backLinkUrl"))
+  private final val itemNumber: Int      = 0
+  private val formAction                 = Call("POST", "formActionUrl")
+  private val backLink                   = Some(Call("GET", "backLinkUrl"))
 
   "Rendering the Other reason amendment page" when {
 
@@ -45,7 +47,11 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
 
       val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
       lazy val view: Html = injectedView(
-        form, formAction, boxNumber, itemNumber, backLink
+        form,
+        formAction,
+        boxNumber,
+        itemNumber,
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -59,17 +65,21 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${OtherReasonAmendmentMessages.h1}'" in {
-        elementText("h1") mustBe OtherReasonAmendmentMessages.h1
+      s"have the correct h1 of '${OtherReasonAmendmentMessages.title}'" in {
+        elementText("h1") mustBe OtherReasonAmendmentMessages.title
       }
 
     }
 
-
     "error exists" should {
-      lazy val form: Form[UnderpaymentReasonValue] = formProvider(boxNumber).bind(Map("original" -> "", "amended" -> ""))
+      lazy val form: Form[UnderpaymentReasonValue] =
+        formProvider(boxNumber).bind(Map("original" -> "", "amended" -> ""))
       lazy val view: Html = injectedView(
-        form, formAction, boxNumber, itemNumber, backLink
+        form,
+        formAction,
+        boxNumber,
+        itemNumber,
+        backLink
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -80,19 +90,24 @@ class OtherReasonAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#original-error") mustBe OtherReasonAmendmentMessages.errorPrefix + OtherReasonAmendmentMessages.requiredError
+        elementText(
+          "#original-error"
+        ) mustBe OtherReasonAmendmentMessages.errorPrefix + OtherReasonAmendmentMessages.requiredError
       }
 
     }
 
   }
 
-
   it should {
 
     val form: Form[UnderpaymentReasonValue] = formProvider.apply(boxNumber)
     lazy val view: Html = injectedView(
-      form, formAction, boxNumber, itemNumber, backLink
+      form,
+      formAction,
+      boxNumber,
+      itemNumber,
+      backLink
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

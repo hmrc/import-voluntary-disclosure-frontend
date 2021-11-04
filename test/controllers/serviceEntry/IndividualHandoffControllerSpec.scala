@@ -30,8 +30,8 @@ class IndividualHandoffControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val view: IndividualHandoffView = app.injector.instanceOf[IndividualHandoffView]
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-    lazy val controller = new IndividualHandoffController(messagesControllerComponents, view)
+    val userAnswers: Option[UserAnswers]         = Some(UserAnswers("credId"))
+    lazy val controller                          = new IndividualHandoffController(messagesControllerComponents, view)
   }
 
   "GET onLoad" when {

@@ -20,9 +20,8 @@ import messages.BaseMessages
 
 object IndividualHandoffMessages extends BaseMessages {
 
-  val title = "You cannot use this service"
-  val heading = "You cannot use this service"
-  val p1 = "This service can only be used where goods were originally declared to customs."
+  val title   = "You cannot use this service"
+  val p1      = "This service can only be used where goods were originally declared to customs."
   val p2Part1 = "You need to contact us on the email address"
   val p2Part2 = "and give brief details. We will take you through the process of paying the tax or duty that is owed."
 

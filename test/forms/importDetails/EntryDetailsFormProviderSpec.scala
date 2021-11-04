@@ -24,24 +24,26 @@ import java.time.LocalDate
 
 class EntryDetailsFormProviderSpec extends FormSpecBase {
 
-  def buildFormData(epu: Option[String] = Some("123"),
-                    entryNumber: Option[String] = Some("123456Q"),
-                    day: Option[String] = Some("31"),
-                    month: Option[String] = Some("12"),
-                    year: Option[String] = Some("2020")): Map[String, String] =
+  def buildFormData(
+    epu: Option[String] = Some("123"),
+    entryNumber: Option[String] = Some("123456Q"),
+    day: Option[String] = Some("31"),
+    month: Option[String] = Some("12"),
+    year: Option[String] = Some("2020")
+  ): Map[String, String] =
     (
       epu.map(_ => "epu" -> epu.get) ++
         entryNumber.map(_ => "entryNumber" -> entryNumber.get) ++
         day.map(_ => "entryDate.day" -> day.get) ++
         month.map(_ => "entryDate.month" -> month.get) ++
         year.map(_ => "entryDate.year" -> year.get)
-      ).toMap
+    ).toMap
 
   "Binding a form with invalid data" when {
 
     "no values provided" should {
       val missingOption: Map[String, String] = Map.empty
-      val form = new EntryDetailsFormProvider().apply().bind(missingOption)
+      val form                               = new EntryDetailsFormProvider().apply().bind(missingOption)
 
       "result in a form with errors" in {
         form.errors mustBe Seq(
@@ -83,7 +85,9 @@ class EntryDetailsFormProviderSpec extends FormSpecBase {
       }
     }
     "multiple date fields have invalid format" should {
-      val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("a31"), month = Some("a12"), year = Some("a2020")))
+      val form = new EntryDetailsFormProvider().apply().bind(
+        buildFormData(day = Some("a31"), month = Some("a12"), year = Some("a2020"))
+      )
 
       "result in a form with one error, but multiple fields highlighted" in {
         form.errors.size mustBe 1
@@ -159,7 +163,8 @@ class EntryDetailsFormProviderSpec extends FormSpecBase {
             day = Some(s"${tomorrow.getDayOfMonth}"),
             month = Some(s"${tomorrow.getMonthValue}"),
             year = Some(s"${tomorrow.getYear}")
-          ))
+          )
+        )
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
@@ -181,7 +186,9 @@ class EntryDetailsFormProviderSpec extends FormSpecBase {
         form.errors.head.args mustBe Seq("day", "month")
       }
       "result in a form with Not A Date error when the date contains negative numbers" in {
-        val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some("-1"), month = Some("-2"), year = Some("-3")))
+        val form = new EntryDetailsFormProvider().apply().bind(
+          buildFormData(day = Some("-1"), month = Some("-2"), year = Some("-3"))
+        )
 
         form.errors.size mustBe 1
         form.errors.head.key mustBe "entryDate.day"
@@ -226,7 +233,9 @@ class EntryDetailsFormProviderSpec extends FormSpecBase {
   }
 
   "Binding a form with valid data with whitespace in date fields" should {
-    val form = new EntryDetailsFormProvider().apply().bind(buildFormData(day = Some(" 31"), month = Some("  12"), year = Some("2020 ")))
+    val form = new EntryDetailsFormProvider().apply().bind(
+      buildFormData(day = Some(" 31"), month = Some("  12"), year = Some("2020 "))
+    )
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
@@ -240,10 +249,9 @@ class EntryDetailsFormProviderSpec extends FormSpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 31))
-      val form = new EntryDetailsFormProvider().apply().fill(model)
+      val form  = new EntryDetailsFormProvider().apply().fill(model)
       form.data mustBe buildFormData()
     }
   }
 
 }
-

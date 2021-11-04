@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
+
 @import models.reasons.BoxNumber.BoxNumber
 
 @this(
@@ -35,9 +36,9 @@
 
    @errorSummary(form.errors)
 
-   @h1(messages("removeUnderpaymentReason.heading"))
+   @h1(messages("removeUnderpaymentReason.pageTitle"))
 
-   @p{ @messages(s"box${boxNumber.id}.pageHeader", itemNumber) }
+   @p{ @messages(s"box${boxNumber.id}.pageTitle", itemNumber) }
 
    @formHelper(action = controllers.reasons.routes.RemoveUnderpaymentReasonController.onSubmit()) {
        @inputRadio(

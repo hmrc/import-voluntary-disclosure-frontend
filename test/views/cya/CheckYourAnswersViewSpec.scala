@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.CYAMessages
+import messages.cya.CYAMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -30,7 +30,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   "Rendering the Check Your Answers page" when {
     "multiple answers provided" should {
-      lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have ${answers.size + 1} sub-headings" in {
@@ -39,8 +39,8 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
       "have correct sub-headings" in {
         val subHeadings = document.select("main h2")
-        answers.zipWithIndex.map {
-          case (answer, index) => subHeadings.get(index).text mustBe answer.heading
+        answers.zipWithIndex.map { case (answer, index) =>
+          subHeadings.get(index).text mustBe answer.heading.get
         }
       }
 
@@ -53,13 +53,13 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
 
   it should {
 
-    lazy val view: Html = injectedView(answers)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(answers)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(CYAMessages.title)
 
-    s"have the correct h1 of '${CYAMessages.heading}'" in {
-      elementText("h1") mustBe CYAMessages.heading
+    s"have the correct h1 of '${CYAMessages.title}'" in {
+      elementText("h1") mustBe CYAMessages.title
     }
 
     "have Now Send Disclosure sub-heading " in {

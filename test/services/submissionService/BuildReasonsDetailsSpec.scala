@@ -24,7 +24,11 @@ import play.api.libs.json.Json
 import services.SubmissionService
 
 class BuildReasonsDetailsSpec
-  extends ServiceSpecBase with MockIvdSubmissionConnector with MockAuditService with SubmissionServiceTestData with SubmissionServiceTestJson {
+    extends ServiceSpecBase
+    with MockIvdSubmissionConnector
+    with MockAuditService
+    with SubmissionServiceTestData
+    with SubmissionServiceTestJson {
 
   val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
 
@@ -45,7 +49,9 @@ class BuildReasonsDetailsSpec
       }
 
       "return expected json for other reason submission" in {
-        val submission = importerSubmission.copy(amendedItems = Some(Seq(UnderpaymentReason(BoxNumber.OtherItem, 0 ,"This is a other reason", ""))))
+        val submission = importerSubmission.copy(amendedItems =
+          Some(Seq(UnderpaymentReason(BoxNumber.OtherItem, 0, "This is a other reason", "")))
+        )
         lazy val result = service.buildReasonsDetails(submission)
 
         result mustBe Json.parse(otherReasonJson)

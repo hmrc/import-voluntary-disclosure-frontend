@@ -25,7 +25,7 @@ class ImporterVatRegisteredFormProviderSpec extends FormSpecBase {
     "no value is selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ImporterVatRegisteredFormProvider()().bind(missingOption)
+      val form                               = new ImporterVatRegisteredFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -53,4 +53,3 @@ class ImporterVatRegisteredFormProviderSpec extends FormSpecBase {
   }
 
 }
-

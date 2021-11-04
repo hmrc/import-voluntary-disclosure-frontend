@@ -35,26 +35,24 @@ import views.html.importDetails.UserTypeView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class UserTypeController @Inject()(identify: IdentifierAction,
-                                   getData: DataRetrievalAction,
-                                   sessionRepository: SessionRepository,
-                                   mcc: MessagesControllerComponents,
-                                   formProvider: UserTypeFormProvider,
-                                   view: UserTypeView,
-                                   appConfig: AppConfig,
-                                   implicit val ec: ExecutionContext
-                                  ) extends FrontendController(mcc) with I18nSupport {
+class UserTypeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: UserTypeFormProvider,
+  view: UserTypeView,
+  appConfig: AppConfig,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-
     val form = for {
       userAnswers <- request.userAnswers
-      data <- userAnswers.get(UserTypePage)
-    } yield {
-      formProvider().fill(data)
-    }
+      data        <- userAnswers.get(UserTypePage)
+    } yield formProvider().fill(data)
 
     Future.successful(Ok(view(form.getOrElse(formProvider()), backLink)))
   }
@@ -74,7 +72,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
 
         for {
           updatedAnswers <- Future.fromTry(cleanedUserAnswers.set(UserTypePage, newUserType))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
           val checkMode = updatedAnswers.get(CheckModePage).getOrElse(false)
           if (prevUserType == newUserType && checkMode) {
@@ -94,7 +92,7 @@ class UserTypeController @Inject()(identify: IdentifierAction,
     val cyaMode = {
       for {
         answers <- request.userAnswers
-        mode <- answers.get(CheckModePage)
+        mode    <- answers.get(CheckModePage)
       } yield mode
     }.getOrElse(false)
 

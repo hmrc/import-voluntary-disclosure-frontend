@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.AcceptanceDateFormProvider
-import messages.{AcceptanceDateBulkMessages, BaseMessages}
+import messages.BaseMessages
+import messages.importDetails.AcceptanceDateBulkMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -37,8 +38,8 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the AcceptanceDateBulk page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply(false)
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply(false)
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(AcceptanceDateBulkMessages.title)
@@ -53,8 +54,8 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider(false).bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider(false).bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.title)
@@ -64,7 +65,9 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.requiredError
+        elementText(
+          "#value-error"
+        ) mustBe AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.requiredError
       }
 
     }
@@ -72,12 +75,12 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe AcceptanceDateBulkMessages.h1
+      elementText("h1") mustBe AcceptanceDateBulkMessages.title
     }
 
     "have the correct page info" in {
@@ -85,11 +88,15 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe AcceptanceDateBulkMessages.beforeRadio
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe AcceptanceDateBulkMessages.beforeRadio
     }
 
     "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe AcceptanceDateBulkMessages.afterRadio
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe AcceptanceDateBulkMessages.afterRadio
     }
 
     "render a back link with the correct URL" in {

@@ -17,17 +17,17 @@
 package forms.cancelCase
 
 import forms.mappings.Mappings
+import forms.utils.FormHelpers
 import play.api.data.Form
 
 import javax.inject.Inject
 
-
-class CancelCaseDisclosureReferenceNumberFormProvider @Inject() extends Mappings {
+class CancelCaseDisclosureReferenceNumberFormProvider @Inject() extends Mappings with FormHelpers {
 
   def apply(): Form[String] =
     Form(
       "value" -> text("cancelCase.disclosureReference.error.required")
+        .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
         .verifying(regexp("^[cC]18[a-zA-Z0-9]{19}$", "cancelCase.disclosureReference.error.format"))
     )
 }
-

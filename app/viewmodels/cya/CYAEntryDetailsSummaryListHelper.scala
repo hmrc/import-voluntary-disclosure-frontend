@@ -47,7 +47,7 @@ trait CYAEntryDetailsSummaryListHelper {
       if (rows.nonEmpty) {
         Seq(
           cya.CYASummaryList(
-            messages("cya.entryDetails"),
+            Some(messages("cya.entryDetails")),
             SummaryList(
               classes = "govuk-!-margin-bottom-9",
               rows = rows
@@ -62,16 +62,21 @@ trait CYAEntryDetailsSummaryListHelper {
     }
   }
 
-  private def buildNumberOfEntriesSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildNumberOfEntriesSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(NumberOfEntriesPage).map { numberOfEntries =>
-      val numberOfEntriesValue = if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
+      val numberOfEntriesValue =
+        if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
-          messages("cya.numberOfEntries.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
+            messages("cya.numberOfEntries.change")
+          )
+        )
       )
     }
 
@@ -80,10 +85,12 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.epu")),
         valueContent = Text(entryDetails.epu),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.EntryDetailsController.onLoad().url,
-          messages("cya.epu.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+            messages("cya.epu.change")
+          )
+        )
       )
     }
 
@@ -92,10 +99,12 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.entryNumber")),
         valueContent = Text(entryDetails.entryNumber),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.EntryDetailsController.onLoad().url,
-          messages("cya.entryNumber.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+            messages("cya.entryNumber.change")
+          )
+        )
       )
     }
 
@@ -105,48 +114,62 @@ trait CYAEntryDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.entryDate")),
         valueContent = Text(entryDateFormat),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.EntryDetailsController.onLoad().url,
-          messages("cya.entryDate.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.EntryDetailsController.onLoad().url,
+            messages("cya.entryDate.change")
+          )
+        )
       )
     }
 
   private def buildAcceptanceDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(AcceptanceDatePage).map { acceptanceDate =>
-      val acceptanceDateValue = if (acceptanceDate) messages("cya.single.acceptanceDate.before") else messages("cya.single.acceptanceDate.after")
+      val acceptanceDateValue =
+        if (acceptanceDate) messages("cya.single.acceptanceDate.before")
+        else messages("cya.single.acceptanceDate.after")
       createRow(
         keyText = Text(messages("cya.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
-          messages("cya.acceptanceDate.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
+            messages("cya.acceptanceDate.change")
+          )
+        )
       )
     }
 
-  private def buildOneCustomsProcedureCodeListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildOneCustomsProcedureCodeListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(OneCustomsProcedureCodePage).map { customsProcedureCode =>
       val oneCustomsProcedureCode = if (customsProcedureCode) messages("site.yes") else messages("site.no")
       createRow(
         keyText = Text(messages("cya.oneCustomsProcedureCode")),
         valueContent = Text(oneCustomsProcedureCode),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url,
-          messages("cya.cpcExists.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad().url,
+            messages("cya.cpcExists.change")
+          )
+        )
       )
     }
 
-  private def buildCustomsProcedureCodeListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildCustomsProcedureCodeListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EnterCustomsProcedureCodePage).map { customsProcedureCode =>
       createRow(
         keyText = Text(messages("cya.customsProcedureCode")),
         valueContent = Text(customsProcedureCode),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
-          messages("cya.enterCpc.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad().url,
+            messages("cya.enterCpc.change")
+          )
+        )
       )
     }
 

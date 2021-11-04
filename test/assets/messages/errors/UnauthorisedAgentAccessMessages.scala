@@ -20,7 +20,20 @@ import messages.BaseMessages
 
 object UnauthorisedAgentAccessMessages extends BaseMessages {
 
-  val title = "You cannot access this service to disclose a Customs Duty or import VAT underpayment"
-  val para1 = "You have signed in with an agent Government user ID that cannot access this service."
-  val para2 = "If you are an importer or an importer’s representative you need to sign in again with the Government Gateway user ID you use for your business."
+  val pageTitle = "You cannot access the service with this type of user ID"
+  val para1 =
+    "You have signed in with an Agent Government Gateway user ID (also known as an Agent Services account). " +
+      "Agent Government Gateway user IDs cannot be used to access this service."
+  val signInAgain1    = "Sign in again "
+  val signInAgain2    = "with:"
+  val bullet1         = "the Government Gateway user ID used to apply for your EORI number online"
+  val bullet2         = "or, if you do not have this, another Government Gateway user ID you use for your business"
+  val detailsLinkText = "I do not have another Government Gateway user ID"
+  val details1 =
+    "You can use the link on the sign in page to create a new user ID. You should select organisation or individual " +
+      "(not agent) when asked for the type of account."
+  val details2 =
+    "The subscription will be unsuccessful if another Government Gateway user ID is already linked to your EORI number. " +
+      "Make sure you check one does not exist before creating a new user ID."
+
 }

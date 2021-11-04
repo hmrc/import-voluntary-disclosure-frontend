@@ -3,7 +3,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "import-voluntary-disclosure-frontend"
 
-val silencerVersion = "1.7.5"
+val silencerVersion = "1.7.6"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -11,14 +11,13 @@ lazy val microservice = Project(appName, file("."))
   .enablePlugins(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin)
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.12.14",
+    scalaVersion := "2.12.15",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     PlayKeys.playDefaultPort := 7950,
     routesImport += "models.SelectedDutyTypes.SelectedDutyType",
     TwirlKeys.templateImports ++= Seq(
       "config.AppConfig",
       "uk.gov.hmrc.govukfrontend.views.html.components._",
-      "uk.gov.hmrc.govukfrontend.views.html.helpers._",
       "uk.gov.hmrc.hmrcfrontend.views.html.components._"
     ),
     // ***************

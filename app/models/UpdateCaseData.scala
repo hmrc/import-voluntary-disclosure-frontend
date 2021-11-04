@@ -16,26 +16,28 @@
 
 package models
 
-import pages.{DisclosureReferenceNumberPage, MoreDocumentationPage, UpdateAdditionalInformationPage, UploadSupportingDocumentationPage}
+import pages.shared.MoreDocumentationPage
+import pages.updateCase._
 import play.api.libs.json.Reads
 
-case class UpdateCaseData(caseId: String,
-                          anyOtherSupportingDocs: Boolean,
-                          supportingDocuments: Option[Seq[FileUploadInfo]],
-                          additionalInfo: String)
+case class UpdateCaseData(
+  caseId: String,
+  anyOtherSupportingDocs: Boolean,
+  supportingDocuments: Option[Seq[FileUploadInfo]],
+  additionalInfo: String
+)
 
 object UpdateCaseData {
   implicit val reads: Reads[UpdateCaseData] =
     for {
-      caseId <- DisclosureReferenceNumberPage.path.read[String]
+      caseId                 <- DisclosureReferenceNumberPage.path.read[String]
       anyOtherSupportingDocs <- MoreDocumentationPage.path.read[Boolean]
-      supportingDocuments <- UploadSupportingDocumentationPage.path.readNullable[Seq[FileUploadInfo]]
-      additionalInfo <- UpdateAdditionalInformationPage.path.read[String]
-    } yield
-      UpdateCaseData(
-        caseId = caseId,
-        anyOtherSupportingDocs = anyOtherSupportingDocs,
-        supportingDocuments = supportingDocuments,
-        additionalInfo = additionalInfo
-      )
+      supportingDocuments    <- UploadSupportingDocumentationPage.path.readNullable[Seq[FileUploadInfo]]
+      additionalInfo         <- UpdateAdditionalInformationPage.path.read[String]
+    } yield UpdateCaseData(
+      caseId = caseId,
+      anyOtherSupportingDocs = anyOtherSupportingDocs,
+      supportingDocuments = supportingDocuments,
+      additionalInfo = additionalInfo
+    )
 }

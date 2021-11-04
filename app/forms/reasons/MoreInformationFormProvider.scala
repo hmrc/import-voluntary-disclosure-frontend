@@ -21,7 +21,6 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-
 class MoreInformationFormProvider @Inject() extends Mappings {
 
   val maxLength: Int = 1500

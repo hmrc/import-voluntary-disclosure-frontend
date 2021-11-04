@@ -22,13 +22,19 @@ import models._
 import models.requests._
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
-import pages._
 import pages.serviceEntry.WhatDoYouWantToDoPage
+import pages.shared.MoreDocumentationPage
+import pages.updateCase._
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime
 
-class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYAUpdateCaseSummaryListHelper {
+class UpdateCaseCYASummaryListHelperSpec
+    extends SpecBase
+    with Matchers
+    with TryValues
+    with OptionValues
+    with CYAUpdateCaseSummaryListHelper {
 
   trait Test {
 
@@ -36,13 +42,19 @@ class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with Try
       .set(WhatDoYouWantToDoPage, CreateCase).success.value
       .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
       .set(MoreDocumentationPage, true).success.value
-      .set(UploadSupportingDocumentationPage, Seq(FileUploadInfo(
-        "file-ref-1",
-        "Example.pdf",
-        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        LocalDateTime.now,
-        "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "application/pdf"))).success.value
+      .set(
+        UploadSupportingDocumentationPage,
+        Seq(
+          FileUploadInfo(
+            "file-ref-1",
+            "Example.pdf",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            LocalDateTime.now,
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "application/pdf"
+          )
+        )
+      ).success.value
       .set(UpdateAdditionalInformationPage, "Hello World").success.value
 
     implicit lazy val dataRequest = DataRequest(
@@ -62,13 +74,16 @@ class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with Try
   "buildUpdateCase with file uploaded" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildUpdateCaseSummaryList mustBe Seq(updateCaseAnswers(
-        Seq(
-          referenceNumberRow,
-          moreDocumentationRow(true),
-          fileUploadRow,
-          additionalInformationRow
-        )))
+      buildUpdateCaseSummaryList mustBe Seq(
+        updateCaseAnswers(
+          Seq(
+            referenceNumberRow,
+            moreDocumentationRow(true),
+            fileUploadRow,
+            additionalInformationRow
+          )
+        )
+      )
     }
   }
 
@@ -81,12 +96,15 @@ class UpdateCaseCYASummaryListHelperSpec extends SpecBase with Matchers with Try
         .set(MoreDocumentationPage, false).success.value
         .set(UpdateAdditionalInformationPage, "Hello World").success.value
 
-      buildUpdateCaseSummaryList mustBe Seq(updateCaseAnswers(
-        Seq(
-          referenceNumberRow,
-          moreDocumentationRow(false),
-          additionalInformationRow
-        )))
+      buildUpdateCaseSummaryList mustBe Seq(
+        updateCaseAnswers(
+          Seq(
+            referenceNumberRow,
+            moreDocumentationRow(false),
+            additionalInformationRow
+          )
+        )
+      )
     }
   }
 

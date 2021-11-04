@@ -19,7 +19,7 @@ package controllers.cancelCase
 import controllers.actions._
 import forms.cancelCase.CancelCaseDisclosureReferenceNumberFormProvider
 import models.requests.DataRequest
-import pages.DisclosureReferenceNumberPage
+import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
@@ -31,15 +31,17 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    formProvider: CancelCaseDisclosureReferenceNumberFormProvider,
-                                                    view: CancelCaseDisclosureReferenceNumberView,
-                                                    implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class CancelCaseReferenceNumberController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: CancelCaseDisclosureReferenceNumberFormProvider,
+  view: CancelCaseDisclosureReferenceNumberView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DisclosureReferenceNumberPage).fold(formProvider()) {
@@ -53,11 +55,13 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       reference =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase))
+          updatedAnswers <- Future.fromTry(
+            request.userAnswers.set(DisclosureReferenceNumberPage, reference.toUpperCase)
+          )
           _ <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
-            Redirect(controllers.routes.UpdateCaseCheckYourAnswersController.onLoad())
+            Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
           } else {
             Redirect(controllers.cancelCase.routes.CancellationReasonController.onLoad())
           }
@@ -67,7 +71,7 @@ class CancelCaseReferenceNumberController @Inject()(identify: IdentifierAction,
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
-      controllers.routes.UpdateCaseCheckYourAnswersController.onLoad()
+      controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
     } else {
       controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
     }

@@ -18,32 +18,30 @@ package models
 
 import play.api.libs.json.{Format, Json, Reads, _}
 
-case class ContactAddress(addressLine1: String,
-                          addressLine2: Option[String] = None,
-                          city: String,
-                          postalCode: Option[String],
-                          countryCode: String)
+case class ContactAddress(
+  addressLine1: String,
+  addressLine2: Option[String] = None,
+  city: String,
+  postalCode: Option[String],
+  countryCode: String
+)
 
 object ContactAddress {
 
   implicit val reads: Reads[ContactAddress] = for {
     addressLine1 <- (__ \\ "addressLine1").read[String]
     addressLine2 <- (__ \\ "addressLine2").readNullable[String]
-    city <- (__ \\ "city").read[String]
-    postalCode <- (__ \\ "postalCode").readNullable[String]
-    countryCode <- (__ \\ "countryCode").read[String]
-  } yield {
-    ContactAddress(addressLine1, addressLine2, city, postalCode, countryCode)
-  }
+    city         <- (__ \\ "city").read[String]
+    postalCode   <- (__ \\ "postalCode").readNullable[String]
+    countryCode  <- (__ \\ "countryCode").read[String]
+  } yield ContactAddress(addressLine1, addressLine2, city, postalCode, countryCode)
 
   val sub09Reads: Reads[ContactAddress] = for {
     addressLine1 <- (__ \\ "streetAndNumber").read[String]
-    city <- (__ \\ "city").read[String]
-    postalCode <- (__ \\ "postalCode").readNullable[String]
-    countryCode <- (__ \\ "countryCode").read[String]
-  } yield {
-    ContactAddress(addressLine1, None, city, postalCode, countryCode)
-  }
+    city         <- (__ \\ "city").read[String]
+    postalCode   <- (__ \\ "postalCode").readNullable[String]
+    countryCode  <- (__ \\ "countryCode").read[String]
+  } yield ContactAddress(addressLine1, None, city, postalCode, countryCode)
 
   implicit val format: Format[ContactAddress] = Json.format[ContactAddress]
 

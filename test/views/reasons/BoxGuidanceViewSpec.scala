@@ -17,7 +17,8 @@
 package views.reasons
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, BoxGuidanceMessages}
+import messages.BaseMessages
+import messages.reasons.BoxGuidanceMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc._
@@ -49,8 +50,8 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     "it" should {
       lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, appConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
-      s"have the correct page heading of '${BoxGuidanceMessages.heading}'" in {
-        elementText("h1") mustBe BoxGuidanceMessages.heading
+      s"have the correct page heading of '${BoxGuidanceMessages.title}'" in {
+        elementText("h1") mustBe BoxGuidanceMessages.title
       }
 
       s"have the correct p1 page text of '${BoxGuidanceMessages.p1}'" in {
@@ -62,7 +63,9 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render a continue button with the correct URL " in {
-        elementAttributes(".govuk-button") must contain("href" -> controllers.reasons.routes.BoxNumberController.onLoad().url)
+        elementAttributes(".govuk-button") must contain(
+          "href" -> controllers.reasons.routes.BoxNumberController.onLoad().url
+        )
       }
 
       "render a back link with the correct URL" in {

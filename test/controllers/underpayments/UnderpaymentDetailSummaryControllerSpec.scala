@@ -20,14 +20,15 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import mocks.repositories.MockSessionRepository
-import models.SelectedDutyTypes.{Both, Vat}
+import models.SelectedDutyTypes.{Both, Duty, Vat}
 import models.importDetails.UserType.Representative
 import models.underpayments.UnderpaymentDetail
 import models.UserAnswers
 import models.importDetails.NumberOfEntries
 import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
-import pages.{CheckModePage, SplitPaymentPage}
+import pages.CheckModePage
+import pages.paymentInfo.SplitPaymentPage
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}
@@ -40,18 +41,30 @@ import scala.concurrent.Future
 class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockSessionRepository {
-    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView = app.injector.instanceOf[UnderpaymentDetailSummaryView]
+    private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView =
+      app.injector.instanceOf[UnderpaymentDetailSummaryView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailSummaryFormProvider = injector.instanceOf[UnderpaymentDetailSummaryFormProvider]
-    val form: UnderpaymentDetailSummaryFormProvider = formProvider
+    val form: UnderpaymentDetailSummaryFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    def setupMock(): Unit =
+      MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailSummaryController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailSummaryView, form, ec)
+    lazy val controller = new UnderpaymentDetailSummaryController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentDetailSummaryView,
+      form,
+      ec
+    )
+
+    setupMock()
   }
 
   "GET onLoad" should {
@@ -87,7 +100,10 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
 
       "return a SEE OTHER Underpayment Type page when true is selected" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
-          UserAnswers("credId").set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
+          UserAnswers("credId").set(
+            UnderpaymentDetailSummaryPage,
+            Seq(UnderpaymentDetail("A00", 0.0, 1.0))
+          ).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "true")
@@ -111,7 +127,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
           Some(controllers.reasons.routes.BoxGuidanceController.onLoad().url)
       }
 
-
       "return a SEE OTHER Bulk Upload File page when false is selected and Bulk Entry" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
@@ -123,7 +138,35 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BulkUploadFileController.onLoad().url)
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
+      }
+
+      "return a SEE OTHER Postponed VAT page when false is selected duty is VAT only" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
+      }
+
+      "return a SEE OTHER Postponed VAT page when false is selected duty is VAT only but we're in bulk flow" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
 
       "return a SEE OTHER Check Your Answers page when false is selected" in new Test {
@@ -167,18 +210,22 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.BulkUploadFileController.onLoad().url)
+          Some(controllers.docUpload.routes.BulkUploadFileController.onLoad().url)
       }
 
       "return a SEE OTHER Check Your Answers page when in Representative flow Both and Both" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(TempUnderpaymentTypePage, Both).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            ).success.value
             .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
@@ -192,18 +239,28 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(TempUnderpaymentTypePage, Vat).success.value
-            .set(UnderpaymentDetailSummaryPage, Seq(
-              UnderpaymentDetail("A00", 0.0, 1.0),
-              UnderpaymentDetail("B00", 0.0, 1.0)
-            )).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(
+                UnderpaymentDetail("A00", 0.0, 1.0),
+                UnderpaymentDetail("B00", 0.0, 1.0)
+              )
+            ).success.value
             .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
         )
+
+        override def setupMock(): Unit = {
+          MockedSessionRepository.set(Future.successful(true))
+          MockedSessionRepository.set(Future.successful(true))
+        }
+
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.DefermentController.onLoad().url)
+          Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
       "return a SEE OTHER Deferment page when in Representative flow Both and VatOrDuty and Split initially" in new Test {
@@ -213,15 +270,107 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
             .set(UserTypePage, Representative).success.value
             .set(SplitPaymentPage, true).success.value
+            .set(CheckModePage, true).success.value
         )
+
+        override def setupMock(): Unit = {
+          MockedSessionRepository.set(Future.successful(true))
+          MockedSessionRepository.set(Future.successful(true))
+        }
+
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
-          Some(controllers.routes.DefermentController.onLoad().url)
+          Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
+      "return a SEE OTHER Postponed VAT page when in Representative flow and duty is VAT only" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        )
+
+        override def setupMock(): Unit = {
+          MockedSessionRepository.set(Future.successful(true))
+          MockedSessionRepository.set(Future.successful(true))
+        }
+
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
+      }
+
+      "return a SEE OTHER Postponed VAT page when in Representative flow going from Both to Vat only" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(TempUnderpaymentTypePage, Both).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        )
+
+        override def setupMock(): Unit =
+          MockedSessionRepository.set(Future.successful(true))
+
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
+        verifyCalls()
+      }
+
+      "return a SEE OTHER Postponed VAT page when in Representative flow going from Duty to Vat only" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(TempUnderpaymentTypePage, Duty).success.value
+            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+            .set(UserTypePage, Representative).success.value
+            .set(CheckModePage, true).success.value
+            .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        )
+
+        override def setupMock(): Unit = {}
+
+        lazy val result: Future[Result] = controller.onSubmit()(
+          fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        )
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe
+          Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
+        verifyCalls()
+      }
+    }
+
+    "return a SEE OTHER Deferment page when in Representative flow going from Both to Vat only in Bulk flow" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(TempUnderpaymentTypePage, Both).success.value
+          .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+          .set(UserTypePage, Representative).success.value
+          .set(CheckModePage, true).success.value
+          .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+          .set(SplitPaymentPage, true).success.value
+      )
+
+      override def setupMock(): Unit =
+        MockedSessionRepository.set(Future.successful(true))
+
+      lazy val result: Future[Result] = controller.onSubmit()(
+        fakeRequest.withFormUrlEncodedBody("value" -> "false")
+      )
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe
+        Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
+      verifyCalls()
     }
 
     "payload contains invalid data" should {

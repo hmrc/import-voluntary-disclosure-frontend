@@ -1,0 +1,57 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(layout: templates.Layout,
+        h2: components.h2,
+        p: components.p,
+        appConfig: AppConfig
+)
+
+@(caseId: String)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = messages("cancelCase.confirmation.pageTitle"), showBackLink = false) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("cancelCase.confirmation.heading", caseId)
+        </h1>
+        <div class="govuk-panel__body">
+            <div id = "entryNumber">@messages("cancelCase.confirmation.panelText")</div>
+            <strong>@caseId</strong>
+        </div>
+    </div>
+
+    @h2(messages("cancelCase.confirmation.whatHappensNext"), id = Some("whatHappensNext"))
+
+    @p(Html(messages("cancelCase.confirmation.whatHappensNext.p")))
+
+    @p{
+        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
+        id="discloseAnotherUnderpayment" class="govuk-link">
+        @{messages("cancelCase.confirmation.anotherDisclosure")}
+        </a>
+    }
+
+    <div id="helpImproveServiceLink">
+        @p{
+            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("cancelCase.confirmation.helpImproveServiceLink")}</a>
+        }
+    </div>
+}
+
+@{
+    //$COVERAGE-OFF$
+}

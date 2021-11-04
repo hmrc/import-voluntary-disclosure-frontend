@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import models.UserAnswers
 import models.requests.DataRequest
-import pages._
+import pages.contactDetails.ImporterAddressPage
 import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
@@ -41,13 +41,15 @@ trait CYAImporterDetailsSummaryListHelper {
       ).flatten
 
       if (rows.nonEmpty) {
-        Seq(cya.CYASummaryList(
-          messages(messages("cya.aboutImporter")),
-          SummaryList(
-            classes = "govuk-!-margin-bottom-9",
-            rows = rows
+        Seq(
+          cya.CYASummaryList(
+            Some(messages(messages("cya.aboutImporter"))),
+            SummaryList(
+              classes = "govuk-!-margin-bottom-9",
+              rows = rows
+            )
           )
-        ))
+        )
       } else {
         Seq.empty
       }
@@ -56,15 +58,19 @@ trait CYAImporterDetailsSummaryListHelper {
     }
   }
 
-  private def buildImporterNameSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildImporterNameSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ImporterNamePage).map { importerName =>
       createRow(
         keyText = Text(messages("cya.name")),
         valueContent = Text(importerName),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.ImporterNameController.onLoad().url,
-          messages("cya.importerName.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.ImporterNameController.onLoad().url,
+            messages("cya.importerName.change")
+          )
+        )
       )
     }
 
@@ -89,23 +95,29 @@ trait CYAImporterDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressParts)),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.routes.AddressLookupController.initialiseImporterJourney().url,
-          messages("cya.importerAddress.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.contactDetails.routes.AddressLookupController.initialiseImporterJourney().url,
+            messages("cya.importerAddress.change")
+          )
+        )
       )
     }
 
-  private def buildEoriNumberExistsSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildEoriNumberExistsSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ImporterEORIExistsPage).map { eoriExists =>
       val eoriNumberExists = if (eoriExists) messages("site.yes") else messages("site.no")
       createRow(
         keyText = Text(messages("cya.eoriNumberExists")),
         valueContent = Text(eoriNumberExists),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url,
-          messages("cya.eoriExists.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url,
+            messages("cya.eoriExists.change")
+          )
+        )
       )
     }
 
@@ -114,23 +126,29 @@ trait CYAImporterDetailsSummaryListHelper {
       createRow(
         keyText = Text(messages("cya.eoriNumber")),
         valueContent = Text(eoriNumber),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
-          messages("cya.eoriNumber.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.ImporterEORINumberController.onLoad().url,
+            messages("cya.eoriNumber.change")
+          )
+        )
       )
     }
 
-  private def buildVatRegisteredSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+  private def buildVatRegisteredSummaryListRow(
+    answers: UserAnswers
+  )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ImporterVatRegisteredPage).map { registered =>
       val isVatRegistered = if (registered) messages("site.yes") else messages("site.no")
       createRow(
         keyText = Text(messages("cya.vatRegistered")),
         valueContent = Text(isVatRegistered),
-        action = Some(ActionItemHelper.createChangeActionItem(
-          controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url,
-          messages("cya.vatRegistered.change")
-        ))
+        action = Some(
+          ActionItemHelper.createChangeActionItem(
+            controllers.importDetails.routes.ImporterVatRegisteredController.onLoad().url,
+            messages("cya.vatRegistered.change")
+          )
+        )
       )
     }
 

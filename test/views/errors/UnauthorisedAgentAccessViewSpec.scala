@@ -17,37 +17,53 @@
 package views.errors
 
 import base.ViewBaseSpec
-import messages.BaseMessages
-import messages.errors.UnauthorisedAgentAccessMessages
+import messages.errors.UnauthorisedAgentAccessMessages._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.html.errors.UnauthorisedAgentAccessView
 
-class UnauthorisedAgentAccessViewSpec extends ViewBaseSpec with BaseMessages {
+class UnauthorisedAgentAccessViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: UnauthorisedAgentAccessView = app.injector.instanceOf[UnauthorisedAgentAccessView]
 
   "Rendering the UnauthorisedAgentAccess page" should {
-    lazy val view: Html = injectedView()(fakeRequest, messages, appConfig)
+    lazy val view: Html                  = injectedView()(fakeRequest, messages, appConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    checkPageTitle(UnauthorisedAgentAccessMessages.title)
+    checkPageTitle(pageTitle)
 
     s"have the correct page heading" in {
-      elementText("h1") mustBe UnauthorisedAgentAccessMessages.title
+      elementText("h1") mustBe pageTitle
     }
 
     s"have the correct first paragraph of text" in {
-      elementText("#main-content p:nth-of-type(1)") mustBe UnauthorisedAgentAccessMessages.para1
+      elementText("#main-content > div > div > p:nth-child(2)") mustBe para1
     }
 
-    s"have the correct second paragraph of text" in {
-      elementText("#main-content p:nth-of-type(2)") mustBe UnauthorisedAgentAccessMessages.para2
+    s"have the correct sign in again link text" in {
+      elementText("#main-content > div > div > p:nth-child(3)") mustBe signInAgain1 + signInAgain2
     }
 
     "have the correct sign-out link" in {
-      elementAttributes("p > a").get("href") mustBe Some(appConfig.signOutUrl)
+      elementAttributes("#main-content > div > div > p:nth-child(3) > a").get("href") mustBe Some(appConfig.signOutUrl)
     }
+
+    s"have the correct bullet one text" in {
+      elementText("#main-content > div > div > ul > li:nth-child(1)") mustBe bullet1
+    }
+
+    s"have the correct bullet two text" in {
+      elementText("#main-content > div > div > ul > li:nth-child(2)") mustBe bullet2
+    }
+
+    s"have the correct details link text" in {
+      elementText("#main-content > div > div > details > summary > span") mustBe detailsLinkText
+    }
+
+    s"have the correct details p1 text" in {
+      elementText("#main-content > div > div > details > div") mustBe details1 + " " + details2
+    }
+
   }
 }

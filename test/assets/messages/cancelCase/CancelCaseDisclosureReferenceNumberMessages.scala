@@ -21,10 +21,10 @@ import messages.BaseMessages
 object CancelCaseDisclosureReferenceNumberMessages extends BaseMessages {
 
   val title: String = "What is the disclosure reference number?"
-  val label: String = "What is the disclosure reference number?"
-  val hint = "This is 22 characters and starts with C18, it was issued by us when the disclosure was made."
+  val hint          = "This is 22 characters and starts with C18, it was issued by us when the disclosure was made."
   val requiredError: String = "Enter the disclosure reference number"
-  val formatError: String = "Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31"
-  val details = "You will need to email us at customsaccountingrepayments@hmrc.gov.uk with the entry details, the EORI number and name of the importer, and the reason for cancelling the disclosure."
+  val formatError: String   = "Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31"
+  val details =
+    "You will need to email us at npcc@hmrc.gov.uk with the entry details, the EORI number and name of the importer, and the reason for cancelling the disclosure."
 
 }

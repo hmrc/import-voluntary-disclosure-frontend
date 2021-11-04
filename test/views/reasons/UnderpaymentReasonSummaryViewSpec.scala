@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
-import messages.{BaseMessages, ReasonSummary}
+import messages.BaseMessages
+import messages.reasons.ReasonSummary
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -38,8 +39,8 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Reason summary page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, summaryList)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ReasonSummary.pageTitle)
@@ -54,8 +55,8 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, summaryList)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, summaryList)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ReasonSummary.errorPrefix + ReasonSummary.pageTitle)
@@ -73,16 +74,20 @@ class UnderpaymentReasonSummaryViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, summaryList)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, summaryList)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${ReasonSummary.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe ReasonSummary.siteYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe ReasonSummary.siteYes
     }
 
     s"have the correct value for the second radio button of '${ReasonSummary.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe ReasonSummary.siteNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe ReasonSummary.siteNo
     }
 
     s"have the correct radio message'" in {

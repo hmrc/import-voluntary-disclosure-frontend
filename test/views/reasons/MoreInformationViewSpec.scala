@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.MoreInformationFormProvider
-import messages.{BaseMessages, MoreInformationMessages}
+import messages.BaseMessages
+import messages.reasons.MoreInformationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -37,7 +38,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist single entry" should {
 
       val form: Form[String] = formProvider.apply()
-      lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
+      lazy val view: Html    = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(MoreInformationMessages.singleEntryTitle)
@@ -50,8 +51,8 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${MoreInformationMessages.singleEntryH1}'" in {
-        elementText("h1") mustBe MoreInformationMessages.singleEntryH1
+      s"have the correct h1 of '${MoreInformationMessages.singleEntryTitle}'" in {
+        elementText("h1") mustBe MoreInformationMessages.singleEntryTitle
       }
 
     }
@@ -72,15 +73,15 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         document.select("#value-error").size mustBe 0
       }
 
-      s"have the correct h1 of '${MoreInformationMessages.bulkEntryH1}'" in {
-        elementText("h1") mustBe MoreInformationMessages.bulkEntryH1
+      s"have the correct h1 of '${MoreInformationMessages.bulkEntryTitle}'" in {
+        elementText("h1") mustBe MoreInformationMessages.bulkEntryTitle
       }
 
-      s"have the correct p1 of '${MoreInformationMessages.bulkEntryH1}'" in {
+      s"have the correct p1 of '${MoreInformationMessages.bulkEntryTitle}'" in {
         elementText("#main-content > div > div > p:nth-child(2)") mustBe MoreInformationMessages.bulkP1
       }
 
-      s"have the correct p2 of '${MoreInformationMessages.bulkEntryH1}'" in {
+      s"have the correct p2 of '${MoreInformationMessages.bulkEntryTitle}'" in {
         elementText("#main-content > div > div > p:nth-child(3)") mustBe MoreInformationMessages.bulkP2
       }
 
@@ -100,7 +101,9 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryRequiredError
+          elementText(
+            "#value-error"
+          ) mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.singleEntryRequiredError
         }
 
       }
@@ -117,7 +120,9 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
         }
 
         "render an error message against the field" in {
-          elementText("#value-error") mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryRequiredError
+          elementText(
+            "#value-error"
+          ) mustBe MoreInformationMessages.errorPrefix + MoreInformationMessages.bulkEntryRequiredError
         }
 
       }
@@ -129,7 +134,7 @@ class MoreInformationViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String] = formProvider.apply()
-    lazy val view: Html = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
+    lazy val view: Html    = injectedView(form, Some(Call("GET", "url")), isSingleEntry = true)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct Continue button" in {

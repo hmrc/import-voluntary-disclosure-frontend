@@ -1,0 +1,63 @@
+@*
+ * Copyright 2021 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(layout: templates.Layout,
+        h2: components.h2,
+        p: components.p,
+        appConfig: AppConfig
+)
+
+@(caseId: String,
+)(implicit request: Request[_], messages: Messages)
+
+@layout(pageTitle = messages("updateCase.confirmation.pageTitle"), showBackLink = false) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("updateCase.confirmation.heading")
+        </h1>
+    </div>
+
+    @p(Html(messages("updateCase.confirmation.p", caseId)))
+
+    @h2(messages("updateCase.confirmation.whatHappensNext"), id = Some("whatHappensNext"))
+
+    @p(Html(messages("updateCase.confirmation.whatHappensNext.p")))
+
+    @h2(messages("updateCase.confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
+
+    @p {
+        @Html(messages("updateCase.confirmation.whatYouShouldDoNext.p"))
+        <a class="govuk-link" href=@{s"mailto:${appConfig.c18EmailAddress}"}>@appConfig.c18EmailAddress</a>.
+    }
+
+    @p{
+        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
+        id="discloseAnotherUnderpayment" class="govuk-link">
+            @{messages("updateCase.confirmation.startNewUnderpaymentLink")}
+        </a>
+    }
+
+    <div id="helpImproveServiceLink">
+        @p{
+            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("updateCase.confirmation.helpImproveServiceLink")}</a>
+        }
+    </div>
+}
+
+@{
+    //$COVERAGE-OFF$
+}

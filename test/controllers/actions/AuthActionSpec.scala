@@ -32,30 +32,31 @@ import scala.concurrent.Future
 class AuthActionSpec extends SpecBase {
   val testEori = "GB987654321000"
 
-  val singleEnrolment: Enrolments = Enrolments(Set(
-    Enrolment("HMRC-CTS-ORG", Seq(EnrolmentIdentifier("EORINumber", testEori)), "Activated")
-  ))
+  val singleEnrolment: Enrolments = Enrolments(
+    Set(
+      Enrolment("HMRC-CTS-ORG", Seq(EnrolmentIdentifier("EORINumber", testEori)), "Activated")
+    )
+  )
 
   val noEnrolment: Enrolments = Enrolments(Set.empty)
 
   trait Test extends MockAuthConnector with MockHttp {
 
     class Harness(authAction: IdentifierAction) {
-      def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
+      def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
     }
 
-    lazy val bodyParsers: BodyParsers.Default = injector.instanceOf[BodyParsers.Default]
+    lazy val bodyParsers: BodyParsers.Default   = injector.instanceOf[BodyParsers.Default]
     lazy val unauthorisedView: UnauthorisedView = injector.instanceOf[views.html.errors.UnauthorisedView]
     lazy val config = new MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = false,
-      otherItemEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
-    lazy val action = new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
+    lazy val action =
+      new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
     val target = new Harness(action)
   }
 
@@ -71,7 +72,9 @@ class AuthActionSpec extends SpecBase {
 
     "user is logged in and has an external ID for organisation" must {
       "execute the action block" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Organisation)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Organisation))
+        )
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.OK
       }
@@ -79,7 +82,9 @@ class AuthActionSpec extends SpecBase {
 
     "user is logged in and has an external ID for individual" must {
       "execute the action block" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual))
+        )
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.OK
       }
@@ -87,7 +92,9 @@ class AuthActionSpec extends SpecBase {
 
     "user is logged in and has an external ID for organisation but no enrolment" must {
       "execute the action block" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and noEnrolment and Some(AffinityGroup.Organisation)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and noEnrolment and Some(AffinityGroup.Organisation))
+        )
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.SEE_OTHER
         redirectLocation(response) mustBe Some(config.eccSubscribeUrl)
@@ -99,7 +106,9 @@ class AuthActionSpec extends SpecBase {
         MockedAuthConnector.authorise(Future.successful(Some("abc") and noEnrolment and Some(AffinityGroup.Individual)))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.SEE_OTHER
-        redirectLocation(response) mustBe Some(config.eccSubscribeUrl)
+        redirectLocation(response) mustBe Some(
+          controllers.serviceEntry.routes.CustomsDeclarationController.onLoad().url
+        )
       }
     }
 
@@ -124,19 +133,21 @@ class AuthActionSpec extends SpecBase {
         MockedAuthConnector.authorise(Future.successful(None and singleEnrolment and Some(AffinityGroup.Agent)))
         private val response = target.onPageLoad()(fakeRequest)
         status(response) mustBe Status.SEE_OTHER
-        redirectLocation(response) mustBe Some(controllers.errors.routes.UnauthorisedController.unauthorisedAgentAccess().url)
+        redirectLocation(response) mustBe Some(
+          controllers.errors.routes.UnauthorisedController.unauthorisedAgentAccess().url
+        )
       }
     }
 
     "user is on the private beta allow list and the allow list is enabled" must {
       "receive an authorised response" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual))
+        )
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -148,32 +159,34 @@ class AuthActionSpec extends SpecBase {
 
     "user is not on the private beta allow list and the allow list is enabled" must {
       "receive an unauthorised response" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual))
+        )
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(),
           privateBetaAllowListEnabled = true,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
         private val response = target.onPageLoad()(fakeRequest)
 
         status(response) mustBe Status.SEE_OTHER
-        redirectLocation(response) mustBe Some(controllers.errors.routes.UnauthorisedController.unauthorisedPrivateBetaAccess().url)
+        redirectLocation(response) mustBe Some(
+          controllers.errors.routes.UnauthorisedController.unauthorisedPrivateBetaAccess().url
+        )
       }
     }
 
     "user is not on the private beta allow list and the allow list is disabled" must {
       "receive an authorised response" in new Test {
-        MockedAuthConnector.authorise(Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual)))
+        MockedAuthConnector.authorise(
+          Future.successful(Some("abc") and singleEnrolment and Some(AffinityGroup.Individual))
+        )
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = false,
-          privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )

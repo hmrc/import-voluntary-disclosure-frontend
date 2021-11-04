@@ -16,7 +16,7 @@
 
 package controllers.reasons
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.reasons.MoreInformationFormProvider
 import models.requests.DataRequest
 import pages.reasons.MoreInformationPage
@@ -30,17 +30,18 @@ import views.html.reasons.MoreInformationView
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class MoreInformationController @Inject()(identify: IdentifierAction,
-                                          getData: DataRetrievalAction,
-                                          requireData: DataRequiredAction,
-                                          sessionRepository: SessionRepository,
-                                          mcc: MessagesControllerComponents,
-                                          formProvider: MoreInformationFormProvider,
-                                          view: MoreInformationView,
-                                          implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport {
+class MoreInformationController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: MoreInformationFormProvider,
+  view: MoreInformationView,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val isOneEntry = request.isOneEntry
@@ -57,15 +58,15 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
       moreInfo => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreInformationPage, moreInfo))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
           } else {
             if (request.isOneEntry) {
-              Redirect(controllers.routes.SupportingDocController.onLoad())
+              Redirect(controllers.docUpload.routes.SupportingDocController.onLoad())
             } else {
-              Redirect(controllers.routes.DeclarantContactDetailsController.onLoad())
+              Redirect(controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad())
             }
           }
         }
@@ -77,11 +78,7 @@ class MoreInformationController @Inject()(identify: IdentifierAction,
     if (request.checkMode) {
       None
     } else {
-      if (request.isOneEntry) {
-        Some(controllers.reasons.routes.HasFurtherInformationController.onLoad())
-      } else {
-        Some(controllers.routes.BulkUploadFileController.onLoad())
-      }
+      Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
     }
   }
 

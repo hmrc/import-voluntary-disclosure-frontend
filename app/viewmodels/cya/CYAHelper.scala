@@ -24,10 +24,15 @@ object CYAHelper {
 
   def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
-  def createRow(keyText: Content, valueContent: Content, action: Option[ActionItem] = None,
-                columnClasses: String = "", rowClasses: String = ""): SummaryListRow = {
+  def createRow(
+    keyText: Content,
+    valueContent: Content,
+    action: Option[ActionItem] = None,
+    columnClasses: String = "",
+    rowClasses: String = ""
+  ): SummaryListRow = {
     SummaryListRow(
-      key = Key(content = keyText, classes = s"govuk-!-width-one-third ${columnClasses}".trim),
+      key = Key(content = keyText, classes = s"govuk-!-width-one-third $columnClasses".trim),
       value = Value(content = valueContent, classes = columnClasses),
       actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
       classes = rowClasses

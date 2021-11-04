@@ -30,9 +30,9 @@ case object ImporterEORIExistsPage extends QuestionPage[Boolean] {
 
   override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
     value match {
-      case Some(true) => Try(userAnswers)
+      case Some(true)  => Try(userAnswers)
       case Some(false) => Try(userAnswers.remove(ImporterEORINumberPage).getOrElse(userAnswers))
-      case _ => super.cleanup(value, userAnswers)
+      case _           => super.cleanup(value, userAnswers)
     }
   }
 }

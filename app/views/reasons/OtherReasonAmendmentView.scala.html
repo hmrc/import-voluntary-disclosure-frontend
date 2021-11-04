@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *@
+
 @import models.reasons.BoxNumber.BoxNumber
 
 @this(layout: templates.Layout,
@@ -41,7 +42,7 @@
 
         @errorSummary(form.errors)
 
-        @h1(messages(s"box${boxNumber.id}.pageHeader", itemNumber))
+        @h1(messages(s"box${boxNumber.id}.pageTitle", itemNumber))
 
         @bodyMessage.map{msg => @p{ @msg } }
 

@@ -23,7 +23,6 @@ import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-
 object InitialiseAddressLookupHttpParser {
 
   implicit object InitialiseAddressLookupReads extends HttpReads[HttpPostResult[AddressLookupOnRampModel]] {

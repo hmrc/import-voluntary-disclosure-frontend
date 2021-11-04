@@ -60,7 +60,9 @@ class AddressLookupConnectorSpec extends SpecBase with MockHttp {
     val continueUrl = "continue-url"
 
     def initaliseJourneyResult: Future[HttpPostResult[AddressLookupOnRampModel]] =
-      TestAddressLookupConnector.initialiseJourney(Json.toJson(AddressLookupJsonBuilder(continueUrl)(messagesApi, appConfig)))
+      TestAddressLookupConnector.initialiseJourney(
+        Json.toJson(AddressLookupJsonBuilder(continueUrl)(messagesApi, appConfig))
+      )
 
     "for initialiseJourney method" when {
 

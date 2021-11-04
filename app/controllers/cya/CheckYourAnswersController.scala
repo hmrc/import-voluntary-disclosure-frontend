@@ -17,51 +17,49 @@
 package controllers.cya
 
 import config.ErrorHandler
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import pages._
-import pages.importDetails.{EntryDetailsPage, ImporterEORINumberPage, ImporterNamePage}
+import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.SubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
-import views.html.cya.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
+import views.html.cya._
 
 import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 
 @Singleton
-class CheckYourAnswersController @Inject()(identify: IdentifierAction,
-                                           getData: DataRetrievalAction,
-                                           requireData: DataRequiredAction,
-                                           mcc: MessagesControllerComponents,
-                                           sessionRepository: SessionRepository,
-                                           submissionService: SubmissionService,
-                                           view: CheckYourAnswersView,
-                                           importerConfirmationView: ImporterConfirmationView,
-                                           repConfirmationView: RepresentativeConfirmationView,
-                                           errorHandler: ErrorHandler,
-                                           implicit val ec: ExecutionContext)
-  extends FrontendController(mcc) with I18nSupport with CYASummaryListHelper {
+class CheckYourAnswersController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  mcc: MessagesControllerComponents,
+  sessionRepository: SessionRepository,
+  submissionService: SubmissionService,
+  view: CheckYourAnswersView,
+  importerConfirmationView: ImporterConfirmationView,
+  repConfirmationView: RepresentativeConfirmationView,
+  errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport
+    with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
-      _ <- sessionRepository.set(updatedAnswers)
-    } yield {
-      Ok(view(
-        buildImporterDetailsSummaryList ++
-          buildEntryDetailsSummaryList ++
-          buildUnderpaymentDetailsSummaryList ++
-          buildYourDetailsSummaryList ++
-          buildPaymentDetailsSummaryList ++
-          buildDefermentDutySummaryList ++
-          buildDefermentImportVatSummaryList
-      ))
-    }
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentCheckModePage))
+      updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Ok(view(buildFullSummaryList()))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -69,11 +67,11 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
       case Right(value) =>
         val confirmationData = {
           for {
-            eoriDetails <- request.userAnswers.get(KnownEoriDetailsPage)
+            eoriDetails  <- request.userAnswers.get(KnownEoriDetailsPage)
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
-            eoriNumber <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
+            eoriNumber   <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
-            _ <- Some(sessionRepository.remove(request.credId))
+            _            <- Some(sessionRepository.set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage))))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
               case Some(entryDetails) =>
@@ -95,12 +93,15 @@ class CheckYourAnswersController @Inject()(identify: IdentifierAction,
           }
         }
 
+        val submittedDate = DateTime.now(DateTimeZone.forID("Europe/London"))
+        val summaryList   = buildSummaryListForPrint(value.id, submittedDate)
+
         confirmationData match {
-          case Some(confirmationData) =>
+          case Some(data) =>
             if (request.isRepFlow) {
-              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             } else {
-              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, confirmationData))
+              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
             }
           case _ => errorHandler.showInternalServerError
         }

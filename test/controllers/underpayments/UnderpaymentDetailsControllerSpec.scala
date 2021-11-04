@@ -41,12 +41,20 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UnderpaymentDetailsFormProvider = injector.instanceOf[UnderpaymentDetailsFormProvider]
-    val form: UnderpaymentDetailsFormProvider = formProvider
+    val form: UnderpaymentDetailsFormProvider         = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailsController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, form, underpaymentDetailsView, ec)
+    lazy val controller = new UnderpaymentDetailsController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      underpaymentDetailsView,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -80,8 +88,10 @@ class UnderpaymentDetailsControllerSpec extends ControllerSpecBase {
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit(underpaymentType)(
-          fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
+        await(
+          controller.onSubmit(underpaymentType)(
+            fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
+          )
         )
         verifyCalls()
       }

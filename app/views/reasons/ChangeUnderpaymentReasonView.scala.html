@@ -20,14 +20,14 @@
         linkButton: components.linkButton
 )
 
-@(backLink: Call, summaryList: SummaryList, title: String, heading: String)(implicit request: Request[_], messages: Messages)
+@(backLink: Call, summaryList: SummaryList, title: String)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = title,
     customBackLinkUrl = Some(backLink)
 ) {
 
-    @h1(heading)
+    @h1(title)
 
     @govukSummaryList(summaryList)
 

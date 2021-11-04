@@ -24,16 +24,17 @@ import java.time.{Instant, LocalDateTime}
 import javax.mail.internet.MimeUtility
 import scala.util.Try
 
-case class FileUpload(reference: String,
-                      credId: Option[String] = None,
-                      downloadUrl: Option[String] = None,
-                      fileStatus: Option[FileStatusEnum] = None,
-                      uploadDetails: Option[UploadDetails] = None,
-                      failureDetails: Option[FailureDetails] = None,
-                      lastUpdatedDate: Option[Instant] = None) {
+case class FileUpload(
+  reference: String,
+  credId: Option[String] = None,
+  downloadUrl: Option[String] = None,
+  fileStatus: Option[FileStatusEnum] = None,
+  uploadDetails: Option[UploadDetails] = None,
+  failureDetails: Option[FailureDetails] = None,
+  lastUpdatedDate: Option[Instant] = None
+) {
   val fileName = uploadDetails.map(_.fileName)
 }
-
 
 object FileUpload {
 
@@ -45,15 +46,12 @@ object FileUpload {
       (JsPath \ "uploadDetails").readNullable[UploadDetails] and
       (JsPath \ "failureDetails").readNullable[FailureDetails] and
       (JsPath \ "lastUpdatedDate").readNullable[Instant]
-    ) (FileUpload.apply _)
+  )(FileUpload.apply _)
 
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
-case class UploadDetails(uploadTimestamp: LocalDateTime,
-                         checksum: String,
-                         fileName: String,
-                         fileMimeType: String)
+case class UploadDetails(uploadTimestamp: LocalDateTime, checksum: String, fileName: String, fileMimeType: String)
 
 object UploadDetails {
 
@@ -61,19 +59,18 @@ object UploadDetails {
     ((JsPath \ "uploadTimestamp").read[LocalDateTime] and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
-      (JsPath \ "fileMimeType").read[String]) (UploadDetails.apply _),
+      (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
     ((JsPath \ "uploadTimestamp").write[LocalDateTime] and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
-      (JsPath \ "fileMimeType").write[String]) (unlift(UploadDetails.unapply _))
+      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))
   )
 
   def decodeMimeEncodedWord(word: String): String =
     Try(MimeUtility.decodeText(word)).getOrElse(word)
 }
 
-case class FailureDetails(failureReason: String,
-                          message: String)
+case class FailureDetails(failureReason: String, message: String)
 
 object FailureDetails {
 

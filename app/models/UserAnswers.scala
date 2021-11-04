@@ -25,10 +25,7 @@ import scala.annotation.tailrec
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$Code taken from another [trusted] service
-final case class UserAnswers(id: String,
-                             data: JsObject = Json.obj(),
-                             lastUpdated: LocalDateTime = LocalDateTime.now
-                            ) {
+final case class UserAnswers(id: String, data: JsObject = Json.obj(), lastUpdated: LocalDateTime = LocalDateTime.now) {
 
   def get[A](page: Gettable[A])(implicit rds: Reads[A]): Option[A] =
     Reads.optionNoError(Reads.at(page.path)).reads(data).getOrElse(None)
@@ -45,10 +42,9 @@ final case class UserAnswers(id: String,
         Failure(JsResultException(errors))
     }
 
-    updatedData.flatMap {
-      d =>
-        val updatedAnswers = copy(data = d)
-        page.cleanup(Some(value), updatedAnswers)
+    updatedData.flatMap { d =>
+      val updatedAnswers = copy(data = d)
+      page.cleanup(Some(value), updatedAnswers)
     }
   }
 
@@ -61,10 +57,9 @@ final case class UserAnswers(id: String,
         Success(data)
     }
 
-    updatedData.flatMap {
-      d =>
-        val updatedAnswers = copy(data = d)
-        page.cleanup(None, updatedAnswers)
+    updatedData.flatMap { d =>
+      val updatedAnswers = copy(data = d)
+      page.cleanup(None, updatedAnswers)
     }
   }
 
@@ -72,10 +67,11 @@ final case class UserAnswers(id: String,
     @tailrec
     def removePages(userAnswers: UserAnswers, pages: Seq[QuestionPage[_]]): UserAnswers = pages match {
       case Nil => userAnswers
-      case page :: remainingPages => userAnswers.remove(page) match {
-        case Success(answers) => removePages(answers, remainingPages)
-        case Failure(exception) => throw exception
-      }
+      case page :: remainingPages =>
+        userAnswers.remove(page) match {
+          case Success(answers)   => removePages(answers, remainingPages)
+          case Failure(exception) => throw exception
+        }
     }
 
     removePages(this, pages)
@@ -86,13 +82,13 @@ final case class UserAnswers(id: String,
     val preservedAnswers: Seq[JsObject] = pages.map { page =>
       val answer = Reads.jsPick[JsValue](page.path).reads(data) match {
         case JsSuccess(value, _) => Some(value)
-        case JsError(_) => None
+        case JsError(_)          => None
       }
       page.path -> answer
-    }.collect {
-      case (path, Some(value)) => Json.obj().setObject(path, value) match {
+    }.collect { case (path, Some(value)) =>
+      Json.obj().setObject(path, value) match {
         case JsSuccess(value, _) => value
-        case JsError(_) => Json.obj()
+        case JsError(_)          => Json.obj()
       }
     }
 
@@ -113,7 +109,7 @@ object UserAnswers {
       (__ \ "_id").read[String] and
         (__ \ "data").read[JsObject] and
         (__ \ "lastUpdated").read(MongoJavatimeFormats.localDateTimeReads)
-      ) (UserAnswers.apply _)
+    )(UserAnswers.apply _)
   }
 
   val writes: OWrites[UserAnswers] = {
@@ -124,7 +120,7 @@ object UserAnswers {
       (__ \ "_id").write[String] and
         (__ \ "data").write[JsObject] and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.localDateTimeWrites)
-      ) (unlift(UserAnswers.unapply))
+    )(unlift(UserAnswers.unapply))
   }
 }
 

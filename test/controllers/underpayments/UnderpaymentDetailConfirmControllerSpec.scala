@@ -33,7 +33,8 @@ import scala.concurrent.Future
 class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
-    private lazy val underpaymentDetailConfirmView: UnderpaymentDetailConfirmView = app.injector.instanceOf[UnderpaymentDetailConfirmView]
+    private lazy val underpaymentDetailConfirmView: UnderpaymentDetailConfirmView =
+      app.injector.instanceOf[UnderpaymentDetailConfirmView]
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
@@ -41,14 +42,19 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
         .set(UnderpaymentDetailsPage, UnderpaymentAmount(0, 1)).success.value
     )
 
-
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UnderpaymentDetailConfirmController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, underpaymentDetailConfirmView, ec)
-
+    lazy val controller = new UnderpaymentDetailConfirmController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      underpaymentDetailConfirmView,
+      ec
+    )
 
   }
 
@@ -56,7 +62,7 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
 
     "return OK" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result] = controller.onLoad("B00", change = true)(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad("B00", change = true)(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -89,36 +95,50 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit("B00", change = false)(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+        )
       }
 
       "return a SEE OTHER underpayment summary response when change is true" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", original = 10, amended = 20))).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("B00", original = 10, amended = 20))
+            ).success.value
             .set(UnderpaymentTypePage, "B00").success.value
             .set(UnderpaymentDetailsPage, UnderpaymentAmount(0, 1)).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit("B00", change = true)(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+        )
       }
 
       "return a SEE OTHER underpayment summary response when change is true but values are unchanged" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
-            .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", original = 10, amended = 20))).success.value
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("B00", original = 10, amended = 20))
+            ).success.value
             .set(UnderpaymentTypePage, "B00").success.value
             .set(UnderpaymentDetailsPage, UnderpaymentAmount(10, 20)).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit("B00", change = true)(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
-        await(controller.onSubmit("B00", change = true)(
-          fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50"))
+        await(
+          controller.onSubmit("B00", change = true)(
+            fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
+          )
         )
         verifyCalls()
       }

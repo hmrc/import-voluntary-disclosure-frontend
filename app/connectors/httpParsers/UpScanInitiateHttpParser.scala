@@ -31,9 +31,11 @@ object UpScanInitiateHttpParser extends Logging {
     def read(method: String, url: String, response: HttpResponse): UpscanInitiateResponse = {
       response.status match {
         case OK =>
-          response.json.validate[UpScanInitiateResponse](UpScanInitiateResponse.jsonReadsForUpScanInitiateResponse) match {
+          response.json.validate[UpScanInitiateResponse](
+            UpScanInitiateResponse.jsonReadsForUpScanInitiateResponse
+          ) match {
             case JsSuccess(model, _) => Right(model)
-            case _ => Left(InvalidJson)
+            case _                   => Left(InvalidJson)
           }
         case BAD_REQUEST =>
           logger.warn(s"Bad request returned with reason: ${response.body}")

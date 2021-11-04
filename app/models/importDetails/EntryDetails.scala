@@ -25,4 +25,3 @@ case class EntryDetails(epu: String, entryNumber: String, entryDate: LocalDate)
 object EntryDetails {
   implicit val format = Json.format[EntryDetails]
 }
-

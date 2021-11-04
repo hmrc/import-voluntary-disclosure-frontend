@@ -19,7 +19,6 @@ package messages.errors
 import messages.BaseMessages
 
 object ConfirmEoriDetailsErrorMessages extends BaseMessages {
-  val title = "Sorry, there is a problem with the service"
-  val heading = "Sorry, there is a problem with the service"
+  val title   = "Sorry, there is a problem with the service"
   val message = "Try again later."
 }

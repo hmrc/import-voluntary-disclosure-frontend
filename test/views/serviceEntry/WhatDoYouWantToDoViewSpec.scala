@@ -18,7 +18,7 @@ package views.serviceEntry
 
 import base.ViewBaseSpec
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import messages.WhatDoYouWantToDoMessages
+import messages.serviceEntry.WhatDoYouWantToDoMessages
 import models.SubmissionType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -38,8 +38,8 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
   "Rendering the WhatDoYouWantToDo page" when {
     "no errors exist" should {
 
-      val form: Form[SubmissionType] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[SubmissionType]       = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(WhatDoYouWantToDoMessages.title)
@@ -54,8 +54,8 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[SubmissionType] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[SubmissionType]  = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(WhatDoYouWantToDoMessages.errorPrefix + WhatDoYouWantToDoMessages.title)
@@ -73,17 +73,18 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
 
   it should {
 
-    val form: Form[SubmissionType] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[SubmissionType]       = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct page heading" in {
-      elementText("h1") mustBe WhatDoYouWantToDoMessages.h1
+      elementText("h1") mustBe WhatDoYouWantToDoMessages.title
     }
 
-
     "have the correct value for the first radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label") mustBe WhatDoYouWantToDoMessages.createCaseMsg
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
+      ) mustBe WhatDoYouWantToDoMessages.createCaseMsg
     }
 
     "have the correct value for the first radio button hint" in {
@@ -91,11 +92,15 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
     }
 
     "have the correct value for the second radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label") mustBe WhatDoYouWantToDoMessages.updateCaseMsg
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"
+      ) mustBe WhatDoYouWantToDoMessages.updateCaseMsg
     }
 
     "have the correct value for the third radio button" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(3) > label") mustBe WhatDoYouWantToDoMessages.cancelCaseMsg
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(3) > label"
+      ) mustBe WhatDoYouWantToDoMessages.cancelCaseMsg
     }
 
     "render a back link with the correct URL" in {

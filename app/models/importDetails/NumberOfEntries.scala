@@ -33,7 +33,8 @@ object NumberOfEntries extends Enumerable.Implicits[NumberOfEntries] {
   case object MoreThanOneEntry extends WithName("moreThanOneEntry") with NumberOfEntries
 
   val values: Seq[NumberOfEntries] = Seq(
-    OneEntry, MoreThanOneEntry
+    OneEntry,
+    MoreThanOneEntry
   )
 
   def options(form: Form[_], isRepFlow: Boolean)(implicit messages: Messages): Seq[RadioItem] = values.map {

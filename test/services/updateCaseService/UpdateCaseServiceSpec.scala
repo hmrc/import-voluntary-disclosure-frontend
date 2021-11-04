@@ -19,9 +19,9 @@ package services.updateCaseService
 import base.ServiceSpecBase
 import mocks.connectors.MockIvdSubmissionConnector
 import mocks.services.MockAuditService
-import models.audit.UpdateCaseAuditEvent
+import models.audit.{CancelCaseAuditEvent, UpdateCaseAuditEvent}
 import models.requests._
-import models.{UpdateCaseError, UpdateCaseResponse, UserAnswers}
+import models._
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
@@ -30,10 +30,13 @@ import utils.ReusableValues
 
 class UpdateCaseServiceSpec extends ServiceSpecBase {
 
-  trait Test extends MockIvdSubmissionConnector with MockAuditService with UpdateCaseServiceTestData with ReusableValues {
-    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit = {
+  trait Test
+      extends MockIvdSubmissionConnector
+      with MockAuditService
+      with UpdateCaseServiceTestData
+      with ReusableValues {
+    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
       setupMockUpdateCase(response)
-    }
 
     val userAnswers: UserAnswers = completeUserAnswers
 
@@ -50,7 +53,10 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     )
 
     val failedCreateCaseConnectorCall: UpdateCaseError =
-      UpdateCaseError.UnexpectedError(Status.BAD_REQUEST, Some("Downstream error returned when retrieving SubmissionResponse from back end"))
+      UpdateCaseError.UnexpectedError(
+        Status.BAD_REQUEST,
+        Some("Downstream error returned when retrieving SubmissionResponse from back end")
+      )
 
     val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
   }
@@ -61,6 +67,15 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
         verifyAudit(UpdateCaseAuditEvent(updateCaseJson))
+        private val result = await(service.updateCase())
+        result mustBe Right(response)
+      }
+
+      "return successful UpdateCaseResponse for Cancel Case" in new Test {
+        override val userAnswers: UserAnswers    = cancelCaseCompleteUserAnswers
+        private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
+        setupMockUpdateCase(Right(response))
+        verifyAudit(CancelCaseAuditEvent(cancelCaseJson))
         private val result = await(service.updateCase())
         result mustBe Right(response)
       }
@@ -76,10 +91,9 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called with incomplete User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result = await(service.updateCase())
+        private val result                    = await(service.updateCase())
 
-        result must matchPattern {
-          case Left(UpdateCaseError.UnexpectedError(_, _)) =>
+        result must matchPattern { case Left(UpdateCaseError.UnexpectedError(_, _)) =>
         }
       }
     }
@@ -97,7 +111,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called without supporting documents" should {
       "return expected JSON" in new Test {
         override val userAnswers: UserAnswers = userAnswersWithoutDocs
-        private val result = service.buildUpdate()
+        private val result                    = service.buildUpdate()
 
         result mustBe Right(updateCaseJsonWithoutDocs)
       }

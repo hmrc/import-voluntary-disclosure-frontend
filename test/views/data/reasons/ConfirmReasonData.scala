@@ -16,7 +16,7 @@
 
 package views.data.reasons
 
-import messages.ConfirmReasonDetailMessages
+import messages.reasons.ConfirmReasonDetailMessages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
@@ -25,94 +25,109 @@ object ConfirmReasonData {
   val itemNumberExample: Int = 1
 
   def boxNumber(box: Int): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmReasonDetailMessages.boxNumber),
-        classes = "govuk-!-width-two-thirds"
-      ),
-      value = Value(
-        content = HtmlContent(box.toString)
-      ),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItem(
-            controllers.reasons.routes.BoxNumberController.onLoad().url,
-            HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.boxChange)
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmReasonDetailMessages.boxNumber),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(box.toString)
+        ),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.BoxNumberController.onLoad().url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.boxChange)
+              )
+            )
           )
         )
-      ))
-    )
+      )
     )
 
   def itemNumber(item: Option[Int]): Option[Seq[SummaryListRow]] =
     item.map { itemNo =>
-      Seq(SummaryListRow(
-        key = Key(
-          content = Text(ConfirmReasonDetailMessages.itemNumber),
-          classes = "govuk-!-width-two-thirds"
-        ),
-        value = Value(
-          content = HtmlContent(itemNo.toString)
-        ),
-        actions = Some(Actions(
-          items = Seq(
-            ActionItem(
-              controllers.reasons.routes.ItemNumberController.onLoad().url,
-              HtmlContent("""<span aria-hidden="true">Change</span>"""),
-              Some(ConfirmReasonDetailMessages.itemChange)
+      Seq(
+        SummaryListRow(
+          key = Key(
+            content = Text(ConfirmReasonDetailMessages.itemNumber),
+            classes = "govuk-!-width-two-thirds"
+          ),
+          value = Value(
+            content = HtmlContent(itemNo.toString)
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItem(
+                  controllers.reasons.routes.ItemNumberController.onLoad().url,
+                  HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                  Some(ConfirmReasonDetailMessages.itemChange)
+                )
+              )
             )
-          )
-        ))
-      ))
-    }
-
-  def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmReasonDetailMessages.originalValue),
-        classes = "govuk-!-width-two-thirds"
-      ),
-      value = Value(
-        content = HtmlContent(originalValue)
-      ),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItem(
-            controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-            HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.originalAmountChange)
           )
         )
       )
+    }
+
+  def originalAmount(originalValue: String, boxNumber: Int): Seq[SummaryListRow] =
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmReasonDetailMessages.originalValue),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(originalValue)
+        ),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.originalAmountChange)
+              )
+            )
+          )
+        )
       )
-    )
     )
 
   def amendedAmount(amendedValue: String, boxNumber: Int): Seq[SummaryListRow] =
-    Seq(SummaryListRow(
-      key = Key(
-        content = Text(ConfirmReasonDetailMessages.amendedValue),
-        classes = "govuk-!-width-two-thirds"
-      ),
-      value = Value(
-        content = HtmlContent(amendedValue)
-      ),
-      actions = Some(Actions(
-        items = Seq(
-          ActionItem(
-            controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
-            HtmlContent("""<span aria-hidden="true">Change</span>"""),
-            Some(ConfirmReasonDetailMessages.amendedAmountChange)
+    Seq(
+      SummaryListRow(
+        key = Key(
+          content = Text(ConfirmReasonDetailMessages.amendedValue),
+          classes = "govuk-!-width-two-thirds"
+        ),
+        value = Value(
+          content = HtmlContent(amendedValue)
+        ),
+        actions = Some(
+          Actions(
+            items = Seq(
+              ActionItem(
+                controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber).url,
+                HtmlContent("""<span aria-hidden="true">Change</span>"""),
+                Some(ConfirmReasonDetailMessages.amendedAmountChange)
+              )
+            )
           )
-        ))
-      ),
-    )
+        )
+      )
     )
 
   def reasons(box: Int, item: Option[Int] = None, originalValue: String, amendedValue: String): Seq[SummaryList] = Seq(
     SummaryList(
-      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(amendedValue, box)
+      boxNumber(box) ++ itemNumber(item).getOrElse(Seq.empty) ++ originalAmount(originalValue, box) ++ amendedAmount(
+        amendedValue,
+        box
+      )
     )
   )
 }

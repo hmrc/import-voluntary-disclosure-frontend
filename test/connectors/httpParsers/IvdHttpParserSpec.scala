@@ -56,70 +56,89 @@ class IvdHttpParserSpec extends AnyWordSpec with Matchers with ReusableValues {
 
     "called to parse a Eori Details" should {
       "the http response status is OK and valid content" in {
-        EoriDetailsReads.read("", "",
-          HttpResponse(Status.OK, cleanedDetailsJson, Map.empty[String, Seq[String]])) mustBe Right(eoriDetails)
+        EoriDetailsReads.read(
+          "",
+          "",
+          HttpResponse(Status.OK, cleanedDetailsJson, Map.empty[String, Seq[String]])
+        ) mustBe Right(eoriDetails)
       }
 
       "the http response status is OK with valid Json" in {
-        EoriDetailsReads.read("", "",
-          HttpResponse(Status.OK, cleanedDetailsJson, Map.empty[String, Seq[String]])) mustBe Right(eoriDetailsJson)
+        EoriDetailsReads.read(
+          "",
+          "",
+          HttpResponse(Status.OK, cleanedDetailsJson, Map.empty[String, Seq[String]])
+        ) mustBe Right(eoriDetailsJson)
       }
 
       "return an ErrorModel when invalid Json is returned" in {
-        EoriDetailsReads.read("", "",
-          HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for EoriDetailsHttpParser"))
+        EoriDetailsReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
+          Left(
+            ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from SUB09 API for EoriDetailsHttpParser")
+          )
       }
 
       "return an ErrorModel when NOT_FOUND is returned" in {
-        EoriDetailsReads.read("", "",
-          HttpResponse(Status.NOT_FOUND, "")) mustBe
-          Left(ErrorModel(Status.NOT_FOUND,
-            "Downstream error returned when retrieving EoriDetails model from back end"))
+        EoriDetailsReads.read("", "", HttpResponse(Status.NOT_FOUND, "")) mustBe
+          Left(
+            ErrorModel(Status.NOT_FOUND, "Downstream error returned when retrieving EoriDetails model from back end")
+          )
       }
     }
 
     "called to parse a Submission Response" should {
       "the http response status is OK with valid Json" in {
-        SubmissionResponseReads.read("", "",
-          HttpResponse(Status.OK, submissionResponseJson, Map.empty[String, Seq[String]])) mustBe Right(submissionResponseModel)
+        SubmissionResponseReads.read(
+          "",
+          "",
+          HttpResponse(Status.OK, submissionResponseJson, Map.empty[String, Seq[String]])
+        ) mustBe Right(submissionResponseModel)
       }
 
       "return an ErrorModel when invalid Json is returned" in {
-        SubmissionResponseReads.read("", "",
-          HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,
-            "Invalid Json returned from IVD Submission"))
+        SubmissionResponseReads.read("", "", HttpResponse(Status.OK, Json.obj(), Map.empty[String, Seq[String]])) mustBe
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from IVD Submission"))
       }
 
       "return an ErrorModel when NOT_FOUND is returned" in {
-        SubmissionResponseReads.read("", "",
-          HttpResponse(Status.NOT_FOUND, "")) mustBe
-          Left(ErrorModel(Status.NOT_FOUND,
-            "Downstream error returned when retrieving SubmissionResponse from back end"))
+        SubmissionResponseReads.read("", "", HttpResponse(Status.NOT_FOUND, "")) mustBe
+          Left(
+            ErrorModel(Status.NOT_FOUND, "Downstream error returned when retrieving SubmissionResponse from back end")
+          )
       }
     }
 
     "called to parse an Update Response" should {
       "the http response status is OK with valid Json" in {
-        UpdateResponseReads.read("", "",
-          HttpResponse(Status.OK, updateResponseJson, Map.empty[String, Seq[String]])) mustBe Right(updateResponseModel)
+        UpdateResponseReads.read(
+          "",
+          "",
+          HttpResponse(Status.OK, updateResponseJson, Map.empty[String, Seq[String]])
+        ) mustBe Right(updateResponseModel)
       }
 
       "return the correct error when received BAD_REQUEST for InvalidCaseId" in {
-        val response = HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 1, "errorMessage" -> "Invalid case ID").toString())
+        val response =
+          HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 1, "errorMessage" -> "Invalid case ID").toString())
         UpdateResponseReads.read("", "", response) mustBe Left(UpdateCaseError.InvalidCaseId)
       }
 
       "return the correct error when received BAD_REQUEST for CaseAlreadyClosed" in {
-        val response = HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 2, "errorMessage" -> "Case is already closed").toString())
+        val response = HttpResponse(
+          Status.BAD_REQUEST,
+          Json.obj("errorCode" -> 2, "errorMessage" -> "Case is already closed").toString()
+        )
         UpdateResponseReads.read("", "", response) mustBe Left(UpdateCaseError.CaseAlreadyClosed)
       }
 
       "return an error when NOT_FOUND is returned" in {
-        UpdateResponseReads.read("", "",
-          HttpResponse(Status.NOT_FOUND, "")) mustBe
-          Left(UpdateCaseError.UnexpectedError(Status.NOT_FOUND, Some("Downstream error returned when retrieving UpdateResponse from back end")))
+        UpdateResponseReads.read("", "", HttpResponse(Status.NOT_FOUND, "")) mustBe
+          Left(
+            UpdateCaseError.UnexpectedError(
+              Status.NOT_FOUND,
+              Some("Downstream error returned when retrieving UpdateResponse from back end")
+            )
+          )
       }
     }
 

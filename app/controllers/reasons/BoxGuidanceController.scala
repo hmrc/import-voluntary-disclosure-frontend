@@ -18,6 +18,7 @@ package controllers.reasons
 
 import config.AppConfig
 import controllers.actions._
+import models.SelectedDutyTypes.{SelectedDutyType, Vat}
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -28,22 +29,29 @@ import javax.inject.{Inject, Singleton}
 import scala.concurrent.Future
 
 @Singleton
-class BoxGuidanceController @Inject()(identify: IdentifierAction,
-                                      getData: DataRetrievalAction,
-                                      mcc: MessagesControllerComponents,
-                                      requireData: DataRequiredAction,
-                                      view: BoxGuidanceView,
-                                      implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+class BoxGuidanceController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  mcc: MessagesControllerComponents,
+  requireData: DataRequiredAction,
+  view: BoxGuidanceView,
+  implicit val appConfig: AppConfig
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-  private lazy val backLink = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+  private[reasons] def backLink(dutyType: SelectedDutyType): Call = {
+    if (dutyType == Vat) {
+      controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
+    } else {
+      controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
+    }
+  }
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-
     if (request.userAnswers.get(UnderpaymentReasonsPage).getOrElse(Seq.empty).nonEmpty) {
       Future.successful(Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()))
     } else {
-      Future.successful(Ok(view(backLink, !request.checkMode)))
+      Future.successful(Ok(view(backLink(request.dutyType), !request.checkMode)))
     }
   }
 

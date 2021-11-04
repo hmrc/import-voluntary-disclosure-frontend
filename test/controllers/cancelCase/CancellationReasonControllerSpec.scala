@@ -21,12 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.cancelCase.CancellationReasonFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import pages.{CheckModePage, UpdateAdditionalInformationPage}
+import models.requests._
+import pages.CheckModePage
+import pages.updateCase.UpdateAdditionalInformationPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc._
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers._
 import views.html.cancelCase.CancellationReasonView
 
 import scala.concurrent.Future
@@ -36,8 +37,9 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val view: CancellationReasonView = app.injector.instanceOf[CancellationReasonView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-      .set(CheckModePage, false).success.value
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(CheckModePage, false).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -57,8 +59,16 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new CancellationReasonController(authenticatedAction, dataRetrievalAction, dataRequiredAction,
-      mockSessionRepository, messagesControllerComponents, formProvider, view, ec)
+    lazy val controller = new CancellationReasonController(
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      formProvider,
+      view,
+      ec
+    )
   }
 
   "GET onLoad" should {
@@ -68,7 +78,8 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id").set(UpdateAdditionalInformationPage, "some text").success.value)
+      override val userAnswers: Option[UserAnswers] =
+        Some(UserAnswers("some-cred-id").set(UpdateAdditionalInformationPage, "some text").success.value)
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -79,7 +90,8 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
     "payload contains valid data when check mode is false" should {
 
       "return a SEE OTHER response" in new Test {
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
@@ -90,9 +102,12 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
             .set(UpdateAdditionalInformationPage, "some text").success.value
             .set(CheckModePage, false).success.value
         )
-        val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         lazy val result: Future[Result] = controller.onSubmit(request)
-        redirectLocation(result) mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad().url)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url
+        )
       }
 
       "update the UserAnswers in session" in new Test {
@@ -110,7 +125,6 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
     }
   }
 
-
   "backLink" when {
     "not in change mode" should {
       "point to Disclosure Referencer Number Page" in new Test {
@@ -127,7 +141,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
         lazy val result: Option[Call] = controller.backLink()
-        result mustBe Some(controllers.cancelCase.routes.CancellationReasonController.onLoad())
+        result mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
       }
     }
 

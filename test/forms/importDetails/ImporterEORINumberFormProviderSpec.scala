@@ -21,8 +21,8 @@ import play.api.data.Form
 
 class ImporterEORINumberFormProviderSpec extends FormSpecBase {
 
-  private final val importerEORINumber = "GB345834921000"
-  private final val importerEORINumberNonEmptyKey = "importerEORINumber.error.nonEmpty"
+  private final val importerEORINumber                = "GB345834921000"
+  private final val importerEORINumberNonEmptyKey     = "importerEORINumber.error.nonEmpty"
   private final val importerEORINumberIncorrectFormat = "importerEORINumber.error.incorrectFormat"
 
   def formBuilder(importerEORI: String = ""): Map[String, String] = Map(
@@ -37,7 +37,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new ImporterEORINumberFormProvider()().bind(missingOption)
+      val form                               = new ImporterEORINumberFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

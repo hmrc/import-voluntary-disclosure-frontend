@@ -25,7 +25,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
     "no data entered single entry" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new MoreInformationFormProvider()().bind(missingOption)
+      val form                               = new MoreInformationFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -43,7 +43,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
     "no data entered bulk entry" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new MoreInformationFormProvider()(false).bind(missingOption)
+      val form                               = new MoreInformationFormProvider()(false).bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -61,7 +61,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
     "maxLength data entered single entry" should {
 
       val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
-      val form = new MoreInformationFormProvider()().bind(maxLengthData)
+      val form                               = new MoreInformationFormProvider()().bind(maxLengthData)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -79,7 +79,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
     "maxLength data entered bulk entry" should {
 
       val maxLengthData: Map[String, String] = Map("value" -> "c" * 1501)
-      val form = new MoreInformationFormProvider()(false).bind(maxLengthData)
+      val form                               = new MoreInformationFormProvider()(false).bind(maxLengthData)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -94,11 +94,10 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
       }
     }
 
-
     "emoji entered for single entry" should {
 
       val emoji: Map[String, String] = Map("value" -> "😀")
-      val form = new MoreInformationFormProvider()().bind(emoji)
+      val form                       = new MoreInformationFormProvider()().bind(emoji)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -116,7 +115,7 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
     "emoji entered for bulk entry" should {
 
       val emoji: Map[String, String] = Map("value" -> "😀")
-      val form = new MoreInformationFormProvider()(false).bind(emoji)
+      val form                       = new MoreInformationFormProvider()(false).bind(emoji)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -146,10 +145,12 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
 
   "Binding a form with valid punctuation characters" should {
 
-    val data = Map("value" ->
-      """"!?@£$%^&*(na
+    val data = Map(
+      "value" ->
+        """"!?@£$%^&*(na
         |
-        |sd671263-'][./,"""".stripMargin)
+        |sd671263-'][./,"""".stripMargin
+    )
     val form = new MoreInformationFormProvider()().bind(data)
 
     "result in a form with no errors" in {
@@ -158,4 +159,3 @@ class MoreInformationFormProviderSpec extends FormSpecBase {
   }
 
 }
-

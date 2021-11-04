@@ -17,23 +17,29 @@
 package viewmodels.cya
 
 import base.SpecBase
-import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.importDetails._
+import models.reasons.{BoxNumber, UnderpaymentReason}
+import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.{ContactAddress, ContactDetails, FileUploadInfo, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
-import pages._
-import pages.underpayments.UnderpaymentDetailSummaryPage
+import pages.contactDetails._
+import pages.docUpload.FileUploadPage
+import pages.importDetails._
+import pages.paymentInfo.DefermentPage
+import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
+import pages.underpayments.{PostponedVatAccountingPage, UnderpaymentDetailSummaryPage}
 import views.data.CheckYourAnswersData._
 
 import java.time.{LocalDate, LocalDateTime}
-import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.{BoxNumber, UnderpaymentReason}
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, ImporterEORIExistsPage, ImporterEORINumberPage, ImporterNamePage, ImporterVatRegisteredPage, NumberOfEntriesPage, OneCustomsProcedureCodePage, UserTypePage}
-import pages.reasons.{HasFurtherInformationPage, MoreInformationPage, UnderpaymentReasonsPage}
 
-
-class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues with OptionValues with CYASummaryListHelper {
+class CYASummaryListHelperSpec
+    extends SpecBase
+    with Matchers
+    with TryValues
+    with OptionValues
+    with CYASummaryListHelper {
 
   trait Test {
 
@@ -41,17 +47,20 @@ class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues wit
       .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
       .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 12, 1))).success.value
       .set(AcceptanceDatePage, true).success.value
-      .set(FileUploadPage, Seq(FileUploadInfo(
-        "file-ref-1",
-        "Example.pdf",
-        "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-        LocalDateTime.now,
-        "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-        "application/pdf"))).success.value
-      .set(DeclarantContactDetailsPage, ContactDetails(
-        "First Second",
-        "email@email.com",
-        "1234567890")).success.value
+      .set(
+        FileUploadPage,
+        Seq(
+          FileUploadInfo(
+            "file-ref-1",
+            "Example.pdf",
+            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+            LocalDateTime.now,
+            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+            "application/pdf"
+          )
+        )
+      ).success.value
+      .set(DeclarantContactDetailsPage, ContactDetails("First Second", "email@email.com", "1234567890")).success.value
       .set(TraderAddressPage, ContactAddress("21 Street", Some("Mayfair"), "London", Some("SN6PY"), "UK")).success.value
       .set(OneCustomsProcedureCodePage, true).success.value
       .set(EnterCustomsProcedureCodePage, "4000C09").success.value
@@ -61,14 +70,14 @@ class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues wit
       .set(ImporterVatRegisteredPage, true).success.value
       .set(UserTypePage, UserType.Representative).success.value
       .set(ImporterNamePage, "First Second").success.value
-      .set(ImporterAddressPage, ContactAddress(
-        "21 Street", Some("Mayfair"), "London", None, "UK")).success.value
+      .set(ImporterAddressPage, ContactAddress("21 Street", Some("Mayfair"), "London", None, "UK")).success.value
       .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
-      .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(
-        boxNumber = BoxNumber.Box22, original = "50", amended = "60")
-      )).success.value
-      .set(HasFurtherInformationPage, true).success.value
+      .set(
+        UnderpaymentReasonsPage,
+        Seq(UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"))
+      ).success.value
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
+      .set(PostponedVatAccountingPage, false).success.value
 
     implicit lazy val dataRequest = DataRequest(
       OptionalDataRequest(
@@ -82,6 +91,16 @@ class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues wit
       userAnswers
     )
 
+  }
+
+  "buildSummaryListForPrint" should {
+    "produce rows without links" in new Test {
+      buildSummaryListForPrint(caseId, dateSubmitted).flatMap(_.summaryList.rows.flatMap(_.actions)) mustBe Seq.empty
+    }
+
+    "produce a valid model for disclosure summary" in new Test {
+      buildDisclosureSummaryList(caseId, dateSubmitted) mustBe disclosureSummaryList
+    }
   }
 
   "buildEntryDetails" should {
@@ -118,16 +137,46 @@ class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues wit
       override val userAnswers: UserAnswers = UserAnswers("")
         .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
         .set(AcceptanceDatePage, true).success.value
-        .set(FileUploadPage, Seq(FileUploadInfo(
-          "file-ref-1",
-          "Example.pdf",
-          "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-          LocalDateTime.now,
-          "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-          "application/pdf"))).success.value
+        .set(
+          FileUploadPage,
+          Seq(
+            FileUploadInfo(
+              "file-ref-1",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          )
+        ).success.value
         .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
         .set(UserTypePage, UserType.Importer).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
+        .set(DefermentPage, false).success.value
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
+    }
+
+    "produce a valid model when Duty is used and PVA is not an option" in new Test {
+      override val userAnswers: UserAnswers = UserAnswers("")
+        .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
+        .set(AcceptanceDatePage, true).success.value
+        .set(
+          FileUploadPage,
+          Seq(
+            FileUploadInfo(
+              "file-ref-1",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          )
+        ).success.value
+        .set(MoreInformationPage, "Stock losses in warehouse across multiple entries.").success.value
+        .set(UserTypePage, UserType.Importer).success.value
+        .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
         .set(DefermentPage, false).success.value
       buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
     }
@@ -165,8 +214,7 @@ class CYASummaryListHelperSpec extends SpecBase with Matchers with TryValues wit
         .set(ImporterVatRegisteredPage, true).success.value
         .set(UserTypePage, UserType.Importer).success.value
         .set(ImporterNamePage, "First Second").success.value
-        .set(ImporterAddressPage, ContactAddress(
-          "21 Street", None, "London", Some("SN6PY"), "UK")).success.value
+        .set(ImporterAddressPage, ContactAddress("21 Street", None, "London", Some("SN6PY"), "UK")).success.value
 
       buildImporterDetailsSummaryList mustBe List.empty
     }

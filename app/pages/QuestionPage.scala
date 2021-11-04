@@ -18,5 +18,4 @@ package pages
 
 import models.{Gettable, Settable}
 
-
 trait QuestionPage[A] extends Gettable[A] with Settable[A]

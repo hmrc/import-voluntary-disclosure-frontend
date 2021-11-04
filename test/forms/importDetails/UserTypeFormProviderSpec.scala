@@ -26,7 +26,7 @@ class UserTypeFormProviderSpec extends FormSpecBase {
     "the no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form = new UserTypeFormProvider()().bind(missingOption)
+      val form                               = new UserTypeFormProvider()().bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -59,10 +59,9 @@ class UserTypeFormProviderSpec extends FormSpecBase {
   "A form built from a valid model" should {
     "generate the correct mapping" in {
       val model = UserType.Importer
-      val form = new UserTypeFormProvider()().fill(model)
+      val form  = new UserTypeFormProvider()().fill(model)
       form.data mustBe Map("value" -> "importer")
     }
   }
 
 }
-

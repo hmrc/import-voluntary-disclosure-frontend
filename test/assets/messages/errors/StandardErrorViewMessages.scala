@@ -20,7 +20,6 @@ import messages.BaseMessages
 
 object StandardErrorViewMessages extends BaseMessages {
   val title = "Sorry, there is a problem with the service"
-  val heading = "Sorry, there is a problem with the service"
-  val p1 = "Try again later."
-  val p2 = "We have not saved your answers. When the service is available, you will have to start again."
+  val p1    = "Try again later."
+  val p2    = "We have not saved your answers. When the service is available, you will have to start again."
 }

@@ -27,8 +27,8 @@ import uk.gov.hmrc.http.HttpResponse
 class UpScanInitiateHttpParserSpec extends AnyWordSpec with Matchers {
 
   class Test(status: Int, json: JsValue = Json.obj(), responseHeaders: Map[String, Seq[String]] = Map.empty) {
-    private val httpMethod = "POST"
-    private val url = "/"
+    private val httpMethod         = "POST"
+    private val url                = "/"
     val httpResponse: HttpResponse = HttpResponse(status, json.toString, responseHeaders)
 
     def readResponse: UpScanInitiateHttpParser.UpscanInitiateResponse =
@@ -67,7 +67,9 @@ class UpScanInitiateHttpParserSpec extends AnyWordSpec with Matchers {
       readResponse mustBe Left(BadRequest)
     }
     s"return $UnexpectedFailure if random non Success status code returned" in new Test(Status.INTERNAL_SERVER_ERROR) {
-      readResponse mustBe Left(UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "Unexpected response, status 500 returned"))
+      readResponse mustBe Left(
+        UnexpectedFailure(Status.INTERNAL_SERVER_ERROR, "Unexpected response, status 500 returned")
+      )
     }
   }
 }

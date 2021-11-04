@@ -30,15 +30,17 @@
     pageTitle = messages("cya.pageTitle"),
     showBackLink = false
 ) {
-    @h1(messages("cya.heading"))
+    @h1(messages("cya.pageTitle"))
     @answers.map { answer =>
-
-        @if(answer.heading.startsWith("Deferment")) {
-            @h3(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
-        } else {
-            @h2(messages(answer.heading), id = Some(answer.heading.replaceAll("\\s","")))
+        @{
+            answer.heading match {
+                case Some(heading) if heading.startsWith("Deferment") =>
+                    h3(messages(heading), id = Some(heading.replaceAll("\\s","")))
+                case Some(heading) =>
+                    h2(messages(heading), id = Some(heading.replaceAll("\\s","")))
+                case None => ()
+            }
         }
-
 
         @govukSummaryList(answer.summaryList)
     }

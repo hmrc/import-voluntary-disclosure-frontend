@@ -29,16 +29,17 @@ import views.html.importDetails.EnterCustomsProcedureCodeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
-                                                    getData: DataRetrievalAction,
-                                                    requireData: DataRequiredAction,
-                                                    sessionRepository: SessionRepository,
-                                                    mcc: MessagesControllerComponents,
-                                                    view: EnterCustomsProcedureCodeView,
-                                                    formProvider: EnterCustomsProcedureCodeFormProvider,
-                                                    implicit val ec: ExecutionContext
-                                                   )
-  extends FrontendController(mcc) with I18nSupport {
+class EnterCustomsProcedureCodeController @Inject() (
+  identify: IdentifierAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: EnterCustomsProcedureCodeView,
+  formProvider: EnterCustomsProcedureCodeFormProvider,
+  implicit val ec: ExecutionContext
+) extends FrontendController(mcc)
+    with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(EnterCustomsProcedureCodePage).fold(formProvider()) {
@@ -53,7 +54,7 @@ class EnterCustomsProcedureCodeController @Inject()(identify: IdentifierAction,
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(EnterCustomsProcedureCodePage, value))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
           if (request.checkMode) {
             Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())

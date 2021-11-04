@@ -37,12 +37,13 @@ import scala.concurrent.Future
 
 class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithEntryDetails: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-    .set(
-      EntryDetailsPage,
-      EntryDetails("123", "123456Q", LocalDate of(2020, 1, 1))
-    ).success.value
-    .set(CheckModePage, false).success.value
+  val userAnswersWithEntryDetails: Option[UserAnswers] = Some(
+    UserAnswers("some-cred-id")
+      .set(
+        EntryDetailsPage,
+        EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))
+      ).success.value
+      .set(CheckModePage, false).success.value
   )
 
   private def fakeRequestGenerator(cpc: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -62,7 +63,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       ec
     )
     private lazy val EnterCustomsProcedureCodeView = app.injector.instanceOf[EnterCustomsProcedureCodeView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    private lazy val dataRetrievalAction           = new FakeDataRetrievalAction(userAnswers)
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -74,7 +75,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-    val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
+    val userAnswers: Option[UserAnswers]                    = userAnswersWithEntryDetails
     val formProvider: EnterCustomsProcedureCodeFormProvider = injector.instanceOf[EnterCustomsProcedureCodeFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: EnterCustomsProcedureCodeFormProvider = formProvider
@@ -87,8 +88,9 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     }
 
     "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId")
-        .set(EnterCustomsProcedureCodePage, "1234A12").success.value
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(EnterCustomsProcedureCodePage, "1234A12").success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -102,13 +104,13 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response when correct data with numeric only values" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234567"))
+        lazy val result: Future[Result]               = controller.onSubmit(fakeRequestGenerator("1234567"))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.underpayments.routes.UnderpaymentStartController.onLoad().url)
       }
       "return a SEE OTHER response when correct data with an alphanumeric value" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234A12"))
+        lazy val result: Future[Result]               = controller.onSubmit(fakeRequestGenerator("1234A12"))
         status(result) mustBe Status.SEE_OTHER
       }
       "update the UserAnswers in session" in new Test {
@@ -122,26 +124,29 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     "payload contains valid data when check mode is true" should {
 
       "return a SEE OTHER response when correct data with numeric only values" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of(2020, 1, 1))).success.value
-          .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234567"))
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
       "return a SEE OTHER response when correct data with an alphanumeric value" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of(2020, 1, 1))).success.value
-          .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234A12"))
         status(result) mustBe Status.SEE_OTHER
       }
       "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id")
-          .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of(2020, 1, 1))).success.value
-          .set(CheckModePage, true).success.value
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(CheckModePage, true).success.value
         )
         await(controller.onSubmit(fakeRequestGenerator("1234567")))
         verifyCalls()
@@ -153,25 +158,25 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
       "return BAD REQUEST when invalid data is sent" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("123456!"))
+        val result: Future[Result]                    = controller.onSubmit(fakeRequestGenerator("123456!"))
         status(result) mustBe Status.BAD_REQUEST
       }
 
       "return BAD REQUEST when data is more than 7 in length" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("12345678"))
+        val result: Future[Result]                    = controller.onSubmit(fakeRequestGenerator("12345678"))
         status(result) mustBe Status.BAD_REQUEST
       }
 
       "return BAD REQUEST when data there is an alpha character at the beginning" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("A2345678"))
+        val result: Future[Result]                    = controller.onSubmit(fakeRequestGenerator("A2345678"))
         status(result) mustBe Status.BAD_REQUEST
       }
 
       "return BAD REQUEST when data there is an alpha character at the end" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
-        val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234567A"))
+        val result: Future[Result]                    = controller.onSubmit(fakeRequestGenerator("1234567A"))
         status(result) mustBe Status.BAD_REQUEST
       }
 
@@ -187,8 +192,9 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     "not in change mode" should {
       "point to acceptance date page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, false).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, false).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad())
@@ -198,8 +204,9 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id")
-            .set(CheckModePage, true).success.value
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
           )
         lazy val result: Option[Call] = controller.backLink()
         result mustBe None

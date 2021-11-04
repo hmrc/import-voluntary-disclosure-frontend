@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.ImporterEORIExistsFormProvider
-import messages.{BaseMessages, ImporterEORIExistsMessages}
+import messages.BaseMessages
+import messages.importDetails.ImporterEORIExistsMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -37,8 +38,8 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the ImportEORIExists page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      val form: Form[Boolean]              = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterEORIExistsMessages.title)
@@ -53,8 +54,8 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterEORIExistsMessages.errorPrefix + ImporterEORIExistsMessages.title)
@@ -64,7 +65,9 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error message against the field" in {
-        elementText("#value-error") mustBe ImporterEORIExistsMessages.errorPrefix + ImporterEORIExistsMessages.requiredError
+        elementText(
+          "#value-error"
+        ) mustBe ImporterEORIExistsMessages.errorPrefix + ImporterEORIExistsMessages.requiredError
       }
 
     }
@@ -72,12 +75,12 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
-    lazy val view: Html = injectedView(form, backLink)(fakeRequest, messages)
+    val form: Form[Boolean]              = formProvider.apply()
+    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct h1 of '${ImporterEORIExistsMessages.h1}'" in {
-      elementText("h1") mustBe ImporterEORIExistsMessages.h1
+    s"have the correct h1 of '${ImporterEORIExistsMessages.title}'" in {
+      elementText("h1") mustBe ImporterEORIExistsMessages.title
     }
 
     s"have the correct hint of '${ImporterEORIExistsMessages.hint}'" in {
@@ -85,11 +88,15 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have the correct value for the first radio button of '${ImporterEORIExistsMessages.siteYes}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(1)") mustBe ImporterEORIExistsMessages.siteYes
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(1)"
+      ) mustBe ImporterEORIExistsMessages.siteYes
     }
 
     s"have the correct value for the second radio button of '${ImporterEORIExistsMessages.siteNo}'" in {
-      elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe ImporterEORIExistsMessages.siteNo
+      elementText(
+        "#main-content > div > div > form > div > fieldset > div > div:nth-child(2)"
+      ) mustBe ImporterEORIExistsMessages.siteNo
     }
 
     "render a back link with the correct URL" in {

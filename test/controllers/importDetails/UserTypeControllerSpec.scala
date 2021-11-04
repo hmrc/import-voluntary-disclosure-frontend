@@ -37,32 +37,38 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
-    val userAnswers: Option[UserAnswers] = None
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+    val userAnswers: Option[UserAnswers]        = None
+    private lazy val dataRetrievalAction        = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
-    val form: UserTypeFormProvider = formProvider
+    val form: UserTypeFormProvider         = formProvider
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
       updateCaseEnabled = false,
-      privateCitizenEnabled = false,
-      otherItemEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
 
     MockedSessionRepository.set(Future.successful(true))
 
-    lazy val controller = new UserTypeController(authenticatedAction, dataRetrievalAction,
-      mockSessionRepository, messagesControllerComponents, form, userTypePage, appConfig, ec)
+    lazy val controller = new UserTypeController(
+      authenticatedAction,
+      dataRetrievalAction,
+      mockSessionRepository,
+      messagesControllerComponents,
+      form,
+      userTypePage,
+      appConfig,
+      ec
+    )
   }
 
   "GET onLoad" should {
     "return OK" in new Test {
       private val previousAnswers = UserAnswers("some cred ID").set(UserTypePage, UserType.Importer).success.value
       override val userAnswers: Option[UserAnswers] = Some(previousAnswers)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -77,13 +83,13 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     "submitting a 'Importer' answer in the the initial user journey" should {
 
       "return a SEE OTHER response" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request             = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "redirect to the number of entries page" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request             = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.importDetails.routes.NumberOfEntriesController.onLoad().url)
       }
@@ -152,14 +158,14 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(answers)
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request             = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "redirect the user to the CYA page" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(answers)
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
+        private val request             = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         lazy val result: Future[Result] = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
@@ -184,7 +190,10 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     "in the the initial user journey" should {
       "go to the confirm EORI details page" in new Test {
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None
+          IdentifierRequest(fakeRequest, "", ""),
+          "cred-id",
+          "eori",
+          None
         )
         private val backLink = controller.backLink()(request)
 
@@ -196,13 +205,14 @@ class UserTypeControllerSpec extends ControllerSpecBase {
           privateBetaAllowList = List.empty,
           privateBetaAllowListEnabled = false,
           updateCaseEnabled = true,
-          privateCitizenEnabled = true,
-          otherItemEnabled = true,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", None
+          IdentifierRequest(fakeRequest, "", ""),
+          "cred-id",
+          "eori",
+          None
         )
         private val backLink = controller.backLink()(request)
 
@@ -215,7 +225,10 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       "go to the CYA page" in new Test {
         private val answers = UserAnswers("cred-id").set(CheckModePage, true).success.value
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""), "cred-id", "eori", Some(answers)
+          IdentifierRequest(fakeRequest, "", ""),
+          "cred-id",
+          "eori",
+          Some(answers)
         )
         private val backLink = controller.backLink()(request)
 

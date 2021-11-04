@@ -28,10 +28,11 @@ class AddressLookupJsonBuilderSpec extends SpecBase {
     "Serialize to new address lookup Json when using addressLookup v2" when {
 
       "the continueUrl is given to the user" in {
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)) mustBe addressLookupV2Json
+        Json.toJson(
+          AddressLookupJsonBuilder("/lookup-address/confirmed")(messagesApi, MockAppConfig)
+        ) mustBe addressLookupV2Json
       }
     }
   }
 
 }
-
