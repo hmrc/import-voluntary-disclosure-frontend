@@ -46,7 +46,7 @@ unauthorised.agent.details.2 = The subscription will be unsuccessful if another 
 unauthorised.privateBeta.pageTitle = Sorry, the service is unavailable
 unauthorised.privateBeta.para1 = We are working on updating this service.
 unauthorised.privateBeta.para2.1 = 'In the meantime you can '
-unauthorised.privateBeta.para2.2 = 'tell us about an underpayment of customs duty or import VAT using the existing C2001 form'
+unauthorised.privateBeta.para2.2 = 'tell us about an underpayment of customs duty or import VAT using the existing C2001 form.'
 
 #Feedback
 feedback.before = This is a new service – your

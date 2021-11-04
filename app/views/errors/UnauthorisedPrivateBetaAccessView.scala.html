@@ -18,7 +18,8 @@
 
 @this(layout: Layout,
         h1: components.h1,
-        p: components.p
+        p: components.p,
+        standard_link: components.standard_link
 )
 
 @()(implicit request: Request[_], messages: Messages, appConfig: AppConfig)
@@ -36,8 +37,10 @@
     }
 
     @p {
-       @messages("unauthorised.privateBeta.para2.1")
-       <a href="@appConfig.c2001Url">@messages("unauthorised.privateBeta.para2.2")</a>.
+        @messages("unauthorised.privateBeta.para2.1")
+        @standard_link(
+            appConfig.c2001Url, messages("unauthorised.privateBeta.para2.2")
+        )
     }
 
 }
