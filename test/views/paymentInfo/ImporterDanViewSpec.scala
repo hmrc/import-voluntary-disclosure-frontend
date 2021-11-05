@@ -18,7 +18,8 @@ package views.paymentInfo
 
 import base.ViewBaseSpec
 import forms.paymentInfo.ImporterDanFormProvider
-import messages.{BaseMessages, ImporterDanMessages}
+import messages.BaseMessages
+import messages.paymentInfo.ImporterDanMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

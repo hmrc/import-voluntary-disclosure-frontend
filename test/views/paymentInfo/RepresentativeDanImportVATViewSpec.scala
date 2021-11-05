@@ -18,7 +18,8 @@ package views.paymentInfo
 
 import base.ViewBaseSpec
 import forms.paymentInfo.RepresentativeDanFormProvider
-import messages.{BaseMessages, RepresentativeDanImportVATMessages}
+import messages.BaseMessages
+import messages.paymentInfo.RepresentativeDanImportVATMessages
 import models.RepresentativeDan
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

@@ -18,7 +18,8 @@ package views.paymentInfo
 
 import base.ViewBaseSpec
 import forms.paymentInfo.DefermentFormProvider
-import messages.{BaseMessages, DefermentMessages}
+import messages.BaseMessages
+import messages.paymentInfo.DefermentMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

@@ -18,7 +18,8 @@ package views.shared
 
 import base.ViewBaseSpec
 import forms.shared.RemoveUploadedFileFormProvider
-import messages.{BaseMessages, DefermentMessages, RemoveUploadedFileMessages}
+import messages.paymentInfo.DefermentMessages
+import messages.{BaseMessages, RemoveUploadedFileMessages}
 import models.Index
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
