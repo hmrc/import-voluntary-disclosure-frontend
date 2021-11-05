@@ -18,7 +18,7 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
-import messages.RemoveUnderpaymentReasonMessages
+import messages.reasons.RemoveUnderpaymentReasonMessages
 import models.reasons.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

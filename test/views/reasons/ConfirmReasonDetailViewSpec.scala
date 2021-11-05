@@ -17,7 +17,7 @@
 package views.reasons
 
 import base.ViewBaseSpec
-import messages.ConfirmReasonDetailMessages
+import messages.reasons.ConfirmReasonDetailMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc.Call

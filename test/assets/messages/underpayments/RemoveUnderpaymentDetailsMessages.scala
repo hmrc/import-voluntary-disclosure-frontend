@@ -16,7 +16,8 @@
 
 package messages.underpayments
 
-import messages.{BaseMessages, ExpectedContent}
+import messages.BaseMessages
+import messages.reasons.ExpectedContent
 
 object RemoveUnderpaymentDetailsMessages extends BaseMessages {
 

@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.ItemNumberFormProvider
-import messages.{BaseMessages, ItemNumberMessages}
+import messages.BaseMessages
+import messages.reasons.ItemNumberMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

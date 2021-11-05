@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package messages
+package messages.reasons
 
+import messages.BaseMessages
 import models.reasons.BoxNumber
 import models.reasons.BoxNumber.BoxNumber
 
