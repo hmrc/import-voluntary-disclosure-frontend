@@ -18,7 +18,7 @@ package views.serviceEntry
 
 import base.ViewBaseSpec
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import messages.WhatDoYouWantToDoMessages
+import messages.serviceEntry.WhatDoYouWantToDoMessages
 import models.SubmissionType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

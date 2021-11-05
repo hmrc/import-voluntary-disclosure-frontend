@@ -17,7 +17,8 @@
 package views.serviceEntry
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, SessionTimeoutMessages}
+import messages.BaseMessages
+import messages.serviceEntry.SessionTimeoutMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
