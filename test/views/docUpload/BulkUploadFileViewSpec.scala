@@ -18,7 +18,7 @@ package views.docUpload
 
 import base.ViewBaseSpec
 import forms.shared.UploadFileFormProvider
-import messages.BulkUploadFileMessages
+import messages.docUpload.BulkUploadFileMessages
 import mocks.config.MockAppConfig
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup

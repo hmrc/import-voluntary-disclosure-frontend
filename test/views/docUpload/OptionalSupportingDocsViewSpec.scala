@@ -18,7 +18,8 @@ package views.docUpload
 
 import base.ViewBaseSpec
 import forms.docUpload.OptionalSupportingDocsFormProvider
-import messages.{BaseMessages, OptionalDocumentsMessages}
+import messages.BaseMessages
+import messages.docUpload.OptionalDocumentsMessages
 import models.OptionalDocument
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

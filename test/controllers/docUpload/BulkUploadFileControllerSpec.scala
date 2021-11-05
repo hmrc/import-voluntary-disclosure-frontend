@@ -19,7 +19,7 @@ package controllers.docUpload
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.shared.UploadFileFormProvider
-import messages.BulkUploadFileMessages
+import messages.docUpload.BulkUploadFileMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService

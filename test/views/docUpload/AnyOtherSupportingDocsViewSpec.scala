@@ -18,7 +18,8 @@ package views.docUpload
 
 import base.ViewBaseSpec
 import forms.docUpload.AnyOtherSupportingDocsFormProvider
-import messages.{AnyOtherSupportingDocsMessages, BaseMessages}
+import messages.BaseMessages
+import messages.docUpload.AnyOtherSupportingDocsMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
