@@ -16,7 +16,7 @@
 
 package views.data.cya
 
-import messages.UpdateCaseCYAMessages
+import messages.updateCase.UpdateCaseCYAMessages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya

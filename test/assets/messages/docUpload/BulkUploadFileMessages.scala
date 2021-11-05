@@ -1,6 +1,6 @@
 package messages.docUpload
 
-import messages.UploadFileCommonMessages
+import messages.shared.UploadFileCommonMessages
 
 object BulkUploadFileMessages extends UploadFileCommonMessages {
 

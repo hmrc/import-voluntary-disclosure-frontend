@@ -16,7 +16,8 @@
 
 package assets
 
-import messages.{AddressLookupMessages, BaseMessages, ImporterAddressLookupMessages}
+import messages.addressLookup.{AddressLookupMessages, ImporterAddressLookupMessages}
+import messages.BaseMessages
 import models.addressLookup.AddressModel
 import play.api.libs.json.{JsObject, Json}
 

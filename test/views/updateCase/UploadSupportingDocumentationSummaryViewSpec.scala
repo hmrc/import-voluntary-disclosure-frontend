@@ -19,7 +19,7 @@ package views.updateCase
 import base.ViewBaseSpec
 import forms.shared.UploadAnotherFileFormProvider
 import messages.BaseMessages
-import messages.docUpload.UploadAnotherFileMessages
+import messages.shared.UploadAnotherFileMessages
 import models.Index
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

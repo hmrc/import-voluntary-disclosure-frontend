@@ -1,6 +1,6 @@
 package messages.paymentInfo
 
-import messages.UploadFileCommonMessages
+import messages.shared.UploadFileCommonMessages
 
 object UploadAuthorityMessages extends UploadFileCommonMessages {
 

@@ -1,4 +1,4 @@
-package messages.docUpload
+package messages.shared
 
 import messages.BaseMessages
 
