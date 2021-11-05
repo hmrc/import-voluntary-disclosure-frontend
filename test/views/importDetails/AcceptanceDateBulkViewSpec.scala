@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.AcceptanceDateFormProvider
-import messages.{AcceptanceDateBulkMessages, BaseMessages}
+import messages.BaseMessages
+import messages.importDetails.AcceptanceDateBulkMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

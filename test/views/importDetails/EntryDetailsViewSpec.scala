@@ -17,10 +17,10 @@
 package views.importDetails
 
 import java.time.LocalDate
-
 import base.ViewBaseSpec
 import forms.importDetails.EntryDetailsFormProvider
-import messages.{BaseMessages, EntryDetailsMessages}
+import messages.BaseMessages
+import messages.importDetails.EntryDetailsMessages
 import models.importDetails.EntryDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

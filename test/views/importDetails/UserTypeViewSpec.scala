@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.UserTypeFormProvider
-import messages.{BaseMessages, UserTypeMessages}
+import messages.BaseMessages
+import messages.importDetails.UserTypeMessages
 import models.importDetails.UserType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

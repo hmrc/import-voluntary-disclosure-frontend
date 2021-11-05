@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.NumberOfEntriesFormProvider
-import messages.{BaseMessages, NumberOfEntriesMessages}
+import messages.BaseMessages
+import messages.importDetails.NumberOfEntriesMessages
 import models.importDetails.NumberOfEntries
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
