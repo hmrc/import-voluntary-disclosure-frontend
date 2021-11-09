@@ -830,7 +830,6 @@ whatDoYouWantToDo.pageTitle = What do you want to do?
 whatDoYouWantToDo.createCase = Start a new underpayment disclosure
 whatDoYouWantToDo.updateCase = Add more information to an existing underpayment disclosure
 whatDoYouWantToDo.cancelCase = Cancel an existing underpayment disclosure
-whatDoYouWantToDo.createCaseHint = Tell us about an underpayment of Customs Duty or import VAT.
 whatDoYouWantToDo.error.required = Select what you want to do
 
 # Disclosure Reference Number Page
@@ -943,7 +942,6 @@ cancelCase.cya.referenceNumber.change = Change reference number
 cancelCase.cya.reasonCancellation.change = Change reason for cancellation
 cancelCase.cya.supportingDocumentation.change = Change supporting documentation?
 cancelCase.cya.uploadedFiles.change = Change uploaded files
-
 
 # Cancel Case - Confirmation Page
 cancelCase.confirmation.pageTitle = Confirmation
