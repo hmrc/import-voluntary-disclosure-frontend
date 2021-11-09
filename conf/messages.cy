@@ -841,7 +841,7 @@ disclosureReference.pageTitle = What is the disclosure reference number?
 disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
 disclosureReference.detailsHeader = I do not have the disclosure reference number
 disclosureReference.details_p1 = 'You will need to email us at '
-disclosureReference.details_p2 = ' with the entry details, the EORI number and name of the importer, and the information you want to add to the disclosure.'
+disclosureReference.details_p2 = ' with the entry details, the importer’s name and EORI number, and the information you want to add to the disclosure.'
 disclosureReference.error.required = Enter the disclosure reference number
 disclosureReference.error.format = Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31
 
