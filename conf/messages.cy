@@ -849,7 +849,7 @@ cancelCase.disclosureReference.pageTitle = What is the disclosure reference numb
 cancelCase.disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made.
 cancelCase.disclosureReference.detailsHeader = I do not have the disclosure reference number
 cancelCase.disclosureReference.details_p1 = 'You will need to email us at '
-cancelCase.disclosureReference.details_p2 = ' with the entry details, the EORI number and name of the importer, and the reason for cancelling the disclosure.'
+cancelCase.disclosureReference.details_p2 = ' with the entry details, the importer’s name and EORI number, and the reason for cancelling the disclosure.'
 cancelCase.disclosureReference.error.required = Enter the disclosure reference number
 cancelCase.disclosureReference.error.format = Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31
 
