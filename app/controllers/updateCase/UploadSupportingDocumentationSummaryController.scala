@@ -22,11 +22,10 @@ import models.requests.DataRequest
 import models.{FileUploadInfo, Index}
 import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.data.Form
-import play.api.i18n.I18nSupport
+import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.ActionItemHelper
 import views.html.updateCase.UploadSupportingDocumentationSummaryView
 
 import javax.inject.Inject
@@ -81,20 +80,20 @@ class UploadSupportingDocumentationSummaryController @Inject() (
           Future.successful(BadRequest(view(formWithErrors, buildSummaryList(files))))
       }
 
-  private def buildSummaryList(files: Seq[FileUploadInfo])(implicit request: DataRequest[AnyContent]) = {
+  private def buildSummaryList(files: Seq[FileUploadInfo])(implicit messages: Messages) = {
     val summaryListRows = files.zipWithIndex.map { case (file, index) =>
+      val removeLink = controllers.updateCase.routes.RemoveSupportingDocumentationController.onLoad(Index(index)).url
       SummaryListRow(
         key = Key(content = Text(file.fileName), classes = s"govuk-!-width-one-third govuk-!-font-weight-regular".trim),
-        actions = Some(
-          Actions(
-            items = Seq(
-              ActionItemHelper.createDeleteActionItem(
-                controllers.updateCase.routes.RemoveSupportingDocumentationController.onLoad(Index(index)).url,
-                s"Remove ${file.fileName}"
-              )
-            )
-          )
-        )
+        value = Value(
+          content = HtmlContent(
+            s"""<a href=$removeLink class="govuk-link"> <span aria-hidden="true">${messages("common.remove")}</span>
+               |<span class="govuk-visually-hidden"> Remove ${file.fileName}</span>
+               |</a>""".stripMargin
+          ),
+          classes = "govuk-summary-list__actions"
+        ),
+        actions = None
       )
     }
     SummaryList(
