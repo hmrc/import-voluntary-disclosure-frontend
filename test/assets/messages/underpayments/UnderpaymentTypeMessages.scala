@@ -33,6 +33,6 @@ object UnderpaymentTypeMessages extends BaseMessages {
   val definitiveCountervailingDuty  = "Definitive Countervailing Duty (A40)"
   val provisionalCountervailingDuty = "Provisional Countervailing Duty (A45)"
   val agriculturalDuty              = "Customs Duty on Agricultural products (A10)"
-  val compensatoryDuty              = "Compensatory interest (D10)"
+  val compensatoryDuty              = "Compensatory Duty (D10)"
 
 }

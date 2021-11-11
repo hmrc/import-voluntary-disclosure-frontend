@@ -155,7 +155,7 @@ underpaymentType.A35.radio = Provisional Anti-Dumping Duty (A35)
 underpaymentType.A40.radio = Definitive Countervailing Duty (A40)
 underpaymentType.A45.radio = Provisional Countervailing Duty (A45)
 underpaymentType.A10.radio = Customs Duty on Agricultural products (A10)
-underpaymentType.D10.radio = Compensatory interest (D10)
+underpaymentType.D10.radio = Compensatory Duty (D10)
 
 # Underpayment Details
 underpaymentDetails.originalAmount = Amount that was paid
