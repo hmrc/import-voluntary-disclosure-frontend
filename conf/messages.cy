@@ -143,9 +143,9 @@ pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re usi
 
 
 # Underpayment Type
-underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
-underpaymentType.secondTime.pageTitle = Which type of tax or duty was underpaid?
-underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid you will be able to select further types later.
+underpaymentType.firstTime.pageTitle = Which tax or duty do you want to tell us about first?
+underpaymentType.secondTime.pageTitle = Which tax or duty was underpaid?
+underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid, you can tell us about them later.
 underpaymentType.error.required = Select the type of tax or duty that was underpaid
 underpaymentType.B00.radio = Import VAT (B00)
 underpaymentType.A00.radio = Customs Duty (A00)
