@@ -143,7 +143,7 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         )
       }
 
-      "redirect to Reason Underpayment Summary page when not removing other reason" in new Test {
+      "redirect to Change Underpayment Reason page when not removing other reason" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(
