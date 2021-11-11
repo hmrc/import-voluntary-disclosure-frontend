@@ -20,7 +20,6 @@ import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import views.ViewUtils.hint
 
 sealed trait SubmissionType
 
@@ -49,9 +48,6 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] {
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"whatDoYouWantToDo.${value.toString}")),
-        hint = if (value == CreateCase) {
-          Some(hint(messages("whatDoYouWantToDo.createCaseHint")))
-        } else None,
         checked = form("value").value.contains(value.toString)
       )
     }
