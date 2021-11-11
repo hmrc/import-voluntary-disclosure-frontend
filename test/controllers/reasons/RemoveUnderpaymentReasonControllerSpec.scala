@@ -143,18 +143,19 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         )
       }
 
-      "redirect to Change Underpayment Reason page when selecting not to remove underpayment" in new Test {
+      "redirect to the Change Underpayment Reason page when selecting not to remove underpayment" in new Test {
+        val itemNumber = 0
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("credId")
             .set(
               UnderpaymentReasonsPage,
-              Seq(underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0))
+              Seq(underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber))
             ).success.value
             .set(
               ChangeUnderpaymentReasonPage,
               ChangeUnderpaymentReason(
-                original = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0),
-                changed = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber = 0)
+                original = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber),
+                changed = underpaymentReason(boxNumber = BoxNumber.OtherItem, itemNumber)
               )
             ).success.value
         )
