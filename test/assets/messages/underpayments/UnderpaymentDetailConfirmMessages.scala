@@ -33,7 +33,7 @@ object UnderpaymentDetailConfirmMessages extends BaseMessages {
   val A40pageTitle          = "Definitive Countervailing Duty"
   val A45pageTitle          = "Provisional Countervailing Duty"
   val A10pageTitle          = "Customs Duty on Agricultural Products"
-  val D10pageTitle          = "Compensatory Duty"
+  val D10pageTitle          = "Compensatory interest"
   val beginningMessage      = "Confirm the "
   val endingMessage         = " underpayment details"
   val dueToHMRC             = " owed to HMRC"
