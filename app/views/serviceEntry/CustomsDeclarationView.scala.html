@@ -25,7 +25,8 @@
     @layout(
         pageTitle = messages("privateCitizen.customsDeclaration.pageTitle"),
         form = Some(form),
-        showBackLink = false) {
+        showBackLink = false,
+        isAuthorised = false) {
 
         @errorSummary(form.errors)
 
