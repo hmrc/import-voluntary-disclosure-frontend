@@ -18,7 +18,7 @@ package views.docUpload
 
 import base.ViewBaseSpec
 import forms.shared.UploadFileFormProvider
-import messages.UploadFileMessages
+import messages.docUpload.UploadFileMessages
 import mocks.config.MockAppConfig
 import models.OptionalDocument
 import models.OptionalDocument._

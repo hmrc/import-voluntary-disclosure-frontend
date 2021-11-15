@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.BoxNumberFormProvider
-import messages.{BaseMessages, BoxNumberMessages}
+import messages.BaseMessages
+import messages.reasons.BoxNumberMessages
 import models.reasons.BoxNumber.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

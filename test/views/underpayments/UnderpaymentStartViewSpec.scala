@@ -17,7 +17,8 @@
 package views.underpayments
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, UnderpaymentStartMessages}
+import messages.BaseMessages
+import messages.underpayments.UnderpaymentStartMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

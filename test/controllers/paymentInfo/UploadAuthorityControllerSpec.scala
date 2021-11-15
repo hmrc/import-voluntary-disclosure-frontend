@@ -19,7 +19,7 @@ package controllers.paymentInfo
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.shared.UploadFileFormProvider
-import messages.UploadAuthorityMessages
+import messages.paymentInfo.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService

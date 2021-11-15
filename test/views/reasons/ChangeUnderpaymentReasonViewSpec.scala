@@ -17,7 +17,7 @@
 package views.reasons
 
 import base.ViewBaseSpec
-import messages.ChangeUnderpaymentReasonMessages
+import messages.reasons.ChangeUnderpaymentReasonMessages
 import models.reasons.BoxNumber
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

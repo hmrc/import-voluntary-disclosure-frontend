@@ -16,7 +16,7 @@
 
 package views.data
 
-import messages.{CYAMessages, SummaryForPrintMessages}
+import messages.cya.{CYAMessages, SummaryForPrintMessages}
 import models.{ContactAddress, ContactDetails}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat

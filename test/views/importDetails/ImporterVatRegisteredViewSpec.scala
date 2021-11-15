@@ -18,7 +18,8 @@ package views.importDetails
 
 import base.ViewBaseSpec
 import forms.importDetails.ImporterVatRegisteredFormProvider
-import messages.{BaseMessages, ImporterVatRegisteredMessages}
+import messages.BaseMessages
+import messages.importDetails.ImporterVatRegisteredMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

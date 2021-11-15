@@ -16,7 +16,7 @@
 
 package views.data.cya
 
-import messages.CYAMessages
+import messages.cya.CYAMessages
 import models.SelectedDutyTypes.{Both, Duty, Vat}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._

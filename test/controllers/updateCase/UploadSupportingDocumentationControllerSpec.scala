@@ -19,7 +19,7 @@ package controllers.updateCase
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.shared.UploadFileFormProvider
-import messages.UploadSupportingDocumentationMessages
+import messages.updateCase.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService

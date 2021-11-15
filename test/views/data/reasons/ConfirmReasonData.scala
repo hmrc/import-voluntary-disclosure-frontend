@@ -16,7 +16,7 @@
 
 package views.data.reasons
 
-import messages.ConfirmReasonDetailMessages
+import messages.reasons.ConfirmReasonDetailMessages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 

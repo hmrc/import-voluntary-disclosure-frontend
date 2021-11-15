@@ -18,7 +18,7 @@ package views.updateCase
 
 import base.ViewBaseSpec
 import forms.updateCase.DisclosureReferenceNumberFormProvider
-import messages.DisclosureReferenceNumberMessages
+import messages.updateCase.DisclosureReferenceNumberMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

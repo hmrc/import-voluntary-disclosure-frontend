@@ -18,7 +18,8 @@ package views.updateCase
 
 import base.ViewBaseSpec
 import forms.updateCase.UpdateAdditionalInformationFormProvider
-import messages.{BaseMessages, UpdateAdditionalInformationMessages}
+import messages.BaseMessages
+import messages.updateCase.UpdateAdditionalInformationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

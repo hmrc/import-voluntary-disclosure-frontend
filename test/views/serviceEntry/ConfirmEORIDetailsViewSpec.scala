@@ -17,7 +17,7 @@
 package views.serviceEntry
 
 import base.ViewBaseSpec
-import messages.ConfirmEORIDetailsMessages
+import messages.serviceEntry.ConfirmEORIDetailsMessages
 import mocks.config.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

@@ -17,7 +17,8 @@
 package views.updateCase
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, DisclosureNotFoundMessages}
+import messages.BaseMessages
+import messages.updateCase.DisclosureNotFoundMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

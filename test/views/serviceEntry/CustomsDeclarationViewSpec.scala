@@ -18,7 +18,7 @@ package views.serviceEntry
 
 import base.ViewBaseSpec
 import forms.serviceEntry.CustomsDeclarationFormProvider
-import messages.CustomsDeclarationMessages._
+import messages.serviceEntry.CustomsDeclarationMessages._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

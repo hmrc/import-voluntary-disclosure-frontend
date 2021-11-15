@@ -17,7 +17,8 @@
 package views.docUpload
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, SupportingDocMessages}
+import messages.BaseMessages
+import messages.docUpload.SupportingDocMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

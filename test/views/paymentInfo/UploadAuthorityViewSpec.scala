@@ -18,7 +18,7 @@ package views.paymentInfo
 
 import base.ViewBaseSpec
 import forms.shared.UploadFileFormProvider
-import messages.UploadAuthorityMessages
+import messages.paymentInfo.UploadAuthorityMessages
 import mocks.config.MockAppConfig
 import models.upscan.{Reference, UpScanInitiateResponse, UploadFormTemplate}
 import org.jsoup.Jsoup

@@ -17,7 +17,7 @@
 package views.updateCase
 
 import base.ViewBaseSpec
-import messages.UpdateCaseConfirmationMessages
+import messages.updateCase.UpdateCaseConfirmationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
