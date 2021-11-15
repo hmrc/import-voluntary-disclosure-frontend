@@ -87,10 +87,6 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
       ) mustBe WhatDoYouWantToDoMessages.createCaseMsg
     }
 
-    "have the correct value for the first radio button hint" in {
-      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.createCaseHint
-    }
-
     "have the correct value for the second radio button" in {
       elementText(
         "#main-content > div > div > form > div > fieldset > div > div:nth-child(2) > label"

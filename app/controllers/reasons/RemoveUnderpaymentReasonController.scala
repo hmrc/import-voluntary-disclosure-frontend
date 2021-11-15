@@ -19,7 +19,7 @@ package controllers.reasons
 import controllers.actions._
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
 import models.UserAnswers
-import models.reasons.{BoxNumber, UnderpaymentReason}
+import models.reasons.UnderpaymentReason
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
@@ -86,11 +86,7 @@ class RemoveUnderpaymentReasonController @Inject() (
             case _ => Future.successful(InternalServerError("Invalid sequence of reasons"))
           }
         } else {
-          if (changeReason.boxNumber == BoxNumber.OtherItem) {
-            Future.successful(Redirect(controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()))
-          } else {
             Future.successful(Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
-          }
         }
       }
     )

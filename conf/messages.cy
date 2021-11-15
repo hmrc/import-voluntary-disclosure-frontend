@@ -143,9 +143,9 @@ pvaHandoff.p2 = how to account for import VAT on your VAT Return if you’re usi
 
 
 # Underpayment Type
-underpaymentType.firstTime.pageTitle = Which type of tax or duty do you want to tell us about first?
-underpaymentType.secondTime.pageTitle = Which type of tax or duty was underpaid?
-underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid you will be able to select further types later.
+underpaymentType.firstTime.pageTitle = Which tax or duty do you want to tell us about first?
+underpaymentType.secondTime.pageTitle = Which tax or duty was underpaid?
+underpaymentType.firstTime.hint = If more than one type of tax or duty was underpaid, you can tell us about them later.
 underpaymentType.error.required = Select the type of tax or duty that was underpaid
 underpaymentType.B00.radio = Import VAT (B00)
 underpaymentType.A00.radio = Customs Duty (A00)
@@ -156,7 +156,7 @@ underpaymentType.A35.radio = Provisional Anti-Dumping Duty (A35)
 underpaymentType.A40.radio = Definitive Countervailing Duty (A40)
 underpaymentType.A45.radio = Provisional Countervailing Duty (A45)
 underpaymentType.A10.radio = Customs Duty on Agricultural products (A10)
-underpaymentType.D10.radio = Compensatory Duty (D10)
+underpaymentType.D10.radio = Compensatory interest (D10)
 
 # Underpayment Details
 underpaymentDetails.originalAmount = Amount that was paid
@@ -172,7 +172,7 @@ underpaymentDetails.A35.pageTitle = Provisional Anti-Dumping Duty
 underpaymentDetails.A40.pageTitle = Definitive Countervailing Duty
 underpaymentDetails.A45.pageTitle = Provisional Countervailing Duty
 underpaymentDetails.A10.pageTitle = Customs Duty on Agricultural Products
-underpaymentDetails.D10.pageTitle = Compensatory Duty
+underpaymentDetails.D10.pageTitle = Compensatory interest
 underpaymentDetails.error.originalNonEmpty = Enter the amount that was paid, in pounds
 underpaymentDetails.error.originalNonNumber = Amount that was paid must be a number like 7235 or 67.39
 underpaymentDetails.error.originalOutOfRange = Amount that was paid must be between £0 and £9,999,999,999.99
@@ -193,7 +193,7 @@ changeUnderpaymentDetails.A35.pageTitle = Change the Provisional Anti-Dumping Du
 changeUnderpaymentDetails.A40.pageTitle = Change the Definitive Countervailing Duty underpayment details
 changeUnderpaymentDetails.A45.pageTitle = Change the Provisional Countervailing Duty underpayment details
 changeUnderpaymentDetails.A10.pageTitle = Change the Customs Duty on Agricultural Products underpayment details
-changeUnderpaymentDetails.D10.pageTitle = Change the Compensatory Duty underpayment details
+changeUnderpaymentDetails.D10.pageTitle = Change the Compensatory interest underpayment details
 changeUnderpaymentDetails.B00.removeLink = Remove this import VAT underpayment
 changeUnderpaymentDetails.A00.removeLink = Remove this Customs Duty underpayment
 changeUnderpaymentDetails.E00.removeLink = Remove this excise duty underpayment
@@ -203,7 +203,7 @@ changeUnderpaymentDetails.A35.removeLink = Remove this Provisional Anti-Dumping 
 changeUnderpaymentDetails.A40.removeLink = Remove this Definitive Countervailing Duty underpayment
 changeUnderpaymentDetails.A45.removeLink = Remove this Provisional Countervailing Duty underpayment
 changeUnderpaymentDetails.A10.removeLink = Remove this Customs Duty on Agricultural Products underpayment
-changeUnderpaymentDetails.D10.removeLink = Remove this Compensatory Duty underpayment
+changeUnderpaymentDetails.D10.removeLink = Remove this Compensatory interest underpayment
 
 # Remove Underpayment Details
 removeUnderpaymentDetails.B00.pageTitle = Are you sure you want to remove this import VAT underpayment?
@@ -215,7 +215,7 @@ removeUnderpaymentDetails.A35.pageTitle = Are you sure you want to remove this P
 removeUnderpaymentDetails.A40.pageTitle = Are you sure you want to remove this Definitive Countervailing Duty underpayment?
 removeUnderpaymentDetails.A45.pageTitle = Are you sure you want to remove this Provisional Countervailing Duty underpayment?
 removeUnderpaymentDetails.A10.pageTitle = Are you sure you want to remove this Customs Duty on Agricultural Products underpayment?
-removeUnderpaymentDetails.D10.pageTitle = Are you sure you want to remove this Compensatory Duty underpayment?
+removeUnderpaymentDetails.D10.pageTitle = Are you sure you want to remove this Compensatory interest underpayment?
 removeUnderpaymentDetails.B00.error.message = Select yes if you want to remove this import VAT underpayment
 removeUnderpaymentDetails.A00.error.message = Select yes if you want to remove this Customs Duty VAT underpayment
 removeUnderpaymentDetails.E00.error.message = Select yes if you want to remove this excise duty underpayment
@@ -225,7 +225,7 @@ removeUnderpaymentDetails.A35.error.message = Select yes if you want to remove t
 removeUnderpaymentDetails.A40.error.message = Select yes if you want to remove this Definitive Countervailing Duty underpayment
 removeUnderpaymentDetails.A45.error.message = Select yes if you want to remove this Provisional Countervailing Duty underpayment
 removeUnderpaymentDetails.A10.error.message = Select yes if you want to remove this Customs Duty on Agricultural Products underpayment
-removeUnderpaymentDetails.D10.error.message = Select yes if you want to remove this Compensatory Duty underpayment
+removeUnderpaymentDetails.D10.error.message = Select yes if you want to remove this Compensatory interest underpayment
 
 # Underpayment Details Summary
 underpaymentDetailsSummary.pageTitle = Underpayment summary
@@ -245,7 +245,7 @@ underpaymentDetailsSummary.A35 = Provisional Anti-Dumping Duty
 underpaymentDetailsSummary.A40 = Definitive Countervailing Duty
 underpaymentDetailsSummary.A45 = Provisional Countervailing Duty
 underpaymentDetailsSummary.A10 = Customs Duty on Agricultural Products
-underpaymentDetailsSummary.D10 = Compensatory Duty
+underpaymentDetailsSummary.D10 = Compensatory interest
 underpaymentDetailsSummary.B00.change = Change Import VAT underpayment
 underpaymentDetailsSummary.A00.change = Change Customs Duty underpayment
 underpaymentDetailsSummary.E00.change = Change Excise duty underpayment
@@ -255,7 +255,7 @@ underpaymentDetailsSummary.A35.change = Change Provisional Anti-Dumping Duty und
 underpaymentDetailsSummary.A40.change = Change Definitive Countervailing Duty underpayment
 underpaymentDetailsSummary.A45.change = Change Provisional Countervailing Duty underpayment
 underpaymentDetailsSummary.A10.change = Change Customs Duty on Agricultural Products underpayment
-underpaymentDetailsSummary.D10.change = Change Compensatory Duty underpayment
+underpaymentDetailsSummary.D10.change = Change Compensatory interest underpayment
 
 # Underpayment Details Confirm
 underpaymentDetailsConfirm.B00.pageTitle = Confirm the import VAT underpayment details
@@ -267,7 +267,7 @@ underpaymentDetailsConfirm.A35.pageTitle = Confirm the Provisional Anti-Dumping 
 underpaymentDetailsConfirm.A40.pageTitle = Confirm the Definitive Countervailing Duty underpayment details
 underpaymentDetailsConfirm.A45.pageTitle = Confirm the Provisional Countervailing Duty underpayment details
 underpaymentDetailsConfirm.A10.pageTitle = Confirm the Customs Duty on Agricultural Products underpayment details
-underpaymentDetailsConfirm.D10.pageTitle = Confirm the Compensatory Duty underpayment details
+underpaymentDetailsConfirm.D10.pageTitle = Confirm the Compensatory interest underpayment details
 underpaymentDetailsConfirm.originalAmount = Amount that was paid
 underpaymentDetailsConfirm.amendedAmount = Amount that should have been paid
 underpaymentDetailsConfirm.B00.dueToHmrc = Import VAT owed to HMRC
@@ -279,7 +279,7 @@ underpaymentDetailsConfirm.A35.dueToHmrc = Provisional Anti-Dumping Duty owed to
 underpaymentDetailsConfirm.A40.dueToHmrc = Definitive Countervailing Duty owed to HMRC
 underpaymentDetailsConfirm.A45.dueToHmrc = Provisional Countervailing Duty owed to HMRC
 underpaymentDetailsConfirm.A10.dueToHmrc = Customs Duty on Agricultural Products owed to HMRC
-underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory Duty owed to HMRC
+underpaymentDetailsConfirm.D10.dueToHmrc = Compensatory interest owed to HMRC
 underpaymentDetailsConfirm.B00.original.change = Change the import VAT underpayment details amount that was paid
 underpaymentDetailsConfirm.B00.amended.change = Change the import VAT underpayment details amount that should have been paid
 underpaymentDetailsConfirm.A00.original.change = Change the Customs Duty underpayment details amount that was paid
@@ -298,8 +298,8 @@ underpaymentDetailsConfirm.A45.original.change = Change the Provisional Counterv
 underpaymentDetailsConfirm.A45.amended.change = Change the Provisional Countervailing Duty underpayment details amount that should have been paid
 underpaymentDetailsConfirm.A10.original.change = Change the Customs Duty on Agricultural Products underpayment details amount that was paid
 underpaymentDetailsConfirm.A10.amended.change = Change the Customs Duty on Agricultural Products underpayment details amount that should have been paid
-underpaymentDetailsConfirm.D10.original.change = Change the Compensatory Duty underpayment details amount that was paid
-underpaymentDetailsConfirm.D10.amended.change = Change the Compensatory Duty underpayment details amount that should have been paid
+underpaymentDetailsConfirm.D10.original.change = Change the Compensatory interest underpayment details amount that was paid
+underpaymentDetailsConfirm.D10.amended.change = Change the Compensatory interest underpayment details amount that should have been paid
 
 # Postponed VAT Accounting page
 postponedVatAccounting.pageTitle = Does {0} use postponed VAT accounting?
@@ -717,7 +717,7 @@ confirmEORI.name = Name
 confirmEORI.vatNumber = VAT number
 confirmEORI.vatNumberNotPresent = Not VAT registered
 confirmEORI.notThisEoriText = Not the right EORI number?
-confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password.
+confirmEORI.notThisEoriExpandedLinkText = Sign in using a different Government Gateway user ID and password
 
 # Confirm EORI Details Error
 confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
@@ -833,7 +833,6 @@ whatDoYouWantToDo.pageTitle = What do you want to do?
 whatDoYouWantToDo.createCase = Start a new underpayment disclosure
 whatDoYouWantToDo.updateCase = Add more information to an existing underpayment disclosure
 whatDoYouWantToDo.cancelCase = Cancel an existing underpayment disclosure
-whatDoYouWantToDo.createCaseHint = Tell us about an underpayment of Customs Duty or import VAT.
 whatDoYouWantToDo.error.required = Select what you want to do
 
 # Disclosure Reference Number Page
@@ -841,7 +840,7 @@ disclosureReference.pageTitle = What is the disclosure reference number?
 disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made. It may also be included in an email from us requesting more information.
 disclosureReference.detailsHeader = I do not have the disclosure reference number
 disclosureReference.details_p1 = 'You will need to email us at '
-disclosureReference.details_p2 = ' with the entry details, the EORI number and name of the importer, and the information you want to add to the disclosure.'
+disclosureReference.details_p2 = ' with the entry details, the importer’s name and EORI number, and the information you want to add to the disclosure.'
 disclosureReference.error.required = Enter the disclosure reference number
 disclosureReference.error.format = Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31
 
@@ -850,7 +849,7 @@ cancelCase.disclosureReference.pageTitle = What is the disclosure reference numb
 cancelCase.disclosureReference.hint = This is 22 characters and starts with C18, it was issued by us when the disclosure was made.
 cancelCase.disclosureReference.detailsHeader = I do not have the disclosure reference number
 cancelCase.disclosureReference.details_p1 = 'You will need to email us at '
-cancelCase.disclosureReference.details_p2 = ' with the entry details, the EORI number and name of the importer, and the reason for cancelling the disclosure.'
+cancelCase.disclosureReference.details_p2 = ' with the entry details, the importer’s name and EORI number, and the reason for cancelling the disclosure.'
 cancelCase.disclosureReference.error.required = Enter the disclosure reference number
 cancelCase.disclosureReference.error.format = Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31
 
@@ -946,7 +945,6 @@ cancelCase.cya.referenceNumber.change = Change reference number
 cancelCase.cya.reasonCancellation.change = Change reason for cancellation
 cancelCase.cya.supportingDocumentation.change = Change supporting documentation?
 cancelCase.cya.uploadedFiles.change = Change uploaded files
-
 
 # Cancel Case - Confirmation Page
 cancelCase.confirmation.pageTitle = Confirmation

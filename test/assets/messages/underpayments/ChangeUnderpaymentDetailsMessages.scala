@@ -31,7 +31,7 @@ object ChangeUnderpaymentDetailsMessages extends BaseMessages {
   val A40pageTitle  = "Change the Definitive Countervailing Duty underpayment details"
   val A45pageTitle  = "Change the Provisional Countervailing Duty underpayment details"
   val A10pageTitle  = "Change the Customs Duty on Agricultural Products underpayment details"
-  val D10pageTitle  = "Change the Compensatory Duty underpayment details"
+  val D10pageTitle  = "Change the Compensatory interest underpayment details"
   val B00removeLink = "Remove this import VAT underpayment"
   val A00removeLink = "Remove this Customs Duty underpayment"
   val E00removeLink = "Remove this excise duty underpayment"
@@ -41,7 +41,7 @@ object ChangeUnderpaymentDetailsMessages extends BaseMessages {
   val A40removeLink = "Remove this Definitive Countervailing Duty underpayment"
   val A45removeLink = "Remove this Provisional Countervailing Duty underpayment"
   val A10removeLink = "Remove this Customs Duty on Agricultural Products underpayment"
-  val D10removeLink = "Remove this Compensatory Duty underpayment"
+  val D10removeLink = "Remove this Compensatory interest underpayment"
 
   val originalAmount = "Amount that was paid"
   val amendedAmount  = "Amount that should have been paid"
