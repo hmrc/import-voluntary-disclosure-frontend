@@ -51,7 +51,6 @@ class AuthActionSpec extends SpecBase {
     lazy val config = new MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -147,7 +146,6 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = true,
-          updateCaseEnabled = false,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -165,7 +163,6 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(),
           privateBetaAllowListEnabled = true,
-          updateCaseEnabled = false,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )
@@ -186,7 +183,6 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = false,
-          updateCaseEnabled = false,
           welshToggleEnabled = true,
           cancelCaseEnabled = false
         )

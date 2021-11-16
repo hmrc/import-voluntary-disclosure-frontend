@@ -24,7 +24,6 @@ object MockAppConfig
     extends MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -32,7 +31,6 @@ object MockAppConfig
 class MockAppConfig(
   override val privateBetaAllowList: List[String] = List.empty,
   override val privateBetaAllowListEnabled: Boolean = false,
-  override val updateCaseEnabled: Boolean = false,
   override val welshToggleEnabled: Boolean = false,
   override val cancelCaseEnabled: Boolean = false
 ) extends AppConfig {

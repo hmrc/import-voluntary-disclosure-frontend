@@ -45,7 +45,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -188,26 +187,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
   "Calling backLink" when {
     "in the the initial user journey" should {
-      "go to the confirm EORI details page" in new Test {
-        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""),
-          "cred-id",
-          "eori",
-          None
-        )
-        private val backLink = controller.backLink()(request)
-
-        backLink mustBe controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
-      }
-
       "go to the confirm New Or Update Case page" in new Test {
-        override lazy val appConfig = new MockAppConfig(
-          privateBetaAllowList = List.empty,
-          privateBetaAllowListEnabled = false,
-          updateCaseEnabled = true,
-          welshToggleEnabled = true,
-          cancelCaseEnabled = false
-        )
         val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
           IdentifierRequest(fakeRequest, "", ""),
           "cred-id",
