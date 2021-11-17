@@ -98,10 +98,8 @@ class UserTypeController @Inject() (
 
     if (cyaMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
-    } else if (appConfig.updateCaseEnabled || appConfig.cancelCaseEnabled) {
-      controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
     } else {
-      controllers.serviceEntry.routes.ConfirmEORIDetailsController.onLoad()
+      controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
     }
   }
 

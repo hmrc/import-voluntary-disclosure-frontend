@@ -34,7 +34,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )
@@ -80,7 +79,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     "render a continue button with the correct URL " in {
       elementAttributes(".govuk-button") must contain(
-        "href" -> controllers.importDetails.routes.UserTypeController.onLoad().url
+        "href" -> controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url
       )
     }
 
@@ -91,7 +90,6 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = true,
       welshToggleEnabled = true,
       cancelCaseEnabled = false
     )

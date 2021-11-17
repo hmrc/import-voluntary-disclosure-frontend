@@ -37,12 +37,10 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] {
     CancelCase
   )
 
-  def options(form: Form[_], cancelCase: Boolean, updateCase: Boolean)(implicit messages: Messages): Seq[RadioItem] = {
-    val values = (cancelCase, updateCase) match {
-      case (true, true)  => Seq(CreateCase, UpdateCase, CancelCase)
-      case (true, false) => Seq(CreateCase, CancelCase)
-      case (false, true) => Seq(CreateCase, UpdateCase)
-      case _             => Seq.empty
+  def options(form: Form[_], cancelCase: Boolean)(implicit messages: Messages): Seq[RadioItem] = {
+    val values = cancelCase match {
+      case true  => Seq(CreateCase, UpdateCase, CancelCase)
+      case false => Seq(CreateCase, UpdateCase)
     }
     values.map { value =>
       RadioItem(
