@@ -29,7 +29,7 @@ object ImporterConfirmationMessages extends BaseMessages {
     "We have received your disclosure of underpaid Customs Duty or import VAT on multiple entries. All of these entries were for goods imported by Test User, EORI number GB123456789."
   val whatHappensNext = "What happens next"
   val p2Deferment =
-    "We will check the information you have provided and process the payment using the deferment account details you have provided. We will then send you a C18 Post Clearance Demand Note in the post, usually within 10 days."
+    "We will check the information you have provided and process the payment using the deferment account details you have provided. We will then send you a C18 Post Clearance Demand Note in the post, usually within 10 working days."
   val p3Deferment =
     "If we find that the amount owed differs from what you have told us, we will contact you before we process the payment."
   val p2OtherPayment =
