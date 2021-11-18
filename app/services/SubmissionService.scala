@@ -255,7 +255,7 @@ class SubmissionService @Inject() (ivdSubmissionConnector: IvdSubmissionConnecto
       Json.obj(
         "representative" -> (Json.obj(
           "eori"           -> data.knownDetails.eori,
-          "contactDetails" -> data.declarantContactDetails,
+          "contactDetails" -> data.declarantContactDetails.copy(fullName = data.knownDetails.name),
           "address"        -> data.traderAddress
         ) ++ vatNumber)
       )
