@@ -24,15 +24,13 @@ object MockAppConfig
     extends MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
-      welshToggleEnabled = true,
-      cancelCaseEnabled = false
+      welshToggleEnabled = true
     )
 
 class MockAppConfig(
   override val privateBetaAllowList: List[String] = List.empty,
   override val privateBetaAllowListEnabled: Boolean = false,
-  override val welshToggleEnabled: Boolean = false,
-  override val cancelCaseEnabled: Boolean = false
+  override val welshToggleEnabled: Boolean = false
 ) extends AppConfig {
   override val footerLinkItems: Seq[String]         = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"
@@ -85,7 +83,7 @@ class MockAppConfig(
   override val defaultLanguage: Lang   = en
 
   override val vatReturnAdjustmentsUrl: String = "url"
-  override val pvaHandoffUrl: String = "url"
-  override val c18EmailAddress: String = "npcc@hmrc.gov.uk"
+  override val pvaHandoffUrl: String           = "url"
+  override val c18EmailAddress: String         = "npcc@hmrc.gov.uk"
 
 }

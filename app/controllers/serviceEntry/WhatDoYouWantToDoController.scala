@@ -18,7 +18,7 @@ package controllers.serviceEntry
 
 import controllers.actions._
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import models.SubmissionType.{CreateCase, UpdateCase}
+import models.SubmissionType.{CancelCase, CreateCase, UpdateCase}
 import models.{SubmissionType, UserAnswers}
 import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
 import play.api.i18n.I18nSupport
@@ -74,7 +74,7 @@ class WhatDoYouWantToDoController @Inject() (
     submittedValue match {
       case CreateCase => Redirect(controllers.importDetails.routes.UserTypeController.onLoad())
       case UpdateCase => Redirect(controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad())
-      case _          => Redirect(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
+      case CancelCase => Redirect(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
     }
   }
 
