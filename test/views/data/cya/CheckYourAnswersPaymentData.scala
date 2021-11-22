@@ -25,7 +25,7 @@ import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersPaymentData {
   val changeUrl         = "Url"
-  val payingByOther     = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
+  val payingByOther     = "By Bacs, CHAPS, Faster Payments, cheque or banker’s draft."
   val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
   val accountNumberVAT  = "5293747"
