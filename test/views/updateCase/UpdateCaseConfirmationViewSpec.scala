@@ -40,8 +40,15 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
       lazy val view: Html                  = injectedView(referenceNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
+
       s"have the correct page heading of '${UpdateCaseConfirmationMessages.heading}'" in {
         elementText("h1") mustBe UpdateCaseConfirmationMessages.heading
+      }
+
+      s"have the correct page headings reference number message" in {
+        elementText(
+          "#main-content > div > div > div.govuk-panel.govuk-panel--confirmation > div"
+        ) mustBe UpdateCaseConfirmationMessages.paragraph(referenceNumber)
       }
 
       "The what happens next section" should {
