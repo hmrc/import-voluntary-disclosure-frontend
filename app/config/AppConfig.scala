@@ -107,8 +107,6 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   val welshToggleEnabled: Boolean = servicesConfig.getBoolean("features.welshToggleEnabled")
 
-  val cancelCaseEnabled: Boolean = servicesConfig.getBoolean("features.cancelCaseEnabled")
-
   val en: Lang              = Lang("en")
   val cy: Lang              = Lang("cy")
   val defaultLanguage: Lang = en
@@ -167,7 +165,6 @@ trait AppConfig extends FixedConfig {
   val eccSubscribeUrl: String
   val privateBetaAllowListEnabled: Boolean
   val welshToggleEnabled: Boolean
-  val cancelCaseEnabled: Boolean
   val en: Lang
   val cy: Lang
   val defaultLanguage: Lang
