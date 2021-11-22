@@ -690,7 +690,7 @@ moreInformation.bulk.error.noEmoji = The reasons for the underpayment must not i
 
 # Importer name
 importerName.pageTitle = What is the name of the importer?
-importerName.hint = This should match the name as it appears on the import declaration (also known as the C88 or SAD). If you are representing an individual then enter their full name.
+importerName.hint = This should match the name as it appears on the import declaration (also known as the C88 or Single Administrative Document (SAD)). If you are representing an individual then enter their full name.
 importerName.error.nameNonEmpty = Enter the name of the importer
 importerName.error.nameMinLength = Name of the importer must be 2 characters or more
 importerName.error.nameMaxLength = Name of the importer must be 50 characters or fewer
