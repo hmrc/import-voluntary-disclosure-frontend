@@ -29,9 +29,12 @@
         <h1 class="govuk-panel__title">
             @messages("updateCase.confirmation.heading")
         </h1>
+        <div class="govuk-panel__body">
+            <div id = "entryNumber">@messages("updateCase.confirmation.caseId")</div>
+            <strong>@caseId</strong>
+        </div>
+        <br>
     </div>
-
-    @p(Html(messages("updateCase.confirmation.p", caseId)))
 
     @h2(messages("updateCase.confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
