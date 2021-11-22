@@ -307,7 +307,7 @@ postponedVatAccounting.error.required = Select yes if {0} uses postponed VAT acc
 
 # One Customs Procedure Code page
 oneCustomsProcedureCode.pageTitle = Is there only one customs procedure code for this entry?
-oneCustomsProcedureCode.hint = The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the SAD or C88).
+oneCustomsProcedureCode.hint = The customs procedure code may be called ‘procedure’ and is box 37 on the import declaration (sometimes called the Single Administrative Document (SAD) or C88).
 oneCustomsProcedureCode.error.required = Select yes if there is only one customs procedure code for this entry
 
 # Enter Customs Procedure Code page
