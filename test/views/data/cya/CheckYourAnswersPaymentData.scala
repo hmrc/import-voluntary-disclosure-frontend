@@ -406,7 +406,8 @@ object CheckYourAnswersPaymentData {
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
-    )
+    ),
+    smallHeader = true
   )
 
   val repAccountNumberVATRow = SummaryListRow(
@@ -477,7 +478,8 @@ object CheckYourAnswersPaymentData {
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
-    )
+    ),
+    smallHeader = true
   )
 
   val answers: Seq[CYASummaryList] = Seq(

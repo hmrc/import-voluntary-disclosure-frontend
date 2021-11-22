@@ -53,7 +53,8 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows
-          )
+          ),
+          smallHeader = true
         )
       )
     } else {
