@@ -34,7 +34,7 @@
     @answers.map { answer =>
         @{
             answer.heading match {
-                case Some(heading) if heading.startsWith("Deferment") =>
+                case Some(heading) if answer.smallHeader =>
                     h3(messages(heading), id = Some(heading.replaceAll("\\s","")))
                 case Some(heading) =>
                     h2(messages(heading), id = Some(heading.replaceAll("\\s","")))

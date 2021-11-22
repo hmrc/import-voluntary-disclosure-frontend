@@ -50,7 +50,8 @@ trait CYADefermentDutyDetailsSummaryListHelper {
           SummaryList(
             classes = "govuk-!-margin-bottom-9",
             rows = rows
-          )
+          ),
+          smallHeader = true
         )
       )
     } else {
