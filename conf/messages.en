@@ -127,7 +127,7 @@ acceptanceDate.bulk.error.required = Select when the entry acceptance dates were
 # Supporting Documentation
 SupportDoc.pageTitle = Documents you must upload
 SupportDoc.disclosure = We will ask you for the following documents to support your disclosure:
-SupportDoc.bullet1 = the import declaration also known as the C88 or SAD
+SupportDoc.bullet1 = the import declaration also known as the C88 or Single Administrative Document (SAD)
 SupportDoc.bullet2 = the entry acceptance also known as the E2
 SupportDoc.bullet3 = a document or scanned image showing how you calculated the tax or duty that should have been paid
 
