@@ -879,7 +879,7 @@ updateCase.cya.uploadedFiles.change = Change uploaded files
 # Update Case - Confirmation Page
 updateCase.confirmation.pageTitle = Confirmation
 updateCase.confirmation.heading = Information added
-updateCase.confirmation.p = We have received the additional information for disclosure reference number: {0}.
+updateCase.confirmation.caseId = to disclosure reference number
 updateCase.confirmation.whatHappensNext = What happens next
 updateCase.confirmation.whatHappensNext.p = We will check the information you have provided and send the C18 Post Clearance Demand Note in the post.
 updateCase.confirmation.whatYouShouldDoNext = What you should do next

@@ -40,14 +40,15 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
       lazy val view: Html                  = injectedView(referenceNumber)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
+
       s"have the correct page heading of '${UpdateCaseConfirmationMessages.heading}'" in {
         elementText("h1") mustBe UpdateCaseConfirmationMessages.heading
       }
 
-      s"have the correct paragraph of '${UpdateCaseConfirmationMessages.paragraph(referenceNumber)}'" in {
-        elementText("#main-content > div > div > p:nth-child(2)") mustBe UpdateCaseConfirmationMessages.paragraph(
-          referenceNumber
-        )
+      s"have the correct page headings reference number message" in {
+        elementText(
+          "#main-content > div > div > div.govuk-panel.govuk-panel--confirmation > div"
+        ) mustBe UpdateCaseConfirmationMessages.paragraph(referenceNumber)
       }
 
       "The what happens next section" should {
@@ -58,7 +59,7 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the paragraph of '${UpdateCaseConfirmationMessages.whatHappensNextParagraph}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > p:nth-child(3)"
           ) mustBe UpdateCaseConfirmationMessages.whatHappensNextParagraph
         }
       }
@@ -71,7 +72,7 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the paragraph of '${UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(6)"
+            "#main-content > div > div > p:nth-child(5)"
           ) mustBe UpdateCaseConfirmationMessages.whatYouShouldDoNextParagraph
         }
 
@@ -85,7 +86,7 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(6) > a")
+          elementAttributes("#main-content > div > div > p:nth-child(5) > a")
             .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
         }
       }

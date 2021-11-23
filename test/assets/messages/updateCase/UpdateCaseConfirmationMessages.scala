@@ -24,7 +24,7 @@ object UpdateCaseConfirmationMessages extends BaseMessages {
   val heading   = "Information added"
 
   def paragraph(caseId: String): String =
-    s"We have received the additional information for disclosure reference number: $caseId."
+    s"to disclosure reference number $caseId"
 
   val whatHappensNext = "What happens next"
   val whatHappensNextParagraph =
