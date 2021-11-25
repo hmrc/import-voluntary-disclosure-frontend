@@ -732,8 +732,9 @@ underpaymentStart.oneEntry.bullet1 = the amount that was originally paid
 underpaymentStart.oneEntry.bullet2 = the amount that should have been paid
 underpaymentStart.bulkEntry.bullet1 = the total amount that was originally paid across all the entries
 underpaymentStart.bulkEntry.bullet2 = the total amount that should have been paid across all the entries
-underpaymentStart.representative.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. Instead, they must account for the underpaid import VAT on their next VAT return.
-underpaymentStart.importer.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. Instead you must account for the underpaid import VAT on your next VAT return.
+underpaymentStart.details.header = If {0} uses postponed VAT accounting (PVA)
+underpaymentStart.details.representative.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. They must account for the underpaid import VAT on their next VAT return.
+underpaymentStart.details.importer.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. You must account for the underpaid import VAT on your next VAT return.
 
 # Split Payment page
 splitPayment.pageTitle = Do you want to split payment between two deferment accounts?
