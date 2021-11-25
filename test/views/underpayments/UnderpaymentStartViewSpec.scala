@@ -28,7 +28,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: UnderpaymentStartView = app.injector.instanceOf[UnderpaymentStartView]
 
-  val nameOfCompany = "ABC ltd"
+  val nameOfImporter = "ABC ltd"
+  val representativeNameOfImporter = "Fast Food ltd"
 
   "Rendering the Underpayment start page" when {
     "no errors exist for importer" should {
@@ -37,14 +38,18 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         true,
         true,
         false,
-        nameOfCompany
+        nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
 
-      "have the correct paragraph with company name displayed" in {
-        elementText("#main-content > div > div > p:nth-child(4)") mustBe UnderpaymentStartMessages.importerParagraph
+      "have the correct details heading" in {
+        elementText("#main-content > div > div > details > summary > span") mustBe UnderpaymentStartMessages.importerDetailsHeader
+      }
+
+      "have the correct details paragraph" in {
+        elementText("#main-content > div > div > details > div") mustBe UnderpaymentStartMessages.importerDetailsParagraph
       }
     }
 
@@ -54,17 +59,17 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         true,
         true,
         true,
-        nameOfCompany
+        nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
 
-      "have the correct paragraph with company name displayed" in {
-        elementText(
-          "#main-content > div > div > p:nth-child(4)"
-        ) mustBe UnderpaymentStartMessages.representativeParagraph
-      }
+//      "have the correct paragraph with company name displayed" in {
+//        elementText(
+//          "#main-content > div > div > p:nth-child(4)"
+//        ) mustBe UnderpaymentStartMessages.representativeParagraph
+//      }
     }
 
     "when in change mode back button" should {
@@ -72,8 +77,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         true,
         false,
-        true,
-        nameOfCompany
+        false,
+        nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -90,8 +95,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         true,
         true,
-        true,
-        nameOfCompany
+        false,
+        nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -109,8 +114,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
         false,
         true,
-        true,
-        nameOfCompany
+        false,
+        nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -130,8 +135,8 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
       true,
       true,
-      true,
-      nameOfCompany
+      false,
+      nameOfImporter
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
     s"have the correct page heading of '${UnderpaymentStartMessages.pageTitle}'" in {
@@ -140,6 +145,10 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have the correct page text of '${UnderpaymentStartMessages.p1}'" in {
       elementText("#main-content p:nth-of-type(1)") mustBe UnderpaymentStartMessages.p1
+    }
+
+    s"render the details block" in {
+      document.select("#main-content > div > div > details > summary > span").size mustBe 1
     }
 
     "render a continue button with the correct URL " in {
