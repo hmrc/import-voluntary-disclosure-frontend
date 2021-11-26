@@ -32,5 +32,8 @@ object UnderpaymentStartMessages extends BaseMessages {
     "If ABC ltd uses postponed VAT accounting (PVA)"
   val importerDetailsParagraph =
     "Do not use this service to tell us about underpaid import VAT if ABC ltd uses postponed VAT accounting. You must account for the underpaid import VAT on your next VAT return."
-
+  val representativeImporterDetailsHeader =
+    "If Fast Food ltd uses postponed VAT accounting (PVA)"
+  val representativeImporterDetailsParagraph =
+    "Do not use this service to tell us about underpaid import VAT if Fast Food ltd uses postponed VAT accounting. They must account for the underpaid import VAT on their next VAT return."
 }

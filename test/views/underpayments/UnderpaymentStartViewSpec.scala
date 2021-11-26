@@ -59,17 +59,19 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
         true,
         true,
         true,
-        nameOfImporter
+        representativeNameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
 
-//      "have the correct paragraph with company name displayed" in {
-//        elementText(
-//          "#main-content > div > div > p:nth-child(4)"
-//        ) mustBe UnderpaymentStartMessages.representativeParagraph
-//      }
+      "have the correct details heading" in {
+        elementText("#main-content > div > div > details > summary > span") mustBe UnderpaymentStartMessages.representativeImporterDetailsHeader
+      }
+
+      "have the correct details paragraph" in {
+        elementText("#main-content > div > div > details > div") mustBe UnderpaymentStartMessages.representativeImporterDetailsParagraph
+      }
     }
 
     "when in change mode back button" should {
