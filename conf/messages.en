@@ -793,11 +793,11 @@ uploadAuthority.uploadFile = Upload file
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
-anyOtherSupportingDocs.p1 = You must upload the following documents if they apply:
+anyOtherSupportingDocs.p1 = You must upload the following documents if you have them:
 anyOtherSupportingDocs.bullet1 = the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry
-anyOtherSupportingDocs.bullet2 = the airway bill, if the goods were transported by air
-anyOtherSupportingDocs.bullet3 = a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences
-anyOtherSupportingDocs.bullet4 = other documentation relevant to this underpayment disclosure
+anyOtherSupportingDocs.bullet2 = the air waybill, if the goods were transported by air
+anyOtherSupportingDocs.bullet3 = a proof of origin for the goods
+anyOtherSupportingDocs.bullet4 = other documents relevant to this underpayment disclosure
 anyOtherSupportingDocs.error.required = Select yes if you have any of these documents
 
 # Optional Support Documents you will be uploading page
