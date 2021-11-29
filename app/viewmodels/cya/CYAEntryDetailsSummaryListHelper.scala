@@ -16,18 +16,18 @@
 
 package viewmodels.cya
 
-import models.requests.DataRequest
 import models.UserAnswers
+import models.importDetails.NumberOfEntries
+import models.requests.DataRequest
+import pages.importDetails._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
-import java.time.format.DateTimeFormatter
 
-import models.importDetails.NumberOfEntries
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
+import java.time.format.DateTimeFormatter
 
 trait CYAEntryDetailsSummaryListHelper {
 

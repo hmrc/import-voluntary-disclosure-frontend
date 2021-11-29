@@ -3,6 +3,8 @@ common.back = Back
 common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
+common.file = file
+common.files = files
 
 common.error.pageTitle = Sorry, there is a problem with the service
 common.error.p1 = Try again later.
@@ -468,6 +470,7 @@ boxNumber.66.radio = Box 66 Insurance
 boxNumber.67.radio = Box 67 Other charges of deductions
 boxNumber.68.radio = Box 68 Adjustment for VAT value
 boxNumber.99.radio = Other reason
+boxNumber.or = or
 
 # Amend Reason Values
 amendmentValue.originalAmount = Original value

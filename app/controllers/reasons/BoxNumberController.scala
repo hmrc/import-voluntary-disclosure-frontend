@@ -112,7 +112,7 @@ class BoxNumberController @Inject() (
     val radioButtons = (boxNumbers - BoxNumber.OtherItem).toList.map(radioItem)
 
     if (boxNumbers.contains(BoxNumber.OtherItem)) {
-      val divider         = RadioItem(divider = Some("or"))
+      val divider         = RadioItem(divider = Some(messages("boxNumber.or")))
       val otherItemButton = radioItem(BoxNumber.OtherItem)
 
       radioButtons :+ divider :+ otherItemButton
