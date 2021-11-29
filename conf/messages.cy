@@ -328,10 +328,10 @@ common.uploadFile.image = image (.jpeg, .jpg, .png or .tiff)
 common.uploadFile.fileSize = Each file must be 6MB or less and you can only upload one file at a time.
 
 # Upload File page
-uploadFile.pageTitle = Upload supporting documentation
+uploadFile.pageTitle = Upload supporting documents
 uploadFile.mustInclude = You must upload:
 uploadFile.mayInclude = You have told us you will upload:
-uploadFile.originalC88 = the import declaration, also known as the C88 or SAD
+uploadFile.originalC88 = the original import declaration, also known as the C88 or SAD
 uploadFile.originalE2 = the entry acceptance, also known as the E2
 uploadFile.originalCalculations = a document or scanned image showing how you calculated the tax or duty that should have been paid
 uploadFile.importAndEntry = the amendment import declaration (C88) and entry acceptance (E2)
