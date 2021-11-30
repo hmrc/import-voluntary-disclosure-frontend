@@ -808,7 +808,7 @@ optionalSupportingDocuments.pageTitle = Which of these documents will you be upl
 optionalSupportingDocuments.hint = Select all that apply.
 optionalSupportingDocuments.error.required = Select which documents you will be uploading
 optionalSupportingDocuments.importAndEntry = Amendment import declaration (C88) and entry acceptance (E2)
-optionalSupportingDocuments.airwayBill = Air waybill
+optionalSupportingDocuments.airwayBill = Airway bill
 optionalSupportingDocuments.originProof = Proof of origin
 optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure
 
