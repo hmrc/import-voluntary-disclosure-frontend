@@ -645,6 +645,18 @@ cya.bulk.acceptanceDate.change = Change acceptance dates
 cya.bulk.reasonForUnderpayment.change = Change reason for underpayment
 cya.bulk.multipleEntriesFile = Multiple entries file
 cya.bulk.multipleEntriesFile.change = Change multiple entries file
+cya.month.1 = January
+cya.month.2 = February
+cya.month.3 = March
+cya.month.4 = April
+cya.month.5 = May
+cya.month.6 = June
+cya.month.7 = July
+cya.month.8 = August
+cya.month.9 = September
+cya.month.10 = October
+cya.month.11 = November
+cya.month.12 = December
 
 # Item Number
 itemNo.pageTitle = What is the item number?

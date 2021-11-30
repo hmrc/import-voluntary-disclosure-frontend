@@ -27,8 +27,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
 
-import java.time.format.DateTimeFormatter
-
 trait CYAEntryDetailsSummaryListHelper {
 
   def buildEntryDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
@@ -110,7 +108,22 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def buildEntryDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EntryDetailsPage).map { entryDetails =>
-      val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+      val entryMonth = entryDetails.entryDate.getMonth.toString match {
+        case "JANUARY"   => messages("cya.month.1")
+        case "FEBRUARY"  => messages("cya.month.2")
+        case "MARCH"     => messages("cya.month.3")
+        case "APRIL"     => messages("cya.month.4")
+        case "MAY"       => messages("cya.month.5")
+        case "JUNE"      => messages("cya.month.6")
+        case "JULY"      => messages("cya.month.7")
+        case "AUGUST"    => messages("cya.month.8")
+        case "SEPTEMBER" => messages("cya.month.9")
+        case "OCTOBER"   => messages("cya.month.10")
+        case "NOVEMBER"  => messages("cya.month.11")
+        case "DECEMBER"  => messages("cya.month.12")
+      }
+      val entryDateFormat =
+        entryDetails.entryDate.getDayOfMonth + " " + entryMonth + " " + entryDetails.entryDate.getYear
       createRow(
         keyText = Text(messages("cya.entryDate")),
         valueContent = Text(entryDateFormat),

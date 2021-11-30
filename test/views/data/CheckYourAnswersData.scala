@@ -38,7 +38,7 @@ object CheckYourAnswersData {
   val multipleEntries            = "More than one entry"
   val epu                        = "123"
   val entryNumber                = "123456Q"
-  val entryDate                  = "01 December 2020"
+  val entryDate                  = "1 December 2020"
   val yes                        = "Yes"
   val acceptanceDate             = "Before 1 January 2021"
   val acceptanceDateBulk         = "On or before 31 December 2020"
