@@ -108,19 +108,19 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def buildEntryDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EntryDetailsPage).map { entryDetails =>
-      val entryMonth = entryDetails.entryDate.getMonth.toString match {
-        case "JANUARY"   => messages("cya.month.1")
-        case "FEBRUARY"  => messages("cya.month.2")
-        case "MARCH"     => messages("cya.month.3")
-        case "APRIL"     => messages("cya.month.4")
-        case "MAY"       => messages("cya.month.5")
-        case "JUNE"      => messages("cya.month.6")
-        case "JULY"      => messages("cya.month.7")
-        case "AUGUST"    => messages("cya.month.8")
-        case "SEPTEMBER" => messages("cya.month.9")
-        case "OCTOBER"   => messages("cya.month.10")
-        case "NOVEMBER"  => messages("cya.month.11")
-        case "DECEMBER"  => messages("cya.month.12")
+      val entryMonth = entryDetails.entryDate.getMonthValue.toString match {
+        case "1"  => messages("month.1")
+        case "2"  => messages("month.2")
+        case "3"  => messages("month.3")
+        case "4"  => messages("month.4")
+        case "5"  => messages("month.5")
+        case "6"  => messages("month.6")
+        case "7"  => messages("month.7")
+        case "8"  => messages("month.8")
+        case "9"  => messages("month.9")
+        case "10" => messages("month.10")
+        case "11" => messages("month.11")
+        case "12" => messages("month.12")
       }
       val entryDateFormat =
         entryDetails.entryDate.getDayOfMonth + " " + entryMonth + " " + entryDetails.entryDate.getYear
