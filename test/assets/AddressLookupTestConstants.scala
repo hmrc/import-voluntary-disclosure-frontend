@@ -16,8 +16,8 @@
 
 package assets
 
-import messages.{AddressLookupMessages, BaseMessages, ImporterAddressLookupMessages}
-import models.addressLookup.AddressModel
+import messages.BaseMessages
+import models.addressLookup.{AddressLookupJsonBuilder, AddressModel, ImporterAddressLookupJsonBuilder}
 import play.api.libs.json.{JsObject, Json}
 
 object AddressLookupTestConstants extends BaseMessages {
@@ -103,7 +103,7 @@ object AddressLookupTestConstants extends BaseMessages {
     )
   )
 
-  val addressLookupV2Json: JsObject = Json.obj(
+  def addressLookupV2Json(builder: AddressLookupJsonBuilder): JsObject = Json.obj(
     fields = "version" -> 2,
     "options" -> Json.obj(
       "continueUrl"            -> "/lookup-address/confirmed",
@@ -124,68 +124,28 @@ object AddressLookupTestConstants extends BaseMessages {
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle"        -> AddressLookupMessages.navTitle,
-          "phaseBannerHtml" -> phaseBannerHtml
+          "navTitle"        -> builder.Version2.navTitle(builder.Version2.eng),
+          "phaseBannerHtml" -> builder.Version2.phaseBannerHtml(builder.Version2.eng)
         ),
-        "selectPageLabels" -> Json.obj(
-          "title"               -> AddressLookupMessages.selectHeading,
-          "heading"             -> AddressLookupMessages.selectHeading,
-          "submitLabel"         -> continue,
-          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
-        ),
-        "lookupPageLabels" -> Json.obj(
-          "title"         -> AddressLookupMessages.startHeading,
-          "heading"       -> AddressLookupMessages.startHeading,
-          "filterLabel"   -> AddressLookupMessages.filter,
-          "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel"   -> AddressLookupMessages.submitLabel
-        ),
-        "confirmPageLabels" -> Json.obj(
-          "title"                 -> AddressLookupMessages.confirmHeading,
-          "heading"               -> AddressLookupMessages.confirmHeading,
-          "infoMessage"           -> AddressLookupMessages.infoMessage,
-          "showConfirmChangeText" -> false
-        ),
-        "editPageLabels" -> Json.obj(
-          "heading"     -> AddressLookupMessages.editPageHeading,
-          "submitLabel" -> continue,
-          "townLabel"   -> AddressLookupMessages.townOrCity
-        )
+        "selectPageLabels"  -> builder.Version2.selectPageLabels(builder.Version2.eng),
+        "lookupPageLabels"  -> builder.Version2.lookupPageLabels(builder.Version2.eng),
+        "confirmPageLabels" -> builder.Version2.confirmPageLabels(builder.Version2.eng),
+        "editPageLabels"    -> builder.Version2.editPageLabels(builder.Version2.eng)
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle"        -> AddressLookupMessages.navTitle,
-          "phaseBannerHtml" -> phaseBannerHtml
+          "navTitle"        -> builder.Version2.navTitle(builder.Version2.wel),
+          "phaseBannerHtml" -> builder.Version2.phaseBannerHtml(builder.Version2.wel)
         ),
-        "selectPageLabels" -> Json.obj(
-          "title"               -> AddressLookupMessages.selectHeading,
-          "heading"             -> AddressLookupMessages.selectHeading,
-          "submitLabel"         -> continue,
-          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
-        ),
-        "lookupPageLabels" -> Json.obj(
-          "title"         -> AddressLookupMessages.startHeading,
-          "heading"       -> AddressLookupMessages.startHeading,
-          "filterLabel"   -> AddressLookupMessages.filter,
-          "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel"   -> AddressLookupMessages.submitLabel
-        ),
-        "confirmPageLabels" -> Json.obj(
-          "title"                 -> AddressLookupMessages.confirmHeading,
-          "heading"               -> AddressLookupMessages.confirmHeading,
-          "infoMessage"           -> AddressLookupMessages.infoMessage,
-          "showConfirmChangeText" -> false
-        ),
-        "editPageLabels" -> Json.obj(
-          "heading"     -> AddressLookupMessages.editPageHeading,
-          "submitLabel" -> continue,
-          "townLabel"   -> AddressLookupMessages.townOrCity
-        )
+        "selectPageLabels"  -> builder.Version2.selectPageLabels(builder.Version2.wel),
+        "lookupPageLabels"  -> builder.Version2.lookupPageLabels(builder.Version2.wel),
+        "confirmPageLabels" -> builder.Version2.confirmPageLabels(builder.Version2.wel),
+        "editPageLabels"    -> builder.Version2.editPageLabels(builder.Version2.wel)
       )
     )
   )
 
-  val importerAddressLookupV2Json: JsObject = Json.obj(
+  def importerAddressLookupV2Json(builder: ImporterAddressLookupJsonBuilder): JsObject = Json.obj(
     fields = "version" -> 2,
     "options" -> Json.obj(
       "continueUrl"            -> "/lookup-address/confirmed",
@@ -206,63 +166,23 @@ object AddressLookupTestConstants extends BaseMessages {
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle"        -> ImporterAddressLookupMessages.navTitle,
-          "phaseBannerHtml" -> phaseBannerHtml
+          "navTitle"        -> builder.Version2.navTitle(builder.Version2.eng),
+          "phaseBannerHtml" -> builder.Version2.phaseBannerHtml(builder.Version2.eng)
         ),
-        "selectPageLabels" -> Json.obj(
-          "title"               -> ImporterAddressLookupMessages.selectHeading,
-          "heading"             -> ImporterAddressLookupMessages.selectHeading,
-          "submitLabel"         -> continue,
-          "editAddressLinkText" -> ImporterAddressLookupMessages.editAddressLinkText
-        ),
-        "lookupPageLabels" -> Json.obj(
-          "title"         -> ImporterAddressLookupMessages.startHeading,
-          "heading"       -> ImporterAddressLookupMessages.startHeading,
-          "filterLabel"   -> ImporterAddressLookupMessages.filter,
-          "postcodeLabel" -> ImporterAddressLookupMessages.postcode,
-          "submitLabel"   -> ImporterAddressLookupMessages.submitLabel
-        ),
-        "confirmPageLabels" -> Json.obj(
-          "title"                 -> ImporterAddressLookupMessages.confirmHeading,
-          "heading"               -> ImporterAddressLookupMessages.confirmHeading,
-          "infoMessage"           -> ImporterAddressLookupMessages.confirmInfoMessage,
-          "showConfirmChangeText" -> false
-        ),
-        "editPageLabels" -> Json.obj(
-          "heading"     -> ImporterAddressLookupMessages.editHeading,
-          "townLabel"   -> ImporterAddressLookupMessages.editTown,
-          "submitLabel" -> continue
-        )
+        "selectPageLabels"  -> builder.Version2.selectPageLabels(builder.Version2.eng),
+        "lookupPageLabels"  -> builder.Version2.lookupPageLabels(builder.Version2.eng),
+        "confirmPageLabels" -> builder.Version2.confirmPageLabels(builder.Version2.eng),
+        "editPageLabels"    -> builder.Version2.editPageLabels(builder.Version2.eng)
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle"        -> ImporterAddressLookupMessages.navTitle,
-          "phaseBannerHtml" -> phaseBannerHtml
+          "navTitle"        -> builder.Version2.navTitle(builder.Version2.wel),
+          "phaseBannerHtml" -> builder.Version2.phaseBannerHtml(builder.Version2.wel)
         ),
-        "selectPageLabels" -> Json.obj(
-          "title"               -> ImporterAddressLookupMessages.selectHeading,
-          "heading"             -> ImporterAddressLookupMessages.selectHeading,
-          "submitLabel"         -> continue,
-          "editAddressLinkText" -> ImporterAddressLookupMessages.editAddressLinkText
-        ),
-        "lookupPageLabels" -> Json.obj(
-          "title"         -> ImporterAddressLookupMessages.startHeading,
-          "heading"       -> ImporterAddressLookupMessages.startHeading,
-          "filterLabel"   -> ImporterAddressLookupMessages.filter,
-          "postcodeLabel" -> ImporterAddressLookupMessages.postcode,
-          "submitLabel"   -> ImporterAddressLookupMessages.submitLabel
-        ),
-        "confirmPageLabels" -> Json.obj(
-          "title"                 -> ImporterAddressLookupMessages.confirmHeading,
-          "heading"               -> ImporterAddressLookupMessages.confirmHeading,
-          "infoMessage"           -> ImporterAddressLookupMessages.confirmInfoMessage,
-          "showConfirmChangeText" -> false
-        ),
-        "editPageLabels" -> Json.obj(
-          "heading"     -> ImporterAddressLookupMessages.editHeading,
-          "townLabel"   -> ImporterAddressLookupMessages.editTown,
-          "submitLabel" -> continue
-        )
+        "selectPageLabels"  -> builder.Version2.selectPageLabels(builder.Version2.wel),
+        "lookupPageLabels"  -> builder.Version2.lookupPageLabels(builder.Version2.wel),
+        "confirmPageLabels" -> builder.Version2.confirmPageLabels(builder.Version2.wel),
+        "editPageLabels"    -> builder.Version2.editPageLabels(builder.Version2.wel)
       )
     )
   )
