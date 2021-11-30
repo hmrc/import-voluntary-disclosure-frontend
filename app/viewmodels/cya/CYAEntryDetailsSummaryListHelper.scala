@@ -108,13 +108,13 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def buildEntryDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EntryDetailsPage).map { entryDetails =>
-      val entryDateFormat =
+      val entryDate =
         entryDetails.entryDate.getDayOfMonth + " " + messages(
           s"month.${entryDetails.entryDate.getMonthValue}"
         ) + " " + entryDetails.entryDate.getYear
       createRow(
         keyText = Text(messages("cya.entryDate")),
-        valueContent = Text(entryDateFormat),
+        valueContent = Text(entryDate),
         action = Some(
           ActionItemHelper.createChangeActionItem(
             controllers.importDetails.routes.EntryDetailsController.onLoad().url,
