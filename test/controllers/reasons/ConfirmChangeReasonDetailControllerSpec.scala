@@ -18,7 +18,7 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import messages.ConfirmChangeReasonDetailMessages
+import messages.reasons.ConfirmChangeReasonDetailMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber

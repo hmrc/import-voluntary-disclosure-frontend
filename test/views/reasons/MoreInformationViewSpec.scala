@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.MoreInformationFormProvider
-import messages.{BaseMessages, MoreInformationMessages}
+import messages.BaseMessages
+import messages.reasons.MoreInformationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

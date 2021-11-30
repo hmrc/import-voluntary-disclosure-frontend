@@ -18,7 +18,7 @@ package views.cancelCase
 
 import base.ViewBaseSpec
 import messages.BaseMessages
-import messages.errors.CancelCaseDisclosureClosedMessages
+import messages.cancelCase.CancelCaseDisclosureClosedMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -55,7 +55,7 @@ class CancelCaseDisclosureClosedViewSpec extends ViewBaseSpec with BaseMessages 
 
         s"have the correct mail link" in {
           elementAttributes("#main-content p:nth-of-type(2) a").get("href") mustBe
-            Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+            Some(s"mailto:${appConfig.c18EmailAddress}")
         }
 
         s"have the correct bullet list" in {

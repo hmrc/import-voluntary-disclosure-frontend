@@ -16,7 +16,8 @@
 
 package messages.underpayments
 
-import messages.{BaseMessages, ExpectedContent}
+import messages.BaseMessages
+import messages.reasons.ExpectedContent
 
 object RemoveUnderpaymentDetailsMessages extends BaseMessages {
 
@@ -29,7 +30,7 @@ object RemoveUnderpaymentDetailsMessages extends BaseMessages {
   val A40pageTitle     = "Definitive Countervailing Duty"
   val A45pageTitle     = "Provisional Countervailing Duty"
   val A10pageTitle     = "Customs Duty on Agricultural Products"
-  val D10pageTitle     = "Compensatory Duty"
+  val D10pageTitle     = "Compensatory interest"
   val beginningMessage = "Are you sure you want to remove this "
   val endingMessage    = " underpayment?"
   val radioYes         = "Yes"
@@ -84,7 +85,7 @@ object RemoveUnderpaymentDetailsMessages extends BaseMessages {
     "D10" -> ExpectedContent(
       beginningMessage + D10pageTitle + endingMessage,
       beginningMessage + D10pageTitle + endingMessage,
-      Some("Select yes if you want to remove this Compensatory Duty underpayment")
+      Some("Select yes if you want to remove this Compensatory interest underpayment")
     )
   )
 

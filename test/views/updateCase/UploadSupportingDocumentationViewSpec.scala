@@ -18,7 +18,7 @@ package views.updateCase
 
 import base.ViewBaseSpec
 import forms.shared.UploadFileFormProvider
-import messages.UploadSupportingDocumentationMessages
+import messages.updateCase.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
 import models.upscan._
 import org.jsoup.Jsoup

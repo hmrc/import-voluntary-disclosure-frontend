@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
-import messages.{BaseMessages, OtherReasonAmendmentMessages}
+import messages.BaseMessages
+import messages.reasons.OtherReasonAmendmentMessages
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import org.jsoup.Jsoup

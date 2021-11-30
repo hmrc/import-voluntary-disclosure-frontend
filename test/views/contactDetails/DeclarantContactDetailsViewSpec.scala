@@ -18,7 +18,8 @@ package views.contactDetails
 
 import base.ViewBaseSpec
 import forms.contactDetails.DeclarantContactDetailsFormProvider
-import messages.{BaseMessages, TraderContactDetailsMessages}
+import messages.BaseMessages
+import messages.contactDetails.TraderContactDetailsMessages
 import models.ContactDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

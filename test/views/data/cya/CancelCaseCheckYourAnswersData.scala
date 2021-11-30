@@ -32,7 +32,7 @@ object CancelCaseCheckYourAnswersData {
   val additionalInformation = "Hello World"
 
   def cancelCaseAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    "",
+    None,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows

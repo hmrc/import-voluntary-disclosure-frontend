@@ -16,7 +16,7 @@
 
 package views.data.cya
 
-import messages.CYAMessages
+import messages.cya.CYAMessages
 import models.SelectedDutyTypes.{Both, Duty, Vat}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
@@ -25,7 +25,7 @@ import viewmodels.cya.CYASummaryList
 
 object CheckYourAnswersPaymentData {
   val changeUrl         = "Url"
-  val payingByOther     = "By BACS, CHAPS, Faster Payments, cheque or banker’s draft."
+  val payingByOther     = "By Bacs, CHAPS, Faster Payments, cheque or banker’s draft."
   val payingByDeferment = "By duty deferment"
   val accountNumberDuty = "1284958"
   val accountNumberVAT  = "5293747"
@@ -143,7 +143,7 @@ object CheckYourAnswersPaymentData {
   )
 
   def paymentDetailsAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.paymentDetails,
+    Some(CYAMessages.paymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
@@ -402,11 +402,12 @@ object CheckYourAnswersPaymentData {
   )
 
   def defermentDutyAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.defermentInfoDuty,
+    Some(CYAMessages.defermentInfoDuty),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
-    )
+    ),
+    smallHeader = true
   )
 
   val repAccountNumberVATRow = SummaryListRow(
@@ -473,11 +474,12 @@ object CheckYourAnswersPaymentData {
   )
 
   def defermentVATAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    CYAMessages.defermentInfoVAT,
+    Some(CYAMessages.defermentInfoVAT),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows
-    )
+    ),
+    smallHeader = true
   )
 
   val answers: Seq[CYASummaryList] = Seq(

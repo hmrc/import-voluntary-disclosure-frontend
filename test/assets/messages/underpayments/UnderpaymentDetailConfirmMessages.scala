@@ -16,7 +16,8 @@
 
 package messages.underpayments
 
-import messages.{BaseMessages, ExpectedContent}
+import messages.BaseMessages
+import messages.reasons.ExpectedContent
 
 object UnderpaymentDetailConfirmMessages extends BaseMessages {
 
@@ -33,7 +34,7 @@ object UnderpaymentDetailConfirmMessages extends BaseMessages {
   val A40pageTitle          = "Definitive Countervailing Duty"
   val A45pageTitle          = "Provisional Countervailing Duty"
   val A10pageTitle          = "Customs Duty on Agricultural Products"
-  val D10pageTitle          = "Compensatory Duty"
+  val D10pageTitle          = "Compensatory interest"
   val beginningMessage      = "Confirm the "
   val endingMessage         = " underpayment details"
   val dueToHMRC             = " owed to HMRC"

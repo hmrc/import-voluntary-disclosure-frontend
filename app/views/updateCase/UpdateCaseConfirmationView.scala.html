@@ -29,9 +29,11 @@
         <h1 class="govuk-panel__title">
             @messages("updateCase.confirmation.heading")
         </h1>
+        <div class="govuk-panel__body">
+            <div>@messages("updateCase.confirmation.caseId")</div>
+            <strong>@caseId</strong>
+        </div>
     </div>
-
-    @p(Html(messages("updateCase.confirmation.p", caseId)))
 
     @h2(messages("updateCase.confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
@@ -41,7 +43,7 @@
 
     @p {
         @Html(messages("updateCase.confirmation.whatYouShouldDoNext.p"))
-        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>.
+        <a class="govuk-link" href=@{s"mailto:${appConfig.c18EmailAddress}"}>@appConfig.c18EmailAddress</a>.
     }
 
     @p{

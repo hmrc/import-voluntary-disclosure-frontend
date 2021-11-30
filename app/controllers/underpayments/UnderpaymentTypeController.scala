@@ -16,14 +16,14 @@
 
 package controllers.underpayments
 
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions._
 import forms.underpayments.UnderpaymentTypeFormProvider
 import models.UserAnswers
 import models.requests.DataRequest
-import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentTypePage}
+import pages.underpayments._
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, Messages}
-import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
+import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -82,6 +82,7 @@ class UnderpaymentTypeController @Inject() (
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentTypePage, value))
+          updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentDetailsPage))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(controllers.underpayments.routes.UnderpaymentDetailsController.onLoad(value))
       }

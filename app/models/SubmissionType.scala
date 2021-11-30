@@ -20,7 +20,6 @@ import play.api.data.Form
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import views.ViewUtils.hint
 
 sealed trait SubmissionType
 
@@ -38,24 +37,14 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] {
     CancelCase
   )
 
-  def options(form: Form[_], cancelCase: Boolean, updateCase: Boolean)(implicit messages: Messages): Seq[RadioItem] = {
-    val values = (cancelCase, updateCase) match {
-      case (true, true)  => Seq(CreateCase, UpdateCase, CancelCase)
-      case (true, false) => Seq(CreateCase, CancelCase)
-      case (false, true) => Seq(CreateCase, UpdateCase)
-      case _             => Seq.empty
-    }
+  def options(form: Form[_])(implicit messages: Messages): Seq[RadioItem] =
     values.map { value =>
       RadioItem(
         value = Some(value.toString),
         content = Text(messages(s"whatDoYouWantToDo.${value.toString}")),
-        hint = if (value == CreateCase) {
-          Some(hint(messages("whatDoYouWantToDo.createCaseHint")))
-        } else None,
         checked = form("value").value.contains(value.toString)
       )
     }
-  }
 
   implicit val enumerable: Enumerable[SubmissionType] =
     Enumerable(values.map(v => v.toString -> v): _*)

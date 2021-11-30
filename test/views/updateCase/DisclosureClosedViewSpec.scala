@@ -18,7 +18,7 @@ package views.updateCase
 
 import base.ViewBaseSpec
 import messages.BaseMessages
-import messages.errors.DisclosureClosedMessages
+import messages.updateCase.DisclosureClosedMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

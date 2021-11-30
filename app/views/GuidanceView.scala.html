@@ -45,17 +45,19 @@
             Html(<a class="gem-c-contents-list__link govuk-link " data-track-category="contentsClicked" data-track-action="content_item 1" data-track-label="#who-should-claim" data-track-options="{&quot;dimension29&quot;:&quot;Who should claim&quot;}" href="#5">After you've disclosed</a>.toString)
         ))
 
-        @p(Html("If you're only disclosing underpaid import VAT and use postponed VAT accounting, you should account for the underpaid import VAT on your VAT return. Do not use this service."))
+        @p(Html("If you’ve previously told us about underpaid Customs Duty or import VAT and you need to send us more information about your disclosure you can use this service. You’ll need to have your disclosure reference number."))
 
         <div class="govuk-inset-text">
-            If you are only disclosing underpaid import VAT and use postponed VAT accounting, you should make adjustments on your VAT return to account for the underpaid import VAT. Do not use this service.
+            If you're only disclosing underpaid import VAT and use postponed VAT accounting, you should
+            <a class="govuk-link" href="https://www.gov.uk/guidance/complete-your-vat-return-to-account-for-import-vat">account for the underpaid import VAT on your VAT return.</a>
+            Do not use this service.
         </div>
 
         @p(
             Html(
                     <span>
                     If you need to pay duty or taxes on goods that were not declared to customs, you cannot use this service. You should email
-                    <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     for advice.
                     </span>.toString()
             )
@@ -82,7 +84,7 @@
         @p(Html("You’ll need to tell us the amount that was paid to HMRC and the amount that should have been paid to HMRC for each of the following that were underpaid:"))
 
         @bullets(Seq(
-            "Import VAT (B00)",
+            "import VAT (B00)",
             "Customs Duty (A00)",
             "excise duty",
             "Additional Duty (A20)",
@@ -91,7 +93,7 @@
             "Definitive Countervailing Duty (A40)",
             "Provisional Countervailing Duty (A45)",
             "Customs Duty on Agricultural Products (A10)",
-            "Compensatory Duty (D10)").map(Html(_)))
+            "Compensatory interest (D10)").map(Html(_)))
 
         @p(Html("You must also provide the calculations that show the amount of tax or duty that should have been paid."))
 
@@ -99,7 +101,7 @@
             Html(
                     <span>
                     If you are offsetting a Customs Duty (A00) overpayment against an Additional Duty (A20) underpayment (or the other way round), email the C18 team at
-                    <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>
                     </span>.toString()
             )
         )
@@ -153,7 +155,7 @@
                 <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
             </svg></a>
 
-        @h2("After you have disclosed", Some("5"))
+        @h2("After you’ve disclosed", Some("5"))
 
         @p(Html("If we agree with the calculations you’ve provided, we’ll send a C18 Post Clearance Demand Note in the post within 14 days."))
 
@@ -180,7 +182,7 @@
             Html(
                     <span>
                     If you have any questions or have not received the demand note within 14 days then email
-                    <a class="govuk-link" href="mailto:customsaccountingrepayments@hmrc.gov.uk">customsaccountingrepayments@hmrc.gov.uk</a>.
+                    <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>.
                     </span>.toString()
             )
         )

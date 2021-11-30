@@ -16,7 +16,7 @@
 
 package views.data
 
-import messages.ConfirmEORIDetailsMessages
+import messages.serviceEntry.ConfirmEORIDetailsMessages
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._

@@ -51,9 +51,7 @@ class AuthActionSpec extends SpecBase {
     lazy val config = new MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
-      welshToggleEnabled = true,
-      cancelCaseEnabled = false
+      welshToggleEnabled = true
     )
     lazy val action =
       new AuthenticatedIdentifierAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
@@ -147,9 +145,7 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = true,
-          updateCaseEnabled = false,
-          welshToggleEnabled = true,
-          cancelCaseEnabled = false
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 
@@ -165,9 +161,7 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(),
           privateBetaAllowListEnabled = true,
-          updateCaseEnabled = false,
-          welshToggleEnabled = true,
-          cancelCaseEnabled = false
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 
@@ -186,9 +180,7 @@ class AuthActionSpec extends SpecBase {
         override lazy val config: MockAppConfig = new MockAppConfig(
           List(testEori),
           privateBetaAllowListEnabled = false,
-          updateCaseEnabled = false,
-          welshToggleEnabled = true,
-          cancelCaseEnabled = false
+          welshToggleEnabled = true
         )
         private val response = target.onPageLoad()(fakeRequest)
 

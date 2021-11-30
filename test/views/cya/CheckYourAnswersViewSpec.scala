@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.CYAMessages
+import messages.cya.CYAMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -40,7 +40,7 @@ class CheckYourAnswersViewSpec extends ViewBaseSpec {
       "have correct sub-headings" in {
         val subHeadings = document.select("main h2")
         answers.zipWithIndex.map { case (answer, index) =>
-          subHeadings.get(index).text mustBe answer.heading
+          subHeadings.get(index).text mustBe answer.heading.get
         }
       }
 

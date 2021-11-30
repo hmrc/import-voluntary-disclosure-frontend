@@ -16,7 +16,7 @@
 
 package views.data.cya
 
-import messages.UpdateCaseCYAMessages
+import messages.updateCase.UpdateCaseCYAMessages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya
@@ -32,7 +32,7 @@ object UpdateCaseCheckYourAnswersData {
   val additionalInformation = "Hello World"
 
   def updateCaseAnswers(rows: Seq[SummaryListRow]): CYASummaryList = cya.CYASummaryList(
-    "",
+    None,
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = rows

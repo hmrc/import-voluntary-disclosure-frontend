@@ -17,7 +17,8 @@
 package views.reasons
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, BoxGuidanceMessages}
+import messages.BaseMessages
+import messages.reasons.BoxGuidanceMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.mvc._

@@ -17,7 +17,7 @@
 package views.reasons
 
 import base.ViewBaseSpec
-import messages.{ConfirmChangeReasonDetailMessages, ConfirmReasonDetailMessages}
+import messages.reasons.{ConfirmChangeReasonDetailMessages, ConfirmReasonDetailMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

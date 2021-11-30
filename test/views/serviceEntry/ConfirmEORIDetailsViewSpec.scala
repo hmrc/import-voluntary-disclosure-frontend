@@ -17,7 +17,7 @@
 package views.serviceEntry
 
 import base.ViewBaseSpec
-import messages.ConfirmEORIDetailsMessages
+import messages.serviceEntry.ConfirmEORIDetailsMessages
 import mocks.config.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -34,9 +34,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = false,
-      welshToggleEnabled = true,
-      cancelCaseEnabled = false
+      welshToggleEnabled = true
     )
 
     lazy val view: Html = injectedView(
@@ -80,7 +78,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     "render a continue button with the correct URL " in {
       elementAttributes(".govuk-button") must contain(
-        "href" -> controllers.importDetails.routes.UserTypeController.onLoad().url
+        "href" -> controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url
       )
     }
 
@@ -91,9 +89,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
       privateBetaAllowListEnabled = false,
-      updateCaseEnabled = true,
-      welshToggleEnabled = true,
-      cancelCaseEnabled = false
+      welshToggleEnabled = true
     )
 
     lazy val view: Html = injectedView(

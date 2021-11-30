@@ -17,7 +17,7 @@
 package views.shared
 
 import base.ViewBaseSpec
-import messages.FileUploadSuccessMessages
+import messages.shared.FileUploadSuccessMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html

@@ -16,7 +16,7 @@
 
 package messages.cancelCase
 
-import messages.UploadFileCommonMessages
+import messages.shared.UploadFileCommonMessages
 
 object CancelCaseUploadSupportingDocumentationMessages extends UploadFileCommonMessages {
 

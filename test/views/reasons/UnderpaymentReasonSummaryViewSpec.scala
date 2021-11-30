@@ -18,7 +18,8 @@ package views.reasons
 
 import base.ViewBaseSpec
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
-import messages.{BaseMessages, ReasonSummary}
+import messages.BaseMessages
+import messages.reasons.ReasonSummary
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

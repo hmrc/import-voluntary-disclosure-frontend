@@ -19,7 +19,7 @@ package controllers.paymentInfo
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.DefermentFormProvider
-import messages.DefermentMessages
+import messages.paymentInfo.DefermentMessages
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.{NumberOfEntries, UserType}

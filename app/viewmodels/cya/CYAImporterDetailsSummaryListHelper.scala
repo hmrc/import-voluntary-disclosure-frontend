@@ -43,7 +43,7 @@ trait CYAImporterDetailsSummaryListHelper {
       if (rows.nonEmpty) {
         Seq(
           cya.CYASummaryList(
-            messages(messages("cya.aboutImporter")),
+            Some(messages(messages("cya.aboutImporter"))),
             SummaryList(
               classes = "govuk-!-margin-bottom-9",
               rows = rows

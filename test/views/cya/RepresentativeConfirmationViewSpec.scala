@@ -17,7 +17,7 @@
 package views.cya
 
 import base.ViewBaseSpec
-import messages.RepresentativeConfirmationMessages
+import messages.cya.RepresentativeConfirmationMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -38,7 +38,10 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
     "no errors exist" should {
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(
+          fakeRequest,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeConfirmationMessages.pageTitle)
@@ -51,7 +54,10 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
     "it" should {
 
       lazy val view: Html =
-        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data)(fakeRequest, messages)
+        injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = true, data, Seq.empty)(
+          fakeRequest,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${RepresentativeConfirmationMessages.heading}'" in {
         elementText("h1") mustBe RepresentativeConfirmationMessages.heading
@@ -59,32 +65,6 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
       s"have the correct reference number message of '${RepresentativeConfirmationMessages.referenceNumber}'" in {
         elementText("#entryNumber") mustBe RepresentativeConfirmationMessages.referenceNumber
-      }
-
-      s"have the p1 message for single entry of '${RepresentativeConfirmationMessages.p1SingleEntry}'" in {
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1SingleEntry
-      }
-
-      s"have the p1 message for bulk entry and importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryEoriExists}'" in {
-        lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, data)(fakeRequest, messages)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1BulkEntryEoriExists
-      }
-
-      s"have the p1 message for bulk entry and no importer EORI exists of '${RepresentativeConfirmationMessages.p1BulkEntryNoEori}'" in {
-        lazy val view: Html = injectedView(referenceNumber, isPayByDeferment = true, isSingleEntry = false, dataNoEori)(
-          fakeRequest,
-          messages
-        )
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText(
-          "#main-content > div > div > p:nth-child(2)"
-        ) mustBe RepresentativeConfirmationMessages.p1BulkEntryNoEori
       }
 
       "The what happens next section - Deferment selected" should {
@@ -95,37 +75,40 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2Deferment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3Deferment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(5)"
+            "#main-content > div > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3Deferment
         }
       }
 
       "The what happens next section - Other payment selected" should {
         lazy val view: Html =
-          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data)(fakeRequest, messages)
+          injectedView(referenceNumber, isPayByDeferment = false, isSingleEntry = true, data, Seq.empty)(
+            fakeRequest,
+            messages
+          )
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the p2 message of '${RepresentativeConfirmationMessages.p2OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(4)"
+            "#main-content > div > div > div > p:nth-child(3)"
           ) mustBe RepresentativeConfirmationMessages.p2OtherPayment
         }
 
         s"have the p3 message of for bulk entry '${RepresentativeConfirmationMessages.p3OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(5)"
+            "#main-content > div > div > div > p:nth-child(4)"
           ) mustBe RepresentativeConfirmationMessages.p3OtherPayment
         }
 
         s"have the p4 message of for bulk entry '${RepresentativeConfirmationMessages.p4OtherPayment}'" in {
           elementText(
-            "#main-content > div > div > p:nth-child(6)"
+            "#main-content > div > div > div > p:nth-child(5)"
           ) mustBe RepresentativeConfirmationMessages.p4OtherPayment
         }
       }
@@ -144,13 +127,20 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
           elementText("#printSaveRestOfMessage") mustBe RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have the p5 message of '${RepresentativeConfirmationMessages.p5}'" in {
-          elementText("#main-content > div > div > p:nth-child(8)") mustBe RepresentativeConfirmationMessages.p5
+        s"have the paragraph message of '${RepresentativeConfirmationMessages.contactInfo}'" in {
+          elementText(
+            "#main-content > div > div > div > p:nth-child(8)"
+          ) mustBe RepresentativeConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > p:nth-child(8) > a")
-            .get("href") mustBe Some("mailto:customsaccountingrepayments@hmrc.gov.uk")
+          elementAttributes("#main-content > div > div > div > p:nth-child(8) > a")
+            .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
+        }
+
+        s"have the correct noscript paragraph" in {
+          elementText("#main-content > div > div > div > noscript") mustBe
+            RepresentativeConfirmationMessages.printSave + " " + RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
         s"have a link message of '${RepresentativeConfirmationMessages.discloseAnotherUnderpayment}'" in {

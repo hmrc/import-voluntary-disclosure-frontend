@@ -25,6 +25,6 @@ object CancelCaseDisclosureReferenceNumberMessages extends BaseMessages {
   val requiredError: String = "Enter the disclosure reference number"
   val formatError: String   = "Enter the disclosure reference number in the correct format, like C182107152024AQYVM6E31"
   val details =
-    "You will need to email us at customsaccountingrepayments@hmrc.gov.uk with the entry details, the EORI number and name of the importer, and the reason for cancelling the disclosure."
+    "You will need to email us at npcc@hmrc.gov.uk with the entry details, the importer’s name and EORI number, and the reason for cancelling the disclosure."
 
 }

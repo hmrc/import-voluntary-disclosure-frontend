@@ -18,7 +18,7 @@ package views.serviceEntry
 
 import base.ViewBaseSpec
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import messages.WhatDoYouWantToDoMessages
+import messages.serviceEntry.WhatDoYouWantToDoMessages
 import models.SubmissionType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -85,10 +85,6 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
       elementText(
         "#main-content > div > div > form > div > fieldset > div > div:nth-child(1) > label"
       ) mustBe WhatDoYouWantToDoMessages.createCaseMsg
-    }
-
-    "have the correct value for the first radio button hint" in {
-      elementText("#value-item-hint") mustBe WhatDoYouWantToDoMessages.createCaseHint
     }
 
     "have the correct value for the second radio button" in {

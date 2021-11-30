@@ -105,10 +105,7 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
 
-  val updateCaseEnabled: Boolean  = servicesConfig.getBoolean("features.updateCaseEnabled")
   val welshToggleEnabled: Boolean = servicesConfig.getBoolean("features.welshToggleEnabled")
-
-  val cancelCaseEnabled: Boolean = servicesConfig.getBoolean("features.cancelCaseEnabled")
 
   val en: Lang              = Lang("en")
   val cy: Lang              = Lang("cy")
@@ -117,6 +114,8 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
   lazy val vatReturnAdjustmentsUrl: String = servicesConfig.getString("urls.vatReturnAdjustmentsUrl")
 
   lazy val pvaHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
+
+  val c18EmailAddress: String = servicesConfig.getString("emails.c18Support")
 
 }
 
@@ -165,14 +164,13 @@ trait AppConfig extends FixedConfig {
   val importVoluntaryDisclosureSubmission: String
   val eccSubscribeUrl: String
   val privateBetaAllowListEnabled: Boolean
-  val updateCaseEnabled: Boolean
   val welshToggleEnabled: Boolean
-  val cancelCaseEnabled: Boolean
   val en: Lang
   val cy: Lang
   val defaultLanguage: Lang
   val vatReturnAdjustmentsUrl: String
   val pvaHandoffUrl: String
+  val c18EmailAddress: String
 }
 
 trait FixedConfig {

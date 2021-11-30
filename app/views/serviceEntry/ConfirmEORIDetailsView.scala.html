@@ -43,7 +43,7 @@
         )
     )
 
-    @linkButton(url = if(appConfig.updateCaseEnabled || appConfig.cancelCaseEnabled) controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url else controllers.importDetails.routes.UserTypeController.onLoad().url, messages(("common.button.confirm")), id = Some("value"))
+    @linkButton(url = controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url, messages(("common.button.confirm")), id = Some("value"))
 
 
 }

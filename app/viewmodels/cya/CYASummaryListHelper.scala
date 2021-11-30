@@ -16,11 +16,36 @@
 
 package viewmodels.cya
 
+import play.api.i18n.Messages
+import models.requests.DataRequest
+import org.joda.time.DateTime
+
 trait CYASummaryListHelper
-    extends CYAImporterDetailsSummaryListHelper
+    extends CYADisclosureSummaryListHelper
+    with CYAImporterDetailsSummaryListHelper
     with CYAEntryDetailsSummaryListHelper
     with CYAUnderpaymentDetailsSummaryListHelper
     with CYAYourDetailsSummaryListHelper
     with CYAPaymentDetailsSummaryListHelper
     with CYADefermentDutyDetailsSummaryListHelper
-    with CYADefermentImportVATDetailsSummaryListHelper
+    with CYADefermentImportVATDetailsSummaryListHelper {
+
+  def buildFullSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] =
+    buildImporterDetailsSummaryList ++
+      buildEntryDetailsSummaryList ++
+      buildUnderpaymentDetailsSummaryList ++
+      buildYourDetailsSummaryList ++
+      buildPaymentDetailsSummaryList ++
+      buildDefermentDutySummaryList ++
+      buildDefermentImportVatSummaryList
+
+  def buildSummaryListForPrint(caseId: String, date: DateTime)(implicit
+    messages: Messages,
+    request: DataRequest[_]
+  ): Seq[CYASummaryList] = {
+    val existing = buildFullSummaryList().map { list =>
+      list.copy(summaryList = list.summaryList.copy(rows = list.summaryList.rows.map(row => row.copy(actions = None))))
+    }
+    buildDisclosureSummaryList(caseId, date) +: existing
+  }
+}

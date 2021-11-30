@@ -17,7 +17,8 @@
 package views.components
 
 import base.ViewBaseSpec
-import messages.{BaseMessages, PhaseBannerMessages}
+import messages.BaseMessages
+import messages.components.PhaseBannerMessages
 import mocks.config.MockAppConfig.feedbackUrl
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

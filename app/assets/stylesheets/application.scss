@@ -3,3 +3,25 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
 
 @import "lib/govuk-frontend/govuk/all";
 @import "lib/hmrc-frontend/hmrc/all";
+
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+
+    .govuk-header {
+        margin-bottom: 32px;
+    }
+
+    .hmrc-header__service-name {
+        color: black !important;
+    }
+
+    .govuk-grid-column-two-thirds {
+        width: 100%;
+    }
+}

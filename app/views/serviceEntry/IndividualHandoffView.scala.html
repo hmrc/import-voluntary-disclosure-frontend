@@ -16,14 +16,16 @@
 
 @this(layout: templates.Layout,
         p: components.p,
-        h1: components.h1)
+        h1: components.h1,
+        appConfig: AppConfig)
 
 @()(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("privateCitizen.handOff.pageTitle"),
     form = None,
-    showBackLink = false) {
+    showBackLink = false,
+    isAuthorised = false) {
 
     @h1(messages("privateCitizen.handOff.pageTitle"))
 
@@ -31,7 +33,7 @@
 
     @p{
         @Html(messages("privateCitizen.handOff.p2.part1"))
-        <a class="govuk-link" href="mailto:customsaccountingrepayments@@hmrc.gov.uk">customsaccountingrepayments@@hmrc.gov.uk</a>
+        <a class="govuk-link" href=@{s"mailto:${appConfig.c18EmailAddress}"}>@appConfig.c18EmailAddress</a>
         @Html(messages("privateCitizen.handOff.p2.part2"))
     }
 
