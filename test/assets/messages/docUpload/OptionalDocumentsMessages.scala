@@ -22,7 +22,7 @@ object OptionalDocumentsMessages {
   val hint           = "Select all that apply."
   val errorRequired  = "Select which documents you will be uploading"
   val importAndEntry = "Amendment import declaration (C88) and entry acceptance (E2)"
-  val airwayBill     = "Airway bill"
+  val airwayBill     = "Air waybill"
   val originProof    = "Proof of origin"
   val other          = "Other documentation relevant to this underpayment disclosure"
 

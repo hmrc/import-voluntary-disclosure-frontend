@@ -335,7 +335,7 @@ uploadFile.originalC88 = the import declaration, also known as the C88 or SAD
 uploadFile.originalE2 = the entry acceptance, also known as the E2
 uploadFile.originalCalculations = a document or scanned image showing how you calculated the tax or duty that should have been paid
 uploadFile.importAndEntry = the amendment import declaration (C88) and entry acceptance (E2)
-uploadFile.airwayBill = the airway bill
+uploadFile.airwayBill = the air waybill
 uploadFile.originProof = a proof of origin
 uploadFile.other = other documentation relevant to this underpayment disclosure
 uploadFile.error.noFileSelected = Select a file to upload
@@ -808,7 +808,7 @@ optionalSupportingDocuments.pageTitle = Which of these documents will you be upl
 optionalSupportingDocuments.hint = Select all that apply.
 optionalSupportingDocuments.error.required = Select which documents you will be uploading
 optionalSupportingDocuments.importAndEntry = Amendment import declaration (C88) and entry acceptance (E2)
-optionalSupportingDocuments.airwayBill = Airway bill
+optionalSupportingDocuments.airwayBill = Air waybill
 optionalSupportingDocuments.originProof = Proof of origin
 optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure
 
