@@ -28,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.ImporterEORINumberView
 
 import scala.concurrent.{ExecutionContext, Future}
+import config.ErrorHandler
 
 @Singleton
 class ImporterEORINumberController @Inject() (
@@ -36,22 +37,30 @@ class ImporterEORINumberController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   formProvider: ImporterEORINumberFormProvider,
   view: ImporterEORINumberView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+      Ok(view(form, name, backLink()))
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => {
+        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          BadRequest(view(formWithErrors, name, backLink()))
+        }
+        Future.successful(res)
+      },
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))

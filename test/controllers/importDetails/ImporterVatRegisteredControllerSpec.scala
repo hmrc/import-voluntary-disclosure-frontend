@@ -31,6 +31,7 @@ import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirec
 import views.html.importDetails.ImporterVatRegisteredView
 
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
@@ -64,6 +65,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       ImporterVATRegisteredView,
       ec

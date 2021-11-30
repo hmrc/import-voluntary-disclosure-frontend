@@ -39,7 +39,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[Boolean]              = formProvider.apply()
-      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterEORIExistsMessages.title)
@@ -55,7 +55,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterEORIExistsMessages.errorPrefix + ImporterEORIExistsMessages.title)
@@ -76,7 +76,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[Boolean]              = formProvider.apply()
-    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterEORIExistsMessages.title}'" in {

@@ -35,6 +35,7 @@ import play.api.test.Helpers._
 import views.html.paymentInfo.RepresentativeDanDutyView
 
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
 
@@ -75,6 +76,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       representativeDanDutyView,
       form,
       ec

@@ -34,6 +34,7 @@ import play.api.test.Helpers._
 import views.html.importDetails.NumberOfEntriesView
 
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class NumberOfEntriesControllerSpec extends ControllerSpecBase {
 
@@ -71,6 +72,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       appConfig,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       numberOfEntriesPage,
       ec

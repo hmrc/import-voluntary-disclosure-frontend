@@ -42,12 +42,12 @@ class AddressLookupService @Inject() (
       Json.toJson(AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl))
     )
 
-  def initialiseImporterJourney(implicit
+  def initialiseImporterJourney(importerName: String)(implicit
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Either[ErrorModel, AddressLookupOnRampModel]] =
     addressLookupConnector.initialiseJourney(
-      Json.toJson(ImporterAddressLookupJsonBuilder(appConfig.importerAddressLookupCallbackUrl))
+      Json.toJson(ImporterAddressLookupJsonBuilder(appConfig.importerAddressLookupCallbackUrl, importerName))
     )
 
   def retrieveAddress(

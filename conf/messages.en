@@ -81,13 +81,13 @@ address_lookupPage.editPage.townOrCity = Town or city
 address_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
 
 #Importer Address Lookup
-importerAddress_lookupPage.pageTitle = What address should we send the importer’s copy of the demand note to?
+importerAddress_lookupPage.pageTitle = What is {0}’s address?
 importerAddress_lookupPage.filter = Property name or number (optional)
 importerAddress_lookupPage.postcode = UK postcode
-importerAddress_lookupPage.selectPage.pageTitle = Select the importer’s address
+importerAddress_lookupPage.selectPage.pageTitle = Select {0}’s address
 importerAddress_lookupPage.selectPage.editLink = Enter the address manually
-importerAddress_lookupPage.confirmPage.pageTitle = Confirm the importer’s address
-importerAddress_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
+importerAddress_lookupPage.confirmPage.pageTitle = Confirm {0}’s address
+importerAddress_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 demand note to this address.
 importerAddress_lookupPage.lookupPage.submit = Find Address
 importerAddress_lookupPage.editPage.pageTitle = Enter the importer’s address
 importerAddress_lookupPage.editPage.townOrCity = Town or city
@@ -126,7 +126,7 @@ userType.error.required = Select if you are the importer or their representative
 numberOfEntries.pageTitle = How many entries are you disclosing an underpayment for?
 numberOfEntries.oneEntry = One entry
 numberOfEntries.moreThanOneEntry = More than one entry
-numberOfEntries.moreThanOneEntry.hint = All the entries must be for the same importer.
+numberOfEntries.moreThanOneEntry.hint = All the entries must be for {0}.
 numberOfEntries.error.required = Select if you are disclosing an underpayment for one entry or more than one entry
 
 #Acceptance Date Page
@@ -712,12 +712,12 @@ importerName.error.nameMaxLength = Name of the importer must be 50 characters or
 importerName.error.noEmoji = Name of the importer must not include emojis
 
 # Importer EORI Exists
-importerEORIExists.pageTitle = Does the importer have an EORI number?
+importerEORIExists.pageTitle = Does {0} have an EORI number?
 importerEORIExists.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
 importerEORIExists.error.required = Select yes if the importer has an EORI number
 
 # Importer EORI Number
-importerEORINumber.pageTitle = What is the importer’s EORI number?
+importerEORINumber.pageTitle = What is {0}’s EORI number?
 importerEORINumber.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
 importerEORINumber.error.nonEmpty = Enter an EORI number
 importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
@@ -736,7 +736,7 @@ confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
 confirmEoriDetailsError.message = Try again later.
 
 # Importer Dan page
-importerDan.pageTitle = What is the deferment account number?
+importerDan.pageTitle = What is {0}’s deferment account number?
 importerDan.error.required = Enter the deferment account number
 importerDan.error.format = Enter the deferment account number in the correct format, like 1234567
 
@@ -762,9 +762,9 @@ repDan.pageTitle = Deferment account details
 repDan.accountNumberLabel = Deferment account number
 repDan.radioLabel = Whose deferment account is this?
 repDan.radio1 = My deferment account (A)
-repDan.radio2 = The importer’s account and I have authority to use it (B)
+repDan.radio2 = {0}’s account and I have authority to use it (B)
 repDan.radio2.hint = You will be asked to upload proof of authority
-repDan.radio3 = The importer’s account and I have standing authority to use it (C)
+repDan.radio3 = {0}’s account and I have standing authority to use it (C)
 repDan.error.input.required = Enter the deferment account number
 repDan.error.input.format = Enter the deferment account number in the correct format, like 1234567
 repDan.error.radio.required = Select whose deferment account this is
@@ -826,7 +826,7 @@ optionalSupportingDocuments.originProof = Proof of origin
 optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure
 
 # Import VAT Registered Page
-importerVatRegistered.pageTitle = Is the importer VAT registered?
+importerVatRegistered.pageTitle = Is {0} VAT registered?
 importerVatRegistered.error.required = Select yes if the importer is VAT registered
 
 # Update Additional Information Page

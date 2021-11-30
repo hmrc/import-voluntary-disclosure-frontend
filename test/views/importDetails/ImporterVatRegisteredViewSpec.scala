@@ -39,6 +39,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
+        "importer",
         Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -58,6 +59,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
+        "importer",
         Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -80,6 +82,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
     val form: Form[Boolean] = formProvider.apply()
     lazy val view: Html = injectedView(
       form,
+      "importer",
       Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)

@@ -28,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.{ExecutionContext, Future}
+import config.ErrorHandler
 
 class ImporterDanController @Inject() (
   identify: IdentifierAction,
@@ -35,22 +36,30 @@ class ImporterDanController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   formProvider: ImporterDanFormProvider,
   view: ImporterDanView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = request.userAnswers.get(DefermentAccountPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink)))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+      Ok(view(form, name, backLink()))
+    }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => {
+        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          BadRequest(view(formWithErrors, name, backLink()))
+        }
+        Future.successful(res)
+      },
       value => {
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))

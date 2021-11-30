@@ -20,10 +20,10 @@
       yesNoRadio: components.yesNoRadio,
       button: components.button)
 
-@(form: Form[_],backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("importerEORIExists.pageTitle"),
+        pageTitle = messages("importerEORIExists.pageTitle", importerName),
         form = Some(form),
         customBackLinkUrl = Some(backLink)) {
 
@@ -33,6 +33,7 @@
             @yesNoRadio(
                 form,
                 headingKey = "importerEORIExists.pageTitle",
+                headingMessageArgs = Seq(importerName),
                 hint = Some(messages("importerEORIExists.hint"))
             )
 

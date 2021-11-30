@@ -36,6 +36,7 @@ import views.html.paymentInfo.RepresentativeDanImportVATView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
 
@@ -76,6 +77,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       representativeDanView,
       form,
       ec

@@ -39,6 +39,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[NumberOfEntries] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
+        "importer",
         isRepFlow = true,
         controllers.importDetails.routes.UserTypeController.onLoad()
       )(fakeRequest, messages)
@@ -71,6 +72,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       val form: Form[NumberOfEntries] = formProvider.apply()
       lazy val view: Html = injectedView(
         form,
+        "importer",
         isRepFlow = false,
         controllers.importDetails.routes.UserTypeController.onLoad()
       )(fakeRequest, messages)
@@ -102,6 +104,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       lazy val form: Form[NumberOfEntries] = formProvider().bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
+        "importer",
         isRepFlow = true,
         controllers.importDetails.routes.UserTypeController.onLoad()
       )(fakeRequest, messages)
@@ -125,6 +128,7 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
     val form: Form[NumberOfEntries] = formProvider.apply()
     lazy val view: Html = injectedView(
       form,
+      "importer",
       isRepFlow = true,
       controllers.importDetails.routes.UserTypeController.onLoad()
     )(fakeRequest, messages)

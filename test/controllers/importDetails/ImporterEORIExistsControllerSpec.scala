@@ -31,6 +31,7 @@ import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirec
 import views.html.importDetails.ImporterEORIExistsView
 
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
 
@@ -65,6 +66,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       importerEORIExistsView,
       ec

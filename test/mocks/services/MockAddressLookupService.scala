@@ -42,7 +42,7 @@ trait MockAddressLookupService extends MockFactory {
       .returns(Future.successful(response))
 
   def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit =
-    (mockAddressLookupService.initialiseImporterJourney(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *)
+    (mockAddressLookupService.initialiseImporterJourney(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *)
       .returns(Future.successful(response))
 }

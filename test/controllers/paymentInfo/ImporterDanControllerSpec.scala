@@ -31,6 +31,7 @@ import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.Future
+import config.ErrorHandler
 
 class ImporterDanControllerSpec extends ControllerSpecBase {
 
@@ -52,6 +53,7 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       view,
       ec
