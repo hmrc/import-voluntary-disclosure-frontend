@@ -28,7 +28,12 @@ object UnderpaymentStartMessages extends BaseMessages {
   val bulkBullet2: String     = "the total amount that should have been paid across all the entries"
   val representativeParagraph =
     "Do not use this service to tell us about underpaid import VAT if ABC ltd uses postponed VAT accounting. Instead, they must account for the underpaid import VAT on their next VAT return."
-  val importerParagraph =
-    "Do not use this service to tell us about underpaid import VAT if ABC ltd uses postponed VAT accounting. Instead you must account for the underpaid import VAT on your next VAT return."
-
+  val importerDetailsHeader =
+    "If ABC ltd uses postponed VAT accounting (PVA)"
+  val importerDetailsParagraph =
+    "Do not use this service to tell us about underpaid import VAT if ABC ltd uses postponed VAT accounting. You must account for the underpaid import VAT on your next VAT return."
+  val representativeImporterDetailsHeader =
+    "If Fast Food ltd uses postponed VAT accounting (PVA)"
+  val representativeImporterDetailsParagraph =
+    "Do not use this service to tell us about underpaid import VAT if Fast Food ltd uses postponed VAT accounting. They must account for the underpaid import VAT on their next VAT return."
 }
