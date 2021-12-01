@@ -17,6 +17,7 @@
 package controllers.paymentInfo
 
 import com.google.inject.Inject
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.paymentInfo.RepresentativeDanFormProvider
 import models.RepresentativeDan
@@ -31,7 +32,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.RepresentativeDanDutyView
 
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
 
 class RepresentativeDanDutyController @Inject() (
   identify: IdentifierAction,

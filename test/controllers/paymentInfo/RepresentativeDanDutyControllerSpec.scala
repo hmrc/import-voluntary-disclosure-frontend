@@ -17,6 +17,7 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
@@ -26,7 +27,7 @@ import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
@@ -35,8 +36,6 @@ import play.api.test.Helpers._
 import views.html.paymentInfo.RepresentativeDanDutyView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.ImporterNamePage
 
 class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
 

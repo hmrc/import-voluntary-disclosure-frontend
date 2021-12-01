@@ -16,6 +16,7 @@
 
 package controllers.importDetails
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.ImporterEORIExistsFormProvider
 import javax.inject.{Inject, Singleton}
@@ -28,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.ImporterEORIExistsView
 
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
 
 @Singleton
 class ImporterEORIExistsController @Inject() (

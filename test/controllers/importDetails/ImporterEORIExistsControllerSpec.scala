@@ -17,13 +17,15 @@
 package controllers.importDetails
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterEORIExistsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
-import pages.importDetails.ImporterEORIExistsPage
+import pages.importDetails.{ImporterEORIExistsPage, ImporterNamePage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -31,10 +33,6 @@ import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirec
 import views.html.importDetails.ImporterEORIExistsView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.UserTypePage
-import models.importDetails.UserType
-import pages.importDetails.ImporterNamePage
 
 class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
 

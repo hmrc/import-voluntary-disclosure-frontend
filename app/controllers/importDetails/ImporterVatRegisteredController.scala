@@ -16,6 +16,7 @@
 
 package controllers.importDetails
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.ImporterVatRegisteredFormProvider
 import javax.inject.{Inject, Singleton}
@@ -29,7 +30,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.ImporterVatRegisteredView
 
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
 
 @Singleton
 class ImporterVatRegisteredController @Inject() (

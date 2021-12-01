@@ -17,24 +17,23 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.ImporterDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.DefermentAccountPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
 import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.UserTypePage
-import models.importDetails.UserType
-import pages.importDetails.ImporterNamePage
-import play.api.test.FakeRequest
 
 class ImporterDanControllerSpec extends ControllerSpecBase {
 
