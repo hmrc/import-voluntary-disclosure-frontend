@@ -60,7 +60,10 @@
             } else {
                 Some(controllers.routes.SignOutController.signOutUnidentified().url)
             },
-            classes = headerClasses
+            language = messages.lang.language match {
+                case "cy" => Cy
+                case _    => En
+            }
         )
     )
 }

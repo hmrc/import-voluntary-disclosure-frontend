@@ -16,18 +16,16 @@
 
 package viewmodels.cya
 
-import models.requests.DataRequest
 import models.UserAnswers
+import models.importDetails.NumberOfEntries
+import models.requests.DataRequest
+import pages.importDetails._
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYAHelper._
 import viewmodels.{ActionItemHelper, cya}
-import java.time.format.DateTimeFormatter
-
-import models.importDetails.NumberOfEntries
-import pages.importDetails.{AcceptanceDatePage, EnterCustomsProcedureCodePage, EntryDetailsPage, NumberOfEntriesPage, OneCustomsProcedureCodePage}
 
 trait CYAEntryDetailsSummaryListHelper {
 
@@ -110,10 +108,13 @@ trait CYAEntryDetailsSummaryListHelper {
 
   private def buildEntryDateListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(EntryDetailsPage).map { entryDetails =>
-      val entryDateFormat = entryDetails.entryDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy"))
+      val entryDate =
+        entryDetails.entryDate.getDayOfMonth + " " + messages(
+          s"month.${entryDetails.entryDate.getMonthValue}"
+        ) + " " + entryDetails.entryDate.getYear
       createRow(
         keyText = Text(messages("cya.entryDate")),
-        valueContent = Text(entryDateFormat),
+        valueContent = Text(entryDate),
         action = Some(
           ActionItemHelper.createChangeActionItem(
             controllers.importDetails.routes.EntryDetailsController.onLoad().url,

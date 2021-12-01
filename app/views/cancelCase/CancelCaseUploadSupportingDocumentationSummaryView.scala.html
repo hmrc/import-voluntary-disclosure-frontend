@@ -27,7 +27,7 @@
 @(form: Form[_], files: SummaryList)(implicit request: Request[_], messages: Messages)
 
 @singularFile = @{
-    if(files.rows.size == 1) "file" else "files"
+    if(files.rows.size == 1) messages("common.file") else messages("common.files")
 }
 
 @layout(

@@ -3,6 +3,8 @@ common.back = Back
 common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
+common.file = file
+common.files = files
 
 common.error.pageTitle = Sorry, there is a problem with the service
 common.error.p1 = Try again later.
@@ -15,6 +17,18 @@ page.title.suffix = ' - Disclose an underpayment of Customs Duty or import VAT -
 date.day = Day
 date.month = Month
 date.year = Year
+month.1 = January
+month.2 = February
+month.3 = March
+month.4 = April
+month.5 = May
+month.6 = June
+month.7 = July
+month.8 = August
+month.9 = September
+month.10 = October
+month.11 = November
+month.12 = December
 
 site.yes = Yes
 site.no = No
@@ -464,6 +478,7 @@ boxNumber.66.radio = Box 66 Insurance
 boxNumber.67.radio = Box 67 Other charges of deductions
 boxNumber.68.radio = Box 68 Adjustment for VAT value
 boxNumber.99.radio = Other reason
+boxNumber.or = or
 
 # Amend Reason Values
 amendmentValue.originalAmount = Original value
