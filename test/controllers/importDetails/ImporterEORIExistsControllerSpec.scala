@@ -32,6 +32,9 @@ import views.html.importDetails.ImporterEORIExistsView
 
 import scala.concurrent.Future
 import config.ErrorHandler
+import pages.importDetails.UserTypePage
+import models.importDetails.UserType
+import pages.importDetails.ImporterNamePage
 
 class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
 
@@ -41,6 +44,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
         .set(CheckModePage, false).success.value
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(

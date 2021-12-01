@@ -32,6 +32,9 @@ import views.html.importDetails.ImporterVatRegisteredView
 
 import scala.concurrent.Future
 import config.ErrorHandler
+import pages.importDetails.UserTypePage
+import models.importDetails.UserType
+import pages.importDetails.ImporterNamePage
 
 class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
@@ -39,7 +42,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
     private lazy val ImporterVATRegisteredView: ImporterVatRegisteredView =
       app.injector.instanceOf[ImporterVatRegisteredView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: ImporterVatRegisteredFormProvider = injector.instanceOf[ImporterVatRegisteredFormProvider]

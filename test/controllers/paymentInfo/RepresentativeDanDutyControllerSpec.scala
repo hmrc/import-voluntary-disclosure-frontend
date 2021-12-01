@@ -36,6 +36,7 @@ import views.html.paymentInfo.RepresentativeDanDutyView
 
 import scala.concurrent.Future
 import config.ErrorHandler
+import pages.importDetails.ImporterNamePage
 
 class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
 
@@ -50,7 +51,12 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
     private lazy val representativeDanDutyView: RepresentativeDanDutyView =
       app.injector.instanceOf[RepresentativeDanDutyView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
+
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
