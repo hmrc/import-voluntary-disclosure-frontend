@@ -23,11 +23,11 @@ import play.api.data.Form
 
 class ImporterEORINumberFormProvider @Inject() extends Mappings with FormHelpers {
 
-  def apply(): Form[String] =
+  def apply(importerName: String): Form[String] =
     Form(
-      "importerEORI" -> text("importerEORINumber.error.nonEmpty")
+      "importerEORI" -> text("importerEORINumber.error.nonEmpty", Seq(importerName))
         .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-        .verifying(regexp("\\{*^(?i)GB([0-9]{12}|[0-9]{15})$\\}*", "importerEORINumber.error.incorrectFormat"))
+        .verifying(regexp("\\{*^(?i)GB([0-9]{12}|[0-9]{15})$\\}*", "importerEORINumber.error.incorrectFormat", Seq(importerName)))
     )
 
 }

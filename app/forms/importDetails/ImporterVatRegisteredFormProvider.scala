@@ -21,8 +21,8 @@ import play.api.data.Form
 
 class ImporterVatRegisteredFormProvider extends Mappings {
 
-  def apply(): Form[Boolean] =
+  def apply(importerName: String): Form[Boolean] =
     Form(
-      "value" -> boolean("importerVatRegistered.error.required")
+      "value" -> boolean("importerVatRegistered.error.required", args = Seq(importerName))
     )
 }

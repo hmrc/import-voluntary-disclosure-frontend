@@ -34,7 +34,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
     }
 
     "return Invalid when the second constraint fails" in {
-      first("") mustEqual Invalid("error.regexp", """^\w+$""")
+      first("") mustEqual Invalid("error.regexp")
     }
   }
 
@@ -129,7 +129,7 @@ class ConstraintsSpec extends FormSpecBase with Constraints {
 
     "return Invalid for an input that does not match the expression" in {
       val result = regexp("""^\d+$""", "error.invalid")("foo")
-      result mustEqual Invalid("error.invalid", """^\d+$""")
+      result mustEqual Invalid("error.invalid")
     }
   }
 

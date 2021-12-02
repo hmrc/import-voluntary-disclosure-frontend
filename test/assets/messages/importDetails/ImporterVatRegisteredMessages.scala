@@ -19,6 +19,6 @@ package messages.importDetails
 object ImporterVatRegisteredMessages {
 
   val title: String         = "Is importer VAT registered?"
-  val requiredError: String = "Select yes if the importer is VAT registered"
+  val requiredError: String = "Select yes if importer is VAT registered"
 
 }

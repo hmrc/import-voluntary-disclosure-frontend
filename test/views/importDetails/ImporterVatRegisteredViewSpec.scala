@@ -36,7 +36,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the ImporterVATRegistered page" when {
     "no errors exist" should {
 
-      val form: Form[Boolean] = formProvider.apply()
+      val form: Form[Boolean] = formProvider.apply("importer")
       lazy val view: Html = injectedView(
         form,
         "importer",
@@ -56,7 +56,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
+      lazy val form: Form[Boolean] = formProvider("importer").bind(Map("value" -> ""))
       lazy val view: Html = injectedView(
         form,
         "importer",
@@ -79,7 +79,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
+    val form: Form[Boolean] = formProvider.apply("importer")
     lazy val view: Html = injectedView(
       form,
       "importer",

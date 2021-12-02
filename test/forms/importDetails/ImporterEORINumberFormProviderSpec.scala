@@ -30,14 +30,14 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
   )
 
   def formBinder(formValues: Map[String, String] = Map(importerEORINumber -> "")): Form[String] =
-    new ImporterEORINumberFormProvider()().bind(formValues)
+    new ImporterEORINumberFormProvider()("importer").bind(formValues)
 
   "Binding a form with invalid data" when {
 
     "with no data present" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form                               = new ImporterEORINumberFormProvider()().bind(missingOption)
+      val form                               = new ImporterEORINumberFormProvider()("importer").bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -55,7 +55,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number entered in an incorrect format" should {
 
       val data = Map("importerEORI" -> "345834921000")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -73,7 +73,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number exceeding length of 12" should {
 
       val data = Map("importerEORI" -> "GB1234567891231")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -91,7 +91,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number exceeding length of 15" should {
 
       val data = Map("importerEORI" -> "GB1234567891231231")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -109,7 +109,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number that is 11 in length" should {
 
       val data = Map("importerEORI" -> "GB12345678912")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -127,7 +127,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number that is 14 in length" should {
 
       val data = Map("importerEORI" -> "GB12345678912312")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -145,7 +145,7 @@ class ImporterEORINumberFormProviderSpec extends FormSpecBase {
     "with EORI Number that does not begin with GB" should {
 
       val data = Map("importerEORI" -> "BG123456789123")
-      val form = new ImporterEORINumberFormProvider()().bind(data)
+      val form = new ImporterEORINumberFormProvider()("importer").bind(data)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true

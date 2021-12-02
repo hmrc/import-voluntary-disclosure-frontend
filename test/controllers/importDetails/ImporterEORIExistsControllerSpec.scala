@@ -134,6 +134,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -145,6 +147,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -156,6 +160,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -167,6 +173,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)

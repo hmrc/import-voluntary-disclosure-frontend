@@ -45,29 +45,25 @@ class ImporterEORINumberController @Inject() (
     with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider()) {
-      formProvider().fill
-    }
-    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, backLink()))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { importerName =>
+      val form = request.userAnswers.get(ImporterEORINumberPage).fold(formProvider(importerName)) {
+        formProvider(importerName).fill
+      }
+      Ok(view(form, importerName, backLink()))
     }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, backLink()))
-        }
-        Future.successful(res)
-      },
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(controllers.importDetails.routes.ImporterVatRegisteredController.onLoad())
-      }
-    )
+    request.getImporterName.fold(Future.successful(errorHandler.showInternalServerError)) { importerName =>
+      formProvider(importerName).bindFromRequest().fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, importerName, backLink()))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterEORINumberPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(controllers.importDetails.routes.ImporterVatRegisteredController.onLoad())
+      )
+    }
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {

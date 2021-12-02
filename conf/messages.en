@@ -714,13 +714,13 @@ importerName.error.noEmoji = Name of the importer must not include emojis
 # Importer EORI Exists
 importerEORIExists.pageTitle = Does {0} have an EORI number?
 importerEORIExists.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
-importerEORIExists.error.required = Select yes if the importer has an EORI number
+importerEORIExists.error.required = Select yes if {0} has an EORI number
 
 # Importer EORI Number
 importerEORINumber.pageTitle = What is {0}’s EORI number?
 importerEORINumber.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
-importerEORINumber.error.nonEmpty = Enter an EORI number
-importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
+importerEORINumber.error.nonEmpty = Enter {0}’s EORI number
+importerEORINumber.error.incorrectFormat = Enter {0}’s EORI number in the correct format
 
 # Confirm EORI Details
 confirmEORI.pageTitle = Confirm you want to disclose an underpayment using this EORI number
@@ -827,7 +827,7 @@ optionalSupportingDocuments.other = Other documentation relevant to this underpa
 
 # Import VAT Registered Page
 importerVatRegistered.pageTitle = Is {0} VAT registered?
-importerVatRegistered.error.required = Select yes if the importer is VAT registered
+importerVatRegistered.error.required = Select yes if {0} is VAT registered
 
 # Update Additional Information Page
 updateAdditionalInformation.pageTitle = Tell us any additional information
