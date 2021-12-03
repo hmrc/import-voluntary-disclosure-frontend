@@ -21,10 +21,10 @@
         inputText: components.inputText
 )
 
-@(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("importerDan.pageTitle"),
+        pageTitle = messages("importerDan.pageTitle", importerName),
         form = Some(form),
         customBackLinkUrl = backLink) {
 
@@ -35,7 +35,8 @@
                 form = form,
                 id = "value",
                 name = "value",
-                label = messages("importerDan.pageTitle"),
+                label = "importerDan.pageTitle",
+                headingMessageArgs = Seq(importerName),
                 isPageHeading = true,
                 classes = Some("govuk-fieldset__legend govuk-input--width-10")
             )

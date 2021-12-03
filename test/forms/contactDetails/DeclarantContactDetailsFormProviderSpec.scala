@@ -36,10 +36,10 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   private final val fullNameInvalidCharactersKey = "declarantContactDetails.error.nameAllowableCharacters"
   private final val emailInvalidFormatKey        = "declarantContactDetails.error.emailInvalidFormat"
   private final val phoneNumberInvalidFormatKey  = "declarantContactDetails.error.phoneNumberInvalidFormat"
-  private final val emailRegex                   =
+  private final val emailRegex =
     "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-  private final val phoneRegex                   = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
-  private final val nameRegex                    = "^[a-zA-Z '-]+$"
+  private final val phoneRegex = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
+  private final val nameRegex  = "^[a-zA-Z '-]+$"
 
   def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
     "fullName"    -> fullName,
@@ -96,7 +96,7 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
             email = exampleEmail,
             phoneNumber = examplePhoneNumber
           )
-        ).errors mustBe Seq(FormError(fullName, fullNameInvalidCharactersKey, Seq(nameRegex)))
+        ).errors mustBe Seq(FormError(fullName, fullNameInvalidCharactersKey))
       }
     }
 
@@ -108,7 +108,7 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
             email = "email.com",
             phoneNumber = examplePhoneNumber
           )
-        ).errors mustBe Seq(FormError(email, emailInvalidFormatKey, Seq(emailRegex)))
+        ).errors mustBe Seq(FormError(email, emailInvalidFormatKey))
       }
     }
 
@@ -120,7 +120,7 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
             email = exampleEmail,
             phoneNumber = "++0123456789"
           )
-        ).errors mustBe Seq(FormError(phoneNumber, phoneNumberInvalidFormatKey, Seq(phoneRegex)))
+        ).errors mustBe Seq(FormError(phoneNumber, phoneNumberInvalidFormatKey))
       }
     }
 
@@ -151,14 +151,16 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   }
 
   "email address has two fullstops before the @" should {
-    val form = formBinder(formBuilder(fullName = exampleName, email = "email.email.email@email.com", phoneNumber = examplePhoneNumber))
+    val form = formBinder(
+      formBuilder(fullName = exampleName, email = "email.email.email@email.com", phoneNumber = examplePhoneNumber)
+    )
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
     }
 
     "generate the correct model" in {
-      form.value mustBe Some(ContactDetails(exampleName,  "email.email.email@email.com", examplePhoneNumber))
+      form.value mustBe Some(ContactDetails(exampleName, "email.email.email@email.com", examplePhoneNumber))
     }
 
   }

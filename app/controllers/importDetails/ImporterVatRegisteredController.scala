@@ -16,6 +16,7 @@
 
 package controllers.importDetails
 
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.ImporterVatRegisteredFormProvider
 import javax.inject.{Inject, Singleton}
@@ -37,36 +38,40 @@ class ImporterVatRegisteredController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   formProvider: ImporterVatRegisteredFormProvider,
   view: ImporterVatRegisteredView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(ImporterVatRegisteredPage).fold(formProvider()) {
-      formProvider().fill
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    request.getImporterName.fold(errorHandler.showInternalServerError) { importerName =>
+      val form = request.userAnswers.get(ImporterVatRegisteredPage).fold(formProvider(importerName)) {
+        formProvider(importerName).fill
+      }
+      Ok(view(form, importerName, backLink()))
     }
-
-    Future.successful(Ok(view(form, backLink)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      value => {
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterVatRegisteredPage, value))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield {
-          if (request.checkMode) {
-            Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-          } else {
-            Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
+    request.getImporterName.fold(Future.successful(errorHandler.showInternalServerError)) { importerName =>
+      formProvider(importerName).bindFromRequest().fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, importerName, backLink()))),
+        value => {
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ImporterVatRegisteredPage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield {
+            if (request.checkMode) {
+              Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
+            } else {
+              Redirect(controllers.importDetails.routes.NumberOfEntriesController.onLoad())
+            }
           }
         }
-      }
-    )
+      )
+    }
   }
 
   private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {

@@ -17,13 +17,15 @@
 package controllers.importDetails
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterVatRegisteredFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
-import pages.importDetails.ImporterVatRegisteredPage
+import pages.importDetails.{ImporterNamePage, ImporterVatRegisteredPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -38,7 +40,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
     private lazy val ImporterVATRegisteredView: ImporterVatRegisteredView =
       app.injector.instanceOf[ImporterVatRegisteredView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: ImporterVatRegisteredFormProvider = injector.instanceOf[ImporterVatRegisteredFormProvider]
@@ -64,6 +70,7 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       ImporterVATRegisteredView,
       ec
@@ -117,7 +124,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
       "return a SEE OTHER response" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
+          Some(
+            UserAnswers("some-cred-id").set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
+          )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -125,7 +136,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
       "return the correct location header when true" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
+          Some(
+            UserAnswers("some-cred-id").set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
+          )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
@@ -133,7 +148,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
       "return the correct location header when false" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
+          Some(
+            UserAnswers("some-cred-id").set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
+          )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
@@ -141,7 +160,11 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] =
-          Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
+          Some(
+            UserAnswers("some-cred-id").set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
+          )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
         verifyCalls()

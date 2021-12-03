@@ -32,11 +32,18 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 
 import scala.concurrent.Future
+import pages.importDetails.ImporterNamePage
 
 class AddressLookupControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockAddressLookupService with MockSessionRepository {
-    lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(UserAnswers("some-cred-id")))
+    lazy val dataRetrievalAction = new FakeDataRetrievalAction(
+      Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(ImporterNamePage, "importer").success.value
+      )
+    )
 
     lazy val controller = new AddressLookupController(
       authenticatedAction,

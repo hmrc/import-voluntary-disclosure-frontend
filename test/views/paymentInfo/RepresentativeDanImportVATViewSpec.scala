@@ -43,11 +43,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
   "Rendering the RepresentativeDan page" when {
 
     "no errors exist" should {
-      val form: Form[RepresentativeDan] = formProvider.apply()
-      lazy val view: Html = injectedView(
-        form,
-        backLink
-      )(fakeRequest, messages)
+      val form: Form[RepresentativeDan]    = formProvider.apply()
+      lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.title)
@@ -67,11 +64,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (no value has been specified for the account number)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues(emptyString, "A")
-      lazy val view: Html = injectedView(
-        form,
-        backLink
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -90,11 +84,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (account number value is an invalid format)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("!234567", "A")
-      lazy val view: Html = injectedView(
-        form,
-        backLink
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -111,11 +102,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (dan type radio selection has not been provided)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("1234567", emptyString)
-      lazy val view: Html = injectedView(
-        form,
-        backLink
-      )(fakeRequest, messages)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
+      lazy implicit val document: Document   = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -134,7 +122,7 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html                    = injectedView(form, backLink)(fakeRequest, messages)
+    lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
     lazy implicit val document: Document   = Jsoup.parse(view.body)
 
     checkPageTitle(RepresentativeDanImportVATMessages.title)

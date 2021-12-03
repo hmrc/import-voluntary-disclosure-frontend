@@ -17,13 +17,15 @@
 package controllers.importDetails
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterEORIExistsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
-import pages.importDetails.ImporterEORIExistsPage
+import pages.importDetails.{ImporterEORIExistsPage, ImporterNamePage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
@@ -40,6 +42,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
         .set(CheckModePage, false).success.value
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
@@ -65,6 +69,7 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       importerEORIExistsView,
       ec
@@ -129,6 +134,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -140,6 +147,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -151,6 +160,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
@@ -162,6 +173,8 @@ class ImporterEORIExistsControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(UserTypePage, UserType.Representative).success.value
+              .set(ImporterNamePage, "importer").success.value
           )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)

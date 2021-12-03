@@ -38,7 +38,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist" should {
 
       val form: Form[String]               = formProvider.apply()
-      lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterDanMessages.title)
@@ -56,7 +56,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String]          = formProvider().bind(Map("value" -> ""))
-        lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+        lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
@@ -76,7 +76,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
 
       "an error exists" should {
         lazy val form: Form[String]          = formProvider().bind(Map("value" -> "A1234567"))
-        lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+        lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
@@ -96,7 +96,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
   it should {
 
     val form: Form[String]               = formProvider.apply()
-    lazy val view: Html                  = injectedView(form, backLink)(fakeRequest, messages)
+    lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterDanMessages.title}'" in {

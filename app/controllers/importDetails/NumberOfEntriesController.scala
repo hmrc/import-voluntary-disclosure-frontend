@@ -36,6 +36,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.NumberOfEntriesView
 
 import scala.concurrent.{ExecutionContext, Future}
+import config.ErrorHandler
 
 @Singleton
 class NumberOfEntriesController @Inject() (
@@ -45,6 +46,7 @@ class NumberOfEntriesController @Inject() (
   sessionRepository: SessionRepository,
   appConfig: AppConfig,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   formProvider: NumberOfEntriesFormProvider,
   view: NumberOfEntriesView,
   implicit val ec: ExecutionContext
@@ -53,17 +55,24 @@ class NumberOfEntriesController @Inject() (
 
   implicit val config: AppConfig = appConfig
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = request.userAnswers.get(NumberOfEntriesPage).fold(formProvider()) {
       formProvider().fill
     }
 
-    Future.successful(Ok(view(form, request.isRepFlow, backLink())))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+      Ok(view(form, name, request.isRepFlow, backLink()))
+    }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, request.isRepFlow, backLink()))),
+      formWithErrors => {
+        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          BadRequest(view(formWithErrors, name, request.isRepFlow, backLink()))
+        }
+        Future.successful(res)
+      },
       newNumberOfEntries => {
         val prevNumberOfEntries: Option[NumberOfEntries] = request.userAnswers.get(NumberOfEntriesPage)
         val cleanedUserAnswers: UserAnswers = prevNumberOfEntries match {

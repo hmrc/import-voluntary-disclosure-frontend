@@ -36,9 +36,10 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the Importer's EORI Number page" when {
     "no errors exist" should {
 
-      val form: Form[String] = formProvider.apply()
+      val form: Form[String] = formProvider.apply("importer")
       lazy val view: Html = injectedView(
         form,
+        "importer",
         Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -57,9 +58,10 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     "no data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> ""))
+        lazy val form: Form[String] = formProvider("importer").bind(Map("importerEORI" -> ""))
         lazy val view: Html = injectedView(
           form,
+          "importer",
           Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -81,9 +83,10 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
     "wrong format data supplied" should {
 
       "an error exists" should {
-        lazy val form: Form[String] = formProvider().bind(Map("importerEORI" -> "345834921000"))
+        lazy val form: Form[String] = formProvider("importer").bind(Map("importerEORI" -> "345834921000"))
         lazy val view: Html = injectedView(
           form,
+          "importer",
           Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -105,9 +108,10 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
 
   it should {
 
-    val form: Form[String] = formProvider.apply()
+    val form: Form[String] = formProvider.apply("importer")
     lazy val view: Html = injectedView(
       form,
+      "importer",
       Some(Call("GET", controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url))
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
