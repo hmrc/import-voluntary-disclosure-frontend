@@ -344,7 +344,6 @@ declarantContactDetails.error.nameAllowableCharacters=Mae’n rhaid i’r enw gy
 declarantContactDetails.error.emailInvalidFormat=Nodwch gyfeiriad e-bost yn y fformat cywir, megis enw@enghraifft.com
 declarantContactDetails.error.phoneNumberInvalidFormat=Nodwch rif ffôn, megis 01632 960 001, 07700 900 982 neu +44 0808 157 0192
 traderAddressCorrect.pageTitle=Ai dyma’r cyfeiriad cywir ar gyfer anfon y gorchymyn i dalu?
-traderAddressCorrect.h1=Ai dyma’r cyfeiriad cywir ar gyfer anfon y gorchymyn i dalu?
 traderAddressCorrect.error.required=Dewiswch ‘Iawn’ os mai dyma’r cyfeiriad cywir ar gyfer anfon y gorchymyn i dalu
 uploadAnotherFile.pageTitle=Rydych wedi uwchlwytho {0} {1}
 uploadAnotherFile.addFile=A oes angen i chi uwchlwytho ffeil arall?

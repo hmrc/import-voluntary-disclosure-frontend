@@ -23,10 +23,18 @@
         yesNoRadio: components.yesNoRadio
 )
 
-@(form: Form[_], traderAddress: ContactAddress, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(
+        form: Form[_],
+        traderAddress: ContactAddress,
+        traderName: String,
+        importerName: String,
+        backLink: Call
+)(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
-        @h1(messages("traderAddressCorrect.h1"))
+        @h1(messages("traderAddressCorrect.pageTitle", traderName))
+
+        @p(Html(messages("traderAddressCorrect.p", traderName, importerName)))
 
         @if(!traderAddress.postalCode.isEmpty) {
             @p(content = Html(
@@ -47,7 +55,7 @@
     }
 
     @layout(
-        pageTitle = messages("traderAddressCorrect.pageTitle"),
+        pageTitle = messages("traderAddressCorrect.pageTitle", traderName),
         form = Some(form),
         customBackLinkUrl = Some(backLink)) {
 
