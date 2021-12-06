@@ -52,13 +52,15 @@ class TraderAddressCorrectController @Inject() (
   private val logger = Logger("application." + getClass.getCanonicalName)
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val importerName = request.userAnswers.get(ImporterNamePage).get
+    val importerName = request.userAnswers.get(ImporterNamePage)
     val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
       formProvider().fill
     }
     request.userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) =>
-        Future.successful(Ok(view(form, eoriDetails.address, eoriDetails.name, importerName, backLink())))
+        Future.successful(
+          Ok(view(form, eoriDetails.address, eoriDetails.name, importerName, request.isRepFlow, backLink()))
+        )
       case None =>
         logger.error("Requested the trader address page without EORI details")
         Future.successful(errorHandler.showInternalServerError)
@@ -66,13 +68,15 @@ class TraderAddressCorrectController @Inject() (
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val importerName                  = request.userAnswers.get(ImporterNamePage).get
+    val importerName                  = request.userAnswers.get(ImporterNamePage)
     val knownEoriDetailsPage          = request.userAnswers.get(KnownEoriDetailsPage).get
     val traderAddress: ContactAddress = knownEoriDetailsPage.address
     formProvider().bindFromRequest().fold(
       formWithErrors =>
         Future.successful(
-          BadRequest(view(formWithErrors, traderAddress, knownEoriDetailsPage.name, importerName, backLink()))
+          BadRequest(
+            view(formWithErrors, traderAddress, knownEoriDetailsPage.name, importerName, request.isRepFlow, backLink())
+          )
         ),
       value => {
         if (value) {

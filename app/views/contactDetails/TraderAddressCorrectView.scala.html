@@ -27,14 +27,17 @@
         form: Form[_],
         traderAddress: ContactAddress,
         traderName: String,
-        importerName: String,
+        importerName: Option[String],
+        isRepFlow: Boolean,
         backLink: Call
 )(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
-        @h1(messages("traderAddressCorrect.pageTitle", traderName))
+        @h1(messages("traderAddressCorrect.pageTitle.rep", traderName))
 
-        @p(Html(messages("traderAddressCorrect.p", traderName, importerName)))
+        @if(isRepFlow){
+            @p(Html(messages("traderAddressCorrect.p", traderName, importerName.get)))
+        }
 
         @if(!traderAddress.postalCode.isEmpty) {
             @p(content = Html(
