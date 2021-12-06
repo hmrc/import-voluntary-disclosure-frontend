@@ -33,7 +33,7 @@
 )(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
-        @h1(messages("traderAddressCorrect.pageTitle.rep", traderName))
+        @h1(messages("traderAddressCorrect.pageTitle", traderName))
 
         @if(isRepFlow){
             @p(Html(messages("traderAddressCorrect.p", traderName, importerName.get)))
