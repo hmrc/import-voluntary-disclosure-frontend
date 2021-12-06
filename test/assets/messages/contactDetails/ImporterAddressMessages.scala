@@ -26,6 +26,6 @@ object ImporterAddressMessages extends BaseMessages {
 
   def getTitle(traderName: String) = s"$pageTitle $traderName?"
 
-  def getParagraph(traderName: String, importerName: String) = s"$p $traderName and $importerName"
+  def getParagraph(traderName: String, importerName: Option[String]) = s"$p $traderName and ${importerName.get}"
 
 }
