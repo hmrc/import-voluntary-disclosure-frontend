@@ -32,6 +32,8 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
 
   val backLink = Call("GET", "backLinkUrl")
 
+  val representativeName = "Traders ltd"
+
   private lazy val injectedView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
   val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
@@ -138,10 +140,10 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       ) mustBe RepresentativeDanMessages.radioButtonLabel
     }
 
-    s"have the correct value for the first radio button of '${RepresentativeDanMessages.radio1}'" in {
+    s"have the correct value for the first radio button of '${RepresentativeDanMessages.getRadioOne(representativeName)}'" in {
       elementText(
         "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label"
-      ) mustBe RepresentativeDanMessages.radio1
+      ) mustBe RepresentativeDanMessages.getRadioOne(representativeName)
     }
 
     s"have the correct value for the second radio button of '${RepresentativeDanMessages.radio2}'" in {
