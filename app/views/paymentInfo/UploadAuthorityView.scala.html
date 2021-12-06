@@ -28,20 +28,20 @@
         govukDetails: GovukDetails
 )
 
-@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, dan: String, dutyTypeKey: String)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
+@(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, importerName: String, dutyTypeKey: String)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
 
 @layout(
-    pageTitle = messages("uploadAuthority.pageTitle"),
+    pageTitle = messages("uploadAuthority.pageTitle", importerName),
     customBackLinkUrl = Some(backLink),
     form = Some(form),
 ) {
 
     @errorSummary(form.errors)
 
-    @h1(messages("uploadAuthority.pageTitle"))
+    @h1(messages("uploadAuthority.pageTitle", importerName))
 
     @p {
-        @messages("uploadAuthority.p1", dan, messages(dutyTypeKey))
+        @messages("uploadAuthority.p1", importerName, messages(dutyTypeKey))
     }
 
     @p {
@@ -64,7 +64,7 @@
     )
 
     @p {
-        @messages("common.uploadFile.fileSize")
+        @messages("uploadAuthority.fileSize")
     }
 
     <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
