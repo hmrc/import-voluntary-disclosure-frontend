@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import config.ErrorHandler
 import controllers.actions._
 import forms.contactDetails.TraderAddressCorrectFormProvider
-import models.ContactAddress
+import models.EoriDetails
 import models.requests.DataRequest
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.contactDetails.{TraderAddressCorrectPage, TraderAddressPage}
@@ -50,28 +50,29 @@ class TraderAddressCorrectController @Inject() (
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
       formProvider().fill
     }
     request.userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) =>
-        Future.successful(Ok(view(form, eoriDetails.address, backLink())))
+        Ok(view(form, eoriDetails.address, eoriDetails.name, backLink()))
       case None =>
         logger.error("Requested the trader address page without EORI details")
-        Future.successful(errorHandler.showInternalServerError)
+        errorHandler.showInternalServerError
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val traderAddress: ContactAddress = request.userAnswers.get(KnownEoriDetailsPage).get.address
+    val eoriDetails: EoriDetails = request.userAnswers.get(KnownEoriDetailsPage).get
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, traderAddress, backLink()))),
+      formWithErrors =>
+        Future.successful(BadRequest(view(formWithErrors, eoriDetails.address, eoriDetails.name, backLink()))),
       value => {
         if (value) {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, eoriDetails.address))
             _              <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {

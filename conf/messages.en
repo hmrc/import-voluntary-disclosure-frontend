@@ -404,8 +404,7 @@ declarantContactDetails.error.emailInvalidFormat = Enter an email address in the
 declarantContactDetails.error.phoneNumberInvalidFormat = Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192
 
 # Trader Address
-traderAddressCorrect.pageTitle = Is this the correct address to send the demand for payment to?
-traderAddressCorrect.h1 = Is this the correct address to send the demand for payment to?
+traderAddressCorrect.pageTitle = Is this the correct address for {0}?
 traderAddressCorrect.error.required = Select yes if this is the correct address to send the demand for payment to
 
 # File Upload Summary page
