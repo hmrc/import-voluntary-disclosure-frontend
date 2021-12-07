@@ -22,13 +22,14 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Duty
-import models.UserAnswers
+import models.{ContactAddress, EoriDetails, UserAnswers}
 import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
 import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
@@ -54,6 +55,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
         .set(UserTypePage, UserType.Representative).success.value
         .set(ImporterNamePage, "importer").success.value
+        .set(
+          KnownEoriDetailsPage,
+          EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+        ).success.value
     )
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
@@ -100,6 +105,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           UserAnswers("some-cred-id")
             .set(DefermentTypePage, "A").success.value
             .set(DefermentAccountPage, "1234567").success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -154,6 +163,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
@@ -182,6 +195,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
             .set(SplitPaymentPage, true).success.value
             .set(DefermentTypePage, "A").success.value
             .set(DefermentAccountPage, "1234567").success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("A")): _*)
@@ -202,6 +219,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
             .set(SplitPaymentPage, true).success.value
             .set(DefermentTypePage, "A").success.value
             .set(DefermentAccountPage, "1234567").success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
@@ -222,6 +243,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
             .set(SplitPaymentPage, true).success.value
             .set(DefermentTypePage, "A").success.value
             .set(DefermentAccountPage, "1234567").success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
@@ -241,6 +266,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.paymentInfo.routes.SplitPaymentController.onLoad()
@@ -253,6 +282,10 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
