@@ -36,6 +36,8 @@ import views.html.paymentInfo.RepresentativeDanImportVATView
 
 import java.time.LocalDateTime
 import scala.concurrent.Future
+import config.ErrorHandler
+import pages.importDetails.ImporterNamePage
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
 
@@ -50,7 +52,11 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
     private lazy val representativeDanView: RepresentativeDanImportVATView =
       app.injector.instanceOf[RepresentativeDanImportVATView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
@@ -76,6 +82,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       representativeDanView,
       form,
       ec

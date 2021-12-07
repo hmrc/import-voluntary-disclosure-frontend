@@ -21,10 +21,10 @@
         inputText: components.inputText
 )
 
-@(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
 @layout(
-    pageTitle = messages("importerEORINumber.pageTitle"),
+    pageTitle = messages("importerEORINumber.pageTitle", importerName),
     form = Some(form),
     customBackLinkUrl = backLink) {
 
@@ -36,6 +36,7 @@
             id = "importerEORI",
             name = "importerEORI",
             label = "importerEORINumber.pageTitle",
+            headingMessageArgs = Seq(importerName),
             classes = Some("govuk-input govuk-input--width-20"),
             isPageHeading = true,
             hint = Some(Html(messages("importerEORINumber.hint")))

@@ -55,12 +55,15 @@ class AddressLookupController @Inject() (
 
   def initialiseImporterJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      addressLookupService.initialiseImporterJourney map {
-        case Right(response) =>
-          Redirect(response.redirectUrl)
-        case Left(_) =>
-          errorHandler.showInternalServerError
+      request.getImporterName.fold(Future.successful(errorHandler.showInternalServerError)) { name =>
+        addressLookupService.initialiseImporterJourney(name).map {
+          case Right(response) =>
+            Redirect(response.redirectUrl)
+          case Left(_) =>
+            errorHandler.showInternalServerError
+        }
       }
+
   }
 
   def callback(id: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {

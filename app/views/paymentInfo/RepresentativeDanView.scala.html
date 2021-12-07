@@ -25,7 +25,7 @@
         inputRadio: components.inputRadio
 )
 
-@(form: Form[_], backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, backLink: Call)(implicit request: Request[_], messages: Messages)
 
     @layout(
         pageTitle = messages("repDan.pageTitle"),
@@ -50,13 +50,13 @@
                             ),
                             RadioItem(
                                 value = Some("B"),
-                                content = Text(messages("repDan.radio2")),
+                                content = Text(messages("repDan.radio2", importerName)),
                                 hint = Some(hint("repDan.radio2.hint")),
                                 checked = form("value").value.contains("B")
                             ),
                             RadioItem(
                                 value = Some("C"),
-                                content = Text(messages("repDan.radio3")),
+                                content = Text(messages("repDan.radio3", importerName)),
                                 hint = None,
                                 checked = form("value").value.contains("C")
                             )

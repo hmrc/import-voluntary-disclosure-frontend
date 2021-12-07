@@ -3,6 +3,8 @@ common.back = Back
 common.errorPrefix = 'Error: '
 common.remove = Remove
 common.change = Change
+common.file = file
+common.files = files
 
 common.error.pageTitle = Sorry, there is a problem with the service
 common.error.p1 = Try again later.
@@ -15,6 +17,18 @@ page.title.suffix = ' - Disclose an underpayment of Customs Duty or import VAT -
 date.day = Day
 date.month = Month
 date.year = Year
+month.1 = January
+month.2 = February
+month.3 = March
+month.4 = April
+month.5 = May
+month.6 = June
+month.7 = July
+month.8 = August
+month.9 = September
+month.10 = October
+month.11 = November
+month.12 = December
 
 site.yes = Yes
 site.no = No
@@ -67,13 +81,13 @@ address_lookupPage.editPage.townOrCity = Town or city
 address_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
 
 #Importer Address Lookup
-importerAddress_lookupPage.pageTitle = What address should we send the importer’s copy of the demand note to?
+importerAddress_lookupPage.pageTitle = What is {0}’s address?
 importerAddress_lookupPage.filter = Property name or number (optional)
 importerAddress_lookupPage.postcode = UK postcode
-importerAddress_lookupPage.selectPage.pageTitle = Select the importer’s address
+importerAddress_lookupPage.selectPage.pageTitle = Select {0}’s address
 importerAddress_lookupPage.selectPage.editLink = Enter the address manually
-importerAddress_lookupPage.confirmPage.pageTitle = Confirm the importer’s address
-importerAddress_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
+importerAddress_lookupPage.confirmPage.pageTitle = Confirm {0}’s address
+importerAddress_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 demand note to this address.
 importerAddress_lookupPage.lookupPage.submit = Find Address
 importerAddress_lookupPage.editPage.pageTitle = Enter the importer’s address
 importerAddress_lookupPage.editPage.townOrCity = Town or city
@@ -112,7 +126,7 @@ userType.error.required = Select if you are the importer or their representative
 numberOfEntries.pageTitle = How many entries are you disclosing an underpayment for?
 numberOfEntries.oneEntry = One entry
 numberOfEntries.moreThanOneEntry = More than one entry
-numberOfEntries.moreThanOneEntry.hint = All the entries must be for the same importer.
+numberOfEntries.moreThanOneEntry.hint = All the entries must be for {0}.
 numberOfEntries.error.required = Select if you are disclosing an underpayment for one entry or more than one entry
 
 #Acceptance Date Page
@@ -334,7 +348,7 @@ uploadFile.originalC88 = the original import declaration, also known as the C88 
 uploadFile.originalE2 = the entry acceptance, also known as the E2
 uploadFile.originalCalculations = a document or scanned image showing how you calculated the tax or duty that should have been paid
 uploadFile.importAndEntry = the amendment import declaration (C88) and entry acceptance (E2)
-uploadFile.airwayBill = the airway bill
+uploadFile.airwayBill = the air waybill
 uploadFile.originProof = a proof of origin
 uploadFile.other = other documentation relevant to this underpayment disclosure
 uploadFile.error.noFileSelected = Select a file to upload
@@ -464,6 +478,7 @@ boxNumber.66.radio = Box 66 Insurance
 boxNumber.67.radio = Box 67 Other charges of deductions
 boxNumber.68.radio = Box 68 Adjustment for VAT value
 boxNumber.99.radio = Other reason
+boxNumber.or = or
 
 # Amend Reason Values
 amendmentValue.originalAmount = Original value
@@ -697,15 +712,15 @@ importerName.error.nameMaxLength = Name of the importer must be 50 characters or
 importerName.error.noEmoji = Name of the importer must not include emojis
 
 # Importer EORI Exists
-importerEORIExists.pageTitle = Does the importer have an EORI number?
+importerEORIExists.pageTitle = Does {0} have an EORI number?
 importerEORIExists.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
-importerEORIExists.error.required = Select yes if the importer has an EORI number
+importerEORIExists.error.required = Select yes if {0} has an EORI number
 
 # Importer EORI Number
-importerEORINumber.pageTitle = What is the importer’s EORI number?
+importerEORINumber.pageTitle = What is {0}’s EORI number?
 importerEORINumber.hint = This must start with GB and be followed by either 12 or 15 numbers, for example GB345834921000 or GB123456789123000.
-importerEORINumber.error.nonEmpty = Enter an EORI number
-importerEORINumber.error.incorrectFormat = Enter an EORI number in the correct format
+importerEORINumber.error.nonEmpty = Enter {0}’s EORI number
+importerEORINumber.error.incorrectFormat = Enter {0}’s EORI number in the correct format
 
 # Confirm EORI Details
 confirmEORI.pageTitle = Confirm you want to disclose an underpayment using this EORI number
@@ -721,7 +736,7 @@ confirmEoriDetailsError.pageTitle = Sorry, there is a problem with the service
 confirmEoriDetailsError.message = Try again later.
 
 # Importer Dan page
-importerDan.pageTitle = What is the deferment account number?
+importerDan.pageTitle = What is {0}’s deferment account number?
 importerDan.error.required = Enter the deferment account number
 importerDan.error.format = Enter the deferment account number in the correct format, like 1234567
 
@@ -732,8 +747,9 @@ underpaymentStart.oneEntry.bullet1 = the amount that was originally paid
 underpaymentStart.oneEntry.bullet2 = the amount that should have been paid
 underpaymentStart.bulkEntry.bullet1 = the total amount that was originally paid across all the entries
 underpaymentStart.bulkEntry.bullet2 = the total amount that should have been paid across all the entries
-underpaymentStart.representative.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. Instead, they must account for the underpaid import VAT on their next VAT return.
-underpaymentStart.importer.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. Instead you must account for the underpaid import VAT on your next VAT return.
+underpaymentStart.details.header = If {0} uses postponed VAT accounting (PVA)
+underpaymentStart.details.representative.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. They must account for the underpaid import VAT on their next VAT return.
+underpaymentStart.details.importer.p1 = Do not use this service to tell us about underpaid import VAT if {0} uses postponed VAT accounting. You must account for the underpaid import VAT on your next VAT return.
 
 # Split Payment page
 splitPayment.pageTitle = Do you want to split payment between two deferment accounts?
@@ -746,9 +762,9 @@ repDan.pageTitle = Deferment account details
 repDan.accountNumberLabel = Deferment account number
 repDan.radioLabel = Whose deferment account is this?
 repDan.radio1 = My deferment account (A)
-repDan.radio2 = The importer’s account and I have authority to use it (B)
+repDan.radio2 = {0}’s account and I have authority to use it (B)
 repDan.radio2.hint = You will be asked to upload proof of authority
-repDan.radio3 = The importer’s account and I have standing authority to use it (C)
+repDan.radio3 = {0}’s account and I have standing authority to use it (C)
 repDan.error.input.required = Enter the deferment account number
 repDan.error.input.format = Enter the deferment account number in the correct format, like 1234567
 repDan.error.radio.required = Select whose deferment account this is
@@ -793,11 +809,11 @@ uploadAuthority.uploadFile = Upload file
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?
-anyOtherSupportingDocs.p1 = You must upload the following documents if they apply:
+anyOtherSupportingDocs.p1 = You must upload the following documents if you have them:
 anyOtherSupportingDocs.bullet1 = the amendment import declaration (C88) and entry acceptance (E2), sometimes known as a training entry
-anyOtherSupportingDocs.bullet2 = the airway bill, if the goods were transported by air
-anyOtherSupportingDocs.bullet3 = a proof of origin for the goods, if the import declaration used a preference from a preference agreement or the Generalised Scheme of Preferences
-anyOtherSupportingDocs.bullet4 = other documentation relevant to this underpayment disclosure
+anyOtherSupportingDocs.bullet2 = the air waybill, if the goods were transported by air
+anyOtherSupportingDocs.bullet3 = a proof of origin for the goods
+anyOtherSupportingDocs.bullet4 = other documents relevant to this underpayment disclosure
 anyOtherSupportingDocs.error.required = Select yes if you have any of these documents
 
 # Optional Support Documents you will be uploading page
@@ -805,13 +821,13 @@ optionalSupportingDocuments.pageTitle = Which of these documents will you be upl
 optionalSupportingDocuments.hint = Select all that apply.
 optionalSupportingDocuments.error.required = Select which documents you will be uploading
 optionalSupportingDocuments.importAndEntry = Amendment import declaration (C88) and entry acceptance (E2)
-optionalSupportingDocuments.airwayBill = Airway bill
+optionalSupportingDocuments.airwayBill = Air waybill
 optionalSupportingDocuments.originProof = Proof of origin
 optionalSupportingDocuments.other = Other documentation relevant to this underpayment disclosure
 
 # Import VAT Registered Page
-importerVatRegistered.pageTitle = Is the importer VAT registered?
-importerVatRegistered.error.required = Select yes if the importer is VAT registered
+importerVatRegistered.pageTitle = Is {0} VAT registered?
+importerVatRegistered.error.required = Select yes if {0} is VAT registered
 
 # Update Additional Information Page
 updateAdditionalInformation.pageTitle = Tell us any additional information

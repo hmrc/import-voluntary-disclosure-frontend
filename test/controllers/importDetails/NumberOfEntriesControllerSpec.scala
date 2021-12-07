@@ -34,6 +34,8 @@ import play.api.test.Helpers._
 import views.html.importDetails.NumberOfEntriesView
 
 import scala.concurrent.Future
+import config.ErrorHandler
+import pages.importDetails.ImporterNamePage
 
 class NumberOfEntriesControllerSpec extends ControllerSpecBase {
 
@@ -44,6 +46,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       UserAnswers("some-cred-id")
         .set(UserTypePage, Representative).success.value
         .set(ImporterEORIExistsPage, false).success.value
+        .set(ImporterNamePage, "importer").success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -71,6 +74,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       appConfig,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       numberOfEntriesPage,
       ec
@@ -84,6 +88,7 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
           .set(UserTypePage, Representative).success.value
           .set(ImporterEORIExistsPage, true).success.value
           .set(ImporterEORINumberPage, "GB345834921000").success.value
+          .set(ImporterNamePage, "importer").success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK

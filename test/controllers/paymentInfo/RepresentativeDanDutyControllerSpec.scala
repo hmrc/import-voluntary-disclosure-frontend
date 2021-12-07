@@ -17,6 +17,7 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
@@ -26,7 +27,7 @@ import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.{DefermentAccountPage, DefermentTypePage, SplitPaymentPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
@@ -49,7 +50,12 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
     private lazy val representativeDanDutyView: RepresentativeDanDutyView =
       app.injector.instanceOf[RepresentativeDanDutyView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
+
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
@@ -75,6 +81,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       representativeDanDutyView,
       form,
       ec

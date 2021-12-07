@@ -35,6 +35,8 @@ import play.api.test.Helpers._
 import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.Future
+import config.ErrorHandler
+import pages.importDetails.ImporterNamePage
 
 class RepresentativeDanControllerSpec extends ControllerSpecBase {
 
@@ -48,7 +50,11 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
   trait Test extends MockSessionRepository {
     private lazy val representativeDanView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
@@ -74,6 +80,7 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       representativeDanView,
       form,
       ec

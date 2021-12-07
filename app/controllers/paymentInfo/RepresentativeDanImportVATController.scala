@@ -17,6 +17,7 @@
 package controllers.paymentInfo
 
 import com.google.inject.Inject
+import config.ErrorHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.paymentInfo.RepresentativeDanFormProvider
 import models.RepresentativeDan
@@ -39,30 +40,41 @@ class RepresentativeDanImportVATController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   view: RepresentativeDanImportVATView,
   formProvider: RepresentativeDanFormProvider,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = (for {
       danType       <- request.userAnswers.get(AdditionalDefermentTypePage)
       accountNumber <- request.userAnswers.get(AdditionalDefermentNumberPage)
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
-    Future.successful(Ok(view(form, backLink)))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+      Ok(view(form, name, backLink))
+    }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
+      formWithErrors => {
+        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          BadRequest(view(formWithErrors, name, backLink))
+        }
+        Future.successful(res)
+      },
       dan => {
         val dutyAccountNumberIsSame = request.userAnswers.get(DefermentAccountPage).contains(dan.accountNumber)
         if (dutyAccountNumberIsSame) {
           val form = formProvider().fill(RepresentativeDan(dan.accountNumber, dan.danType))
             .withError(FormError("accountNumber", "repDan.error.input.sameAccountNumber"))
-          Future.successful(Ok(view(form, backLink)))
+          val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+            Ok(view(form, name, backLink))
+          }
+          Future.successful(res)
         } else {
 
           if (previousVATData(dan.accountNumber, dan.danType)) {

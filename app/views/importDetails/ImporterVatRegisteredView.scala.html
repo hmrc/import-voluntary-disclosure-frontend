@@ -20,10 +20,10 @@
         yesNoRadio: components.yesNoRadio,
         button: components.button)
 
-@(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, backLink: Option[Call])(implicit request: Request[_], messages: Messages)
 
     @layout(
-        pageTitle = messages("importerVatRegistered.pageTitle"),
+        pageTitle = messages("importerVatRegistered.pageTitle", importerName),
         form = Some(form),
         customBackLinkUrl = None) {
 
@@ -33,6 +33,7 @@
             @yesNoRadio(
                 form,
                 headingKey = "importerVatRegistered.pageTitle",
+                headingMessageArgs = Seq(importerName),
                 inline = true
             )
 

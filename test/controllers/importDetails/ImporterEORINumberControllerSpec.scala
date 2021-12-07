@@ -31,6 +31,10 @@ import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirec
 import views.html.importDetails.ImporterEORINumberView
 
 import scala.concurrent.Future
+import config.ErrorHandler
+import pages.importDetails.UserTypePage
+import models.importDetails.UserType
+import pages.importDetails.ImporterNamePage
 
 class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
@@ -38,10 +42,9 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
   val userAnswersWithImporterEORINumber: Option[UserAnswers] = Some(
     UserAnswers("some-cred-id")
-      .set(
-        ImporterEORINumberPage,
-        importerEORINumber
-      ).success.value
+      .set(ImporterEORINumberPage, importerEORINumber).success.value
+      .set(UserTypePage, UserType.Representative).success.value
+      .set(ImporterNamePage, "importer").success.value
   )
 
   private def fakeRequestGenerator(importerEORI: String): FakeRequest[AnyContentAsFormUrlEncoded] =
@@ -56,6 +59,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       ImporterEORINumberView,
       ec
@@ -73,7 +77,11 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-    val userAnswers: Option[UserAnswers]             = Some(UserAnswers("some-cred-id"))
+    val userAnswers: Option[UserAnswers] = Some(
+      UserAnswers("some-cred-id")
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     val formProvider: ImporterEORINumberFormProvider = injector.instanceOf[ImporterEORINumberFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ImporterEORINumberFormProvider = formProvider

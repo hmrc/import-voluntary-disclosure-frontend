@@ -22,7 +22,7 @@
         inputRadio: components.inputRadio,
         button: components.button)
 
-@(form: Form[_], isRepFlow: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], importerName: String, isRepFlow: Boolean, backLink: Call)(implicit request: Request[_], messages: Messages)
 
 @layout(
     pageTitle = messages("numberOfEntries.pageTitle"),
@@ -36,7 +36,7 @@
         @inputRadio(
             form = form,
             legend = Some(messages("numberOfEntries.pageTitle")),
-            items = NumberOfEntries.options(form, isRepFlow),
+            items = NumberOfEntries.options(form, importerName, isRepFlow),
             inline = false,
             legendAsHeading = true
         )

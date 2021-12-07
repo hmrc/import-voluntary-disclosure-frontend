@@ -304,9 +304,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
           formBuilder(original = invalidAdjustmentOriginalValue, amended = adjustmentAmendedValue),
           box = BoxNumber.Box45
         ).errors mustBe
-          Seq(
-            FormError(originalKey, originalFormatMessageKey, Seq(box45Regex))
-          )
+          Seq(FormError(originalKey, originalFormatMessageKey))
       }
 
       "result in a form with errors for amendment field" in {
@@ -314,9 +312,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
           formBuilder(original = adjustmentOriginalValue, amended = invalidAdjustmentAmendedValue),
           box = BoxNumber.Box45
         ).errors mustBe
-          Seq(
-            FormError(amendedKey, amendedFormatMessageKey, Seq(box45Regex))
-          )
+          Seq(FormError(amendedKey, amendedFormatMessageKey))
       }
     }
   }

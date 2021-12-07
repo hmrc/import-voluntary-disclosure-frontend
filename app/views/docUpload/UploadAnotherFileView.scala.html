@@ -29,7 +29,7 @@
 @(form: Form[_], files: SummaryList, optionalDocs: Seq[OptionalDocument] = Seq.empty)(implicit request: Request[_], messages: Messages)
 
 @singularFile = @{
-    if(files.rows.length == 1) "file" else "files"
+    if(files.rows.length == 1) messages("common.file") else messages("common.files")
 }
 
 @layout(

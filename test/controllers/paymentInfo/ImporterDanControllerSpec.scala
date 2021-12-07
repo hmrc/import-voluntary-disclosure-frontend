@@ -17,12 +17,15 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.ImporterDanFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.DefermentAccountPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
@@ -34,11 +37,12 @@ import scala.concurrent.Future
 
 class ImporterDanControllerSpec extends ControllerSpecBase {
 
-  val userAnswersWithImporterDan: Option[UserAnswers] = Some(
+  val userAnswersWithImporterDan: UserAnswers =
     UserAnswers("some-cred-id")
       .set(DefermentAccountPage, "1234567").success.value
       .set(CheckModePage, false).success.value
-  )
+      .set(UserTypePage, UserType.Representative).success.value
+      .set(ImporterNamePage, "importer").success.value
 
   private def fakeRequestGenerator(dan: String): FakeRequest[AnyContentAsFormUrlEncoded] =
     fakeRequest.withFormUrlEncodedBody(
@@ -52,13 +56,16 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
+      injector.instanceOf[ErrorHandler],
       form,
       view,
       ec
     )
-    private lazy val view                     = app.injector.instanceOf[ImporterDanView]
-    private lazy val dataRetrievalAction      = new FakeDataRetrievalAction(userAnswers)
-    val userAnswers: Option[UserAnswers]      = Some(UserAnswers("some-cred-id"))
+    private lazy val view                = app.injector.instanceOf[ImporterDanView]
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
+    val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+      .set(UserTypePage, UserType.Representative).success.value
+      .set(ImporterNamePage, "importer").success.value
     val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
     MockedSessionRepository.set(Future.successful(true))
     val form: ImporterDanFormProvider = formProvider
@@ -68,11 +75,11 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
-        userAnswers
+        Some(userAnswers)
       ),
       "credId",
       "eori",
-      userAnswers.get
+      userAnswers
     )
 
   }
@@ -84,8 +91,8 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
     }
 
     "return OK when form filled" in new Test {
-      override val userAnswers: Option[UserAnswers] = userAnswersWithImporterDan
-      val result: Future[Result]                    = controller.onLoad(fakeRequest)
+      override val userAnswers: UserAnswers = userAnswersWithImporterDan
+      val result: Future[Result]            = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
@@ -135,11 +142,9 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
 
     "not in change mode" should {
       "point to acceptance date page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(
-            UserAnswers("some-cred-id")
-              .set(CheckModePage, false).success.value
-          )
+        override val userAnswers: UserAnswers =
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
         lazy val result: Option[Call] = controller.backLink()
         result mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad())
       }
@@ -147,11 +152,9 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
 
     "in change mode" should {
       "point to Check Your Answers page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(
-            UserAnswers("some-cred-id")
-              .set(CheckModePage, true).success.value
-          )
+        override val userAnswers: UserAnswers =
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
         lazy val result: Option[Call] = controller.backLink()
         result mustBe None
       }

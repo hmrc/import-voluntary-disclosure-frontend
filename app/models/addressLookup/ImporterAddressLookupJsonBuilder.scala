@@ -20,7 +20,10 @@ import config.AppConfig
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
 
-case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messagesApi: MessagesApi, config: AppConfig) {
+case class ImporterAddressLookupJsonBuilder(continueUrl: String, importerName: String)(implicit
+  messagesApi: MessagesApi,
+  config: AppConfig
+) {
 
   // general journey overrides
   val showPhaseBanner: Boolean       = true
@@ -50,16 +53,16 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
     )
     val selectPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"               -> message("importerAddress_lookupPage.selectPage.pageTitle"),
-        "heading"             -> message("importerAddress_lookupPage.selectPage.pageTitle"),
+        "title"               -> message("importerAddress_lookupPage.selectPage.pageTitle", importerName),
+        "heading"             -> message("importerAddress_lookupPage.selectPage.pageTitle", importerName),
         "submitLabel"         -> message("common.continue"),
         "editAddressLinkText" -> message("importerAddress_lookupPage.selectPage.editLink")
       )
 
     val lookupPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"         -> message("importerAddress_lookupPage.pageTitle"),
-        "heading"       -> message("importerAddress_lookupPage.pageTitle"),
+        "title"         -> message("importerAddress_lookupPage.pageTitle", importerName),
+        "heading"       -> message("importerAddress_lookupPage.pageTitle", importerName),
         "filterLabel"   -> message("importerAddress_lookupPage.filter"),
         "postcodeLabel" -> message("importerAddress_lookupPage.postcode"),
         "submitLabel"   -> message("importerAddress_lookupPage.lookupPage.submit")
@@ -67,8 +70,8 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String)(implicit messag
 
     val confirmPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "title"                 -> message("importerAddress_lookupPage.confirmPage.pageTitle"),
-        "heading"               -> message("importerAddress_lookupPage.confirmPage.pageTitle"),
+        "title"                 -> message("importerAddress_lookupPage.confirmPage.pageTitle", importerName),
+        "heading"               -> message("importerAddress_lookupPage.confirmPage.pageTitle", importerName),
         "infoMessage"           -> message("importerAddress_lookupPage.confirmPage.infoMessage"),
         "showConfirmChangeText" -> false
       )

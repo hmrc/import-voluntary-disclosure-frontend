@@ -30,6 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.{ExecutionContext, Future}
+import config.ErrorHandler
 
 class RepresentativeDanController @Inject() (
   identify: IdentifierAction,
@@ -37,24 +38,32 @@ class RepresentativeDanController @Inject() (
   requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
+  errorHandler: ErrorHandler,
   view: RepresentativeDanView,
   formProvider: RepresentativeDanFormProvider,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = (for {
       danType       <- request.userAnswers.get(DefermentTypePage)
       accountNumber <- request.userAnswers.get(DefermentAccountPage)
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
-    Future.successful(Ok(view(form, backLink(request.userAnswers))))
+    request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+      Ok(view(form, name, backLink(request.userAnswers)))
+    }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink(request.userAnswers)))),
+      formWithErrors => {
+        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          BadRequest(view(formWithErrors, name, backLink(request.userAnswers)))
+        }
+        Future.successful(res)
+      },
       dan => {
         val previousAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
         val previousAccountType   = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)
