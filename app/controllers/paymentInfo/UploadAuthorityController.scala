@@ -79,15 +79,14 @@ class UploadAuthorityController @Inject() (
         case _                   => formProvider()
       }
 
-      getDanNumber(dutyType, splitPayment) match {
-        case Some(danNumber) =>
+      request.getImporterName match {
+        case Some(importerName) =>
           upScanService.initiateAuthorityJourney(dutyType.toString).map { response =>
-            Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), danNumber, dutyTypeKey))
+            Ok(view(form, response, backLink(dutyType, request.dutyType, splitPayment), importerName, dutyTypeKey))
               .removingFromSession("AuthorityUpscanReference")
               .addingToSession("AuthorityUpscanReference" -> response.reference.value)
           }
         case None =>
-          logger.error(s"DAN not found for $dutyType")
           Future.successful(errorHandler.showInternalServerError)
       }
 

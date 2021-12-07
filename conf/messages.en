@@ -799,13 +799,14 @@ confirmChangeReason.pageTitle = Confirm the changes to box {0} reason for underp
 confirmChangeReason.otherReason.pageTitle = Confirm the changes to the reason for underpayment
 
 # Upload Authority page
-uploadAuthority.pageTitle = Upload proof of authority to use this deferment account
-uploadAuthority.p1 = You must provide proof that you have one-off authority to use this deferment account {0} to pay for the {1} owed.
+uploadAuthority.pageTitle = Upload proof of authority to use {0}’s deferment account
+uploadAuthority.p1 = You must provide proof that you have one-off authority to use {0}’s deferment account to pay for the {1} owed.
 uploadAuthority.vat = import VAT
 uploadAuthority.duty = duty
 uploadAuthority.both = import VAT and duty
 uploadAuthority.p2 = The proof needs to be dated and signed by the owner of the deferment account. The date must be after the date of the original import declaration.
 uploadAuthority.uploadFile = Upload file
+uploadAuthority.fileSize = The file must be 6MB or less.
 
 # Any Other Supporting Documentation
 anyOtherSupportingDocs.pageTitle = Do you have any of these documents?

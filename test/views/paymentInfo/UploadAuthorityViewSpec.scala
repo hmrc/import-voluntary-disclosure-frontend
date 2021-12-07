@@ -30,7 +30,6 @@ import views.html.paymentInfo.UploadAuthorityView
 
 class UploadAuthorityViewSpec extends ViewBaseSpec {
 
-  private val dan: String                            = "1234567"
   private val dutyTypeKey                            = "both"
   private lazy val injectedView: UploadAuthorityView = app.injector.instanceOf[UploadAuthorityView]
   private lazy val initiateResponse: UpScanInitiateResponse =
@@ -42,7 +41,7 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
   "Rendering the UploadAuthorityFile page" when {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct form action" in {
@@ -61,37 +60,37 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       val dutyType           = "duty"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
+      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
     }
 
     s"have the correct text for vat only" in {
       val dutyType           = "vat"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
+      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
     }
 
     s"have the correct text for both duty and vat" in {
       val dutyType           = "both"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dan, dutyType)
+      elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
     }
 
     "an error exists (no file has been uploaded)" should {
       val dutyType                = "vat"
       lazy val form: Form[String] = formProvider().withError("file", UploadAuthorityMessages.fileUnknown)
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, dan, dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAuthorityMessages.errorPrefix + UploadAuthorityMessages.title)
@@ -111,7 +110,7 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
   it should {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, dan, dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadAuthorityMessages.title)
