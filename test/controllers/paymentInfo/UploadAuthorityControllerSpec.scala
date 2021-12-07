@@ -24,11 +24,13 @@ import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
 import models.SelectedDutyTypes.{Vat, _}
+import models.importDetails.UserType
 import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
 import pages._
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo._
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
@@ -75,6 +77,8 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
         .set(DefermentAccountPage, "1234567").success.value
         .set(AdditionalDefermentNumberPage, "1234568").success.value
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 

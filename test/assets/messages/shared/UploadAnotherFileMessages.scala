@@ -27,7 +27,7 @@ object UploadAnotherFileMessages extends BaseMessages {
   val remove2: String          = "Remove fileName2"
   val mustInclude: String      = "You must upload:"
   val mayInclude: String       = "You have told us you will upload:"
-  val mustIncludeFile1: String = "the import declaration, also known as the C88 or SAD"
+  val mustIncludeFile1: String = "the original import declaration, also known as the C88 or SAD"
   val mustIncludeFile2: String = "the entry acceptance, also known as the E2"
   val mustIncludeFile3: String =
     "a document or scanned image showing how you calculated the tax or duty that should have been paid"
