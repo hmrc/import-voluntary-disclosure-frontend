@@ -405,7 +405,8 @@ declarantContactDetails.error.phoneNumberInvalidFormat = Enter a telephone numbe
 
 # Trader Address
 traderAddressCorrect.pageTitle = Is this the correct address for {0}?
-traderAddressCorrect.p = We will send the C18 demand note to both {0} and {1}
+traderAddressCorrect.p.rep = We will send the C18 demand note to both {0} and {1}
+traderAddressCorrect.p.importer = We will send the C18 demand note to this address
 traderAddressCorrect.error.required = Select yes if this is the correct address to send the demand for payment to
 
 # File Upload Summary page
