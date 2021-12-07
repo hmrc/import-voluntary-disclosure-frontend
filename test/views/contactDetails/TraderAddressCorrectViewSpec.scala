@@ -40,8 +40,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
   "Rendering the AcceptanceDate page" when {
     "no errors exist with full trader details" should {
 
-      val form: Form[Boolean]              = formProvider.apply()
-      lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+      val form: Form[Boolean] = formProvider.apply()
+      lazy val view: Html     = injectedView(form, addressDetails, "testName", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.pageTitle)
@@ -59,7 +59,10 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
 
       val form: Form[Boolean] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, ContactAddress("first", None, "second", None, "fourth"), backLink)(fakeRequest, messages)
+        injectedView(form, ContactAddress("first", None, "second", None, "fourth"), "testName", backLink)(
+          fakeRequest,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.pageTitle)
@@ -74,8 +77,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean]         = formProvider().bind(Map("value" -> ""))
-      lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
+      lazy val view: Html          = injectedView(form, addressDetails, "testName", backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.errorPrefix + ImporterAddressMessages.pageTitle)
@@ -94,8 +97,8 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with BaseMessages with R
 
   it should {
 
-    val form: Form[Boolean]              = formProvider.apply()
-    lazy val view: Html                  = injectedView(form, addressDetails, backLink)(fakeRequest, messages)
+    val form: Form[Boolean] = formProvider.apply()
+    lazy val view: Html     = injectedView(form, addressDetails, "testName", backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct h1 of '${ImporterAddressMessages.pageTitle}'" in {
