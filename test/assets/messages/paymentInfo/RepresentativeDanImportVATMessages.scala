@@ -34,6 +34,6 @@ object RepresentativeDanImportVATMessages extends BaseMessages {
   val danTypeRequiredError: String       = "Select whose deferment account this is"
   val accountNumberFormatError: String   = "Enter the deferment account number in the correct format, like 1234567"
 
-  def getRadioOne(repName: String) = s"$repName $radio1"
+  def getRadioOne(repName: String) = s"$repName’s $radio1"
 
 }
