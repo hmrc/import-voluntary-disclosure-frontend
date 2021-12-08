@@ -37,8 +37,8 @@ trait MockAddressLookupService extends MockFactory {
       .returns(Future.successful(response))
 
   def setupMockInitialiseJourney(response: InitialiseJourneyResponse): Unit =
-    (mockAddressLookupService.initialiseJourney("Fast Food ltd")(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *)
+    (mockAddressLookupService.initialiseJourney(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *)
       .returns(Future.successful(response))
 
   def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit =

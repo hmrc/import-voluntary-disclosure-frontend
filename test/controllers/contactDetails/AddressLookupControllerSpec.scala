@@ -17,12 +17,11 @@
 package controllers.contactDetails
 
 import assets.AddressLookupTestConstants.{customerAddressMax, customerAddressMissingLine3}
-import assets.BaseTestConstants.errorModel
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockAddressLookupService
-import models.{ContactAddress, EoriDetails, UserAnswers}
+import models.{ErrorModel, UserAnswers}
 import models.addressLookup.AddressLookupOnRampModel
 import models.importDetails.UserType
 import pages.CheckModePage
@@ -34,13 +33,15 @@ import play.api.test.Helpers.{redirectLocation, _}
 import scala.concurrent.Future
 import pages.importDetails.ImporterNamePage
 import pages.serviceEntry.KnownEoriDetailsPage
+import utils.ReusableValues
 
-class AddressLookupControllerSpec extends ControllerSpecBase {
+class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues {
 
   trait Test extends MockAddressLookupService with MockSessionRepository {
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(
       Some(
         UserAnswers("some-cred-id")
+          .set(KnownEoriDetailsPage, eoriDetails).success.value
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "importer").success.value
       )
@@ -57,6 +58,9 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
       ec
     )
   }
+
+  val addressLookupErrorModel: ErrorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
+
 
   "Calling .callback" must {
 
@@ -91,7 +95,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
     "produce error if business address lookup service returns an error" should {
       "return InternalServerError" in new Test {
-        setupMockRetrieveAddress(Left(errorModel))
+        setupMockRetrieveAddress(Left(addressLookupErrorModel))
         val result: Future[Result] = controller.callback("12345")(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
 
@@ -139,7 +143,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
 
     "produce error if business address lookup service returns an error" should {
       "return InternalServerError" in new Test {
-        setupMockRetrieveAddress(Left(errorModel))
+        setupMockRetrieveAddress(Left(addressLookupErrorModel))
         val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
 
@@ -167,7 +171,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
     "address lookup service returns an error" should {
 
       "return InternalServerError" in new Test {
-        setupMockInitialiseJourney(Left(errorModel))
+        setupMockInitialiseJourney(Left(addressLookupErrorModel))
         val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
@@ -194,7 +198,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase {
     "address lookup service returns an error" should {
 
       "return InternalServerError" in new Test {
-        setupMockInitialiseImporterJourney(Left(errorModel))
+        setupMockInitialiseImporterJourney(Left(addressLookupErrorModel))
         val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
