@@ -42,7 +42,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
   "Rendering the AcceptanceDate page" when {
     "no errors exist with full trader details" should {
 
-      val form: Form[Boolean] = formProvider.apply()
+      val form: Form[Boolean] = formProvider.apply(importerName.get)
       lazy val view: Html =
         injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -72,7 +72,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
 
     "no errors exist with trader details without postcode" should {
 
-      val form: Form[Boolean] = formProvider.apply()
+      val form: Form[Boolean] = formProvider.apply(importerName.get)
       lazy val view: Html =
         injectedView(
           form,
@@ -99,7 +99,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
     }
 
     "an error exists (no option has been selected)" should {
-      lazy val form: Form[Boolean] = formProvider().bind(Map("value" -> ""))
+      lazy val form: Form[Boolean] = formProvider(importerName.get).bind(Map("value" -> ""))
       lazy val view: Html =
         injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -120,7 +120,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
 
   it should {
 
-    val form: Form[Boolean] = formProvider.apply()
+    val form: Form[Boolean] = formProvider.apply(importerName.get)
     lazy val view: Html =
       injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)

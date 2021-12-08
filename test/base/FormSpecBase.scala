@@ -17,6 +17,5 @@
 package base
 
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.wordspec.AnyWordSpec
 
-trait FormSpecBase extends AnyWordSpec with Matchers
+trait FormSpecBase extends SpecBase with Matchers

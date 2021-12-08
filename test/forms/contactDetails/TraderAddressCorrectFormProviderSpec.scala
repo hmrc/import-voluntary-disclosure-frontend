@@ -25,7 +25,7 @@ class TraderAddressCorrectFormProviderSpec extends FormSpecBase {
     "the no value selected" should {
 
       val missingOption: Map[String, String] = Map.empty
-      val form                               = new TraderAddressCorrectFormProvider()().bind(missingOption)
+      val form                               = new TraderAddressCorrectFormProvider()("Traders ltd").bind(missingOption)
 
       "result in a form with errors" in {
         form.hasErrors mustBe true
@@ -36,7 +36,7 @@ class TraderAddressCorrectFormProviderSpec extends FormSpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "traderAddressCorrect.error.required"
+        form.errors.head.message mustBe "Select yes if this is the correct address for Traders ltd"
       }
     }
   }
@@ -44,7 +44,7 @@ class TraderAddressCorrectFormProviderSpec extends FormSpecBase {
   "Binding a form with valid data" should {
 
     val data = Map("value" -> "true")
-    val form = new TraderAddressCorrectFormProvider()().bind(data)
+    val form = new TraderAddressCorrectFormProvider()("Traders ltd").bind(data)
 
     "result in a form with no errors" in {
       form.hasErrors mustBe false
