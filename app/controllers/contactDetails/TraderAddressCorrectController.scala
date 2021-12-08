@@ -53,11 +53,11 @@ class TraderAddressCorrectController @Inject() (
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val importerName = request.userAnswers.get(ImporterNamePage)
-    val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
-      formProvider().fill
-    }
     request.userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) =>
+        val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider(eoriDetails.name)) {
+          formProvider(eoriDetails.name).fill
+        }
         Future.successful(
           Ok(view(form, eoriDetails.address, eoriDetails.name, importerName, request.isRepFlow, backLink()))
         )
@@ -71,7 +71,7 @@ class TraderAddressCorrectController @Inject() (
     val importerName                  = request.userAnswers.get(ImporterNamePage)
     val knownEoriDetailsPage          = request.userAnswers.get(KnownEoriDetailsPage).get
     val traderAddress: ContactAddress = knownEoriDetailsPage.address
-    formProvider().bindFromRequest().fold(
+    formProvider(knownEoriDetailsPage.name).bindFromRequest().fold(
       formWithErrors =>
         Future.successful(
           BadRequest(
