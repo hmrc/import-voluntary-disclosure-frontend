@@ -34,12 +34,12 @@ class AddressLookupService @Inject() (
   implicit val appConfig: AppConfig
 ) {
 
-  def initialiseJourney(implicit
+  def initialiseJourney(eoriName: String)(implicit
     hc: HeaderCarrier,
     ec: ExecutionContext
   ): Future[Either[ErrorModel, AddressLookupOnRampModel]] =
     addressLookupConnector.initialiseJourney(
-      Json.toJson(AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl))
+      Json.toJson(AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl, eoriName))
     )
 
   def initialiseImporterJourney(importerName: String)(implicit
