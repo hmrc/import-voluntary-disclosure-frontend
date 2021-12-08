@@ -36,7 +36,7 @@ class TraderAddressCorrectFormProviderSpec extends FormSpecBase {
       }
 
       "have an error with the correct message" in {
-        form.errors.head.message mustBe "Select yes if this is the correct address for Traders ltd"
+        form.errors.head.message mustBe "traderAddressCorrect.error.required"
       }
     }
   }

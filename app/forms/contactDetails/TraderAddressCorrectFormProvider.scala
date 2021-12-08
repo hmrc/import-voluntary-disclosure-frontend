@@ -18,15 +18,12 @@ package forms.contactDetails
 
 import forms.mappings.Mappings
 import play.api.data.Form
-import play.api.i18n.Messages
 
 import javax.inject.Inject
 
 class TraderAddressCorrectFormProvider @Inject() extends Mappings {
 
-  def apply(traderName: String)(implicit messages: Messages): Form[Boolean] =
-    Form(
-      "value" -> boolean(messages("traderAddressCorrect.error.required", traderName))
-    )
+  def apply(traderName: String): Form[Boolean] =
+    Form("value" -> boolean("traderAddressCorrect.error.required", args = Seq(traderName)))
 
 }
