@@ -22,7 +22,7 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import mocks.repositories.MockSessionRepository
 import mocks.services.MockAddressLookupService
-import models.UserAnswers
+import models.{ContactAddress, EoriDetails, UserAnswers}
 import models.addressLookup.AddressLookupOnRampModel
 import models.importDetails.UserType
 import pages.CheckModePage
@@ -33,6 +33,7 @@ import play.api.test.Helpers.{redirectLocation, _}
 
 import scala.concurrent.Future
 import pages.importDetails.ImporterNamePage
+import pages.serviceEntry.KnownEoriDetailsPage
 
 class AddressLookupControllerSpec extends ControllerSpecBase {
 
