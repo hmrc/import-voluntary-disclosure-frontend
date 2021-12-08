@@ -25,6 +25,7 @@ import models.SelectedDutyTypes.Duty
 import models.requests.DataRequest
 import pages._
 import pages.paymentInfo.{AdditionalDefermentNumberPage, AdditionalDefermentTypePage, DefermentAccountPage, DefermentTypePage, UploadAuthorityPage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -47,21 +48,23 @@ class RepresentativeDanDutyController @Inject() (
     with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     val form = (for {
       danType       <- request.userAnswers.get(DefermentTypePage)
       accountNumber <- request.userAnswers.get(DefermentAccountPage)
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, backLink))
+      Ok(view(form, name, repName, backLink))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, backLink))
+          BadRequest(view(formWithErrors, name, repName, backLink))
         }
         Future.successful(res)
       },

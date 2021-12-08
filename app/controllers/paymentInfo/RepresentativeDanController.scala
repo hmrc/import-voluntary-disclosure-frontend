@@ -31,6 +31,7 @@ import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.{ExecutionContext, Future}
 import config.ErrorHandler
+import pages.serviceEntry.KnownEoriDetailsPage
 
 class RepresentativeDanController @Inject() (
   identify: IdentifierAction,
@@ -46,21 +47,23 @@ class RepresentativeDanController @Inject() (
     with I18nSupport {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     val form = (for {
       danType       <- request.userAnswers.get(DefermentTypePage)
       accountNumber <- request.userAnswers.get(DefermentAccountPage)
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, backLink(request.userAnswers)))
+      Ok(view(form, name, repName, backLink(request.userAnswers)))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, backLink(request.userAnswers)))
+          BadRequest(view(formWithErrors, name, repName, backLink(request.userAnswers)))
         }
         Future.successful(res)
       },

@@ -38,6 +38,7 @@ import java.time.LocalDateTime
 import scala.concurrent.Future
 import config.ErrorHandler
 import pages.importDetails.ImporterNamePage
+import pages.serviceEntry.KnownEoriDetailsPage
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
 
@@ -56,6 +57,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
         .set(UserTypePage, UserType.Representative).success.value
         .set(ImporterNamePage, "importer").success.value
+        .set(
+          KnownEoriDetailsPage,
+          EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+        ).success.value
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
@@ -101,6 +106,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           UserAnswers("some-cred-id")
             .set(AdditionalDefermentTypePage, "A").success.value
             .set(AdditionalDefermentNumberPage, "1234567").success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
@@ -151,6 +160,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
@@ -171,6 +184,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
               .set(SplitPaymentPage, true).success.value
               .set(AdditionalDefermentTypePage, "A").success.value
               .set(AdditionalDefermentNumberPage, "1234567").success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
           private val request =
             fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("A")): _*)
@@ -189,6 +206,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
               .set(SplitPaymentPage, true).success.value
               .set(AdditionalDefermentTypePage, "A").success.value
               .set(AdditionalDefermentNumberPage, "1234567").success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
           private val request =
             fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)
@@ -207,6 +228,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
               .set(SplitPaymentPage, true).success.value
               .set(AdditionalDefermentTypePage, "A").success.value
               .set(AdditionalDefermentNumberPage, "1234567").success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
           private val request =
             fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("B")): _*)
@@ -259,6 +284,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
                 )
               )
             ).success.value
+            .set(
+              KnownEoriDetailsPage,
+              EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+            ).success.value
         )
         private val request =
           fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
@@ -284,6 +313,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad()
@@ -296,6 +329,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           Some(
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
+              .set(
+                KnownEoriDetailsPage,
+                EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+              ).success.value
           )
         lazy val result: Call = controller.backLink()
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
@@ -316,6 +353,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           .set(SplitPaymentPage, true).success.value
           .set(DefermentAccountPage, "1234567").success.value
           .set(DefermentTypePage, "C").success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+          ).success.value
       )
       private val request =
         fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("7654321"), danType = Some("C")): _*)
@@ -334,6 +375,10 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
           .set(SplitPaymentPage, true).success.value
           .set(DefermentAccountPage, "1234567").success.value
           .set(DefermentTypePage, "C").success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
+          ).success.value
       )
       private val request =
         fakeRequest.withFormUrlEncodedBody(buildForm(accountNumber = Some("1234567"), danType = Some("C")): _*)

@@ -23,9 +23,7 @@ import javax.inject.Inject
 
 class TraderAddressCorrectFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("traderAddressCorrect.error.required")
-    )
+  def apply(traderName: String): Form[Boolean] =
+    Form("value" -> boolean("traderAddressCorrect.error.required", args = Seq(traderName)))
 
 }

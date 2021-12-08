@@ -20,10 +20,11 @@ import com.google.inject.Inject
 import config.ErrorHandler
 import controllers.actions._
 import forms.contactDetails.TraderAddressCorrectFormProvider
-import models.EoriDetails
+import models.ContactAddress
 import models.requests.DataRequest
-import pages.serviceEntry.KnownEoriDetailsPage
 import pages.contactDetails.{TraderAddressCorrectPage, TraderAddressPage}
+import pages.importDetails.ImporterNamePage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
@@ -50,29 +51,38 @@ class TraderAddressCorrectController @Inject() (
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider()) {
-      formProvider().fill
-    }
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val importerName = request.userAnswers.get(ImporterNamePage)
     request.userAnswers.get(KnownEoriDetailsPage) match {
       case Some(eoriDetails) =>
-        Ok(view(form, eoriDetails.address, eoriDetails.name, backLink()))
+        val form = request.userAnswers.get(TraderAddressCorrectPage).fold(formProvider(eoriDetails.name)) {
+          formProvider(eoriDetails.name).fill
+        }
+        Future.successful(
+          Ok(view(form, eoriDetails.address, eoriDetails.name, importerName, request.isRepFlow, backLink()))
+        )
       case None =>
         logger.error("Requested the trader address page without EORI details")
-        errorHandler.showInternalServerError
+        Future.successful(errorHandler.showInternalServerError)
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val eoriDetails: EoriDetails = request.userAnswers.get(KnownEoriDetailsPage).get
-    formProvider().bindFromRequest().fold(
+    val importerName                  = request.userAnswers.get(ImporterNamePage)
+    val knownEoriDetailsPage          = request.userAnswers.get(KnownEoriDetailsPage).get
+    val traderAddress: ContactAddress = knownEoriDetailsPage.address
+    formProvider(knownEoriDetailsPage.name).bindFromRequest().fold(
       formWithErrors =>
-        Future.successful(BadRequest(view(formWithErrors, eoriDetails.address, eoriDetails.name, backLink()))),
+        Future.successful(
+          BadRequest(
+            view(formWithErrors, traderAddress, knownEoriDetailsPage.name, importerName, request.isRepFlow, backLink())
+          )
+        ),
       value => {
         if (value) {
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(TraderAddressCorrectPage, value))
-            updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, eoriDetails.address))
+            updatedAnswers <- Future.fromTry(updatedAnswers.set(TraderAddressPage, traderAddress))
             _              <- sessionRepository.set(updatedAnswers)
           } yield {
             if (request.checkMode) {

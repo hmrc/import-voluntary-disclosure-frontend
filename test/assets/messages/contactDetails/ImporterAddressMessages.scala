@@ -20,7 +20,12 @@ import messages.BaseMessages
 
 object ImporterAddressMessages extends BaseMessages {
 
-  val pageTitle     = "Is this the correct address for testName?"
-  val errorRequired = "Select yes if this is the correct address to send the demand for payment to"
+  val pageTitle     = "Is this the correct address for"
+  val p             = "We will send the C18 demand note to both"
+  val errorRequired = "Select yes if this is the correct address for Traders ltd"
+
+  def getTitle(traderName: String) = s"$pageTitle $traderName?"
+
+  def getParagraph(traderName: String, importerName: Option[String]) = s"$p $traderName and ${importerName.get}"
 
 }

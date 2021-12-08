@@ -25,6 +25,7 @@ import models.requests._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.CheckModePage
 import pages.contactDetails.TraderAddressCorrectPage
+import pages.importDetails.ImporterNamePage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
@@ -54,7 +55,9 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
 
     val userAnswers: UserAnswers =
-      UserAnswers("credId").set(KnownEoriDetailsPage, eoriDetails).success.value
+      UserAnswers("credId")
+        .set(KnownEoriDetailsPage, eoriDetails).success.value
+        .set(ImporterNamePage, "First Last").success.value
     val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
     val form: TraderAddressCorrectFormProvider         = formProvider
 
@@ -85,6 +88,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
     "return error model" in new Test {
       override val userAnswers: UserAnswers =
         UserAnswers("some-cred-id").remove(KnownEoriDetailsPage).success.value
+          .set(ImporterNamePage, "First Last").success.value
+
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
@@ -92,6 +97,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
     "return HTML" in new Test {
       override val userAnswers: UserAnswers =
         UserAnswers("some-cred-id").set(TraderAddressCorrectPage, importerAddressYes).success.value
+          .set(ImporterNamePage, "First Last").success.value
+
       val result: Future[Result] = controller.onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -113,6 +120,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
           UserAnswers("some-cred-id")
             .set(KnownEoriDetailsPage, eoriDetails).success.value
             .set(CheckModePage, true).success.value
+            .set(ImporterNamePage, "First Last").success.value
+
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
@@ -144,6 +153,8 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
         "return a BAD REQUEST" in new Test {
           override val userAnswers: UserAnswers =
             UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
+              .set(ImporterNamePage, "First Last").success.value
+
           val result: Future[Result] = controller.onSubmit(fakeRequest)
           status(result) mustBe Status.BAD_REQUEST
         }

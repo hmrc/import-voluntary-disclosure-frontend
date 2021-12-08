@@ -23,10 +23,23 @@
         yesNoRadio: components.yesNoRadio
 )
 
-@(form: Form[_], traderAddress: ContactAddress, eoriDetailsName: String, backLink: Call)(implicit request: Request[_], messages: Messages)
+@(
+        form: Form[_],
+        traderAddress: ContactAddress,
+        traderName: String,
+        importerName: Option[String],
+        isRepFlow: Boolean,
+        backLink: Call
+)(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
-        @h1(messages("traderAddressCorrect.pageTitle", eoriDetailsName))
+        @h1(messages("traderAddressCorrect.pageTitle", traderName))
+
+        @if(isRepFlow){
+            @p(Html(messages("traderAddressCorrect.p.rep", traderName, importerName.get)))
+        } else {
+            @p(Html(messages("traderAddressCorrect.p.importer")))
+        }
 
         @if(!traderAddress.postalCode.isEmpty) {
             @p(content = Html(
@@ -47,7 +60,7 @@
     }
 
     @layout(
-        pageTitle = messages("traderAddressCorrect.pageTitle", eoriDetailsName),
+        pageTitle = messages("traderAddressCorrect.pageTitle", traderName),
         form = Some(form),
         customBackLinkUrl = Some(backLink)) {
 
@@ -64,7 +77,7 @@
         }) { legend =>
                 @yesNoRadio(
                     form = form,
-                    headingKey = messages("traderAddressCorrect.pageTitle", eoriDetailsName),
+                    headingKey = messages("traderAddressCorrect.pageTitle", traderName),
                     isPageHeading = false,
                     classes = "govuk-visually-hidden",
                     customLegend = legend

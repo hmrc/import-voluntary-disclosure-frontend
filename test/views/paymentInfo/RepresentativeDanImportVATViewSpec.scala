@@ -32,6 +32,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
   val backLink = Call("GET", "backLinkUrl")
 
+  val representativeName = "Traders ltd"
+
   private lazy val injectedView: RepresentativeDanImportVATView =
     app.injector.instanceOf[RepresentativeDanImportVATView]
 
@@ -43,8 +45,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
   "Rendering the RepresentativeDan page" when {
 
     "no errors exist" should {
-      val form: Form[RepresentativeDan]    = formProvider.apply()
-      lazy val view: Html                  = injectedView(form, "importer", backLink)(fakeRequest, messages)
+      val form: Form[RepresentativeDan] = formProvider.apply()
+      lazy val view: Html = injectedView(form, "importer", representativeName, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.title)
@@ -64,8 +66,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (no value has been specified for the account number)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues(emptyString, "A")
-      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
-      lazy implicit val document: Document   = Jsoup.parse(view.body)
+      lazy val view: Html = injectedView(form, "importer", representativeName, backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -84,8 +86,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (account number value is an invalid format)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("!234567", "A")
-      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
-      lazy implicit val document: Document   = Jsoup.parse(view.body)
+      lazy val view: Html = injectedView(form, "importer", representativeName, backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -102,8 +104,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
     "an error exists (dan type radio selection has not been provided)" should {
       lazy val form: Form[RepresentativeDan] = repDanFormWithValues("1234567", emptyString)
-      lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
-      lazy implicit val document: Document   = Jsoup.parse(view.body)
+      lazy val view: Html = injectedView(form, "importer", representativeName, backLink)(fakeRequest, messages)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
@@ -122,8 +124,8 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
 
   it should {
     lazy val form: Form[RepresentativeDan] = formProvider()
-    lazy val view: Html                    = injectedView(form, "importer", backLink)(fakeRequest, messages)
-    lazy implicit val document: Document   = Jsoup.parse(view.body)
+    lazy val view: Html = injectedView(form, "importer", representativeName, backLink)(fakeRequest, messages)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(RepresentativeDanImportVATMessages.title)
 
@@ -141,10 +143,10 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       ) mustBe RepresentativeDanImportVATMessages.radioButtonLabel
     }
 
-    s"have the correct value for the first radio button of '${RepresentativeDanImportVATMessages.radio1}'" in {
+    s"have the correct value for the first radio button of '${RepresentativeDanImportVATMessages.getRadioOne(representativeName)}'" in {
       elementText(
         "#main-content > div > div > form > div:nth-child(3) > fieldset > div > div:nth-child(1) > label"
-      ) mustBe RepresentativeDanImportVATMessages.radio1
+      ) mustBe RepresentativeDanImportVATMessages.getRadioOne(representativeName)
     }
 
     s"have the correct value for the second radio button of '${RepresentativeDanImportVATMessages.radio2}'" in {
