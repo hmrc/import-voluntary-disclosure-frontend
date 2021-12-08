@@ -78,7 +78,7 @@ case class ImporterAddressLookupJsonBuilder(continueUrl: String, importerName: S
 
     val editPageLabels: Messages => JsObject = message =>
       Json.obj(
-        "heading"     -> message("importerAddress_lookupPage.editPage.pageTitle"),
+        "heading"     -> message("importerAddress_lookupPage.editPage.pageTitle", importerName),
         "townLabel"   -> message("importerAddress_lookupPage.editPage.townOrCity"),
         "submitLabel" -> message("common.continue")
       )
