@@ -44,8 +44,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
     val form: UserTypeFormProvider         = formProvider
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
-      privateBetaAllowListEnabled = false,
-      welshToggleEnabled = true
+      privateBetaAllowListEnabled = false
     )
 
     MockedSessionRepository.set(Future.successful(true))
