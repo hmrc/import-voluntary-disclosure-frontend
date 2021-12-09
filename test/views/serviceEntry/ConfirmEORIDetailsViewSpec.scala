@@ -33,7 +33,7 @@ class ConfirmEORIDetailsViewSpec extends ViewBaseSpec {
 
     lazy val appConfig = new MockAppConfig(
       privateBetaAllowList = List.empty,
-      privateBetaAllowListEnabled = false,
+      privateBetaAllowListEnabled = false
     )
 
     lazy val view: Html = injectedView(

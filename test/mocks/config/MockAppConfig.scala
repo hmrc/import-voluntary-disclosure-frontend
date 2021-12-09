@@ -23,12 +23,12 @@ import play.api.mvc.RequestHeader
 object MockAppConfig
     extends MockAppConfig(
       List.empty,
-      privateBetaAllowListEnabled = false,
+      privateBetaAllowListEnabled = false
     )
 
 class MockAppConfig(
   override val privateBetaAllowList: List[String] = List.empty,
-  override val privateBetaAllowListEnabled: Boolean = false,
+  override val privateBetaAllowListEnabled: Boolean = false
 ) extends AppConfig {
   override val footerLinkItems: Seq[String]         = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"
