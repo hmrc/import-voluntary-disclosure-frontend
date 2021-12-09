@@ -16,11 +16,12 @@
 
 package controllers
 
-import config.AppConfig
-import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
-import play.api.mvc._
-import play.api.i18n.Lang
 import com.google.inject.Inject
+import config.AppConfig
+import play.api.i18n.Lang
+import play.api.mvc._
+import uk.gov.hmrc.play.language.{LanguageController, LanguageUtils}
+
 import javax.inject.Singleton
 
 @Singleton
@@ -31,7 +32,6 @@ class LanguageSwitchController @Inject() (appConfig: AppConfig, languageUtils: L
   override def fallbackURL: String = s"$host/disclose-import-taxes-underpayment"
 
   override protected def languageMap: Map[String, Lang] =
-    if (appConfig.welshToggleEnabled) Map(en.code -> en, cy.code -> cy)
-    else Map(en.code                              -> en)
+    Map(en.code -> en, cy.code -> cy)
 
 }

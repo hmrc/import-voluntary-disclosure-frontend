@@ -24,13 +24,11 @@ object MockAppConfig
     extends MockAppConfig(
       List.empty,
       privateBetaAllowListEnabled = false,
-      welshToggleEnabled = true
     )
 
 class MockAppConfig(
   override val privateBetaAllowList: List[String] = List.empty,
   override val privateBetaAllowListEnabled: Boolean = false,
-  override val welshToggleEnabled: Boolean = false
 ) extends AppConfig {
   override val footerLinkItems: Seq[String]         = Seq("TBC")
   override val contactFormServiceIdentifier: String = "TBC"
