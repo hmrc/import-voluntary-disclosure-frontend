@@ -23,9 +23,7 @@ import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import java.time.LocalDate
-import java.util.Base64
 import javax.inject.{Inject, Singleton}
-import scala.util.Try
 
 @Singleton
 class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
@@ -96,16 +94,6 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   lazy val eccSubscribeUrl: String = servicesConfig.getString("urls.eccSubscribeUrl")
 
-  val privateBetaAllowList: Seq[String] =
-    Try(servicesConfig.getString("privateBetaAllowList"))
-      .map { str =>
-        val decodedAllowList = new String(Base64.getDecoder.decode(str))
-        decodedAllowList.split(",").toList
-      }.getOrElse(List.empty)
-
-  val privateBetaAllowListEnabled: Boolean = servicesConfig.getBoolean("features.privateBetaAllowListEnabled")
-
-
   val en: Lang              = Lang("en")
   val cy: Lang              = Lang("cy")
   val defaultLanguage: Lang = en
@@ -158,11 +146,9 @@ trait AppConfig extends FixedConfig {
   val upScanSupportingDocErrorRedirectForUser: String
   val upScanCancelCaseRedirectForUser: String
   val upScanCancelCaseDocErrorRedirectForUser: String
-  val privateBetaAllowList: Seq[String]
   val fileRepositoryTtl: Int
   val importVoluntaryDisclosureSubmission: String
   val eccSubscribeUrl: String
-  val privateBetaAllowListEnabled: Boolean
   val en: Lang
   val cy: Lang
   val defaultLanguage: Lang

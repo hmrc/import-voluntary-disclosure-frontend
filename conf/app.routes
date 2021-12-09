@@ -480,5 +480,4 @@ GET         /cancel-disclosure/disclosure-not-found                             
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad()
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess()
-GET         /not-eligible/no-access-to-private-beta                                            controllers.errors.UnauthorisedController.unauthorisedPrivateBetaAccess()
 

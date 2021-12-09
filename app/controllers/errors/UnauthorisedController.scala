@@ -28,7 +28,6 @@ class UnauthorisedController @Inject() (
   mcc: MessagesControllerComponents,
   view: UnauthorisedView,
   unauthorisedAgentAccessView: UnauthorisedAgentAccessView,
-  unauthorisedPrivateBetaView: UnauthorisedPrivateBetaAccessView,
   implicit val appConfig: AppConfig
 ) extends FrontendController(mcc)
     with I18nSupport {
@@ -39,9 +38,5 @@ class UnauthorisedController @Inject() (
 
   def unauthorisedAgentAccess: Action[AnyContent] = Action { implicit request =>
     Ok(unauthorisedAgentAccessView())
-  }
-
-  def unauthorisedPrivateBetaAccess: Action[AnyContent] = Action { implicit request =>
-    Ok(unauthorisedPrivateBetaView())
   }
 }
