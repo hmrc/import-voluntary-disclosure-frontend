@@ -8,6 +8,10 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
     display: none;
 }
 
+.case-reference-number {
+    word-wrap: break-word;
+}
+
 @media print {
     .print-only {
         display: block;
