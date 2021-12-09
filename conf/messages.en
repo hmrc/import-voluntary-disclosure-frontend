@@ -69,16 +69,16 @@ feedback.after = will help us to improve it.
 banner.phaseName = BETA
 
 #Address Lookup
-address_lookupPage.pageTitle = Find the address
+address_lookupPage.pageTitle = Find {0}’s address
 address_lookupPage.filter = Property name or number (optional)
 address_lookupPage.postcode = UK postcode
-address_lookupPage.selectPage.pageTitle = Select the address
+address_lookupPage.selectPage.pageTitle = Select {0}’s address
 address_lookupPage.selectPage.editLink = Edit the address manually
-address_lookupPage.confirmPage.pageTitle = Confirm the address
+address_lookupPage.confirmPage.pageTitle = Confirm {0}’s address
 address_lookupPage.lookupPage.submit = Find Address
-address_lookupPage.editPage.pageTitle = Enter the address
+address_lookupPage.editPage.pageTitle = Enter {0}’s address
 address_lookupPage.editPage.townOrCity = Town or city
-address_lookupPage.confirmPage.infoMessage = We will send a copy of the C18 post clearance demand note to this address.
+address_lookupPage.confirmPage.infoMessage = We will send the C18 demand note to this address.
 
 #Importer Address Lookup
 importerAddress_lookupPage.pageTitle = What is {0}’s address?

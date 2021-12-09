@@ -21,6 +21,7 @@ import controllers.actions._
 import models.ContactAddress
 import models.addressLookup.AddressModel
 import pages.contactDetails.{ImporterAddressPage, TraderAddressPage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
@@ -45,12 +46,13 @@ class AddressLookupController @Inject() (
 
   def initialiseJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      addressLookupService.initialiseJourney map {
-        case Right(response) =>
-          Redirect(response.redirectUrl)
-        case Left(_) =>
-          errorHandler.showInternalServerError
-      }
+      val eoriName = request.userAnswers.get(KnownEoriDetailsPage).get.name
+        addressLookupService.initialiseJourney(eoriName).map {
+          case Right(response) =>
+            Redirect(response.redirectUrl)
+          case Left(_) =>
+            errorHandler.showInternalServerError
+        }
   }
 
   def initialiseImporterJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
