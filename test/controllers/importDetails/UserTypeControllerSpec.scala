@@ -42,10 +42,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
     val form: UserTypeFormProvider         = formProvider
-    lazy val appConfig = new MockAppConfig(
-      privateBetaAllowList = List.empty,
-      privateBetaAllowListEnabled = false
-    )
+    lazy val appConfig = new MockAppConfig()
 
     MockedSessionRepository.set(Future.successful(true))
 

@@ -65,14 +65,9 @@ class AuthenticatedIdentifierAction @Inject() (
             enrolment  <- enrolments.getEnrolment("HMRC-CTS-ORG")
             identifier <- enrolment.getIdentifier("EORINumber")
           } yield identifier.value
-        if (config.privateBetaAllowListEnabled && !config.privateBetaAllowList.contains(eori)) {
-          Future.successful(Redirect(controllers.errors.routes.UnauthorisedController.unauthorisedPrivateBetaAccess()))
-        } else {
-          val req = IdentifierRequest(request, userId, eori)
-          block(req)
-        }
-      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual)
-          if !isValidUser(enrolments) =>
+        val req = IdentifierRequest(request, userId, eori)
+        block(req)
+      case Some(userId) ~ enrolments ~ Some(AffinityGroup.Individual) if !isValidUser(enrolments) =>
         val updatedSession = request.session + ("credId" -> userId)
         Future.successful(
           Redirect(controllers.serviceEntry.routes.CustomsDeclarationController.onLoad()).withSession(updatedSession)
