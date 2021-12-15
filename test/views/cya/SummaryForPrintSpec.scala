@@ -33,10 +33,6 @@ class SummaryForPrintSpec extends ViewBaseSpec {
       lazy val view: Html                  = injectedView(answers)(messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct header of '${SummaryForPrintMessages.header}'" in {
-        elementText(".hmrc-header__service-name") mustBe SummaryForPrintMessages.header
-      }
-
       s"have the correct h1 of '${SummaryForPrintMessages.yourDisclosure}'" in {
         elementText("h1") mustBe SummaryForPrintMessages.yourDisclosure
       }
