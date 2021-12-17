@@ -26,13 +26,6 @@
 
 @(answers: Seq[CYASummaryList])(implicit messages: Messages)
 <div class="print-only">
-    @hmrcHeader(
-        HeaderProps(
-            serviceName = Some(messages("service.name")),
-            serviceUrl = messages("service.homePageUrl")
-        )
-    )
-
     @h1(messages("printConfirmation.yourDisclosure"))
 
     <div>

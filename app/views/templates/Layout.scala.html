@@ -38,7 +38,6 @@
         scriptsBlock: Option[Html] = None,
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
-        headerClasses: String = "",
         enableTimeoutDialog: Boolean = true,
         isAuthorised: Boolean = true
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
@@ -60,7 +59,6 @@
             } else {
                 Some(controllers.routes.SignOutController.signOutUnidentified().url)
             },
-            classes = headerClasses,
             language = messages.lang.language match {
                 case "cy" => Cy
                 case _    => En
