@@ -27,8 +27,7 @@
 @(form: Form[_], index: Index, filename: String, backlink: Call, action: Call)(implicit request: Request[_], messages: Messages)
 
 @legendContent = {
-    @h1("removeUploadedFile.pageTitle")
-    @p(Html(filename))
+    @messages("removeUploadedFile.pageTitle")
 }
 
 @layout(pageTitle = messages("removeUploadedFile.pageTitle"), form = Some(form), customBackLinkUrl = Some(backlink)) {
@@ -37,11 +36,14 @@
 
     @formHelper(action = action) {
 
+        @h1("removeUploadedFile.pageTitle")
+        @p(Html(filename))
+
         @defining({
             Some(Legend(
                 content = HtmlContent(legendContent.toString()),
                 isPageHeading = false,
-                classes = "govuk-radios--inline"
+                classes = "govuk-visually-hidden"
             ))
         }) { legend =>
             @yesNoRadio(
