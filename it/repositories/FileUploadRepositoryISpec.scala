@@ -172,18 +172,4 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     }
   }
 
-  "testOnlyRemoveAllRecords" should {
-
-    "remove all documents" in new Test {
-      count mustBe 0
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModelAlternative))
-      count mustBe 3
-
-      await(repo.testOnlyRemoveAllRecords())
-      count mustBe 0
-    }
-  }
-
 }

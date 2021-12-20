@@ -82,10 +82,6 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
   override def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]] =
     getRecord(reference).map(_.flatMap(fileUpload => fileUpload.uploadDetails.map(_.fileName)))
 
-  override def testOnlyRemoveAllRecords()(implicit ec: ExecutionContext): Future[DeleteResult] = {
-    logger.info("removing all records in file-upload")
-    collection.deleteMany(BsonDocument()).toFuture()
-  }
 }
 
 trait FileUploadRepository {
@@ -99,7 +95,5 @@ trait FileUploadRepository {
   def getRecord(reference: String)(implicit ec: ExecutionContext): Future[Option[FileUpload]]
 
   def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]]
-
-  def testOnlyRemoveAllRecords()(implicit ec: ExecutionContext): Future[DeleteResult]
 
 }
