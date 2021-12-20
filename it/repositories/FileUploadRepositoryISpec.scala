@@ -86,19 +86,6 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     }
   }
 
-  "insertRecord" should {
-    "insert the document, including setting the new timestamp value" in new Test {
-
-      count() mustBe 0
-
-      val insertedResult = await(repo.insertRecord(fileUploadModel))
-
-      insertedResult mustBe true
-      count() mustBe 1
-      await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate.isDefined mustBe true
-    }
-  }
-
   "updateRecord" should {
     "upsert the document, including setting the new timestamp value" in new Test {
 
@@ -113,7 +100,7 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
     "update the document, including setting the new timestamp value" in new Test {
 
       count() mustBe 0
-      await(repo.insertRecord(fileUploadModel))
+      await(repo.updateRecord(fileUploadModel))
 
       count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("cred Id")
@@ -129,8 +116,8 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
 
     "retrieve a single document" in new Test {
       count mustBe 0
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModelAlternative))
+      await(repo.updateRecord(fileUploadModel))
+      await(repo.updateRecord(fileUploadModelAlternative))
 
       count mustBe 2
       val getResult = await(repo.getRecord(fileUploadModel.reference))
@@ -140,49 +127,9 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
 
     "return None for no match found" in new Test {
       count mustBe 0
-      await(repo.insertRecord(fileUploadModelAlternative))
+      await(repo.updateRecord(fileUploadModelAlternative))
       count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)) mustBe None
-    }
-  }
-
-  "deleteRecord" should {
-
-    "remove a single document" in new Test {
-      count mustBe 0
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModelAlternative))
-      count mustBe 2
-
-      await(repo.deleteRecord("123")) mustBe true
-      count mustBe 1
-      await(repo.getRecord(fileUploadModel.reference)).size mustBe 1
-    }
-  }
-
-  "getFilename" should {
-
-    "retrieve the correct document" in new Test {
-      count mustBe 0
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModelAlternative))
-      count mustBe 2
-
-      await(repo.getFileName("123")) mustBe fileUploadModel.fileName
-    }
-  }
-
-  "testOnlyRemoveAllRecords" should {
-
-    "remove all documents" in new Test {
-      count mustBe 0
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModel))
-      await(repo.insertRecord(fileUploadModelAlternative))
-      count mustBe 3
-
-      await(repo.testOnlyRemoveAllRecords())
-      count mustBe 0
     }
   }
 
