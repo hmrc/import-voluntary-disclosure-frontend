@@ -55,11 +55,6 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
 
   val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
 
-  override def insertRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] =
-    collection.insertOne(updateLastUpdatedTimestamp(fileUpload))
-      .toFuture()
-      .map(_.wasAcknowledged())
-
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())
     collection
@@ -73,26 +68,12 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
       .find(equal("reference", reference))
       .headOption()
 
-  override def deleteRecord(reference: String)(implicit ec: ExecutionContext): Future[Boolean] =
-    collection.deleteOne(equal("reference", reference))
-      .toFuture()
-      .map(_.wasAcknowledged())
-
-  override def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]] =
-    getRecord(reference).map(_.flatMap(fileUpload => fileUpload.uploadDetails.map(_.fileName)))
-
 }
 
 trait FileUploadRepository {
 
-  def insertRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean]
-
   def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean]
 
-  def deleteRecord(reference: String)(implicit ec: ExecutionContext): Future[Boolean]
-
   def getRecord(reference: String)(implicit ec: ExecutionContext): Future[Option[FileUpload]]
-
-  def getFileName(reference: String)(implicit ec: ExecutionContext): Future[Option[String]]
 
 }
