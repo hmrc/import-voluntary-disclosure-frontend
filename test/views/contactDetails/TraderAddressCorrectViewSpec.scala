@@ -51,13 +51,13 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
 
       s"have the correct h1 of '${ImporterAddressMessages.getTitle(traderName)}'" in {
         elementText(
-          "#main-content > div > div > form > div > fieldset > legend > h1"
+          "h1"
         ) mustBe ImporterAddressMessages.getTitle(traderName)
       }
 
       s"have the correct p of '${ImporterAddressMessages.getParagraph(traderName, importerName)}'" in {
         elementText(
-          "#main-content > div > div > form > div > fieldset > legend > p:nth-child(2)"
+          "#main-content > div > div > form > p"
         ) mustBe ImporterAddressMessages.getParagraph(traderName, importerName)
       }
 

@@ -33,30 +33,7 @@
 )(implicit request: Request[_], messages: Messages)
 
     @legendContent = {
-        @h1(messages("traderAddressCorrect.pageTitle", traderName))
-
-        @if(isRepFlow){
-            @p(Html(messages("traderAddressCorrect.p.rep", traderName, importerName.get)))
-        } else {
-            @p(Html(messages("traderAddressCorrect.p.importer")))
-        }
-
-        @if(!traderAddress.postalCode.isEmpty) {
-            @p(content = Html(
-                traderAddress.addressLine1 + "<br/>" +
-                traderAddress.city + "<br/>" +
-                traderAddress.postalCode.getOrElse("") + "<br/>" +
-                traderAddress.countryCode)
-            )
-        } else {
-            @p(
-                Html(
-                    traderAddress.addressLine1 + "<br/>" +
-                    traderAddress.city + "<br/>" +
-                    traderAddress.countryCode
-                )
-            )
-        }
+        @messages("traderAddressCorrect.pageTitle", traderName)
     }
 
     @layout(
@@ -68,19 +45,44 @@
 
         @formHelper(action = controllers.contactDetails.routes.TraderAddressCorrectController.onSubmit()) {
 
-        @defining({
-            Some(Legend(
-                content = HtmlContent(legendContent.toString()),
-                isPageHeading = false,
-                classes = "govuk-radios--inline"
-            ))
-        }) { legend =>
-                @yesNoRadio(
-                    form = form,
-                    headingKey = messages("traderAddressCorrect.pageTitle", traderName),
+            @h1(messages("traderAddressCorrect.pageTitle", traderName))
+
+            @if(isRepFlow){
+                @p(Html(messages("traderAddressCorrect.p.rep", traderName, importerName.get)))
+            } else {
+                @p(Html(messages("traderAddressCorrect.p.importer")))
+            }
+
+            @if(!traderAddress.postalCode.isEmpty) {
+                @p(content = Html(
+                    traderAddress.addressLine1 + "<br/>" +
+                            traderAddress.city + "<br/>" +
+                            traderAddress.postalCode.getOrElse("") + "<br/>" +
+                            traderAddress.countryCode)
+                )
+            } else {
+                @p(
+                    Html(
+                        traderAddress.addressLine1 + "<br/>" +
+                                traderAddress.city + "<br/>" +
+                                traderAddress.countryCode
+                    )
+                )
+            }
+
+            @defining({
+                Some(Legend(
+                    content = HtmlContent(legendContent.toString()),
                     isPageHeading = false,
-                    classes = "govuk-visually-hidden",
-                    customLegend = legend
+                    classes = "govuk-visually-hidden"
+                ))
+            }) { legend =>
+                @yesNoRadio(
+                        form = form,
+                        headingKey = messages("traderAddressCorrect.pageTitle", traderName),
+                        isPageHeading = false,
+                        classes = "govuk-visually-hidden",
+                        customLegend = legend
                 )
                 @button("common.button.continue")
             }
