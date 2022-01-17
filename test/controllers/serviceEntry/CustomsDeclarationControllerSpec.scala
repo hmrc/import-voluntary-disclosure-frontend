@@ -44,7 +44,7 @@ class CustomsDeclarationControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction         = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new CustomsDeclarationController(
-      authOnlyAction,
+      privateIndividualAuthAction,
       dataRetrievalAction,
       mockSessionRepository,
       messagesControllerComponents,

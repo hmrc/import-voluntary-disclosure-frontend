@@ -59,7 +59,7 @@ class IndividualContinueWithCredentialsControllerSpec extends ControllerSpecBase
     )
 
     lazy val controller = new IndividualContinueWithCredentialsController(
-      authOnlyAction,
+      privateIndividualAuthAction,
       dataRetrievalAction,
       dataRequiredAction,
       mockSessionRepository,

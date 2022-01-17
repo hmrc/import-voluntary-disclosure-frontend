@@ -17,7 +17,7 @@
 package controllers.serviceEntry
 
 import config.ErrorHandler
-import controllers.actions.{AuthOnlyAction, DataRetrievalAction}
+import controllers.actions.{PrivateIndividualAuthAction, DataRetrievalAction}
 import forms.serviceEntry.CustomsDeclarationFormProvider
 import models.UserAnswers
 import pages.serviceEntry.CustomsDeclarationPage
@@ -32,18 +32,18 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CustomsDeclarationController @Inject() (
-  authOnly: AuthOnlyAction,
-  getData: DataRetrievalAction,
-  sessionRepository: SessionRepository,
-  mcc: MessagesControllerComponents,
-  formProvider: CustomsDeclarationFormProvider,
-  view: CustomsDeclarationView,
-  val errorHandler: ErrorHandler,
-  implicit val ec: ExecutionContext
+                                               privateIndividualAuth: PrivateIndividualAuthAction,
+                                               getData: DataRetrievalAction,
+                                               sessionRepository: SessionRepository,
+                                               mcc: MessagesControllerComponents,
+                                               formProvider: CustomsDeclarationFormProvider,
+                                               view: CustomsDeclarationView,
+                                               val errorHandler: ErrorHandler,
+                                               implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = (authOnly andThen getData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (privateIndividualAuth andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
     val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
       formProvider().fill
@@ -51,7 +51,7 @@ class CustomsDeclarationController @Inject() (
     Future.successful(Ok(view(form)))
   }
 
-  def onSubmit(): Action[AnyContent] = (authOnly andThen getData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (privateIndividualAuth andThen getData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
       value => {

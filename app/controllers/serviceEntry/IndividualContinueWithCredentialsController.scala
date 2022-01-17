@@ -17,7 +17,7 @@
 package controllers.serviceEntry
 
 import config.{AppConfig, ErrorHandler}
-import controllers.actions.{AuthOnlyAction, DataRequiredAction, DataRetrievalAction}
+import controllers.actions.{PrivateIndividualAuthAction, DataRequiredAction, DataRetrievalAction}
 import forms.serviceEntry.IndividualContinueWithCredentialsFormProvider
 import pages.serviceEntry.IndividualContinueWithCredentialsPage
 import play.api.i18n.I18nSupport
@@ -30,27 +30,27 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualContinueWithCredentialsController @Inject() (
-  authOnly: AuthOnlyAction,
-  getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  sessionRepository: SessionRepository,
-  mcc: MessagesControllerComponents,
-  view: IndividualContinueWithCredentialsView,
-  formProvider: IndividualContinueWithCredentialsFormProvider,
-  appConfig: AppConfig,
-  val errorHandler: ErrorHandler,
-  implicit val ec: ExecutionContext
+                                                              privateIndividualAuth: PrivateIndividualAuthAction,
+                                                              getData: DataRetrievalAction,
+                                                              requireData: DataRequiredAction,
+                                                              sessionRepository: SessionRepository,
+                                                              mcc: MessagesControllerComponents,
+                                                              view: IndividualContinueWithCredentialsView,
+                                                              formProvider: IndividualContinueWithCredentialsFormProvider,
+                                                              appConfig: AppConfig,
+                                                              val errorHandler: ErrorHandler,
+                                                              implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = (authOnly andThen getData andThen requireData).async { implicit request =>
+  def onLoad(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(IndividualContinueWithCredentialsPage).fold(formProvider()) {
       formProvider().fill
     }
     Future.successful(Ok(view(form, backLink())))
   }
 
-  def onSubmit(): Action[AnyContent] = (authOnly andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
       value =>

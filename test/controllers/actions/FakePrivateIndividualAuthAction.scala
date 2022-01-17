@@ -21,10 +21,10 @@ import play.api.mvc._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-object FakeAuthOnlyAction {
+object FakePrivateIndividualAuthAction {
 
-  def identifierAction(bodyParser: BodyParser[AnyContent], externalId: String, eori: String): AuthOnlyAction =
-    new AuthOnlyAction {
+  def identifierAction(bodyParser: BodyParser[AnyContent], externalId: String, eori: String): PrivateIndividualAuthAction =
+    new PrivateIndividualAuthAction {
 
       override implicit protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.global
 

@@ -31,11 +31,11 @@ import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait AuthOnlyAction
+trait PrivateIndividualAuthAction
   extends ActionBuilder[IdentifierRequest, AnyContent]
     with ActionFunction[Request, IdentifierRequest]
 
-class AuthenticationOnlyAction @Inject() (
+class PrivateIndividualAuthenticationAction @Inject()(
   override val authConnector: AuthConnector,
   unauthorisedView: views.html.errors.UnauthorisedView,
   config: AppConfig,
@@ -43,7 +43,7 @@ class AuthenticationOnlyAction @Inject() (
   val messagesApi: MessagesApi,
   val http: HttpClient
 )(implicit val executionContext: ExecutionContext)
-    extends AuthOnlyAction
+    extends PrivateIndividualAuthAction
     with AuthorisedFunctions
     with I18nSupport {
 

@@ -25,7 +25,7 @@ class ModuleBindings extends Module {
 
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
     bind[IdentifierAction].to(classOf[AuthenticatedIdentifierAction]),
-    bind[AuthOnlyAction].to(classOf[AuthenticationOnlyAction]),
+    bind[PrivateIndividualAuthAction].to(classOf[PrivateIndividualAuthenticationAction]),
     bind[DataRequiredAction].to(classOf[DataRequiredActionImpl]),
     bind[DataRetrievalAction].to(classOf[DataRetrievalActionImpl]),
     bind[AppConfig].to(classOf[AppConfigImpl]),

@@ -26,8 +26,8 @@ trait ControllerSpecBase extends SpecBase {
       "GB987654321000"
     )
 
-  lazy val authOnlyAction: AuthOnlyAction =
-    FakeAuthOnlyAction.identifierAction(
+  lazy val privateIndividualAuthAction: PrivateIndividualAuthAction =
+    FakePrivateIndividualAuthAction.identifierAction(
       messagesControllerComponents.parsers.anyContent,
       "some_external_id",
       "GB987654321000"
