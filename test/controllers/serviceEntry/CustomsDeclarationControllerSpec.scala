@@ -17,6 +17,7 @@
 package controllers.serviceEntry
 
 import base.ControllerSpecBase
+import controllers.actions.FakeDataRetrievalAction
 import forms.serviceEntry.CustomsDeclarationFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
@@ -40,8 +41,11 @@ class CustomsDeclarationControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    private lazy val dataRetrievalAction         = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new CustomsDeclarationController(
+      authOnlyAction,
+      dataRetrievalAction,
       mockSessionRepository,
       messagesControllerComponents,
       formProvider,

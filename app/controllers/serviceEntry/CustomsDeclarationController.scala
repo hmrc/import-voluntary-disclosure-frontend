@@ -17,6 +17,7 @@
 package controllers.serviceEntry
 
 import config.ErrorHandler
+import controllers.actions.{AuthOnlyAction, DataRetrievalAction}
 import forms.serviceEntry.CustomsDeclarationFormProvider
 import models.UserAnswers
 import pages.serviceEntry.CustomsDeclarationPage
@@ -31,6 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CustomsDeclarationController @Inject() (
+  authOnly: AuthOnlyAction,
+  getData: DataRetrievalAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
   formProvider: CustomsDeclarationFormProvider,
@@ -40,43 +43,30 @@ class CustomsDeclarationController @Inject() (
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = Action.async { implicit request =>
-    getUserAnswers(getCredId(request)).map { userAnswers =>
-      val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
-        formProvider().fill
-      }
-      Ok(view(form))
+  def onLoad(): Action[AnyContent] = (authOnly andThen getData).async { implicit request =>
+    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+    val form = userAnswers.get(CustomsDeclarationPage).fold(formProvider()) {
+      formProvider().fill
     }
+    Future.successful(Ok(view(form)))
   }
 
-  def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (authOnly andThen getData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
-      value =>
-        getUserAnswers(getCredId(request)).flatMap {
-          case userAnswers: UserAnswers =>
-            for {
-              updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield {
-              if (value) {
-                Redirect(controllers.serviceEntry.routes.IndividualContinueWithCredentialsController.onLoad())
-              } else {
-                Redirect(controllers.serviceEntry.routes.IndividualHandoffController.onLoad())
-              }
-            }
-          case _ => Future.successful(errorHandler.showInternalServerError)
+      value => {
+        val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+        for {
+          updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if (value) {
+            Redirect(controllers.serviceEntry.routes.IndividualContinueWithCredentialsController.onLoad())
+          } else {
+            Redirect(controllers.serviceEntry.routes.IndividualHandoffController.onLoad())
+          }
         }
+      }
     )
   }
-
-  def getCredId(request: Request[_]): String =
-    request.session.apply("credId")
-
-  def getUserAnswers(credId: String): Future[UserAnswers] =
-    sessionRepository.get(credId).map {
-      case Some(existingUserAnswers) => existingUserAnswers
-      case None                      => UserAnswers(credId)
-    }
-
 }

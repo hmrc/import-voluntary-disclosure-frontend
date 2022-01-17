@@ -26,5 +26,12 @@ trait ControllerSpecBase extends SpecBase {
       "GB987654321000"
     )
 
+  lazy val authOnlyAction: AuthOnlyAction =
+    FakeAuthOnlyAction.identifierAction(
+      messagesControllerComponents.parsers.anyContent,
+      "some_external_id",
+      "GB987654321000"
+    )
+
   lazy val dataRequiredAction: DataRequiredAction = injector.instanceOf[DataRequiredActionImpl]
 }
