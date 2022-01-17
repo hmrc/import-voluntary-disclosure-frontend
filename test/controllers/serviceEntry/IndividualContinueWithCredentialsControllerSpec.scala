@@ -16,20 +16,22 @@
 
 package controllers.serviceEntry
 
-import base.SpecBase
+import base.ControllerSpecBase
+import controllers.actions.FakeDataRetrievalAction
 import forms.serviceEntry.IndividualContinueWithCredentialsFormProvider
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.serviceEntry.IndividualContinueWithCredentialsPage
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{defaultAwaitTimeout, redirectLocation, status}
 import views.html.serviceEntry.IndividualContinueWithCredentialsView
 
 import scala.concurrent.Future
 
-class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
+class IndividualContinueWithCredentialsControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val view: IndividualContinueWithCredentialsView =
@@ -43,8 +45,23 @@ class IndividualContinueWithCredentialsControllerSpec extends SpecBase {
     MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
+    private lazy val dataRetrievalAction         = new FakeDataRetrievalAction(userAnswers)
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
 
     lazy val controller = new IndividualContinueWithCredentialsController(
+      privateIndividualAuthAction,
+      dataRetrievalAction,
+      dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
       view,
