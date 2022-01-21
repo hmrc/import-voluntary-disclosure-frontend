@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ class ModuleBindings extends Module {
 
   override def bindings(environment: Environment, configuration: Configuration): Seq[Binding[_]] = Seq(
     bind[IdentifierAction].to(classOf[AuthenticatedIdentifierAction]),
+    bind[PrivateIndividualAuthAction].to(classOf[PrivateIndividualAuthenticationAction]),
     bind[DataRequiredAction].to(classOf[DataRequiredActionImpl]),
     bind[DataRetrievalAction].to(classOf[DataRetrievalActionImpl]),
     bind[AppConfig].to(classOf[AppConfigImpl]),
