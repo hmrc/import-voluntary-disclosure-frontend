@@ -135,7 +135,7 @@ class UnderpaymentReasonAmendmentController @Inject() (
         currencyAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
       case BoxNumber.OtherItem =>
         otherReasonAmendmentView(form, formAction(boxNumber), boxNumber, itemNumber, backLink(boxNumber))
-      case _ => throw new RuntimeException("Invalid Box Number")
+      case _ => throw new RuntimeException(s"Invalid Box Number: ${boxNumber.id}")
     }
   }
 
