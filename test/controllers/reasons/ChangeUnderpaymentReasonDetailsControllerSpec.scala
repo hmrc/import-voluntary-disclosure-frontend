@@ -100,7 +100,7 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
 
     "throw an exception for invalid box number" in new Test {
       val result: RuntimeException = intercept[RuntimeException](await(controller.onLoad(0)(fakeRequest)))
-      assert(result.getMessage.contains("Invalid Box Number"))
+      assert(result.getMessage.contains("Invalid Box Number: 0"))
     }
 
     "redirect the back button to Change underpayment reasons" in new Test {
@@ -158,7 +158,7 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
 
       "return RuntimeException for invalid box number" in new Test {
         val result: RuntimeException = intercept[RuntimeException](await(controller.onSubmit(0)(fakeRequest)))
-        assert(result.getMessage.contains("Invalid Box Number"))
+        assert(result.getMessage.contains("Invalid Box Number: 0"))
       }
     }
 

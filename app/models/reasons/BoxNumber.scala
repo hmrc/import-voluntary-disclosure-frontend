@@ -46,7 +46,7 @@ object BoxNumber extends Enumeration {
   def fromInt(i: Int): BoxNumber =
     Exception.nonFatalCatch
       .opt(BoxNumber(i))
-      .getOrElse(throw new RuntimeException("Invalid Box Number"))
+      .getOrElse(throw new RuntimeException(s"Invalid Box Number: $i"))
 
   implicit val reads: Reads[BoxNumber]   = implicitly[Reads[Int]].map(BoxNumber.fromInt)
   implicit val writes: Writes[BoxNumber] = implicitly[Writes[Int]].contramap(_.id)
