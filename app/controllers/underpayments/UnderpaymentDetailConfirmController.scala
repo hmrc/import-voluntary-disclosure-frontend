@@ -112,7 +112,8 @@ class UnderpaymentDetailConfirmController @Inject() (
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.original))
+            content = HtmlContent(displayMoney(underpaymentAmount.original)),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -131,7 +132,8 @@ class UnderpaymentDetailConfirmController @Inject() (
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended))
+            content = HtmlContent(displayMoney(underpaymentAmount.amended)),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(

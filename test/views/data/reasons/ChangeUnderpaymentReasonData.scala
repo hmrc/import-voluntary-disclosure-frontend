@@ -151,7 +151,8 @@ object ChangeUnderpaymentReasonData {
             content = Text("Other reason")
           ),
           value = Value(
-            HtmlContent("Other reason")
+            HtmlContent("Other reason"),
+            "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(

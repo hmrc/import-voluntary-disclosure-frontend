@@ -42,7 +42,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(payingByOther)
+      Text(payingByOther),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -63,7 +64,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(payingByDeferment)
+      Text(payingByDeferment),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -84,7 +86,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text("Yes")
+      Text("Yes"),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -105,7 +108,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text("No")
+      Text("No"),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -126,7 +130,8 @@ object CheckYourAnswersPaymentData {
       classes = s"govuk-!-width-one-third"
     ),
     value = Value(
-      Text(accountNumberDuty)
+      Text(accountNumberDuty),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -156,7 +161,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(accountNumberDuty)
+      Text(accountNumberDuty),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -177,7 +183,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(accountNumberDuty)
+      Text(accountNumberDuty),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -198,7 +205,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeA)
+      Text(danTypeA),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -219,7 +227,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeA)
+      Text(danTypeA),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -240,7 +249,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeB)
+      Text(danTypeB),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -261,7 +271,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeB)
+      Text(danTypeB),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -282,7 +293,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeB)
+      Text(danTypeB),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -303,7 +315,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeB)
+      Text(danTypeB),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -324,7 +337,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeC)
+      Text(danTypeC),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -345,7 +359,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(danTypeC)
+      Text(danTypeC),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -365,7 +380,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(dutyFileExample)
+      Text(dutyFileExample),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -386,7 +402,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(FileExample)
+      Text(FileExample),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -416,7 +433,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(accountNumberVAT)
+      Text(accountNumberVAT),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -437,7 +455,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(dutyFileExample)
+      Text(dutyFileExample),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =
@@ -458,7 +477,8 @@ object CheckYourAnswersPaymentData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(vatFileExample)
+      Text(vatFileExample),
+      classes = "govuk-!-width-one-half "
     ),
     actions = Some(
       Actions(items =

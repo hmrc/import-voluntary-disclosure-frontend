@@ -32,7 +32,8 @@ object ConfirmReasonData {
           classes = "govuk-!-width-two-thirds"
         ),
         value = Value(
-          content = HtmlContent(box.toString)
+          content = HtmlContent(box.toString),
+          classes = "govuk-!-width-one-half"
         ),
         actions = Some(
           Actions(
@@ -54,10 +55,10 @@ object ConfirmReasonData {
         SummaryListRow(
           key = Key(
             content = Text(ConfirmReasonDetailMessages.itemNumber),
-            classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(itemNo.toString)
+            content = HtmlContent(itemNo.toString),
+            classes = "govuk-!-width-two-thirds"
           ),
           actions = Some(
             Actions(
@@ -78,11 +79,11 @@ object ConfirmReasonData {
     Seq(
       SummaryListRow(
         key = Key(
-          content = Text(ConfirmReasonDetailMessages.originalValue),
-          classes = "govuk-!-width-two-thirds"
+          content = Text(ConfirmReasonDetailMessages.originalValue)
         ),
         value = Value(
-          content = HtmlContent(originalValue)
+          content = HtmlContent(originalValue),
+          classes = "govuk-!-width-two-thirds"
         ),
         actions = Some(
           Actions(
@@ -102,11 +103,11 @@ object ConfirmReasonData {
     Seq(
       SummaryListRow(
         key = Key(
-          content = Text(ConfirmReasonDetailMessages.amendedValue),
-          classes = "govuk-!-width-two-thirds"
+          content = Text(ConfirmReasonDetailMessages.amendedValue)
         ),
         value = Value(
-          content = HtmlContent(amendedValue)
+          content = HtmlContent(amendedValue),
+          classes = "govuk-!-width-two-thirds"
         ),
         actions = Some(
           Actions(

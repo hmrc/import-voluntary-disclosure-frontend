@@ -64,7 +64,10 @@ object CheckYourAnswersData {
             Text(SummaryForPrintMessages.referenceNumber),
             classes = "govuk-!-width-one-third"
           ),
-          value = Value(Text(caseId)),
+          value = Value(
+            Text(caseId),
+            classes = "govuk-!-width-one-half "
+          ),
           actions = None
         ),
         SummaryListRow(
@@ -72,7 +75,10 @@ object CheckYourAnswersData {
             Text(SummaryForPrintMessages.dateSubmitted),
             classes = "govuk-!-width-one-third"
           ),
-          value = Value(HtmlContent(DateTimeFormat.forPattern("d MMMM yyyy").print(dateSubmitted))),
+          value = Value(
+            HtmlContent(DateTimeFormat.forPattern("d MMMM yyyy").print(dateSubmitted)),
+            classes = "govuk-!-width-one-half "
+          ),
           actions = None
         )
       )
@@ -90,7 +96,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(fullName)
+            Text(fullName),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -110,7 +117,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(buildAddress(importerAddress))
+            HtmlContent(buildAddress(importerAddress)),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -130,7 +138,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(yes)
+            Text(yes),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -150,7 +159,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(eoriNumber)
+            Text(eoriNumber),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -170,7 +180,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(yes)
+            Text(yes),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -199,7 +210,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(amount)
+            Text(amount),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -219,7 +231,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text("No")
+            Text("No"),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -239,7 +252,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(reason)
+            Text(reason),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -259,7 +273,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(extraInformation)
+            Text(extraInformation),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -279,7 +294,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(file)
+            HtmlContent(file),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -308,7 +324,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(multipleEntries)
+            Text(multipleEntries),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -328,7 +345,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(acceptanceDateBulk)
+            Text(acceptanceDateBulk),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -348,7 +366,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(amount)
+            Text(amount),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -368,7 +387,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(file)
+            HtmlContent(file),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -388,7 +408,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(reasonForUnderpaymentBulk)
+            Text(reasonForUnderpaymentBulk),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -417,7 +438,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(userType)
+            Text(userType),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -437,7 +459,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(buildContactDetails(contactDetails))
+            HtmlContent(buildContactDetails(contactDetails)),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(
@@ -457,7 +480,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(buildAddress(traderAddress))
+            HtmlContent(buildAddress(traderAddress)),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -486,7 +510,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(oneEntry)
+            Text(oneEntry),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -506,7 +531,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(epu)
+            Text(epu),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -526,7 +552,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryNumber)
+            Text(entryNumber),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -546,7 +573,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(entryDate)
+            Text(entryDate),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -566,7 +594,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(acceptanceDate)
+            Text(acceptanceDate),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -586,7 +615,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(yes)
+            Text(yes),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =
@@ -606,7 +636,8 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(cpc)
+            Text(cpc),
+            classes = "govuk-!-width-one-half "
           ),
           actions = Some(
             Actions(items =

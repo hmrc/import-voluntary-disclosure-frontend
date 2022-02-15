@@ -146,7 +146,10 @@ class ChangeUnderpaymentReasonController @Inject() (
   private def otherReasonSummary(value: String)(implicit messages: Messages): SummaryListRow =
     SummaryListRow(
       key = Key(content = Text(messages("changeUnderpaymentReason.otherReason"))),
-      value = Value(content = HtmlContent(value)),
+      value = Value(
+        content = HtmlContent(value),
+        classes = "govuk-!-width-one-half"
+      ),
       actions = Some(
         Actions(
           items = Seq(

@@ -37,7 +37,8 @@ object UnderpaymentDetailConfirmData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(0))
+            content = HtmlContent(displayMoney(0)),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -57,7 +58,8 @@ object UnderpaymentDetailConfirmData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(1))
+            content = HtmlContent(displayMoney(1)),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(

@@ -49,7 +49,8 @@ object UnderpaymentReasonSummaryData {
             content = Text("Box 22")
           ),
           value = Value(
-            HtmlContent("Entry level")
+            HtmlContent("Entry level"),
+            "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -76,7 +77,8 @@ object UnderpaymentReasonSummaryData {
             content = Text("Box 22")
           ),
           value = Value(
-            HtmlContent("Entry level")
+            HtmlContent("Entry level"),
+            "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -96,7 +98,8 @@ object UnderpaymentReasonSummaryData {
             content = Text("Box 33")
           ),
           value = Value(
-            HtmlContent("Item 1")
+            HtmlContent("Item 1"),
+            "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -116,7 +119,8 @@ object UnderpaymentReasonSummaryData {
             content = Text("Other reason")
           ),
           value = Value(
-            HtmlContent("Entry or item level")
+            HtmlContent("Entry or item level"),
+            "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(

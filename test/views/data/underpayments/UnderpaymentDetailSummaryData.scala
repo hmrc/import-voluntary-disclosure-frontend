@@ -35,7 +35,7 @@ object UnderpaymentDetailSummaryData {
         ),
         value = Value(
           content = HtmlContent(displayMoney(amountInPence = 100)),
-          classes = "govuk-summary-list__value"
+          classes = "govuk-summary-list__value govuk-!-width-one-third"
         ),
         actions = Some(
           Actions(
@@ -48,12 +48,7 @@ object UnderpaymentDetailSummaryData {
             )
           )
         )
-      )
-    )
-  )
-
-  val amountOwedSummaryList: SummaryList = SummaryList(
-    Seq(
+      ),
       SummaryListRow(
         key = Key(
           content = Text(UnderpaymentDetailSummaryMessages.owedToHMRC),
@@ -61,7 +56,7 @@ object UnderpaymentDetailSummaryData {
         ),
         value = Value(
           content = HtmlContent(displayMoney(amountInPence = 100)),
-          classes = "govuk-summary-list__value"
+          classes = "govuk-summary-list__value govuk-!-width-one-third"
         ),
         classes = "govuk-summary-list__row--no-border"
       )

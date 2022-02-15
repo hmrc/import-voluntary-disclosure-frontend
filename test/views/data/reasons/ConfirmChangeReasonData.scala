@@ -33,7 +33,8 @@ object ConfirmChangeReasonData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(itemNo.toString)
+            content = HtmlContent(itemNo.toString),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -58,7 +59,8 @@ object ConfirmChangeReasonData {
           classes = "govuk-!-width-two-thirds"
         ),
         value = Value(
-          content = HtmlContent(originalValue)
+          content = HtmlContent(originalValue),
+          classes = "govuk-!-width-one-half"
         ),
         actions = Some(
           Actions(
@@ -82,7 +84,8 @@ object ConfirmChangeReasonData {
           classes = "govuk-!-width-two-thirds"
         ),
         value = Value(
-          content = HtmlContent(amendedValue)
+          content = HtmlContent(amendedValue),
+          classes = "govuk-!-width-one-half"
         ),
         actions = Some(
           Actions(
@@ -111,7 +114,8 @@ object ConfirmChangeReasonData {
             content = Text(ConfirmReasonDetailMessages.otherReason)
           ),
           value = Value(
-            content = HtmlContent(value)
+            content = HtmlContent(value),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
