@@ -28,7 +28,6 @@
 @(
         form: Form[_],
         underpaymentDetailsSummaryList: SummaryList,
-        amountOwedSummaryList: SummaryList,
         underpaymentDetailsLength: Int,
         isOneEntry: Boolean
 )(implicit request: Request[_], messages: Messages)
@@ -46,8 +45,6 @@
     @h2(messages("underpaymentDetailsSummary.pageHeaderSmall"))
 
     @govukSummaryList(underpaymentDetailsSummaryList)
-
-    @govukSummaryList(amountOwedSummaryList)
 
     @formHelper(action = controllers.underpayments.routes.UnderpaymentDetailSummaryController.onSubmit()) {
         @if(underpaymentDetailsLength == 10) {

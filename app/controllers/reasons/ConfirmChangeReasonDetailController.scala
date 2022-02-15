@@ -85,7 +85,8 @@ class ConfirmChangeReasonDetailController @Inject() (
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.itemNumber.toString)
+              content = HtmlContent(reason.changed.itemNumber.toString),
+              classes = "govuk-!-width-one-half"
             ),
             actions = Some(
               Actions(
@@ -111,7 +112,8 @@ class ConfirmChangeReasonDetailController @Inject() (
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.original)
+              content = HtmlContent(reason.changed.original),
+              classes = "govuk-!-width-one-half"
             ),
             actions = Some(
               Actions(
@@ -130,7 +132,8 @@ class ConfirmChangeReasonDetailController @Inject() (
               classes = "govuk-!-width-two-thirds"
             ),
             value = Value(
-              content = HtmlContent(reason.changed.amended)
+              content = HtmlContent(reason.changed.amended),
+              classes = "govuk-!-width-one-half"
             ),
             actions = Some(
               Actions(
@@ -163,7 +166,10 @@ class ConfirmChangeReasonDetailController @Inject() (
     Seq(
       SummaryListRow(
         key = Key(content = Text(messages("confirmReason.otherReason"))),
-        value = Value(content = HtmlContent(value)),
+        value = Value(
+          content = HtmlContent(value),
+          classes = "govuk-!-width-one-half"
+        ),
         actions = Some(
           Actions(
             items = Seq(

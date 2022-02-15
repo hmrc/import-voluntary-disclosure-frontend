@@ -105,7 +105,8 @@ class UnderpaymentReasonSummaryController @Inject() (
                 HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
               } else {
                 HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
-              }
+              },
+              classes = "govuk-!-width-one-half"
             ),
             actions = Some(
               Actions(

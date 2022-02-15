@@ -79,7 +79,8 @@ class ConfirmReasonDetailController @Inject() (
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(boxNumber.id.toString)
+            content = HtmlContent(boxNumber.id.toString),
+            classes = "govuk-!-width-one-half"
           ),
           actions = Some(
             Actions(
@@ -100,11 +101,11 @@ class ConfirmReasonDetailController @Inject() (
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("confirmReason.itemNumber")),
-            classes = "govuk-!-width-two-thirds"
+            content = Text(messages("confirmReason.itemNumber"))
           ),
           value = Value(
-            content = HtmlContent(itemNumber.toString)
+            content = HtmlContent(itemNumber.toString),
+            classes = "govuk-!-width-two-thirds"
           ),
           actions = Some(
             Actions(
@@ -127,11 +128,11 @@ class ConfirmReasonDetailController @Inject() (
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(messages("confirmReason.original")),
-            classes = "govuk-!-width-two-thirds"
+            content = Text(messages("confirmReason.original"))
           ),
           value = Value(
-            content = HtmlContent(underPaymentReasonValue.original)
+            content = HtmlContent(underPaymentReasonValue.original),
+            classes = "govuk-!-width-two-thirds"
           ),
           actions = Some(
             Actions(
@@ -146,11 +147,11 @@ class ConfirmReasonDetailController @Inject() (
         ),
         SummaryListRow(
           key = Key(
-            content = Text(messages("confirmReason.amended")),
-            classes = "govuk-!-width-two-thirds"
+            content = Text(messages("confirmReason.amended"))
           ),
           value = Value(
-            content = HtmlContent(underPaymentReasonValue.amended)
+            content = HtmlContent(underPaymentReasonValue.amended),
+            classes = "govuk-!-width-two-thirds"
           ),
           actions = Some(
             Actions(
@@ -192,7 +193,10 @@ class ConfirmReasonDetailController @Inject() (
     Seq(
       SummaryListRow(
         key = Key(content = Text(messages("confirmReason.otherReason"))),
-        value = Value(content = HtmlContent(value)),
+        value = Value(
+          content = HtmlContent(value),
+          classes = "govuk-!-width-one-half"
+        ),
         actions = Some(
           Actions(
             items = Seq(

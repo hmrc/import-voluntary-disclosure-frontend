@@ -67,7 +67,6 @@ class UnderpaymentDetailSummaryController @Inject() (
           view(
             formProvider(),
             summaryList(underpayments),
-            amountOwedSummaryList(underpayments),
             underpayments.length,
             request.isOneEntry
           )
@@ -84,7 +83,6 @@ class UnderpaymentDetailSummaryController @Inject() (
         val content = view(
           formWithErrors,
           summaryList(underpayments),
-          amountOwedSummaryList(underpayments),
           underpayments.length,
           request.isOneEntry
         )
@@ -172,46 +170,49 @@ class UnderpaymentDetailSummaryController @Inject() (
 
   private[controllers] def summaryList(
     underpaymentDetail: Seq[UnderpaymentDetail]
-  )(implicit messages: Messages): SummaryList = {
+  )(implicit messages: Messages): SummaryList =
     SummaryList(
-      rows =
-        for (underpayment <- underpaymentDetail.reverse)
-          yield SummaryListRow(
-            key = Key(
-              content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
-              classes = "govuk-summary-list__key govuk-!-width-two-thirds govuk-!-font-weight-regular"
-            ),
-            value = Value(
-              content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
-              classes = "govuk-summary-list__value"
-            ),
-            actions = Some(
-              Actions(
-                items = Seq(
-                  ActionItemHelper.createChangeActionItem(
-                    controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
-                    messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
-                  )
+      rows = generateUnderpaymentsDetailsRows(underpaymentDetail) :+ amountOwedSummaryListRow(underpaymentDetail)
+    )
+
+  private def generateUnderpaymentsDetailsRows(underpaymentDetails: Seq[UnderpaymentDetail])(implicit messages: Messages): Seq[SummaryListRow] = {
+    for (underpayment <- underpaymentDetails.reverse)
+      yield {
+        SummaryListRow(
+          key = Key(
+            content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
+            classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
+          ),
+          value = Value(
+            content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
+            classes = "govuk-!-width-one-half"
+          ),
+          actions = Some(
+            Actions(
+              items = Seq(
+                ActionItemHelper.createChangeActionItem(
+                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
+                  messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
                 )
               )
             )
           )
-    )
+        )
+      }
   }
 
-  def amountOwedSummaryList(underpaymentDetail: Seq[UnderpaymentDetail])(implicit messages: Messages): SummaryList = {
+  private def amountOwedSummaryListRow(underpaymentDetail: Seq[UnderpaymentDetail])(implicit messages: Messages): SummaryListRow = {
     val amountOwed = underpaymentDetail.map(underpayment => underpayment.amended - underpayment.original).sum
-    SummaryList(
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages(s"underpaymentDetailsSummary.owedToHMRC")),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(content = HtmlContent(displayMoney(amountOwed))),
-          classes = "govuk-summary-list__row--no-border govuk-!-font-weight-bold"
-        )
-      )
+      SummaryListRow(
+        key = Key(
+          content = Text(messages(s"underpaymentDetailsSummary.owedToHMRC")),
+          classes = "govuk-!-width-one-half govuk-!-padding-top-7"
+        ),
+        value = Value(
+          content = HtmlContent(displayMoney(amountOwed)),
+          classes = "govuk-!-width-one-half"
+        ),
+        classes = "govuk-summary-list__row--no-border govuk-summary-list__row--no-actions govuk-!-font-weight-bold"
     )
   }
 

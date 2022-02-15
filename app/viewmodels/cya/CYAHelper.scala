@@ -33,7 +33,7 @@ object CYAHelper {
   ): SummaryListRow = {
     SummaryListRow(
       key = Key(content = keyText, classes = s"govuk-!-width-one-third $columnClasses".trim),
-      value = Value(content = valueContent, classes = columnClasses),
+      value = Value(content = valueContent, classes = s"govuk-!-width-one-half $columnClasses"),
       actions = action.map(act => Actions(items = Seq(act), classes = columnClasses)),
       classes = rowClasses
     )
