@@ -28,10 +28,10 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import viewmodels.ActionItemHelper
+import viewmodels.SummaryListHelper
 import views.html.docUpload.UploadAnotherFileView
 
-class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
+class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages with SummaryListHelper {
 
   private lazy val injectedView: UploadAnotherFileView = app.injector.instanceOf[UploadAnotherFileView]
 
@@ -45,7 +45,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
@@ -64,7 +64,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
@@ -77,7 +77,7 @@ class UploadAnotherFileViewSpec extends ViewBaseSpec with BaseMessages {
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.docUpload.routes.RemoveUploadedFileController.onLoad(Index(1)).url,
                 s"Remove fileName2"
               )

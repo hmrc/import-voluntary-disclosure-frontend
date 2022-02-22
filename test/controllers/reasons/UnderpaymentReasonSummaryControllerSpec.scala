@@ -141,7 +141,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
     "single item is passed" should {
       "produce summary list with one item" in new Test {
-        controller.summaryList(
+        controller.buildSummaryList(
           UnderpaymentReasonSummaryData.singleItemReason
         ) mustBe UnderpaymentReasonSummaryData.singleItemSummaryList
       }
@@ -149,7 +149,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
     "multiple items are passed" should {
       "produce summary list with multiple items" in new Test {
-        controller.summaryList(
+        controller.buildSummaryList(
           UnderpaymentReasonSummaryData.multipleItemReason
         ) mustBe UnderpaymentReasonSummaryData.multipleItemSummaryList
       }
@@ -157,7 +157,7 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
 
     "no items are passed" should {
       "produce an empty summary list" in new Test {
-        controller.summaryList(None) mustBe None
+        controller.buildSummaryList(None) mustBe None
       }
     }
 

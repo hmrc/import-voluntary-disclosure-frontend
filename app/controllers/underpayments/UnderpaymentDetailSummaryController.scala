@@ -20,18 +20,14 @@ import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierA
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
-import models.underpayments.UnderpaymentDetail
 import pages._
 import pages.paymentInfo._
 import pages.underpayments._
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.ActionItemHelper
-import views.ViewUtils.displayMoney
+import viewmodels.summary.UnderpaymentDetailSummaryList
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
 import javax.inject.Inject
@@ -47,6 +43,7 @@ class UnderpaymentDetailSummaryController @Inject() (
   formProvider: UnderpaymentDetailSummaryFormProvider,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
+    with UnderpaymentDetailSummaryList
     with I18nSupport {
 
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -66,7 +63,7 @@ class UnderpaymentDetailSummaryController @Inject() (
         Ok(
           view(
             formProvider(),
-            summaryList(underpayments),
+            buildSummaryList(underpayments),
             underpayments.length,
             request.isOneEntry
           )
@@ -82,7 +79,7 @@ class UnderpaymentDetailSummaryController @Inject() (
         val underpayments = request.userAnswers.get(UnderpaymentDetailSummaryPage).getOrElse(Seq.empty)
         val content = view(
           formWithErrors,
-          summaryList(underpayments),
+          buildSummaryList(underpayments),
           underpayments.length,
           request.isOneEntry
         )
@@ -149,6 +146,12 @@ class UnderpaymentDetailSummaryController @Inject() (
     }
   }
 
+  private def redirectForDeferment(request: DataRequest[_]): Future[Result] =
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
+      _              <- removePaymentData(request.copy(userAnswers = updatedAnswers))
+    } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
+
   private def removePaymentData(request: DataRequest[_]): Future[Unit] = {
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.remove(DefermentPage))
@@ -160,60 +163,6 @@ class UnderpaymentDetailSummaryController @Inject() (
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(AdditionalDefermentNumberPage))
       _              <- sessionRepository.set(updatedAnswers)
     } yield ()
-  }
-
-  private def redirectForDeferment(request: DataRequest[_]): Future[Result] =
-    for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.remove(CheckModePage))
-      _              <- removePaymentData(request.copy(userAnswers = updatedAnswers))
-    } yield Redirect(controllers.paymentInfo.routes.DefermentController.onLoad())
-
-  private[controllers] def summaryList(
-    underpaymentDetail: Seq[UnderpaymentDetail]
-  )(implicit messages: Messages): SummaryList =
-    SummaryList(
-      rows = generateUnderpaymentsDetailsRows(underpaymentDetail) :+ amountOwedSummaryListRow(underpaymentDetail)
-    )
-
-  private def generateUnderpaymentsDetailsRows(underpaymentDetails: Seq[UnderpaymentDetail])(implicit messages: Messages): Seq[SummaryListRow] = {
-    for (underpayment <- underpaymentDetails.reverse)
-      yield {
-        SummaryListRow(
-          key = Key(
-            content = Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
-            classes = "govuk-!-width-two-thirds govuk-!-font-weight-regular"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
-            classes = "govuk-!-width-one-half"
-          ),
-          actions = Some(
-            Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
-                  messages(s"underpaymentDetailsSummary.${underpayment.duty}.change")
-                )
-              )
-            )
-          )
-        )
-      }
-  }
-
-  private def amountOwedSummaryListRow(underpaymentDetail: Seq[UnderpaymentDetail])(implicit messages: Messages): SummaryListRow = {
-    val amountOwed = underpaymentDetail.map(underpayment => underpayment.amended - underpayment.original).sum
-      SummaryListRow(
-        key = Key(
-          content = Text(messages(s"underpaymentDetailsSummary.owedToHMRC")),
-          classes = "govuk-!-width-one-half govuk-!-padding-top-7"
-        ),
-        value = Value(
-          content = HtmlContent(displayMoney(amountOwed)),
-          classes = "govuk-!-width-one-half"
-        ),
-        classes = "govuk-summary-list__row--no-border govuk-summary-list__row--no-actions govuk-!-font-weight-bold"
-    )
   }
 
 }

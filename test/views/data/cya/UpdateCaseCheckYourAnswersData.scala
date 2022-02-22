@@ -46,7 +46,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     value = Value(
       Text(referenceNumber),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -68,7 +68,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     value = Value(
       Text(if (moreDocuments) yes else no),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -90,7 +90,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     value = Value(
       HtmlContent(file),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -112,7 +112,7 @@ object UpdateCaseCheckYourAnswersData {
     ),
     value = Value(
       Text(additionalInformation),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =

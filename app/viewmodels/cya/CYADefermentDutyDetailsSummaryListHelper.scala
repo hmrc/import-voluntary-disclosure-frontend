@@ -23,10 +23,9 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.{ActionItemHelper, cya}
-import viewmodels.cya.CYAHelper.createRow
+import viewmodels.{SummaryListHelper, cya}
 
-trait CYADefermentDutyDetailsSummaryListHelper {
+trait CYADefermentDutyDetailsSummaryListHelper extends SummaryListHelper {
 
   def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val paymentMethod = request.userAnswers.get(DefermentPage)
@@ -67,7 +66,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
         Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
             messages("cya.repDutyAccountNumber.change")
           )
@@ -88,7 +87,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
         Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.paymentInfo.routes.RepresentativeDanDutyController.onLoad().url,
             messages("cya.repDutyAccountOwner.change")
           )
@@ -109,7 +108,7 @@ trait CYADefermentDutyDetailsSummaryListHelper {
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
             action = Some(
-              ActionItemHelper.createChangeActionItem(
+              createChangeActionItem(
                 controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Duty).url,
                 messages("cya.proofOfAuth.duty.change")
               )

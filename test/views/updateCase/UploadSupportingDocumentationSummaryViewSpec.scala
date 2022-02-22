@@ -27,10 +27,10 @@ import play.api.data.Form
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.Aliases._
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import viewmodels.ActionItemHelper
+import viewmodels.SummaryListHelper
 import views.html.updateCase.UploadSupportingDocumentationSummaryView
 
-class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with BaseMessages {
+class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with BaseMessages with SummaryListHelper {
 
   private lazy val injectedView: UploadSupportingDocumentationSummaryView =
     app.injector.instanceOf[UploadSupportingDocumentationSummaryView]
@@ -45,7 +45,7 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.updateCase.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
@@ -64,7 +64,7 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.updateCase.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
                 s"Remove fileName"
               )
@@ -77,7 +77,7 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
         actions = Some(
           Actions(
             items = Seq(
-              ActionItemHelper.createDeleteActionItem(
+              createDeleteActionItem(
                 controllers.updateCase.routes.RemoveSupportingDocumentationController.onLoad(Index(1)).url,
                 s"Remove fileName2"
               )

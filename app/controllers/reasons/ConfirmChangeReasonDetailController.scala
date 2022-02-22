@@ -17,18 +17,14 @@
 package controllers.reasons
 
 import controllers.actions._
-import models.UserAnswers
 import models.reasons.BoxNumber
 import models.reasons.BoxNumber.BoxNumber
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.i18n.{I18nSupport, Messages}
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.ActionItemHelper
+import viewmodels.summary.ConfirmChangeReasonDetailSummaryList
 import views.html.reasons.ConfirmChangeReasonDetailView
 
 import javax.inject.{Inject, Singleton}
@@ -44,13 +40,14 @@ class ConfirmChangeReasonDetailController @Inject() (
   view: ConfirmChangeReasonDetailView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
+    with ConfirmChangeReasonDetailSummaryList
     with I18nSupport {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val boxNumber = request.userAnswers.get(ChangeUnderpaymentReasonPage).fold(BoxNumber.Box22) { reason =>
       reason.original.boxNumber
     }
-    val summary = summaryList(request.userAnswers, boxNumber)
+    val summary = buildSummaryList(request.userAnswers.get(ChangeUnderpaymentReasonPage), boxNumber)
     Future.successful(Ok(view(summary, pageTitle(boxNumber))))
   }
 
@@ -74,114 +71,6 @@ class ConfirmChangeReasonDetailController @Inject() (
     }
 
   }
-
-  def summaryList(userAnswers: UserAnswers, boxNumber: BoxNumber)(implicit messages: Messages): SummaryList = {
-    val itemNumberSummaryListRow: Seq[SummaryListRow] = userAnswers.get(ChangeUnderpaymentReasonPage) match {
-      case Some(reason) if reason.changed.itemNumber != 0 =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("confirmReason.itemNumber")),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              content = HtmlContent(reason.changed.itemNumber.toString),
-              classes = "govuk-!-width-one-half"
-            ),
-            actions = Some(
-              Actions(
-                items = Seq(
-                  ActionItemHelper.createChangeActionItem(
-                    controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
-                    messages("confirmReason.item.change")
-                  )
-                )
-              )
-            )
-          )
-        )
-      case _ => Seq.empty
-    }
-
-    val originalAmountSummaryListRow: Seq[SummaryListRow] = userAnswers.get(ChangeUnderpaymentReasonPage) match {
-      case Some(reason) =>
-        Seq(
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("confirmReason.original")),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              content = HtmlContent(reason.changed.original),
-              classes = "govuk-!-width-one-half"
-            ),
-            actions = Some(
-              Actions(
-                items = Seq(
-                  ActionItemHelper.createChangeActionItem(
-                    controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber.id).url,
-                    messages("confirmReason.values.original.change")
-                  )
-                )
-              )
-            )
-          ),
-          SummaryListRow(
-            key = Key(
-              content = Text(messages("confirmReason.amended")),
-              classes = "govuk-!-width-two-thirds"
-            ),
-            value = Value(
-              content = HtmlContent(reason.changed.amended),
-              classes = "govuk-!-width-one-half"
-            ),
-            actions = Some(
-              Actions(
-                items = Seq(
-                  ActionItemHelper.createChangeActionItem(
-                    controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber.id).url,
-                    messages("confirmReason.values.amended.change")
-                  )
-                )
-              )
-            )
-          )
-        )
-      case _ => Seq.empty
-    }
-
-    val rows =
-      if (boxNumber == BoxNumber.OtherItem) {
-        userAnswers.get(ChangeUnderpaymentReasonPage)
-          .map(value => otherReasonSummaryList(value.changed.original))
-          .getOrElse(Seq.empty)
-      } else {
-        itemNumberSummaryListRow ++ originalAmountSummaryListRow
-      }
-
-    SummaryList(rows)
-  }
-
-  private def otherReasonSummaryList(value: String)(implicit messages: Messages) =
-    Seq(
-      SummaryListRow(
-        key = Key(content = Text(messages("confirmReason.otherReason"))),
-        value = Value(
-          content = HtmlContent(value),
-          classes = "govuk-!-width-one-half"
-        ),
-        actions = Some(
-          Actions(
-            items = Seq(
-              ActionItemHelper.createChangeActionItem(
-                controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(BoxNumber.OtherItem.id).url,
-                messages("confirmReason.values.otherReason.change")
-              )
-            )
-          )
-        )
-      )
-    )
 
   private[controllers] def pageTitle(boxNumber: BoxNumber)(implicit messages: Messages): String =
     boxNumber match {

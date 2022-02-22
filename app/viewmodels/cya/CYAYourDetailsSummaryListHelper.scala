@@ -25,10 +25,9 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.{ActionItemHelper, cya}
-import viewmodels.cya.CYAHelper._
+import viewmodels.{SummaryListHelper, cya}
 
-trait CYAYourDetailsSummaryListHelper {
+trait CYAYourDetailsSummaryListHelper extends SummaryListHelper {
 
   def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
@@ -61,7 +60,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.userType")),
         valueContent = Text(userTypeValue),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.importDetails.routes.UserTypeController.onLoad().url,
             messages("cya.userType.change")
           )
@@ -78,7 +77,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.contactDetails")),
         valueContent = HtmlContent(encodeMultilineText(contactDetailsValue)),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad().url,
             messages("cya.contactDetails.change")
           )
@@ -108,7 +107,7 @@ trait CYAYourDetailsSummaryListHelper {
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressString)),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.contactDetails.routes.TraderAddressCorrectController.onLoad().url,
             messages("cya.address.change")
           )

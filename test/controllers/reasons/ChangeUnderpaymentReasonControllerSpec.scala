@@ -124,13 +124,13 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     "single item is passed" should {
       "produce summary list with one item" in new Test {
-        controller.summaryList(
+        controller.buildSummaryList(
           ChangeUnderpaymentReasonData.singleItemReason.original
         ) mustBe ChangeUnderpaymentReasonData.summaryList(BoxNumber.Box35)
       }
 
       "produce summary list with Other Item" in new Test {
-        controller.summaryList(
+        controller.buildSummaryList(
           ChangeUnderpaymentReasonData.otherItemReason.original
         ) mustBe ChangeUnderpaymentReasonData.otherItemSummaryList()
       }
