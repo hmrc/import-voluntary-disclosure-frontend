@@ -24,10 +24,9 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya.CYAHelper._
-import viewmodels.{ActionItemHelper, cya}
+import viewmodels.{SummaryListHelper, cya}
 
-trait CYACancelCaseSummaryListHelper {
+trait CYACancelCaseSummaryListHelper extends SummaryListHelper {
 
   def buildCancelCaseSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
@@ -61,7 +60,7 @@ trait CYACancelCaseSummaryListHelper {
         keyText = Text(messages("cancelCase.cya.referenceNumber")),
         valueContent = Text(reference),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad().url,
             messages("cancelCase.cya.referenceNumber.change")
           )
@@ -75,7 +74,7 @@ trait CYACancelCaseSummaryListHelper {
         keyText = Text(messages("cancelCase.cya.reasonCancellation")),
         valueContent = Text(moreInformation),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.cancelCase.routes.CancellationReasonController.onLoad().url,
             messages("cancelCase.cya.reasonCancellation.change")
           )
@@ -93,7 +92,7 @@ trait CYACancelCaseSummaryListHelper {
         keyText = Text(messages("cancelCase.cya.supportingDocumentation")),
         valueContent = Text(anySupportingDocumentation),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad().url,
             messages("cancelCase.cya.supportingDocumentation.change")
           )
@@ -109,7 +108,7 @@ trait CYACancelCaseSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
             messages("cancelCase.cya.uploadedFiles.change")
           )

@@ -26,11 +26,10 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya.CYAHelper._
-import viewmodels.{ActionItemHelper, cya}
+import viewmodels.{SummaryListHelper, cya}
 import views.ViewUtils.displayMoney
 
-trait CYAUnderpaymentDetailsSummaryListHelper {
+trait CYAUnderpaymentDetailsSummaryListHelper extends SummaryListHelper {
 
   def buildUnderpaymentDetailsSummaryList()(implicit
     messages: Messages,
@@ -77,7 +76,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages(numberOfFiles, fileNames.length)),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.docUpload.routes.UploadAnotherFileController.onLoad().url,
             messages("cya.supportingDocuments.change")
           )
@@ -99,7 +98,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(keyTextMessage),
         valueContent = Text(extraInformation),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.reasons.routes.MoreInformationController.onLoad().url,
             changeTextMessage
           )
@@ -118,7 +117,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         Text(messages("cya.reasonForUnderpayment")),
         Text(messages(numberOfReasons, underpaymentReason.size)),
         Some(
-          ActionItemHelper.createViewSummaryActionItem(
+          createViewSummaryActionItem(
             controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url,
             messages("cya.reasonForUnderpayment.change")
           )
@@ -134,7 +133,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         Text(messages("cya.underpaymentDetails.owedToHmrc")),
         Text(displayMoney(amountOwed)),
         Some(
-          ActionItemHelper.createViewSummaryActionItem(
+          createViewSummaryActionItem(
             controllers.underpayments.routes.UnderpaymentDetailSummaryController.cya().url,
             messages("cya.underpaymentDetails.owedToHmrc.change")
           )
@@ -151,7 +150,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.underpaymentDetails.usesPVA")),
         valueContent = Text(messages("site.no")),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url,
             messages("cya.underpaymentDetails.usesPVA.change")
           )
@@ -167,7 +166,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(messages("cya.bulkEntry")),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.importDetails.routes.NumberOfEntriesController.onLoad().url,
             messages("cya.numberOfEntries.change")
           )
@@ -183,7 +182,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.bulk.acceptanceDate")),
         valueContent = Text(acceptanceDateValue),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.importDetails.routes.AcceptanceDateController.onLoad().url,
             messages("cya.bulk.acceptanceDate.change")
           )
@@ -198,7 +197,7 @@ trait CYAUnderpaymentDetailsSummaryListHelper {
         keyText = Text(messages("cya.bulk.multipleEntriesFile")),
         valueContent = HtmlContent(encodeMultilineText(fileNames)),
         action = Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.docUpload.routes.BulkUploadFileController.onLoad().url,
             messages("cya.bulk.multipleEntriesFile.change")
           )

@@ -25,6 +25,7 @@ import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumb
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.data.reasons.ConfirmReasonData
 import views.html.reasons.ConfirmReasonDetailView
 
@@ -69,7 +70,7 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list" in new Test {
-      val result = controller.summaryList(
+      val result = controller.buildSummaryList(
         UserAnswers("some-cred-id")
           .set(UnderpaymentReasonBoxNumberPage, BoxNumber.Box33).success.value
           .set(UnderpaymentReasonItemNumberPage, 1).success.value
@@ -77,19 +78,19 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         boxNumber = BoxNumber.Box33
       )
 
-      val expectedResult = Some(ConfirmReasonData.reasons(33, Some(1), "1806321000", "2204109400X411"))
+      val expectedResult = ConfirmReasonData.reasons(33, Some(1), "1806321000", "2204109400X411")
       result mustBe expectedResult
     }
 
     "produce correct summary list for Other Reason" in new Test {
-      val result = controller.summaryList(
+      val result = controller.buildSummaryList(
         UserAnswers("some-cred-id")
           .set(UnderpaymentReasonBoxNumberPage, BoxNumber.OtherItem).success.value
           .set(UnderpaymentReasonAmendmentPage, UnderpaymentReasonValue("Other Reason", "")).success.value,
         boxNumber = BoxNumber.OtherItem
       )
 
-      val rows = result.value.head.rows
+      val rows = result.head.rows
       rows.length mustBe 1
       rows.head.value.content.asHtml.toString() mustBe "Other Reason"
       rows.head.key.content.asHtml.toString() mustBe "Other reason"
@@ -136,16 +137,14 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         )
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
-        redirectLocation(result) mustBe Some(
-          controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
-        )
+        redirectLocation(result).get mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
         verifyCalls()
       }
 
       "payload contains no data" should {
-        "produce no summary list" in new Test {
-          val result = controller.summaryList(UserAnswers("some-cred-id"), BoxNumber.Box22)
-          result mustBe None
+        "produce an empty summary list" in new Test {
+          val result = controller.buildSummaryList(UserAnswers("some-cred-id"), BoxNumber.Box22)
+          result mustBe Seq(SummaryList())
         }
       }
     }

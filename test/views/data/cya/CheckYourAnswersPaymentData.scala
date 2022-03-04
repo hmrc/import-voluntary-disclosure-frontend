@@ -43,7 +43,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(payingByOther),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -65,7 +65,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(payingByDeferment),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -87,7 +87,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text("Yes"),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -109,7 +109,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text("No"),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -131,7 +131,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(accountNumberDuty),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -162,7 +162,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(accountNumberDuty),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -184,7 +184,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(accountNumberDuty),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -206,7 +206,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeA),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -228,7 +228,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeA),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -250,7 +250,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeB),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -272,7 +272,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeB),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -294,7 +294,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeB),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -316,7 +316,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeB),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -338,7 +338,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeC),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -360,7 +360,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(danTypeC),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -381,7 +381,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(dutyFileExample),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -403,7 +403,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(FileExample),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -434,7 +434,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(accountNumberVAT),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -456,7 +456,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(dutyFileExample),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -478,7 +478,7 @@ object CheckYourAnswersPaymentData {
     ),
     value = Value(
       Text(vatFileExample),
-      classes = "govuk-!-width-one-half "
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =

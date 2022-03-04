@@ -19,14 +19,11 @@ package controllers.underpayments
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import viewmodels.ActionItemHelper
-import views.ViewUtils.displayMoney
+import viewmodels.summary.UnderpaymentDetailConfirmSummaryList
 import views.html.underpayments.UnderpaymentDetailConfirmView
 
 import javax.inject.Inject
@@ -41,6 +38,7 @@ class UnderpaymentDetailConfirmController @Inject() (
   view: UnderpaymentDetailConfirmView,
   implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
+    with UnderpaymentDetailConfirmSummaryList
     with I18nSupport {
 
   def onLoad(underpaymentType: String, change: Boolean): Action[AnyContent] =
@@ -50,7 +48,7 @@ class UnderpaymentDetailConfirmController @Inject() (
         Ok(
           view(
             underpaymentType,
-            summaryList(underpaymentType, underpaymentDetail),
+            buildSummaryList(underpaymentType, underpaymentDetail),
             submitCall(underpaymentType, change)
           )
         )
@@ -98,66 +96,6 @@ class UnderpaymentDetailConfirmController @Inject() (
     } else {
       controllers.underpayments.routes.UnderpaymentDetailConfirmController.onSubmit(underpaymentType, change = false)
     }
-  }
-
-  private[controllers] def summaryList(underpaymentType: String, underpaymentAmount: UnderpaymentAmount)(implicit
-    messages: Messages
-  ): SummaryList = {
-    SummaryList(
-      classes = "govuk-!-margin-bottom-9",
-      rows = Seq(
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("underpaymentDetailsConfirm.originalAmount")),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.original)),
-            classes = "govuk-!-width-one-half"
-          ),
-          actions = Some(
-            Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                  messages(s"underpaymentDetailsConfirm.$underpaymentType.original.change")
-                )
-              )
-            )
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(messages("underpaymentDetailsConfirm.amendedAmount")),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(
-            content = HtmlContent(displayMoney(underpaymentAmount.amended)),
-            classes = "govuk-!-width-one-half"
-          ),
-          actions = Some(
-            Actions(
-              items = Seq(
-                ActionItemHelper.createChangeActionItem(
-                  controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
-                  messages(s"underpaymentDetailsConfirm.$underpaymentType.amended.change")
-                )
-              )
-            )
-          )
-        ),
-        SummaryListRow(
-          key = Key(
-            content = Text(
-              messages(s"underpaymentDetailsConfirm.$underpaymentType.dueToHmrc")
-            ),
-            classes = "govuk-!-width-two-thirds"
-          ),
-          value = Value(content = HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original))),
-          classes = "govuk-summary-list__row--no-border"
-        )
-      )
-    )
   }
 
 }

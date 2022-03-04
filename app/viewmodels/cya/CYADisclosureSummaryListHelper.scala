@@ -20,11 +20,11 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.cya.CYAHelper._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import viewmodels.SummaryListHelper
 
-trait CYADisclosureSummaryListHelper {
+trait CYADisclosureSummaryListHelper extends SummaryListHelper {
   private val dateFormat = DateTimeFormat.forPattern("d MMMM yyyy")
 
   def buildDisclosureSummaryList(caseId: String, date: DateTime)(implicit

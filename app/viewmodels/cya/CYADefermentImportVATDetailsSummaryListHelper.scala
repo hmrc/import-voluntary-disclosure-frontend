@@ -23,10 +23,9 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import viewmodels.{ActionItemHelper, cya}
-import viewmodels.cya.CYAHelper.createRow
+import viewmodels.{SummaryListHelper, cya}
 
-trait CYADefermentImportVATDetailsSummaryListHelper {
+trait CYADefermentImportVATDetailsSummaryListHelper extends SummaryListHelper {
 
   def buildDefermentImportVatSummaryList()(implicit
     messages: Messages,
@@ -70,7 +69,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Text(messages("cya.repAccountNumber")),
         Text(accountNumber),
         Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
             messages("cya.repVATAccountNumber.change")
           )
@@ -91,7 +90,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
         Text(messages("cya.accountOwner")),
         Text(accountOwnerContent),
         Some(
-          ActionItemHelper.createChangeActionItem(
+          createChangeActionItem(
             controllers.paymentInfo.routes.RepresentativeDanImportVATController.onLoad().url,
             messages("cya.repVATAccountOwner.change")
           )
@@ -116,7 +115,7 @@ trait CYADefermentImportVATDetailsSummaryListHelper {
             Text(messages("cya.proofOfAuth")),
             Text(fileName),
             action = Some(
-              ActionItemHelper.createChangeActionItem(
+              createChangeActionItem(
                 controllers.paymentInfo.routes.UploadAuthorityController.onLoad(SelectedDutyTypes.Vat).url,
                 messages("cya.proofOfAuth.Vat.change")
               )

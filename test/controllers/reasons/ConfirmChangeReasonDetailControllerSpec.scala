@@ -91,15 +91,13 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list" in new Test {
-      val result = controller.summaryList(
-        UserAnswers("some-cred-id")
-          .set(
-            ChangeUnderpaymentReasonPage,
-            ChangeUnderpaymentReason(
-              underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
-              underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412")
-            )
-          ).success.value,
+      val result = controller.buildSummaryList(
+        Some(
+          ChangeUnderpaymentReason(
+            underpayment(box = BoxNumber.Box33, item = 1, original = "1806321000", amended = "2204109400X411"),
+            underpayment(box = BoxNumber.Box33, item = 2, original = "1806321001", amended = "2204109400X412")
+          )
+        ),
         boxNumber = BoxNumber.Box33
       )
 
@@ -108,15 +106,13 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
     }
 
     "produce correct summary list for Other Item" in new Test {
-      val result = controller.summaryList(
-        UserAnswers("some-cred-id")
-          .set(
-            ChangeUnderpaymentReasonPage,
-            ChangeUnderpaymentReason(
-              underpayment(box = BoxNumber.OtherItem, original = "Other reason", amended = ""),
-              underpayment(box = BoxNumber.OtherItem, original = "New other reason", amended = "")
-            )
-          ).success.value,
+      val result = controller.buildSummaryList(
+        Some(
+          ChangeUnderpaymentReason(
+            underpayment(box = BoxNumber.OtherItem, original = "Other reason", amended = ""),
+            underpayment(box = BoxNumber.OtherItem, original = "New other reason", amended = "")
+          )
+        ),
         boxNumber = BoxNumber.OtherItem
       )
 
@@ -203,7 +199,7 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
       "payload contains no data" should {
         "produce no summary list" in new Test {
-          val result = controller.summaryList(UserAnswers("some-cred-id"), BoxNumber.Box22)
+          val result = controller.buildSummaryList(None, BoxNumber.Box22)
           result mustBe SummaryList(Seq.empty)
         }
       }
