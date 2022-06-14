@@ -18,14 +18,13 @@ package controllers.paymentInfo
 
 import com.google.inject.Inject
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.paymentInfo.ImporterDanFormProvider
 import models.requests.DataRequest
 import pages.paymentInfo.DefermentAccountPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,8 +39,7 @@ class ImporterDanController @Inject() (
   formProvider: ImporterDanFormProvider,
   view: ImporterDanView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form = request.userAnswers.get(DefermentAccountPage).fold(formProvider()) {
@@ -60,12 +58,11 @@ class ImporterDanController @Inject() (
         }
         Future.successful(res)
       },
-      value => {
+      value =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
-      }
     )
   }
 

@@ -32,7 +32,7 @@ import scala.concurrent.Future
 object UserAnswersStub extends PlaySpec with GuiceOneServerPerSuite {
 
   lazy val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
-  lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  lazy val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
   lazy val fakeNow: LocalDateTime = LocalDateTime.now()
 
@@ -46,7 +46,7 @@ object UserAnswersStub extends PlaySpec with GuiceOneServerPerSuite {
       data = Json.obj(
         "claimPeriodPage" -> Json.obj(
           "startDateValue" -> "2020-03-01",
-          "endDateValue" -> "2020-04-01"
+          "endDateValue"   -> "2020-04-01"
         )
       ),
       lastUpdated = fakeNow

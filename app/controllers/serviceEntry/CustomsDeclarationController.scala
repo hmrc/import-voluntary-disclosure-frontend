@@ -17,14 +17,13 @@
 package controllers.serviceEntry
 
 import config.ErrorHandler
-import controllers.actions.{PrivateIndividualAuthAction, DataRetrievalAction}
+import controllers.IVDFrontendController
+import controllers.actions.{DataRetrievalAction, PrivateIndividualAuthAction}
 import forms.serviceEntry.CustomsDeclarationFormProvider
 import models.UserAnswers
 import pages.serviceEntry.CustomsDeclarationPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.serviceEntry.CustomsDeclarationView
 
 import javax.inject.{Inject, Singleton}
@@ -32,16 +31,15 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CustomsDeclarationController @Inject() (
-                                               privateIndividualAuth: PrivateIndividualAuthAction,
-                                               getData: DataRetrievalAction,
-                                               sessionRepository: SessionRepository,
-                                               mcc: MessagesControllerComponents,
-                                               formProvider: CustomsDeclarationFormProvider,
-                                               view: CustomsDeclarationView,
-                                               val errorHandler: ErrorHandler,
-                                               implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+  privateIndividualAuth: PrivateIndividualAuthAction,
+  getData: DataRetrievalAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  formProvider: CustomsDeclarationFormProvider,
+  view: CustomsDeclarationView,
+  val errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (privateIndividualAuth andThen getData).async { implicit request =>
     val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
@@ -58,7 +56,7 @@ class CustomsDeclarationController @Inject() (
         val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
         for {
           updatedAnswers <- Future.fromTry(userAnswers.set(CustomsDeclarationPage, value))
-          _ <- sessionRepository.set(updatedAnswers)
+          _              <- sessionRepository.set(updatedAnswers)
         } yield {
           if (value) {
             Redirect(controllers.serviceEntry.routes.IndividualContinueWithCredentialsController.onLoad())

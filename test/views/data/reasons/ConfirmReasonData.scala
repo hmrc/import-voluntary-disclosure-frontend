@@ -54,7 +54,7 @@ object ConfirmReasonData {
       Seq(
         SummaryListRow(
           key = Key(
-            content = Text(ConfirmReasonDetailMessages.itemNumber),
+            content = Text(ConfirmReasonDetailMessages.itemNumber)
           ),
           value = Value(
             content = HtmlContent(itemNo.toString),

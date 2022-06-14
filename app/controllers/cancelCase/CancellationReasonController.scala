@@ -16,15 +16,14 @@
 
 package controllers.cancelCase
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.cancelCase.CancellationReasonFormProvider
 import models.requests.DataRequest
 import pages.updateCase.UpdateAdditionalInformationPage
-import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.cancelCase.CancellationReasonView
 
 import javax.inject.{Inject, Singleton}
@@ -40,8 +39,7 @@ class CancellationReasonController @Inject() (
   formProvider: CancellationReasonFormProvider,
   view: CancellationReasonView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UpdateAdditionalInformationPage).fold(formProvider()) {

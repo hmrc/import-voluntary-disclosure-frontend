@@ -17,12 +17,11 @@
 package controllers.reasons
 
 import config.AppConfig
+import controllers.IVDFrontendController
 import controllers.actions._
 import models.SelectedDutyTypes.{SelectedDutyType, Vat}
 import pages.reasons.UnderpaymentReasonsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.BoxGuidanceView
 
 import javax.inject.{Inject, Singleton}
@@ -36,8 +35,7 @@ class BoxGuidanceController @Inject() (
   requireData: DataRequiredAction,
   view: BoxGuidanceView,
   implicit val appConfig: AppConfig
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private[reasons] def backLink(dutyType: SelectedDutyType): Call = {
     if (dutyType == Vat) {

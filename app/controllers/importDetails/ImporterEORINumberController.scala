@@ -16,19 +16,18 @@
 
 package controllers.importDetails
 
+import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.ImporterEORINumberFormProvider
-import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
 import pages.importDetails.ImporterEORINumberPage
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.ImporterEORINumberView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
 
 @Singleton
 class ImporterEORINumberController @Inject() (
@@ -41,8 +40,7 @@ class ImporterEORINumberController @Inject() (
   formProvider: ImporterEORINumberFormProvider,
   view: ImporterEORINumberView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     request.getImporterName.fold(errorHandler.showInternalServerError) { importerName =>

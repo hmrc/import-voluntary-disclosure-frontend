@@ -25,7 +25,9 @@ import views.ViewUtils.displayMoney
 
 trait UnderpaymentDetailConfirmSummaryList extends SummaryListHelper {
 
-  def buildSummaryList(underpaymentType: String, underpaymentAmount: UnderpaymentAmount)(implicit messages: Messages): SummaryList = {
+  def buildSummaryList(underpaymentType: String, underpaymentAmount: UnderpaymentAmount)(implicit
+    messages: Messages
+  ): SummaryList = {
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
       rows = Seq(

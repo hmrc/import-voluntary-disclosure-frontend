@@ -16,6 +16,7 @@
 
 package controllers.underpayments
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
 import models.SelectedDutyTypes._
@@ -23,10 +24,8 @@ import models.requests.DataRequest
 import pages._
 import pages.paymentInfo._
 import pages.underpayments._
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.summary.UnderpaymentDetailSummaryList
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
@@ -42,9 +41,8 @@ class UnderpaymentDetailSummaryController @Inject() (
   view: UnderpaymentDetailSummaryView,
   formProvider: UnderpaymentDetailSummaryFormProvider,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with UnderpaymentDetailSummaryList
-    with I18nSupport {
+) extends IVDFrontendController(mcc)
+    with UnderpaymentDetailSummaryList {
 
   def cya(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {

@@ -18,7 +18,7 @@ package assets
 
 object AddressLookupITConstants {
 
-  val startHeading = "Find your address"
+  val startHeading   = "Find your address"
   val startHeadingCy = "Find your address"
 
 }

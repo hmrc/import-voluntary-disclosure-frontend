@@ -16,15 +16,14 @@
 
 package controllers.underpayments
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.underpayments.UnderpaymentDetailsFormProvider
 import models.underpayments.UnderpaymentAmount
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
 import play.api.data.FormError
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.ChangeUnderpaymentDetailsView
 
 import javax.inject.{Inject, Singleton}
@@ -40,8 +39,7 @@ class ChangeUnderpaymentDetailsController @Inject() (
   formProvider: UnderpaymentDetailsFormProvider,
   view: ChangeUnderpaymentDetailsView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(underpaymentType: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>

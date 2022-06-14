@@ -16,6 +16,7 @@
 
 package controllers.paymentInfo
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.paymentInfo.DefermentFormProvider
 import models.SelectedDutyTypes._
@@ -23,11 +24,9 @@ import models.requests.DataRequest
 import pages._
 import pages.paymentInfo._
 import pages.underpayments.UnderpaymentCheckModePage
-import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.DefermentView
 
 import javax.inject.{Inject, Singleton}
@@ -43,8 +42,7 @@ class DefermentController @Inject() (
   formProvider: DefermentFormProvider,
   view: DefermentView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {

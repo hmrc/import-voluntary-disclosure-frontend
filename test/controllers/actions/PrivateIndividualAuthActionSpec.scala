@@ -50,7 +50,14 @@ class PrivateIndividualAuthActionSpec extends SpecBase {
     lazy val unauthorisedView: UnauthorisedView = injector.instanceOf[views.html.errors.UnauthorisedView]
     lazy val config                             = new MockAppConfig()
     lazy val action =
-      new PrivateIndividualAuthenticationAction(mockAuthConnector, unauthorisedView, config, bodyParsers, messagesApi, mockHttp)
+      new PrivateIndividualAuthenticationAction(
+        mockAuthConnector,
+        unauthorisedView,
+        config,
+        bodyParsers,
+        messagesApi,
+        mockHttp
+      )
     val target = new Harness(action)
   }
 

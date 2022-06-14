@@ -24,7 +24,9 @@ import viewmodels.SummaryListHelper
 
 trait UnderpaymentReasonSummaryList extends SummaryListHelper {
 
-  def buildSummaryList(underpaymentReason: Option[Seq[UnderpaymentReason]])(implicit messages: Messages): Option[SummaryList] = {
+  def buildSummaryList(
+    underpaymentReason: Option[Seq[UnderpaymentReason]]
+  )(implicit messages: Messages): Option[SummaryList] = {
 
     underpaymentReason.map { reasons =>
       val sortedReasons = reasons.sortBy(item => item.boxNumber)
@@ -37,8 +39,8 @@ trait UnderpaymentReasonSummaryList extends SummaryListHelper {
           val hiddenLabel = underpayment.boxNumber match {
             case BoxNumber.OtherItem => messages("underpaymentReasonSummary.otherReason.change")
             case BoxNumber.Box33 | BoxNumber.Box34 | BoxNumber.Box35 | BoxNumber.Box36 | BoxNumber.Box37 |
-                 BoxNumber.Box38 | BoxNumber.Box39 | BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 |
-                 BoxNumber.Box45 | BoxNumber.Box46 =>
+                BoxNumber.Box38 | BoxNumber.Box39 | BoxNumber.Box41 | BoxNumber.Box42 | BoxNumber.Box43 |
+                BoxNumber.Box45 | BoxNumber.Box46 =>
               messages("underpaymentReasonSummary.itemLevel.change", underpayment.boxNumber.id, underpayment.itemNumber)
             case _ => messages("underpaymentReasonSummary.entryLevel.change", underpayment.boxNumber.id)
           }
@@ -56,7 +58,10 @@ trait UnderpaymentReasonSummaryList extends SummaryListHelper {
             valueContent,
             Some(
               createChangeActionItem(
-                controllers.reasons.routes.ChangeUnderpaymentReasonController.change(underpayment.boxNumber.id, underpayment.itemNumber).url,
+                controllers.reasons.routes.ChangeUnderpaymentReasonController.change(
+                  underpayment.boxNumber.id,
+                  underpayment.itemNumber
+                ).url,
                 hiddenLabel
               )
             ),

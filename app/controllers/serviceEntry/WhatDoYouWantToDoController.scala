@@ -16,15 +16,14 @@
 
 package controllers.serviceEntry
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import models.SubmissionType.{CancelCase, CreateCase, UpdateCase}
 import models.{SubmissionType, UserAnswers}
 import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.serviceEntry.WhatDoYouWantToDoView
 
 import javax.inject.Inject
@@ -39,8 +38,7 @@ class WhatDoYouWantToDoController @Inject() (
   formProvider: WhatDoYouWantToDoFormProvider,
   view: WhatDoYouWantToDoView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {

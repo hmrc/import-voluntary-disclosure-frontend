@@ -78,20 +78,25 @@ class AddressLookupControllerISpec extends IntegrationSpec {
         AuditStub.audit()
         UserAnswersStub.createUserAnswers("some_external_id")
 
-        AddressLookupStub.getAddress(OK, Json.obj(
-          "lines" -> Json.arr("line1", "line2"),
-          "country" -> Json.obj(
-            "name" -> "United Kingdom",
-            "code" -> "GB"
+        AddressLookupStub.getAddress(
+          OK,
+          Json.obj(
+            "lines" -> Json.arr("line1", "line2"),
+            "country" -> Json.obj(
+              "name" -> "United Kingdom",
+              "code" -> "GB"
+            )
           )
-        ))
+        )
 
         val request: WSRequest = buildRequest("/address-callback?id=9999999")
 
         val response: WSResponse = await(request.get())
 
         response.status shouldBe Status.SEE_OTHER
-        response.header(HeaderNames.LOCATION) shouldBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
+        response.header(HeaderNames.LOCATION) shouldBe Some(
+          controllers.paymentInfo.routes.DefermentController.onLoad().url
+        )
       }
     }
   }

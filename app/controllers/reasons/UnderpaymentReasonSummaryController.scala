@@ -16,12 +16,11 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.reasons.UnderpaymentReasonSummaryFormProvider
 import pages.reasons.UnderpaymentReasonsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.summary.UnderpaymentReasonSummaryList
 import views.html.reasons.UnderpaymentReasonSummaryView
 
@@ -35,9 +34,8 @@ class UnderpaymentReasonSummaryController @Inject() (
   mcc: MessagesControllerComponents,
   view: UnderpaymentReasonSummaryView,
   formProvider: UnderpaymentReasonSummaryFormProvider
-) extends FrontendController(mcc)
-    with UnderpaymentReasonSummaryList
-    with I18nSupport {
+) extends IVDFrontendController(mcc)
+    with UnderpaymentReasonSummaryList {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     buildSummaryList(request.userAnswers.get(UnderpaymentReasonsPage)) match {

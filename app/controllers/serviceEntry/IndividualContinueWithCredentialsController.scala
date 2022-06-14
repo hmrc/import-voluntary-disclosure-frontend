@@ -17,54 +17,54 @@
 package controllers.serviceEntry
 
 import config.{AppConfig, ErrorHandler}
-import controllers.actions.{PrivateIndividualAuthAction, DataRequiredAction, DataRetrievalAction}
+import controllers.IVDFrontendController
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, PrivateIndividualAuthAction}
 import forms.serviceEntry.IndividualContinueWithCredentialsFormProvider
 import pages.serviceEntry.IndividualContinueWithCredentialsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.serviceEntry.IndividualContinueWithCredentialsView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndividualContinueWithCredentialsController @Inject() (
-                                                              privateIndividualAuth: PrivateIndividualAuthAction,
-                                                              getData: DataRetrievalAction,
-                                                              requireData: DataRequiredAction,
-                                                              sessionRepository: SessionRepository,
-                                                              mcc: MessagesControllerComponents,
-                                                              view: IndividualContinueWithCredentialsView,
-                                                              formProvider: IndividualContinueWithCredentialsFormProvider,
-                                                              appConfig: AppConfig,
-                                                              val errorHandler: ErrorHandler,
-                                                              implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+  privateIndividualAuth: PrivateIndividualAuthAction,
+  getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
+  sessionRepository: SessionRepository,
+  mcc: MessagesControllerComponents,
+  view: IndividualContinueWithCredentialsView,
+  formProvider: IndividualContinueWithCredentialsFormProvider,
+  appConfig: AppConfig,
+  val errorHandler: ErrorHandler,
+  implicit val ec: ExecutionContext
+) extends IVDFrontendController(mcc) {
 
-  def onLoad(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(IndividualContinueWithCredentialsPage).fold(formProvider()) {
-      formProvider().fill
-    }
-    Future.successful(Ok(view(form, backLink())))
+  def onLoad(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async {
+    implicit request =>
+      val form = request.userAnswers.get(IndividualContinueWithCredentialsPage).fold(formProvider()) {
+        formProvider().fill
+      }
+      Future.successful(Ok(view(form, backLink())))
   }
 
-  def onSubmit(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async { implicit request =>
-    formProvider().bindFromRequest().fold(
-      formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
-      value =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualContinueWithCredentialsPage, value))
-          _ <- if (value) sessionRepository.set(updatedAnswers) else sessionRepository.remove(request.credId)
-        } yield {
-          if (value) {
-            Redirect(appConfig.eccSubscribeUrl)
-          } else {
-            Redirect(appConfig.signOutUrl)
+  def onSubmit(): Action[AnyContent] = (privateIndividualAuth andThen getData andThen requireData).async {
+    implicit request =>
+      formProvider().bindFromRequest().fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink()))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(IndividualContinueWithCredentialsPage, value))
+            _ <- if (value) sessionRepository.set(updatedAnswers) else sessionRepository.remove(request.credId)
+          } yield {
+            if (value) {
+              Redirect(appConfig.eccSubscribeUrl)
+            } else {
+              Redirect(appConfig.signOutUrl)
+            }
           }
-        }
-    )
+      )
   }
 
   private[serviceEntry] def backLink(): Option[Call] =

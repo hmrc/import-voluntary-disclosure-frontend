@@ -17,12 +17,11 @@
 package controllers.cancelCase
 
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
 import pages.updateCase.DisclosureReferenceNumberPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.cancelCase.CancelCaseDisclosureClosedView
 
 import javax.inject.{Inject, Singleton}
@@ -38,8 +37,7 @@ class CancelCaseDisclosureClosedController @Inject() (
   view: CancelCaseDisclosureClosedView,
   errorHandler: ErrorHandler,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {

@@ -17,18 +17,17 @@
 package controllers.docUpload
 
 import config.AppConfig
-import controllers.FileUploadHandler
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.{FileUploadHandler, IVDFrontendController}
 import forms.shared.UploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan.FileUpload
 import models.{FileUploadInfo, UserAnswers}
 import pages.docUpload.FileUploadPage
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.docUpload.BulkUploadFileView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
@@ -51,8 +50,7 @@ class BulkUploadFileController @Inject() (
   successView: FileUploadSuccessView,
   implicit val appConfig: AppConfig,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

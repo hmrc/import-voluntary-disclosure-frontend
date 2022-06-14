@@ -28,10 +28,14 @@ import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with FutureAwaits with DefaultAwaitTimeout {
+class FileUploadRepositoryISpec
+    extends PlaySpec
+    with GuiceOneServerPerSuite
+    with FutureAwaits
+    with DefaultAwaitTimeout {
 
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
-  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
   val fakeNow: LocalDateTime = LocalDateTime.now()
 
@@ -54,20 +58,24 @@ class FileUploadRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite wit
         uploadTimestamp = fakeNow,
         checksum = "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
         fileName = "test.xls",
-        fileMimeType = "application/pdf")
+        fileMimeType = "application/pdf"
+      )
     ),
     lastUpdatedDate = None
   )
   val fileUploadModelAlternative: FileUpload = fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))
   val jsonInRepo: JsValue = Json.obj(
-    "reference" -> "11370e18-6e24-453e-b45a-76d3e32ea33d",
-    "credId" -> "cred Id",
+    "reference"  -> "11370e18-6e24-453e-b45a-76d3e32ea33d",
+    "credId"     -> "cred Id",
     "fileStatus" -> FileStatusEnum.READY.toString,
-    "uploadDetails" -> Json.toJson(UploadDetails(
-      uploadTimestamp = fakeNow,
-      checksum = "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-      fileName = "test.xls",
-      fileMimeType = "application/pdf"))
+    "uploadDetails" -> Json.toJson(
+      UploadDetails(
+        uploadTimestamp = fakeNow,
+        checksum = "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+        fileName = "test.xls",
+        fileMimeType = "application/pdf"
+      )
+    )
   )
 
   "repository domainFormatImplicit reads" should {

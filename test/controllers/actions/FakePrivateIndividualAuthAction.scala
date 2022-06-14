@@ -23,7 +23,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object FakePrivateIndividualAuthAction {
 
-  def identifierAction(bodyParser: BodyParser[AnyContent], externalId: String, eori: String): PrivateIndividualAuthAction =
+  def identifierAction(
+    bodyParser: BodyParser[AnyContent],
+    externalId: String,
+    eori: String
+  ): PrivateIndividualAuthAction =
     new PrivateIndividualAuthAction {
 
       override implicit protected def executionContext: ExecutionContext = scala.concurrent.ExecutionContext.global

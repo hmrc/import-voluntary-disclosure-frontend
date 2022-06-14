@@ -16,27 +16,24 @@
 
 package controllers.importDetails
 
-import config.AppConfig
+import config.{AppConfig, ErrorHandler}
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.NumberOfEntriesFormProvider
-
-import javax.inject.{Inject, Singleton}
-import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
-import models.requests.DataRequest
 import models.UserAnswers
 import models.importDetails.NumberOfEntries
+import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
+import models.requests.DataRequest
 import pages._
 import pages.contactDetails.ImporterAddressPage
 import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.NumberOfEntriesView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
 
 @Singleton
 class NumberOfEntriesController @Inject() (
@@ -50,8 +47,7 @@ class NumberOfEntriesController @Inject() (
   formProvider: NumberOfEntriesFormProvider,
   view: NumberOfEntriesView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   implicit val config: AppConfig = appConfig
 

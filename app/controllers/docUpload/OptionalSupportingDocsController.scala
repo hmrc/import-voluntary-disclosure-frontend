@@ -16,13 +16,12 @@
 
 package controllers.docUpload
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.docUpload.OptionalSupportingDocsFormProvider
 import pages.docUpload.OptionalSupportingDocsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.docUpload.OptionalSupportingDocsView
 
 import javax.inject.Inject
@@ -37,8 +36,7 @@ class OptionalSupportingDocsController @Inject() (
   view: OptionalSupportingDocsView,
   formProvider: OptionalSupportingDocsFormProvider,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private lazy val backLink = controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad()
 
@@ -57,12 +55,11 @@ class OptionalSupportingDocsController @Inject() (
         )
         Future.successful(BadRequest(view(form, backLink, Seq.empty)))
       },
-      value => {
+      value =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(OptionalSupportingDocsPage, value))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(controllers.docUpload.routes.UploadFileController.onLoad())
-      }
     )
   }
 

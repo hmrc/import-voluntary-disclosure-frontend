@@ -17,18 +17,17 @@
 package controllers.cancelCase
 
 import config.AppConfig
-import controllers.FileUploadHandler
 import controllers.actions._
+import controllers.{FileUploadHandler, IVDFrontendController}
 import forms.cancelCase.CancelCaseUploadFileFormProvider
 import models.requests.DataRequest
 import models.upscan._
 import models.{FileUploadInfo, UserAnswers}
 import pages.updateCase.UploadSupportingDocumentationPage
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 import views.html.shared.FileUploadProgressView
 
@@ -50,8 +49,7 @@ class CancelCaseUploadSupportingDocumentationController @Inject() (
   formProvider: CancelCaseUploadFileFormProvider,
   implicit val appConfig: AppConfig,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with FileUploadHandler[FileUploadInfo] {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

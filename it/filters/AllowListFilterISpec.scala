@@ -32,7 +32,7 @@ class AllowListFilterISpec extends IntegrationSpec {
       AuditStub.audit()
       AuthStub.authorised()
 
-      val request: WSRequest = buildRequest("/disclosure/entry-details")
+      val request: WSRequest   = buildRequest("/disclosure/entry-details")
       val response: WSResponse = await(request.get())
 
       response.status shouldBe Status.NOT_FOUND

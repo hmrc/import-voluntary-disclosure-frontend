@@ -16,6 +16,7 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.reasons.BoxNumberFormProvider
 import models.UserAnswers
@@ -23,12 +24,11 @@ import models.reasons.BoxNumber
 import models.reasons.BoxNumber.BoxNumber
 import pages.reasons._
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.BoxNumberView
 
 import javax.inject.{Inject, Singleton}
@@ -44,8 +44,7 @@ class BoxNumberController @Inject() (
   formProvider: BoxNumberFormProvider,
   view: BoxNumberView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private lazy val backLink: Call = controllers.reasons.routes.BoxGuidanceController.onLoad()
   private val boxNumbers          = BoxNumber.values

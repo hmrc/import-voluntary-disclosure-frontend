@@ -16,6 +16,7 @@
 
 package controllers.docUpload
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.shared.UploadAnotherFileFormProvider
 import models.requests.DataRequest
@@ -23,10 +24,9 @@ import models.{FileUploadInfo, Index, OptionalDocument, UserAnswers}
 import pages.docUpload.{FileUploadPage, OptionalSupportingDocsPage}
 import pages.shared.AnyOtherSupportingDocsPage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import uk.gov.hmrc.govukfrontend.views.Aliases._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.docUpload.UploadAnotherFileView
 
 import javax.inject.Inject
@@ -40,8 +40,7 @@ class UploadAnotherFileController @Inject() (
   formProvider: UploadAnotherFileFormProvider,
   view: UploadAnotherFileView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(FileUploadPage).fold(

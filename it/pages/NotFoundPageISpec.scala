@@ -30,7 +30,6 @@ class NotFoundPageISpec extends IntegrationSpec {
       AuditStub.audit()
       AuthStub.authorised()
 
-
       val request: WSRequest = buildRequest("/some-path-that-does-not-exist")
 
       val response: WSResponse = await(request.get())

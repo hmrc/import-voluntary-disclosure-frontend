@@ -30,7 +30,10 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import viewmodels.SummaryListHelper
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationSummaryView
 
-class CancelCaseUploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with BaseMessages with SummaryListHelper {
+class CancelCaseUploadSupportingDocumentationSummaryViewSpec
+    extends ViewBaseSpec
+    with BaseMessages
+    with SummaryListHelper {
 
   private lazy val injectedView: CancelCaseUploadSupportingDocumentationSummaryView =
     app.injector.instanceOf[CancelCaseUploadSupportingDocumentationSummaryView]

@@ -18,18 +18,18 @@ package controllers.serviceEntry
 
 import com.google.inject.Inject
 import config.AppConfig
+import controllers.IVDFrontendController
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.{EoriDetails, UserAnswers}
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.EoriDetailsService
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.errors.ConfirmEoriDetailsErrorView
 import views.html.serviceEntry.ConfirmEORIDetailsView
 
@@ -47,8 +47,7 @@ class ConfirmEORIDetailsController @Inject() (
   errorView: ConfirmEoriDetailsErrorView,
   implicit val appConfig: AppConfig,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 

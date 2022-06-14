@@ -16,12 +16,11 @@
 
 package controllers.docUpload
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import models.UserAnswers
 import pages.docUpload.FileUploadPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.docUpload.SupportingDocView
 
 import javax.inject.{Inject, Singleton}
@@ -34,8 +33,7 @@ class SupportingDocController @Inject() (
   mcc: MessagesControllerComponents,
   requireData: DataRequiredAction,
   view: SupportingDocView
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     if (request.userAnswers.get(FileUploadPage).getOrElse(Seq.empty).nonEmpty) {
