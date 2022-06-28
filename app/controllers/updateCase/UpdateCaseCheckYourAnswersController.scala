@@ -17,16 +17,15 @@
 package controllers.updateCase
 
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
 import models.UpdateCaseError
 import pages._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.UpdateCaseService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYAUpdateCaseSummaryListHelper
 import views.html.updateCase.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
@@ -45,8 +44,7 @@ class UpdateCaseCheckYourAnswersController @Inject() (
   confirmationView: UpdateCaseConfirmationView,
   errorHandler: ErrorHandler,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with CYAUpdateCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

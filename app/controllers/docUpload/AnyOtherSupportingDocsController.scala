@@ -16,14 +16,13 @@
 
 package controllers.docUpload
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.docUpload.AnyOtherSupportingDocsFormProvider
 import pages.shared.AnyOtherSupportingDocsPage
-import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.docUpload.AnyOtherSupportingDocsView
 
 import javax.inject.{Inject, Singleton}
@@ -39,8 +38,7 @@ class AnyOtherSupportingDocsController @Inject() (
   formProvider: AnyOtherSupportingDocsFormProvider,
   view: AnyOtherSupportingDocsView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private lazy val backLink: Call = controllers.docUpload.routes.SupportingDocController.onLoad()
 

@@ -28,7 +28,7 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
 
   private lazy val injectedView: UnderpaymentStartView = app.injector.instanceOf[UnderpaymentStartView]
 
-  val nameOfImporter = "ABC ltd"
+  val nameOfImporter               = "ABC ltd"
   val representativeNameOfImporter = "Fast Food ltd"
 
   "Rendering the Underpayment start page" when {
@@ -45,11 +45,15 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
 
       "have the correct details heading" in {
-        elementText("#main-content > div > div > details > summary > span") mustBe UnderpaymentStartMessages.importerDetailsHeader
+        elementText(
+          "#main-content > div > div > details > summary > span"
+        ) mustBe UnderpaymentStartMessages.importerDetailsHeader
       }
 
       "have the correct details paragraph" in {
-        elementText("#main-content > div > div > details > div") mustBe UnderpaymentStartMessages.importerDetailsParagraph
+        elementText(
+          "#main-content > div > div > details > div"
+        ) mustBe UnderpaymentStartMessages.importerDetailsParagraph
       }
     }
 
@@ -66,11 +70,15 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(UnderpaymentStartMessages.pageTitle)
 
       "have the correct details heading" in {
-        elementText("#main-content > div > div > details > summary > span") mustBe UnderpaymentStartMessages.representativeImporterDetailsHeader
+        elementText(
+          "#main-content > div > div > details > summary > span"
+        ) mustBe UnderpaymentStartMessages.representativeImporterDetailsHeader
       }
 
       "have the correct details paragraph" in {
-        elementText("#main-content > div > div > details > div") mustBe UnderpaymentStartMessages.representativeImporterDetailsParagraph
+        elementText(
+          "#main-content > div > div > details > div"
+        ) mustBe UnderpaymentStartMessages.representativeImporterDetailsParagraph
       }
     }
 

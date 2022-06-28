@@ -16,18 +16,18 @@
 
 package controllers.underpayments
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.underpayments.UnderpaymentTypeFormProvider
 import models.UserAnswers
 import models.requests.DataRequest
 import pages.underpayments._
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.underpayments.UnderpaymentTypeView
 
 import javax.inject.Inject
@@ -42,8 +42,7 @@ class UnderpaymentTypeController @Inject() (
   underpaymentTypeView: UnderpaymentTypeView,
   formProvider: UnderpaymentTypeFormProvider,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private val underpaymentTypes = Seq("B00", "A00", "E00", "A20", "A30", "A35", "A40", "A45", "A10", "D10")
 

@@ -17,21 +17,20 @@
 package controllers.paymentInfo
 
 import com.google.inject.Inject
+import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.paymentInfo.RepresentativeDanFormProvider
 import models.requests.DataRequest
 import models.{RepresentativeDan, UserAnswers}
 import pages._
 import pages.paymentInfo._
-import play.api.i18n.I18nSupport
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.{ExecutionContext, Future}
-import config.ErrorHandler
-import pages.serviceEntry.KnownEoriDetailsPage
 
 class RepresentativeDanController @Inject() (
   identify: IdentifierAction,
@@ -43,8 +42,7 @@ class RepresentativeDanController @Inject() (
   view: RepresentativeDanView,
   formProvider: RepresentativeDanFormProvider,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name

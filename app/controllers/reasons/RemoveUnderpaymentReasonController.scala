@@ -16,16 +16,15 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
 import models.UserAnswers
 import models.reasons.UnderpaymentReason
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
-import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.RemoveUnderpaymentReasonView
 
 import javax.inject.{Inject, Singleton}
@@ -41,8 +40,7 @@ class RemoveUnderpaymentReasonController @Inject() (
   formProvider: RemoveUnderpaymentReasonFormProvider,
   view: RemoveUnderpaymentReasonView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   lazy val backLink: Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()
 
@@ -86,7 +84,7 @@ class RemoveUnderpaymentReasonController @Inject() (
             case _ => Future.successful(InternalServerError("Invalid sequence of reasons"))
           }
         } else {
-            Future.successful(Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
+          Future.successful(Redirect(controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()))
         }
       }
     )

@@ -28,7 +28,7 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import play.api.{Application, Environment, Mode}
 
 trait IntegrationSpec
-  extends AnyWordSpec
+    extends AnyWordSpec
     with EitherValues
     with Matchers
     with FutureAwaits
@@ -46,11 +46,11 @@ trait IntegrationSpec
   private val servicesPath = "microservice.services"
 
   def overriddenConfig: Map[String, Any] = Map(
-    s"$servicesPath.auth.host" -> mockHost,
-    s"$servicesPath.auth.port" -> mockPort,
+    s"$servicesPath.auth.host"                    -> mockHost,
+    s"$servicesPath.auth.port"                    -> mockPort,
     s"$servicesPath.address-lookup-frontend.host" -> mockHost,
     s"$servicesPath.address-lookup-frontend.port" -> mockPort,
-    "auditing.consumer.baseUri.port" -> mockPort
+    "auditing.consumer.baseUri.port"              -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()

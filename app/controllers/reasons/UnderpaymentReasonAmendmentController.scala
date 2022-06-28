@@ -16,16 +16,15 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import models.reasons.BoxNumber
 import models.reasons.BoxNumber.BoxNumber
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.data.{Form, FormError}
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.{CurrencyAmendmentView, OtherReasonAmendmentView, TextAmendmentView, WeightAmendmentView}
 
 import javax.inject.{Inject, Singleton}
@@ -44,8 +43,7 @@ class UnderpaymentReasonAmendmentController @Inject() (
   currencyAmendmentView: CurrencyAmendmentView,
   otherReasonAmendmentView: OtherReasonAmendmentView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private def formAction(boxNumber: BoxNumber): Call =
     controllers.reasons.routes.UnderpaymentReasonAmendmentController.onSubmit(boxNumber.id)
@@ -77,12 +75,11 @@ class UnderpaymentReasonAmendmentController @Inject() (
           }
           Future.successful(BadRequest(routeToView(boxNumber, itemNumber, formWithErrors.copy(errors = newErrors))))
         },
-        value => {
+        value =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(UnderpaymentReasonAmendmentPage, value))
             _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(controllers.reasons.routes.ConfirmReasonDetailController.onLoad())
-        }
       )
   }
 

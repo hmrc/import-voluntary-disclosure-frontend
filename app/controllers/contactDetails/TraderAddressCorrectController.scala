@@ -18,6 +18,7 @@ package controllers.contactDetails
 
 import com.google.inject.Inject
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.contactDetails.TraderAddressCorrectFormProvider
 import models.ContactAddress
@@ -26,10 +27,8 @@ import pages.contactDetails.{TraderAddressCorrectPage, TraderAddressPage}
 import pages.importDetails.ImporterNamePage
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.Logger
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.contactDetails.TraderAddressCorrectView
 
 import javax.inject.Singleton
@@ -46,8 +45,7 @@ class TraderAddressCorrectController @Inject() (
   formProvider: TraderAddressCorrectFormProvider,
   view: TraderAddressCorrectView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private val logger = Logger("application." + getClass.getCanonicalName)
 

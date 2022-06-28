@@ -26,14 +26,14 @@ trait SummaryListHelper {
   def encodeMultilineText(content: Seq[String]): String = content.map(line => HtmlFormat.escape(line)).mkString("<br/>")
 
   def createRow(
-                 keyText: Content,
-                 valueContent: Content,
-                 action: Option[ActionItem] = None,
-                 keyColumnClasses: String = "govuk-!-width-one-third",
-                 valueColumnClasses: String = "govuk-!-width-one-half",
-                 actionColumnClasses: String = "",
-                 rowClasses: String = ""
-               ): SummaryListRow = {
+    keyText: Content,
+    valueContent: Content,
+    action: Option[ActionItem] = None,
+    keyColumnClasses: String = "govuk-!-width-one-third",
+    valueColumnClasses: String = "govuk-!-width-one-half",
+    actionColumnClasses: String = "",
+    rowClasses: String = ""
+  ): SummaryListRow = {
 
     SummaryListRow(
       key = Key(content = keyText, classes = keyColumnClasses),

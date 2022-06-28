@@ -16,16 +16,15 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import pages.reasons.ChangeUnderpaymentReasonPage
 import play.api.data.{Form, FormError}
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons._
 
 import javax.inject.{Inject, Singleton}
@@ -44,8 +43,7 @@ class ChangeUnderpaymentReasonDetailsController @Inject() (
   currencyAmendmentView: CurrencyAmendmentView,
   otherReasonAmendmentView: OtherReasonAmendmentView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private def formAction(boxNumber: BoxNumber): Call =
     controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onSubmit(boxNumber.id)

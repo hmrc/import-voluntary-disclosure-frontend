@@ -17,24 +17,22 @@
 package controllers.cya
 
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
+import org.joda.time.{DateTime, DateTimeZone}
 import pages._
 import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.SubmissionService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.{CYASummaryListHelper, ConfirmationViewData}
 import views.html.cya._
 
 import java.time.format.DateTimeFormatter
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
 
 @Singleton
 class CheckYourAnswersController @Inject() (
@@ -49,8 +47,7 @@ class CheckYourAnswersController @Inject() (
   repConfirmationView: RepresentativeConfirmationView,
   errorHandler: ErrorHandler,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with CYASummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

@@ -17,11 +17,10 @@
 package controllers.cancelCase
 
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
 import pages.updateCase.DisclosureReferenceNumberPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.cancelCase.CancelCaseDisclosureNotFoundView
 
 import javax.inject.Inject
@@ -33,8 +32,7 @@ class CancelCaseDisclosureNotFoundController @Inject() (
   mcc: MessagesControllerComponents,
   view: CancelCaseDisclosureNotFoundView,
   errorHandler: ErrorHandler
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {

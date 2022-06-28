@@ -20,7 +20,10 @@ import config.AppConfig
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
 
-case class AddressLookupJsonBuilder(continueUrl: String, eoriName: String)(implicit messagesApi: MessagesApi, config: AppConfig) {
+case class AddressLookupJsonBuilder(continueUrl: String, eoriName: String)(implicit
+  messagesApi: MessagesApi,
+  config: AppConfig
+) {
 
   // general journey overrides
   val showPhaseBanner: Boolean       = true

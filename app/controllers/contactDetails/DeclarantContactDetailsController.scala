@@ -16,14 +16,13 @@
 
 package controllers.contactDetails
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.contactDetails.DeclarantContactDetailsFormProvider
 import models.requests.DataRequest
 import pages.contactDetails.DeclarantContactDetailsPage
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.contactDetails.DeclarantContactDetailsView
 
 import javax.inject.Inject
@@ -38,8 +37,7 @@ class DeclarantContactDetailsController @Inject() (
   formProvider: DeclarantContactDetailsFormProvider,
   view: DeclarantContactDetailsView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DeclarantContactDetailsPage).fold(formProvider()) {

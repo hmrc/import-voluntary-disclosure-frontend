@@ -29,7 +29,7 @@ import views.html.underpayments.PostponedVatAccountingView
 class PostponedVatAccountingViewSpec extends ViewBaseSpec {
 
   private lazy val injectedView: PostponedVatAccountingView = app.injector.instanceOf[PostponedVatAccountingView]
-  val importerName = "importerName"
+  val importerName                                          = "importerName"
   val formProvider: PostponedVatAccountingFormProvider      = injector.instanceOf[PostponedVatAccountingFormProvider]
 
   "Rendering the Postponed VAT Accounting page" when {

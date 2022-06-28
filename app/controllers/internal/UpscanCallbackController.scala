@@ -16,12 +16,11 @@
 
 package controllers.internal
 
+import controllers.IVDFrontendController
 import models.upscan._
-import play.api.i18n.I18nSupport
 import play.api.libs.json.JsValue
 import play.api.mvc._
 import repositories.FileUploadRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
@@ -31,8 +30,7 @@ class UpscanCallbackController @Inject() (
   mcc: MessagesControllerComponents,
   fileUploadRepository: FileUploadRepository,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def callbackHandler(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     withJsonBody[FileUpload] { fileUploadResponse =>

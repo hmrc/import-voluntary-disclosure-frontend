@@ -61,7 +61,6 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
 
   val addressLookupErrorModel: ErrorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
 
-
   "Calling .callback" must {
 
     "correctly redirect if the address lookup service returns success" when {

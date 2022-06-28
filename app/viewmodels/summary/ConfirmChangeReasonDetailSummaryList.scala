@@ -26,12 +26,14 @@ import viewmodels.SummaryListHelper
 
 trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
 
-  def buildSummaryList(reasonOpt: Option[ChangeUnderpaymentReason], boxNumber: BoxNumber)(implicit messages: Messages): SummaryList = {
+  def buildSummaryList(reasonOpt: Option[ChangeUnderpaymentReason], boxNumber: BoxNumber)(implicit
+    messages: Messages
+  ): SummaryList = {
 
     val rows = reasonOpt match {
-      case Some(reason) if (boxNumber == BoxNumber.OtherItem) =>
+      case Some(reason) if boxNumber == BoxNumber.OtherItem =>
         buildOtherReasonSummaryList(reason.changed.original)
-      case Some(reason) if (reason.changed.itemNumber != 0) =>
+      case Some(reason) if reason.changed.itemNumber != 0 =>
         buildItemNumberSummaryListRow(reason) ++ buildOriginalAmountSummaryListRow(reason, boxNumber.id)
       case Some(reason) =>
         Seq.empty ++ buildOriginalAmountSummaryListRow(reason, boxNumber.id)
@@ -41,7 +43,9 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
     SummaryList(rows)
   }
 
-  private def buildItemNumberSummaryListRow(reason: ChangeUnderpaymentReason)(implicit messages: Messages): Seq[SummaryListRow] = {
+  private def buildItemNumberSummaryListRow(
+    reason: ChangeUnderpaymentReason
+  )(implicit messages: Messages): Seq[SummaryListRow] = {
     Seq(
       createRow(
         Text(messages("confirmReason.itemNumber")),
@@ -57,31 +61,33 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
     )
   }
 
-  def buildOriginalAmountSummaryListRow(reason: ChangeUnderpaymentReason, boxNumber: Int)(implicit messages: Messages): Seq[SummaryListRow] = {
-      Seq(
-        createRow(
-          Text(messages("confirmReason.original")),
-          HtmlContent(reason.changed.original),
-          Some(
-            createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-              messages("confirmReason.values.original.change")
-            )
-          ),
-          "govuk-!-width-two-thirds"
+  def buildOriginalAmountSummaryListRow(reason: ChangeUnderpaymentReason, boxNumber: Int)(implicit
+    messages: Messages
+  ): Seq[SummaryListRow] = {
+    Seq(
+      createRow(
+        Text(messages("confirmReason.original")),
+        HtmlContent(reason.changed.original),
+        Some(
+          createChangeActionItem(
+            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+            messages("confirmReason.values.original.change")
+          )
         ),
-        createRow(
-          Text(messages("confirmReason.amended")),
-          HtmlContent(reason.changed.amended),
-          Some(
-            createChangeActionItem(
-              controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
-              messages("confirmReason.values.amended.change")
-            )
-          ),
-          "govuk-!-width-two-thirds"
-        )
+        "govuk-!-width-two-thirds"
+      ),
+      createRow(
+        Text(messages("confirmReason.amended")),
+        HtmlContent(reason.changed.amended),
+        Some(
+          createChangeActionItem(
+            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
+            messages("confirmReason.values.amended.change")
+          )
+        ),
+        "govuk-!-width-two-thirds"
       )
+    )
   }
 
   private def buildOtherReasonSummaryList(value: String)(implicit messages: Messages): Seq[SummaryListRow] =
@@ -91,8 +97,8 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
         HtmlContent(value),
         Some(
           createChangeActionItem(
-          controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(BoxNumber.OtherItem.id).url,
-          messages("confirmReason.values.otherReason.change")
+            controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(BoxNumber.OtherItem.id).url,
+            messages("confirmReason.values.otherReason.change")
           )
         ),
         ""

@@ -41,7 +41,7 @@ class CustomsDeclarationControllerSpec extends ControllerSpecBase {
     MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-    private lazy val dataRetrievalAction         = new FakeDataRetrievalAction(userAnswers)
+    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new CustomsDeclarationController(
       privateIndividualAuthAction,

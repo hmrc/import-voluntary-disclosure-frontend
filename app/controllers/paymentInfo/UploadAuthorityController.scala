@@ -17,8 +17,8 @@
 package controllers.paymentInfo
 
 import config.{AppConfig, ErrorHandler}
-import controllers.FileUploadHandler
 import controllers.actions._
+import controllers.{FileUploadHandler, IVDFrontendController}
 import forms.shared.UploadFileFormProvider
 import models.SelectedDutyTypes._
 import models.requests.DataRequest
@@ -26,11 +26,10 @@ import models.upscan._
 import models.{UploadAuthority, UserAnswers}
 import pages.paymentInfo._
 import play.api.Logger
-import play.api.i18n.{I18nSupport, Messages}
+import play.api.i18n.Messages
 import play.api.mvc._
 import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
@@ -54,8 +53,7 @@ class UploadAuthorityController @Inject() (
   errorHandler: ErrorHandler,
   implicit val appConfig: AppConfig,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with FileUploadHandler[UploadAuthority] {
 
   private val logger = Logger("application." + getClass.getCanonicalName)

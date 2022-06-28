@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package forms.importDetails
+package controllers
 
-import forms.mappings.Mappings
-import forms.utils.FormHelpers
+import play.api.i18n.I18nSupport
+import play.api.mvc.MessagesControllerComponents
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.controller.WithDefaultFormBinding
+
 import javax.inject.Inject
-import play.api.data.Form
 
-class ImporterEORINumberFormProvider @Inject() extends Mappings with FormHelpers {
-
-  def apply(importerName: String): Form[String] =
-    Form(
-      "importerEORI" -> text("importerEORINumber.error.nonEmpty", Seq(importerName))
-        .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
-        .verifying(
-          regexp("\\{*^(?i)GB([0-9]{12}|[0-9]{15})$\\}*", "importerEORINumber.error.incorrectFormat", Seq(importerName))
-        )
-    )
-
-}
+class IVDFrontendController @Inject() (
+  mcc: MessagesControllerComponents
+) extends FrontendController(mcc)
+    with I18nSupport
+    with WithDefaultFormBinding {}

@@ -16,16 +16,15 @@
 
 package controllers.updateCase
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.updateCase.UpdateAdditionalInformationFormProvider
 import models.requests.DataRequest
 import pages.shared.MoreDocumentationPage
 import pages.updateCase.UpdateAdditionalInformationPage
-import play.api.i18n.I18nSupport
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.updateCase.UpdateAdditionalInformationView
 
 import javax.inject.{Inject, Singleton}
@@ -41,8 +40,7 @@ class UpdateAdditionalInformationController @Inject() (
   formProvider: UpdateAdditionalInformationFormProvider,
   view: UpdateAdditionalInformationView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(UpdateAdditionalInformationPage).fold(formProvider()) {
@@ -54,12 +52,11 @@ class UpdateAdditionalInformationController @Inject() (
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
-      additionalInfo => {
+      additionalInfo =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(UpdateAdditionalInformationPage, additionalInfo))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
-      }
     )
   }
 

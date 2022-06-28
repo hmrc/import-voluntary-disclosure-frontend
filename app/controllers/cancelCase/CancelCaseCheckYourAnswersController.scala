@@ -17,16 +17,15 @@
 package controllers.cancelCase
 
 import config.ErrorHandler
+import controllers.IVDFrontendController
 import controllers.actions._
 import models.UpdateCaseError
 import pages._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
 import services.UpdateCaseService
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import viewmodels.cya.CYACancelCaseSummaryListHelper
 import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
 
@@ -45,8 +44,7 @@ class CancelCaseCheckYourAnswersController @Inject() (
   confirmationView: CancelCaseConfirmationView,
   errorHandler: ErrorHandler,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport
+) extends IVDFrontendController(mcc)
     with CYACancelCaseSummaryListHelper {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

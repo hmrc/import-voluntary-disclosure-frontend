@@ -25,15 +25,13 @@ import support.WireMockMethods
 object AddressLookupStub extends WireMockMethods {
 
   private val addressUri = "/api/confirmed.*"
-  private val initUriV2 = "/api/v2/init"
+  private val initUriV2  = "/api/v2/init"
 
-  def postInitV2Journey(status: Int, response: AddressLookupOnRampModel, body: Option[String] = None): StubMapping = {
+  def postInitV2Journey(status: Int, response: AddressLookupOnRampModel, body: Option[String] = None): StubMapping =
     when(method = POST, uri = initUriV2, body = body)
       .thenReturn(status = status, headers = Map(LOCATION -> response.redirectUrl))
-  }
 
-  def getAddress(status: Int, response: JsValue): StubMapping = {
+  def getAddress(status: Int, response: JsValue): StubMapping =
     when(method = GET, uri = addressUri)
       .thenReturn(status = status, body = response)
-  }
 }

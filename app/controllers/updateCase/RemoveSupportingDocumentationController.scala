@@ -16,14 +16,14 @@
 
 package controllers.updateCase
 
+import controllers.IVDFrontendController
 import controllers.actions._
 import forms.shared.RemoveUploadedFileFormProvider
 import models.Index
 import pages.updateCase.{RemoveSupportingDocumentationPage, UploadSupportingDocumentationPage}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.MessagesApi
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.shared.RemoveUploadedFileView
 
 import javax.inject.Inject
@@ -39,8 +39,8 @@ class RemoveSupportingDocumentationController @Inject() (
   mcc: MessagesControllerComponents,
   view: RemoveUploadedFileView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
+
   def onLoad(index: Index): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(UploadSupportingDocumentationPage) match {

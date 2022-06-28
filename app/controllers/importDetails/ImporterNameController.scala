@@ -16,17 +16,16 @@
 
 package controllers.importDetails
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.ImporterNameFormProvider
-import javax.inject.{Inject, Singleton}
 import models.requests.DataRequest
 import pages.importDetails.ImporterNamePage
-import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.importDetails.ImporterNameView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -39,8 +38,7 @@ class ImporterNameController @Inject() (
   formProvider: ImporterNameFormProvider,
   view: ImporterNameView,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(ImporterNamePage).fold(formProvider()) {

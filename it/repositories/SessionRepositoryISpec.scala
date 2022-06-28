@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with FutureAwaits with DefaultAwaitTimeout {
 
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
-  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
   val fakeNow: LocalDateTime = LocalDateTime.now()
 
@@ -61,7 +61,7 @@ class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with F
     data = Json.obj(
       "claimPeriodPage" -> Json.obj(
         "startDateValue" -> "2020-03-01",
-        "endDateValue" -> "2020-04-01"
+        "endDateValue"   -> "2020-04-01"
       )
     ),
     lastUpdated = fakeNow

@@ -28,7 +28,8 @@ class ImporterAddressLookupJsonBuilderSpec extends SpecBase {
     "Serialize to new address lookup Json when using importerAddressLookup v2" when {
 
       "the continueUrl is given to the user" in {
-        val builder = ImporterAddressLookupJsonBuilder("/lookup-address/confirmed", "importer")(messagesApi, MockAppConfig)
+        val builder =
+          ImporterAddressLookupJsonBuilder("/lookup-address/confirmed", "importer")(messagesApi, MockAppConfig)
         Json.toJson(builder) mustBe importerAddressLookupV2Json(builder)
       }
     }

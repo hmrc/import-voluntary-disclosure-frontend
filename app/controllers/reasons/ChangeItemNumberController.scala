@@ -16,14 +16,13 @@
 
 package controllers.reasons
 
+import controllers.IVDFrontendController
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.reasons.ItemNumberFormProvider
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.data.FormError
-import play.api.i18n.I18nSupport
 import play.api.mvc._
 import repositories.SessionRepository
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.ItemNumberView
 
 import javax.inject.{Inject, Singleton}
@@ -39,8 +38,7 @@ class ChangeItemNumberController @Inject() (
   view: ItemNumberView,
   formProvider: ItemNumberFormProvider,
   implicit val ec: ExecutionContext
-) extends FrontendController(mcc)
-    with I18nSupport {
+) extends IVDFrontendController(mcc) {
 
   private lazy val backLink: Call = controllers.reasons.routes.ChangeUnderpaymentReasonController.onLoad()
 
