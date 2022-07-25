@@ -3,7 +3,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "import-voluntary-disclosure-frontend"
 
-val silencerVersion = "1.7.6"
+val silencerVersion = "1.7.9"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
