@@ -19,7 +19,7 @@ package controllers
 import play.api.i18n.I18nSupport
 import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import uk.gov.hmrc.play.bootstrap.controller.WithDefaultFormBinding
+import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 
 import javax.inject.Inject
 
@@ -27,4 +27,4 @@ class IVDFrontendController @Inject() (
   mcc: MessagesControllerComponents
 ) extends FrontendController(mcc)
     with I18nSupport
-    with WithDefaultFormBinding {}
+    with WithUnsafeDefaultFormBinding {}
