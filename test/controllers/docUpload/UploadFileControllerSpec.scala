@@ -129,7 +129,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(
-        controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad.url
+        controllers.docUpload.routes.AnyOtherSupportingDocsController.onLoad().url
       ) mustBe true
     }
 
@@ -140,7 +140,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentAsString(result).contains(
-        controllers.docUpload.routes.OptionalSupportingDocsController.onLoad.url
+        controllers.docUpload.routes.OptionalSupportingDocsController.onLoad().url
       ) mustBe true
     }
 
@@ -162,7 +162,7 @@ class UploadFileControllerSpec extends ControllerSpecBase {
           ).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result).contains(controllers.docUpload.routes.UploadAnotherFileController.onLoad.url) mustBe true
+      contentAsString(result).contains(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url) mustBe true
     }
 
     "return no back link if in check mode and all files removed" in new Test {

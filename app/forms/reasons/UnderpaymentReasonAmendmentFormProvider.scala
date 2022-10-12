@@ -24,8 +24,11 @@ import play.api.data.Forms._
 import play.api.data.validation._
 import play.api.data.{Form, Forms}
 
+import scala.annotation.nowarn
+
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
+  @nowarn("msg=match may not be exhaustive")
   def apply(boxNumber: BoxNumber): Form[UnderpaymentReasonValue] = {
     boxNumber match {
       case BoxNumber.Box22 | BoxNumber.Box62 | BoxNumber.Box63 | BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 =>

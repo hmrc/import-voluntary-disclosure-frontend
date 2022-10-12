@@ -726,7 +726,7 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
     "out of range values provided" should {
       "result in a form with errors" in {
         val bigDecimal: BigDecimal = 999999999999.99
-        val rangeValueArgs         = Seq(0, bigDecimal)
+        val rangeValueArgs         = Seq(BigDecimal(0), bigDecimal)
         formBinderBox(
           formBuilder(original = decimalOutOfRangeValue.toString, amended = decimalOutOfRangeValue.toString),
           box = BoxNumber.Box42

@@ -71,7 +71,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
           setupMockRetrieveAddress(Right(customerAddressMax))
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
           verifyCalls()
         }
 
@@ -86,7 +86,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
           setupMockRetrieveAddress(Right(customerAddressMax))
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
           verifyCalls()
         }
       }
@@ -118,7 +118,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
           setupMockRetrieveAddress(Right(customerAddressMissingLine3))
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url)
           verifyCalls()
         }
 
@@ -134,7 +134,7 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
           setupMockRetrieveAddress(Right(customerAddressMissingLine3))
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
-          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad.url)
+          redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
           verifyCalls()
         }
       }

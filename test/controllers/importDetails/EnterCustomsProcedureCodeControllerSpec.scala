@@ -41,7 +41,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     UserAnswers("some-cred-id")
       .set(
         EntryDetailsPage,
-        EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))
+        EntryDetails("123", "123456Q", LocalDate.of(2020, 1, 1))
       ).success.value
       .set(CheckModePage, false).success.value
   )
@@ -126,7 +126,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER response when correct data with numeric only values" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 1, 1))).success.value
             .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234567"))
@@ -136,7 +136,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "return a SEE OTHER response when correct data with an alphanumeric value" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 1, 1))).success.value
             .set(CheckModePage, true).success.value
         )
         lazy val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1234A12"))
@@ -145,7 +145,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
-            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate of (2020, 1, 1))).success.value
+            .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.of(2020, 1, 1))).success.value
             .set(CheckModePage, true).success.value
         )
         await(controller.onSubmit(fakeRequestGenerator("1234567")))
@@ -196,7 +196,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.importDetails.routes.OneCustomsProcedureCodeController.onLoad())
       }
     }
@@ -208,7 +208,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe None
       }
     }

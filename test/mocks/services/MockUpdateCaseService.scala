@@ -29,7 +29,7 @@ trait MockUpdateCaseService extends MockFactory {
   val mockUpdateCaseService: UpdateCaseService = mock[UpdateCaseService]
 
   def setupMockUpdateCase(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
-    (mockUpdateCaseService.updateCase()(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
+    (mockUpdateCaseService.updateCase(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
 }

@@ -177,7 +177,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
               .set(CheckModePage, false).success.value
               .set(NumberOfEntriesPage, OneEntry).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
 
       }
@@ -191,7 +191,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
               .set(CheckModePage, false).success.value
               .set(NumberOfEntriesPage, MoreThanOneEntry).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.docUpload.routes.BulkUploadFileController.onLoad())
 
       }
@@ -204,7 +204,7 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe None
       }
     }

@@ -396,7 +396,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
     }
@@ -408,7 +408,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

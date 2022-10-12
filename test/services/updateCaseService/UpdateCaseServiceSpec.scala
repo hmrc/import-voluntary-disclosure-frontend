@@ -67,7 +67,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
         verifyAudit(UpdateCaseAuditEvent(updateCaseJson))
-        private val result = await(service.updateCase())
+        private val result = await(service.updateCase)
         result mustBe Right(response)
       }
 
@@ -76,13 +76,13 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
         private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
         setupMockUpdateCase(Right(response))
         verifyAudit(CancelCaseAuditEvent(cancelCaseJson))
-        private val result = await(service.updateCase())
+        private val result = await(service.updateCase)
         result mustBe Right(response)
       }
 
       "return error if connector call fails" in new Test {
         setupMock(Left(failedCreateCaseConnectorCall))
-        private val result = await(service.updateCase())
+        private val result = await(service.updateCase)
 
         result mustBe Left(failedCreateCaseConnectorCall)
       }
@@ -91,7 +91,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called with incomplete User Answers" should {
       "return error - unable to parse to model" in new Test {
         override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result                    = await(service.updateCase())
+        private val result                    = await(service.updateCase)
 
         result must matchPattern { case Left(UpdateCaseError.UnexpectedError(_, _)) =>
         }
@@ -102,7 +102,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
   "buildUpdate" when {
     "called with a complete User Answers" should {
       "return expected JSON" in new Test {
-        private val result = service.buildUpdate()
+        private val result = service.buildUpdate
 
         result mustBe Right(updateCaseJson)
       }
@@ -111,7 +111,7 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
     "called without supporting documents" should {
       "return expected JSON" in new Test {
         override val userAnswers: UserAnswers = userAnswersWithoutDocs
-        private val result                    = service.buildUpdate()
+        private val result                    = service.buildUpdate
 
         result mustBe Right(updateCaseJsonWithoutDocs)
       }

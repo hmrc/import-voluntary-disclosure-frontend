@@ -31,7 +31,7 @@ import views.ViewUtils.displayMoney
 
 trait CYAUnderpaymentDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildUnderpaymentDetailsSummaryList()(implicit
+  def buildUnderpaymentDetailsSummaryList(implicit
     messages: Messages,
     request: DataRequest[_]
   ): Seq[CYASummaryList] = {

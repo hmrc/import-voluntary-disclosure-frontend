@@ -84,7 +84,7 @@ class UserTypeController @Inject() (
     )
   }
 
-  private[controllers] def backLink()(implicit request: OptionalDataRequest[AnyContent]): Call = {
+  private[controllers] def backLink(implicit request: OptionalDataRequest[AnyContent]): Call = {
     val cyaMode = {
       for {
         answers <- request.userAnswers

@@ -207,7 +207,7 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.paymentInfo.routes.DefermentController.onLoad()
       }
     }
@@ -219,7 +219,7 @@ class SplitPaymentControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

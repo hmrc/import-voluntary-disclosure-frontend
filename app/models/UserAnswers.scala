@@ -21,7 +21,7 @@ import pages.QuestionPage
 import play.api.libs.json._
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import scala.annotation.tailrec
+import scala.annotation.{nowarn, tailrec}
 import scala.util.{Failure, Success, Try}
 
 // $COVERAGE-OFF$Code taken from another [trusted] service
@@ -64,6 +64,7 @@ final case class UserAnswers(id: String, data: JsObject = Json.obj(), lastUpdate
   }
 
   def removeMany(pages: Seq[QuestionPage[_]]): UserAnswers = {
+    @nowarn("msg=match may not be exhaustive")
     @tailrec
     def removePages(userAnswers: UserAnswers, pages: Seq[QuestionPage[_]]): UserAnswers = pages match {
       case Nil => userAnswers

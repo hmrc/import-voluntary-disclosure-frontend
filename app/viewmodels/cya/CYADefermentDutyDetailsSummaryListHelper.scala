@@ -27,7 +27,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYADefermentDutyDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildDefermentDutySummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildDefermentDutySummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val paymentMethod = request.userAnswers.get(DefermentPage)
     val splitPayment  = request.userAnswers.get(SplitPaymentPage)
 

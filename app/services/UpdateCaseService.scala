@@ -32,7 +32,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class UpdateCaseService @Inject() (ivdSubmissionConnector: IvdSubmissionConnector, auditService: AuditService) {
   private val logger = Logger("application." + getClass.getCanonicalName)
 
-  def updateCase()(implicit
+  def updateCase(implicit
     request: DataRequest[_],
     hc: HeaderCarrier,
     ec: ExecutionContext
@@ -53,7 +53,7 @@ class UpdateCaseService @Inject() (ivdSubmissionConnector: IvdSubmissionConnecto
     }
   }
 
-  private[services] def buildUpdate()(implicit request: DataRequest[_]): Either[UpdateCaseError, JsValue] = {
+  private[services] def buildUpdate(implicit request: DataRequest[_]): Either[UpdateCaseError, JsValue] = {
     Json.fromJson[UpdateCaseData](request.userAnswers.data) match {
       case JsSuccess(data, _) =>
         val eoriPrefix = s"[EORINumber=${request.eori}]\n"

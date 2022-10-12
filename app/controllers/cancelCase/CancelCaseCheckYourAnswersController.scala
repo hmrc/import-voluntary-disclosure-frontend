@@ -47,17 +47,17 @@ class CancelCaseCheckYourAnswersController @Inject() (
 ) extends IVDFrontendController(mcc)
     with CYACancelCaseSummaryListHelper {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _              <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(buildCancelCaseSummaryList))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) =>
-        updateCaseService.updateCase().flatMap {
+        updateCaseService.updateCase.flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
             Future.successful(
               Redirect(controllers.cancelCase.routes.CancelCaseDisclosureNotFoundController.onLoad())

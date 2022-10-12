@@ -28,7 +28,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYACancelCaseSummaryListHelper extends SummaryListHelper {
 
-  def buildCancelCaseSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildCancelCaseSummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
     val rows = Seq(
       buildReferenceNumberSummaryListRow(answers),

@@ -50,16 +50,16 @@ class CheckYourAnswersController @Inject() (
 ) extends IVDFrontendController(mcc)
     with CYASummaryListHelper {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(UnderpaymentCheckModePage))
       updatedAnswers <- Future.fromTry(updatedAnswers.remove(TempUnderpaymentTypePage))
       _              <- sessionRepository.set(updatedAnswers)
-    } yield Ok(view(buildFullSummaryList()))
+    } yield Ok(view(buildFullSummaryList))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     submissionService.createCase.map {
       case Right(value) =>
         val confirmationData = {

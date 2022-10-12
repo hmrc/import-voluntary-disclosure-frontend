@@ -39,7 +39,7 @@ class SubmissionService @Inject() (ivdSubmissionConnector: IvdSubmissionConnecto
   private val logger                     = Logger("application." + getClass.getCanonicalName)
   private val buildSubmissionErrorPrefix = "buildSubmission error - "
 
-  def createCase()(implicit
+  def createCase(implicit
     request: DataRequest[_],
     hc: HeaderCarrier,
     ec: ExecutionContext

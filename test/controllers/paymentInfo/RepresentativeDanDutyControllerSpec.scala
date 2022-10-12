@@ -271,7 +271,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
                 EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
               ).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.paymentInfo.routes.SplitPaymentController.onLoad()
       }
     }
@@ -287,7 +287,7 @@ class RepresentativeDanDutyControllerSpec extends ControllerSpecBase {
                 EoriDetails("1234567890", "name", ContactAddress("line1", None, "City", Some("CC"), ""), Some(""))
               ).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

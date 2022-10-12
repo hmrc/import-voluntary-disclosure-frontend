@@ -3,7 +3,7 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "import-voluntary-disclosure-frontend"
 
-val silencerVersion = "1.7.9"
+val silencerVersion = "1.7.11"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -12,7 +12,7 @@ lazy val microservice = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin) //Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(
     majorVersion := 0,
-    scalaVersion := "2.12.16",
+    scalaVersion := "2.13.9",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
     PlayKeys.playDefaultPort := 7950,
     routesImport += "models.SelectedDutyTypes.SelectedDutyType",

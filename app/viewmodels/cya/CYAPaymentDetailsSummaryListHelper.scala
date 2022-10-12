@@ -27,7 +27,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYAPaymentDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildPaymentDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildPaymentDetailsSummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
 
     val answers = request.userAnswers
     val rows = if (request.isRepFlow) {

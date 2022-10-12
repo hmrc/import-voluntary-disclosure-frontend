@@ -188,7 +188,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
           "eori",
           None
         )
-        private val backLink = controller.backLink()(request)
+        private val backLink = controller.backLink(request)
 
         backLink mustBe controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       }
@@ -204,7 +204,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
           "eori",
           Some(answers)
         )
-        private val backLink = controller.backLink()(request)
+        private val backLink = controller.backLink(request)
 
         backLink mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }

@@ -53,7 +53,7 @@ class BulkUploadFileController @Inject() (
 ) extends IVDFrontendController(mcc)
     with FileUploadHandler[FileUploadInfo] {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.flash.get("uploadError") match {
       case Some("TooSmall")    => formProvider().withError("file", Messages("uploadFile.error.tooSmall"))
       case Some("TooBig")      => formProvider().withError("file", Messages("uploadFile.error.tooBig"))
@@ -114,7 +114,7 @@ class BulkUploadFileController @Inject() (
       )
   }
 
-  def onSuccess(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSuccess: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val action = if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad().url
     } else {
@@ -130,7 +130,7 @@ class BulkUploadFileController @Inject() (
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
