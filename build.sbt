@@ -3,8 +3,6 @@ import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin.publishingSettings
 
 val appName = "import-voluntary-disclosure-frontend"
 
-val silencerVersion = "1.7.11"
-
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
 lazy val microservice = Project(appName, file("."))
@@ -14,6 +12,7 @@ lazy val microservice = Project(appName, file("."))
     majorVersion := 0,
     scalaVersion := "2.13.9",
     libraryDependencies ++= AppDependencies.compile ++ AppDependencies.test,
+    libraryDependencySchemes ++= Seq("org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always),
     PlayKeys.playDefaultPort := 7950,
     routesImport += "models.SelectedDutyTypes.SelectedDutyType",
     TwirlKeys.templateImports ++= Seq(
@@ -21,22 +20,12 @@ lazy val microservice = Project(appName, file("."))
       "uk.gov.hmrc.govukfrontend.views.html.components._",
       "uk.gov.hmrc.hmrcfrontend.views.html.components._"
     ),
-    // ***************
-    // Use the silencer plugin to suppress warnings
-    // You may turn it on for `views` too to suppress warnings from unused imports in compiled twirl templates, but this will hide other warnings.
-    scalacOptions += "-P:silencer:pathFilters=routes,silencer:pathFilters=twirl",
     // turn any warnings into errors
     scalacOptions += "-Xfatal-warnings",
     scalastyleFailOnWarning := true,
     // run scalastyle on compile
     compileScalastyle := (Compile / scalastyle).toTask("").value,
     (Compile / compile) := ((Compile / compile) dependsOn compileScalastyle).value,
-
-    libraryDependencies ++= Seq(
-      compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
-      "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
-    ),
-    // ***************
     Concat.groups := Seq(
       "javascripts/application.js" ->
         group(Seq(
