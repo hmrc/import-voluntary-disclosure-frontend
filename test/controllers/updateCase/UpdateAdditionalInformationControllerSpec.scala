@@ -138,7 +138,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
               .set(CheckModePage, false).success.value
               .set(MoreDocumentationPage, true).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad())
 
       }
@@ -152,7 +152,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
               .set(CheckModePage, false).success.value
               .set(MoreDocumentationPage, false).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.updateCase.routes.MoreDocumentationController.onLoad())
 
       }
@@ -165,7 +165,7 @@ class UpdateAdditionalInformationControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
       }
     }

@@ -29,7 +29,7 @@ trait MockSubmissionService extends MockFactory {
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
 
   def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit =
-    (mockSubmissionService.createCase()(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
+    (mockSubmissionService.createCase(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *)
       .returns(Future.successful(response))
 

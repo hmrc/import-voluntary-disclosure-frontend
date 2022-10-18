@@ -207,7 +207,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.updateCase.routes.DisclosureReferenceNumberController.onLoad()
       }
     }
@@ -219,7 +219,7 @@ class MoreDocumentationControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad()
       }
     }

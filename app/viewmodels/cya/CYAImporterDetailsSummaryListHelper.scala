@@ -28,7 +28,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYAImporterDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildImporterDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildImporterDetailsSummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     if (request.isRepFlow) {
       val answers = request.userAnswers
       val rows = Seq(

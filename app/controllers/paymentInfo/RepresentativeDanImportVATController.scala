@@ -122,7 +122,7 @@ class RepresentativeDanImportVATController @Inject() (
       case _         => Redirect(controllers.paymentInfo.routes.UploadAuthorityController.onLoad(Vat))
     }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink(implicit request: DataRequest[_]): Call = {
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {

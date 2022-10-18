@@ -47,17 +47,17 @@ class UpdateCaseCheckYourAnswersController @Inject() (
 ) extends IVDFrontendController(mcc)
     with CYAUpdateCaseSummaryListHelper {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     for {
       updatedAnswers <- Future.fromTry(request.userAnswers.set(CheckModePage, true))
       _              <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(buildUpdateCaseSummaryList))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) =>
-        updateCaseService.updateCase().flatMap {
+        updateCaseService.updateCase.flatMap {
           case Left(UpdateCaseError.InvalidCaseId) =>
             Future.successful(Redirect(controllers.updateCase.routes.DisclosureNotFoundController.onLoad()))
           case Left(UpdateCaseError.CaseAlreadyClosed) =>

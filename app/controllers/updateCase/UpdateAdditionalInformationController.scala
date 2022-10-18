@@ -60,7 +60,7 @@ class UpdateAdditionalInformationController @Inject() (
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
       Some(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad())
     } else {

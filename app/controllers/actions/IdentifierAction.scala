@@ -29,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
+import scala.annotation.nowarn
 import scala.concurrent.{ExecutionContext, Future}
 
 trait IdentifierAction
@@ -54,6 +55,7 @@ class AuthenticatedIdentifierAction @Inject() (
     case None            => false
   }
 
+  @nowarn("msg=match may not be exhaustive")
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     authorised().retrieve(externalId and allEnrolments and affinityGroup) {

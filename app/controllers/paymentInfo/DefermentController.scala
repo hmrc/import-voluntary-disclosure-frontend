@@ -48,7 +48,7 @@ class DefermentController @Inject() (
     val form = request.userAnswers.get(DefermentPage).fold(formProvider()) {
       formProvider().fill
     }
-    Future.successful(Ok(view(form, backLink, getHeaderMessage())))
+    Future.successful(Ok(view(form, backLink, getHeaderMessage)))
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -59,7 +59,7 @@ class DefermentController @Inject() (
             view(
               formWithErrors,
               backLink,
-              getHeaderMessage()
+              getHeaderMessage
             )
           )
         ),
@@ -83,7 +83,7 @@ class DefermentController @Inject() (
             _                   <- sessionRepository.set(updatedAnswers)
           } yield {
             if (paymentByDeferment) {
-              redirectToDefermentView()
+              redirectToDefermentView
             } else {
               Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             }
@@ -94,7 +94,7 @@ class DefermentController @Inject() (
             _              <- sessionRepository.set(updatedAnswers)
           } yield {
             if (paymentByDeferment && !request.checkMode) {
-              redirectToDefermentView()
+              redirectToDefermentView
             } else {
               Redirect(controllers.cya.routes.CheckYourAnswersController.onLoad())
             }
@@ -104,7 +104,7 @@ class DefermentController @Inject() (
     )
   }
 
-  private[controllers] def redirectToDefermentView()(implicit request: DataRequest[_]): Result = {
+  private[controllers] def redirectToDefermentView(implicit request: DataRequest[_]): Result = {
     if (request.isRepFlow) {
       request.dutyType match {
         case underpaymentType if underpaymentType == Both =>
@@ -118,7 +118,7 @@ class DefermentController @Inject() (
     }
   }
 
-  private[controllers] def getHeaderMessage()(implicit request: DataRequest[_]): String = {
+  private[controllers] def getHeaderMessage(implicit request: DataRequest[_]): String = {
     request.dutyType match {
       case Vat  => "deferment.headingOnlyVAT"
       case Duty => "deferment.headingDutyOnly"
@@ -126,7 +126,7 @@ class DefermentController @Inject() (
     }
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Call = {
+  private[controllers] def backLink(implicit request: DataRequest[_]): Call = {
     val isUnderpaymentCheckMode = request.userAnswers.get(UnderpaymentCheckModePage).exists(identity)
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()

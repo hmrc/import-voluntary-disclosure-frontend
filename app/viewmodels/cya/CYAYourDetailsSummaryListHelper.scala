@@ -29,7 +29,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYAYourDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildYourDetailsSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
+  def buildYourDetailsSummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] = {
     val answers = request.userAnswers
     val rows = Seq(
       buildUserTypeSummaryListRow(answers),

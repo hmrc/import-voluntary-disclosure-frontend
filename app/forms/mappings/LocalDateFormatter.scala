@@ -64,7 +64,7 @@ private[mappings] class LocalDateFormatter(
   }
 
   override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], LocalDate] = {
-    val sanitizedFields = data.mapValues(filter).filter(_._2.nonEmpty)
+    val sanitizedFields = data.view.mapValues(filter).filter(_._2.nonEmpty).toMap
     val missingKeys     = fieldKeys.toSet -- sanitizedFields.keys.map(_.stripPrefix(s"$key."))
 
     def int(field: String, validate: Int => Boolean, errorKey: String) = {

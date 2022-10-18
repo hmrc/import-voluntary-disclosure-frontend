@@ -103,7 +103,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
           .set(DefermentPage, true).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
       )
-      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingOnlyVAT
+      messages(controller.getHeaderMessage) mustBe DefermentMessages.headingOnlyVAT
     }
 
     "return duty only header and title" in new Test {
@@ -112,7 +112,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
           .set(DefermentPage, true).success.value
           .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
       )
-      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingDutyOnly
+      messages(controller.getHeaderMessage) mustBe DefermentMessages.headingDutyOnly
     }
 
     "return duty and VAT header and title" in new Test {
@@ -127,7 +127,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      messages(controller.getHeaderMessage()) mustBe DefermentMessages.headingVATandDuty
+      messages(controller.getHeaderMessage) mustBe DefermentMessages.headingVATandDuty
     }
 
   }
@@ -269,7 +269,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, false).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
 
       }
@@ -282,7 +282,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
             UserAnswers("some-cred-id")
               .set(CheckModePage, true).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
 
@@ -294,7 +294,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
               .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
               .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.underpayments.routes.PostponedVatAccountingController.onLoad()
       }
 
@@ -306,7 +306,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
               .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
               .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
 
@@ -317,7 +317,7 @@ class DefermentControllerSpec extends ControllerSpecBase {
               .set(UnderpaymentCheckModePage, true).success.value
               .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
           )
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller.backLink
         result mustBe controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad()
       }
     }

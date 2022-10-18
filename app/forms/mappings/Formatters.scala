@@ -55,7 +55,7 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
           .bind(key, data)
-          .right.flatMap {
+          .flatMap {
             case "true"  => Right(true)
             case "false" => Right(false)
             case _       => Left(Seq(FormError(key, invalidKey, args)))
@@ -79,8 +79,8 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]) =
         baseFormatter
           .bind(key, data)
-          .right.map(_.replace(",", "").trim)
-          .right.flatMap {
+          .map(_.replace(",", "").trim)
+          .flatMap {
             case s if s.matches(decimalRegexp) =>
               Left(Seq(FormError(key, wholeNumberKey, args)))
             case s =>
@@ -111,11 +111,11 @@ trait Formatters {
       override def bind(key: String, data: Map[String, String]) = {
 
         val numericFormatter = stringFormatter(requiredKey).bind(key, data)
-          .right.map(_.replace(",", ""))
-          .right.map(_.replaceAll("\\s", ""))
+          .map(_.replace(",", ""))
+          .map(_.replaceAll("\\s", ""))
 
         val currencyFormatter = numericFormatter
-          .right.map(_.replace("£", ""))
+          .map(_.replace("£", ""))
 
         val validation: PartialFunction[String, Either[Seq[FormError], BigDecimal]] = {
           case s if !s.matches(validNumeric) =>
@@ -130,10 +130,10 @@ trait Formatters {
 
         if (isCurrency) {
           currencyFormatter
-            .right.flatMap(validation)
+            .flatMap(validation)
         } else {
           numericFormatter
-            .right.flatMap(validation)
+            .flatMap(validation)
         }
       }
 
@@ -149,7 +149,7 @@ trait Formatters {
       private val baseFormatter = stringFormatter(requiredKey)
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], A] =
-        baseFormatter.bind(key, data).right.flatMap { str =>
+        baseFormatter.bind(key, data).flatMap { str =>
           ev.withName(str).map(Right.apply).getOrElse(Left(Seq(FormError(key, invalidKey))))
         }
 
@@ -165,7 +165,7 @@ trait Formatters {
       val countryCurrencyRegex  = """^[a-zA-Z]{3}$"""
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], String] =
-        baseFormatter.bind(key, data).right.flatMap { str =>
+        baseFormatter.bind(key, data).flatMap { str =>
           val input = str.replaceAll("\\s", "").toUpperCase
           if (input.take(3).matches(countryCurrencyRegex) && input.drop(3).matches(valid2dpCurrency)) {
             Right(input)

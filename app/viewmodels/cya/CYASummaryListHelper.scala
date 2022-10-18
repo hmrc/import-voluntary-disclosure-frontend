@@ -30,7 +30,7 @@ trait CYASummaryListHelper
     with CYADefermentDutyDetailsSummaryListHelper
     with CYADefermentImportVATDetailsSummaryListHelper {
 
-  def buildFullSummaryList()(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] =
+  def buildFullSummaryList(implicit messages: Messages, request: DataRequest[_]): Seq[CYASummaryList] =
     buildImporterDetailsSummaryList ++
       buildEntryDetailsSummaryList ++
       buildUnderpaymentDetailsSummaryList ++
@@ -43,7 +43,7 @@ trait CYASummaryListHelper
     messages: Messages,
     request: DataRequest[_]
   ): Seq[CYASummaryList] = {
-    val existing = buildFullSummaryList().map { list =>
+    val existing = buildFullSummaryList.map { list =>
       list.copy(summaryList = list.summaryList.copy(rows = list.summaryList.rows.map(row => row.copy(actions = None))))
     }
     buildDisclosureSummaryList(caseId, date) +: existing

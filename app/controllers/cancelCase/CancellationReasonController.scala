@@ -66,7 +66,7 @@ class CancellationReasonController @Inject() (
     )
   }
 
-  private[controllers] def backLink()(implicit request: DataRequest[_]): Option[Call] = {
+  private[controllers] def backLink(implicit request: DataRequest[_]): Option[Call] = {
     if (request.checkMode) {
       Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
     } else {

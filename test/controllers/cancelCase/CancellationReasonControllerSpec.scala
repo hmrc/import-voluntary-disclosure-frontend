@@ -130,7 +130,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
       "point to Disclosure Referencer Number Page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id").set(CheckModePage, false).success.value)
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.cancelCase.routes.CancelCaseReferenceNumberController.onLoad())
 
       }
@@ -140,7 +140,7 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
       "point to Check Your Answers page" in new Test {
         override val userAnswers: Option[UserAnswers] =
           Some(UserAnswers("some-cred-id").set(CheckModePage, true).success.value)
-        lazy val result: Option[Call] = controller.backLink()
+        lazy val result: Option[Call] = controller.backLink
         result mustBe Some(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad())
       }
     }

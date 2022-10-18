@@ -27,7 +27,7 @@ import viewmodels.{SummaryListHelper, cya}
 
 trait CYADefermentImportVATDetailsSummaryListHelper extends SummaryListHelper {
 
-  def buildDefermentImportVatSummaryList()(implicit
+  def buildDefermentImportVatSummaryList(implicit
     messages: Messages,
     request: DataRequest[_]
   ): Seq[CYASummaryList] = {
