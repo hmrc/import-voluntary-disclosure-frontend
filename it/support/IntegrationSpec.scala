@@ -84,22 +84,23 @@ trait IntegrationSpec
       .withCookies(mockSessionCookie)
       .withFollowRedirects(false)
 
-
   def mockSessionCookie: WSCookie = {
 
     def makeSessionCookie(session: Session): Cookie = {
-      val cookieCrypto = inject[SessionCookieCrypto]
-      val cookieBaker = inject[CSessionCookieBaker]
-      val sessionCookie = cookieBaker.encodeAsCookie(session)
+      val cookieCrypto   = inject[SessionCookieCrypto]
+      val cookieBaker    = inject[CSessionCookieBaker]
+      val sessionCookie  = cookieBaker.encodeAsCookie(session)
       val encryptedValue = cookieCrypto.crypto.encrypt(PlainText(sessionCookie.value))
       sessionCookie.copy(value = encryptedValue.value)
     }
 
-    val mockSession = Session(Map(
-      SessionKeys.lastRequestTimestamp -> System.currentTimeMillis().toString,
-      SessionKeys.authToken -> "mock-bearer-token",
-      SessionKeys.sessionId -> "mock-sessionid"
-    ))
+    val mockSession = Session(
+      Map(
+        SessionKeys.lastRequestTimestamp -> System.currentTimeMillis().toString,
+        SessionKeys.authToken            -> "mock-bearer-token",
+        SessionKeys.sessionId            -> "mock-sessionid"
+      )
+    )
 
     val cookie = makeSessionCookie(mockSession)
 
@@ -119,6 +120,5 @@ trait IntegrationSpec
       override def httpOnly: Boolean = cookie.httpOnly
     }
   }
-
 
 }

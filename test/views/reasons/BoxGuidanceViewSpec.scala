@@ -31,7 +31,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the box guidance page" when {
     "no errors exist" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(BoxGuidanceMessages.title)
@@ -39,7 +39,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "when in check mode" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), false)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), false)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "no back link displayed" in {
@@ -48,7 +48,7 @@ class BoxGuidanceViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "it" should {
-      lazy val view: Html = injectedView(Call("GET", "backLink"), true)(fakeRequest, messages)
+      lazy val view: Html                  = injectedView(Call("GET", "backLink"), true)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
       s"have the correct page heading of '${BoxGuidanceMessages.title}'" in {
         elementText("h1") mustBe BoxGuidanceMessages.title

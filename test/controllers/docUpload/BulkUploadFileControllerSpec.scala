@@ -137,31 +137,31 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
     }
 
     "Display error when file uploaded is Too Small" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooSmall")))
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash("uploadError" -> "TooSmall"))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileTooSmall) mustBe true
     }
 
     "Display error when file uploaded is Too Big" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "TooBig")))
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash("uploadError" -> "TooBig"))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileTooBig) mustBe true
     }
 
     "Display error when file uploaded is Unknown" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Unknown")))
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash("uploadError" -> "Unknown"))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileUnknown) mustBe true
     }
 
     "Display error when file uploaded is Rejected" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Rejected")))
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash("uploadError" -> "Rejected"))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileRejected) mustBe true
     }
 
     "Display error when file uploaded is Quarantined" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash(("uploadError" -> "Quarantined")))
+      val result: Future[Result] = controller.onLoad()(fakeRequest.withFlash("uploadError" -> "Quarantined"))
       status(result) mustBe Status.OK
       contentAsString(result).contains(BulkUploadFileMessages.fileQuarantined) mustBe true
     }
