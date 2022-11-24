@@ -32,7 +32,7 @@
 
         @errorSummary(form.errors)
 
-        @formHelper(action = controllers.cancelCase.routes.CancelCaseReferenceNumberController.onSubmit) {
+        @formHelper(action = controllers.cancelCase.routes.CancelCaseReferenceNumberController.onSubmit()) {
             @inputText(
                 form = form,
                 id = "value",

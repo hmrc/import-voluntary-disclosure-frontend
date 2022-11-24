@@ -16,7 +16,7 @@
 
 @this()
 
-@(items: Seq[Html], isWarning: Boolean = false, numberList: Boolean = false, isSpaced: Boolean = false)(implicit messages: Messages)
+@(items: Seq[Html], isWarning: Boolean = false, numberList: Boolean = false, isSpaced: Boolean = false)
 
 <ul class="govuk-list govuk-list--bullet @if(isWarning){govuk-warning-text__text govuk-!-margin-top-5} @if(numberList){govuk-list govuk-list--number} @if(isSpaced){govuk-list--spaced}">
  @items.map { item =>

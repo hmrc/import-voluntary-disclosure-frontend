@@ -20,8 +20,10 @@ lazy val microservice = Project(appName, file("."))
       "uk.gov.hmrc.govukfrontend.views.html.components._",
       "uk.gov.hmrc.hmrcfrontend.views.html.components._"
     ),
-    // turn any warnings into errors
+
     scalacOptions += "-Wconf:src=routes/.*:s",
+    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
+    // turn any warnings into errors
     scalastyleFailOnWarning := true,
     // run scalastyle on compile
     compileScalastyle := (Compile / scalastyle).toTask("").value,

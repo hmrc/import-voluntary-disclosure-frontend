@@ -24,7 +24,7 @@
       linkButton: components.linkButton
       )
 
-@(backLink: Call, displayBackLink: Boolean)(implicit request: Request[_],appConfig: AppConfig, messages: Messages)
+@(backLink: Call, displayBackLink: Boolean)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = messages("boxGuidance.pageTitle"),
     customBackLinkUrl = Some(backLink), showBackLink = displayBackLink) {
