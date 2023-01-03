@@ -102,10 +102,12 @@ class FileUploadRepositoryISpec
 
       updatedResult mustBe true
       count mustBe 1
-      val lastUpdated: Option[Instant] = await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate
+      val fileUpload: FileUpload = await(repo.getRecord(fileUploadModel.reference)).get
+      val lastUpdated: Option[Instant] =  fileUpload.lastUpdatedDate
       lastUpdated.isDefined mustBe true
       //check seconds in millis
       lastUpdated.map(_.toString.split('.').last.length) mustBe Some(4)
+      fileUpload.uploadDetails.map(_.uploadTimestamp.toString.split('.').last.length) mustBe Some(3)
     }
 
     "update the document, including setting the new timestamp value" in new Test {

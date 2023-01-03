@@ -51,7 +51,8 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
     )
     with FileUploadRepository {
 
-  private def getTime: Instant = Instant.now().atZone(ZoneId.of("UTC")).toInstant.truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
+  private def getTime: Instant =
+    Instant.now().atZone(ZoneId.of("UTC")).toInstant.truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
   private val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
 
