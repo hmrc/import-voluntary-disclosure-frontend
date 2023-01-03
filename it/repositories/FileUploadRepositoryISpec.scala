@@ -41,7 +41,7 @@ class FileUploadRepositoryISpec
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
-  private def count() = await(repo.collection.countDocuments().toFuture())
+  private def count: Long = await(repo.collection.countDocuments().toFuture())
 
   val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
 
@@ -97,11 +97,11 @@ class FileUploadRepositoryISpec
   "updateRecord" should {
     "upsert the document, including setting the new timestamp value" in new Test {
 
-      count() mustBe 0
+      count mustBe 0
       val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel))
 
       updatedResult mustBe true
-      count() mustBe 1
+      count mustBe 1
       val lastUpdated: Option[Instant] = await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate
       lastUpdated.isDefined mustBe true
       //check seconds in millis
@@ -110,15 +110,15 @@ class FileUploadRepositoryISpec
 
     "update the document, including setting the new timestamp value" in new Test {
 
-      count() mustBe 0
+      count mustBe 0
       await(repo.updateRecord(fileUploadModel))
 
-      count() mustBe 1
+      count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("cred Id")
       val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
       updatedResult mustBe true
 
-      count() mustBe 1
+      count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("Another cred Id")
     }
   }
@@ -137,9 +137,9 @@ class FileUploadRepositoryISpec
     }
 
     "return None for no match found" in new Test {
-      count() mustBe 0
+      count mustBe 0
       await(repo.updateRecord(fileUploadModelAlternative))
-      count() mustBe 1
+      count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)) mustBe None
     }
   }

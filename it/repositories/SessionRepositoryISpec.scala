@@ -37,7 +37,7 @@ class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with F
 
   val repo: UserAnswersRepository = new UserAnswersRepository(mongo: MongoComponent, appConfig)
 
-  private def count() = await(repo.collection.countDocuments().toFuture())
+  private def count: Long = await(repo.collection.countDocuments().toFuture())
 
   val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
 
