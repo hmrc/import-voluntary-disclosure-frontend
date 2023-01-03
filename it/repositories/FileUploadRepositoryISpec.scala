@@ -25,7 +25,7 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileUploadRepositoryISpec
@@ -98,11 +98,14 @@ class FileUploadRepositoryISpec
     "upsert the document, including setting the new timestamp value" in new Test {
 
       count() mustBe 0
-      val updatedResult = await(repo.updateRecord(fileUploadModel))
+      val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel))
 
       updatedResult mustBe true
       count() mustBe 1
-      await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate.isDefined mustBe true
+      val lastUpdated: Option[Instant] = await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate
+      lastUpdated.isDefined mustBe true
+      //check seconds in millis
+      lastUpdated.map(_.toString.split('.').last.length) mustBe Some(4)
     }
 
     "update the document, including setting the new timestamp value" in new Test {
@@ -112,7 +115,7 @@ class FileUploadRepositoryISpec
 
       count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("cred Id")
-      val updatedResult = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
+      val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
       updatedResult mustBe true
 
       count() mustBe 1
@@ -128,15 +131,15 @@ class FileUploadRepositoryISpec
       await(repo.updateRecord(fileUploadModelAlternative))
 
       count mustBe 2
-      val getResult = await(repo.getRecord(fileUploadModel.reference))
+      val getResult: Option[FileUpload] = await(repo.getRecord(fileUploadModel.reference))
       getResult.size mustBe 1
       getResult.get.credId mustBe Some("cred Id")
     }
 
     "return None for no match found" in new Test {
-      count mustBe 0
+      count() mustBe 0
       await(repo.updateRecord(fileUploadModelAlternative))
-      count mustBe 1
+      count() mustBe 1
       await(repo.getRecord(fileUploadModel.reference)) mustBe None
     }
   }
