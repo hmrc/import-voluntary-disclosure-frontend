@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileUploadRepositoryISpec
@@ -41,7 +41,7 @@ class FileUploadRepositoryISpec
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
-  private def count() = await(repo.collection.countDocuments().toFuture())
+  private def count: Long = await(repo.collection.countDocuments().toFuture())
 
   val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
 
@@ -97,25 +97,29 @@ class FileUploadRepositoryISpec
   "updateRecord" should {
     "upsert the document, including setting the new timestamp value" in new Test {
 
-      count() mustBe 0
-      val updatedResult = await(repo.updateRecord(fileUploadModel))
+      count mustBe 0
+      val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel))
 
       updatedResult mustBe true
-      count() mustBe 1
-      await(repo.getRecord(fileUploadModel.reference)).get.lastUpdatedDate.isDefined mustBe true
+      count mustBe 1
+      val fileUpload: FileUpload       = await(repo.getRecord(fileUploadModel.reference)).get
+      val lastUpdated: Option[Instant] = fileUpload.lastUpdatedDate
+      lastUpdated.isDefined mustBe true
+      // check seconds in millis
+      lastUpdated.map(_.toString.split('.').last.length) mustBe Some(4)
     }
 
     "update the document, including setting the new timestamp value" in new Test {
 
-      count() mustBe 0
+      count mustBe 0
       await(repo.updateRecord(fileUploadModel))
 
-      count() mustBe 1
+      count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("cred Id")
-      val updatedResult = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
+      val updatedResult: Boolean = await(repo.updateRecord(fileUploadModel.copy(credId = Some("Another cred Id"))))
       updatedResult mustBe true
 
-      count() mustBe 1
+      count mustBe 1
       await(repo.getRecord(fileUploadModel.reference)).get.credId mustBe Some("Another cred Id")
     }
   }
@@ -128,7 +132,7 @@ class FileUploadRepositoryISpec
       await(repo.updateRecord(fileUploadModelAlternative))
 
       count mustBe 2
-      val getResult = await(repo.getRecord(fileUploadModel.reference))
+      val getResult: Option[FileUpload] = await(repo.getRecord(fileUploadModel.reference))
       getResult.size mustBe 1
       getResult.get.credId mustBe Some("cred Id")
     }

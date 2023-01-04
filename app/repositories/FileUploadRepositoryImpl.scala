@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,10 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
     )
     with FileUploadRepository {
 
-  private def getTime: Instant = Instant.now().atZone(ZoneId.of("UTC")).toInstant
+  private def getTime: Instant =
+    Instant.now().atZone(ZoneId.of("UTC")).toInstant.truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
-  val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
+  private val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
 
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())
