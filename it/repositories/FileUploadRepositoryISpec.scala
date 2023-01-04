@@ -102,10 +102,10 @@ class FileUploadRepositoryISpec
 
       updatedResult mustBe true
       count mustBe 1
-      val fileUpload: FileUpload = await(repo.getRecord(fileUploadModel.reference)).get
-      val lastUpdated: Option[Instant] =  fileUpload.lastUpdatedDate
+      val fileUpload: FileUpload       = await(repo.getRecord(fileUploadModel.reference)).get
+      val lastUpdated: Option[Instant] = fileUpload.lastUpdatedDate
       lastUpdated.isDefined mustBe true
-      //check seconds in millis
+      // check seconds in millis
       lastUpdated.map(_.toString.split('.').last.length) mustBe Some(4)
       fileUpload.uploadDetails.map(_.uploadTimestamp.toString.split('.').last.length) mustBe Some(3)
     }
