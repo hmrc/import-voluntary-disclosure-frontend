@@ -90,7 +90,9 @@ class UnderpaymentDetailSummaryViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(UnderpaymentDetailSummaryMessages.errorPrefix + UnderpaymentDetailSummaryMessages.pageTitle)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe UnderpaymentDetailSummaryMessages.errorRequired
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe thereIsAProblemPrefix + UnderpaymentDetailSummaryMessages.errorRequired
       }
 
       "render an error message against the field" in {

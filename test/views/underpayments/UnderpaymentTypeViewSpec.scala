@@ -63,7 +63,9 @@ class UnderpaymentTypeViewSpec extends ViewBaseSpec with BaseMessages with Reusa
       checkPageTitle(UnderpaymentTypeMessages.errorPrefix + UnderpaymentTypeMessages.firstTimePageTitle)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe UnderpaymentTypeMessages.errorRequired
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe thereIsAProblemPrefix + UnderpaymentTypeMessages.errorRequired
       }
 
       "render an error message against the field" in {

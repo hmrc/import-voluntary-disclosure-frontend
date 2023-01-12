@@ -99,7 +99,9 @@ class RemoveUnderpaymentDetailsViewSpec extends ViewBaseSpec {
 
         "render an error summary with the correct message" in {
           elementText("div.govuk-error-summary > div") mustBe
-            RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(underpaymentType).body.get
+            RemoveUnderpaymentDetailsMessages.thereIsAProblemPrefix + RemoveUnderpaymentDetailsMessages.underpaymentTypeContent(
+              underpaymentType
+            ).body.get
         }
 
       }

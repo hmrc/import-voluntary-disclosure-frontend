@@ -63,7 +63,9 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
         checkPageTitle(DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe DisclosureReferenceNumberMessages.requiredError
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe DisclosureReferenceNumberMessages.thereIsAProblemPrefix + DisclosureReferenceNumberMessages.requiredError
         }
 
         "render an error message against the field" in {
@@ -84,7 +86,9 @@ class DisclosureReferenceNumberViewSpec extends ViewBaseSpec {
         checkPageTitle(DisclosureReferenceNumberMessages.errorPrefix + DisclosureReferenceNumberMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe DisclosureReferenceNumberMessages.formatError
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe DisclosureReferenceNumberMessages.thereIsAProblemPrefix + DisclosureReferenceNumberMessages.formatError
         }
 
         "render an error message against the field" in {

@@ -61,7 +61,9 @@ class AcceptanceDateBulkViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(AcceptanceDateBulkMessages.errorPrefix + AcceptanceDateBulkMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe AcceptanceDateBulkMessages.requiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe thereIsAProblemPrefix + AcceptanceDateBulkMessages.requiredError
       }
 
       "render an error message against the field" in {

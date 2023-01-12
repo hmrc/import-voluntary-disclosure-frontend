@@ -107,7 +107,9 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
       checkPageTitle(ImporterAddressMessages.errorPrefix + ImporterAddressMessages.getTitle(traderName))
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe ImporterAddressMessages.errorRequired
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe ImporterAddressMessages.thereIsAProblemPrefix + ImporterAddressMessages.errorRequired
       }
 
       "render an error message against the field" in {

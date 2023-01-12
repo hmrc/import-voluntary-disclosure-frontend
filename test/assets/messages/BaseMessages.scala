@@ -26,6 +26,8 @@ trait BaseMessages {
 
   val errorPrefix = "Error: "
 
+  val thereIsAProblemPrefix = "There is a problem "
+
   val siteYes = "Yes"
 
   val siteNo = "No"

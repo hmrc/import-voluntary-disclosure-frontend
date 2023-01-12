@@ -60,7 +60,7 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(UserTypeMessages.errorPrefix + UserTypeMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe UserTypeMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + UserTypeMessages.requiredError
       }
 
       "render an error message against the field" in {

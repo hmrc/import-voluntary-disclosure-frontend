@@ -67,7 +67,7 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nonEmpty
+          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + ImporterNameMessages.nonEmpty
         }
 
         "render an error message against the field" in {
@@ -89,7 +89,7 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nameMinLength
+          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + ImporterNameMessages.nameMinLength
         }
 
         "render an error message against the field" in {
@@ -112,7 +112,7 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.nameMaxLength
+          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + ImporterNameMessages.nameMaxLength
         }
 
         "render an error message against the field" in {
@@ -134,7 +134,9 @@ class ImporterNameViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterNameMessages.errorPrefix + ImporterNameMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterNameMessages.emojiNotAllowed
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe thereIsAProblemPrefix + ImporterNameMessages.emojiNotAllowed
         }
 
         "render an error message against the field" in {

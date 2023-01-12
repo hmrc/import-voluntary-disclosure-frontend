@@ -79,7 +79,9 @@ class RemoveUnderpaymentReasonViewSpec extends ViewBaseSpec {
       checkPageTitle(RemoveUnderpaymentReasonMessages.errorPrefix + RemoveUnderpaymentReasonMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe RemoveUnderpaymentReasonMessages.requiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe RemoveUnderpaymentReasonMessages.thereIsAProblemPrefix + RemoveUnderpaymentReasonMessages.requiredError
       }
 
       "render an error message against the field" in {

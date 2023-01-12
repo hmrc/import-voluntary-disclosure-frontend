@@ -69,7 +69,9 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterEORINumberMessages.nonEmpty
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe ImporterEORINumberMessages.thereIsAProblemPrefix + ImporterEORINumberMessages.nonEmpty
         }
 
         "render an error message against the field" in {
@@ -94,7 +96,9 @@ class ImporterEORINumberViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterEORINumberMessages.errorPrefix + ImporterEORINumberMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe ImporterEORINumberMessages.incorrectFormat
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe ImporterEORINumberMessages.thereIsAProblemPrefix + ImporterEORINumberMessages.incorrectFormat
         }
 
         "render an error message against the field" in {

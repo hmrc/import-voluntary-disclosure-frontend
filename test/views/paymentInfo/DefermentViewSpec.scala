@@ -107,7 +107,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingDutyOnly)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + DefermentMessages.requiredError
       }
 
       "render an error message against the field" in {
@@ -127,7 +127,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingOnlyVAT)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + DefermentMessages.requiredError
       }
 
       "render an error message against the field" in {
@@ -147,7 +147,7 @@ class DefermentViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(DefermentMessages.errorPrefix + DefermentMessages.headingVATandDuty)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe DefermentMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + DefermentMessages.requiredError
       }
 
       "render an error message against the field" in {
