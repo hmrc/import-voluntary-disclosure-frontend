@@ -66,7 +66,7 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
         checkPageTitle(errorPrefix + title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe requiredError
+          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + requiredError
         }
 
         "render an error message against the field" in {
@@ -85,7 +85,7 @@ class CancelCaseDisclosureReferenceNumberViewSpec extends ViewBaseSpec with Base
         checkPageTitle(errorPrefix + title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe formatError
+          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + formatError
         }
 
         "render an error message against the field" in {

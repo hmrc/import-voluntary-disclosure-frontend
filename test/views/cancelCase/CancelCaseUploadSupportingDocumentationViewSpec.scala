@@ -72,7 +72,7 @@ class CancelCaseUploadSupportingDocumentationViewSpec extends ViewBaseSpec {
       checkPageTitle(errorPrefix + title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe fileUnknown
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + fileUnknown
       }
 
       "render an error message against the field" in {

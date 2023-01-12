@@ -65,7 +65,7 @@ class SplitPaymentViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(SplitPaymentMessages.errorPrefix + SplitPaymentMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe SplitPaymentMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + SplitPaymentMessages.requiredError
       }
 
       "render an error message against the field" in {

@@ -69,7 +69,9 @@ class UpdateAdditionalInformationViewSpec extends ViewBaseSpec with BaseMessages
         checkPageTitle(UpdateAdditionalInformationMessages.errorPrefix + UpdateAdditionalInformationMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe UpdateAdditionalInformationMessages.requiredError
+          elementText(
+            "div.govuk-error-summary > div"
+          ) mustBe UpdateAdditionalInformationMessages.thereIsAProblemPrefix + UpdateAdditionalInformationMessages.requiredError
         }
 
         "render an error message against the field" in {

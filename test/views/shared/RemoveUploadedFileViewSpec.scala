@@ -67,7 +67,9 @@ class RemoveUploadedFileViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(DefermentMessages.errorPrefix + RemoveUploadedFileMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe RemoveUploadedFileMessages.requiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe thereIsAProblemPrefix + RemoveUploadedFileMessages.requiredError
       }
 
       "render an error message against the field" in {

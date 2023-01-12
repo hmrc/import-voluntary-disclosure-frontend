@@ -62,7 +62,11 @@ class PostponedVatAccountingViewSpec extends ViewBaseSpec {
       )
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe PostponedVatAccountingMessages.errorRequired(importerName)
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe PostponedVatAccountingMessages.thereIsAProblemPrefix + PostponedVatAccountingMessages.errorRequired(
+          importerName
+        )
       }
 
       "render an error message against the field" in {

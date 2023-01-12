@@ -22,7 +22,7 @@ import messages.BaseMessages
 import messages.contactDetails.TraderContactDetailsMessages
 import models.ContactDetails
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
+import org.jsoup.nodes.{Document, Element}
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
@@ -68,9 +68,11 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li:nth-child(1) > a"
-        ) mustBe TraderContactDetailsMessages.errorNameNonEmpty
+
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#fullName"
+        ).text() mustBe TraderContactDetailsMessages.errorNameNonEmpty
       }
 
       "render an error message against the full name field" in {
@@ -80,9 +82,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message for email" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li:nth-child(2) > a"
-        ) mustBe TraderContactDetailsMessages.errorEmailNonEmpty
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#email"
+        ).text() mustBe TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
       "render an error message against the email field" in {
@@ -92,9 +95,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "render an error summary with the correct message for phone number" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li:nth-child(3) > a"
-        ) mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#phone"
+        ).text() mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
       "render an error message against the phone number field" in {
@@ -119,9 +123,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorNameNonEmpty
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#fullName"
+        ).text() mustBe TraderContactDetailsMessages.errorNameNonEmpty
       }
 
       "render an error message against the full name field" in {
@@ -146,9 +151,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorEmailNonEmpty
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#email"
+        ).text() mustBe TraderContactDetailsMessages.errorEmailNonEmpty
       }
 
       "render an error message against the email field" in {
@@ -173,9 +179,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#phone"
+        ).text() mustBe TraderContactDetailsMessages.errorPhoneNumberNonEmpty
       }
 
       "render an error message against the phone number field" in {
@@ -200,9 +207,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorNameMinLength
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#fullName"
+        ).text() mustBe TraderContactDetailsMessages.errorNameMinLength
       }
 
       "render an error message against the full name field" in {
@@ -227,9 +235,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorNameMaxLength
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#fullName"
+        ).text() mustBe TraderContactDetailsMessages.errorNameMaxLength
       }
 
       "render an error message against the full name field" in {
@@ -254,9 +263,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for full name" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorNameAllowableCharacters
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#fullName"
+        ).text() mustBe TraderContactDetailsMessages.errorNameAllowableCharacters
       }
 
       "render an error message against the full name field" in {
@@ -281,9 +291,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for email" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorEmailInvalidFormat
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#email"
+        ).text() mustBe TraderContactDetailsMessages.errorEmailInvalidFormat
       }
 
       "render an error message against the email field" in {
@@ -308,9 +319,10 @@ class DeclarantContactDetailsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(TraderContactDetailsMessages.errorPrefix + TraderContactDetailsMessages.title)
 
       "render an error summary with the correct message for phone number" in {
-        elementText(
-          "#main-content > div > div > div > div > ul > li > a"
-        ) mustBe TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
+        document.body().getElementsByAttributeValueContaining(
+          "href",
+          "#phone"
+        ).text() mustBe TraderContactDetailsMessages.errorPhoneNumberInvalidFormat
       }
 
       "render an error message against the phone number field" in {

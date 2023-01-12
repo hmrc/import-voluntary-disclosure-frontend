@@ -170,7 +170,9 @@ class UploadSupportingDocumentationSummaryViewSpec extends ViewBaseSpec with Bas
       checkPageTitle(UploadAnotherFileMessages.errorPrefix + UploadAnotherFileMessages.title("1", "file"))
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe UploadAnotherFileMessages.requiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe UploadAnotherFileMessages.thereIsAProblemPrefix + UploadAnotherFileMessages.requiredError
       }
 
       "render an error message against the field" in {

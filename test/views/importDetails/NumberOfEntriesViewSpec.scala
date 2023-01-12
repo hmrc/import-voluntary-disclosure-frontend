@@ -113,7 +113,9 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(NumberOfEntriesMessages.errorPrefix + NumberOfEntriesMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe NumberOfEntriesMessages.requiredError
+        elementText(
+          "div.govuk-error-summary > div"
+        ) mustBe NumberOfEntriesMessages.thereIsAProblemPrefix + NumberOfEntriesMessages.requiredError
       }
 
       "render an error message against the field" in {
