@@ -143,7 +143,7 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
             RepresentativeConfirmationMessages.printSave + " " + RepresentativeConfirmationMessages.printSaveRestOfMessage
         }
 
-        s"have a link message of '${RepresentativeConfirmationMessages.discloseAnotherUnderpayment}'" in {
+        s"have a button message of '${RepresentativeConfirmationMessages.discloseAnotherUnderpayment}'" in {
           elementText(
             "#discloseAnotherUnderpayment"
           ) mustBe RepresentativeConfirmationMessages.discloseAnotherUnderpayment
