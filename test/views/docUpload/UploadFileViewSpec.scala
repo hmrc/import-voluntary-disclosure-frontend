@@ -88,9 +88,7 @@ class UploadFileViewSpec extends ViewBaseSpec {
         checkPageTitle(UploadFileMessages.errorPrefix + UploadFileMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText(
-            "div.govuk-error-summary > div"
-          ) mustBe UploadFileMessages.thereIsAProblemPrefix + UploadFileMessages.fileUnknown
+          elementText("div.govuk-error-summary > div") mustBe UploadFileMessages.fileUnknown
         }
 
         "render an error message against the field" in {

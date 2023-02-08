@@ -71,9 +71,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanMessages.accountNumberRequiredError
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.accountNumberRequiredError
       }
 
       "render an error message against the field" in {
@@ -91,9 +89,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanMessages.accountNumberFormatError
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.accountNumberFormatError
       }
 
       "render an error message against the field" in {
@@ -111,9 +107,7 @@ class RepresentativeDanViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(RepresentativeDanMessages.errorPrefix + RepresentativeDanMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanMessages.danTypeRequiredError
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanMessages.danTypeRequiredError
       }
 
       "render an error message against the field" in {

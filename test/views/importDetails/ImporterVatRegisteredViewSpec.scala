@@ -67,9 +67,7 @@ class ImporterVatRegisteredViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(errorPrefix + ImporterVatRegisteredMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + ImporterVatRegisteredMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe ImporterVatRegisteredMessages.requiredError
       }
 
       "render an error message against the field" in {

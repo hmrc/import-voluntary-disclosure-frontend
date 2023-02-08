@@ -62,7 +62,7 @@ class IndividualContinueWithCredentialsViewSpec extends ViewBaseSpec {
       checkPageTitle(errorPrefix + title)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + errorRequired
+        elementText("div.govuk-error-summary > div") mustBe errorRequired
       }
 
       "render an error message against the field" in {

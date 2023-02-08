@@ -66,9 +66,7 @@ class CancellationReasonViewSpec extends ViewBaseSpec {
         checkPageTitle(CancellationReasonMessages.errorPrefix + CancellationReasonMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText(
-            "div.govuk-error-summary > div"
-          ) mustBe CancellationReasonMessages.thereIsAProblemPrefix + CancellationReasonMessages.requiredError
+          elementText("div.govuk-error-summary > div") mustBe CancellationReasonMessages.requiredError
         }
 
         "render an error message against the field" in {

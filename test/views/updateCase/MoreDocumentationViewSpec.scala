@@ -60,9 +60,7 @@ class MoreDocumentationViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(MoreDocumentationMessages.errorPrefix + MoreDocumentationMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + MoreDocumentationMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe MoreDocumentationMessages.requiredError
       }
 
       "render an error message against the field" in {

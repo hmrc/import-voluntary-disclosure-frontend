@@ -127,7 +127,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       checkPageTitle(BoxNumberMessages.errorPrefix + BoxNumberMessages.pageTitle)
 
       "render an error summary with the correct message" in {
-        elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + BoxNumberMessages.errorRequired
+        elementText("div.govuk-error-summary > div") mustBe BoxNumberMessages.errorRequired
       }
 
       "render an error message against the field" in {

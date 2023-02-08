@@ -62,7 +62,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + ImporterDanMessages.requiredError
+          elementText("div.govuk-error-summary > div") mustBe ImporterDanMessages.requiredError
         }
 
         "render an error message against the field" in {
@@ -82,7 +82,7 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(ImporterDanMessages.errorPrefix + ImporterDanMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText("div.govuk-error-summary > div") mustBe thereIsAProblemPrefix + ImporterDanMessages.formatError
+          elementText("div.govuk-error-summary > div") mustBe ImporterDanMessages.formatError
         }
 
         "render an error message against the field" in {

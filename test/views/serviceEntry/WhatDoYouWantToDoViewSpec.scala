@@ -61,9 +61,7 @@ class WhatDoYouWantToDoViewSpec extends ViewBaseSpec {
       checkPageTitle(WhatDoYouWantToDoMessages.errorPrefix + WhatDoYouWantToDoMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe WhatDoYouWantToDoMessages.thereIsAProblemPrefix + WhatDoYouWantToDoMessages.error
+        elementText("div.govuk-error-summary > div") mustBe WhatDoYouWantToDoMessages.error
       }
 
       "render an error message against the field" in {

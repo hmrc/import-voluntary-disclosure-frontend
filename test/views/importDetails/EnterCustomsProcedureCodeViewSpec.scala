@@ -67,9 +67,7 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText(
-            "div.govuk-error-summary > div"
-          ) mustBe thereIsAProblemPrefix + EnterCustomsProcedureCodeMessages.requiredError
+          elementText("div.govuk-error-summary > div") mustBe EnterCustomsProcedureCodeMessages.requiredError
         }
 
         "render an error message against the field" in {
@@ -94,9 +92,7 @@ class EnterCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
         checkPageTitle(EnterCustomsProcedureCodeMessages.errorPrefix + EnterCustomsProcedureCodeMessages.title)
 
         "render an error summary with the correct message" in {
-          elementText(
-            "div.govuk-error-summary > div"
-          ) mustBe thereIsAProblemPrefix + EnterCustomsProcedureCodeMessages.formatError
+          elementText("div.govuk-error-summary > div") mustBe EnterCustomsProcedureCodeMessages.formatError
         }
 
         "render an error message against the field" in {

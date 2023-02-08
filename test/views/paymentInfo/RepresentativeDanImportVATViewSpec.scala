@@ -74,7 +74,7 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       "render an error summary with the correct message " in {
         elementText(
           "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanImportVATMessages.accountNumberRequiredError
+        ) mustBe RepresentativeDanImportVATMessages.accountNumberRequiredError
       }
 
       "render an error message against the field" in {
@@ -92,9 +92,7 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanImportVATMessages.accountNumberFormatError
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanImportVATMessages.accountNumberFormatError
       }
 
       "render an error message against the field" in {
@@ -112,9 +110,7 @@ class RepresentativeDanImportVATViewSpec extends ViewBaseSpec with BaseMessages 
       checkPageTitle(RepresentativeDanImportVATMessages.errorPrefix + RepresentativeDanImportVATMessages.title)
 
       "render an error summary with the correct message " in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + RepresentativeDanImportVATMessages.danTypeRequiredError
+        elementText("div.govuk-error-summary > div") mustBe RepresentativeDanImportVATMessages.danTypeRequiredError
       }
 
       "render an error message against the field" in {

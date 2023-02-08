@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import forms.importDetails.OneCustomsProcedureCodeFormProvider
 import messages.BaseMessages
 import messages.importDetails.OneCustomsProcedureCodeMessages
-import messages.serviceEntry.CustomsDeclarationMessages.thereIsAProblemPrefix
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -62,9 +61,7 @@ class OneCustomsProcedureCodeViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(errorPrefix + OneCustomsProcedureCodeMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + OneCustomsProcedureCodeMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe OneCustomsProcedureCodeMessages.requiredError
       }
 
       "render an error message against the field" in {

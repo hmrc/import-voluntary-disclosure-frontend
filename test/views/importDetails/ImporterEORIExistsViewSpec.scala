@@ -61,9 +61,7 @@ class ImporterEORIExistsViewSpec extends ViewBaseSpec with BaseMessages {
       checkPageTitle(ImporterEORIExistsMessages.errorPrefix + ImporterEORIExistsMessages.title)
 
       "render an error summary with the correct message" in {
-        elementText(
-          "div.govuk-error-summary > div"
-        ) mustBe thereIsAProblemPrefix + ImporterEORIExistsMessages.requiredError
+        elementText("div.govuk-error-summary > div") mustBe ImporterEORIExistsMessages.requiredError
       }
 
       "render an error message against the field" in {
