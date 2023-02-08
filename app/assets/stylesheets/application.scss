@@ -33,12 +33,3 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
         width: 100%;
     }
 }
-
-
-// hide when no js available
-.govuk-back-link {
-display: none;
-}
-.js-enabled .govuk-back-link {
-display: inline-block;
-}
