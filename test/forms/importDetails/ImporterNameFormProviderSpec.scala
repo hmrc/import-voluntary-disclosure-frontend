@@ -92,7 +92,7 @@ class ImporterNameFormProviderSpec extends FormSpecBase {
 
     "with full name containing emoji" should {
 
-      val data = Map("fullName" -> "\uD83D\uDE0E\uD83E\uDD14\uD83E\uDD16")
+      val data = Map("fullName" -> "\uD83D\uDE0E\uD83E\uDD14\uD83E\uDD16\uD83D\uDD25")
       val form = new ImporterNameFormProvider()().bind(data)
 
       "result in a form with errors" in {
