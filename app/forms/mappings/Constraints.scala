@@ -127,5 +127,4 @@ trait Constraints extends InputFilter {
     regex.findFirstIn(valueToCheck).isDefined
   }
 
-
 }
