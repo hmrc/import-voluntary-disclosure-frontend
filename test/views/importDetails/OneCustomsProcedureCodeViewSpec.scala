@@ -20,7 +20,6 @@ import base.ViewBaseSpec
 import forms.importDetails.OneCustomsProcedureCodeFormProvider
 import messages.BaseMessages
 import messages.importDetails.OneCustomsProcedureCodeMessages
-import messages.serviceEntry.CustomsDeclarationMessages.thereIsAProblemPrefix
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form

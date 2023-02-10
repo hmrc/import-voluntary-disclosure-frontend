@@ -22,7 +22,7 @@ import messages.BaseMessages
 import messages.contactDetails.TraderContactDetailsMessages
 import models.ContactDetails
 import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element}
+import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.api.mvc.Call
 import play.twirl.api.Html
