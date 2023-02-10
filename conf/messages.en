@@ -439,7 +439,7 @@ confirmation.whatYouShouldDoNext = What you should do next
 confirmation.whatYouShouldDoNext.printSave = Print or save a summary of your disclosure
 confirmation.whatYouShouldDoNext.printSaveRestOfMessage = as we will not send you an email confirmation.
 confirmation.whatYouShouldDoNext.contactInfo = 'If you have not received the demand note or we have not contacted you within 14 days then email '
-confirmation.whatYouShouldDoNext.link = Start a new, add to, or cancel a disclosure
+confirmation.whatYouShouldDoNext.button = Start a new, add to, or cancel a disclosure
 confirmation.helpImproveService = Help us improve this service
 confirmation.helpImproveServiceLink = What did you think of this service?
 confirmation.helpImproveServiceLinkTime = ' (takes 30 seconds)'
@@ -896,7 +896,7 @@ updateCase.confirmation.whatHappensNext.p = We will check the information you ha
 updateCase.confirmation.whatYouShouldDoNext = What you should do next
 updateCase.confirmation.whatYouShouldDoNext.p = 'If you have not received the demand note or we have not contacted you within 14 days then email '
 updateCase.confirmation.helpImproveServiceLink = What did you think of this service?
-updateCase.confirmation.startNewUnderpaymentLink = Start a new, add to, or cancel a disclosure
+updateCase.confirmation.startNewUnderpaymentButton = Start a new, add to, or cancel a disclosure
 
 # Update Case - Disclosure Not Found
 updateCase.disclosureNotFound.pageTitle = No disclosure found
