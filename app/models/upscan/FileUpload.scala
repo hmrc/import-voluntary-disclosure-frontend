@@ -20,7 +20,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
 
-import java.time.{Instant, LocalDateTime}
+import java.util.Date
 import javax.mail.internet.MimeUtility
 import scala.util.Try
 
@@ -31,7 +31,7 @@ case class FileUpload(
   fileStatus: Option[FileStatusEnum] = None,
   uploadDetails: Option[UploadDetails] = None,
   failureDetails: Option[FailureDetails] = None,
-  lastUpdatedDate: Option[Instant] = None
+  lastUpdatedDate: Option[Date] = None
 ) {
   val fileName = uploadDetails.map(_.fileName)
 }
@@ -45,22 +45,22 @@ object FileUpload {
       (JsPath \ "fileStatus").readNullable[FileStatusEnum] and
       (JsPath \ "uploadDetails").readNullable[UploadDetails] and
       (JsPath \ "failureDetails").readNullable[FailureDetails] and
-      (JsPath \ "lastUpdatedDate").readNullable[Instant]
+      (JsPath \ "lastUpdatedDate").readNullable[Date]
   )(FileUpload.apply _)
 
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
-case class UploadDetails(uploadTimestamp: LocalDateTime, checksum: String, fileName: String, fileMimeType: String)
+case class UploadDetails(uploadTimestamp: Date, checksum: String, fileName: String, fileMimeType: String)
 
 object UploadDetails {
 
   implicit val formats: Format[UploadDetails] = Format(
-    ((JsPath \ "uploadTimestamp").read[LocalDateTime] and
+    ((JsPath \ "uploadTimestamp").read[Date] and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
       (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
-    ((JsPath \ "uploadTimestamp").write[LocalDateTime] and
+    ((JsPath \ "uploadTimestamp").write[Date] and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
       (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))

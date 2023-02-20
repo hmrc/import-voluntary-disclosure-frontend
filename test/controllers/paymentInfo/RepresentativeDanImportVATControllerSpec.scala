@@ -17,6 +17,7 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.RepresentativeDanFormProvider
 import mocks.repositories.MockSessionRepository
@@ -26,19 +27,19 @@ import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo._
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.paymentInfo.RepresentativeDanImportVATView
 
-import java.time.LocalDateTime
+import java.text.DateFormat
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.ImporterNamePage
-import pages.serviceEntry.KnownEoriDetailsPage
 
 class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
 
@@ -243,6 +244,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
       }
 
       "redirect to CYA and remove VAT proof of authority when user supplies account type C and user answers holds account type A" in new Test {
+
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
             .set(UserTypePage, UserType.Representative).success.value
@@ -265,7 +267,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
                     "file-ref-1",
                     "DutyDocument.pdf",
                     "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
-                    LocalDateTime.of(2020, 1, 10, 10, 31),
+                    Date.from(LocalDateTime.of(2020, 1, 10, 10, 31).atZone(ZoneId.systemDefault()).toInstant()),
                     "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e5",
                     "application/pdf"
                   )
@@ -277,7 +279,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
                     "file-ref-1",
                     "VATDocument.pdf",
                     "http://localhost:9570/upscan/download/5e922a0f-d5ad-4aa6-9977-45a83096f71d",
-                    LocalDateTime.of(2020, 1, 10, 10, 30),
+                    Date.from(LocalDateTime.of(2020, 1, 10, 10, 31).atZone(ZoneId.systemDefault()).toInstant()),
                     "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e6",
                     "application/pdf"
                   )

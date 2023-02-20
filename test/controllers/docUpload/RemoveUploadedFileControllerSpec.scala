@@ -28,7 +28,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.shared.RemoveUploadedFileView
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
 
 class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
@@ -59,6 +60,8 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
     )
   }
 
+  private val locateDateTime: Date = Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant())
+
   "GET onLoad" should {
     "redirect to SupportingDoc page if no uploaded-files in user answers" in new Test {
       val result: Future[Result] = controller.onLoad(index)(fakeRequest)
@@ -87,7 +90,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = locateDateTime,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )
@@ -140,7 +143,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
                   reference = "file-ref-1",
                   fileName = "file.txt",
                   downloadUrl = "url",
-                  uploadTimestamp = LocalDateTime.now,
+                  uploadTimestamp = locateDateTime,
                   checksum = "checksum",
                   fileMimeType = "application/txt"
                 )

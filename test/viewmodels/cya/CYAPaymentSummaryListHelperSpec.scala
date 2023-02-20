@@ -32,7 +32,8 @@ import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.cya.CheckYourAnswersPaymentData._
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{LocalDate, LocalDateTime, ZoneId}
+import java.util.Date
 
 class CYAPaymentSummaryListHelperSpec
     extends SpecBase
@@ -54,7 +55,7 @@ class CYAPaymentSummaryListHelperSpec
             "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
+            Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
             "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
             "application/pdf"
           )
@@ -93,7 +94,7 @@ class CYAPaymentSummaryListHelperSpec
               "file-ref-1",
               "DutyFileExample.pdf",
               "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              LocalDateTime.now,
+              Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "application/pdf"
             )
@@ -105,7 +106,7 @@ class CYAPaymentSummaryListHelperSpec
               "file-ref-1",
               "VATFileExample.pdf",
               "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-              LocalDateTime.now,
+              Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
               "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
               "application/pdf"
             )
@@ -191,7 +192,7 @@ class CYAPaymentSummaryListHelperSpec
                 "file-ref-1",
                 "Example.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
+                Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "application/pdf"
               )
@@ -256,7 +257,7 @@ class CYAPaymentSummaryListHelperSpec
                 "file-ref-1",
                 "Example.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
+                Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "application/pdf"
               )
@@ -321,7 +322,7 @@ class CYAPaymentSummaryListHelperSpec
                 "file-ref-1",
                 "Example.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
+                Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "application/pdf"
               )
@@ -359,7 +360,7 @@ class CYAPaymentSummaryListHelperSpec
                   "file-ref-1",
                   "DutyFileExample.pdf",
                   "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                  LocalDateTime.now,
+                  Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                   "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                   "application/pdf"
                 )
@@ -399,7 +400,7 @@ class CYAPaymentSummaryListHelperSpec
                 "file-ref-1",
                 "Example.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
+                Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "application/pdf"
               )
@@ -441,7 +442,7 @@ class CYAPaymentSummaryListHelperSpec
                   "file-ref-1",
                   "FileExample.pdf",
                   "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                  LocalDateTime.now,
+                  Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                   "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                   "application/pdf"
                 )
@@ -504,7 +505,7 @@ class CYAPaymentSummaryListHelperSpec
                 "file-ref-1",
                 "Example.pdf",
                 "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-                LocalDateTime.now,
+                Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
                 "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
                 "application/pdf"
               )

@@ -25,7 +25,8 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.{Instant, LocalDateTime}
+import java.time.{Instant, LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FileUploadRepositoryISpec
@@ -37,13 +38,13 @@ class FileUploadRepositoryISpec
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  val fakeNow: LocalDateTime = LocalDateTime.now()
+  val fakeNow: Date = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
   private def count: Long = await(repo.collection.countDocuments().toFuture())
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
+  val mongoDate: JsValue = Json.toJson(fakeNow)
 
   trait Test {
     await(repo.collection.drop().head())
@@ -102,11 +103,11 @@ class FileUploadRepositoryISpec
 
       updatedResult mustBe true
       count mustBe 1
-      val fileUpload: FileUpload       = await(repo.getRecord(fileUploadModel.reference)).get
-      val lastUpdated: Option[Instant] = fileUpload.lastUpdatedDate
+      val fileUpload: FileUpload    = await(repo.getRecord(fileUploadModel.reference)).get
+      val lastUpdated: Option[Date] = fileUpload.lastUpdatedDate
       lastUpdated.isDefined mustBe true
       // check seconds in millis
-      lastUpdated.map(_.toString.split('.').last.length) mustBe Some(4)
+      lastUpdated.map(_.toString.split(' ').last.length) mustBe Some(4)
     }
 
     "update the document, including setting the new timestamp value" in new Test {

@@ -24,6 +24,8 @@ import pages.updateCase._
 import play.api.libs.json.{JsObject, Json}
 import utils.ReusableValues
 
+import java.time.Instant
+
 trait UpdateCaseServiceTestData extends ReusableValues {
 
   val updateData: UpdateCaseData = UpdateCaseData(
@@ -71,7 +73,7 @@ trait UpdateCaseServiceTestData extends ReusableValues {
           "reference"       -> "file-ref-1",
           "fileName"        -> "TestDocument.pdf",
           "downloadUrl"     -> "http://some/location",
-          "uploadTimestamp" -> "2021-05-14T20:15:13.807",
+          "uploadTimestamp" -> 1621019713807L,
           "checksum"        -> "the file checksum",
           "fileMimeType"    -> "application/pdf"
         )
@@ -87,7 +89,7 @@ trait UpdateCaseServiceTestData extends ReusableValues {
           "reference"       -> "file-ref-1",
           "fileName"        -> "TestDocument.pdf",
           "downloadUrl"     -> "http://some/location",
-          "uploadTimestamp" -> "2021-05-14T20:15:13.807",
+          "uploadTimestamp" -> 1621019713807L,
           "checksum"        -> "the file checksum",
           "fileMimeType"    -> "application/pdf"
         )

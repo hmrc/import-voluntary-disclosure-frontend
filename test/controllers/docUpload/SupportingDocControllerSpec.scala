@@ -28,7 +28,8 @@ import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.docUpload.SupportingDocView
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
 
 class SupportingDocControllerSpec extends ControllerSpecBase {
@@ -48,6 +49,8 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
+  private val locateDateTime: Date = Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant())
+
   "GET onLoad" should {
     "return 200" in new Test {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
@@ -66,7 +69,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
           .set(
             FileUploadPage,
             Seq(
-              FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType")
+              FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", locateDateTime, "checksum", "fileMimeType")
             )
           ).success.value
       )

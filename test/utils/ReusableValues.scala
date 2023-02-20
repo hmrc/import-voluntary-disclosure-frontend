@@ -26,9 +26,11 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.http.HttpResponse
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{LocalDate, LocalDateTime, ZoneId}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
 import models.reasons.{BoxNumber, UnderpaymentReason}
+
+import java.util.Date
 
 trait ReusableValues {
 
@@ -115,12 +117,13 @@ trait ReusableValues {
   val bulkEntry: NumberOfEntries         = NumberOfEntries.MoreThanOneEntry
   val contactDetails: ContactDetails     = ContactDetails("John Smith", "test@test.com", "0123456789")
   val cpc: String                        = "4000C09"
+  private val validTimeStampToDate: Date = Date.from(validTimestamp.atZone(ZoneId.systemDefault()).toInstant())
   val supportingDocuments: Seq[FileUploadInfo] = Seq(
     FileUploadInfo(
       reference = "file-ref-1",
       fileName = "TestDocument.pdf",
       downloadUrl = "http://some/location",
-      uploadTimestamp = validTimestamp,
+      uploadTimestamp = validTimeStampToDate,
       checksum = "the file checksum",
       fileMimeType = "application/pdf"
     )
@@ -133,7 +136,7 @@ trait ReusableValues {
         reference = "file-ref-1",
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
-        uploadTimestamp = validTimestamp,
+        uploadTimestamp = validTimeStampToDate,
         checksum = "the file checksum",
         fileMimeType = "application/pdf"
       )
@@ -147,7 +150,7 @@ trait ReusableValues {
         reference = "file-ref-1",
         fileName = "TestDocument.pdf",
         downloadUrl = "http://some/location",
-        uploadTimestamp = validTimestamp,
+        uploadTimestamp = validTimeStampToDate,
         checksum = "the file checksum",
         fileMimeType = "application/pdf"
       )

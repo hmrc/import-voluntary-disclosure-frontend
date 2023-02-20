@@ -40,7 +40,8 @@ import play.api.test.Helpers._
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
 
 class UploadAuthorityControllerSpec extends ControllerSpecBase {
@@ -138,6 +139,8 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
   val form: UploadFileFormProvider         = formProvider
+
+  private val locateDateTime: Date = Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant())
 
   "GET onLoad" should {
     "return OK when called for combine duty and vat" in new Test {
@@ -386,7 +389,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(
             UploadAuthorityPage,
             Seq(
-              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))
+              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", locateDateTime, "", ""))
             )
           ).success.value
       )
@@ -400,7 +403,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(SplitPaymentPage, true).success.value
           .set(
             UploadAuthorityPage,
-            Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", "", LocalDateTime.now(), "", "")))
+            Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", "", locateDateTime, "", "")))
           ).success.value
           .set(CheckModePage, false).success.value
           .set(
@@ -419,7 +422,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(
             UploadAuthorityPage,
             Seq(
-              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))
+              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", locateDateTime, "", ""))
             )
           ).success.value
           .set(CheckModePage, true).success.value

@@ -27,7 +27,8 @@ import pages.shared.MoreDocumentationPage
 import pages.updateCase._
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 
 class UpdateCaseCYASummaryListHelperSpec
     extends SpecBase
@@ -49,7 +50,7 @@ class UpdateCaseCYASummaryListHelperSpec
             "file-ref-1",
             "Example.pdf",
             "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
+            Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant()),
             "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
             "application/pdf"
           )

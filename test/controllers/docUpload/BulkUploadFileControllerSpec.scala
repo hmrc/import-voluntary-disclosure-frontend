@@ -35,7 +35,8 @@ import play.api.test.Helpers._
 import views.html.docUpload.BulkUploadFileView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
 
 class BulkUploadFileControllerSpec extends ControllerSpecBase {
@@ -123,6 +124,8 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
   val form: UploadFileFormProvider         = formProvider
+
+  private val locateDateTime: Date = Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant());
 
   "GET onLoad" should {
     "return OK" in new Test {
@@ -330,7 +333,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "filename.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = locateDateTime,
                 checksum = "checksum",
                 fileMimeType = "filename/txt"
               )
@@ -351,7 +354,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = locateDateTime,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )
@@ -373,7 +376,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = locateDateTime,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )

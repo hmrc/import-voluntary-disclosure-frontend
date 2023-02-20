@@ -28,6 +28,7 @@ import uk.gov.hmrc.mongo.play.json.Codecs._
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
 import java.time.{Instant, ZoneId}
+import java.util.Date
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -54,7 +55,10 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
   private def getTime: Instant =
     Instant.now().atZone(ZoneId.of("UTC")).toInstant.truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
-  private val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
+  private def getDate: Date =
+    Date.from(getTime)
+
+  private val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getDate))
 
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
     val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())

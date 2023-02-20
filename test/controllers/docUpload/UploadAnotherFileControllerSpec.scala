@@ -31,7 +31,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.docUpload.UploadAnotherFileView
 
-import java.time.LocalDateTime
+import java.time.{LocalDateTime, ZoneId}
+import java.util.Date
 import scala.concurrent.Future
 
 class UploadAnotherFileControllerSpec extends ControllerSpecBase {
@@ -70,6 +71,8 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
     )
   }
 
+  private val locateDateTime: Date = Date.from(LocalDateTime.now.atZone(ZoneId.systemDefault()).toInstant())
+
   "GET onLoad" should {
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
@@ -91,7 +94,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("cred-id", data)
           .set(AnyOtherSupportingDocsPage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo("", "", "", LocalDateTime.now(), "", ""))).success.value
+          .set(FileUploadPage, Seq(FileUploadInfo("", "", "", locateDateTime, "", ""))).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
