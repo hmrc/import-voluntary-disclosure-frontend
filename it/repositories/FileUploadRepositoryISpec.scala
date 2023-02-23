@@ -37,7 +37,7 @@ class FileUploadRepositoryISpec
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  val fakeNow: LocalDateTime = LocalDateTime.now()
+  val fakeNow: LocalDateTime = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
@@ -63,6 +63,7 @@ class FileUploadRepositoryISpec
     ),
     lastUpdatedDate = None
   )
+
   val fileUploadModelAlternative: FileUpload = fileUploadModel.copy(reference = "123", credId = Some("Another cred Id"))
   val jsonInRepo: JsValue = Json.obj(
     "reference"  -> "11370e18-6e24-453e-b45a-76d3e32ea33d",

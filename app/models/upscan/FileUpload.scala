@@ -19,6 +19,7 @@ package models.upscan
 import play.api.libs.functional.syntax._
 import play.api.libs.json.Reads._
 import play.api.libs.json._
+import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.{Instant, LocalDateTime}
 import javax.mail.internet.MimeUtility
@@ -38,16 +39,7 @@ case class FileUpload(
 
 object FileUpload {
 
-  val callbackReads: Reads[FileUpload] = (
-    (JsPath \ "reference").read[String] and
-      (JsPath \ "credId").readNullable[String] and
-      (JsPath \ "downloadUrl").readNullable[String] and
-      (JsPath \ "fileStatus").readNullable[FileStatusEnum] and
-      (JsPath \ "uploadDetails").readNullable[UploadDetails] and
-      (JsPath \ "failureDetails").readNullable[FailureDetails] and
-      (JsPath \ "lastUpdatedDate").readNullable[Instant]
-  )(FileUpload.apply _)
-
+  implicit val mongoInstantFormat = MongoJavatimeFormats.instantFormat
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
@@ -56,14 +48,14 @@ case class UploadDetails(uploadTimestamp: LocalDateTime, checksum: String, fileN
 object UploadDetails {
 
   implicit val formats: Format[UploadDetails] = Format(
-    ((JsPath \ "uploadTimestamp").read[LocalDateTime] and
+    ((JsPath \ "uploadTimestamp").read[LocalDateTime].orElse((JsPath \ "uploadTimestamp").read(MongoJavatimeFormats.localDateTimeReads)) and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
       (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
-    ((JsPath \ "uploadTimestamp").write[LocalDateTime] and
+    ((JsPath \ "uploadTimestamp").write(MongoJavatimeFormats.localDateTimeWrites) and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
-      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))
+      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply))
   )
 
   def decodeMimeEncodedWord(word: String): String =
