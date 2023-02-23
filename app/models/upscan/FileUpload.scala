@@ -39,7 +39,7 @@ case class FileUpload(
 
 object FileUpload {
 
-  implicit val mongoInstantFormat = MongoJavatimeFormats.instantFormat
+  implicit val mongoInstantFormat          = MongoJavatimeFormats.instantFormat
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
@@ -48,7 +48,9 @@ case class UploadDetails(uploadTimestamp: LocalDateTime, checksum: String, fileN
 object UploadDetails {
 
   implicit val formats: Format[UploadDetails] = Format(
-    ((JsPath \ "uploadTimestamp").read[LocalDateTime].orElse((JsPath \ "uploadTimestamp").read(MongoJavatimeFormats.localDateTimeReads)) and
+    ((JsPath \ "uploadTimestamp").read[LocalDateTime].orElse(
+      (JsPath \ "uploadTimestamp").read(MongoJavatimeFormats.localDateTimeReads)
+    ) and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
       (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),

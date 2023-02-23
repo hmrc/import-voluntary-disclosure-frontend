@@ -62,8 +62,7 @@ class FileUploadSpec extends ModelSpecBase {
     }
 
     "read json as FileUpload when uploadTimestamp is of type mongo Date" in {
-      val json = Json.parse(
-          """
+      val json = Json.parse("""
           |{
           | "reference":"11370e18-6e24-453e-b45a-76d3e32ea33d",
           | "downloadUrl":"https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
