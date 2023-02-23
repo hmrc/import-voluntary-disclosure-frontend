@@ -19,7 +19,6 @@ package models.upscan
 import base.ModelSpecBase
 import models.upscan.FileStatusEnum.READY
 import play.api.libs.json.{JsSuccess, JsValue, Json}
-import play.api.test
 
 import java.time.LocalDateTime
 
@@ -43,7 +42,7 @@ class FileUploadSpec extends ModelSpecBase {
   )
 
   "FileUpload" must {
-    "read json as FileUpload" in {
+    "read json as FileUpload to support field type String" in {
 
       val json: JsValue = Json.parse("""
           | {
@@ -61,7 +60,7 @@ class FileUploadSpec extends ModelSpecBase {
       Json.fromJson[FileUpload](json) mustBe JsSuccess(fileUpload)
     }
 
-    "read json as FileUpload when uploadTimestamp is of type mongo Date" in {
+    "read/write json as FileUpload when uploadTimestamp is of type mongo Date" in {
       val json = Json.parse("""
           |{
           | "reference":"11370e18-6e24-453e-b45a-76d3e32ea33d",
@@ -78,6 +77,7 @@ class FileUploadSpec extends ModelSpecBase {
           |""".stripMargin)
 
       Json.fromJson[FileUpload](json) mustBe JsSuccess(fileUpload)
+      Json.toJson(fileUpload) mustBe json
     }
   }
 }
