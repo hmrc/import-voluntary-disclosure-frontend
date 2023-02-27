@@ -37,7 +37,7 @@ class FileUploadRepositoryISpec
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  val fakeNow: LocalDateTime = LocalDateTime.now()
+  val fakeNow: LocalDateTime = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
