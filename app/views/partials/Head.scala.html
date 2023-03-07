@@ -14,15 +14,16 @@
  * limitations under the License.
  *@
 
+@import views.html.helper.CSPNonce
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcTrackingConsentSnippet
 
 @this(hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet, hmrcTimeoutDialog: HmrcTimeoutDialog, appConfig: AppConfig)
 
-@(headBlock: Option[Html] = None, enableTimeoutDialog: Boolean)(implicit messages: Messages)
+@(headBlock: Option[Html] = None, enableTimeoutDialog: Boolean)(implicit messages: Messages, request: Request[_])
 
 @headBlock
 
-@hmrcTrackingConsentSnippet()
+@hmrcTrackingConsentSnippet(nonce = CSPNonce.get)
 
 <!--[if lte IE 8]><script src='@controllers.routes.Assets.versioned("javascripts/html5shiv.min.js")'></script><![endif]-->
 <!--[if lte IE 8]><link href='@controllers.routes.Assets.versioned("stylesheets/application-ie-8.css")' rel="stylesheet" type="text/css" /><![endif]-->
