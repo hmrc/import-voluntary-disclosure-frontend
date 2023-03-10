@@ -17,6 +17,7 @@
 @import views.html.cya.SummaryForPrint
 @import viewmodels.cya.ConfirmationViewData
 @import viewmodels.cya.CYASummaryList
+@import views.html.helper.CSPNonce
 
 @this(layout: templates.Layout,
         summaryForPrint: SummaryForPrint,
@@ -59,9 +60,15 @@
         @h2(messages("confirmation.whatYouShouldDoNext"), id = Some("whatYouShouldDoNext"))
 
         <p class="js-only">
-            <a id="printSave" class="print-this__link govuk-body govuk-link" href="javascript:window.print()">@messages("confirmation.whatYouShouldDoNext.printSave")</a>
+            <a id="printSave" class="print-this__link govuk-body govuk-link">@messages("confirmation.whatYouShouldDoNext.printSave")</a>
             <a id="printSaveRestOfMessage" class="print-this__link govuk-body">@messages("confirmation.whatYouShouldDoNext.printSaveRestOfMessage")</a>
         </p>
+
+        <script @CSPNonce.attr>
+          document.getElementById("printSave").addEventListener("click", function() {
+              window.print()
+            });
+        </script>
 
         <noscript>
             @p {

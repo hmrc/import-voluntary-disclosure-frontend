@@ -125,12 +125,12 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
 
         s"have the paragraph of '${ImporterConfirmationMessages.contactInfo}'" in {
           elementText(
-            "#main-content > div > div > div > p:nth-child(8)"
+            "#main-content > div > div > div:nth-child(1) > p:nth-child(9)"
           ) mustBe ImporterConfirmationMessages.contactInfo
         }
 
         s"have the correct email link" in {
-          elementAttributes("#main-content > div > div > div > p:nth-child(8) > a")
+          elementAttributes("#main-content > div > div > div:nth-child(1) > p:nth-child(9) > a")
             .get("href") mustBe Some(s"mailto:${appConfig.c18EmailAddress}")
         }
 
