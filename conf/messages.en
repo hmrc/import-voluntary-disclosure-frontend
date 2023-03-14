@@ -124,6 +124,10 @@ numberOfEntries.oneEntry = One entry
 numberOfEntries.moreThanOneEntry = More than one entry
 numberOfEntries.moreThanOneEntry.hint = All the entries must be for {0}.
 numberOfEntries.error.required = Select if you are disclosing an underpayment for one entry or more than one entry
+numberOfEntries.before.you.continue.h2 = Before you continue
+numberOfEntries.before.you.continue.p1 = You cannot change the number of entries you are disclosing after you select continue.
+numberOfEntries.before.you.continue.p2 = If you need to change the number of entries you are disclosing, you will need to start your disclosure again.
+numberOfEntries.before.you.continue.p3 = HMRC will not save your information.
 
 #Acceptance Date Page
 acceptanceDate.single.pageTitle = Was the entry acceptance date before 1 January 2021?

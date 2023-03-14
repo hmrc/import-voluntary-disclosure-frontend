@@ -65,6 +65,28 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe
           s"${NumberOfEntriesMessages.radioButtonTwo} ${NumberOfEntriesMessages.hint}"
       }
+
+      "contains a h2 in the - Before you continue - section" in {
+        elementText("#main-content > div > div > form > h2") mustBe NumberOfEntriesMessages.beforeYouContinueh2
+      }
+
+      "contains a p1 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(4)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep1
+      }
+
+      "contains a p2 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(5)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep2
+      }
+
+      "contains a p3 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(6)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep3
+      }
     }
 
     "no errors exist and importer flow is selected" should {
@@ -98,6 +120,28 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#main-content > div > div > form > div > fieldset > div > div:nth-child(2)") mustBe
           s"${NumberOfEntriesMessages.radioButtonTwo}"
       }
+
+      "contains a h2 in the - Before you continue - section" in {
+        elementText("#main-content > div > div > form > h2") mustBe NumberOfEntriesMessages.beforeYouContinueh2
+      }
+
+      "contains a p1 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(4)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep1
+      }
+
+      "contains a p2 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(5)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep2
+      }
+
+      "contains a p3 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(6)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep3
+      }
     }
 
     "an error exists (no option has been selected)" should {
@@ -120,6 +164,28 @@ class NumberOfEntriesViewSpec extends ViewBaseSpec with BaseMessages {
 
       "render an error message against the field" in {
         elementText("#value-error") mustBe NumberOfEntriesMessages.errorPrefix + NumberOfEntriesMessages.requiredError
+      }
+
+      "contains a h2 in the - Before you continue - section" in {
+        elementText("#main-content > div > div > form > h2") mustBe NumberOfEntriesMessages.beforeYouContinueh2
+      }
+
+      "contains a p1 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(4)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep1
+      }
+
+      "contains a p2 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(5)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep2
+      }
+
+      "contains a p3 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(6)"
+        ) mustBe NumberOfEntriesMessages.beforeYouContinuep3
       }
 
     }
