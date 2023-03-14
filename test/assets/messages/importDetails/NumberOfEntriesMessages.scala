@@ -20,10 +20,16 @@ import messages.BaseMessages
 
 object NumberOfEntriesMessages extends BaseMessages {
 
-  val title: String          = "How many entries are you disclosing an underpayment for?"
-  val radioButtonOne: String = "One entry"
-  val radioButtonTwo: String = "More than one entry"
-  val hint: String           = "All the entries must be for importer."
-  val requiredError: String  = "Select if you are disclosing an underpayment for one entry or more than one entry"
+  val title: String               = "How many entries are you disclosing an underpayment for?"
+  val radioButtonOne: String      = "One entry"
+  val radioButtonTwo: String      = "More than one entry"
+  val hint: String                = "All the entries must be for importer."
+  val requiredError: String       = "Select if you are disclosing an underpayment for one entry or more than one entry"
+  val beforeYouContinueh2: String = "Before you continue"
+  val beforeYouContinuep1: String =
+    "You cannot change the number of entries you are disclosing after you select continue."
+  val beforeYouContinuep2: String =
+    "If you need to change the number of entries you are disclosing, you will need to start your disclosure again."
+  val beforeYouContinuep3: String = "HMRC will not save your information."
 
 }
