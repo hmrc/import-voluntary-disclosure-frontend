@@ -20,10 +20,16 @@ import messages.BaseMessages
 
 object UserTypeMessages extends BaseMessages {
 
-  val title: String          = "Importer or representative?"
-  val h1: String             = "Are you the importer or their representative?"
-  val radioButtonOne: String = "I am the importer"
-  val radioButtonTwo: String = "I am a representative of the importer"
-  val requiredError: String  = "Select if you are the importer or their representative"
+  val title: String               = "Importer or representative?"
+  val h1: String                  = "Are you the importer or their representative?"
+  val radioButtonOne: String      = "I am the importer"
+  val radioButtonTwo: String      = "I am a representative of the importer"
+  val requiredError: String       = "Select if you are the importer or their representative"
+  val beforeYouContinueh2: String = "Before you continue"
+  val beforeYouContinuep1: String =
+    "Once you tell HMRC if you are the importer or their representative (such as a shipping agent) and select continue, you cannot change your answer."
+  val beforeYouContinuep2: String =
+    "If you need to change your answer after you select continue, you will need to start your disclosure again."
+  val beforeYouContinuep3: String = "HMRC will not save your information."
 
 }

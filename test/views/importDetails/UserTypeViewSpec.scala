@@ -49,6 +49,27 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
       "not render an error message against the field" in {
         document.select("#value-error").size mustBe 0
       }
+      "contains a h2 in the - Before you continue - section" in {
+        elementText("#main-content > div > div > form > h2") mustBe UserTypeMessages.beforeYouContinueh2
+      }
+
+      "contains a p1 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(4)"
+        ) mustBe UserTypeMessages.beforeYouContinuep1
+      }
+
+      "contains a p2 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(5)"
+        ) mustBe UserTypeMessages.beforeYouContinuep2
+      }
+
+      "contains a p3 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(6)"
+        ) mustBe UserTypeMessages.beforeYouContinuep3
+      }
     }
 
     "an error exists (no option has been selected)" should {
@@ -65,6 +86,28 @@ class UserTypeViewSpec extends ViewBaseSpec with BaseMessages {
 
       "render an error message against the field" in {
         elementText("#value-error") mustBe UserTypeMessages.errorPrefix + UserTypeMessages.requiredError
+      }
+
+      "contains a h2 in the - Before you continue - section" in {
+        elementText("#main-content > div > div > form > h2") mustBe UserTypeMessages.beforeYouContinueh2
+      }
+
+      "contains a p1 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(4)"
+        ) mustBe UserTypeMessages.beforeYouContinuep1
+      }
+
+      "contains a p2 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(5)"
+        ) mustBe UserTypeMessages.beforeYouContinuep2
+      }
+
+      "contains a p3 in the - Before you continue - section" in {
+        elementText(
+          "#main-content > div > div > form > p:nth-child(6)"
+        ) mustBe UserTypeMessages.beforeYouContinuep3
       }
 
     }
