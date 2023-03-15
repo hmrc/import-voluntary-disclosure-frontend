@@ -41,19 +41,16 @@ trait CYAEntryDetailsSummaryListHelper extends SummaryListHelper {
         buildCustomsProcedureCodeListRow(answers)
       ).flatten
 
-      if (rows.nonEmpty) {
-        Seq(
-          cya.CYASummaryList(
-            Some(messages("cya.entryDetails")),
-            SummaryList(
-              classes = "govuk-!-margin-bottom-9",
-              rows = rows
-            )
+      Seq(
+        cya.CYASummaryList(
+          Some(messages("cya.entryDetails")),
+          SummaryList(
+            classes = "govuk-!-margin-bottom-9",
+            rows = rows
           )
         )
-      } else {
-        Seq.empty
-      }
+      )
+
     } else {
       Seq.empty
     }

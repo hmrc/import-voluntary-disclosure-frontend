@@ -30,6 +30,8 @@ import pages.importDetails._
 import pages.paymentInfo.DefermentPage
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.{PostponedVatAccountingPage, UnderpaymentDetailSummaryPage}
+import play.api.mvc.AnyContentAsEmpty
+import views.data.CheckYourAnswersData
 import views.data.CheckYourAnswersData._
 
 import java.time.{LocalDate, LocalDateTime}
@@ -109,9 +111,14 @@ class CYASummaryListHelperSpec
       buildEntryDetailsSummaryList mustBe Seq(entryDetailsAnswers)
     }
 
-    "produce a valid model when no answers are provided" in new Test {
-      override val userAnswers: UserAnswers = UserAnswers("")
-      buildEntryDetailsSummaryList mustBe List.empty
+    "produce a valid model when all answers are provided for multiple entries" in new Test {
+      val ua: UserAnswers = userAnswers
+        .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        .set(AcceptanceDatePage, false).success.value
+        .set(OneCustomsProcedureCodePage, false).success.value
+
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
+      buildEntryDetailsSummaryList(messages, request) mustBe Seq(entryDetailsAnswersAfterAcceptanceDate)
     }
 
     "not produce Entry Details list when Number of Entries is Bulk" in new Test {
@@ -199,11 +206,26 @@ class CYASummaryListHelperSpec
   "buildImporterDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildImporterDetailsSummaryList mustBe Seq(importerDetailsAnswers)
+      buildImporterDetailsSummaryList mustBe Seq(importerDetailsAnswers(withPostCode = false, yes, yes))
+    }
+
+    "produce a valid model when all answers are provided for values eoriExist as 'false' and vatRegistered as 'false'" in new Test {
+
+       val ua: UserAnswers = userAnswers
+        .set(ImporterAddressPage, ContactAddress("21 Street", Some("Mayfair"), "London", Some("AA1 1AA"), "UK")).success.value
+        .set(ImporterEORIExistsPage, false).success.value
+        .set(ImporterVatRegisteredPage, false).success.value
+
+        val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
+
+      buildImporterDetailsSummaryList(messages, request) mustBe Seq(importerDetailsAnswersNoEori(withPostCode = true,
+        CheckYourAnswersData.no,
+        CheckYourAnswersData.no))
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
+        .set(UserTypePage, UserType.Representative).success.value
       buildImporterDetailsSummaryList mustBe List.empty
     }
 
