@@ -60,8 +60,7 @@ trait CYAEntryDetailsSummaryListHelper extends SummaryListHelper {
     answers: UserAnswers
   )(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(NumberOfEntriesPage).map { numberOfEntries =>
-      val numberOfEntriesValue =
-        if (numberOfEntries.equals(NumberOfEntries.OneEntry)) messages("cya.oneEntry") else messages("cya.bulkEntry")
+      val numberOfEntriesValue = messages("cya.oneEntry")
       createRow(
         keyText = Text(messages("cya.numberOfEntries")),
         valueContent = Text(numberOfEntriesValue),
