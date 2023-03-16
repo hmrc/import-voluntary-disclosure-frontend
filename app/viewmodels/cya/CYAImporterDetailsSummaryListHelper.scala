@@ -76,7 +76,13 @@ trait CYAImporterDetailsSummaryListHelper extends SummaryListHelper {
   private def buildAddressSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(ImporterAddressPage).map { address =>
       val addressParts: Seq[String] =
-        Seq(address.addressLine1, address.addressLine2.getOrElse(""), address.city, address.postalCode.getOrElse(""), address.countryCode).filter(_.nonEmpty)
+        Seq(
+          address.addressLine1,
+          address.addressLine2.getOrElse(""),
+          address.city,
+          address.postalCode.getOrElse(""),
+          address.countryCode
+        ).filter(_.nonEmpty)
 
       createRow(
         keyText = Text(messages("cya.address")),

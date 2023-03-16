@@ -88,7 +88,13 @@ trait CYAYourDetailsSummaryListHelper extends SummaryListHelper {
   private def buildAddressSummaryListRow(answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(TraderAddressPage).map { address =>
       val addressString: Seq[String] =
-        Seq(address.addressLine1, address.addressLine2.getOrElse(""), address.city, address.postalCode.getOrElse(""), address.countryCode).filter(_.nonEmpty)
+        Seq(
+          address.addressLine1,
+          address.addressLine2.getOrElse(""),
+          address.city,
+          address.postalCode.getOrElse(""),
+          address.countryCode
+        ).filter(_.nonEmpty)
       createRow(
         keyText = Text(messages("cya.address")),
         valueContent = HtmlContent(encodeMultilineText(addressString)),

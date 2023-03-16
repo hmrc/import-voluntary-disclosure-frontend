@@ -28,11 +28,12 @@ import views.data.cya.CancelCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime
 
-class CYACancelCaseSummaryListHelperSpec extends SpecBase
-  with Matchers
-  with TryValues
-  with OptionValues
-  with CYACancelCaseSummaryListHelper {
+class CYACancelCaseSummaryListHelperSpec
+    extends SpecBase
+    with Matchers
+    with TryValues
+    with OptionValues
+    with CYACancelCaseSummaryListHelper {
   trait Test {
 
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")

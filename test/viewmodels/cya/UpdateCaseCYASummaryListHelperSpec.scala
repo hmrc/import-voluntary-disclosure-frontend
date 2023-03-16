@@ -88,27 +88,27 @@ class UpdateCaseCYASummaryListHelperSpec
 
     "produce a valid model when all answers are provided and has more than one file" in new Test {
       val ua: UserAnswers = userAnswers
-      .set(
-        UploadSupportingDocumentationPage,
-        Seq(
-          FileUploadInfo(
-            "file-ref-1",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"
-          ),
-          FileUploadInfo(
-            "file-ref-2",
-            "Example.pdf",
-            "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-            LocalDateTime.now,
-            "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-            "application/pdf"
+        .set(
+          UploadSupportingDocumentationPage,
+          Seq(
+            FileUploadInfo(
+              "file-ref-1",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            ),
+            FileUploadInfo(
+              "file-ref-2",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
           )
-        )
-      ).success.value
+        ).success.value
 
       val request = dataRequest.copy(userAnswers = ua)
 
@@ -117,7 +117,7 @@ class UpdateCaseCYASummaryListHelperSpec
           Seq(
             referenceNumberRow,
             moreDocumentationRow(true),
-            fileUploadRow (s"$file<br/>$file", 2),
+            fileUploadRow(s"$file<br/>$file", 2),
             additionalInformationRow
           )
         )
