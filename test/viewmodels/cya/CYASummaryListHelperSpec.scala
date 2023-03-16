@@ -164,7 +164,7 @@ class CYASummaryListHelperSpec
           )
         ).success.value
 
-      val request = dataRequest.copy(userAnswers = ua)
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
 
       buildUnderpaymentDetailsSummaryList(messages, request) mustBe Seq(underpaymentDetailsSingleAnswers("2 reasons given", s"$file<br/>$file", 2))
     }

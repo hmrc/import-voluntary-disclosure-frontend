@@ -83,9 +83,9 @@ object UpdateCaseCheckYourAnswersData {
     )
   )
 
-  val fileUploadRow: SummaryListRow = SummaryListRow(
+  def fileUploadRow(file: String = file, numberOfFile: Int = 1): SummaryListRow = SummaryListRow(
     key = Key(
-      Text(UpdateCaseCYAMessages.filesUploaded(1)),
+      Text(UpdateCaseCYAMessages.filesUploaded(numberOfFile)),
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
@@ -132,7 +132,7 @@ object UpdateCaseCheckYourAnswersData {
       Seq(
         referenceNumberRow,
         moreDocumentationRow(true),
-        fileUploadRow,
+        fileUploadRow(),
         additionalInformationRow
       )
     )
