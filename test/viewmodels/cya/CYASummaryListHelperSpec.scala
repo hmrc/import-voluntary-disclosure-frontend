@@ -30,6 +30,8 @@ import pages.importDetails._
 import pages.paymentInfo.DefermentPage
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.{PostponedVatAccountingPage, UnderpaymentDetailSummaryPage}
+import play.api.mvc.AnyContentAsEmpty
+import views.data.CheckYourAnswersData
 import views.data.CheckYourAnswersData._
 
 import java.time.{LocalDate, LocalDateTime}
@@ -109,9 +111,14 @@ class CYASummaryListHelperSpec
       buildEntryDetailsSummaryList mustBe Seq(entryDetailsAnswers)
     }
 
-    "produce a valid model when no answers are provided" in new Test {
-      override val userAnswers: UserAnswers = UserAnswers("")
-      buildEntryDetailsSummaryList mustBe List.empty
+    "produce a valid model when all answers are provided and acceptance date is false" in new Test {
+      val ua: UserAnswers = userAnswers
+        .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
+        .set(AcceptanceDatePage, false).success.value
+        .set(OneCustomsProcedureCodePage, false).success.value
+
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
+      buildEntryDetailsSummaryList(messages, request) mustBe Seq(entryDetailsAnswersAfterAcceptanceDate)
     }
 
     "not produce Entry Details list when Number of Entries is Bulk" in new Test {
@@ -125,7 +132,45 @@ class CYASummaryListHelperSpec
   "buildUnderpaymentDetails" should {
 
     "produce a valid model when all answers are provided for one entry" in new Test {
-      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsSingleAnswers)
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsSingleAnswers())
+    }
+
+    "produce a valid model when all answers are provided for one entry and multiple underpayment reason" in new Test {
+      val ua = userAnswers
+        .set(
+          UnderpaymentReasonsPage,
+          Seq(
+            UnderpaymentReason(boxNumber = BoxNumber.Box22, original = "50", amended = "60"),
+            UnderpaymentReason(boxNumber = BoxNumber.Box34, original = "100", amended = "160")
+          )
+        ).success.value
+        .set(
+          FileUploadPage,
+          Seq(
+            FileUploadInfo(
+              "file-ref-1",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            ),
+            FileUploadInfo(
+              "file-ref-2",
+              "Example.pdf",
+              "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+              LocalDateTime.now,
+              "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+              "application/pdf"
+            )
+          )
+        ).success.value
+
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
+
+      buildUnderpaymentDetailsSummaryList(messages, request) mustBe Seq(
+        underpaymentDetailsSingleAnswers("2 reasons given", s"$file<br/>$file", 2)
+      )
     }
 
     "produce a valid model when no answers are provided" in new Test {
@@ -136,7 +181,7 @@ class CYASummaryListHelperSpec
     "produce a valid model when all answers are provided for multiple entries" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
         .set(NumberOfEntriesPage, NumberOfEntries.MoreThanOneEntry).success.value
-        .set(AcceptanceDatePage, true).success.value
+        .set(AcceptanceDatePage, false).success.value
         .set(
           FileUploadPage,
           Seq(
@@ -154,7 +199,8 @@ class CYASummaryListHelperSpec
         .set(UserTypePage, UserType.Importer).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
         .set(DefermentPage, false).success.value
-      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
+
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers(acceptanceDateBulkAfter))
     }
 
     "produce a valid model when Duty is used and PVA is not an option" in new Test {
@@ -178,7 +224,8 @@ class CYASummaryListHelperSpec
         .set(UserTypePage, UserType.Importer).success.value
         .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("A00", 0.0, 1.0))).success.value
         .set(DefermentPage, false).success.value
-      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers)
+
+      buildUnderpaymentDetailsSummaryList mustBe Seq(underpaymentDetailsBulkAnswers())
     }
 
   }
@@ -199,11 +246,29 @@ class CYASummaryListHelperSpec
   "buildImporterDetails" should {
 
     "produce a valid model when all answers are provided" in new Test {
-      buildImporterDetailsSummaryList mustBe Seq(importerDetailsAnswers)
+      buildImporterDetailsSummaryList mustBe Seq(importerDetailsAnswers(withPostCode = false, yes, yes))
+    }
+
+    "produce a valid model when all answers are provided for values eoriExist as 'false' and vatRegistered as 'false'" in new Test {
+
+      val ua: UserAnswers = userAnswers
+        .set(
+          ImporterAddressPage,
+          ContactAddress("21 Street", Some("Mayfair"), "London", Some("AA1 1AA"), "UK")
+        ).success.value
+        .set(ImporterEORIExistsPage, false).success.value
+        .set(ImporterVatRegisteredPage, false).success.value
+
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
+
+      buildImporterDetailsSummaryList(messages, request) mustBe Seq(
+        importerDetailsAnswersNoEori(withPostCode = true, CheckYourAnswersData.no, CheckYourAnswersData.no)
+      )
     }
 
     "produce a valid model when no answers are provided" in new Test {
       override val userAnswers: UserAnswers = UserAnswers("")
+        .set(UserTypePage, UserType.Representative).success.value
       buildImporterDetailsSummaryList mustBe List.empty
     }
 

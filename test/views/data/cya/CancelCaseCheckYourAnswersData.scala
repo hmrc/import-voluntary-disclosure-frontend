@@ -45,7 +45,8 @@ object CancelCaseCheckYourAnswersData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(referenceNumber)
+      Text(referenceNumber),
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -66,7 +67,8 @@ object CancelCaseCheckYourAnswersData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(if (supportingDocuments) yes else no)
+      Text(if (supportingDocuments) yes else no),
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -87,7 +89,8 @@ object CancelCaseCheckYourAnswersData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      Text(additionalInformation)
+      Text(additionalInformation),
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =
@@ -108,7 +111,30 @@ object CancelCaseCheckYourAnswersData {
       classes = "govuk-!-width-one-third"
     ),
     value = Value(
-      HtmlContent(file)
+      HtmlContent(file),
+      classes = "govuk-!-width-one-half"
+    ),
+    actions = Some(
+      Actions(items =
+        Seq(
+          ActionItem(
+            controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad().url,
+            HtmlContent("""<span aria-hidden="true">Change</span>"""),
+            visuallyHiddenText = Some(CancelCaseCYAMessages.changeUploadedFiles)
+          )
+        )
+      )
+    )
+  )
+
+  val fileUploadRows: SummaryListRow = SummaryListRow(
+    key = Key(
+      Text(CancelCaseCYAMessages.filesUploaded(2)),
+      classes = "govuk-!-width-one-third"
+    ),
+    value = Value(
+      HtmlContent(s"$file<br/>$file"),
+      classes = "govuk-!-width-one-half"
     ),
     actions = Some(
       Actions(items =

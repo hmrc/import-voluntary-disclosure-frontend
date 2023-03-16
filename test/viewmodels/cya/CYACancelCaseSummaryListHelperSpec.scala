@@ -17,30 +17,28 @@
 package viewmodels.cya
 
 import base.SpecBase
-import models.SubmissionType.CreateCase
-import models._
-import models.requests._
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import models.{FileUploadInfo, UserAnswers}
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
-import pages.serviceEntry.WhatDoYouWantToDoPage
 import pages.shared.MoreDocumentationPage
-import pages.updateCase._
-import views.data.cya.UpdateCaseCheckYourAnswersData._
+import pages.updateCase.{DisclosureReferenceNumberPage, UpdateAdditionalInformationPage, UploadSupportingDocumentationPage}
+import play.api.mvc.AnyContentAsEmpty
+import views.data.cya.CancelCaseCheckYourAnswersData._
 
 import java.time.LocalDateTime
 
-class UpdateCaseCYASummaryListHelperSpec
+class CYACancelCaseSummaryListHelperSpec
     extends SpecBase
     with Matchers
     with TryValues
     with OptionValues
-    with CYAUpdateCaseSummaryListHelper {
-
+    with CYACancelCaseSummaryListHelper {
   trait Test {
 
     val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-      .set(WhatDoYouWantToDoPage, CreateCase).success.value
       .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
+      .set(UpdateAdditionalInformationPage, "Hello World").success.value
       .set(MoreDocumentationPage, true).success.value
       .set(
         UploadSupportingDocumentationPage,
@@ -55,9 +53,8 @@ class UpdateCaseCYASummaryListHelperSpec
           )
         )
       ).success.value
-      .set(UpdateAdditionalInformationPage, "Hello World").success.value
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
@@ -71,23 +68,25 @@ class UpdateCaseCYASummaryListHelperSpec
 
   }
 
-  "buildUpdateCase with file uploaded" should {
-
-    "produce a valid model when all answers are provided" in new Test {
-      buildUpdateCaseSummaryList mustBe Seq(
-        updateCaseAnswers(
+  "CYAPaymentDetailsSummaryListHelper" must {
+    "display a valid model when all answers are provided with supporting documents" in new Test {
+      buildCancelCaseSummaryList mustBe Seq(
+        cancelCaseAnswers(
           Seq(
             referenceNumberRow,
-            moreDocumentationRow(true),
-            fileUploadRow(),
-            additionalInformationRow
+            reasonCancellation,
+            supportingDocumentationRow(true),
+            fileUploadRow
           )
         )
       )
     }
 
-    "produce a valid model when all answers are provided and has more than one file" in new Test {
-      val ua: UserAnswers = userAnswers
+    "display a valid model when all answers are provided" in new Test {
+      override val userAnswers = UserAnswers("some-cred-id")
+        .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
+        .set(UpdateAdditionalInformationPage, "Hello World").success.value
+        .set(MoreDocumentationPage, false).success.value
         .set(
           UploadSupportingDocumentationPage,
           Seq(
@@ -110,40 +109,16 @@ class UpdateCaseCYASummaryListHelperSpec
           )
         ).success.value
 
-      val request = dataRequest.copy(userAnswers = ua)
-
-      buildUpdateCaseSummaryList(messages, request) mustBe Seq(
-        updateCaseAnswers(
+      buildCancelCaseSummaryList mustBe Seq(
+        cancelCaseAnswers(
           Seq(
             referenceNumberRow,
-            moreDocumentationRow(true),
-            fileUploadRow(s"$file<br/>$file", 2),
-            additionalInformationRow
+            reasonCancellation,
+            supportingDocumentationRow(false),
+            fileUploadRows
           )
         )
       )
     }
   }
-
-  "buildUpdateCase with no file uploaded" should {
-
-    "produce a valid model when all answers are provided" in new Test {
-      override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        .set(WhatDoYouWantToDoPage, CreateCase).success.value
-        .set(DisclosureReferenceNumberPage, "C184567898765333333333").success.value
-        .set(MoreDocumentationPage, false).success.value
-        .set(UpdateAdditionalInformationPage, "Hello World").success.value
-
-      buildUpdateCaseSummaryList mustBe Seq(
-        updateCaseAnswers(
-          Seq(
-            referenceNumberRow,
-            moreDocumentationRow(false),
-            additionalInformationRow
-          )
-        )
-      )
-    }
-  }
-
 }
