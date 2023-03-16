@@ -47,6 +47,7 @@ object CheckYourAnswersData {
   val acceptanceDate             = "Before 1 January 2021"
   val acceptanceDateAfter        = "On or after 1 January 2021"
   val acceptanceDateBulk         = "On or before 31 December 2020"
+  val acceptanceDateBulkAfter    = "From 1 January 2021"
   val eoriNumber                 = "GB345834921000"
   val amount                     = "£1.00"
   val reason                     = "1 reason given"
@@ -229,7 +230,8 @@ object CheckYourAnswersData {
     )
   )
 
-  val underpaymentDetailsSingleAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
+  //noinspection ScalaStyle
+  def underpaymentDetailsSingleAnswers(upReason: String = reason, file: String = file, noOfFiles: Int = 1): CYASummaryList = viewmodels.cya.CYASummaryList(
     Some(CYAMessages.underpaymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -282,7 +284,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(reason),
+            Text(upReason),
             classes = "govuk-!-width-one-half"
           ),
           actions = Some(
@@ -320,7 +322,7 @@ object CheckYourAnswersData {
         ),
         SummaryListRow(
           key = Key(
-            Text(CYAMessages.filesUploaded(1)),
+            Text(CYAMessages.filesUploaded(noOfFiles)),
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
@@ -343,7 +345,8 @@ object CheckYourAnswersData {
     )
   )
 
-  val underpaymentDetailsBulkAnswers: CYASummaryList = viewmodels.cya.CYASummaryList(
+  //noinspection ScalaStyle
+  def underpaymentDetailsBulkAnswers(acceptanceDate: String = acceptanceDateBulk): CYASummaryList = viewmodels.cya.CYASummaryList(
     Some(CYAMessages.underpaymentDetails),
     SummaryList(
       classes = "govuk-!-margin-bottom-9",
@@ -375,7 +378,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            Text(acceptanceDateBulk),
+            Text(acceptanceDate),
             classes = "govuk-!-width-one-half"
           ),
           actions = Some(
@@ -733,8 +736,8 @@ object CheckYourAnswersData {
   val answers: Seq[CYASummaryList] = Seq(
     importerDetailsAnswers(withPostCode = false, yes, yes),
     entryDetailsAnswers,
-    underpaymentDetailsSingleAnswers,
-    underpaymentDetailsBulkAnswers,
+    underpaymentDetailsSingleAnswers(),
+    underpaymentDetailsBulkAnswers(),
     yourDetailsAnswers
   )
 

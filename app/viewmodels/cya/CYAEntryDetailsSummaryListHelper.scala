@@ -17,7 +17,6 @@
 package viewmodels.cya
 
 import models.UserAnswers
-import models.importDetails.NumberOfEntries
 import models.requests.DataRequest
 import pages.importDetails._
 import play.api.i18n.Messages
