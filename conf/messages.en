@@ -997,3 +997,10 @@ cancelCase.disclosureNotFound.li2.part2 = ' including the entry details (or wher
 printConfirmation.yourDisclosure = Your disclosure
 printConfirmation.referenceNumber = Disclosure reference number
 printConfirmation.dateSubmitted = Date submitted
+
+# Disclosure already submitted
+cancelCase.alreadySubmitted = You have already asked to cancel your disclosure
+amendCase.alreadySubmitted  = You have already added information to your disclosure
+createCase.alreadySubmitted = You have already submitted your disclosure
+
+
