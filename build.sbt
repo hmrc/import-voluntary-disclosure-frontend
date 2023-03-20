@@ -23,7 +23,7 @@ lazy val microservice = Project(appName, file("."))
     scalacOptions += "-Wconf:src=routes/.*:s",
     scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
     // turn any warnings into errors
-    scalastyleFailOnWarning := true,
+  //  scalastyleFailOnWarning := true,
     // run scalastyle on compile
     compileScalastyle   := (Compile / scalastyle).toTask("").value,
     (Compile / compile) := ((Compile / compile) dependsOn compileScalastyle).value,

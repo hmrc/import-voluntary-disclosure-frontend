@@ -834,3 +834,14 @@ printConfirmation.referenceNumber=Cyfeirnod y Datgeliad
 printConfirmation.yourDisclosure=Eich datgeliad
 printConfirmation.dateSubmitted=Dyddiad cyflwyno
 
+# Disclosure already submitted
+createCase.alreadySubmitted = Rydych eisoes wedi cyflwyno’ch datgeliad
+createCase.alreadySubmitted.p = Mae’ch datgeliad wedi cyrraedd CThEF.
+
+cancelCase.alreadySubmitted = Rydych eisoes wedi ychwanegu gwybodaeth at eich datgeliad
+cancelCase.alreadySubmitted.p = Mae CThEF wedi cael gwybod eich bod wedi ychwanegu gwybodaeth at eich datgeliad.
+
+updateCase.alreadySubmitted  = Rydych eisoes wedi gofyn i ganslo’ch datgeliad
+updateCase.alreadySubmitted.p = Mae CThEF wedi cael gwybod eich bod wedi gofyn i ganslo’ch datgeliad.
+startNewDisclosure.button = Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad
+

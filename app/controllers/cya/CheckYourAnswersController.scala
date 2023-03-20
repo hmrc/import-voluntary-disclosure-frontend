@@ -19,10 +19,11 @@ package controllers.cya
 import config.ErrorHandler
 import controllers.IVDFrontendController
 import controllers.actions._
+import models.SubmissionType
 import org.joda.time.{DateTime, DateTimeZone}
 import pages._
 import pages.importDetails._
-import pages.serviceEntry.KnownEoriDetailsPage
+import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
 import play.api.mvc._
 import repositories.SessionRepository
@@ -68,7 +69,8 @@ class CheckYourAnswersController @Inject() (
             importerName <- Some(request.userAnswers.get(ImporterNamePage).getOrElse(eoriDetails.name))
             eoriNumber   <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
-            _            <- Some(sessionRepository.set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage))))
+            userAnswers  <- request.userAnswers.set(SubmissionTypePage, SubmissionType.CreateCase).toOption
+            _            <- Some(sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage))))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
               case Some(entryDetails) =>

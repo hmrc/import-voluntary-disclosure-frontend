@@ -480,7 +480,8 @@ GET         /cancel-disclosure/disclosure-not-found                             
 
 GET         /unauthorised                                                                      controllers.errors.UnauthorisedController.onPageLoad()
 GET         /not-eligible/no-access-for-agent-user-id                                          controllers.errors.UnauthorisedController.unauthorisedAgentAccess()
-GET         /already_cancelled                                                                 controllers.AlreadySubmittedController.createSubmitted()
-GET         /already_added                                                                     controllers.AlreadySubmittedController.amendSubmitted()
-GET         /already_submitted                                                                 controllers.AlreadySubmittedController.cancelSubmitted()
+
+GET         /already-submitted                                                                 controllers.AlreadySubmittedController.createSubmitted()
+GET         /already-added                                                                     controllers.AlreadySubmittedController.amendSubmitted()
+GET         /already-cancelled                                                                 controllers.AlreadySubmittedController.cancelSubmitted()
 

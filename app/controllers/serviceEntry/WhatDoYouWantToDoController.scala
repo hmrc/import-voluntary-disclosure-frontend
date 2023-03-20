@@ -21,7 +21,7 @@ import controllers.actions._
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import models.SubmissionType.{CancelCase, CreateCase, UpdateCase}
 import models.{SubmissionType, UserAnswers}
-import pages.serviceEntry.{KnownEoriDetailsPage, WhatDoYouWantToDoPage}
+import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage, WhatDoYouWantToDoPage}
 import play.api.mvc._
 import repositories.SessionRepository
 import views.html.serviceEntry.WhatDoYouWantToDoView
@@ -55,7 +55,8 @@ class WhatDoYouWantToDoController @Inject() (
         if (currentValue == userCase) {
           for {
             userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, userCase))
-            _           <- sessionRepository.set(userAnswers)
+            updatedUserAnswers <- Future.fromTry(userAnswers.remove(SubmissionTypePage))
+            _           <- sessionRepository.set(updatedUserAnswers)
           } yield submitRedirect(userCase)
         } else {
           val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))

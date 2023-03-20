@@ -26,10 +26,12 @@ linkButton: components.linkButton
 
     @h1(messages(s"$title.alreadySubmitted"))
 
+     <p class="govuk-body">@messages(s"$title.alreadySubmitted.p")</p>
+
     @p{
     <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
        id="discloseAnotherUnderpayment" class="govuk-button">
-        @{messages("cancelCase.confirmation.anotherDisclosure")}
+        @{messages("startNewDisclosure.button")}
     </a>
     }
 }

@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions._
+import models.SubmissionType
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -34,15 +35,15 @@ class AlreadySubmittedController @Inject()(
     with I18nSupport {
 
   def createSubmitted: Action[AnyContent] = identify.async { implicit request =>
-    Future.successful(Ok(view("createCase")))
+    Future.successful(Ok(view(SubmissionType.CreateCase)))
   }
 
   def amendSubmitted: Action[AnyContent] = identify.async { implicit request =>
-    Future.successful(Ok(view("amendCase")))
+    Future.successful(Ok(view(SubmissionType.UpdateCase)))
   }
 
   def cancelSubmitted: Action[AnyContent] = identify.async { implicit request =>
-    Future.successful(Ok(view("cancelCase")))
+    Future.successful(Ok(view(SubmissionType.CancelCase)))
   }
 
 }

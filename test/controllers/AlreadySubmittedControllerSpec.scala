@@ -19,6 +19,7 @@ package controllers
 import base.ControllerSpecBase
 import play.api.test.Helpers._
 import views.html.shared.AlreadySubmittedView
+
 class AlreadySubmittedControllerSpec extends ControllerSpecBase {
   private lazy val submittedView: AlreadySubmittedView = app.injector.instanceOf[AlreadySubmittedView]
 
@@ -40,7 +41,7 @@ class AlreadySubmittedControllerSpec extends ControllerSpecBase {
     "load amend case already submitted view" in {
       val result = controller.amendSubmitted()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result) mustEqual submittedView("amendCase")(fakeRequest, messages).toString
+      contentAsString(result) mustEqual submittedView("updateCase")(fakeRequest, messages).toString
     }
 
     "load cancel case already submitted view" in {

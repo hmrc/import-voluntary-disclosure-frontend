@@ -19,9 +19,9 @@ package controllers.updateCase
 import config.ErrorHandler
 import controllers.IVDFrontendController
 import controllers.actions._
-import models.UpdateCaseError
+import models.{SubmissionType, UpdateCaseError}
 import pages._
-import pages.serviceEntry.KnownEoriDetailsPage
+import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage}
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.mvc._
 import repositories.SessionRepository
@@ -65,9 +65,10 @@ class UpdateCaseCheckYourAnswersController @Inject() (
           case Left(_) =>
             Future.successful(errorHandler.showInternalServerError)
           case Right(_) =>
-            sessionRepository
-              .set(request.userAnswers.preserve(Seq(KnownEoriDetailsPage)))
-              .map(_ => Ok(confirmationView(caseId)))
+            for {
+              userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.UpdateCase))
+              _ <- sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage)))
+            } yield Ok(confirmationView(caseId))
         }
       case None =>
         Future.successful(errorHandler.showInternalServerError)
