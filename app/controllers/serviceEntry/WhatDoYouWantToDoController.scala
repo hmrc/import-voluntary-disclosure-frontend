@@ -16,8 +16,8 @@
 
 package controllers.serviceEntry
 
-import controllers.IVDFrontendController
 import controllers.actions._
+import controllers.{IVDFrontendController, routes}
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import models.SubmissionType.{CancelCase, CreateCase, UpdateCase}
 import models.{SubmissionType, UserAnswers}
@@ -40,11 +40,21 @@ class WhatDoYouWantToDoController @Inject() (
   implicit val ec: ExecutionContext
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = request.userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
-      formProvider().fill
+  def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+
+    request.userAnswers match {
+      case None =>
+        Future.successful(Redirect(routes.IndexController.onPageLoad()))
+      case Some(userAnswers) =>
+         userAnswers.remove(SubmissionTypePage) map { ua =>
+           sessionRepository.set(ua)
+         }
+        val form = userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
+          formProvider().fill
+        }
+        Future.successful(Ok(view(form, backLink())))
     }
-    Future.successful(Ok(view(form, backLink())))
+
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
@@ -55,8 +65,7 @@ class WhatDoYouWantToDoController @Inject() (
         if (currentValue == userCase) {
           for {
             userAnswers <- Future.fromTry(request.userAnswers.set(WhatDoYouWantToDoPage, userCase))
-            updatedUserAnswers <- Future.fromTry(userAnswers.remove(SubmissionTypePage))
-            _           <- sessionRepository.set(updatedUserAnswers)
+            _           <- sessionRepository.set(userAnswers)
           } yield submitRedirect(userCase)
         } else {
           val cleanedUserAnswers: UserAnswers = request.userAnswers.preserve(Seq(KnownEoriDetailsPage))

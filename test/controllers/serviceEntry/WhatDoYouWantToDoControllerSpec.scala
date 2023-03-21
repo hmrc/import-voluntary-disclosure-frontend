@@ -18,12 +18,13 @@ package controllers.serviceEntry
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
+import controllers.routes
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
 import mocks.repositories.MockSessionRepository
 import models.SubmissionType.CreateCase
-import models.UserAnswers
 import models.requests._
-import pages.serviceEntry.WhatDoYouWantToDoPage
+import models.{SubmissionType, UserAnswers}
+import pages.serviceEntry.{SubmissionTypePage, WhatDoYouWantToDoPage}
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
@@ -75,9 +76,18 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(WhatDoYouWantToDoPage, CreateCase).success.value
+          .set(SubmissionTypePage, SubmissionType.CancelCase).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
+
       status(result) mustBe Status.OK
+    }
+
+    "redirect to index page when userAnswers is 'None'" in new Test {
+      override val userAnswers: Option[UserAnswers] = None
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(routes.IndexController.onPageLoad().url)
     }
 
     "return HTML" in new Test {
