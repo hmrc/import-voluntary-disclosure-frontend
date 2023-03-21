@@ -41,14 +41,13 @@ class WhatDoYouWantToDoController @Inject() (
 ) extends IVDFrontendController(mcc) {
 
   def onLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
-
     request.userAnswers match {
       case None =>
         Future.successful(Redirect(routes.IndexController.onPageLoad()))
       case Some(userAnswers) =>
-         userAnswers.remove(SubmissionTypePage) map { ua =>
-           sessionRepository.set(ua)
-         }
+        userAnswers.remove(SubmissionTypePage) map { ua =>
+          sessionRepository.set(ua)
+        }
         val form = userAnswers.get(WhatDoYouWantToDoPage).fold(formProvider()) {
           formProvider().fill
         }

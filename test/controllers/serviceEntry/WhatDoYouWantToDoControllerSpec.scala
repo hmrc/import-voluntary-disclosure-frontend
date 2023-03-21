@@ -85,7 +85,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
     "redirect to index page when userAnswers is 'None'" in new Test {
       override val userAnswers: Option[UserAnswers] = None
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(routes.IndexController.onPageLoad().url)
     }

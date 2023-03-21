@@ -31,13 +31,14 @@ class DataRequiredActionSpec extends SpecBase with EitherValues {
   }
 
   val identifierRequest: IdentifierRequest[AnyContentAsEmpty.type] = IdentifierRequest(fakeRequest, "id", "eori")
-  val userAnswers: UserAnswers = UserAnswers("id")
+  val userAnswers: UserAnswers                                     = UserAnswers("id")
 
   "DataRequiredAction" must {
     "redirect to IndexController when userAnswers is `None`" in {
       val harness = new Harness
 
-      val result = harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", None)).futureValue.left.value.header
+      val result =
+        harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", None)).futureValue.left.value.header
 
       result.status mustBe SEE_OTHER
       result.headers.get(LOCATION) mustBe Some("/disclose-import-taxes-underpayment")
@@ -46,7 +47,8 @@ class DataRequiredActionSpec extends SpecBase with EitherValues {
     "return userAnswers when userAnswers data exists" in {
       val harness = new Harness
 
-      val result = harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", Some(userAnswers))).futureValue
+      val result =
+        harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", Some(userAnswers))).futureValue
 
       result.isRight mustBe true
     }
@@ -57,7 +59,9 @@ class DataRequiredActionSpec extends SpecBase with EitherValues {
 
       val ua = userAnswers.set(SubmissionTypePage, SubmissionType.CreateCase).success.value
 
-      val result = harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))).futureValue.left.value.header
+      val result = harness.actionRefine(
+        OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))
+      ).futureValue.left.value.header
 
       result.status mustBe SEE_OTHER
       result.headers.get(LOCATION) mustBe Some("/disclose-import-taxes-underpayment/already-submitted")
@@ -69,12 +73,13 @@ class DataRequiredActionSpec extends SpecBase with EitherValues {
 
       val ua = userAnswers.set(SubmissionTypePage, SubmissionType.UpdateCase).success.value
 
-      val result = harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))).futureValue.left.value.header
+      val result = harness.actionRefine(
+        OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))
+      ).futureValue.left.value.header
 
       result.status mustBe SEE_OTHER
       result.headers.get(LOCATION) mustBe Some("/disclose-import-taxes-underpayment/already-added")
     }
-
 
     "redirect to 'already submitted' page when submissionType is 'cancel'" in {
 
@@ -82,7 +87,9 @@ class DataRequiredActionSpec extends SpecBase with EitherValues {
 
       val ua = userAnswers.set(SubmissionTypePage, SubmissionType.CancelCase).success.value
 
-      val result = harness.actionRefine(OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))).futureValue.left.value.header
+      val result = harness.actionRefine(
+        OptionalDataRequest(identifierRequest, "id", "eori", Some(ua))
+      ).futureValue.left.value.header
 
       result.status mustBe SEE_OTHER
       result.headers.get(LOCATION) mustBe Some("/disclose-import-taxes-underpayment/already-cancelled")

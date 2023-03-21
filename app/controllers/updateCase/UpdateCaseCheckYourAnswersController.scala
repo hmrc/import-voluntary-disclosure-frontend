@@ -67,7 +67,7 @@ class UpdateCaseCheckYourAnswersController @Inject() (
           case Right(_) =>
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.UpdateCase))
-              _ <- sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage)))
+              _           <- sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage)))
             } yield Ok(confirmationView(caseId))
         }
       case None =>

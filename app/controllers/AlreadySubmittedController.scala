@@ -26,11 +26,11 @@ import views.html.shared.AlreadySubmittedView
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class AlreadySubmittedController @Inject()(
-                                            identify: IdentifierAction,
-                                            mcc: MessagesControllerComponents,
-                                            view: AlreadySubmittedView,
-                                            implicit val ec: ExecutionContext
+class AlreadySubmittedController @Inject() (
+  identify: IdentifierAction,
+  mcc: MessagesControllerComponents,
+  view: AlreadySubmittedView,
+  implicit val ec: ExecutionContext
 ) extends FrontendController(mcc)
     with I18nSupport {
 

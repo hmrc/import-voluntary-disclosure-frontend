@@ -70,7 +70,7 @@ class CheckYourAnswersController @Inject() (
             eoriNumber   <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(eoriDetails.eori))
             importerEORI <- Some(request.userAnswers.get(ImporterEORINumberPage).getOrElse(""))
             userAnswers  <- request.userAnswers.set(SubmissionTypePage, SubmissionType.CreateCase).toOption
-            _            <- Some(sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage))))
+            _ <- Some(sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage))))
           } yield {
             request.userAnswers.get(EntryDetailsPage) match {
               case Some(entryDetails) =>

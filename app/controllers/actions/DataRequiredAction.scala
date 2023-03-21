@@ -36,7 +36,8 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
       case Some(data) if data.get(SubmissionTypePage).nonEmpty && data.get(WhatDoYouWantToDoPage).isEmpty =>
         data.get(SubmissionTypePage) match {
           case Some(UpdateCase) => Future.successful(Left(Redirect(routes.AlreadySubmittedController.amendSubmitted())))
-          case Some(CancelCase) => Future.successful(Left(Redirect(routes.AlreadySubmittedController.cancelSubmitted())))
+          case Some(CancelCase) =>
+            Future.successful(Left(Redirect(routes.AlreadySubmittedController.cancelSubmitted())))
           case _ => Future.successful(Left(Redirect(routes.AlreadySubmittedController.createSubmitted())))
         }
       case Some(data) =>

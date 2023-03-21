@@ -23,19 +23,19 @@ import views.html.shared.AlreadySubmittedView
 class AlreadySubmittedControllerSpec extends ControllerSpecBase {
   private lazy val submittedView: AlreadySubmittedView = app.injector.instanceOf[AlreadySubmittedView]
 
-    lazy val controller: AlreadySubmittedController = new AlreadySubmittedController(
-      authenticatedAction,
-      messagesControllerComponents,
-      submittedView,
-      ec
-    )
+  lazy val controller: AlreadySubmittedController = new AlreadySubmittedController(
+    authenticatedAction,
+    messagesControllerComponents,
+    submittedView,
+    ec
+  )
 
   "AlreadySubmittedController" must {
 
     "load create case already submitted view" in {
       val result = controller.createSubmitted()(fakeRequest)
       status(result) mustBe OK
-      contentAsString(result)  mustEqual submittedView("createCase")(fakeRequest, messages).toString
+      contentAsString(result) mustEqual submittedView("createCase")(fakeRequest, messages).toString
     }
 
     "load amend case already submitted view" in {
