@@ -23,7 +23,7 @@ import mocks.config.MockAppConfig
 import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.UserType
-import models.requests.{IdentifierRequest, OptionalDataRequest}
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import pages.CheckModePage
 import pages.importDetails.UserTypePage
 import play.api.http.Status
@@ -37,7 +37,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
   trait Test extends MockSessionRepository {
     private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
-    val userAnswers: Option[UserAnswers]        = None
+    val userAnswers: Option[UserAnswers]        = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction        = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
@@ -46,9 +46,22 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
     MockedSessionRepository.set(Future.successful(true))
 
+    implicit lazy val dataRequest: DataRequest[AnyContent] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
+        "credId",
+        "eori",
+        userAnswers
+      ),
+      "credId",
+      "eori",
+      userAnswers.get
+    )
+
     lazy val controller = new UserTypeController(
       authenticatedAction,
       dataRetrievalAction,
+      dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
       form,
@@ -182,13 +195,7 @@ class UserTypeControllerSpec extends ControllerSpecBase {
   "Calling backLink" when {
     "in the the initial user journey" should {
       "go to the confirm New Or Update Case page" in new Test {
-        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""),
-          "cred-id",
-          "eori",
-          None
-        )
-        private val backLink = controller.backLink(request)
+        private val backLink = controller.backLink(dataRequest)
 
         backLink mustBe controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       }
@@ -197,14 +204,10 @@ class UserTypeControllerSpec extends ControllerSpecBase {
 
     "in the the CYA user journey" should {
       "go to the CYA page" in new Test {
-        private val answers = UserAnswers("cred-id").set(CheckModePage, true).success.value
-        val request: OptionalDataRequest[AnyContent] = OptionalDataRequest(
-          IdentifierRequest(fakeRequest, "", ""),
-          "cred-id",
-          "eori",
-          Some(answers)
-        )
-        private val backLink = controller.backLink(request)
+        override val userAnswers: Option[UserAnswers] =
+          Some(UserAnswers("cred-id").set(CheckModePage, true).success.value)
+
+        private val backLink = controller.backLink(dataRequest)
 
         backLink mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }

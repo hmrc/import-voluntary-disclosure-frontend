@@ -17,11 +17,10 @@
 package controllers.importDetails
 
 import controllers.IVDFrontendController
-import controllers.actions.{DataRetrievalAction, IdentifierAction}
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.importDetails.UserTypeFormProvider
-import models.UserAnswers
 import models.importDetails.UserType
-import models.requests.OptionalDataRequest
+import models.requests.DataRequest
 import pages.CheckModePage
 import pages.importDetails.UserTypePage
 import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage}
@@ -37,6 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class UserTypeController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
+  requireData: DataRequiredAction,
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
   formProvider: UserTypeFormProvider,
@@ -44,17 +44,16 @@ class UserTypeController @Inject() (
   implicit val ec: ExecutionContext
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    val form = for {
-      userAnswers <- request.userAnswers
-      data        <- userAnswers.get(UserTypePage)
-    } yield formProvider().fill(data)
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val form = request.userAnswers.get(UserTypePage).fold(formProvider()) {
+      formProvider().fill
+    }
 
-    Future.successful(Ok(view(form.getOrElse(formProvider()), backLink)))
+    Future.successful(Ok(view(form, backLink)))
   }
 
-  def onSubmit: Action[AnyContent] = (identify andThen getData).async { implicit request =>
-    val userAnswers = request.userAnswers.getOrElse(UserAnswers(request.credId))
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val userAnswers = request.userAnswers
     formProvider().bindFromRequest().fold(
       formWithErrors => Future.successful(BadRequest(view(formWithErrors, backLink))),
       newUserType => {
@@ -84,13 +83,8 @@ class UserTypeController @Inject() (
     )
   }
 
-  private[controllers] def backLink(implicit request: OptionalDataRequest[AnyContent]): Call = {
-    val cyaMode = {
-      for {
-        answers <- request.userAnswers
-        mode    <- answers.get(CheckModePage)
-      } yield mode
-    }.getOrElse(false)
+  private[controllers] def backLink(implicit request: DataRequest[AnyContent]): Call = {
+    val cyaMode = request.userAnswers.get(CheckModePage).getOrElse(false)
 
     if (cyaMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
