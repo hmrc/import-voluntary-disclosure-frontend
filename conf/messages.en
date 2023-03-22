@@ -997,3 +997,15 @@ cancelCase.disclosureNotFound.li2.part2 = ' including the entry details (or wher
 printConfirmation.yourDisclosure = Your disclosure
 printConfirmation.referenceNumber = Disclosure reference number
 printConfirmation.dateSubmitted = Date submitted
+
+# Disclosure already submitted
+cancelCase.alreadySubmitted = You have already asked to cancel your disclosure
+cancelCase.alreadySubmitted.p = HMRC has been notified that you have asked to cancel your disclosure.
+
+updateCase.alreadySubmitted  = You have already added information to your disclosure
+updateCase.alreadySubmitted.p = HMRC has been notified that you have added information to your disclosure.
+
+createCase.alreadySubmitted = You have already submitted your disclosure.
+createCase.alreadySubmitted.p = HMRC has received your disclosure.
+startNewDisclosure.button = Start a new, add to, or cancel a disclosure
+

@@ -16,12 +16,14 @@
 
 package controllers.actions
 
-import javax.inject.Inject
 import controllers.routes
+import models.SubmissionType.{CancelCase, UpdateCase}
 import models.requests.{DataRequest, OptionalDataRequest}
+import pages.serviceEntry.{SubmissionTypePage, WhatDoYouWantToDoPage}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext) extends DataRequiredAction {
@@ -31,6 +33,13 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
     request.userAnswers match {
       case None =>
         Future.successful(Left(Redirect(routes.IndexController.onPageLoad())))
+      case Some(data) if data.get(SubmissionTypePage).nonEmpty && data.get(WhatDoYouWantToDoPage).isEmpty =>
+        data.get(SubmissionTypePage) match {
+          case Some(UpdateCase) => Future.successful(Left(Redirect(routes.AlreadySubmittedController.amendSubmitted())))
+          case Some(CancelCase) =>
+            Future.successful(Left(Redirect(routes.AlreadySubmittedController.cancelSubmitted())))
+          case _ => Future.successful(Left(Redirect(routes.AlreadySubmittedController.createSubmitted())))
+        }
       case Some(data) =>
         Future.successful(Right(DataRequest(request, request.credId, request.eori, data)))
     }
