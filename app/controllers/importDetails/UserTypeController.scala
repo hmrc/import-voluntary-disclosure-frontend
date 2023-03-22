@@ -24,7 +24,7 @@ import models.importDetails.UserType
 import models.requests.OptionalDataRequest
 import pages.CheckModePage
 import pages.importDetails.UserTypePage
-import pages.serviceEntry.KnownEoriDetailsPage
+import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage}
 import play.api.libs.json.Format.GenericFormat
 import play.api.mvc._
 import repositories.SessionRepository
@@ -61,7 +61,7 @@ class UserTypeController @Inject() (
         val prevUserType = userAnswers.get(UserTypePage).getOrElse(newUserType)
 
         val cleanedUserAnswers = if (prevUserType != newUserType) {
-          userAnswers.preserve(Seq(KnownEoriDetailsPage))
+          userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage))
         } else {
           userAnswers
         }
