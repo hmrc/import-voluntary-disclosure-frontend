@@ -50,6 +50,9 @@ class IvdHttpParserSpec extends AnyWordSpec with Matchers with ReusableValues {
     "id" -> "1234567890"
   )
 
+  val updateResponseInvalidJson: JsObject = Json.obj(
+  )
+
   val updateResponseModel = UpdateCaseResponse("1234567890")
 
   "IVD Submission HttpParser" when {
@@ -117,6 +120,14 @@ class IvdHttpParserSpec extends AnyWordSpec with Matchers with ReusableValues {
         ) mustBe Right(updateResponseModel)
       }
 
+      "the http response status is OK with invalid Json" in {
+        UpdateResponseReads.read(
+          "",
+          "",
+          HttpResponse(Status.OK, updateResponseInvalidJson, Map.empty[String, Seq[String]])
+        ) mustBe Left(UpdateCaseError.UnexpectedError(Status.OK, Some("Invalid JSON returned from IVD Update Case")))
+      }
+
       "return the correct error when received BAD_REQUEST for InvalidCaseId" in {
         val response =
           HttpResponse(Status.BAD_REQUEST, Json.obj("errorCode" -> 1, "errorMessage" -> "Invalid case ID").toString())
@@ -129,6 +140,16 @@ class IvdHttpParserSpec extends AnyWordSpec with Matchers with ReusableValues {
           Json.obj("errorCode" -> 2, "errorMessage" -> "Case is already closed").toString()
         )
         UpdateResponseReads.read("", "", response) mustBe Left(UpdateCaseError.CaseAlreadyClosed)
+      }
+
+      "return UpdateCaseError.UnexpectedError when received BAD_REQUEST and fail to validate JSON" in {
+        val response = HttpResponse(
+          Status.BAD_REQUEST,
+          Json.obj().toString()
+        )
+        UpdateResponseReads.read("", "", response) mustBe Left(
+          UpdateCaseError.UnexpectedError(response.status, Some("Received an unexpected error response"))
+        )
       }
 
       "return an error when NOT_FOUND is returned" in {
