@@ -90,7 +90,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
     val dan: String                = "1234567"
     val dutyType: SelectedDutyType = Both
-    val vat: SelectedDutyType = Vat
+    val vat: SelectedDutyType      = Vat
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(

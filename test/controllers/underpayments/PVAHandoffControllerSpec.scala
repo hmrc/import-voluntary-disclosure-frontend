@@ -90,7 +90,7 @@ class PVAHandoffControllerSpec extends ControllerSpecBase {
     "return Internal Server Error (ISE) when failed to find importer Name" in new Test {
 
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

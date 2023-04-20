@@ -39,8 +39,7 @@ import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
 
-  private val callbackReadyJson: JsValue = Json.parse(
-    s"""
+  private val callbackReadyJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "READY",
@@ -53,8 +52,7 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
        |   }
        | }""".stripMargin)
 
-  private val callbackFailedRejectedJson: JsValue = Json.parse(
-    s"""
+  private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
        | {
        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
        |   "fileStatus" : "FAILED",
@@ -122,7 +120,7 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
   }
 
   val formProvider: CancelCaseUploadFileFormProvider = injector.instanceOf[CancelCaseUploadFileFormProvider]
-  val form: CancelCaseUploadFileFormProvider = formProvider
+  val form: CancelCaseUploadFileFormProvider         = formProvider
 
   "GET onLoad" should {
     "return OK with HTML when called" in new Test {

@@ -56,7 +56,8 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
       userAnswers.get
     )
 
-    val formProvider: AnyOtherSupportingCancellationDocsFormProvider = injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
+    val formProvider: AnyOtherSupportingCancellationDocsFormProvider =
+      injector.instanceOf[AnyOtherSupportingCancellationDocsFormProvider]
     val form: AnyOtherSupportingCancellationDocsFormProvider = formProvider
 
     MockedSessionRepository.set(Future.successful(true))
@@ -105,7 +106,7 @@ class AnyOtherSupportingCancellationDocsControllerSpec extends ControllerSpecBas
             .set(CheckModePage, true).success.value.set(AnyOtherSupportingDocsPage, true).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(
           controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url
         )

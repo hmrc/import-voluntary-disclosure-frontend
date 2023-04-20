@@ -41,13 +41,13 @@ class CancelCaseDisclosureNotFoundControllerSpec extends ControllerSpecBase {
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new CancelCaseDisclosureNotFoundController(
-        authenticatedAction,
-        dataRetrievalAction,
-        dataRequiredAction,
-        messagesControllerComponents,
-        view,
-        errorHandler
-      )
+      authenticatedAction,
+      dataRetrievalAction,
+      dataRequiredAction,
+      messagesControllerComponents,
+      view,
+      errorHandler
+    )
   }
 
   "onLoad" should {
@@ -56,7 +56,7 @@ class CancelCaseDisclosureNotFoundControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test{
+    "return HTML" in new Test {
       val result = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
@@ -65,7 +65,7 @@ class CancelCaseDisclosureNotFoundControllerSpec extends ControllerSpecBase {
     "return Internal Server Error (ISE) when failed to find caseId" in new Test {
 
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result = controller.onLoad()(fakeRequest)
+      val result                                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }
