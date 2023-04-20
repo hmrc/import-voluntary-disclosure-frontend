@@ -190,7 +190,7 @@ class UploadAuthorityController @Inject() (
     }
   }
 
-  private def getDanNumber(dutyType: SelectedDutyType, splitPayment: Boolean)(implicit
+  private[controllers] def getDanNumber(dutyType: SelectedDutyType, splitPayment: Boolean)(implicit
     request: DataRequest[_]
   ): Option[String] =
     dutyType match {

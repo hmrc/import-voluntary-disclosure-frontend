@@ -18,7 +18,6 @@ package forms.cancelCase
 
 import forms.mappings.Mappings
 import play.api.data.Form
-
 import javax.inject.Inject
 
 class AnyOtherSupportingCancellationDocsFormProvider @Inject() extends Mappings {

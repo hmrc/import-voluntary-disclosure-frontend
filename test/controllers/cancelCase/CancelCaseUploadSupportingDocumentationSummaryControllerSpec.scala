@@ -21,13 +21,13 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.cancelCase.CancelCaseUploadAnotherFileFormProvider
 import models.UserAnswers
 import pages._
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationSummaryView
-
 import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecBase {
@@ -74,6 +74,21 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
       status(result) mustBe Status.OK
     }
 
+    "redirect to upload file page if file is empty" in new Test {
+      override val data: JsObject = Json.obj("data" -> Json.arr())
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(
+            UploadSupportingDocumentationPage,
+            Seq.empty
+          ).success.value
+      )
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      redirectLocation(result) mustBe Some(
+        controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationController.onLoad().url
+      )
+    }
+
     "return SEE OTHER when uploaded-files is empty" in new Test {
       override val data: JsObject = Json.obj("uploaded-supporting-documentation" -> Json.arr())
       val result: Future[Result]  = controller.onLoad(fakeRequest)
@@ -92,7 +107,6 @@ class CancelCaseUploadSupportingDocumentationSummaryControllerSpec extends Contr
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
-
   }
 
   "POST onSubmit" when {
