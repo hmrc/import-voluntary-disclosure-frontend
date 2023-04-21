@@ -39,7 +39,6 @@ import play.api.mvc._
 import play.api.test.Helpers._
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
-
 import java.time.LocalDateTime
 import scala.concurrent.Future
 
@@ -80,10 +79,18 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         .set(UserTypePage, UserType.Representative).success.value
         .set(ImporterNamePage, "importer").success.value
     )
+
+    val userAnswersADNP: Option[UserAnswers] = Some(
+      UserAnswers("credId")
+        .set(AdditionalDefermentNumberPage, "1234568").success.value
+        .set(UserTypePage, UserType.Representative).success.value
+        .set(ImporterNamePage, "importer").success.value
+    )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val dan: String                = "1234567"
     val dutyType: SelectedDutyType = Both
+    val vat: SelectedDutyType      = Vat
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
@@ -431,7 +438,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onSuccess(Duty)(fakeRequest)
       contentAsString(result).contains("/disclose-import-taxes-underpayment/disclosure/check-your-answers") mustBe true
     }
-
   }
 
   "backLink" when {
@@ -463,6 +469,15 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         val result: Call = controller.backLink(Duty, Both, splitPayment = true)(dataRequest)
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
+    }
+  }
+
+  "getDanNumber" should {
+    "return additional-deferment-number if dutyType is Vat" in new Test {
+      override val userAnswersADNP: Option[UserAnswers] =
+        Some(UserAnswers("credId").set(SplitPaymentPage, true).success.value)
+      val result = controller.getDanNumber(Vat, splitPayment = true)(dataRequest)
+      result mustBe Some("1234568")
     }
   }
 

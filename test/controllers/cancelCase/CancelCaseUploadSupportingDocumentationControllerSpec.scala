@@ -23,16 +23,18 @@ import messages.cancelCase.CancelCaseUploadSupportingDocumentationMessages._
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
-import models.UserAnswers
+import models.{FileUploadInfo, UserAnswers}
 import models.requests._
 import models.upscan._
+import pages.CheckModePage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
-
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
@@ -278,11 +280,53 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
     }
   }
 
-  "backLink" should {
-    "return link to Do You Need To Send Us Any other supporting documentation Documentation" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
-      val result: Call                              = controller.backLink()(dataRequest)
-      result mustBe controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad()
+  "backLink" when {
+
+    "in change mode" should {
+      "point to CYA page" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(
+            UserAnswers("some-cred-id")
+              .set(CheckModePage, true).success.value
+          )
+        lazy val result: Call = controller.backLink()
+        result mustBe controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad()
+      }
+    }
+
+    "not in change mode" should {
+      "point to upload another file page if there are files" in new Test {
+
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(CheckModePage, false).success.value
+            .set(
+              UploadSupportingDocumentationPage,
+              Seq(
+                FileUploadInfo(
+                  reference = "file-ref-1",
+                  fileName = "file.txt",
+                  downloadUrl = "url",
+                  uploadTimestamp = LocalDateTime.now,
+                  checksum = "checksum",
+                  fileMimeType = "application/txt"
+                )
+              )
+            ).success.value
+        )
+        val result: Call = controller.backLink()(dataRequest)
+        result mustBe controllers.cancelCase.routes.CancelCaseUploadSupportingDocumentationSummaryController.onLoad()
+      }
+
+      "point to need to upload page if there are no files" in new Test {
+        override val userAnswers: Option[UserAnswers] =
+          Some(
+            UserAnswers("credId")
+              .set(CheckModePage, false).success.value
+          )
+        val result: Call = controller.backLink()(dataRequest)
+        result mustBe controllers.cancelCase.routes.AnyOtherSupportingCancellationDocsController.onLoad()
+      }
     }
   }
 }

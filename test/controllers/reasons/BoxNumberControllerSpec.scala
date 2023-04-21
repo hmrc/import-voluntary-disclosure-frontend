@@ -29,6 +29,8 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import uk.gov.hmrc.govukfrontend.views.Aliases.{Empty, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import views.html.reasons.BoxNumberView
 
 import scala.concurrent.Future
@@ -36,6 +38,7 @@ import scala.concurrent.Future
 class BoxNumberControllerSpec extends ControllerSpecBase {
 
   val BOX_NUMBER = BoxNumber.Box22
+  val OtherItem  = BoxNumber.OtherItem
 
   val underpaymentReasonBoxNumber: UserAnswers = UserAnswers("some-cred-id")
     .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER).success.value
@@ -126,12 +129,47 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
     }
 
     "payload contains invalid data" should {
-
       "return BAD REQUEST when no value is sent" in new Test {
         val result: Future[Result] = controller.onSubmit(fakeRequestGenerator(""))
         status(result) mustBe Status.BAD_REQUEST
       }
+    }
 
+    "createRadioButtons" should {
+
+      "return list with a box number otherItems" in new Test {
+        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(OtherItem, 0, "", "")))
+          .success.value
+
+        controller.createRadioButtons(formProvider(), Set(OtherItem)) mustBe
+          List(
+            RadioItem(Empty, None, None, None, None, Some("or"), false, None, false, Map()),
+            RadioItem(Text("Other reason"), None, Some("99"), None, None, None, false, None, false, Map())
+          )
+      }
+
+      "return list with a box number other than otherItems" in new Test {
+        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
+          .set(UnderpaymentReasonsPage, Seq(UnderpaymentReason(BOX_NUMBER, 0, "", "")))
+          .success.value
+
+        controller.createRadioButtons(formProvider(), Set(BOX_NUMBER)) mustBe
+          List(
+            RadioItem(
+              Text("Box 22 Invoice currency and total amount invoiced"),
+              None,
+              Some("22"),
+              None,
+              None,
+              None,
+              false,
+              None,
+              false,
+              Map()
+            )
+          )
+      }
     }
 
     "underpaymentReasonSelected call" should {

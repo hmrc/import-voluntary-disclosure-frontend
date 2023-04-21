@@ -21,6 +21,7 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.shared.UploadAnotherFileFormProvider
 import models.UserAnswers
 import pages._
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
@@ -71,6 +72,21 @@ class UploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecB
     "return OK" in new Test {
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
+    }
+
+    "redirect to upload file page if file is empty" in new Test {
+      override val data: JsObject = Json.obj("data" -> Json.arr())
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(
+            UploadSupportingDocumentationPage,
+            Seq.empty
+          ).success.value
+      )
+      val result: Future[Result] = controller.onLoad(fakeRequest)
+      redirectLocation(result) mustBe Some(
+        controllers.updateCase.routes.UploadSupportingDocumentationController.onLoad().url
+      )
     }
 
     "return SEE OTHER when uploaded-files is empty" in new Test {

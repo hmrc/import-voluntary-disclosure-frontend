@@ -98,7 +98,7 @@ class BoxNumberController @Inject() (
     }
   }
 
-  private def createRadioButtons(form: Form[_], boxNumbers: Set[BoxNumber])(implicit
+  private[controllers] def createRadioButtons(form: Form[_], boxNumbers: Set[BoxNumber])(implicit
     messages: Messages
   ): Seq[RadioItem] = {
     def radioItem(boxNumber: BoxNumber): RadioItem =

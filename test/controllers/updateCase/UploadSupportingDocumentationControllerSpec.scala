@@ -23,9 +23,11 @@ import messages.updateCase.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
-import models.UserAnswers
+import models.{FileUploadInfo, UserAnswers}
 import models.requests._
 import models.upscan._
+import pages.CheckModePage
+import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
@@ -33,6 +35,7 @@ import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.updateCase.UploadSupportingDocumentationView
 
+import java.time.LocalDateTime
 import scala.concurrent.Future
 
 class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
@@ -279,6 +282,29 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
   }
 
   "backLink" should {
+
+    "point to Upload Another File page if there are files" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId")
+          .set(CheckModePage, false).success.value
+          .set(
+            UploadSupportingDocumentationPage,
+            Seq(
+              FileUploadInfo(
+                reference = "file-ref-1",
+                fileName = "file.txt",
+                downloadUrl = "url",
+                uploadTimestamp = LocalDateTime.now,
+                checksum = "checksum",
+                fileMimeType = "application/txt"
+              )
+            )
+          ).success.value
+      )
+      val result: Call = controller.backLink()(dataRequest)
+      result mustBe controllers.updateCase.routes.UploadSupportingDocumentationSummaryController.onLoad()
+    }
+
     "return link to Do You Need To Send Us More Documentation" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
       val result: Call                              = controller.backLink()(dataRequest)

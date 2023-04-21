@@ -30,7 +30,6 @@ import repositories.{FileUploadRepository, SessionRepository}
 import services.UpScanService
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 import views.html.shared.FileUploadProgressView
-
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
 import scala.util.Try

@@ -28,7 +28,6 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.reasons.PVAHandoffView
-
 import scala.concurrent.Future
 
 class PVAHandoffControllerSpec extends ControllerSpecBase {
@@ -88,6 +87,11 @@ class PVAHandoffControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
-  }
+    "return Internal Server Error (ISE) when failed to find importer Name" in new Test {
 
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+  }
 }

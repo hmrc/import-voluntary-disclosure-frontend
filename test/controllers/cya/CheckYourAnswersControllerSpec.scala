@@ -154,6 +154,31 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
       status(result) mustBe Status.OK
     }
 
+    "return OK even if entryDetails are missing" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(UserTypePage, UserType.Representative).success.value
+          .set(ImporterNamePage, "Test User").success.value
+          .set(ImporterEORINumberPage, "GB123456789").success.value
+          .set(
+            KnownEoriDetailsPage,
+            EoriDetails(
+              "GB123456789",
+              "Test User",
+              ContactAddress(
+                addressLine1 = "address one",
+                countryCode = "GB",
+                city = "Test city",
+                postalCode = Some("AA00AA")
+              ),
+              Some("123456789")
+            )
+          ).success.value
+      )
+      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
     "return Internal Server error when user answers incomplete for confirmation view" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")

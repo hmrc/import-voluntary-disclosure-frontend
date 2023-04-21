@@ -96,6 +96,20 @@ class CancellationReasonControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.SEE_OTHER
       }
 
+      "rediret to CYA" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("some-cred-id")
+            .set(UpdateAdditionalInformationPage, "some text").success.value
+            .set(CheckModePage, true).success.value
+        )
+        val request: FakeRequest[AnyContentAsFormUrlEncoded] =
+          fakeRequest.withFormUrlEncodedBody("value" -> "some text")
+        lazy val result: Future[Result] = controller.onSubmit(request)
+        redirectLocation(result) mustBe Some(
+          controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onLoad().url
+        )
+      }
+
       "return the correct location header for the response" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
