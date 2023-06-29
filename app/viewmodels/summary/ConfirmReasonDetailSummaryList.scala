@@ -22,7 +22,7 @@ import models.reasons.{BoxNumber, UnderpaymentReasonValue}
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.SummaryListHelper
 
@@ -53,7 +53,7 @@ trait ConfirmReasonDetailSummaryList extends SummaryListHelper {
       Seq(
         createRow(
           Text(messages("confirmReason.boxNumber")),
-          HtmlContent(boxNumber.id.toString),
+          Text(boxNumber.id.toString),
           Some(
             createChangeActionItem(
               controllers.reasons.routes.BoxNumberController.onLoad().url,
@@ -73,7 +73,7 @@ trait ConfirmReasonDetailSummaryList extends SummaryListHelper {
       Seq(
         createRow(
           Text(messages("confirmReason.itemNumber")),
-          HtmlContent(itemNumber.toString),
+          Text(itemNumber.toString),
           Some(
             createChangeActionItem(
               controllers.reasons.routes.ItemNumberController.onLoad().url,
@@ -95,7 +95,7 @@ trait ConfirmReasonDetailSummaryList extends SummaryListHelper {
       Seq(
         createRow(
           Text(messages("confirmReason.original")),
-          HtmlContent(underPaymentReasonValue.original),
+          Text(underPaymentReasonValue.original),
           Some(
             createChangeActionItem(
               controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber.id).url,
@@ -107,7 +107,7 @@ trait ConfirmReasonDetailSummaryList extends SummaryListHelper {
         ),
         createRow(
           Text(messages("confirmReason.amended")),
-          HtmlContent(underPaymentReasonValue.amended),
+          Text(underPaymentReasonValue.amended),
           Some(
             createChangeActionItem(
               controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(boxNumber.id).url,
@@ -125,7 +125,7 @@ trait ConfirmReasonDetailSummaryList extends SummaryListHelper {
     Seq(
       createRow(
         Text(messages("confirmReason.otherReason")),
-        HtmlContent(value),
+        Text(value),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.UnderpaymentReasonAmendmentController.onLoad(BoxNumber.OtherItem.id).url,

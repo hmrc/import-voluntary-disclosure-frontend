@@ -20,7 +20,7 @@ import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.SummaryListHelper
 
@@ -49,7 +49,7 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
     Seq(
       createRow(
         Text(messages("confirmReason.itemNumber")),
-        HtmlContent(reason.changed.itemNumber.toString),
+        Text(reason.changed.itemNumber.toString),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
@@ -67,7 +67,7 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
     Seq(
       createRow(
         Text(messages("confirmReason.original")),
-        HtmlContent(reason.changed.original),
+        Text(reason.changed.original),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
@@ -78,7 +78,7 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
       ),
       createRow(
         Text(messages("confirmReason.amended")),
-        HtmlContent(reason.changed.amended),
+        Text(reason.changed.amended),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(boxNumber).url,
@@ -94,7 +94,7 @@ trait ConfirmChangeReasonDetailSummaryList extends SummaryListHelper {
     Seq(
       createRow(
         Text(messages("confirmReason.otherReason")),
-        HtmlContent(value),
+        Text(value),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(BoxNumber.OtherItem.id).url,

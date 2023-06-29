@@ -17,7 +17,7 @@
 package views.data.underpayments
 
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{ActionItem, Actions, Key, SummaryList, SummaryListRow, Value}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.ViewUtils.displayMoney
 
 object UnderpaymentDetailConfirmData {
@@ -37,7 +37,7 @@ object UnderpaymentDetailConfirmData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(0)),
+            content = Text(displayMoney(0)),
             classes = "govuk-!-width-one-half"
           ),
           actions = Some(
@@ -58,7 +58,7 @@ object UnderpaymentDetailConfirmData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            content = HtmlContent(displayMoney(1)),
+            content = Text(displayMoney(1)),
             classes = "govuk-!-width-one-half"
           ),
           actions = Some(
@@ -78,7 +78,7 @@ object UnderpaymentDetailConfirmData {
             content = Text(bodyMessage),
             classes = "govuk-!-width-two-thirds"
           ),
-          value = Value(content = HtmlContent(displayMoney(1))),
+          value = Value(content = Text(displayMoney(1))),
           classes = "govuk-summary-list__row--no-border"
         )
       )

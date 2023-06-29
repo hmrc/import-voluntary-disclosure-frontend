@@ -28,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.EoriDetailsService
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import views.html.errors.ConfirmEoriDetailsErrorView
 import views.html.serviceEntry.ConfirmEORIDetailsView
@@ -75,7 +75,7 @@ class ConfirmEORIDetailsController @Inject() (
 
     def rowItem(message: String, value: String) = SummaryListRow(
       key = Key(content = Text(messages(message)), classes = "govuk-summary-list__key govuk-!-width-one-half"),
-      value = Value(content = HtmlContent(value))
+      value = Value(content = Text(value))
     )
 
     val eoriNumberSummaryListRow: SummaryListRow = rowItem("confirmEORI.eoriNumber", eoriDetails.eori)
