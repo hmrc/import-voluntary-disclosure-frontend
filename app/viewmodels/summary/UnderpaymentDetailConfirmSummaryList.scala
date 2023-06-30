@@ -18,7 +18,7 @@ package viewmodels.summary
 
 import models.underpayments.UnderpaymentAmount
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.SummaryListHelper
 import views.ViewUtils.displayMoney
@@ -33,7 +33,7 @@ trait UnderpaymentDetailConfirmSummaryList extends SummaryListHelper {
       rows = Seq(
         createRow(
           Text(messages("underpaymentDetailsConfirm.originalAmount")),
-          HtmlContent(displayMoney(underpaymentAmount.original)),
+          Text(displayMoney(underpaymentAmount.original)),
           Some(
             createChangeActionItem(
               controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
@@ -44,7 +44,7 @@ trait UnderpaymentDetailConfirmSummaryList extends SummaryListHelper {
         ),
         createRow(
           Text(messages("underpaymentDetailsConfirm.amendedAmount")),
-          HtmlContent(displayMoney(underpaymentAmount.amended)),
+          Text(displayMoney(underpaymentAmount.amended)),
           Some(
             createChangeActionItem(
               controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpaymentType).url,
@@ -55,7 +55,7 @@ trait UnderpaymentDetailConfirmSummaryList extends SummaryListHelper {
         ),
         createRow(
           Text(messages(s"underpaymentDetailsConfirm.$underpaymentType.dueToHmrc")),
-          HtmlContent(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
+          Text(displayMoney(underpaymentAmount.amended - underpaymentAmount.original)),
           keyColumnClasses = "govuk-!-width-two-thirds",
           valueColumnClasses = "",
           rowClasses = "govuk-summary-list__row--no-border"

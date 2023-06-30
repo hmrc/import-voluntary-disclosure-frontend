@@ -19,7 +19,7 @@ package viewmodels.summary
 import models.reasons.{BoxNumber, UnderpaymentReason}
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.SummaryListHelper
 
@@ -43,7 +43,7 @@ trait ChangeUnderpaymentReasonSummaryList extends SummaryListHelper {
       Seq(
         createRow(
           Text(messages("changeUnderpaymentReason.itemNumber")),
-          HtmlContent(underpaymentReason.itemNumber.toString),
+          Text(underpaymentReason.itemNumber.toString),
           Some(
             createChangeActionItem(
               controllers.reasons.routes.ChangeItemNumberController.onLoad().url,
@@ -65,7 +65,7 @@ trait ChangeUnderpaymentReasonSummaryList extends SummaryListHelper {
     Seq(
       createRow(
         Text(messages("changeUnderpaymentReason.original")),
-        HtmlContent(underpaymentReason.original),
+        Text(underpaymentReason.original),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(
@@ -79,7 +79,7 @@ trait ChangeUnderpaymentReasonSummaryList extends SummaryListHelper {
       ),
       createRow(
         Text(messages("changeUnderpaymentReason.amended")),
-        HtmlContent(underpaymentReason.amended),
+        Text(underpaymentReason.amended),
         Some(
           createChangeActionItem(
             controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(
@@ -97,7 +97,7 @@ trait ChangeUnderpaymentReasonSummaryList extends SummaryListHelper {
   private def buildOtherReasonSummary(value: String)(implicit messages: Messages): SummaryListRow = {
     createRow(
       Text(messages("changeUnderpaymentReason.otherReason")),
-      HtmlContent(value),
+      Text(value),
       Some(
         createChangeActionItem(
           controllers.reasons.routes.ChangeUnderpaymentReasonDetailsController.onLoad(99).url,

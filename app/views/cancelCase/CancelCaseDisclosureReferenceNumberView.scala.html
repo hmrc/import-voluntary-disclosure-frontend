@@ -45,7 +45,7 @@
 
         @govukDetails(
             Details(
-                summary = HtmlContent(messages("cancelCase.disclosureReference.detailsHeader")),
+                summary = Text(messages("cancelCase.disclosureReference.detailsHeader")),
                 content = HtmlContent(
                     messages("cancelCase.disclosureReference.details_p1") +
                     <a class="govuk-link" href={s"mailto:${appConfig.c18EmailAddress}"}>{appConfig.c18EmailAddress}</a>.toString() +

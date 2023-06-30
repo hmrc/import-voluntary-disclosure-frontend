@@ -18,7 +18,7 @@ package viewmodels.summary
 
 import models.reasons.{BoxNumber, UnderpaymentReason}
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.SummaryListHelper
 
@@ -46,11 +46,11 @@ trait UnderpaymentReasonSummaryList extends SummaryListHelper {
           }
 
           val valueContent = if (underpayment.boxNumber == BoxNumber.OtherItem) {
-            HtmlContent(messages("underpaymentReasonSummary.entryOrItem"))
+            Text(messages("underpaymentReasonSummary.entryOrItem"))
           } else if (underpayment.itemNumber == 0) {
-            HtmlContent(messages("underpaymentReasonSummary.entryLevel"))
+            Text(messages("underpaymentReasonSummary.entryLevel"))
           } else {
-            HtmlContent(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
+            Text(s"${messages("underpaymentReasonSummary.item")} ${underpayment.itemNumber}")
           }
 
           createRow(

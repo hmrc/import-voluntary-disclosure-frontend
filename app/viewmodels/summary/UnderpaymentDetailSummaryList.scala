@@ -18,7 +18,7 @@ package viewmodels.summary
 
 import models.underpayments.UnderpaymentDetail
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.SummaryListHelper
 import views.ViewUtils.displayMoney
@@ -37,7 +37,7 @@ trait UnderpaymentDetailSummaryList extends SummaryListHelper {
       yield {
         createRow(
           Text(messages(s"underpaymentDetailsSummary.${underpayment.duty}")),
-          HtmlContent(displayMoney(underpayment.amended - underpayment.original)),
+          Text(displayMoney(underpayment.amended - underpayment.original)),
           Some(
             createChangeActionItem(
               controllers.underpayments.routes.ChangeUnderpaymentDetailsController.onLoad(underpayment.duty).url,
@@ -55,7 +55,7 @@ trait UnderpaymentDetailSummaryList extends SummaryListHelper {
     val amountOwed = underpaymentDetail.map(underpayment => underpayment.amended - underpayment.original).sum
     createRow(
       Text(messages(s"underpaymentDetailsSummary.owedToHMRC")),
-      HtmlContent(displayMoney(amountOwed)),
+      Text(displayMoney(amountOwed)),
       keyColumnClasses = "govuk-!-width-one-half govuk-!-padding-top-7",
       rowClasses = "govuk-summary-list__row--no-border govuk-summary-list__row--no-actions govuk-!-font-weight-bold"
     )

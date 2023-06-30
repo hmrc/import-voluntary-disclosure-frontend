@@ -53,7 +53,7 @@ object ChangeUnderpaymentReasonData {
             content = Text("Item number")
           ),
           value = Value(
-            HtmlContent("1")
+            Text("1")
           ),
           actions = Some(
             Actions(
@@ -72,7 +72,7 @@ object ChangeUnderpaymentReasonData {
             content = Text("Original value")
           ),
           value = Value(
-            HtmlContent("50")
+            Text("50")
           ),
           actions = Some(
             Actions(
@@ -92,7 +92,7 @@ object ChangeUnderpaymentReasonData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent("60")
+            Text("60")
           ),
           actions = Some(
             Actions(
@@ -117,7 +117,7 @@ object ChangeUnderpaymentReasonData {
             content = Text("Original value")
           ),
           value = Value(
-            HtmlContent("50")
+            Text("50")
           ),
           actions = Some(
             Actions(
@@ -137,7 +137,7 @@ object ChangeUnderpaymentReasonData {
             classes = "govuk-!-width-two-thirds"
           ),
           value = Value(
-            HtmlContent("60")
+            Text("60")
           )
         )
       )
@@ -151,7 +151,7 @@ object ChangeUnderpaymentReasonData {
             content = Text("Other reason")
           ),
           value = Value(
-            HtmlContent("Other reason"),
+            Text("Other reason"),
             "govuk-!-width-one-half"
           ),
           actions = Some(

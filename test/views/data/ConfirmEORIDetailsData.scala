@@ -17,7 +17,6 @@
 package views.data
 
 import messages.serviceEntry.ConfirmEORIDetailsMessages
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 
@@ -32,7 +31,7 @@ object ConfirmEORIDetailsData {
           classes = classStyling
         ),
         value = Value(
-          content = HtmlContent(number)
+          content = Text(number)
         )
       ),
       SummaryListRow(
@@ -41,7 +40,7 @@ object ConfirmEORIDetailsData {
           classes = classStyling
         ),
         value = Value(
-          content = HtmlContent(name)
+          content = Text(name)
         )
       ),
       SummaryListRow(
@@ -50,7 +49,7 @@ object ConfirmEORIDetailsData {
           classes = classStyling
         ),
         value = Value(
-          content = HtmlContent(vatNumber)
+          content = Text(vatNumber)
         )
       )
     )
