@@ -34,7 +34,6 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
   val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
-  lazy val contactUrl              = s"$contactHost/contact/contact-hmrc?service=$contactFormServiceIdentifier"
   lazy val host                    = servicesConfig.getString("urls.host")
 
   def feedbackUrl(implicit request: RequestHeader): String =
@@ -109,7 +108,6 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 trait AppConfig extends FixedConfig {
   val footerLinkItems: Seq[String]
   val contactFormServiceIdentifier: String
-  val contactUrl: String
   val surveyUrl: String
   val host: String
 
