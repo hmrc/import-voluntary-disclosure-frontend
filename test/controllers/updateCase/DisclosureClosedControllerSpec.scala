@@ -69,7 +69,7 @@ class DisclosureClosedControllerSpec extends ControllerSpecBase {
 
     "return Internal Server Error" in new Test {
       override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id"))
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

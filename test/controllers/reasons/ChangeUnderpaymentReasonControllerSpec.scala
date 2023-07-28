@@ -96,7 +96,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
-      contentAsString(result) must include ("Change box 22 of the reason for underpayment")
+      contentAsString(result) must include("Change box 22 of the reason for underpayment")
     }
 
     "return HTML other reason tile" in new Test {
@@ -111,7 +111,7 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
           ).success.value
       )
       val result: Future[Result] = controller.onLoad()(fakeRequest)
-      contentAsString(result) must include ("Change other reason for underpayment")
+      contentAsString(result) must include("Change other reason for underpayment")
     }
 
     "return Internal Server Error" in new Test {

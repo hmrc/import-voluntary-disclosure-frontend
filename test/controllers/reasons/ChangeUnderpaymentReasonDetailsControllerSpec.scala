@@ -163,7 +163,7 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
 
       "return Internal Server Error" in new Test {
         override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-        val result = controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive))
+        val result                                    = controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive))
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }

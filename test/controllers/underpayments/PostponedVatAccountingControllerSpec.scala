@@ -82,7 +82,7 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
     }
 
     "return Internal Server Error" in new Test {
-      override val userAnswers = Some(UserAnswers("credId"))
+      override val userAnswers   = Some(UserAnswers("credId"))
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
@@ -147,9 +147,9 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
       }
 
       "return Internal Server Error" in new Test {
-        override val userAnswers = Some(UserAnswers("credId"))
+        override val userAnswers                             = Some(UserAnswers("credId"))
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller.onSubmit(request)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
     }
