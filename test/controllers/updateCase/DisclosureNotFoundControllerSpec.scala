@@ -29,9 +29,10 @@ class DisclosureNotFoundControllerSpec extends ControllerSpecBase {
   val userAnswers: Option[UserAnswers] = Some(
     UserAnswers("credId").set(DisclosureReferenceNumberPage, "C18").success.value
   )
-  val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+  private def controller(userAnswers: Option[UserAnswers] = userAnswers) = {
 
-  val controller =
+    val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+
     new DisclosureNotFoundController(
       authenticatedAction,
       dataRetrievalAction,
@@ -40,17 +41,24 @@ class DisclosureNotFoundControllerSpec extends ControllerSpecBase {
       view,
       errorHandler
     )
+  }
 
   "onLoad" should {
     "return 200" in {
-      val result = controller.onLoad()(fakeRequest)
+      val result = controller().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
     "return HTML" in {
-      val result = controller.onLoad()(fakeRequest)
+      val result = controller().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+
+    "return Internal Server Error" in {
+      val emptyAnswer = Some(UserAnswers("credId"))
+      val result = controller(emptyAnswer).onLoad()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }
 }

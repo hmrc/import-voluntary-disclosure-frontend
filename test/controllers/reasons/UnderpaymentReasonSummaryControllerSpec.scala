@@ -79,6 +79,19 @@ class UnderpaymentReasonSummaryControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
+    "return Internal Server Error" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(
+        UserAnswers("credId").set(
+          UnderpaymentReasonsPage,
+          Seq(
+            UnderpaymentReason(boxNumber = BoxNumber.Box33, itemNumber = 15, original = "50", amended = "60")
+          )
+        ).success.value
+      )
+      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.OK
+    }
+
   }
 
   "POST onSubmit" when {
