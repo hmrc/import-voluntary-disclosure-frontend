@@ -96,6 +96,14 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
+    "raise Run Time Exception" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val thrown = intercept[RuntimeException] {
+        await(controller.onLoad(fakeRequest))
+      }
+      thrown.getMessage mustBe "No change reason found for remove"
+    }
+
   }
 
   "POST onSubmit" when {
