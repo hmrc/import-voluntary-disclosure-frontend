@@ -57,7 +57,7 @@ class DisclosureNotFoundControllerSpec extends ControllerSpecBase {
 
     "return Internal Server Error" in {
       val emptyAnswer = Some(UserAnswers("credId"))
-      val result = controller(emptyAnswer).onLoad()(fakeRequest)
+      val result      = controller(emptyAnswer).onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }
