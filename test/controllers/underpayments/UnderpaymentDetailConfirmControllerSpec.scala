@@ -134,6 +134,23 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
         )
       }
 
+      "return a SEE OTHER underpayment summary response when change is true but values are changed" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(
+          UserAnswers("credId")
+            .set(
+              UnderpaymentDetailSummaryPage,
+              Seq(UnderpaymentDetail("BOO", original = 10, amended = 20))
+            ).success.value
+            .set(UnderpaymentTypePage, "BOO").success.value
+            .set(UnderpaymentDetailsPage, UnderpaymentAmount(10, 20)).success.value
+        )
+        lazy val result: Future[Result] = controller.onSubmit("B00", change = true)(fakeRequest)
+        status(result) mustBe Status.SEE_OTHER
+        redirectLocation(result) mustBe Some(
+          controllers.underpayments.routes.UnderpaymentDetailSummaryController.onLoad().url
+        )
+      }
+
       "update the UserAnswers in session" in new Test {
         await(
           controller.onSubmit("B00", change = true)(
