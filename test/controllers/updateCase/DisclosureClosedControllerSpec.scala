@@ -67,6 +67,11 @@ class DisclosureClosedControllerSpec extends ControllerSpecBase {
       charset(result) mustBe Some("utf-8")
     }
 
+    "return Internal Server Error" in new Test {
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id"))
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
   }
 
 }
