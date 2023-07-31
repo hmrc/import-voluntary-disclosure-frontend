@@ -160,6 +160,12 @@ class ChangeUnderpaymentReasonDetailsControllerSpec extends ControllerSpecBase {
         val result: RuntimeException = intercept[RuntimeException](await(controller.onSubmit(0)(fakeRequest)))
         assert(result.getMessage.contains("Invalid Box Number: 0"))
       }
+
+      "return Internal Server Error" in new Test {
+        override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+        val result                                    = controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive))
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      }
     }
 
   }

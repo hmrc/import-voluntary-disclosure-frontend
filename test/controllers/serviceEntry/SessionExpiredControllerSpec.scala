@@ -66,6 +66,12 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
       val result: Future[Result] = controller.keepAlive()(fakeRequest)
       status(result) mustBe Status.NO_CONTENT
     }
+
+    "return false" in new Test {
+      override val userAnswers: Option[UserAnswers] = None
+      val result: Future[Result]                    = controller.keepAlive()(fakeRequest)
+      status(result) mustBe Status.NO_CONTENT
+    }
   }
 
   "GET timeout" should {
