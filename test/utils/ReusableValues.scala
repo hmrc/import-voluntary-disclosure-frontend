@@ -26,13 +26,13 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.http.HttpResponse
 
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{Instant, LocalDate, LocalDateTime}
 import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
 import models.reasons.{BoxNumber, UnderpaymentReason}
 
 trait ReusableValues {
 
-  private val validTimestamp = LocalDateTime.parse("2021-05-14T20:15:13.807")
+  private val validTimestamp = Instant.parse("2021-05-14T20:15:13.807Z")
 
   val idOne: String = "1"
 

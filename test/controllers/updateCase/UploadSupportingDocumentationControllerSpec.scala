@@ -35,7 +35,7 @@ import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.updateCase.UploadSupportingDocumentationView
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.Future
 
 class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
@@ -294,7 +294,7 @@ class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = Instant.now,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )

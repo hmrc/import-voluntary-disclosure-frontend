@@ -34,7 +34,8 @@ import play.api.mvc._
 import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
-import java.time.LocalDateTime
+
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSpecBase {
@@ -307,7 +308,7 @@ class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSp
                   reference = "file-ref-1",
                   fileName = "file.txt",
                   downloadUrl = "url",
-                  uploadTimestamp = LocalDateTime.now,
+                  uploadTimestamp = Instant.now,
                   checksum = "checksum",
                   fileMimeType = "application/txt"
                 )

@@ -34,7 +34,7 @@ import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import views.html.paymentInfo.RepresentativeDanImportVATView
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.Future
 import config.ErrorHandler
 import pages.importDetails.ImporterNamePage
@@ -265,7 +265,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
                     "file-ref-1",
                     "DutyDocument.pdf",
                     "http://localhost:9570/upscan/download/b1bd66aa-97df-4302-931f-f40a5702a14b",
-                    LocalDateTime.of(2020, 1, 10, 10, 31),
+                    Instant.ofEpochMilli(1578652260000l),
                     "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e5",
                     "application/pdf"
                   )
@@ -277,7 +277,7 @@ class RepresentativeDanImportVATControllerSpec extends ControllerSpecBase {
                     "file-ref-1",
                     "VATDocument.pdf",
                     "http://localhost:9570/upscan/download/5e922a0f-d5ad-4aa6-9977-45a83096f71d",
-                    LocalDateTime.of(2020, 1, 10, 10, 30),
+                    Instant.ofEpochMilli(1578652200000l),
                     "10b53aa59c8a893dc6b8708af3732a90e1c53f902c3656feeb43dba8695054e6",
                     "application/pdf"
                   )

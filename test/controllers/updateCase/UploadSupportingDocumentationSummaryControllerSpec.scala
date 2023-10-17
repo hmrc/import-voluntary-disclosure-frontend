@@ -43,7 +43,7 @@ class UploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecB
           "reference"       -> "file-ref-1",
           "fileName"        -> "text.txt",
           "downloadUrl"     -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
-          "uploadTimestamp" -> "2021-01-26T13:22:59.388",
+          "uploadTimestamp" -> "2021-01-26T13:22:59.388Z",
           "checksum"        -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
           "fileMimeType"    -> "application/txt"
         )

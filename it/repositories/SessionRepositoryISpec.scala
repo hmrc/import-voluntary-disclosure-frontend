@@ -25,7 +25,7 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with FutureAwaits with DefaultAwaitTimeout {
@@ -33,13 +33,13 @@ class SessionRepositoryISpec extends PlaySpec with GuiceOneServerPerSuite with F
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  val fakeNow: LocalDateTime = LocalDateTime.now()
+  val fakeNow: Instant = Instant.now()
 
   val repo: UserAnswersRepository = new UserAnswersRepository(mongo: MongoComponent, appConfig)
 
   private def count: Long = await(repo.collection.countDocuments().toFuture())
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
+  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.instantWrites)
 
   val userAnswersJson: JsValue = Json.parse(
     s"""{

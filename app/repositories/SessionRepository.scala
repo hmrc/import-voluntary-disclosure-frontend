@@ -27,7 +27,7 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.Codecs._
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -54,7 +54,7 @@ class UserAnswersRepository @Inject() (mongoComponent: MongoComponent, appConfig
       .headOption()
 
   override def set(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
-    val modifier = userAnswers copy (lastUpdated = LocalDateTime.now())
+    val modifier = userAnswers copy (lastUpdated = Instant.now())
     val update   = BsonDocument("$set" -> modifier.toDocument())
     collection
       .updateOne(equal("_id", userAnswers.id), update, UpdateOptions().upsert(true))

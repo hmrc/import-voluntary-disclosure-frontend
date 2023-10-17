@@ -18,13 +18,13 @@ package models
 
 import play.api.libs.json._
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 case class FileUploadInfo(
   reference: String,
   fileName: String,
   downloadUrl: String,
-  uploadTimestamp: LocalDateTime,
+  uploadTimestamp: Instant,
   checksum: String,
   fileMimeType: String
 )

@@ -21,7 +21,7 @@ import play.api.libs.json.Reads._
 import play.api.libs.json._
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import javax.mail.internet.MimeUtility
 import scala.util.Try
 
@@ -43,18 +43,18 @@ object FileUpload {
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
-case class UploadDetails(uploadTimestamp: LocalDateTime, checksum: String, fileName: String, fileMimeType: String)
+case class UploadDetails(uploadTimestamp: Instant, checksum: String, fileName: String, fileMimeType: String)
 
 object UploadDetails {
 
   implicit val formats: Format[UploadDetails] = Format(
-    ((JsPath \ "uploadTimestamp").read[LocalDateTime].orElse(
-      (JsPath \ "uploadTimestamp").read(MongoJavatimeFormats.localDateTimeReads)
+    ((JsPath \ "uploadTimestamp").read[Instant].orElse(
+      (JsPath \ "uploadTimestamp").read(MongoJavatimeFormats.instantReads)
     ) and
       (JsPath \ "checksum").read[String] and
       (JsPath \ "fileName").read[String].map(decodeMimeEncodedWord) and
       (JsPath \ "fileMimeType").read[String])(UploadDetails.apply _),
-    ((JsPath \ "uploadTimestamp").write(MongoJavatimeFormats.localDateTimeWrites) and
+    ((JsPath \ "uploadTimestamp").write(MongoJavatimeFormats.instantWrites) and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
       (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))

@@ -37,13 +37,13 @@ class FileUploadRepositoryISpec
   val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  val fakeNow: LocalDateTime = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
+  val fakeNow: Instant = Instant.now().truncatedTo(java.time.temporal.ChronoUnit.MILLIS)
 
   val repo: FileUploadRepositoryImpl = new FileUploadRepositoryImpl(mongo: MongoComponent, appConfig)
 
   private def count: Long = await(repo.collection.countDocuments().toFuture())
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
+  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.instantWrites)
 
   trait Test {
     await(repo.collection.drop().head())
