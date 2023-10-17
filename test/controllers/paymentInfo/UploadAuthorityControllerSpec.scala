@@ -40,7 +40,7 @@ import play.api.test.Helpers._
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class UploadAuthorityControllerSpec extends ControllerSpecBase {

@@ -23,9 +23,9 @@ import messages.updateCase.UploadSupportingDocumentationMessages
 import mocks.config.MockAppConfig
 import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
 import mocks.services.MockUpScanService
-import models.{FileUploadInfo, UserAnswers}
 import models.requests._
 import models.upscan._
+import models.{FileUploadInfo, UserAnswers}
 import pages.CheckModePage
 import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.http.Status
@@ -35,7 +35,7 @@ import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.updateCase.UploadSupportingDocumentationView
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class UploadSupportingDocumentationControllerSpec extends ControllerSpecBase {

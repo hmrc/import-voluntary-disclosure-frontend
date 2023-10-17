@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.shared.RemoveUploadedFileView
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class RemoveSupportingDocumentationControllerSpec extends ControllerSpecBase {

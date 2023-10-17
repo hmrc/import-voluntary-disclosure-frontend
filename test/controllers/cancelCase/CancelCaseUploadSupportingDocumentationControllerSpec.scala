@@ -35,7 +35,7 @@ import play.api.test.Helpers._
 import views.html.shared.FileUploadProgressView
 import views.html.cancelCase.CancelCaseUploadSupportingDocumentationView
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class CancelCaseUploadSupportingDocumentationControllerSpec extends ControllerSpecBase {

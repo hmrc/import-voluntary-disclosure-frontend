@@ -35,7 +35,7 @@ import play.api.test.Helpers._
 import views.html.docUpload.UploadFileView
 import views.html.shared.FileUploadProgressView
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class UploadFileControllerSpec extends ControllerSpecBase {

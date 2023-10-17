@@ -19,6 +19,8 @@ package utils
 import messages.underpayments.UnderpaymentTypeMessages
 import models.OptionalDocument.{AirwayBill, ImportAndEntry, OriginProof, Other}
 import models._
+import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
+import models.reasons.{BoxNumber, UnderpaymentReason}
 import models.underpayments.UnderpaymentDetail
 import play.api.http.Status
 import play.api.libs.json.{JsObject, Json}
@@ -26,9 +28,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import uk.gov.hmrc.http.HttpResponse
 
-import java.time.{Instant, LocalDate, LocalDateTime}
-import models.importDetails.{EntryDetails, NumberOfEntries, UserType}
-import models.reasons.{BoxNumber, UnderpaymentReason}
+import java.time.{Instant, LocalDate}
 
 trait ReusableValues {
 

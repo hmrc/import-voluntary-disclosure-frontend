@@ -28,7 +28,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.docUpload.SupportingDocView
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 import scala.concurrent.Future
 
 class SupportingDocControllerSpec extends ControllerSpecBase {

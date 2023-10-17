@@ -26,7 +26,7 @@ import pages.updateCase.{DisclosureReferenceNumberPage, UpdateAdditionalInformat
 import play.api.mvc.AnyContentAsEmpty
 import views.data.cya.CancelCaseCheckYourAnswersData._
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 
 class CYACancelCaseSummaryListHelperSpec
     extends SpecBase

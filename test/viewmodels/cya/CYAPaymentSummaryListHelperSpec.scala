@@ -32,7 +32,7 @@ import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import views.data.cya.CheckYourAnswersPaymentData._
 
-import java.time.{Instant, LocalDate, LocalDateTime}
+import java.time.{Instant, LocalDate}
 
 class CYAPaymentSummaryListHelperSpec
     extends SpecBase
