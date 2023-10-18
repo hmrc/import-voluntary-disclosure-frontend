@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.shared.RemoveUploadedFileView
 
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.Future
 
 class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
@@ -87,7 +87,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = Instant.now,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )
@@ -140,7 +140,7 @@ class RemoveUploadedFileControllerSpec extends ControllerSpecBase {
                   reference = "file-ref-1",
                   fileName = "file.txt",
                   downloadUrl = "url",
-                  uploadTimestamp = LocalDateTime.now,
+                  uploadTimestamp = Instant.now,
                   checksum = "checksum",
                   fileMimeType = "application/txt"
                 )

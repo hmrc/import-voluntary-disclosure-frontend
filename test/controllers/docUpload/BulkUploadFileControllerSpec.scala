@@ -35,7 +35,7 @@ import play.api.test.Helpers._
 import views.html.docUpload.BulkUploadFileView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.Future
 
 class BulkUploadFileControllerSpec extends ControllerSpecBase {
@@ -330,7 +330,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "filename.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = Instant.now,
                 checksum = "checksum",
                 fileMimeType = "filename/txt"
               )
@@ -351,7 +351,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = Instant.now,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )
@@ -373,7 +373,7 @@ class BulkUploadFileControllerSpec extends ControllerSpecBase {
                 reference = "file-ref-1",
                 fileName = "file.txt",
                 downloadUrl = "url",
-                uploadTimestamp = LocalDateTime.now,
+                uploadTimestamp = Instant.now,
                 checksum = "checksum",
                 fileMimeType = "application/txt"
               )

@@ -71,7 +71,7 @@ trait UpdateCaseServiceTestData extends ReusableValues {
           "reference"       -> "file-ref-1",
           "fileName"        -> "TestDocument.pdf",
           "downloadUrl"     -> "http://some/location",
-          "uploadTimestamp" -> "2021-05-14T20:15:13.807",
+          "uploadTimestamp" -> "2021-05-14T20:15:13.807Z",
           "checksum"        -> "the file checksum",
           "fileMimeType"    -> "application/pdf"
         )
@@ -87,7 +87,7 @@ trait UpdateCaseServiceTestData extends ReusableValues {
           "reference"       -> "file-ref-1",
           "fileName"        -> "TestDocument.pdf",
           "downloadUrl"     -> "http://some/location",
-          "uploadTimestamp" -> "2021-05-14T20:15:13.807",
+          "uploadTimestamp" -> "2021-05-14T20:15:13.807Z",
           "checksum"        -> "the file checksum",
           "fileMimeType"    -> "application/pdf"
         )

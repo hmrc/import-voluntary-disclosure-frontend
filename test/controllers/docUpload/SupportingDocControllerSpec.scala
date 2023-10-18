@@ -28,7 +28,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers._
 import views.html.docUpload.SupportingDocView
 
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.Future
 
 class SupportingDocControllerSpec extends ControllerSpecBase {
@@ -66,7 +66,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
           .set(
             FileUploadPage,
             Seq(
-              FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", LocalDateTime.now(), "checksum", "fileMimeType")
+              FileUploadInfo("file-ref-1", "test.pdf", "downloadUrl", Instant.now(), "checksum", "fileMimeType")
             )
           ).success.value
       )

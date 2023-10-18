@@ -21,7 +21,7 @@ import models.upscan.FileStatusEnum.READY
 import models.upscan.{FileUpload, UploadDetails}
 import play.api.libs.json.{JsSuccess, JsValue, Json}
 
-import java.time.LocalDateTime
+import java.time.Instant
 
 class FileUploadSpec extends ModelSpecBase {
 
@@ -32,7 +32,7 @@ class FileUploadSpec extends ModelSpecBase {
     Some(READY),
     Some(
       UploadDetails(
-        LocalDateTime.parse("2018-04-24T09:30"),
+        Instant.parse("2018-04-24T09:30:00Z"),
         "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
         "test.pdf",
         "application/pdf"

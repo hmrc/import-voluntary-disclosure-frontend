@@ -25,7 +25,7 @@ import repositories.UserAnswersRepository
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
-import java.time.LocalDateTime
+import java.time.{Instant, LocalDateTime}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -34,11 +34,11 @@ object UserAnswersStub extends PlaySpec with GuiceOneServerPerSuite {
   lazy val mongo: MongoComponent = app.injector.instanceOf[MongoComponent]
   lazy val appConfig: AppConfig  = app.injector.instanceOf[AppConfig]
 
-  lazy val fakeNow: LocalDateTime = LocalDateTime.now()
+  lazy val fakeNow: Instant = Instant.now()
 
   lazy val repo: UserAnswersRepository = new UserAnswersRepository(mongo: MongoComponent, appConfig)
 
-  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.localDateTimeWrites)
+  val mongoDate: JsValue = Json.toJson(fakeNow)(MongoJavatimeFormats.instantWrites)
 
   def createUserAnswers(credId: String): Future[Boolean] = {
     val userAnswers: UserAnswers = UserAnswers(

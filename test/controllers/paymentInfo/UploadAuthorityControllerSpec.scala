@@ -39,7 +39,8 @@ import play.api.mvc._
 import play.api.test.Helpers._
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
-import java.time.LocalDateTime
+
+import java.time.Instant
 import scala.concurrent.Future
 
 class UploadAuthorityControllerSpec extends ControllerSpecBase {
@@ -393,7 +394,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(
             UploadAuthorityPage,
             Seq(
-              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))
+              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", Instant.now(), "", ""))
             )
           ).success.value
       )
@@ -407,7 +408,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(SplitPaymentPage, true).success.value
           .set(
             UploadAuthorityPage,
-            Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", "", LocalDateTime.now(), "", "")))
+            Seq(UploadAuthority(dan, Duty, FileUploadInfo("", "", "", Instant.now(), "", "")))
           ).success.value
           .set(CheckModePage, false).success.value
           .set(
@@ -426,7 +427,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
           .set(
             UploadAuthorityPage,
             Seq(
-              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", LocalDateTime.now(), "", ""))
+              UploadAuthority(dan, Duty, FileUploadInfo("file-ref-1", "filename.txt", "", Instant.now(), "", ""))
             )
           ).success.value
           .set(CheckModePage, true).success.value

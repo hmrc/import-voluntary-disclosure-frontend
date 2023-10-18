@@ -31,7 +31,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.docUpload.UploadAnotherFileView
 
-import java.time.LocalDateTime
+import java.time.Instant
 import scala.concurrent.Future
 
 class UploadAnotherFileControllerSpec extends ControllerSpecBase {
@@ -45,7 +45,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
           "reference"       -> "file-ref-1",
           "fileName"        -> "text.txt",
           "downloadUrl"     -> "http://localhost:9570/upscan/download/6f531dec-108d-4dc9-a586-9a97cf78bc34",
-          "uploadTimestamp" -> "2021-01-26T13:22:59.388",
+          "uploadTimestamp" -> "2021-01-26T13:22:59.388Z",
           "checksum"        -> "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
           "fileMimeType"    -> "application/txt"
         )
@@ -91,7 +91,7 @@ class UploadAnotherFileControllerSpec extends ControllerSpecBase {
       override val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("cred-id", data)
           .set(AnyOtherSupportingDocsPage, true).success.value
-          .set(FileUploadPage, Seq(FileUploadInfo("", "", "", LocalDateTime.now(), "", ""))).success.value
+          .set(FileUploadPage, Seq(FileUploadInfo("", "", "", Instant.now(), "", ""))).success.value
       )
       val result: Future[Result] = controller.onLoad(fakeRequest)
       status(result) mustBe Status.OK
