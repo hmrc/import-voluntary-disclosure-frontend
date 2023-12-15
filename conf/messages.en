@@ -564,8 +564,6 @@ box99.pageTitle = What was the reason for the underpayment?
 # other reason errors
 otherReason.error.required = Enter the reason for the underpayment
 otherReason.error.maxLength = The reason for the underpayment must be 1500 characters or fewer
-otherReason.error.noEmoji = The reason for the underpayment must not include emojis
-
 # Check Your Answers
 cya.pageTitle = Check your answers before sending your disclosure
 cya.sendDisclosure = Now send your disclosure
@@ -698,14 +696,12 @@ underpaymentReasonSummary.otherReason.change = Change other reason for underpaym
 moreInformation.single.pageTitle = Tell us the extra information about the underpayment
 moreInformation.single.error.required = Enter the extra information about the underpayment
 moreInformation.single.error.maxLength = The extra information must be 1500 characters or fewer
-moreInformation.single.error.noEmoji = The extra information must not include emojis
 
 moreInformation.bulk.pageTitle = What were the reasons for the underpayment of tax or duty?
 moreInformation.bulk.p1 = Tell us why the duty or tax was underpaid for all the entries included in this disclosure.
 moreInformation.bulk.p2 = You do not need to repeat anything that you have already provided in the file you have uploaded.
 moreInformation.bulk.error.required = Enter the reasons for the underpayment of tax or duty
 moreInformation.bulk.error.maxLength = The reasons for the underpayment must be 1500 characters or fewer
-moreInformation.bulk.error.noEmoji = The reasons for the underpayment must not include emojis
 
 
 # Importer name
@@ -714,7 +710,6 @@ importerName.hint = This should match the name as it appears on the import decla
 importerName.error.nameNonEmpty = Enter the name of the importer
 importerName.error.nameMinLength = Name of the importer must be 2 characters or more
 importerName.error.nameMaxLength = Name of the importer must be 50 characters or fewer
-importerName.error.noEmoji = Name of the importer must not include emojis
 
 # Importer EORI Exists
 importerEORIExists.pageTitle = Does {0} have an EORI number?
@@ -840,7 +835,6 @@ updateAdditionalInformation.pageTitle = Tell us any additional information
 updateAdditionalInformation.hint = You may have been asked to provide more information to help us progress the disclosure.
 updateAdditionalInformation.error.required = Enter the additional information about the underpayment
 updateAdditionalInformation.error.maxLength = The additional information must be 1400 characters or fewer
-updateAdditionalInformation.error.noEmoji = The additional information must not include emojis
 
 # Session Timeout Page
 timeout.pageTitle = For your security, we signed you out
@@ -946,7 +940,6 @@ privateCitizen.continueWithCreds.error.required = Select yes if you want to use 
 cancellationReason.pageTitle = Tell us why you want this disclosure cancelled
 cancellationReason.error.required = Enter why you want this disclosure cancelled
 cancellationReason.error.maxLength = Why you want this disclosure cancelled must be 1400 characters or fewer
-cancellationReason.error.noEmoji = Why you want this disclosure cancelled must not include emojis
 
 # Any Other Supporting Cancellation Documentation
 anyOtherSupportingCancellationDocs.pageTitle = Do you have any documentation to support cancelling this disclosure?

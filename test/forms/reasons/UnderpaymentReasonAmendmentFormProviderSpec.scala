@@ -820,11 +820,6 @@ class UnderpaymentReasonAmendmentFormProviderSpec extends FormSpecBase {
         Seq(FormError(originalKey, "otherReason.error.required"))
     }
 
-    "result in a no emoji error" in {
-      formBinderBox(formBuilder(original = "😀"), box = BoxNumber.OtherItem).errors mustBe
-        Seq(FormError(originalKey, "otherReason.error.noEmoji"))
-    }
-
     "result in a max length error" in {
       val maxLengthData: String = "c" * 1502
       formBinderBox(formBuilder(original = maxLengthData), box = BoxNumber.OtherItem).errors mustBe

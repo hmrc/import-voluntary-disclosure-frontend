@@ -19,8 +19,6 @@ package forms.mappings
 import forms.mappings.filters.InputFilter
 import play.api.data.validation.{Constraint, Invalid, Valid}
 
-import scala.util.matching.Regex
-
 trait Constraints extends InputFilter {
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint { input =>
@@ -115,16 +113,5 @@ trait Constraints extends InputFilter {
       case _ =>
         Invalid(errorMessage)
     }
-
-  protected def emojiConstraint(errorKey: String): Constraint[String] =
-    Constraint { text =>
-      if (containsEmoji(text)) Invalid(errorKey)
-      else Valid
-    }
-
-  private def containsEmoji(valueToCheck: String): Boolean = {
-    val regex: Regex = "[^\\p{L}\\p{N}\\p{P}\\p{Z}\\p{M}\\£$^<>|]".r
-    regex.findFirstIn(valueToCheck).isDefined
-  }
 
 }

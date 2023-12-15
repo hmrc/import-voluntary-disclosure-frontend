@@ -58,24 +58,6 @@ class CancellationReasonFormProviderSpec extends FormSpecBase {
       }
     }
 
-    "emoji entered" should {
-
-      val emoji: Map[String, String] = Map("value" -> "😀")
-      val form                       = new CancellationReasonFormProvider()().bind(emoji)
-
-      "result in a form with errors" in {
-        form.hasErrors mustBe true
-      }
-
-      "throw one error" in {
-        form.errors.size mustBe 1
-      }
-
-      "have an error with the correct message" in {
-        form.errors.head.message mustBe "cancellationReason.error.noEmoji"
-      }
-    }
-
   }
 
   "Binding a form with valid data" should {

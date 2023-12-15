@@ -27,7 +27,7 @@ import pages.shared.MoreDocumentationPage
 import pages.updateCase._
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
-import java.time.{Instant, LocalDateTime}
+import java.time.Instant
 
 class UpdateCaseCYASummaryListHelperSpec
     extends SpecBase
