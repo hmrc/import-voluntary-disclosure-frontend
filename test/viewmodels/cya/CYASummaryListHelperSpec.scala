@@ -34,7 +34,7 @@ import play.api.mvc.AnyContentAsEmpty
 import views.data.CheckYourAnswersData
 import views.data.CheckYourAnswersData._
 
-import java.time.{Instant, LocalDate, LocalDateTime}
+import java.time.{Instant, LocalDate}
 
 class CYASummaryListHelperSpec
     extends SpecBase

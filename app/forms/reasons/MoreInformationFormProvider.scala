@@ -36,15 +36,10 @@ class MoreInformationFormProvider @Inject() extends Mappings {
     } else {
       "moreInformation.bulk.error.maxLength"
     }
-    val noEmojiErrorMessage = if (isOneEntry) {
-      "moreInformation.single.error.noEmoji"
-    } else {
-      "moreInformation.bulk.error.noEmoji"
-    }
+
     Form(
       "value" -> text(requiredErrorMessage)
         .verifying(maxLength(maxLength, maxCharactersErrorMessage))
-        .verifying(emojiConstraint(noEmojiErrorMessage))
     )
   }
 

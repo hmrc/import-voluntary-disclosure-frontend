@@ -27,7 +27,6 @@ class ImporterNameFormProvider @Inject() extends Mappings {
       "fullName" -> text("importerName.error.nameNonEmpty")
         .verifying("importerName.error.nameMinLength", value => value.length >= 2)
         .verifying("importerName.error.nameMaxLength", value => value.length <= 50)
-        .verifying(emojiConstraint("importerName.error.noEmoji"))
     )
 
 }

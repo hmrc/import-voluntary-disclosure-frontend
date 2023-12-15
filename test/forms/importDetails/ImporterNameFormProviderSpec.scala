@@ -25,7 +25,6 @@ class ImporterNameFormProviderSpec extends FormSpecBase {
   private final val fullNameNonEmptyKey = "importerName.error.nameNonEmpty"
   private final val fullNameTooShortKey = "importerName.error.nameMinLength"
   private final val fullNameTooLongKey  = "importerName.error.nameMaxLength"
-  private final val fullNameEmojiKey    = "importerName.error.noEmoji"
 
   def formBuilder(fullName: String = ""): Map[String, String] = Map(
     "fullName" -> fullName
@@ -87,24 +86,6 @@ class ImporterNameFormProviderSpec extends FormSpecBase {
 
       "have an error with the correct message" in {
         form.errors.head.message mustBe fullNameTooLongKey
-      }
-    }
-
-    "with full name containing emoji" should {
-
-      val data = Map("fullName" -> "\uD83D\uDE0E\uD83E\uDD14\uD83E\uDD16\uD83D\uDD25")
-      val form = new ImporterNameFormProvider()().bind(data)
-
-      "result in a form with errors" in {
-        form.hasErrors mustBe true
-      }
-
-      "throw one error" in {
-        form.errors.size mustBe 1
-      }
-
-      "have an error with the correct message" in {
-        form.errors.head.message mustBe fullNameEmojiKey
       }
     }
 

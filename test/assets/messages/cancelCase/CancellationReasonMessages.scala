@@ -23,5 +23,4 @@ object CancellationReasonMessages extends BaseMessages {
   val title: String          = "Tell us why you want this disclosure cancelled"
   val requiredError: String  = "Enter why you want this disclosure cancelled"
   val maxLengthError: String = "Why you want this disclosure cancelled must be 1400 characters or fewer"
-  val emojiError: String     = "Why you want this disclosure cancelled must not include emojis"
 }

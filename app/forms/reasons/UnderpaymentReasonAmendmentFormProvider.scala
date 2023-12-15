@@ -177,8 +177,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
     Form(
       mapping(
         "original" -> text("otherReason.error.required")
-          .verifying(maxLength(1500, "otherReason.error.maxLength"))
-          .verifying(emojiConstraint("otherReason.error.noEmoji")),
+          .verifying(maxLength(1500, "otherReason.error.maxLength")),
         "amended" -> Forms.text
       )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
     )
