@@ -17,7 +17,6 @@ object AppDependencies {
 
   val test = Seq(
     "org.scalamock"          %% "scalamock"              % "5.2.0"        ,
-    "com.github.tomakehurst"  % "wiremock-jre8"          % "3.0.1"        ,
     "uk.gov.hmrc"            %% "bootstrap-test-play-28" % bootstrapVersion ,
     "org.scalatest"          %% "scalatest"              % "3.2.17"         ,
     "org.jsoup"               % "jsoup"                  % "1.15.3"        ,
