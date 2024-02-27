@@ -80,8 +80,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(
-              DateTimeFormatter.ofPattern("d MMMM yyyy").format(dateSubmitted)),
+            HtmlContent(DateTimeFormatter.ofPattern("d MMMM yyyy").format(dateSubmitted)),
             classes = "govuk-!-width-one-half"
           ),
           actions = None
