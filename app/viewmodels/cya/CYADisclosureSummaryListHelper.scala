@@ -20,14 +20,14 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import viewmodels.SummaryListHelper
 
 trait CYADisclosureSummaryListHelper extends SummaryListHelper {
-  private val dateFormat = DateTimeFormat.forPattern("d MMMM yyyy")
+  private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-  def buildDisclosureSummaryList(caseId: String, date: DateTime)(implicit
+  def buildDisclosureSummaryList(caseId: String, date: LocalDateTime)(implicit
     messages: Messages
   ): CYASummaryList = {
     val rows = Seq(
@@ -50,10 +50,10 @@ trait CYADisclosureSummaryListHelper extends SummaryListHelper {
     )
 
   private def buildDateSubmittedSummaryListRow(
-    date: DateTime
+    date: LocalDateTime
   )(implicit messages: Messages): SummaryListRow =
     createRow(
       keyText = Text(messages("printConfirmation.dateSubmitted")),
-      valueContent = HtmlContent(dateFormat.print(date))
+      valueContent = HtmlContent(dateFormat.format(date))
     )
 }

@@ -18,7 +18,7 @@ package viewmodels.cya
 
 import play.api.i18n.Messages
 import models.requests.DataRequest
-import org.joda.time.DateTime
+import java.time.LocalDateTime
 
 trait CYASummaryListHelper
     extends CYADisclosureSummaryListHelper
@@ -39,7 +39,7 @@ trait CYASummaryListHelper
       buildDefermentDutySummaryList ++
       buildDefermentImportVatSummaryList
 
-  def buildSummaryListForPrint(caseId: String, date: DateTime)(implicit
+  def buildSummaryListForPrint(caseId: String, date: LocalDateTime)(implicit
     messages: Messages,
     request: DataRequest[_]
   ): Seq[CYASummaryList] = {
