@@ -19,8 +19,8 @@ package views.data
 import messages.cya.{CYAMessages, SummaryForPrintMessages}
 import models.importDetails.NumberOfEntries
 import models.{ContactAddress, ContactDetails}
-import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.{HtmlContent, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist._
 import viewmodels.cya.CYASummaryList
@@ -56,7 +56,7 @@ object CheckYourAnswersData {
   val userType                   = "Representative"
   val contactDetails             = ContactDetails("First Second", "email@email.com", "1234567890")
   val caseId                     = "18123"
-  val dateSubmitted              = DateTime.now()
+  val dateSubmitted              = LocalDateTime.now()
 
   val disclosureSummaryList: CYASummaryList = viewmodels.cya.CYASummaryList(
     None,
@@ -80,7 +80,7 @@ object CheckYourAnswersData {
             classes = "govuk-!-width-one-third"
           ),
           value = Value(
-            HtmlContent(DateTimeFormat.forPattern("d MMMM yyyy").print(dateSubmitted)),
+            HtmlContent(DateTimeFormatter.ofPattern("d MMMM yyyy").format(dateSubmitted)),
             classes = "govuk-!-width-one-half"
           ),
           actions = None

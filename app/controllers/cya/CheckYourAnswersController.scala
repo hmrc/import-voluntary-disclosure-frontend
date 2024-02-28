@@ -20,7 +20,9 @@ import config.ErrorHandler
 import controllers.IVDFrontendController
 import controllers.actions._
 import models.SubmissionType
-import org.joda.time.{DateTime, DateTimeZone}
+
+import java.time.{LocalDateTime, ZoneId}
+import java.util.TimeZone
 import pages._
 import pages.importDetails._
 import pages.serviceEntry.{KnownEoriDetailsPage, SubmissionTypePage}
@@ -92,8 +94,9 @@ class CheckYourAnswersController @Inject() (
           }
         }
 
-        val submittedDate = DateTime.now(DateTimeZone.forID("Europe/London"))
-        val summaryList   = buildSummaryListForPrint(value.id, submittedDate)
+        val zoneId: ZoneId = TimeZone.getTimeZone("Europe/London").toZoneId
+        val submittedDate  = LocalDateTime.now(zoneId)
+        val summaryList    = buildSummaryListForPrint(value.id, submittedDate)
 
         confirmationData match {
           case Some(data) =>
