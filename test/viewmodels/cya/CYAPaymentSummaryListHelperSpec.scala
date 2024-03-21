@@ -30,6 +30,7 @@ import pages.importDetails._
 import pages.paymentInfo._
 import pages.reasons.{MoreInformationPage, UnderpaymentReasonsPage}
 import pages.underpayments.UnderpaymentDetailSummaryPage
+import play.api.mvc.AnyContentAsEmpty
 import views.data.cya.CheckYourAnswersPaymentData._
 
 import java.time.{Instant, LocalDate}
@@ -115,7 +116,7 @@ class CYAPaymentSummaryListHelperSpec
       .set(AdditionalDefermentNumberPage, "5293747").success.value
       .set(AdditionalDefermentTypePage, "B").success.value
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",

@@ -39,7 +39,7 @@ object UpdateCaseCheckYourAnswersData {
     )
   )
 
-  val referenceNumberRow = SummaryListRow(
+  val referenceNumberRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(UpdateCaseCYAMessages.referenceNumber),
       classes = "govuk-!-width-one-third"

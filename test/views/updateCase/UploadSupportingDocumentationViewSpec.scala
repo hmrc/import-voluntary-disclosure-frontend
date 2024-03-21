@@ -44,7 +44,7 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
   "Rendering the UploadSupportingDocumentation page" when {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, oneFileUploaded, false)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, checkMode = false)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "render a back link with the correct URL" in {
@@ -52,7 +52,7 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct form action" in {
-      elementAttributes("form").get("action").get mustBe initiateResponse.uploadFormTemplate.href
+      elementAttributes("form").get("action") mustBe Some(initiateResponse.uploadFormTemplate.href)
     }
 
     s"have the correct file upload control" in {
@@ -66,7 +66,7 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
     "an error exists (no file has been uploaded)" should {
       lazy val form: Form[String] = formProvider().withError("file", UploadSupportingDocumentationMessages.fileUnknown)
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, zeroFilesUploaded, false)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, zeroFilesUploaded, checkMode = false)(fakeRequest, MockAppConfig, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadSupportingDocumentationMessages.errorPrefix + UploadSupportingDocumentationMessages.title)
@@ -90,7 +90,7 @@ class UploadSupportingDocumentationViewSpec extends ViewBaseSpec {
   it should {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, oneFileUploaded, true)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, oneFileUploaded, checkMode = true)(fakeRequest, MockAppConfig, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadSupportingDocumentationMessages.title)

@@ -16,10 +16,10 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class RepresentativeDan(accountNumber: String, danType: String)
 
 object RepresentativeDan {
-  implicit val format = Json.format[RepresentativeDan]
+  implicit val format: OFormat[RepresentativeDan] = Json.format[RepresentativeDan]
 }

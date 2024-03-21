@@ -34,12 +34,12 @@ case class FileUpload(
   failureDetails: Option[FailureDetails] = None,
   lastUpdatedDate: Option[Instant] = None
 ) {
-  val fileName = uploadDetails.map(_.fileName)
+  val fileName: Option[String] = uploadDetails.map(_.fileName)
 }
 
 object FileUpload {
 
-  implicit val mongoInstantFormat          = MongoJavatimeFormats.instantFormat
+  implicit val mongoInstantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
   implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
 }
 
@@ -57,10 +57,10 @@ object UploadDetails {
     ((JsPath \ "uploadTimestamp").write(MongoJavatimeFormats.instantWrites) and
       (JsPath \ "checksum").write[String] and
       (JsPath \ "fileName").write[String] and
-      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply _))
+      (JsPath \ "fileMimeType").write[String])(unlift(UploadDetails.unapply))
   )
 
-  def decodeMimeEncodedWord(word: String): String =
+  private def decodeMimeEncodedWord(word: String): String =
     Try(MimeUtility.decodeText(word)).getOrElse(word)
 }
 

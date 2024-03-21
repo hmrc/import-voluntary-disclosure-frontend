@@ -44,7 +44,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
 
       val form: Form[Boolean] = formProvider.apply(importerName.get)
       lazy val view: Html =
-        injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
+        injectedView(form, addressDetails, traderName, importerName, isRepFlow = true, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.getTitle(traderName))
@@ -79,7 +79,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
           ContactAddress("first", None, "second", None, "fourth"),
           traderName,
           importerName,
-          true,
+          isRepFlow = true,
           backLink
         )(
           fakeRequest,
@@ -101,7 +101,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
     "an error exists (no option has been selected)" should {
       lazy val form: Form[Boolean] = formProvider(importerName.get).bind(Map("value" -> ""))
       lazy val view: Html =
-        injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
+        injectedView(form, addressDetails, traderName, importerName, isRepFlow = true, backLink)(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(ImporterAddressMessages.errorPrefix + ImporterAddressMessages.getTitle(traderName))
@@ -124,7 +124,7 @@ class TraderAddressCorrectViewSpec extends ViewBaseSpec with ReusableValues {
 
     val form: Form[Boolean] = formProvider.apply(importerName.get)
     lazy val view: Html =
-      injectedView(form, addressDetails, traderName, importerName, true, backLink)(fakeRequest, messages)
+      injectedView(form, addressDetails, traderName, importerName, isRepFlow = true, backLink)(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct value for the first radio button of '${ImporterAddressMessages.siteYes}'" in {

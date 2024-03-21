@@ -81,7 +81,7 @@ class CYASummaryListHelperSpec
       .set(MoreInformationPage, "Stock losses in warehouse.").success.value
       .set(PostponedVatAccountingPage, false).success.value
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",

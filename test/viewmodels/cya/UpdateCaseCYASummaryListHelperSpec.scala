@@ -25,6 +25,7 @@ import org.scalatest.{OptionValues, TryValues}
 import pages.serviceEntry.WhatDoYouWantToDoPage
 import pages.shared.MoreDocumentationPage
 import pages.updateCase._
+import play.api.mvc.AnyContentAsEmpty
 import views.data.cya.UpdateCaseCheckYourAnswersData._
 
 import java.time.Instant
@@ -57,7 +58,7 @@ class UpdateCaseCYASummaryListHelperSpec
       ).success.value
       .set(UpdateAdditionalInformationPage, "Hello World").success.value
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",

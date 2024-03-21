@@ -35,9 +35,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist for importer" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-        true,
-        true,
-        false,
+        oneEntry = true,
+        displayBackLink = true,
+        isRepFlow = false,
         nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -60,9 +60,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     "no errors exist for representative" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-        true,
-        true,
-        true,
+        oneEntry = true,
+        displayBackLink = true,
+        isRepFlow = true,
         representativeNameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -85,9 +85,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     "when in change mode back button" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-        true,
-        false,
-        false,
+        oneEntry = true,
+        displayBackLink = false,
+        isRepFlow = false,
         nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -103,9 +103,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     "one entry" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-        true,
-        true,
-        false,
+        oneEntry = true,
+        displayBackLink = true,
+        isRepFlow = false,
         nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -122,9 +122,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
     "bulk entry" should {
       lazy val view: Html = injectedView(
         controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-        false,
-        true,
-        false,
+        oneEntry = false,
+        displayBackLink = true,
+        isRepFlow = false,
         nameOfImporter
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -143,9 +143,9 @@ class UnderpaymentStartViewSpec extends ViewBaseSpec with BaseMessages {
   "it" should {
     lazy val view: Html = injectedView(
       controllers.importDetails.routes.EnterCustomsProcedureCodeController.onLoad(),
-      true,
-      true,
-      false,
+      oneEntry = true,
+      displayBackLink = true,
+      isRepFlow = false,
       nameOfImporter
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)

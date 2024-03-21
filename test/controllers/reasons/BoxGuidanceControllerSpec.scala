@@ -42,7 +42,7 @@ class BoxGuidanceControllerSpec extends ControllerSpecBase {
       appConfig
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view                             = injector.instanceOf[BoxGuidanceView]
+    val view: BoxGuidanceView = injector.instanceOf[BoxGuidanceView]
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 

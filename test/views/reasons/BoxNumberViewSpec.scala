@@ -25,6 +25,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import utils.ReusableValues
 import views.html.reasons.BoxNumberView
 
@@ -34,7 +35,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
 
   val formProvider: BoxNumberFormProvider = injector.instanceOf[BoxNumberFormProvider]
 
-  val boxNumberRadioButtons = Seq(
+  val boxNumberRadioButtons: Seq[RadioItem] = Seq(
     createRadioButton("22", BoxNumberMessages.radioButton22),
     createRadioButton("33", BoxNumberMessages.radioButton33),
     createRadioButton("34", BoxNumberMessages.radioButton34),
@@ -64,7 +65,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
         form,
         controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
-        true
+        isFirstBox = true
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -95,7 +96,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
         form,
         controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
-        false
+        isFirstBox = false
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -120,7 +121,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
         form,
         controllers.reasons.routes.BoxGuidanceController.onLoad(),
         boxNumberRadioButtons,
-        false
+        isFirstBox = false
       )(fakeRequest, messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -145,7 +146,7 @@ class BoxNumberViewSpec extends ViewBaseSpec with BaseMessages with ReusableValu
       form,
       controllers.reasons.routes.BoxGuidanceController.onLoad(),
       boxNumberRadioButtons,
-      false
+      isFirstBox = false
     )(fakeRequest, messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 

@@ -36,7 +36,7 @@ object CheckYourAnswersPaymentData {
   val dutyFileExample   = "DutyFileExample.pdf"
   val vatFileExample    = "VATFileExample.pdf"
 
-  val paymentMethodOtherRow = SummaryListRow(
+  val paymentMethodOtherRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.paymentMethod),
       classes = "govuk-!-width-one-third"

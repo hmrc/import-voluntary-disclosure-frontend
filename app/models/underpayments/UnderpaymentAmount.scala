@@ -16,10 +16,10 @@
 
 package models.underpayments
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class UnderpaymentAmount(original: BigDecimal, amended: BigDecimal)
 
 object UnderpaymentAmount {
-  implicit val format = Json.format[UnderpaymentAmount]
+  implicit val format: OFormat[UnderpaymentAmount] = Json.format[UnderpaymentAmount]
 }
