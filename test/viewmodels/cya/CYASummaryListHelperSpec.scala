@@ -136,7 +136,7 @@ class CYASummaryListHelperSpec
     }
 
     "produce a valid model when all answers are provided for one entry and multiple underpayment reason" in new Test {
-      val ua = userAnswers
+      val ua: UserAnswers = userAnswers
         .set(
           UnderpaymentReasonsPage,
           Seq(

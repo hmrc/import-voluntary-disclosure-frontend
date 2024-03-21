@@ -38,7 +38,7 @@ import scala.concurrent.Future
 class BoxNumberControllerSpec extends ControllerSpecBase {
 
   val BOX_NUMBER: BoxNumber.Value = BoxNumber.Box22
-  val OtherItem: BoxNumber.Value = BoxNumber.OtherItem
+  val OtherItem: BoxNumber.Value  = BoxNumber.OtherItem
 
   val underpaymentReasonBoxNumber: UserAnswers = UserAnswers("some-cred-id")
     .set(UnderpaymentReasonBoxNumberPage, BOX_NUMBER).success.value
@@ -145,7 +145,18 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
         controller.createRadioButtons(formProvider(), Set(OtherItem)) mustBe
           List(
             RadioItem(Empty, None, None, None, None, Some("or"), checked = false, None, disabled = false, Map()),
-            RadioItem(Text("Other reason"), None, Some("99"), None, None, None, checked = false, None, disabled = false, Map())
+            RadioItem(
+              Text("Other reason"),
+              None,
+              Some("99"),
+              None,
+              None,
+              None,
+              checked = false,
+              None,
+              disabled = false,
+              Map()
+            )
           )
       }
 

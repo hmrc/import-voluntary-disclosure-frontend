@@ -111,7 +111,7 @@ class UpdateCaseCYASummaryListHelperSpec
           )
         ).success.value
 
-      val request = dataRequest.copy(userAnswers = ua)
+      val request: DataRequest[AnyContentAsEmpty.type] = dataRequest.copy(userAnswers = ua)
 
       buildUpdateCaseSummaryList(messages, request) mustBe Seq(
         updateCaseAnswers(

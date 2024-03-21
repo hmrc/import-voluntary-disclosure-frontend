@@ -40,7 +40,7 @@ case class FileUpload(
 object FileUpload {
 
   implicit val mongoInstantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
-  implicit val format: OFormat[FileUpload] = Json.format[FileUpload]
+  implicit val format: OFormat[FileUpload]         = Json.format[FileUpload]
 }
 
 case class UploadDetails(uploadTimestamp: Instant, checksum: String, fileName: String, fileMimeType: String)

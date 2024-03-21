@@ -46,9 +46,9 @@ class DefermentControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = new DataRequest(
-      new OptionalDataRequest(
-        new IdentifierRequest(fakeRequest, "credId", "eori"),
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
         userAnswers
