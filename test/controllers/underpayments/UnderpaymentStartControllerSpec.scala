@@ -27,7 +27,7 @@ import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
-import play.api.mvc.{Call, Result}
+import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
 import utils.ReusableValues
 import views.html.underpayments.UnderpaymentStartView
@@ -38,7 +38,7 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
 
   trait Test extends MockSessionRepository {
 
-    implicit lazy val dataRequest = DataRequest(
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
         IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
@@ -112,8 +112,8 @@ class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableVa
     }
 
     "return Internal Server Error" in new Test {
-      override val userAnswers   = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

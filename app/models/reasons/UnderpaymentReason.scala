@@ -16,7 +16,7 @@
 
 package models.reasons
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class UnderpaymentReason(
   boxNumber: BoxNumber.Value,
@@ -27,7 +27,7 @@ case class UnderpaymentReason(
 
 object UnderpaymentReason {
 
-  implicit val format = Json.format[UnderpaymentReason]
+  implicit val format: OFormat[UnderpaymentReason] = Json.format[UnderpaymentReason]
 }
 
 case class ChangeUnderpaymentReason(
@@ -37,5 +37,5 @@ case class ChangeUnderpaymentReason(
 
 object ChangeUnderpaymentReason {
 
-  implicit val format = Json.format[ChangeUnderpaymentReason]
+  implicit val format: OFormat[ChangeUnderpaymentReason] = Json.format[ChangeUnderpaymentReason]
 }

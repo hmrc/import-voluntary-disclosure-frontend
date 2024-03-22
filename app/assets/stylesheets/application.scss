@@ -3,6 +3,7 @@ $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend
 
 @import "lib/govuk-frontend/govuk/all";
 @import "lib/hmrc-frontend/hmrc/all";
+$govuk-suppressed-warnings: ie8;
 
 .print-only {
     display: none;

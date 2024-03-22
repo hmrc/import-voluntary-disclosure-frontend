@@ -17,11 +17,10 @@
 package models.importDetails
 
 import java.time.LocalDate
-
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class EntryDetails(epu: String, entryNumber: String, entryDate: LocalDate)
 
 object EntryDetails {
-  implicit val format = Json.format[EntryDetails]
+  implicit val format: OFormat[EntryDetails] = Json.format[EntryDetails]
 }

@@ -16,10 +16,10 @@
 
 package models
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class CustomsProcedureCode(cpc: String)
 
 object CustomsProcedureCode {
-  implicit val format = Json.format[CustomsProcedureCode]
+  implicit val format: OFormat[CustomsProcedureCode] = Json.format[CustomsProcedureCode]
 }

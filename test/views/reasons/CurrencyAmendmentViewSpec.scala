@@ -248,7 +248,7 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
   }
 
   "The Underpayment Reason Amendment page" when {
-    Seq(BoxNumber.Box46).map { testBox =>
+    Seq(BoxNumber.Box46).foreach { testBox =>
       checkContent(testBox)
     }
 
@@ -264,10 +264,10 @@ class CurrencyAmendmentViewSpec extends ViewBaseSpec with BaseMessages {
         )(fakeRequest, messages)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        checkPageTitle(AmendReasonValuesMessages.boxContent.get(boxNumber).get.title)
+        checkPageTitle(AmendReasonValuesMessages.boxContent.get(boxNumber).head.title)
 
         "have the correct page heading" in {
-          elementText("h1") mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).get.heading
+          elementText("h1") mustBe AmendReasonValuesMessages.boxContent.get(boxNumber).head.heading
         }
       }
     }

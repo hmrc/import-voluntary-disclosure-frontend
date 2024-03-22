@@ -36,7 +36,7 @@ object CheckYourAnswersPaymentData {
   val dutyFileExample   = "DutyFileExample.pdf"
   val vatFileExample    = "VATFileExample.pdf"
 
-  val paymentMethodOtherRow = SummaryListRow(
+  val paymentMethodOtherRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.paymentMethod),
       classes = "govuk-!-width-one-third"
@@ -58,7 +58,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val paymentMethodDefermentRow = SummaryListRow(
+  val paymentMethodDefermentRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.paymentMethod),
       classes = "govuk-!-width-one-third"
@@ -80,7 +80,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val splitDefermentYesRow = SummaryListRow(
+  val splitDefermentYesRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.splitDeferment),
       classes = "govuk-!-width-one-third"
@@ -102,7 +102,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val splitDefermentNoRow = SummaryListRow(
+  val splitDefermentNoRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.splitDeferment),
       classes = "govuk-!-width-one-third"
@@ -124,7 +124,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val importerAccountNumberRow = SummaryListRow(
+  val importerAccountNumberRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.importerAccountNumber),
       classes = s"govuk-!-width-one-third"
@@ -155,7 +155,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val repAccountNumberRow = SummaryListRow(
+  val repAccountNumberRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.repAccountNumber),
       classes = "govuk-!-width-one-third"
@@ -177,7 +177,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val repAccountNumberDutyRow = SummaryListRow(
+  val repAccountNumberDutyRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.repAccountNumber),
       classes = "govuk-!-width-one-third"
@@ -199,7 +199,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeAVATRow = SummaryListRow(
+  val accountOwnerTypeAVATRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -221,7 +221,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeADutyRow = SummaryListRow(
+  val accountOwnerTypeADutyRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -243,7 +243,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerRow = SummaryListRow(
+  val accountOwnerRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -265,7 +265,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeBVATRow = SummaryListRow(
+  val accountOwnerTypeBVATRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -287,7 +287,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeBDutyRow = SummaryListRow(
+  val accountOwnerTypeBDutyRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -309,7 +309,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeBRow = SummaryListRow(
+  val accountOwnerTypeBRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -331,7 +331,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeCVATRow = SummaryListRow(
+  val accountOwnerTypeCVATRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -353,7 +353,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val accountOwnerTypeCDutyRow = SummaryListRow(
+  val accountOwnerTypeCDutyRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.accountOwner),
       classes = "govuk-!-width-one-third"
@@ -374,7 +374,7 @@ object CheckYourAnswersPaymentData {
       )
     )
   )
-  val proofOfAuthority = SummaryListRow(
+  val proofOfAuthority: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"
@@ -396,7 +396,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val proofOfAuthorityBoth = SummaryListRow(
+  val proofOfAuthorityBoth: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"
@@ -427,7 +427,7 @@ object CheckYourAnswersPaymentData {
     smallHeader = true
   )
 
-  val repAccountNumberVATRow = SummaryListRow(
+  val repAccountNumberVATRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.repAccountNumber),
       classes = "govuk-!-width-one-third"
@@ -449,7 +449,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val proofOfAuthorityDuty = SummaryListRow(
+  val proofOfAuthorityDuty: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"
@@ -471,7 +471,7 @@ object CheckYourAnswersPaymentData {
     )
   )
 
-  val proofOfAuthorityVat = SummaryListRow(
+  val proofOfAuthorityVat: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CYAMessages.proofOfAuthority),
       classes = "govuk-!-width-one-third"

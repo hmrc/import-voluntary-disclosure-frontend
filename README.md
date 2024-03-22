@@ -8,11 +8,11 @@ This is the frontend service for the Import Voluntary Disclosure service. It pro
 ### Service manager
 The whole service can be started with:
 
-`sm --start IVD_ALL -r`
+`sm2 --start IVD_ALL`
 
 or specifically for only the frontend
 
-`sm --start IMPORT_VOLUNTARY_DISCLOSURE_FRONTEND -r`
+`sm2 --start IMPORT_VOLUNTARY_DISCLOSURE_FRONTEND`
 
 ### Locally
 `sbt run` or `sbt 'run 7950'`
@@ -45,3 +45,6 @@ To check files have been formatted as expected execute:
 ```
 sbt scalafmtCheckAll scalafmtSbtCheck
 ```
+### License
+
+This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")

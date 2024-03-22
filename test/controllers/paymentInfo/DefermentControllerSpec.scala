@@ -30,7 +30,7 @@ import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.paymentInfo.DefermentPage
 import pages.underpayments.{UnderpaymentCheckModePage, UnderpaymentDetailSummaryPage}
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.paymentInfo.DefermentView
@@ -46,9 +46,9 @@ class DefermentControllerSpec extends ControllerSpecBase {
       UserAnswers("credId")
     )
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    implicit lazy val dataRequest = new DataRequest(
-      new OptionalDataRequest(
-        new IdentifierRequest(fakeRequest, "credId", "eori"),
+    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+      OptionalDataRequest(
+        IdentifierRequest(fakeRequest, "credId", "eori"),
         "credId",
         "eori",
         userAnswers

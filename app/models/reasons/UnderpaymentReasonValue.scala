@@ -16,10 +16,10 @@
 
 package models.reasons
 
-import play.api.libs.json.Json
+import play.api.libs.json.{Json, OFormat}
 
 case class UnderpaymentReasonValue(original: String, amended: String)
 
 object UnderpaymentReasonValue {
-  implicit val format = Json.format[UnderpaymentReasonValue]
+  implicit val format: OFormat[UnderpaymentReasonValue] = Json.format[UnderpaymentReasonValue]
 }

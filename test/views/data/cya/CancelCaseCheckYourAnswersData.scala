@@ -39,7 +39,7 @@ object CancelCaseCheckYourAnswersData {
     )
   )
 
-  val referenceNumberRow = SummaryListRow(
+  val referenceNumberRow: SummaryListRow = SummaryListRow(
     key = Key(
       Text(CancelCaseCYAMessages.referenceNumber),
       classes = "govuk-!-width-one-third"

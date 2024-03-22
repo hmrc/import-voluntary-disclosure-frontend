@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "import-voluntary-disclosure-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "2.13.13"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
