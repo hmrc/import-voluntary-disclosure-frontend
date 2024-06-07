@@ -49,14 +49,14 @@ footer.accessibility.url = /accessibility-statement/import-voluntary-disclosure
 
 #Unauthorised
 unauthorised.agent.pageTitle = You cannot access the service with this type of user ID
-unauthorised.agent.para1 = You have signed in with an Agent Government Gateway user ID (also known as an Agent Services account). Agent Government Gateway user IDs cannot be used to access this service.
+unauthorised.agent.para1 = You have signed in with an Agent user ID (also known as an Agent Services account). Agent user IDs cannot be used to access this service
 unauthorised.agent.signInAgain.1 = Sign in again
 unauthorised.agent.signInAgain.2 = with:
-unauthorised.agent.bullet.1 = the Government Gateway user ID used to apply for your EORI number online
-unauthorised.agent.bullet.2 = or, if you do not have this, another Government Gateway user ID you use for your business
-unauthorised.agent.details.linkText = I do not have another Government Gateway user ID
+unauthorised.agent.bullet.1 = the HMRC sign in details used to apply for your EORI number online
+unauthorised.agent.bullet.2 = or, if you do not have this, another user ID you use for your business
+unauthorised.agent.details.linkText = I do not have another user ID
 unauthorised.agent.details.1 = You can use the link on the sign in page to create a new user ID. You should select organisation or individual (not agent) when asked for the type of account.
-unauthorised.agent.details.2 = The subscription will be unsuccessful if another Government Gateway user ID is already linked to your EORI number. Make sure you check one does not exist before creating a new user ID.
+unauthorised.agent.details.2 = The subscription will be unsuccessful if another user ID is already linked to your EORI number. Make sure you check one does not exist before creating a new user ID.
 
 #Feedback
 feedback.before = This is a new service – your
@@ -930,8 +930,8 @@ privateCitizen.handOff.p2.part1 = You need to contact us on the email address
 privateCitizen.handOff.p2.part2 = and give brief details. We will take you through the process of paying the tax or duty that is owed.
 
 # Private Citizen - Continue with the current creds
-privateCitizen.continueWithCreds.pageTitle = Are you sure you want to use this Government Gateway user ID to set up access to the service?
-privateCitizen.continueWithCreds.hint = Ensure you have signed in with the Government Gateway user ID you use for your business.
+privateCitizen.continueWithCreds.pageTitle = Are you sure you want to use these sign in details to set up access to the service?
+privateCitizen.continueWithCreds.hint = Ensure you have signed in with the HMRC online details you use for your business.
 privateCitizen.continueWithCreds.yesMessage = Yes I want to use this user ID to set up access
 privateCitizen.continueWithCreds.noMessage = No I want to sign in with a different user ID
 privateCitizen.continueWithCreds.error.required = Select yes if you want to use this user ID to set up access
