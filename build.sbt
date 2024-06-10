@@ -31,7 +31,7 @@ lazy val microservice = Project(appName, file("."))
       "javascripts/application.js" ->
         group(
           Seq(
-            "lib/govuk-frontend/govuk/all.js",
+            "lib/govuk-frontend/dist/govuk/all.js",
             "lib/hmrc-frontend/hmrc/all.js",
             "javascripts/jquery.min.js",
             "javascripts/app.js"
