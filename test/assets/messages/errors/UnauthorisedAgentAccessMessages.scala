@@ -28,10 +28,10 @@ object UnauthorisedAgentAccessMessages extends BaseMessages {
   val bullet1         = "the HMRC sign in details used to apply for your EORI number online"
   val bullet2         = "or, if you do not have this, another user ID you use for your business"
   val detailsLinkText = "I do not have another user ID"
-  val details1 =
+  val details1: String =
     "You can use the link on the sign in page to create a new user ID. You should select organisation or individual " +
       "(not agent) when asked for the type of account."
-  val details2 =
+  val details2: String =
     "The subscription will be unsuccessful if another user ID is already linked to your EORI number. Make sure you check one does not exist before creating a new user ID."
 
 }
