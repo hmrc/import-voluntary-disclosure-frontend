@@ -33,7 +33,6 @@ lazy val microservice = Project(appName, file("."))
           Seq(
             "lib/govuk-frontend/dist/govuk/all.js",
             "lib/hmrc-frontend/hmrc/all.js",
-            "javascripts/jquery.min.js",
             "javascripts/app.js"
           )
         )
