@@ -24,6 +24,7 @@
         p: components.p,
         button: components.button,
         bullets: components.bullets,
+        formHelper: FormWithCSRF
 )
 
 @(form: Form[_], upScanResponse: UpScanInitiateResponse, backLink: Call, numberOfFilesUploaded: Int, checkMode: Boolean)(implicit request: Request[_], appConfig: AppConfig, messages: Messages)
@@ -53,8 +54,7 @@
             @messages("common.uploadFile.fileSize")
         }
 
-        <form action="@upScanResponse.uploadFormTemplate.href" method="POST" enctype="multipart/form-data" id="file-upload-form">
-
+        @formHelper(action = Call("POST", upScanResponse.uploadFormTemplate.href),Symbol("enctype") -> "multipart/form-data",Symbol("novalidate") -> "novalidate", Symbol("id") -> "file-upload-form") {
 
             <div id="file-upload-form-group" class="govuk-form-group @{
                 if(form.hasErrors) "govuk-form-group--error"
@@ -78,8 +78,7 @@
             </div>
 
             @button("common.uploadFile.uploadChosenFile")
-
-        </form>
+        }
     }
 
     @{
