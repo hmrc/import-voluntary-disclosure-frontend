@@ -4,6 +4,10 @@
 ## Purpose
 This is the frontend service for the Import Voluntary Disclosure service. It provides user screens to allow users to make voluntary disclosure of issues they have noticed with their original import declarations.
 
+Other related C18 services:
+- Backend service: [Import-Voluntary-Disclosure-Submission](https://github.com/hmrc/import-voluntary-disclosure-submission)
+- Stub: [Import-Voluntary-Disclosure-Stub](https://github.com/hmrc/import-voluntary-disclosure-stub)
+
 ## Running the service
 ### Service manager
 The whole service can be started with:
