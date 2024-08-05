@@ -50,7 +50,8 @@
                 if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.pageTitle"),
                 true,
                 false,
-                classes = Some("govuk-fieldset__legend")
+                classes = Some("govuk-fieldset__legend"),
+                maxCharacters = Some(1500)
             )
             @button("common.button.continue")
 
