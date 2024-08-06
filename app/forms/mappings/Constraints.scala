@@ -79,10 +79,10 @@ trait Constraints extends InputFilter {
     }
 
   protected def maxLength(
-                           maximum: Int,
-                           errorKey: String,
-                           transformation: String => String = identity
-                         ): Constraint[String] =
+    maximum: Int,
+    errorKey: String,
+    transformation: String => String = identity
+  ): Constraint[String] =
     Constraint {
       case str if transformation(str.trim).length <= maximum =>
         Valid
