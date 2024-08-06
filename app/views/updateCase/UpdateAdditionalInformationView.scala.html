@@ -18,7 +18,8 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputTextArea: components.inputTextArea
+        inputTextArea: components.inputTextArea,
+        updateAdditionalInformationFormProvider: forms.updateCase.UpdateAdditionalInformationFormProvider
 )
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
@@ -39,7 +40,8 @@
                 true,
                 true,
                 Some(messages("updateAdditionalInformation.hint")),
-                classes = Some("govuk-fieldset__legend")
+                classes = Some("govuk-fieldset__legend"),
+                maxCharacters = Some(updateAdditionalInformationFormProvider.maxLength)
             )
             @button("common.button.continue")
         }

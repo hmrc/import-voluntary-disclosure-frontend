@@ -17,6 +17,7 @@
 package forms.reasons
 
 import forms.mappings.Mappings
+import forms.utils.TextAreaHelper.removeCarriageReturn
 import play.api.data.Form
 
 import javax.inject.Inject
@@ -39,7 +40,7 @@ class MoreInformationFormProvider @Inject() extends Mappings {
 
     Form(
       "value" -> text(requiredErrorMessage)
-        .verifying(maxLength(maxLength, maxCharactersErrorMessage))
+        .verifying(maxLength(maxLength, maxCharactersErrorMessage, removeCarriageReturn))
     )
   }
 

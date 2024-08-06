@@ -20,7 +20,8 @@
         button: components.button,
         inputTextArea: components.inputTextArea,
         h1: components.h1,
-        p: components.p
+        p: components.p,
+        moreInformationFormProvider: forms.reasons.MoreInformationFormProvider
 )
 
 @(form: Form[_], backLink: Option[Call], isSingleEntry: Boolean)(implicit request: Request[_], messages: Messages)
@@ -50,7 +51,8 @@
                 if(isSingleEntry) messages("moreInformation.single.heading") else messages("moreInformation.bulk.pageTitle"),
                 true,
                 false,
-                classes = Some("govuk-fieldset__legend")
+                classes = Some("govuk-fieldset__legend"),
+                maxCharacters = Some(moreInformationFormProvider.maxLength)
             )
             @button("common.button.continue")
 

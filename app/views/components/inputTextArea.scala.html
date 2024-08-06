@@ -14,7 +14,10 @@
  * limitations under the License.
  *@
 
-@this(govukTextarea : GovukTextarea)
+@this(
+    govukTextarea : GovukTextarea,
+    hmrcCharacterCount: HmrcCharacterCount
+)
 
 @(form: Form[_],
         id: String,
@@ -23,24 +26,43 @@
         labelHidden: Boolean = false,
         isPageHeading: Boolean = false,
         hint: Option[String] = None,
-        classes: Option[String] = None
+        classes: Option[String] = None,
+        maxCharacters: Option[Int] = None
 )(implicit messages: Messages)
 
-@govukTextarea(Textarea(
-    id,
-    name,
-    classes = classes.fold("")(x => x),
-    label = Label(
-        content = Text(messages(label)),
-        isPageHeading = isPageHeading,
-        classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
-    ),
-    hint = hint.map(hintKey => Hint(
-        content = HtmlContent(messages(hintKey))
-    )),
-    value = form(name).value,
-    errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
-))
+@if(maxCharacters.isDefined) {
+    @hmrcCharacterCount(uk.gov.hmrc.hmrcfrontend.views.html.components.CharacterCount(
+        id = id,
+        name = name,
+        maxLength = maxCharacters,
+        label = Label(
+            content = Text(messages(label)),
+            isPageHeading = isPageHeading,
+            classes =  if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
+        ),
+        hint = hint.map(hintHtml => Hint(
+            content = HtmlContent(hintHtml)
+        )),
+        value = form(name).value,
+        errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    ))
+} else {
+    @govukTextarea(Textarea(
+        id,
+        name,
+        classes = classes.fold("")(x => x),
+        label = Label(
+            content = Text(messages(label)),
+            isPageHeading = isPageHeading,
+            classes = if(isPageHeading) "govuk-label--l" else if (labelHidden) "govuk-visually-hidden" else ""
+        ),
+        hint = hint.map(hintKey => Hint(
+            content = HtmlContent(messages(hintKey))
+        )),
+        value = form(name).value,
+        errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*))))
+    ))
+}
 
 @{
     //$COVERAGE-OFF$

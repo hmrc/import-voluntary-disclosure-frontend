@@ -18,7 +18,8 @@
         formHelper: FormWithCSRF,
         errorSummary: components.errorSummary,
         button: components.button,
-        inputTextArea: components.inputTextArea
+        inputTextArea: components.inputTextArea,
+        cancellationReasonFormProvider: forms.cancelCase.CancellationReasonFormProvider
 )
 
 @(form: Form[_], backLink: Option[Call])(implicit request: Request[_], messages: Messages)
@@ -38,7 +39,8 @@
             messages("cancellationReason.pageTitle"),
             true,
             true,
-            classes = Some("govuk-fieldset__legend")
+            classes = Some("govuk-fieldset__legend"),
+            maxCharacters = Some(cancellationReasonFormProvider.maxLength)
         )
         @button("common.button.continue")
     }

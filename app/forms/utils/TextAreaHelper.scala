@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package forms.cancelCase
+package forms.utils
 
-import forms.mappings.Mappings
-import forms.utils.TextAreaHelper.removeCarriageReturn
-import play.api.data.Form
+object TextAreaHelper {
 
-import javax.inject.Inject
+  def removeCarriageReturn: String => String = _.replace("\r\n", "\n")
 
-class CancellationReasonFormProvider @Inject() extends Mappings {
-
-  val maxLength: Int = 1400
-
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("cancellationReason.error.required")
-        .verifying(maxLength(maxLength, "cancellationReason.error.maxLength", removeCarriageReturn))
-    )
 }
