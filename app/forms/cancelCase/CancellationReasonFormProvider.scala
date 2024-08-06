@@ -17,6 +17,7 @@
 package forms.cancelCase
 
 import forms.mappings.Mappings
+import forms.utils.TextAreaHelper.removeCarriageReturn
 import play.api.data.Form
 
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class CancellationReasonFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("cancellationReason.error.required")
-        .verifying(maxLength(maxLength, "cancellationReason.error.maxLength"))
+        .verifying(maxLength(maxLength, "cancellationReason.error.maxLength", removeCarriageReturn))
+        .transform[String](x => removeCarriageReturn(x), identity)
     )
 }

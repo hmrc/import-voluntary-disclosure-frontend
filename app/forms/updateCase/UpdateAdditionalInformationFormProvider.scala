@@ -17,6 +17,7 @@
 package forms.updateCase
 
 import forms.mappings.Mappings
+import forms.utils.TextAreaHelper.removeCarriageReturn
 import play.api.data.Form
 
 import javax.inject.Inject
@@ -28,7 +29,8 @@ class UpdateAdditionalInformationFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("updateAdditionalInformation.error.required")
-        .verifying(maxLength(maxLength, "updateAdditionalInformation.error.maxLength"))
+        .verifying(maxLength(maxLength, "updateAdditionalInformation.error.maxLength", removeCarriageReturn))
+        .transform[String](x => removeCarriageReturn(x), identity)
     )
 
 }
