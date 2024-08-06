@@ -41,7 +41,6 @@ class MoreInformationFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text(requiredErrorMessage)
         .verifying(maxLength(maxLength, maxCharactersErrorMessage, removeCarriageReturn))
-        .transform[String](x => removeCarriageReturn(x), identity)
     )
   }
 

@@ -30,6 +30,5 @@ class CancellationReasonFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("cancellationReason.error.required")
         .verifying(maxLength(maxLength, "cancellationReason.error.maxLength", removeCarriageReturn))
-        .transform[String](x => removeCarriageReturn(x), identity)
     )
 }
