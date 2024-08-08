@@ -18,7 +18,7 @@ package messages.underpayments
 
 import messages.BaseMessages
 
-object PVAHandoffMessages extends BaseMessages{
+object PVAHandoffMessages extends BaseMessages {
 
   val title = "You cannot disclose underpaid import VAT using this service"
   val repMessage =
