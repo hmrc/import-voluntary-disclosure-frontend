@@ -150,8 +150,17 @@ class RepresentativeConfirmationViewSpec extends ViewBaseSpec {
         }
       }
 
-      s"have the '${RepresentativeConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
-        elementText("#helpImproveServiceLink") mustBe RepresentativeConfirmationMessages.helpImproveServiceLink
+      s"have the exit survey content" in {
+        document.getElementsByClass("govuk-heading-m").text() must include(
+          RepresentativeConfirmationMessages.exitSurveyHeading
+        )
+        document.getElementsByClass("govuk-body").text() must include(
+          RepresentativeConfirmationMessages.exitSurveyParagraph
+        )
+        document.getElementsByClass("govuk-body").text() must include(RepresentativeConfirmationMessages.exitSurveyLink)
+        document.getElementsByClass("govuk-body").text() must include(
+          RepresentativeConfirmationMessages.exitSurveyParagraph2
+        )
       }
 
     }

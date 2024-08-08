@@ -144,8 +144,13 @@ class ImporterConfirmationViewSpec extends ViewBaseSpec {
         }
       }
 
-      s"have the '${ImporterConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
-        elementText("#helpImproveServiceLink") mustBe ImporterConfirmationMessages.helpImproveServiceLink
+      s"have the exit survey content" in {
+        document.getElementsByClass("govuk-heading-m").text() must include(
+          ImporterConfirmationMessages.exitSurveyHeading
+        )
+        document.getElementsByClass("govuk-body").text() must include(ImporterConfirmationMessages.exitSurveyParagraph)
+        document.getElementsByClass("govuk-body").text() must include(ImporterConfirmationMessages.exitSurveyLink)
+        document.getElementsByClass("govuk-body").text() must include(ImporterConfirmationMessages.exitSurveyParagraph2)
       }
 
     }

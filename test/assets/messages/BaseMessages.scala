@@ -32,4 +32,12 @@ trait BaseMessages {
 
   val siteNo = "No"
 
+  val exitSurveyHeading = "Before you go"
+
+  val exitSurveyParagraph = "Your feedback helps us make our service better."
+
+  val exitSurveyLink = "Take a short survey"
+
+  val exitSurveyParagraph2 = "to share your feedback on this service."
+
 }
