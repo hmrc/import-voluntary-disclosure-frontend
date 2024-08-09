@@ -756,7 +756,7 @@ updateCase.confirmation.p=Rydym wedi cael yr wybodaeth ychwanegol ar gyfer y dat
 updateCase.confirmation.whatHappensNext=Yr hyn sy’n digwydd nesaf
 updateCase.confirmation.whatHappensNext.p=Byddwn yn gwneud yn siŵr bod yr wybodaeth rydych wedi’i rhoi yn gywir, ac yn anfon y Nodyn Gorchymyn Ar ôl Clirio (C18) drwy’r post.
 updateCase.confirmation.whatYouShouldDoNext=Yr hyn y dylech ei wneud nesaf
-updateCase.confirmation.whatYouShouldDoNext.p=Os nad ydych wedi cael y nodyn gorchymyn neu os nad ydym wedi cysylltu â chi cyn pen 14 diwrnod, anfonwch e-bost at ‘
+updateCase.confirmation.whatYouShouldDoNext.p=Os nad ydych wedi cael y nodyn gorchymyn neu os nad ydym wedi cysylltu â chi cyn pen 14 diwrnod, anfonwch e-bost at
 updateCase.confirmation.helpImproveServiceLink=Beth oedd eich barn am y gwasanaeth hwn?
 updateCase.confirmation.startNewUnderpaymentButton=Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad
 updateCase.confirmation.caseId=i gyfeirnod y datgeliad
@@ -839,3 +839,8 @@ createCase.alreadySubmitted = Rydych eisoes wedi cyflwyno’ch datgeliad
 createCase.alreadySubmitted.p = Mae’ch datgeliad wedi cyrraedd CThEF.
 startNewDisclosure.button = Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad
 
+common.feedback.title = Cyn i chi fynd
+common.feedback.p1 = Mae’ch adborth yn ein helpu i wella ein gwasanaeth.
+common.feedback.link = Llenwch ein harolwg
+common.feedback.p2 = i rannu’ch adborth ar y gwasanaeth.
+exit.survey.anotherDisclosure = Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad

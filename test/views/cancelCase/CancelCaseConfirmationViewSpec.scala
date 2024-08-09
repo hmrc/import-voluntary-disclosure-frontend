@@ -62,8 +62,17 @@ class CancelCaseConfirmationViewSpec extends ViewBaseSpec {
           Some(controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url)
       }
 
-      s"have the '${CancelCaseConfirmationMessages.helpImproveServiceLink}' link" in {
-        elementText("#helpImproveServiceLink") mustBe CancelCaseConfirmationMessages.helpImproveServiceLink
+      s"have the exit survey content" in {
+        document.getElementsByClass("govuk-heading-m").text() must include(
+          CancelCaseConfirmationMessages.exitSurveyHeading
+        )
+        document.getElementsByClass("govuk-body").text() must include(
+          CancelCaseConfirmationMessages.exitSurveyParagraph
+        )
+        document.getElementsByClass("govuk-body").text() must include(CancelCaseConfirmationMessages.exitSurveyLink)
+        document.getElementsByClass("govuk-body").text() must include(
+          CancelCaseConfirmationMessages.exitSurveyParagraph2
+        )
       }
     }
   }

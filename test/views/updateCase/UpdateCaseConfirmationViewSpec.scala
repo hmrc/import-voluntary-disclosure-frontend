@@ -91,8 +91,17 @@ class UpdateCaseConfirmationViewSpec extends ViewBaseSpec {
         }
       }
 
-      s"have the '${UpdateCaseConfirmationMessages.helpImproveServiceLink}' sub-heading" in {
-        elementText("#helpImproveServiceLink") mustBe UpdateCaseConfirmationMessages.helpImproveServiceLink
+      s"have the exit survey content" in {
+        document.getElementsByClass("govuk-heading-m").text() must include(
+          UpdateCaseConfirmationMessages.exitSurveyHeading
+        )
+        document.getElementsByClass("govuk-body").text() must include(
+          UpdateCaseConfirmationMessages.exitSurveyParagraph
+        )
+        document.getElementsByClass("govuk-body").text() must include(UpdateCaseConfirmationMessages.exitSurveyLink)
+        document.getElementsByClass("govuk-body").text() must include(
+          UpdateCaseConfirmationMessages.exitSurveyParagraph2
+        )
       }
     }
   }

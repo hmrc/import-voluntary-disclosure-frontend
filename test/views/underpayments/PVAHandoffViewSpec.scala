@@ -71,5 +71,18 @@ class PVAHandoffViewSpec extends ViewBaseSpec {
         Some("https://www.gov.uk/guidance/complete-your-vat-return-to-account-for-import-vat")
     }
 
+    s"have the exit survey content" in {
+      document.getElementsByClass("govuk-heading-m").text() must include(
+        PVAHandoffMessages.exitSurveyHeading
+      )
+      document.getElementsByClass("govuk-body").text() must include(
+        PVAHandoffMessages.exitSurveyParagraph
+      )
+      document.getElementsByClass("govuk-body").text() must include(PVAHandoffMessages.exitSurveyLink)
+      document.getElementsByClass("govuk-body").text() must include(
+        PVAHandoffMessages.exitSurveyParagraph2
+      )
+    }
+
   }
 }

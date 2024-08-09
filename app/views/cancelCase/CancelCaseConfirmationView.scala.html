@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import helpers._
 @this(layout: templates.Layout,
         h2: components.h2,
         p: components.p,
@@ -37,19 +38,10 @@
     @h2(messages("cancelCase.confirmation.whatHappensNext"), id = Some("whatHappensNext"))
 
     @p(Html(messages("cancelCase.confirmation.whatHappensNext.p")))
+    @linkAnotherDisclosure()
+    @ExitSurvey()
 
-    @p{
-        <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
-        id="discloseAnotherUnderpayment" class="govuk-button">
-        @{messages("cancelCase.confirmation.anotherDisclosure")}
-        </a>
-    }
 
-    <div id="helpImproveServiceLink">
-        @p{
-            <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("cancelCase.confirmation.helpImproveServiceLink")}</a>
-        }
-    </div>
 }
 
 @{

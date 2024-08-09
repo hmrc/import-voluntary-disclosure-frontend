@@ -1,5 +1,5 @@
-/*
- * Copyright 2023 HM Revenue & Customs
+@*
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,32 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package messages
+@()(implicit messages: Messages)
 
-trait BaseMessages {
-
-  val continue = "Continue"
-
-  val confirm = "Confirm"
-
-  val back_link = "Back"
-
-  val errorPrefix = "Error: "
-
-  val thereIsAProblemPrefix = "There is a problem "
-
-  val siteYes = "Yes"
-
-  val siteNo = "No"
-
-  val exitSurveyHeading = "Before you go"
-
-  val exitSurveyParagraph = "Your feedback helps us make our service better."
-
-  val exitSurveyLink = "Take a short survey"
-
-  val exitSurveyParagraph2 = "to share your feedback on this service."
-
-}
+<h2 class="govuk-heading-m">@messages("common.feedback.title")</h2>
+<p class="govuk-body">@messages("common.feedback.p1")</p>
+<p class="govuk-body">
+ <a class="govuk-link" href="@controllers.routes.SignOutController.signOutUnidentified">@messages("common.feedback.link")</a> @messages("common.feedback.p2")
+</p>

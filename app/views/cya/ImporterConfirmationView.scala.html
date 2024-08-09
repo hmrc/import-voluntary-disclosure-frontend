@@ -18,6 +18,8 @@
 @import viewmodels.cya.ConfirmationViewData
 @import viewmodels.cya.CYASummaryList
 @import views.html.helper.CSPNonce
+@import helpers._
+
 
 @this(layout: templates.Layout,
         summaryForPrint: SummaryForPrint,
@@ -81,21 +83,10 @@
             @Html(messages("confirmation.whatYouShouldDoNext.contactInfo"))
             <a class="govuk-link" href=@{s"mailto:${appConfig.c18EmailAddress}"}>@appConfig.c18EmailAddress</a>.
         }
+        @linkAnotherDisclosure()
+        @ExitSurvey()
 
-        @p {
-            <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
-            id="discloseAnotherUnderpayment" class="govuk-button">
-            @{messages("confirmation.whatYouShouldDoNext.button")}
-            </a>
-        }
 
-        <div id="helpImproveServiceLink">
-            @p{
-                <a href=@{appConfig.surveyUrl} class="govuk-link">@{messages("confirmation.helpImproveServiceLink")}</a>
-                @Html(messages("confirmation.helpImproveServiceLinkTime"))
-            }
-        </div>
-    </div>
 
     @summaryForPrint(answers)
 }
