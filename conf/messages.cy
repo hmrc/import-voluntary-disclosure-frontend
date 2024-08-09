@@ -839,3 +839,8 @@ createCase.alreadySubmitted = Rydych eisoes wedi cyflwyno’ch datgeliad
 createCase.alreadySubmitted.p = Mae’ch datgeliad wedi cyrraedd CThEF.
 startNewDisclosure.button = Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad
 
+common.feedback.title = Cyn i chi fynd
+common.feedback.p1 = Mae’ch adborth yn ein helpu i wella ein gwasanaeth.
+common.feedback.link = Llenwch ein harolwg
+common.feedback.p2 = i rannu’ch adborth ar y gwasanaeth.
+exit.survey.anotherDisclosure = Dechrau datgeliad newydd, ychwanegu at ddatgeliad, neu ganslo datgeliad
