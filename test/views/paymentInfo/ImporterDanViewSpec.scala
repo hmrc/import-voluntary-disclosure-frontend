@@ -103,6 +103,10 @@ class ImporterDanViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("h1") mustBe ImporterDanMessages.title
     }
 
+    "have the correct hint text" in {
+      elementText("#value-hint") mustBe ImporterDanMessages.hint
+    }
+
     "render a back link with the correct URL" in {
       elementAttributes("#back-link") must contain("href" -> "backLinkUrl")
     }

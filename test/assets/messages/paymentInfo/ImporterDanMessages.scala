@@ -20,7 +20,9 @@ import messages.BaseMessages
 
 object ImporterDanMessages extends BaseMessages {
 
-  val title: String         = "What is importer’s deferment account number?"
+  val title: String = "What is importer’s deferment account number?"
+  val hint: String =
+    "This is the number HMRC sent to the account holder when the duty deferment account was set up. It’s 7 digits, like 1234567."
   val requiredError: String = "Enter the deferment account number"
   val formatError: String   = "Enter the deferment account number in the correct format, like 1234567"
 

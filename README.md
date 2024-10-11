@@ -35,6 +35,14 @@ The following downstream services are used:
 * **Import Voluntary Disclosure Submission**              
   used to access off-platform endpoint for SUB09 and Create/Update Case
 
+## Testing code
+#### Unit tests
+`sbt test`
+#### Integration tests
+`sbt it/test`
+
+You can run both in sequence by chaining the above commands.
+
 ### Formatting code
 This library uses [Scalafmt](https://scalameta.org/scalafmt/), a code formatter for Scala. The formatting rules configured for this repository are defined within [.scalafmt.conf](.scalafmt.conf). Prior to checking in any changes to this repository, please make sure all files are formatted correctly.
 
@@ -49,6 +57,21 @@ To check files have been formatted as expected execute:
 ```
 sbt scalafmtCheckAll scalafmtSbtCheck
 ```
+
+### Final checks before pushing changes
+
+To run;
+
+- Unit tests
+- Integration tests
+- Scalafmt formatting checks
+- Scoverage checks
+
+You can use the included _**precheck**_ shell script to run all checks before pushing your branch for review.
+```
+./precheck.sh
+```
+
 ### License
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")

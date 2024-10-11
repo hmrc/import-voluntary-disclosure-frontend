@@ -38,7 +38,8 @@
                 label = "importerDan.pageTitle",
                 headingMessageArgs = Seq(importerName),
                 isPageHeading = true,
-                classes = Some("govuk-fieldset__legend govuk-input--width-10")
+                classes = Some("govuk-fieldset__legend govuk-input--width-10"),
+                hint = Some(HtmlContent(messages("importerDan.hint")).asHtml)
             )
             @button("common.button.continue")
 
