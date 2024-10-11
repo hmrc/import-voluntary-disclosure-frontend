@@ -1,0 +1,1 @@
+ sbt -mem 2048 clean scalafmt test:scalafmt coverage test it/test coverageReport

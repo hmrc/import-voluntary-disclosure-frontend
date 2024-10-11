@@ -640,6 +640,7 @@ confirmEORI.notThisEoriExpandedLinkText= Mewngofnodwch gan ddefnyddio manylion g
 confirmEoriDetailsError.pageTitle=Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
 confirmEoriDetailsError.message=Rhowch gynnig arall arni yn nes ymlaen.
 importerDan.pageTitle=Beth yw rhif cyfrif gohirio {0}?
+importerDan.hint=Dyma’r rhif a anfonodd CThEF at ddeiliad y cyfrif pan gafodd y cyfrif gohirio tollau ei greu. 7 digid ydyw, megis 1234567.
 importerDan.error.required=Nodwch rif y cyfrif gohirio
 importerDan.error.format=Nodwch rif y cyfrif gohirio yn y fformat cywir, fel 1234567
 underpaymentStart.pageTitle=Rhowch wybod beth oedd y tandaliad
