@@ -30,7 +30,8 @@
         <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
         s""" ${messages("feedback.after")}"""
     ),
-    classes = "govuk-!-display-none-print"
+    classes = "govuk-!-display-none-print",
+    attributes = Map("role" -> "banner")
 ))
 
 @{
