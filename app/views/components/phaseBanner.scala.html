@@ -31,7 +31,10 @@
         s""" ${messages("feedback.after")}"""
     ),
     classes = "govuk-!-display-none-print",
-    attributes = Map("role" -> "banner")
+    attributes = Map(
+        "id" -> "phaseBanner",
+        "role" -> "region"
+    )
 ))
 
 @{
