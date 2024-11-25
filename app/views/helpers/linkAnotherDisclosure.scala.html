@@ -15,9 +15,9 @@
  *@
 
 @()(implicit messages: Messages)
-<p class="govuk-body">
+<p class="govuk-body govuk-!-padding-2 govuk-!-static-margin-top-7">
     <a href=@{controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad().url}
-       id="discloseAnotherUnderpayment" class="govuk-link govuk-!-static-margin-top-5">
+       id="discloseAnotherUnderpayment" class="govuk-link">
         @{messages("exit.survey.anotherDisclosure")}
     </a>
 </p>
