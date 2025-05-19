@@ -18,7 +18,6 @@ package repositories
 
 import config.AppConfig
 import models.upscan.FileUpload
-import org.mongodb.scala._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes.ascending
@@ -57,7 +56,7 @@ class FileUploadRepositoryImpl @Inject() (mongoComponent: MongoComponent, appCon
   private val updateLastUpdatedTimestamp: FileUpload => FileUpload = _.copy(lastUpdatedDate = Some(getTime))
 
   override def updateRecord(fileUpload: FileUpload)(implicit ec: ExecutionContext): Future[Boolean] = {
-    val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument())
+    val update = BsonDocument("$set" -> updateLastUpdatedTimestamp(fileUpload).toDocument)
     collection
       .updateOne(equal("reference", fileUpload.reference), update, UpdateOptions().upsert(true))
       .toFuture()

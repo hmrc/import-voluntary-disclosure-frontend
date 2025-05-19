@@ -55,7 +55,7 @@ class UserAnswersRepository @Inject() (mongoComponent: MongoComponent, appConfig
 
   override def set(userAnswers: UserAnswers)(implicit ec: ExecutionContext): Future[Boolean] = {
     val modifier = userAnswers copy (lastUpdated = Instant.now())
-    val update   = BsonDocument("$set" -> modifier.toDocument())
+    val update   = BsonDocument("$set" -> modifier.toDocument)
     collection
       .updateOne(equal("_id", userAnswers.id), update, UpdateOptions().upsert(true))
       .toFuture()

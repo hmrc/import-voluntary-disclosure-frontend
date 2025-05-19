@@ -25,7 +25,7 @@ import pages.updateCase.UploadSupportingDocumentationPage
 import play.api.data.Form
 import play.api.i18n.Messages
 import play.api.mvc._
-import uk.gov.hmrc.govukfrontend.views.Aliases._
+import uk.gov.hmrc.govukfrontend.views.Aliases.{HtmlContent, Key, SummaryList, SummaryListRow, Text, Value}
 import views.html.updateCase.UploadSupportingDocumentationSummaryView
 
 import javax.inject.Inject
