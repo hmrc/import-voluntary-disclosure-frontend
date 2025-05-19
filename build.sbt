@@ -42,7 +42,6 @@ lazy val microservice = Project(appName, file("."))
     Assets / pipelineStages := Seq(concat)
   )
   .configs(Test)
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
 
 val codeStyleIntegrationTest = taskKey[Unit]("enforce code style then integration test")
