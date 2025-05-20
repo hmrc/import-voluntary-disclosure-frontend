@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "import-voluntary-disclosure-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.13"
+ThisBuild / scalaVersion := "2.13.16"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -31,7 +31,7 @@ lazy val microservice = Project(appName, file("."))
       "javascripts/application.js" ->
         group(
           Seq(
-            "lib/govuk-frontend/govuk/all.js",
+            "lib/govuk-frontend/govuk/index.js",
             "lib/hmrc-frontend/hmrc/all.js",
             "javascripts/app.js"
           )
@@ -42,7 +42,6 @@ lazy val microservice = Project(appName, file("."))
     Assets / pipelineStages := Seq(concat)
   )
   .configs(Test)
-  .settings(resolvers += Resolver.jcenterRepo)
   .settings(CodeCoverageSettings.settings: _*)
 
 val codeStyleIntegrationTest = taskKey[Unit]("enforce code style then integration test")
