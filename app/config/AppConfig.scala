@@ -27,9 +27,12 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
-  private val contactHost  = servicesConfig.getString("contact-frontend.host")
-  private val feedbackHost = servicesConfig.getString("feedback-frontend.host")
-  lazy val surveyUrl       = feedbackHost + servicesConfig.getString("feedback-frontend.url")
+
+  lazy val basGatewaySignOut = "/bas-gateway/sign-out-without-state"
+  private val contactHost    = servicesConfig.getString("contact-frontend.host")
+  private val feedbackHost   = servicesConfig.getString("feedback-frontend.host")
+  lazy val surveyUrl =
+    s"$feedbackHost$basGatewaySignOut?continue=$feedbackHost" + servicesConfig.getString("feedback-frontend.url")
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
