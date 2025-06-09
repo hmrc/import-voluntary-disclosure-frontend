@@ -85,7 +85,7 @@ class ImporterEORIExistsController @Inject() (
     if (request.checkMode) {
       controllers.cya.routes.CheckYourAnswersController.onLoad()
     } else {
-      controllers.importDetails.routes.ImporterNameController.onLoad()
+      controllers.contactDetails.routes.TraderAddressCorrectController.onLoad()
     }
   }
 
