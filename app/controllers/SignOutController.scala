@@ -38,11 +38,13 @@ class SignOutController @Inject() (
     with I18nSupport {
 
   def signOut(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    sessionRepository.remove(request.credId).map(_ => Redirect(appConfig.surveyUrl))
+    sessionRepository.remove(request.credId).map(_ =>
+      Redirect(appConfig.signOutUrl, Map("continue" -> Seq(appConfig.surveyUrl)))
+    )
   }
 
   def signOutUnidentified(): Action[AnyContent] = Action {
-    Redirect(appConfig.surveyUrl)
+    Redirect(appConfig.signOutUrl, Map("continue" -> Seq(appConfig.surveyUrl)))
   }
 
 }

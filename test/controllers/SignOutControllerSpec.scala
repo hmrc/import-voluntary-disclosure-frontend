@@ -24,7 +24,7 @@ import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers.{defaultAwaitTimeout, redirectLocation, status}
-
+import java.net.URLEncoder
 import scala.concurrent.Future
 
 class SignOutControllerSpec extends ControllerSpecBase {
@@ -66,8 +66,9 @@ class SignOutControllerSpec extends ControllerSpecBase {
     }
 
     "redirect to the correct sign out URL" in new Test {
-      val result: Future[Result] = controller.signOut()(fakeRequest)
-      redirectLocation(result) mustBe Some(appConfig.surveyUrl)
+      val result: Future[Result]     = controller.signOut()(fakeRequest)
+      val feedbackURLEncoded: String = URLEncoder.encode(s"${appConfig.surveyUrl}", "UTF-8")
+      redirectLocation(result) mustBe Some(s"${appConfig.signOutUrl}?continue=$feedbackURLEncoded")
     }
 
   }

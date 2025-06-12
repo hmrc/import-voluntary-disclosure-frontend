@@ -16,6 +16,7 @@
 
 package controllers.serviceEntry
 
+import config.AppConfig
 import controllers.actions.{DataRetrievalAction, IdentifierAction}
 import models.UserAnswers
 import play.api.i18n.I18nSupport
@@ -33,7 +34,8 @@ class SessionExpiredController @Inject() (
   sessionRepository: SessionRepository,
   mcc: MessagesControllerComponents,
   view: SessionTimeoutView,
-  implicit val ec: ExecutionContext
+  implicit val ec: ExecutionContext,
+  implicit val appConfig: AppConfig
 ) extends FrontendController(mcc)
     with I18nSupport {
 
@@ -43,12 +45,15 @@ class SessionExpiredController @Inject() (
 
   def timeout: Action[AnyContent] = (identify andThen getData).async { implicit request =>
     sessionRepository.remove(request.credId).map(_ =>
-      Redirect(controllers.serviceEntry.routes.SessionExpiredController.showView())
+      Redirect(
+        appConfig.signOutUrl,
+        Map("continue" -> Seq(controllers.serviceEntry.routes.SessionExpiredController.showView().url))
+      )
     )
   }
 
   def showView: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(view()).withNewSession)
+    Future.successful(Ok(view()))
   }
 
   private def extendUserAnswersTimeout(answers: Option[UserAnswers]): Future[Boolean] = answers match {

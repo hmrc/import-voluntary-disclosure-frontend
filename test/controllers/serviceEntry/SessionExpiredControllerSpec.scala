@@ -57,7 +57,8 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
       mockSessionRepository,
       messagesControllerComponents,
       timeoutPageView,
-      ec
+      ec,
+      appConfig
     )
   }
 
