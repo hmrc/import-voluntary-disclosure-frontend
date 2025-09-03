@@ -23,13 +23,13 @@ import play.api.mvc.Results.NotFound
 import play.api.mvc.{Filter, Request, RequestHeader, Result}
 import play.api.{Configuration, Logging}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class AllowListFilter @Inject() (
   configuration: Configuration,
   handler: config.ErrorHandler,
   val messagesApi: MessagesApi
-)(implicit val mat: Materializer)
+)(implicit val mat: Materializer, ec: ExecutionContext)
     extends Filter
     with I18nSupport
     with Logging {

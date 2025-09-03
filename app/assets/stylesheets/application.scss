@@ -1,5 +1,6 @@
 $govuk-assets-path: "/disclose-import-taxes-underpayment/assets/lib/govuk-frontend/govuk/assets/";
 $hmrc-assets-path: "/disclose-import-taxes-underpayment/assets/lib/hmrc-frontend/hmrc/";
+$govuk-new-organisation-colours: true;
 
 @import "lib/govuk-frontend/dist/govuk/all";
 @import "lib/hmrc-frontend/hmrc/all";
