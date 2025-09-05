@@ -67,7 +67,7 @@ class CancelCaseCheckYourAnswersController @Inject() (
               Redirect(controllers.cancelCase.routes.CancelCaseDisclosureClosedController.onLoad())
             )
           case Left(_) =>
-            Future.successful(errorHandler.showInternalServerError)
+            errorHandler.showInternalServerError
           case Right(_) =>
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.CancelCase))
@@ -76,7 +76,7 @@ class CancelCaseCheckYourAnswersController @Inject() (
 
         }
       case None =>
-        Future.successful(errorHandler.showInternalServerError)
+        errorHandler.showInternalServerError
     }
   }
 }

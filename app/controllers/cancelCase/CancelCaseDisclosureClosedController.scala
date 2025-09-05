@@ -25,7 +25,7 @@ import repositories.SessionRepository
 import views.html.cancelCase.CancelCaseDisclosureClosedView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class CancelCaseDisclosureClosedController @Inject() (
@@ -42,7 +42,7 @@ class CancelCaseDisclosureClosedController @Inject() (
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) => sessionRepository.remove(request.credId).map(_ => Ok(view(caseId)))
-      case _            => Future.successful(errorHandler.showInternalServerError)
+      case _            => errorHandler.showInternalServerError
     }
   }
 }

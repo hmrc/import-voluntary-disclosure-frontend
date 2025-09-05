@@ -25,7 +25,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.reasons.PVAHandoffView
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class PVAHandoffController @Inject() (
@@ -48,7 +48,7 @@ class PVAHandoffController @Inject() (
         sessionRepository.remove(request.credId).map(_ => Ok(view(request.isRepFlow, nameOfImporter)))
       case None =>
         logger.error("Failed to find Importer Name")
-        Future.successful(errorHandler.showInternalServerError)
+        errorHandler.showInternalServerError
     }
 
   }

@@ -61,7 +61,7 @@ class TraderAddressCorrectController @Inject() (
         )
       case None =>
         logger.error("Requested the trader address page without EORI details")
-        Future.successful(errorHandler.showInternalServerError)
+        errorHandler.showInternalServerError
     }
   }
 

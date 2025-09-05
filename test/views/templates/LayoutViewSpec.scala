@@ -58,7 +58,7 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
       element("body > header > div > div > div.govuk-header__content > nav > a")
         .attr("href")
-        .contains(controllers.routes.SignOutController.signOutUnidentified().url) mustBe true
+        .contains(controllers.routes.SignOutController.signOutUnidentified.url) mustBe true
     }
 
   }

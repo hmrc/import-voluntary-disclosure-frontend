@@ -43,7 +43,7 @@ class SignOutController @Inject() (
     )
   }
 
-  def signOutUnidentified(): Action[AnyContent] = Action {
+  def signOutUnidentified: Action[AnyContent] = Action {
     Redirect(appConfig.signOutUrl, Map("continue" -> Seq(appConfig.surveyUrl)))
   }
 

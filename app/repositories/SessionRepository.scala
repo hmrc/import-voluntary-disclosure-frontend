@@ -18,7 +18,6 @@ package repositories
 
 import config.AppConfig
 import models.UserAnswers
-import org.mongodb.scala._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters._
 import org.mongodb.scala.model.Indexes.ascending

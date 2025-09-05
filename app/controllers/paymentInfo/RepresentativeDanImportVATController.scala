@@ -46,7 +46,7 @@ class RepresentativeDanImportVATController @Inject() (
   implicit val ec: ExecutionContext
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     val form = (for {
       danType       <- request.userAnswers.get(AdditionalDefermentTypePage)
@@ -54,7 +54,7 @@ class RepresentativeDanImportVATController @Inject() (
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, repName, backLink))
+      Future.successful(Ok(view(form, name, repName, backLink)))
     }
   }
 
@@ -63,9 +63,9 @@ class RepresentativeDanImportVATController @Inject() (
     formProvider().bindFromRequest().fold(
       formWithErrors => {
         val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, repName, backLink))
+          Future.successful(BadRequest(view(formWithErrors, name, repName, backLink)))
         }
-        Future.successful(res)
+        res
       },
       dan => {
         val dutyAccountNumberIsSame = request.userAnswers.get(DefermentAccountPage).contains(dan.accountNumber)
@@ -73,9 +73,9 @@ class RepresentativeDanImportVATController @Inject() (
           val form = formProvider().fill(RepresentativeDan(dan.accountNumber, dan.danType))
             .withError(FormError("accountNumber", "repDan.error.input.sameAccountNumber"))
           val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-            Ok(view(form, name, repName, backLink))
+            Future.successful(Ok(view(form, name, repName, backLink)))
           }
-          Future.successful(res)
+          res
         } else {
 
           if (previousVATData(dan.accountNumber, dan.danType)) {

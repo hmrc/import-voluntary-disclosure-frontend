@@ -20,7 +20,7 @@ import org.apache.pekko.stream.Materializer
 import com.google.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.NotFound
-import play.api.mvc.{Filter, Request, RequestHeader, Result}
+import play.api.mvc.{Filter, RequestHeader, Result}
 import play.api.{Configuration, Logging}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,14 +41,12 @@ class AllowListFilter @Inject() (
 
   override def apply(next: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
 
-    implicit val request: Request[_] = Request(rh, "")
-
     val enabled: Boolean = configuration.get[Boolean]("features.allowListActive")
     val allowedList      = allowedPaths.exists(rh.path.startsWith)
 
     if (enabled && !allowedList) {
       logger.info(s"Restricted access to path: ${rh.path}")
-      Future.successful(NotFound(handler.notFoundTemplate(request)))
+      handler.notFoundTemplate(rh).map(html => NotFound(html))
     } else {
       next(rh)
     }

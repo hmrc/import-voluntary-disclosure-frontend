@@ -18,25 +18,35 @@ package config
 
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.InternalServerError
-import play.api.mvc.{Request, Result}
+import play.api.mvc.{Request, RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 import views.html.general.ErrorTemplate
 import views.html.serviceEntry.StandardErrorView
 
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ErrorHandler @Inject() (val messagesApi: MessagesApi, view: StandardErrorView, errorTemplate: ErrorTemplate)
-    extends FrontendErrorHandler {
+class ErrorHandler @Inject() (val messagesApi: MessagesApi, view: StandardErrorView, errorTemplate: ErrorTemplate)(
+  implicit val ec: ExecutionContext
+) extends FrontendErrorHandler {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit
-    request: Request[_]
-  ): Html =
-    errorTemplate(pageTitle, heading, message)
+    requestHeader: RequestHeader
+  ): Future[Html] = {
+    implicit val request: Request[_] = Request(requestHeader, "")
+    Future.successful(errorTemplate(pageTitle, heading, message))
+  }
 
-  def showInternalServerError(implicit request: Request[_]): Result = InternalServerError(internalServerErrorTemplate)
+  def showInternalServerError(implicit requestHeader: RequestHeader): Future[Result] = {
+    implicit val request: Request[_] = Request(requestHeader, "")
+    internalServerErrorTemplate.map(html => InternalServerError(html))
+  }
 
-  override def internalServerErrorTemplate(implicit request: Request[_]): Html = view()
+  override def internalServerErrorTemplate(implicit requestHeader: RequestHeader): Future[Html] = {
+    implicit val request: Request[_] = Request(requestHeader, "")
+    Future.successful(view())
+  }
 
 }

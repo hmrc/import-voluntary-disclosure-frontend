@@ -45,9 +45,9 @@ class AddressLookupController @Inject() (
   def initialiseJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val eoriName = request.userAnswers.get(KnownEoriDetailsPage).get.name
-      addressLookupService.initialiseJourney(eoriName).map {
+      addressLookupService.initialiseJourney(eoriName).flatMap {
         case Right(response) =>
-          Redirect(response.redirectUrl)
+          Future.successful(Redirect(response.redirectUrl))
         case Left(_) =>
           errorHandler.showInternalServerError
       }
@@ -55,10 +55,10 @@ class AddressLookupController @Inject() (
 
   def initialiseImporterJourney(): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.getImporterName.fold(Future.successful(errorHandler.showInternalServerError)) { name =>
-        addressLookupService.initialiseImporterJourney(name).map {
+      request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+        addressLookupService.initialiseImporterJourney(name).flatMap {
           case Right(response) =>
-            Redirect(response.redirectUrl)
+            Future.successful(Redirect(response.redirectUrl))
           case Left(_) =>
             errorHandler.showInternalServerError
         }
@@ -82,7 +82,7 @@ class AddressLookupController @Inject() (
           }
 
         case Left(_) =>
-          Future.successful(errorHandler.showInternalServerError)
+          errorHandler.showInternalServerError
       }
   }
 
@@ -102,7 +102,7 @@ class AddressLookupController @Inject() (
           }
 
         case Left(_) =>
-          Future.successful(errorHandler.showInternalServerError)
+          errorHandler.showInternalServerError
       }
   }
 

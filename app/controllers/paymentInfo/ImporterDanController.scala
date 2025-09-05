@@ -41,23 +41,21 @@ class ImporterDanController @Inject() (
   implicit val ec: ExecutionContext
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(DefermentAccountPage).fold(formProvider()) {
       formProvider().fill
     }
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, backLink()))
+      Future.successful(Ok(view(form, name, backLink())))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, backLink()))
-        }
-        Future.successful(res)
-      },
+      formWithErrors =>
+        request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          Future.successful(BadRequest(view(formWithErrors, name, backLink())))
+        },
       value =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(DefermentAccountPage, value))

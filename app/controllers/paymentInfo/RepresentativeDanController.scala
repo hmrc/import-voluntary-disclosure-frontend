@@ -44,7 +44,7 @@ class RepresentativeDanController @Inject() (
   implicit val ec: ExecutionContext
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     val form = (for {
       danType       <- request.userAnswers.get(DefermentTypePage)
@@ -52,19 +52,17 @@ class RepresentativeDanController @Inject() (
     } yield formProvider().fill(RepresentativeDan(accountNumber, danType))).getOrElse(formProvider())
 
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, repName, backLink(request.userAnswers)))
+      Future.successful(Ok(view(form, name, repName, backLink(request.userAnswers))))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val repName = request.userAnswers.get(KnownEoriDetailsPage).get.name
     formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, repName, backLink(request.userAnswers)))
-        }
-        Future.successful(res)
-      },
+      formWithErrors =>
+        request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          Future.successful(BadRequest(view(formWithErrors, name, repName, backLink(request.userAnswers))))
+        },
       dan => {
         val previousAccountNumber = request.userAnswers.get(DefermentAccountPage).getOrElse(dan.accountNumber)
         val previousAccountType   = request.userAnswers.get(DefermentTypePage).getOrElse(dan.danType)

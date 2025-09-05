@@ -63,7 +63,7 @@ class CheckYourAnswersController @Inject() (
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    submissionService.createCase.map {
+    submissionService.createCase.flatMap {
       case Right(value) =>
         val confirmationData = {
           for {
@@ -101,9 +101,13 @@ class CheckYourAnswersController @Inject() (
         confirmationData match {
           case Some(data) =>
             if (request.isRepFlow) {
-              Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
+              Future.successful(
+                Ok(repConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
+              )
             } else {
-              Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
+              Future.successful(
+                Ok(importerConfirmationView(value.id, request.isPayByDeferment, request.isOneEntry, data, summaryList))
+              )
             }
           case _ => errorHandler.showInternalServerError
         }

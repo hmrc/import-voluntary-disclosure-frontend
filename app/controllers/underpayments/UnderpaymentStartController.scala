@@ -52,7 +52,7 @@ class UnderpaymentStartController @Inject() (
           )
         case None =>
           logger.error("Failed to find Importer Name")
-          Future.successful(errorHandler.showInternalServerError)
+          errorHandler.showInternalServerError
       }
     }
   }
