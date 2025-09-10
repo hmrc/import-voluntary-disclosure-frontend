@@ -21,7 +21,7 @@ import messages.BaseMessages
 object SessionTimeoutMessages extends BaseMessages {
 
   val pageTitle: String = "For your security, we signed you out"
-  val p: String         = "We saved your answers for 30 minutes."
+  val p: String         = "We have saved your answers for 30 minutes."
   val button: String    = "Sign in"
 
 }
