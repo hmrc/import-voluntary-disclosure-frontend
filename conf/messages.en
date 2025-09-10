@@ -845,7 +845,7 @@ updateAdditionalInformation.error.maxLength = The additional information must be
 
 # Session Timeout Page
 timeout.pageTitle = For your security, we signed you out
-timeout.p = We did not save your answers.
+timeout.p = We have saved your answers for 30 minutes.
 timeout.button = Sign in
 
 # What do you want to do Page
