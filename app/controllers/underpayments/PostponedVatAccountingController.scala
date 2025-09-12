@@ -51,7 +51,7 @@ class PostponedVatAccountingController @Inject() (
         val form = request.userAnswers.get(PostponedVatAccountingPage)
           .fold(formProvider(importerName))(formProvider(importerName).fill)
         Future.successful(Ok(view(form, importerName, backLink(request.userAnswers))))
-      case None => Future.successful(errorHandler.showInternalServerError)
+      case None => errorHandler.showInternalServerError
     }
   }
 
@@ -69,7 +69,7 @@ class PostponedVatAccountingController @Inject() (
             } yield result
         )
 
-      case None => Future.successful(errorHandler.showInternalServerError)
+      case None => errorHandler.showInternalServerError
     }
   }
 

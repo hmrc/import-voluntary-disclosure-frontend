@@ -24,6 +24,7 @@ import play.api.mvc._
 import views.html.cancelCase.CancelCaseDisclosureNotFoundView
 
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class CancelCaseDisclosureNotFoundController @Inject() (
   identify: IdentifierAction,
@@ -34,9 +35,9 @@ class CancelCaseDisclosureNotFoundController @Inject() (
   errorHandler: ErrorHandler
 ) extends IVDFrontendController(mcc) {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
-      case Some(caseId) => Ok(view(caseId))
+      case Some(caseId) => Future.successful(Ok(view(caseId)))
       case None         => errorHandler.showInternalServerError
     }
   }

@@ -85,7 +85,7 @@ class UploadAuthorityController @Inject() (
               .addingToSession("AuthorityUpscanReference" -> response.reference.value)
           }
         case None =>
-          Future.successful(errorHandler.showInternalServerError)
+          errorHandler.showInternalServerError
       }
 
     }
@@ -147,7 +147,7 @@ class UploadAuthorityController @Inject() (
           )
         case None =>
           logger.error(s"DAN not found for $dutyType")
-          Future.successful(errorHandler.showInternalServerError)
+          errorHandler.showInternalServerError
       }
 
     }

@@ -23,8 +23,8 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.updateCase.DisclosureNotFoundView
-
 import javax.inject.Inject
+import scala.concurrent.Future
 
 class DisclosureNotFoundController @Inject() (
   identify: IdentifierAction,
@@ -36,9 +36,9 @@ class DisclosureNotFoundController @Inject() (
 ) extends FrontendController(mcc)
     with I18nSupport {
 
-  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
-      case Some(caseId) => Ok(view(caseId))
+      case Some(caseId) => Future.successful(Ok(view(caseId)))
       case None         => errorHandler.showInternalServerError
     }
   }

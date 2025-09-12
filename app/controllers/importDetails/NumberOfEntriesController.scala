@@ -51,24 +51,22 @@ class NumberOfEntriesController @Inject() (
 
   implicit val config: AppConfig = appConfig
 
-  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     val form = request.userAnswers.get(NumberOfEntriesPage).fold(formProvider()) {
       formProvider().fill
     }
 
     request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-      Ok(view(form, name, request.isRepFlow, backLink()))
+      Future.successful(Ok(view(form, name, request.isRepFlow, backLink())))
     }
   }
 
   def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     formProvider().bindFromRequest().fold(
-      formWithErrors => {
-        val res = request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
-          BadRequest(view(formWithErrors, name, request.isRepFlow, backLink()))
-        }
-        Future.successful(res)
-      },
+      formWithErrors =>
+        request.getImporterName.fold(errorHandler.showInternalServerError) { name =>
+          Future.successful(BadRequest(view(formWithErrors, name, request.isRepFlow, backLink())))
+        },
       newNumberOfEntries => {
         val prevNumberOfEntries: Option[NumberOfEntries] = request.userAnswers.get(NumberOfEntriesPage)
         val cleanedUserAnswers: UserAnswers = prevNumberOfEntries match {

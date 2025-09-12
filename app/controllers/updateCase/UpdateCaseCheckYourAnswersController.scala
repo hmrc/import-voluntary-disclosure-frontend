@@ -63,7 +63,7 @@ class UpdateCaseCheckYourAnswersController @Inject() (
           case Left(UpdateCaseError.CaseAlreadyClosed) =>
             Future.successful(Redirect(controllers.updateCase.routes.DisclosureClosedController.onLoad()))
           case Left(_) =>
-            Future.successful(errorHandler.showInternalServerError)
+            errorHandler.showInternalServerError
           case Right(_) =>
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.UpdateCase))
@@ -71,7 +71,7 @@ class UpdateCaseCheckYourAnswersController @Inject() (
             } yield Ok(confirmationView(caseId))
         }
       case None =>
-        Future.successful(errorHandler.showInternalServerError)
+        errorHandler.showInternalServerError
     }
   }
 }

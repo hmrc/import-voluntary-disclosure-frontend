@@ -26,8 +26,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.updateCase.DisclosureClosedView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
-
+import scala.concurrent.ExecutionContext
 @Singleton
 class DisclosureClosedController @Inject() (
   identify: IdentifierAction,
@@ -44,7 +43,7 @@ class DisclosureClosedController @Inject() (
   def onLoad(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     request.userAnswers.get(DisclosureReferenceNumberPage) match {
       case Some(caseId) => sessionRepository.remove(request.credId).map(_ => Ok(view(caseId)))
-      case _            => Future.successful(errorHandler.showInternalServerError)
+      case _            => errorHandler.showInternalServerError
     }
   }
 
