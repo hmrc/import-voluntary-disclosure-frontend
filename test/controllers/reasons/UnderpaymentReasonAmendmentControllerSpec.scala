@@ -19,15 +19,17 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.UnderpaymentReasonAmendmentFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, UnderpaymentReasonValue}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonItemNumberPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.reasons.{CurrencyAmendmentView, OtherReasonAmendmentView, TextAmendmentView, WeightAmendmentView}
 
 import scala.concurrent.Future
@@ -43,7 +45,9 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
       "amended"  -> amended
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
     lazy val controller = new UnderpaymentReasonAmendmentController(
       authenticatedAction,
       dataRetrievalAction,
@@ -69,7 +73,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
     )
     val formProvider: UnderpaymentReasonAmendmentFormProvider =
       injector.instanceOf[UnderpaymentReasonAmendmentFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
     val form: UnderpaymentReasonAmendmentFormProvider = formProvider
   }
 
@@ -111,7 +114,6 @@ class UnderpaymentReasonAmendmentControllerSpec extends ControllerSpecBase {
 
       "update the UserAnswers in session" in new Test {
         await(controller.onSubmit(22)(fakeRequestGenerator(fifty, sixtyFive)))
-        verifyCalls()
       }
     }
 

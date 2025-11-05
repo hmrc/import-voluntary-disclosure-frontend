@@ -17,48 +17,44 @@
 package mocks.services
 
 import models.upscan.UpScanInitiateResponse
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
+import org.scalatestplus.mockito.MockitoSugar.mock
 import services.UpScanService
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockUpScanService extends MockFactory {
+trait MockUpScanService {
 
   val mockUpScanService: UpScanService = mock[UpScanService]
 
   object MockedUpScanService {
-    def initiateNewJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateNewJourney()(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *)
-        .returns(response)
+    def initiateNewJourney(response: Future[UpScanInitiateResponse]): OngoingStubbing[Future[UpScanInitiateResponse]] =
+      when(mockUpScanService.initiateNewJourney()(any(), any()))
+        .thenReturn(response)
 
-    def initiateBulkJourney(response: Future[UpScanInitiateResponse]): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateBulkJourney()(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *)
-        .returns(response)
+    def initiateBulkJourney(response: Future[UpScanInitiateResponse]): OngoingStubbing[Future[UpScanInitiateResponse]] =
+      when(mockUpScanService.initiateBulkJourney()(any(), any()))
+        .thenReturn(response)
 
     def initiateAuthorityJourney(
       response: Future[UpScanInitiateResponse]
-    ): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateAuthorityJourney(_: String)(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *, *)
-        .returns(response)
+    ): OngoingStubbing[Future[UpScanInitiateResponse]] =
+      when(mockUpScanService.initiateAuthorityJourney(any())(any(), any()))
+        .thenReturn(response)
 
     def initiateSupportingDocJourney(
       response: Future[UpScanInitiateResponse]
-    ): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateSupportingDocJourney()(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *)
-        .returns(response)
+    ): OngoingStubbing[Future[UpScanInitiateResponse]] =
+      when(mockUpScanService.initiateSupportingDocJourney()(any(), any()))
+        .thenReturn(response)
 
     def initiateCancelCaseJourney(
       response: Future[UpScanInitiateResponse]
-    ): CallHandler[Future[UpScanInitiateResponse]] =
-      (mockUpScanService.initiateCancelCaseJourney()(_: ExecutionContext, _: HeaderCarrier))
-        .expects(*, *)
-        .returns(response)
+    ): OngoingStubbing[Future[UpScanInitiateResponse]] =
+      when(mockUpScanService.initiateCancelCaseJourney()(any(), any()))
+        .thenReturn(response)
 
   }
 

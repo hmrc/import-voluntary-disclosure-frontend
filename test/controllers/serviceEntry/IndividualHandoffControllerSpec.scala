@@ -17,18 +17,19 @@
 package controllers.serviceEntry
 
 import base.ControllerSpecBase
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{defaultAwaitTimeout, status}
+import repositories.SessionRepository
 import views.html.serviceEntry.IndividualHandoffView
 
 import scala.concurrent.Future
 
 class IndividualHandoffControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
     private lazy val view: IndividualHandoffView = app.injector.instanceOf[IndividualHandoffView]
     val userAnswers: Option[UserAnswers]         = Some(UserAnswers("credId"))
     lazy val controller                          = new IndividualHandoffController(messagesControllerComponents, view)

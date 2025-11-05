@@ -17,81 +17,85 @@
 package services.updateCaseService
 
 import base.ServiceSpecBase
-import mocks.connectors.MockIvdSubmissionConnector
-import mocks.services.MockAuditService
+import connectors.IvdSubmissionConnector
+import models._
 import models.audit.{CancelCaseAuditEvent, UpdateCaseAuditEvent}
 import models.requests._
-import models._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{atMostOnce, reset, verify, when}
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import services.UpdateCaseService
-import utils.ReusableValues
+import services.{AuditService, UpdateCaseService}
 
-class UpdateCaseServiceSpec extends ServiceSpecBase {
+import scala.concurrent.Future
 
-  trait Test
-      extends MockIvdSubmissionConnector
-      with MockAuditService
-      with UpdateCaseServiceTestData
-      with ReusableValues {
-    def setupMock(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
-      setupMockUpdateCase(response)
+class UpdateCaseServiceSpec extends ServiceSpecBase with UpdateCaseServiceTestData with BeforeAndAfterEach {
 
-    val userAnswers: UserAnswers = completeUserAnswers
+  val mockIVDSubmissionConnector: IvdSubmissionConnector = mock[IvdSubmissionConnector]
+  val mockAuditService: AuditService                     = mock[AuditService]
 
-    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
-      OptionalDataRequest(
-        IdentifierRequest(fakeRequest, "credId", "eori"),
-        "credId",
-        "eori",
-        Some(userAnswers)
-      ),
+  val userAnswers: UserAnswers = completeUserAnswers
+
+  implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+    OptionalDataRequest(
+      IdentifierRequest(fakeRequest, "credId", "eori"),
       "credId",
       "eori",
-      userAnswers
+      Some(userAnswers)
+    ),
+    "credId",
+    "eori",
+    userAnswers
+  )
+
+  val failedCreateCaseConnectorCall: UpdateCaseError =
+    UpdateCaseError.UnexpectedError(
+      Status.BAD_REQUEST,
+      Some("Downstream error returned when retrieving SubmissionResponse from back end")
     )
 
-    val failedCreateCaseConnectorCall: UpdateCaseError =
-      UpdateCaseError.UnexpectedError(
-        Status.BAD_REQUEST,
-        Some("Downstream error returned when retrieving SubmissionResponse from back end")
-      )
+  val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
 
-    val service = new UpdateCaseService(mockIVDSubmissionConnector, mockAuditService)
-  }
+  override protected def beforeEach(): Unit =
+    when(mockIVDSubmissionConnector.updateCase(any())(any())).thenReturn(
+      Future.successful(Right(UpdateCaseResponse("1234")))
+    )
 
   "UpdateCaseService" when {
     "called with valid user answers" should {
-      "return successful UpdateCaseResponse" in new Test {
-        private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
-        setupMockUpdateCase(Right(response))
-        verifyAudit(UpdateCaseAuditEvent(updateCaseJson))
-        private val result = await(service.updateCase)
+      "return successful UpdateCaseResponse" in {
+        val response: UpdateCaseResponse = UpdateCaseResponse("1234")
+        val result                       = await(service.updateCase)
         result mustBe Right(response)
+        verify(mockAuditService, atMostOnce()).audit(UpdateCaseAuditEvent(updateCaseJson))
       }
 
-      "return successful UpdateCaseResponse for Cancel Case" in new Test {
-        override val userAnswers: UserAnswers    = cancelCaseCompleteUserAnswers
-        private val response: UpdateCaseResponse = UpdateCaseResponse("1234")
-        setupMockUpdateCase(Right(response))
-        verifyAudit(CancelCaseAuditEvent(cancelCaseJson))
-        private val result = await(service.updateCase)
+      "return successful UpdateCaseResponse for Cancel Case" in {
+        val ua: UserAnswers              = cancelCaseCompleteUserAnswers
+        val response: UpdateCaseResponse = UpdateCaseResponse("1234")
+        val result = await(service.updateCase(dataRequest.copy(userAnswers = ua), headerCarrier, executionContext))
         result mustBe Right(response)
+        verify(mockAuditService, atMostOnce()).audit(CancelCaseAuditEvent(cancelCaseJson))
       }
 
-      "return error if connector call fails" in new Test {
-        setupMock(Left(failedCreateCaseConnectorCall))
-        private val result = await(service.updateCase)
+      "return error if connector call fails" in {
+        reset(mockIVDSubmissionConnector)
+        when(mockIVDSubmissionConnector.updateCase(any())(any())).thenReturn(
+          Future.successful(Left(failedCreateCaseConnectorCall))
+        )
+        val result = await(service.updateCase)
 
         result mustBe Left(failedCreateCaseConnectorCall)
       }
     }
 
     "called with incomplete User Answers" should {
-      "return error - unable to parse to model" in new Test {
-        override val userAnswers: UserAnswers = UserAnswers("some-cred-id")
-        private val result                    = await(service.updateCase)
+      "return error - unable to parse to model" in {
+        val ua: UserAnswers = UserAnswers("some-cred-id")
+        val result = await(service.updateCase(dataRequest.copy(userAnswers = ua), headerCarrier, executionContext))
 
         result must matchPattern { case Left(UpdateCaseError.UnexpectedError(_, _)) =>
         }
@@ -101,17 +105,17 @@ class UpdateCaseServiceSpec extends ServiceSpecBase {
 
   "buildUpdate" when {
     "called with a complete User Answers" should {
-      "return expected JSON" in new Test {
-        private val result = service.buildUpdate
+      "return expected JSON" in {
+        val result = service.buildUpdate
 
         result mustBe Right(updateCaseJson)
       }
     }
 
     "called without supporting documents" should {
-      "return expected JSON" in new Test {
-        override val userAnswers: UserAnswers = userAnswersWithoutDocs
-        private val result                    = service.buildUpdate
+      "return expected JSON" in {
+        val ua: UserAnswers = userAnswersWithoutDocs
+        val result          = service.buildUpdate(dataRequest.copy(userAnswers = ua))
 
         result mustBe Right(updateCaseJsonWithoutDocs)
       }

@@ -19,13 +19,14 @@ package mocks.connectors
 import connectors.UpScanConnector
 import connectors.httpParsers.UpScanInitiateHttpParser.UpscanInitiateResponse
 import models.upscan.UpScanInitiateRequest
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
+import org.scalatestplus.mockito.MockitoSugar.mock
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockUpScanConnector extends MockFactory {
+trait MockUpScanConnector {
 
   val mockUpScanConnector: UpScanConnector = mock[UpScanConnector]
 
@@ -33,9 +34,7 @@ trait MockUpScanConnector extends MockFactory {
     def postToInitiate(
       request: UpScanInitiateRequest,
       response: Future[UpscanInitiateResponse]
-    ): CallHandler[Future[UpscanInitiateResponse]] =
-      (mockUpScanConnector.postToInitiate(_: UpScanInitiateRequest)(_: HeaderCarrier, _: ExecutionContext))
-        .expects(request, *, *)
-        .returns(response)
+    ): OngoingStubbing[Future[UpscanInitiateResponse]] =
+      when(mockUpScanConnector.postToInitiate(any())(any())).thenReturn(response)
   }
 }

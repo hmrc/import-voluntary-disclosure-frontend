@@ -16,21 +16,20 @@
 
 package mocks.services
 
-import models.requests.DataRequest
 import models.{ErrorModel, SubmissionResponse}
-import org.scalamock.scalatest.MockFactory
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import services.SubmissionService
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockSubmissionService extends MockFactory {
+trait MockSubmissionService {
 
   val mockSubmissionService: SubmissionService = mock[SubmissionService]
 
   def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit =
-    (mockSubmissionService.createCase(_: DataRequest[_], _: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockSubmissionService.createCase(any(), any(), any()))
+      .thenReturn(Future.successful(response))
 
 }

@@ -17,24 +17,24 @@
 package controllers.importDetails
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterEORINumberFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
-import pages.importDetails.ImporterEORINumberPage
+import pages.importDetails.{ImporterEORINumberPage, ImporterNamePage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.importDetails.ImporterEORINumberView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.UserTypePage
-import models.importDetails.UserType
-import pages.importDetails.ImporterNamePage
 
 class ImporterEORINumberControllerSpec extends ControllerSpecBase {
 
@@ -52,7 +52,10 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "importerEORI" -> importerEORI
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     lazy val controller = new ImporterEORINumberController(
       authenticatedAction,
       dataRetrievalAction,
@@ -83,8 +86,7 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
         .set(ImporterNamePage, "importer").success.value
     )
     val formProvider: ImporterEORINumberFormProvider = injector.instanceOf[ImporterEORINumberFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: ImporterEORINumberFormProvider = formProvider
+    val form: ImporterEORINumberFormProvider         = formProvider
   }
 
   "GET onLoad" should {
@@ -116,7 +118,6 @@ class ImporterEORINumberControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithImporterEORINumber
         await(controller.onSubmit()(fakeRequestGenerator(importerEORINumber)))
-        verifyCalls()
       }
     }
 

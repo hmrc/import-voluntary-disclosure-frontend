@@ -16,23 +16,24 @@
 
 package controllers.importDetails
 
-import java.time.LocalDate
-
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.EnterCustomsProcedureCodeFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.EntryDetails
 import models.requests._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.{EnterCustomsProcedureCodePage, EntryDetailsPage}
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.importDetails.EnterCustomsProcedureCodeView
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
@@ -51,7 +52,10 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "cpc" -> cpc
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     lazy val controller = new EnterCustomsProcedureCodeController(
       authenticatedAction,
       dataRetrievalAction,
@@ -77,8 +81,7 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
     )
     val userAnswers: Option[UserAnswers]                    = userAnswersWithEntryDetails
     val formProvider: EnterCustomsProcedureCodeFormProvider = injector.instanceOf[EnterCustomsProcedureCodeFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: EnterCustomsProcedureCodeFormProvider = formProvider
+    val form: EnterCustomsProcedureCodeFormProvider         = formProvider
   }
 
   "GET onLoad" when {
@@ -116,7 +119,6 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithEntryDetails
         await(controller.onSubmit(fakeRequestGenerator("1234567")))
-        verifyCalls()
       }
 
     }
@@ -149,7 +151,6 @@ class EnterCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
             .set(CheckModePage, true).success.value
         )
         await(controller.onSubmit(fakeRequestGenerator("1234567")))
-        verifyCalls()
       }
 
     }

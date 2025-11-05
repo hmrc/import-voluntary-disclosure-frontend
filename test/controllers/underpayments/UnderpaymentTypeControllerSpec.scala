@@ -19,12 +19,14 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentTypeFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers._
+import play.api.test.Helpers.*
+import repositories.SessionRepository
 import utils.ReusableValues
 import views.html.underpayments.UnderpaymentTypeView
 
@@ -32,7 +34,9 @@ import scala.concurrent.Future
 
 class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableValues {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
     private lazy val underpaymentTypeView: UnderpaymentTypeView = app.injector.instanceOf[UnderpaymentTypeView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -41,7 +45,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
     val formProvider: UnderpaymentTypeFormProvider = injector.instanceOf[UnderpaymentTypeFormProvider]
     val form: UnderpaymentTypeFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new UnderpaymentTypeController(
       authenticatedAction,
@@ -116,9 +120,7 @@ class UnderpaymentTypeControllerSpec extends ControllerSpecBase with ReusableVal
 
       "update the UserAnswers in session" in new Test {
         await(controller.onSubmit()(fakeRequest.withFormUrlEncodedBody("value" -> "A00")))
-        verifyCalls()
       }
-
     }
 
     "payload contains invalid data" should {

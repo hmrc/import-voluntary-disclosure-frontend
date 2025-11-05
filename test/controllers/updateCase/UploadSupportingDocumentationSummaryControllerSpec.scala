@@ -90,8 +90,9 @@ class UploadSupportingDocumentationSummaryControllerSpec extends ControllerSpecB
     }
 
     "return SEE OTHER when uploaded-files is empty" in new Test {
-      override val data: JsObject = Json.obj("uploaded-supporting-documentation" -> Json.arr())
-      val result: Future[Result]  = controller.onLoad(fakeRequest)
+      override val data: JsObject                   = Json.obj("uploaded-supporting-documentation" -> Json.arr())
+      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("cred-id", data))
+      val result: Future[Result]                    = controller.onLoad(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
     }
 

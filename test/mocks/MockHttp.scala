@@ -16,42 +16,33 @@
 
 package mocks
 
-import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.Writes
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
+import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockHttp extends MockFactory {
+trait MockHttp {
 
-  val mockHttp: HttpClient = mock[HttpClient]
+  val mockHttp: HttpClientV2 = mock[HttpClientV2]
 
-  def setupMockHttpGet[T](url: String)(response: T): Unit =
-    (mockHttp.GET[T](_: String, _: Seq[(String, String)], _: Seq[(String, String)])(
-      _: HttpReads[T],
-      _: HeaderCarrier,
-      _: ExecutionContext
-    ))
-      .expects(url, *, *, *, *, *)
-      .returns(Future.successful(response))
+  def setupMockHttpGet[T](url: String)(response: T): Unit = {
+    val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
+    when(mockHttp.get(any())(any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.execute(any(), any())).thenReturn(Future.successful(response))
+  }
 
-  def setupMockHttpPost[I, O](url: String)(response: O): Unit =
-    (mockHttp.POST[I, O](_: String, _: I, _: Seq[(String, String)])(
-      _: Writes[I],
-      _: HttpReads[O],
-      _: HeaderCarrier,
-      _: ExecutionContext
-    ))
-      .expects(url, *, *, *, *, *, *)
-      .returns(Future.successful(response))
+  def setupMockHttpPost[I, O](url: String)(response: O): Unit = {
+    val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
+    when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.execute(any(), any())).thenReturn(Future.successful(response))
+    when(mockHttp.post(any())(any())).thenReturn(mockRequestBuilder)
+  }
 
   def setupMockHttpPostWithBody[I, O](url: String, body: I)(response: O): Unit =
-    (mockHttp.POST[I, O](_: String, _: I, _: Seq[(String, String)])(
-      _: Writes[I],
-      _: HttpReads[O],
-      _: HeaderCarrier,
-      _: ExecutionContext
-    ))
-      .expects(url, body, *, *, *, *, *)
-      .returns(Future.successful(response))
+    val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
+    when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+    when(mockRequestBuilder.execute(any(), any())).thenReturn(Future.successful(response))
+    when(mockHttp.post(any())(any())).thenReturn(mockRequestBuilder)
 }

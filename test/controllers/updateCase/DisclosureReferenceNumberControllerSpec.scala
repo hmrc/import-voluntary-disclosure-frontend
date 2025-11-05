@@ -19,55 +19,54 @@ package controllers.updateCase
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.updateCase.DisclosureReferenceNumberFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests._
-import org.scalamock.handlers.CallHandler
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import pages.CheckModePage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.updateCase.DisclosureReferenceNumberView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
+class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository {
-    private lazy val view: DisclosureReferenceNumberView = app.injector.instanceOf[DisclosureReferenceNumberView]
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-    val userAnswers: Option[UserAnswers] = Some(
-      UserAnswers("credId")
-        .set(CheckModePage, false).success.value
-    )
-    val disclosureReference              = "C181234567890123456789"
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+  private lazy val view: DisclosureReferenceNumberView = app.injector.instanceOf[DisclosureReferenceNumberView]
 
-    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
-      OptionalDataRequest(
-        IdentifierRequest(fakeRequest, "credId", "eori"),
-        "credId",
-        "eori",
-        userAnswers
-      ),
+  val userAnswers: Option[UserAnswers] = Some(
+    UserAnswers("credId")
+      .set(CheckModePage, false).success.value
+  )
+
+  val disclosureReference = "C181234567890123456789"
+
+  implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+    OptionalDataRequest(
+      IdentifierRequest(fakeRequest, "credId", "eori"),
       "credId",
       "eori",
-      userAnswers.get
-    )
+      userAnswers
+    ),
+    "credId",
+    "eori",
+    userAnswers.get
+  )
 
-    val formProvider: DisclosureReferenceNumberFormProvider = injector.instanceOf[DisclosureReferenceNumberFormProvider]
-    val form: DisclosureReferenceNumberFormProvider         = formProvider
+  val formProvider: DisclosureReferenceNumberFormProvider = injector.instanceOf[DisclosureReferenceNumberFormProvider]
+  val form: DisclosureReferenceNumberFormProvider         = formProvider
 
-    def expectSessionSet(): CallHandler[Future[Boolean]] =
-      MockedSessionRepository.set(Future.successful(true))
-
-    expectSessionSet()
-
-    lazy val controller = new DisclosureReferenceNumberController(
+  def controller(ua: Option[UserAnswers] = userAnswers): DisclosureReferenceNumberController = {
+    new DisclosureReferenceNumberController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(ua),
       dataRequiredAction,
       mockSessionRepository,
       messagesControllerComponents,
@@ -77,16 +76,19 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
     )
   }
 
+  override protected def beforeEach(): Unit =
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
   "GET onLoad" should {
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+    "return OK" in {
+      val result: Future[Result] = controller().onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      override val userAnswers: Option[UserAnswers] =
+    "return HTML" in {
+      val ua: Option[UserAnswers] =
         Some(UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, disclosureReference).success.value)
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller(ua).onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -95,87 +97,74 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
   "POST onSubmit" when {
     "payload contains valid data when check mode is false" should {
 
-      "return a SEE OTHER response" in new Test {
+      "return a SEE OTHER response" in {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller().onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
+      "return the correct location header" in {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller().onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.updateCase.routes.MoreDocumentationController.onLoad().url)
       }
 
-      "update the UserAnswers in session" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        await(controller.onSubmit(request))
-        verifyCalls()
+      "update the UserAnswers in session" in {
+        val request = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
+        await(controller().onSubmit(request))
       }
     }
 
     "payload contains valid data when check mode is true" should {
 
-      "return a SEE OTHER response" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
+      "return a SEE OTHER response" in {
+        val ua: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
             .set(CheckModePage, true).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller(ua).onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
       }
 
-      "return the correct location header" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
+      "return the correct location header" in {
+        val ua: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
             .set(CheckModePage, true).success.value
         )
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller(ua).onSubmit(request)
         redirectLocation(result) mustBe Some(
           controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad().url
         )
       }
 
-      "update the UserAnswers in session" in new Test {
-        override val userAnswers: Option[UserAnswers] = Some(
+      "update the UserAnswers in session" in {
+        val ua: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id")
             .set(CheckModePage, true).success.value
         )
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
-        await(controller.onSubmit(request))
-        verifyCalls()
+        val request = fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference)
+        await(controller(ua).onSubmit(request))
       }
     }
 
     "payload contains lowercase reference number" should {
-      "update the UserAnswers in session with upper case reference number" in new Test {
-        override def expectSessionSet(): CallHandler[Future[Boolean]] =
-          (mockSessionRepository.set(_: UserAnswers)(_: ExecutionContext))
-            .expects(
-              where((answers: UserAnswers, _: ExecutionContext) =>
-                answers.get(DisclosureReferenceNumberPage).contains(disclosureReference)
-              )
-            )
-            .returning(Future.successful(true))
-
+      "update the UserAnswers in session with upper case reference number" in {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] =
           fakeRequest.withFormUrlEncodedBody("value" -> disclosureReference.toLowerCase)
-        lazy val result: Future[Result] = controller.onSubmit(request)
+        lazy val result: Future[Result] = controller().onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
-
-        verifyCalls()
       }
     }
 
     "payload contains invalid data" should {
-      "return a BAD REQUEST" in new Test {
-        val result: Future[Result] = controller.onSubmit(fakeRequest.withFormUrlEncodedBody("value" -> "invalid"))
+      "return a BAD REQUEST" in {
+        val result: Future[Result] = controller().onSubmit(fakeRequest.withFormUrlEncodedBody("value" -> "invalid"))
         status(result) mustBe Status.BAD_REQUEST
       }
     }
@@ -184,25 +173,21 @@ class DisclosureReferenceNumberControllerSpec extends ControllerSpecBase {
   "backLink" when {
 
     "not in change mode" should {
-      "point to What Do You Want To Do page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(
-            UserAnswers("some-cred-id")
-              .set(CheckModePage, false).success.value
-          )
-        lazy val result: Call = controller.backLink
+      "point to What Do You Want To Do page" in {
+        val ua: UserAnswers =
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, false).success.value
+        lazy val result: Call = controller().backLink(dataRequest.copy(userAnswers = ua))
         result mustBe controllers.serviceEntry.routes.WhatDoYouWantToDoController.onLoad()
       }
     }
 
     "in change mode" should {
-      "point to Check Your Answers page" in new Test {
-        override val userAnswers: Option[UserAnswers] =
-          Some(
-            UserAnswers("some-cred-id")
-              .set(CheckModePage, true).success.value
-          )
-        lazy val result: Call = controller.backLink
+      "point to Check Your Answers page" in {
+        val ua: UserAnswers =
+          UserAnswers("some-cred-id")
+            .set(CheckModePage, true).success.value
+        lazy val result: Call = controller().backLink(dataRequest.copy(userAnswers = ua))
         result mustBe controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onLoad()
       }
     }

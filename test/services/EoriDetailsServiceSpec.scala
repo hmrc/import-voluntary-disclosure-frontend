@@ -17,25 +17,23 @@
 package services
 
 import base.SpecBase
-import mocks.connectors.MockIvdSubmissionConnector
-import mocks.services.MockAuditService
-import models.UserAnswers
+import connectors.IvdSubmissionConnector
+import models.{ErrorModel, UserAnswers}
 import models.audit.EoriDetailsAuditEvent
 import models.requests.{IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.{atMostOnce, when}
 import play.api.mvc.AnyContentAsEmpty
 import utils.ReusableValues
 
-class EoriDetailsServiceSpec
-    extends SpecBase
-    with MockIvdSubmissionConnector
-    with MockAuditService
-    with ReusableValues {
+import scala.concurrent.Future
 
-  def setup(eoriDetailsResponse: EoriDetailsResponse): EoriDetailsService = {
-    setupMockGetEoriDetails(eoriDetailsResponse)
-    verifyAudit(EoriDetailsAuditEvent("eori", "credId"))
-    new EoriDetailsService(mockIVDSubmissionConnector, mockAuditService, messagesApi, appConfig)
-  }
+class EoriDetailsServiceSpec extends SpecBase with ReusableValues {
+
+  val mockIVDSubmissionConnector: IvdSubmissionConnector = mock[IvdSubmissionConnector]
+  val mockAuditService: AuditService                     = mock[AuditService]
+  val service = new EoriDetailsService(mockIVDSubmissionConnector, mockAuditService, messagesApi, appConfig)
 
   implicit val request: OptionalDataRequest[AnyContentAsEmpty.type] = OptionalDataRequest(
     IdentifierRequest(fakeRequest, "credId", "eori"),
@@ -45,11 +43,26 @@ class EoriDetailsServiceSpec
   )
 
   "connector call is successful" should {
-    lazy val service = setup(Right(eoriDetails))
-    lazy val result  = service.retrieveEoriDetails("eori")
+    when(mockIVDSubmissionConnector.getEoriDetails(any())(any())).thenReturn(Future.successful(Right(eoriDetails)))
+
+    val result = service.retrieveEoriDetails("eori")
 
     "return successful RetrieveEoriDetailsResponse" in {
       await(result) mustBe Right(eoriDetails)
+      Mockito.verify(mockAuditService, atMostOnce()).audit(EoriDetailsAuditEvent("eori", "credId"))
+    }
+  }
+
+  "connector call in unsuccessful" should {
+    "return Left with error" in {
+      Mockito.reset(mockAuditService)
+      val errorResponse = ErrorModel(500, "server down")
+      when(mockIVDSubmissionConnector.getEoriDetails(any())(any())).thenReturn(Future.successful(Left(errorResponse)))
+
+      val result = service.retrieveEoriDetails("eori")
+
+      await(result) mustBe Left(errorResponse)
+      Mockito.verifyNoInteractions(mockAuditService)
     }
   }
 }

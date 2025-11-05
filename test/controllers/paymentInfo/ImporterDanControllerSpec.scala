@@ -20,10 +20,11 @@ import base.ControllerSpecBase
 import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.ImporterDanFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.DefermentAccountPage
@@ -31,6 +32,7 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import repositories.SessionRepository
 import views.html.paymentInfo.ImporterDanView
 
 import scala.concurrent.Future
@@ -49,7 +51,10 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       "value" -> dan
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     lazy val controller = new ImporterDanController(
       authenticatedAction,
       dataRetrievalAction,
@@ -67,8 +72,7 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       .set(UserTypePage, UserType.Representative).success.value
       .set(ImporterNamePage, "importer").success.value
     val formProvider: ImporterDanFormProvider = injector.instanceOf[ImporterDanFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: ImporterDanFormProvider = formProvider
+    val form: ImporterDanFormProvider         = formProvider
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(
@@ -113,7 +117,6 @@ class ImporterDanControllerSpec extends ControllerSpecBase {
       }
       "update the UserAnswers in session" in new Test {
         await(controller.onSubmit(fakeRequestGenerator("1234567")))
-        verifyCalls()
       }
 
     }

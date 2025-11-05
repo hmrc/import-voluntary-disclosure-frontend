@@ -18,20 +18,24 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.reasons.{BoxNumber, UnderpaymentReason}
 import models.{SelectedDutyTypes, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.UnderpaymentReasonsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.reasons.BoxGuidanceView
 
 import scala.concurrent.Future
 
 class BoxGuidanceControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new BoxGuidanceController(
       authenticatedAction,

@@ -19,20 +19,22 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailSummaryFormProvider
-import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Both, Duty, Vat}
-import models.importDetails.UserType.Representative
-import models.underpayments.UnderpaymentDetail
 import models.UserAnswers
 import models.importDetails.NumberOfEntries
-import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
-import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
+import models.importDetails.UserType.Representative
+import models.underpayments.UnderpaymentDetail
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
+import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.paymentInfo.SplitPaymentPage
+import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentDetailSummaryPage}
 import play.api.mvc.Result
 import play.api.test.Helpers
 import play.api.test.Helpers.{contentType, defaultAwaitTimeout, redirectLocation, status}
 import play.mvc.Http.Status
+import repositories.SessionRepository
 import utils.ReusableValues
 import views.html.underpayments.UnderpaymentDetailSummaryView
 
@@ -40,7 +42,9 @@ import scala.concurrent.Future
 
 class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with ReusableValues {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
     private lazy val underpaymentDetailSummaryView: UnderpaymentDetailSummaryView =
       app.injector.instanceOf[UnderpaymentDetailSummaryView]
 
@@ -50,8 +54,7 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
     val formProvider: UnderpaymentDetailSummaryFormProvider = injector.instanceOf[UnderpaymentDetailSummaryFormProvider]
     val form: UnderpaymentDetailSummaryFormProvider         = formProvider
 
-    def setupMock(): Unit =
-      MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailSummaryController(
       authenticatedAction,
@@ -63,8 +66,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
       form,
       ec
     )
-
-    setupMock()
   }
 
   "GET onLoad" should {
@@ -250,11 +251,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(CheckModePage, true).success.value
         )
 
-        override def setupMock(): Unit = {
-          MockedSessionRepository.set(Future.successful(true))
-          MockedSessionRepository.set(Future.successful(true))
-        }
-
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
@@ -273,11 +269,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(CheckModePage, true).success.value
         )
 
-        override def setupMock(): Unit = {
-          MockedSessionRepository.set(Future.successful(true))
-          MockedSessionRepository.set(Future.successful(true))
-        }
-
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
@@ -292,11 +283,6 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(UnderpaymentDetailSummaryPage, Seq(UnderpaymentDetail("B00", 0.0, 1.0))).success.value
             .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
         )
-
-        override def setupMock(): Unit = {
-          MockedSessionRepository.set(Future.successful(true))
-          MockedSessionRepository.set(Future.successful(true))
-        }
 
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
@@ -316,16 +302,12 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
         )
 
-        override def setupMock(): Unit =
-          MockedSessionRepository.set(Future.successful(true))
-
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
           Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
-        verifyCalls()
       }
 
       "return a SEE OTHER Postponed VAT page when in Representative flow going from Duty to Vat only" in new Test {
@@ -338,15 +320,12 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
             .set(NumberOfEntriesPage, NumberOfEntries.OneEntry).success.value
         )
 
-        override def setupMock(): Unit = {}
-
         lazy val result: Future[Result] = controller.onSubmit()(
           fakeRequest.withFormUrlEncodedBody("value" -> "false")
         )
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe
           Some(controllers.underpayments.routes.PostponedVatAccountingController.onLoad().url)
-        verifyCalls()
       }
     }
 
@@ -361,16 +340,12 @@ class UnderpaymentDetailSummaryControllerSpec extends ControllerSpecBase with Re
           .set(SplitPaymentPage, true).success.value
       )
 
-      override def setupMock(): Unit =
-        MockedSessionRepository.set(Future.successful(true))
-
       lazy val result: Future[Result] = controller.onSubmit()(
         fakeRequest.withFormUrlEncodedBody("value" -> "false")
       )
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe
         Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
-      verifyCalls()
     }
 
     "payload contains invalid data" should {

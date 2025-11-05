@@ -18,14 +18,16 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.data.reasons.ChangeUnderpaymentReasonData
 import views.html.reasons.ChangeUnderpaymentReasonView
 
@@ -33,7 +35,10 @@ import scala.concurrent.Future
 
 class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     private lazy val view: ChangeUnderpaymentReasonView = app.injector.instanceOf[ChangeUnderpaymentReasonView]
 
     def underpayment(box: BoxNumber, item: Int = 0, original: String = "50", amended: String = "60") =
@@ -49,8 +54,6 @@ class ChangeUnderpaymentReasonControllerSpec extends ControllerSpecBase {
           )
         ).success.value
     )
-
-    MockedSessionRepository.set(Future.successful(true))
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 

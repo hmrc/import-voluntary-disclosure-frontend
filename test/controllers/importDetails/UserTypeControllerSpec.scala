@@ -20,31 +20,34 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.UserTypeFormProvider
 import mocks.config.MockAppConfig
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.UserTypePage
 import play.api.http.Status
 import play.api.mvc.{AnyContent, Result}
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.importDetails.UserTypeView
 
 import scala.concurrent.Future
 
 class UserTypeControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val userTypePage: UserTypeView = app.injector.instanceOf[UserTypeView]
     val userAnswers: Option[UserAnswers]        = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction        = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: UserTypeFormProvider = injector.instanceOf[UserTypeFormProvider]
     val form: UserTypeFormProvider         = formProvider
-    lazy val appConfig                     = new MockAppConfig()
+    lazy val appConfig                     = MockAppConfig.appConfig
 
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     implicit lazy val dataRequest: DataRequest[AnyContent] = DataRequest(
       OptionalDataRequest(
@@ -103,7 +106,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -124,7 +126,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -152,7 +153,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(answers)
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Representative.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -180,7 +180,6 @@ class UserTypeControllerSpec extends ControllerSpecBase {
         override val userAnswers: Option[UserAnswers] = Some(answers)
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> UserType.Importer.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

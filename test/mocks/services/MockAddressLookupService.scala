@@ -18,13 +18,14 @@ package mocks.services
 
 import models.ErrorModel
 import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
-import org.scalamock.scalatest.MockFactory
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import services.AddressLookupService
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockAddressLookupService extends MockFactory {
+trait MockAddressLookupService {
 
   val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
 
@@ -32,17 +33,14 @@ trait MockAddressLookupService extends MockFactory {
   type InitialiseJourneyResponse = Either[ErrorModel, AddressLookupOnRampModel]
 
   def setupMockRetrieveAddress(response: RetrieveAddressResponse): Unit =
-    (mockAddressLookupService.retrieveAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockAddressLookupService.retrieveAddress(any())(any(), any()))
+      .thenReturn(Future.successful(response))
 
   def setupMockInitialiseJourney(response: InitialiseJourneyResponse): Unit =
-    (mockAddressLookupService.initialiseJourney(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockAddressLookupService.initialiseJourney(any())(any(), any()))
+      .thenReturn(Future.successful(response))
 
   def setupMockInitialiseImporterJourney(response: InitialiseJourneyResponse): Unit =
-    (mockAddressLookupService.initialiseImporterJourney(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockAddressLookupService.initialiseImporterJourney(any())(any(), any()))
+      .thenReturn(Future.successful(response))
 }

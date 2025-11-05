@@ -18,19 +18,21 @@ package controllers.serviceEntry
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import repositories.SessionRepository
 import views.html.errors.SessionTimeoutView
 
 import scala.concurrent.Future
 
 class SessionExpiredControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val timeoutPageView: SessionTimeoutView = app.injector.instanceOf[SessionTimeoutView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
@@ -48,8 +50,9 @@ class SessionExpiredControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
 
-    MockedSessionRepository.remove(Future.successful("OK"))
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("OK"))
 
     lazy val controller = new SessionExpiredController(
       authenticatedAction,

@@ -21,14 +21,14 @@ import controllers.actions.FakeDataRetrievalAction
 import forms.shared.UploadFileFormProvider
 import messages.paymentInfo.UploadAuthorityMessages
 import mocks.config.MockAppConfig
-import mocks.repositories.{MockFileUploadRepository, MockSessionRepository}
-import mocks.services.MockUpScanService
 import models.SelectedDutyTypes.{Vat, _}
 import models.importDetails.UserType
 import models.requests._
 import models.underpayments.UnderpaymentDetail
 import models.upscan._
 import models.{FileUploadInfo, UploadAuthority, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages._
 import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo._
@@ -37,6 +37,8 @@ import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc._
 import play.api.test.Helpers._
+import repositories.{FileUploadRepository, SessionRepository}
+import services.UpScanService
 import views.html.paymentInfo.UploadAuthorityView
 import views.html.shared.{FileUploadProgressView, FileUploadSuccessView}
 
@@ -46,29 +48,29 @@ import scala.concurrent.Future
 class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   private val callbackReadyJson: JsValue = Json.parse(s"""
-       | {
-       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-       |   "fileStatus" : "READY",
-       |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-       |   "uploadDetails": {
-       |     "uploadTimestamp": "2018-04-24T09:30:00Z",
-       |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-       |     "fileName": "test.pdf",
-       |     "fileMimeType": "application/pdf"
-       |   }
-       | }""".stripMargin)
+                                                         | {
+                                                         |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+                                                         |   "fileStatus" : "READY",
+                                                         |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                                                         |   "uploadDetails": {
+                                                         |     "uploadTimestamp": "2018-04-24T09:30:00Z",
+                                                         |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                                                         |     "fileName": "test.pdf",
+                                                         |     "fileMimeType": "application/pdf"
+                                                         |   }
+                                                         | }""".stripMargin)
 
   private val callbackFailedRejectedJson: JsValue = Json.parse(s"""
-       | {
-       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-       |   "fileStatus" : "FAILED",
-       |    "failureDetails": {
-       |        "failureReason": "REJECTED",
-       |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
-       |    }
-       | }""".stripMargin)
+                                                                  | {
+                                                                  |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+                                                                  |   "fileStatus" : "FAILED",
+                                                                  |    "failureDetails": {
+                                                                  |        "failureReason": "REJECTED",
+                                                                  |        "message": "MIME type .foo is not allowed for service import-voluntary-disclosure-frontend"
+                                                                  |    }
+                                                                  | }""".stripMargin)
 
-  trait Test extends MockSessionRepository with MockFileUploadRepository with MockUpScanService {
+  trait Test {
     private lazy val uploadAuthorityView: UploadAuthorityView = app.injector.instanceOf[UploadAuthorityView]
     private lazy val progressView: FileUploadProgressView     = app.injector.instanceOf[FileUploadProgressView]
     private lazy val successView: FileUploadSuccessView       = app.injector.instanceOf[FileUploadSuccessView]
@@ -105,26 +107,27 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
 
-    def setupMocks(): Unit = {
-      MockedFileUploadRepository.updateRecord(Future.successful(true))
-      MockedFileUploadRepository.getRecord(Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get)))
-      MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository       = mock[SessionRepository]
+    val mockFileUploadRepository: FileUploadRepository = mock[FileUploadRepository]
+    val mockUpScanService: UpScanService               = mock[UpScanService]
 
-      MockedUpScanService.initiateAuthorityJourney(
-        Future.successful(
-          UpScanInitiateResponse(
-            Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
-            UploadFormTemplate(
-              "https://bucketName.s3.eu-west-2.amazonaws.com",
-              Map("Content-Type" -> "application/xml")
-            )
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    when(mockFileUploadRepository.getRecord(any())(any())).thenReturn(
+      Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get))
+    )
+    when(mockUpScanService.initiateAuthorityJourney(any())(any(), any())).thenReturn(
+      Future.successful(
+        UpScanInitiateResponse(
+          Reference("11370e18-6e24-453e-b45a-76d3e32ea33d"),
+          UploadFormTemplate(
+            "https://bucketName.s3.eu-west-2.amazonaws.com",
+            Map("Content-Type" -> "application/xml")
           )
         )
       )
-    }
+    )
 
     lazy val controller = {
-      setupMocks()
       new UploadAuthorityController(
         authenticatedAction,
         dataRetrievalAction,
@@ -138,7 +141,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         form,
         successView,
         errorHandler,
-        MockAppConfig,
+        MockAppConfig.appConfig,
         ec
       )
     }
@@ -146,6 +149,8 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
   val formProvider: UploadFileFormProvider = injector.instanceOf[UploadFileFormProvider]
   val form: UploadFileFormProvider         = formProvider
+
+  //
 
   "GET onLoad" should {
     "return OK when called for combine duty and vat" in new Test {
@@ -249,6 +254,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
 
     "upscan returns success on upload" should {
       "for a valid key, redirect to holding page" in new Test {
+        when(mockFileUploadRepository.updateRecord(any())(any())).thenReturn(Future.successful(true))
         val result = controller.upscanResponseHandler(
           dutyType,
           Some("key"),
@@ -264,9 +270,7 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         )
       }
       "for a valid key, create record in file Repository" in new Test {
-        override def setupMocks(): Unit =
-          MockedFileUploadRepository.updateRecord(Future.successful(true))
-
+        when(mockFileUploadRepository.updateRecord(any())(any())).thenReturn(Future.successful(true))
         await(
           controller.upscanResponseHandler(
             dutyType,
@@ -277,8 +281,6 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
             None
           )(fakeRequest)
         )
-
-        verifyCalls()
       }
 
       "for an invalid key" in new Test {
@@ -303,29 +305,19 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
   "GET uploadProgress" when {
     "called following a successful file upload callback" should {
       "update UserAnswers and redirect to the Success Page" in new Test {
-        override def setupMocks(): Unit = {
-          MockedFileUploadRepository.getRecord(
-            Future.successful(Some(Json.fromJson[FileUpload](callbackReadyJson).get))
-          )
-          MockedSessionRepository.set(Future.successful(true))
-        }
-
         val result: Future[Result] = controller.uploadProgress(dutyType, key = "key")(fakeRequest)
 
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
           controllers.paymentInfo.routes.UploadAuthorityController.onSuccess(dutyType).url
         )
-
-        verifyCalls()
       }
     }
     "called following a file upload callback for a failure" should {
       "NOT update userAnswers and redirect to the Error Page" in new Test {
-        override def setupMocks(): Unit =
-          MockedFileUploadRepository.getRecord(
-            Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get))
-          )
+        when(mockFileUploadRepository.getRecord(any())(any())).thenReturn(
+          Future.successful(Some(Json.fromJson[FileUpload](callbackFailedRejectedJson).get))
+        )
 
         val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 
@@ -333,25 +325,24 @@ class UploadAuthorityControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(
           controllers.paymentInfo.routes.UploadAuthorityController.onLoad(dutyType).url
         )
-
-        verifyCalls()
       }
     }
     "called before any file upload callback" should {
       "NOT update userAnswers and redirect to the Progress Page" in new Test {
-        override def setupMocks(): Unit =
-          MockedFileUploadRepository.getRecord(Future.successful(Some(FileUpload("reference"))))
+        when(mockFileUploadRepository.getRecord(any())(any())).thenReturn(
+          Future.successful(Some(FileUpload("reference")))
+        )
 
         val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 
         status(result) mustBe Status.OK
-        verifyCalls()
       }
     }
     "called for a Key no longer in repository" should {
       "return 500 Internal Server Error" in new Test {
-        override def setupMocks(): Unit =
-          MockedFileUploadRepository.getRecord(Future.successful(None))
+        when(mockFileUploadRepository.getRecord(any())(any())).thenReturn(
+          Future.successful(None)
+        )
 
         val result: Future[Result] = controller.uploadProgress(dutyType, "key")(fakeRequest)
 

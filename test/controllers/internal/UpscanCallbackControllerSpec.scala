@@ -17,38 +17,40 @@
 package controllers.internal
 
 import base.ControllerSpecBase
-import mocks.repositories.MockFileUploadRepository
 import models.upscan._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import play.api.http.Status
 import play.api.libs.json.{JsValue, Json}
 import play.api.test.Helpers._
+import repositories.FileUploadRepository
 
 import scala.concurrent.Future
 
 class UpscanCallbackControllerSpec extends ControllerSpecBase {
 
   private val callbackReadyJson: JsValue = Json.parse("""
-      | {
-      |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-      |   "fileStatus" : "READY",
-      |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
-      |   "uploadDetails": {
-      |     "uploadTimestamp": "2018-04-24T09:30:00Z",
-      |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
-      |     "fileName": "test.pdf",
-      |     "fileMimeType": "application/pdf"
-      |   }
-      | }""".stripMargin)
+                                                        | {
+                                                        |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+                                                        |   "fileStatus" : "READY",
+                                                        |   "downloadUrl" : "https://bucketName.s3.eu-west-2.amazonaws.com?1235676",
+                                                        |   "uploadDetails": {
+                                                        |     "uploadTimestamp": "2018-04-24T09:30:00Z",
+                                                        |     "checksum": "396f101dd52e8b2ace0dcf5ed09b1d1f030e608938510ce46e7a5c7a4e775100",
+                                                        |     "fileName": "test.pdf",
+                                                        |     "fileMimeType": "application/pdf"
+                                                        |   }
+                                                        | }""".stripMargin)
 
   private def callbackFailedBuilder(reason: String, message: String): JsValue = Json.parse(s"""
-       | {
-       |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
-       |   "fileStatus" : "READY",
-       |    "failureDetails": {
-       |        "failureReason": "$reason",
-       |        "message": "$message"
-       |    }
-       | }""".stripMargin)
+                                                                                              | {
+                                                                                              |   "reference" : "11370e18-6e24-453e-b45a-76d3e32ea33d",
+                                                                                              |   "fileStatus" : "READY",
+                                                                                              |    "failureDetails": {
+                                                                                              |        "failureReason": "$reason",
+                                                                                              |        "message": "$message"
+                                                                                              |    }
+                                                                                              | }""".stripMargin)
 
   private val callbackFailedQuarentineJson: JsValue = callbackFailedBuilder(
     reason = "QUARANTINE",
@@ -65,15 +67,12 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
     message = "Something unknown happened"
   )
 
-  trait Test extends MockFileUploadRepository {
+  trait Test {
+    val mockFileUploadRepository: FileUploadRepository = mock[FileUploadRepository]
+    when(mockFileUploadRepository.updateRecord(any())(any())).thenReturn(Future.successful(true))
 
-    def setupMocks(): Unit =
-      MockedFileUploadRepository.updateRecord(Future.successful(true))
-
-    lazy val controller = {
-      setupMocks()
+    lazy val controller =
       new UpscanCallbackController(messagesControllerComponents, mockFileUploadRepository, ec)
-    }
   }
 
   "POST callbackHandler" when {
@@ -84,8 +83,7 @@ class UpscanCallbackControllerSpec extends ControllerSpecBase {
         status(result) mustBe Status.NO_CONTENT
       }
       "return 500 (InternalServerError)" in new Test {
-        override def setupMocks(): Unit =
-          MockedFileUploadRepository.updateRecord(Future.successful(false))
+        when(mockFileUploadRepository.updateRecord(any())(any())).thenReturn(Future.successful(false))
 
         val result = controller.callbackHandler()(fakeRequest.withBody(callbackReadyJson))
 

@@ -16,28 +16,28 @@
 
 package mocks.repositories
 
-import base.RepositorySpecBase
 import models.upscan.FileUpload
-import org.scalamock.handlers.CallHandler
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
+import org.scalatestplus.mockito.MockitoSugar.mock
 import repositories.FileUploadRepository
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockFileUploadRepository extends RepositorySpecBase {
+trait MockFileUploadRepository {
 
   val mockFileUploadRepository: FileUploadRepository = mock[FileUploadRepository]
 
   object MockedFileUploadRepository {
 
-    def updateRecord(response: Future[Boolean]): CallHandler[Future[Boolean]] =
-      (mockFileUploadRepository.updateRecord(_: FileUpload)(_: ExecutionContext))
-        .expects(*, *)
-        .returning(response)
+    def updateRecord(response: Future[Boolean]): OngoingStubbing[Future[Boolean]] =
+      when(mockFileUploadRepository.updateRecord(any())(any()))
+        .thenReturn(response)
 
-    def getRecord(response: Future[Option[FileUpload]]): CallHandler[Future[Option[FileUpload]]] =
-      (mockFileUploadRepository.getRecord(_: String)(_: ExecutionContext))
-        .expects(*, *)
-        .returning(response)
+    def getRecord(response: Future[Option[FileUpload]]): OngoingStubbing[Future[Option[FileUpload]]] =
+      when(mockFileUploadRepository.getRecord(any())(any()))
+        .thenReturn(response)
 
   }
 

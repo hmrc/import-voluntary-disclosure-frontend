@@ -33,70 +33,68 @@
 package controllers.cya
 
 import base.ControllerSpecBase
-import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
-import mocks.services.MockSubmissionService
 import models._
 import models.importDetails.{EntryDetails, UserType}
+import org.mockito.ArgumentMatchers._
+import org.mockito.Mockito
+import org.mockito.Mockito._
+import org.scalatest.BeforeAndAfterEach
 import pages.importDetails._
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
+import services.SubmissionService
 import views.html.cya.{CheckYourAnswersView, ImporterConfirmationView, RepresentativeConfirmationView}
 
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class CheckYourAnswersControllerSpec extends ControllerSpecBase {
+class CheckYourAnswersControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository with MockSubmissionService {
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val mockSubmissionService: SubmissionService = mock[SubmissionService]
 
-    private def setupConnectorMock(response: Either[ErrorModel, SubmissionResponse]) =
-      setupMockCreateCase(response)
+  val checkYourAnswersView: CheckYourAnswersView          = app.injector.instanceOf[CheckYourAnswersView]
+  val importerConfirmationView: ImporterConfirmationView  = app.injector.instanceOf[ImporterConfirmationView]
+  val repConfirmationView: RepresentativeConfirmationView = app.injector.instanceOf[RepresentativeConfirmationView]
 
-    private lazy val checkYourAnswersView: CheckYourAnswersView = app.injector.instanceOf[CheckYourAnswersView]
-    private lazy val importerConfirmationView: ImporterConfirmationView =
-      app.injector.instanceOf[ImporterConfirmationView]
-    private lazy val repConfirmationView: RepresentativeConfirmationView =
-      app.injector.instanceOf[RepresentativeConfirmationView]
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
 
-    val errorHandler: ErrorHandler = app.injector.instanceOf[ErrorHandler]
+  def cyaController(ua: Option[UserAnswers] = userAnswers): CheckYourAnswersController = {
+    new CheckYourAnswersController(
+      authenticatedAction,
+      new FakeDataRetrievalAction(ua),
+      dataRequiredAction,
+      messagesControllerComponents,
+      mockSessionRepository,
+      mockSubmissionService,
+      checkYourAnswersView,
+      importerConfirmationView,
+      repConfirmationView,
+      errorHandler,
+      ec
+    )
+  }
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-
-    MockedSessionRepository.set(Future.successful(true))
-    MockedSessionRepository.remove(Future.successful("OK"))
-
-    lazy val serviceMock: Either[ErrorModel, SubmissionResponse] = Right(SubmissionResponse("123"))
-    lazy val controller = {
-      setupConnectorMock(serviceMock)
-      new CheckYourAnswersController(
-        authenticatedAction,
-        dataRetrievalAction,
-        dataRequiredAction,
-        messagesControllerComponents,
-        mockSessionRepository,
-        mockSubmissionService,
-        checkYourAnswersView,
-        importerConfirmationView,
-        repConfirmationView,
-        errorHandler,
-        ec
-      )
-    }
+  override def beforeEach(): Unit = {
+    when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("OK"))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    when(mockSubmissionService.createCase(any(), any(), any())).thenReturn(
+      Future.successful(Right(SubmissionResponse("123")))
+    )
   }
 
   "GET onLoad" should {
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return OK" in {
+      val result: Future[Result] = cyaController().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return HTML" in {
+      val result: Future[Result] = cyaController().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -104,8 +102,8 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   "GET onSubmit" should {
 
-    "return Redirect to the importer confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return Redirect to the importer confirmation view" in {
+      val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Importer).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
@@ -124,12 +122,12 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = cyaController(userAnswers).onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return Redirect to the representative confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return Redirect to the representative confirmation view" in {
+      val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
@@ -150,12 +148,12 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = cyaController(userAnswers).onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return OK even if entryDetails are missing" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return OK even if entryDetails are missing" in {
+      val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
           .set(ImporterNamePage, "Test User").success.value
@@ -175,25 +173,28 @@ class CheckYourAnswersControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = cyaController(userAnswers).onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return Internal Server error when user answers incomplete for confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return Internal Server error when user answers incomplete for confirmation view" in {
+      val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(UserTypePage, UserType.Representative).success.value
           .set(EntryDetailsPage, EntryDetails("123", "123456Q", LocalDate.now())).success.value
           .set(ImporterNamePage, "Test User").success.value
           .set(ImporterEORINumberPage, "GB123456789").success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = cyaController(userAnswers).onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
-    "return Internal Server error is submission fails" in new Test {
-      override lazy val serviceMock = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working"))
-      val result: Future[Result]    = controller.onSubmit()(fakeRequest)
+    "return Internal Server error is submission fails" in {
+      Mockito.reset(mockSubmissionService)
+      when(mockSubmissionService.createCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Not Working")))
+      )
+      val result: Future[Result] = cyaController(userAnswers).onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

@@ -19,11 +19,11 @@ package views.components
 import base.ViewBaseSpec
 import messages.BaseMessages
 import messages.components.PhaseBannerMessages
-import mocks.config.MockAppConfig.feedbackUrl
+import mocks.config.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import views.html.components.phaseBanner
 
 class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
@@ -37,7 +37,7 @@ class PhaseBannerViewSpec extends ViewBaseSpec with BaseMessages {
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
 
       element("a").attr("href").contains(
-        feedbackUrl(fakeRequest) + s"&backUrl=${SafeRedirectUrl(appConfig.host + fakeRequest.uri).encodedUrl}"
+        MockAppConfig.appConfig.feedbackUrl(fakeRequest) + s"&backUrl=${RedirectUrl(appConfig.host + fakeRequest.uri)}"
       ) mustBe true
     }
   }

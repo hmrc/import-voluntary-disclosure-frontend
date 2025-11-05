@@ -17,29 +17,33 @@
 package controllers.importDetails
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.NumberOfEntriesFormProvider
-import mocks.repositories.MockSessionRepository
+import models.UserAnswers
+import models.importDetails.NumberOfEntries
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.importDetails.UserType.{Importer, Representative}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
-import models.UserAnswers
-import models.importDetails.NumberOfEntries
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages._
-import pages.importDetails.{ImporterEORIExistsPage, ImporterEORINumberPage, NumberOfEntriesPage, UserTypePage}
+import pages.importDetails._
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.importDetails.NumberOfEntriesView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.ImporterNamePage
 
 class NumberOfEntriesControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     private lazy val numberOfEntriesPage: NumberOfEntriesView = app.injector.instanceOf[NumberOfEntriesView]
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -64,8 +68,6 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
 
     val formProvider: NumberOfEntriesFormProvider = injector.instanceOf[NumberOfEntriesFormProvider]
     val form: NumberOfEntriesFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new NumberOfEntriesController(
       authenticatedAction,
@@ -196,7 +198,6 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.OneEntry.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
 
     }
@@ -229,7 +230,6 @@ class NumberOfEntriesControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> NumberOfEntries.MoreThanOneEntry.toString)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
 
     }

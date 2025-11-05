@@ -17,8 +17,8 @@
 package forms.mappings.filters
 
 import java.util.regex.Pattern
-import java.util.regex.Pattern._
-import scala.annotation.{nowarn, tailrec}
+import java.util.regex.Pattern.*
+import scala.annotation.tailrec
 
 trait InputFilter {
   val filters: Seq[Pattern] = Seq(
@@ -34,7 +34,6 @@ trait InputFilter {
     compile("onload(.*?)=", CASE_INSENSITIVE | MULTILINE | DOTALL)
   )
 
-  @nowarn("msg=match may not be exhaustive")
   def filter(input: String): String = {
     @tailrec
     def applyFilters(filters: Seq[Pattern], sanitizedOuput: String): String = filters match {

@@ -20,22 +20,26 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import controllers.routes
 import forms.serviceEntry.WhatDoYouWantToDoFormProvider
-import mocks.repositories.MockSessionRepository
 import models.SubmissionType.CreateCase
 import models.requests._
 import models.{SubmissionType, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.serviceEntry.{SubmissionTypePage, WhatDoYouWantToDoPage}
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.serviceEntry.WhatDoYouWantToDoView
 
 import scala.concurrent.Future
 
 class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
     private lazy val view: WhatDoYouWantToDoView = app.injector.instanceOf[WhatDoYouWantToDoView]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
@@ -57,7 +61,7 @@ class WhatDoYouWantToDoControllerSpec extends ControllerSpecBase {
     val formProvider: WhatDoYouWantToDoFormProvider = injector.instanceOf[WhatDoYouWantToDoFormProvider]
     val form: WhatDoYouWantToDoFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new WhatDoYouWantToDoController(
       authenticatedAction,

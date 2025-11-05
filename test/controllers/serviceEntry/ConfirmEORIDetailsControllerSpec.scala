@@ -18,14 +18,16 @@ package controllers.serviceEntry
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
-import mocks.services.MockEoriDetailsService
 import models.{ContactAddress, EoriDetails, ErrorModel, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.contactDetails.TraderAddressCorrectPage
 import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import repositories.SessionRepository
+import services.EoriDetailsService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import utils.ReusableValues
 import views.data.ConfirmEORIDetailsData
@@ -34,13 +36,15 @@ import views.html.serviceEntry.ConfirmEORIDetailsView
 
 import scala.concurrent.Future
 
-class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriDetailsService with ReusableValues {
+class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with ReusableValues {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: ConfirmEORIDetailsView           = app.injector.instanceOf[ConfirmEORIDetailsView]
     private lazy val errorView: ConfirmEoriDetailsErrorView = app.injector.instanceOf[ConfirmEoriDetailsErrorView]
 
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    val mockEoriDetailsService: EoriDetailsService = mock[EoriDetailsService]
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
 
@@ -62,25 +66,33 @@ class ConfirmEORIDetailsControllerSpec extends ControllerSpecBase with MockEoriD
   "GET onLoad" when {
     "no userAnswers exist" should {
       "return OK" in new Test {
-        setupMockRetrieveAddress(Right(eoriDetails))
+        when(mockEoriDetailsService.retrieveEoriDetails(any())(any(), any(), any())).thenReturn(
+          Future.successful(Right(eoriDetails))
+        )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
 
       "return OK without vatNumber" in new Test {
-        setupMockRetrieveAddress(Right(eoriDetailsWithoutVatNumber))
+        when(mockEoriDetailsService.retrieveEoriDetails(any())(any(), any(), any())).thenReturn(
+          Future.successful(Right(eoriDetailsWithoutVatNumber))
+        )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.OK
       }
 
       "return error view when an error occurs whilst retrieving EORI details" in new Test {
-        setupMockRetrieveAddress(Left(ErrorModel(Status.NOT_FOUND, "")))
+        when(mockEoriDetailsService.retrieveEoriDetails(any())(any(), any(), any())).thenReturn(
+          Future.successful(Left(ErrorModel(Status.NOT_FOUND, "")))
+        )
         val result: Future[Result] = controller.onLoad()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return HTML" in new Test {
-        setupMockRetrieveAddress(Right(eoriDetails))
+        when(mockEoriDetailsService.retrieveEoriDetails(any())(any(), any(), any())).thenReturn(
+          Future.successful(Right(eoriDetails))
+        )
         override val userAnswers: Option[UserAnswers] = Some(
           UserAnswers("some-cred-id").set(TraderAddressCorrectPage, true).success.value
         )

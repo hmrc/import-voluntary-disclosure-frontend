@@ -19,25 +19,33 @@ package controllers.contactDetails
 import assets.AddressLookupTestConstants.{customerAddressMax, customerAddressMissingLine3}
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
-import mocks.services.MockAddressLookupService
-import models.{ErrorModel, UserAnswers}
-import models.addressLookup.AddressLookupOnRampModel
+import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
 import models.importDetails.UserType
+import models.{ErrorModel, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.{ArgumentMatchers, Mockito}
 import pages.CheckModePage
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc.Result
-import play.api.test.Helpers.{redirectLocation, _}
+import play.api.test.Helpers.{redirectLocation, *}
+import repositories.SessionRepository
+import services.AddressLookupService
+import utils.ReusableValues
 
 import scala.concurrent.Future
-import pages.importDetails.ImporterNamePage
-import pages.serviceEntry.KnownEoriDetailsPage
-import utils.ReusableValues
 
 class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues {
 
-  trait Test extends MockAddressLookupService with MockSessionRepository {
+  type RetrieveAddressResponse   = Either[ErrorModel, AddressModel]
+  type InitialiseJourneyResponse = Either[ErrorModel, AddressLookupOnRampModel]
+
+  trait Test {
+    val mockSessionRepository: SessionRepository       = mock[SessionRepository]
+    val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
+
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(
       Some(
         UserAnswers("some-cred-id")
@@ -67,12 +75,13 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
 
       "for an Individual with full address" should {
         "redirect the user to the deferment page if checkMode is false" in new Test {
-          MockedSessionRepository.set(Future.successful(true))
-          setupMockRetrieveAddress(Right(customerAddressMax))
+          when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+          when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+            Future.successful(Right(customerAddressMax))
+          )
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
-          verifyCalls()
         }
 
         "redirect the user to the check your answers page if checkMode is true" in new Test {
@@ -82,19 +91,22 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
                 .set(CheckModePage, true).success.value
             )
           )
-          MockedSessionRepository.set(Future.successful(true))
-          setupMockRetrieveAddress(Right(customerAddressMax))
+          when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+          when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+            Future.successful(Right(customerAddressMax))
+          )
           val result: Future[Result] = controller.callback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
-          verifyCalls()
         }
       }
     }
 
     "produce error if business address lookup service returns an error" should {
       "return InternalServerError" in new Test {
-        setupMockRetrieveAddress(Left(addressLookupErrorModel))
+        when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+          Future.successful(Left(addressLookupErrorModel))
+        )
         val result: Future[Result] = controller.callback("12345")(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
 
@@ -114,14 +126,15 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
                 .set(UserTypePage, UserType.Representative).success.value
             )
           )
-          MockedSessionRepository.set(Future.successful(true))
-          setupMockRetrieveAddress(Right(customerAddressMissingLine3))
+          when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+          when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+            Future.successful(Right(customerAddressMissingLine3))
+          )
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(
             controllers.importDetails.routes.ImporterEORIExistsController.onLoad().url
           )
-          verifyCalls()
         }
 
         "redirect the user to the check your answer page in check mode" in new Test {
@@ -132,19 +145,22 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
                 .set(UserTypePage, UserType.Representative).success.value
             )
           )
-          MockedSessionRepository.set(Future.successful(true))
-          setupMockRetrieveAddress(Right(customerAddressMissingLine3))
+          when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+          when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+            Future.successful(Right(customerAddressMissingLine3))
+          )
           val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
           status(result) mustBe Status.SEE_OTHER
           redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
-          verifyCalls()
         }
       }
     }
 
     "produce error if business address lookup service returns an error" should {
       "return InternalServerError" in new Test {
-        setupMockRetrieveAddress(Left(addressLookupErrorModel))
+        when(mockAddressLookupService.retrieveAddress(any())(any(), any())).thenReturn(
+          Future.successful(Left(addressLookupErrorModel))
+        )
         val result: Future[Result] = controller.importerCallback("12345")(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
 
@@ -157,13 +173,17 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
     "address lookup service returns success" when {
 
       "return redirect to the url returned" in new Test {
-        setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        when(mockAddressLookupService.initialiseJourney(any())(any(), any())).thenReturn(
+          Future.successful(Right(AddressLookupOnRampModel("redirect-url")))
+        )
         val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "redirect to url returned" in new Test {
-        setupMockInitialiseJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        when(mockAddressLookupService.initialiseJourney(any())(any(), any())).thenReturn(
+          Future.successful(Right(AddressLookupOnRampModel("redirect-url")))
+        )
         val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
         redirectLocation(result) mustBe Some("redirect-url")
       }
@@ -172,7 +192,9 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
     "address lookup service returns an error" should {
 
       "return InternalServerError" in new Test {
-        setupMockInitialiseJourney(Left(addressLookupErrorModel))
+        when(mockAddressLookupService.initialiseJourney(any())(any(), any())).thenReturn(
+          Future.successful(Left(addressLookupErrorModel))
+        )
         val result: Future[Result] = controller.initialiseJourney()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }
@@ -184,13 +206,15 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
     "address lookup service returns success" when {
 
       "return redirect to the url returned" in new Test {
-        setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        when(mockAddressLookupService.initialiseImporterJourney(any())(any(), any()))
+          .thenReturn(Future.successful(Right(AddressLookupOnRampModel("redirect-url"))))
         val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
       }
 
       "redirect to url returned" in new Test {
-        setupMockInitialiseImporterJourney(Right(AddressLookupOnRampModel("redirect-url")))
+        when(mockAddressLookupService.initialiseImporterJourney(any())(any(), any()))
+          .thenReturn(Future.successful(Right(AddressLookupOnRampModel("redirect-url"))))
         val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
         redirectLocation(result) mustBe Some("redirect-url")
       }
@@ -199,7 +223,8 @@ class AddressLookupControllerSpec extends ControllerSpecBase with ReusableValues
     "address lookup service returns an error" should {
 
       "return InternalServerError" in new Test {
-        setupMockInitialiseImporterJourney(Left(addressLookupErrorModel))
+        when(mockAddressLookupService.initialiseImporterJourney(any())(any(), any()))
+          .thenReturn(Future.successful(Left(addressLookupErrorModel)))
         val result: Future[Result] = controller.initialiseImporterJourney()(fakeRequest)
         status(result) mustBe Status.INTERNAL_SERVER_ERROR
       }

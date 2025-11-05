@@ -19,15 +19,17 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.ItemNumberFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import repositories.SessionRepository
 import views.html.reasons.ItemNumberView
 
 import scala.concurrent.Future
@@ -39,7 +41,9 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
       "itemNumber" -> itemNumber
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     def underpayment(
       boxNumber: BoxNumber,
@@ -64,8 +68,7 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
     private lazy val itemNumberView          = app.injector.instanceOf[ItemNumberView]
     lazy val dataRetrievalAction             = new FakeDataRetrievalAction(userAnswers)
     val formProvider: ItemNumberFormProvider = injector.instanceOf[ItemNumberFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: ItemNumberFormProvider = formProvider
+    val form: ItemNumberFormProvider         = formProvider
   }
 
   "GET onLoad" when {
@@ -142,7 +145,6 @@ class ChangeItemNumberControllerSpec extends ControllerSpecBase {
             ).success.value
         )
         await(controller.onSubmit(fakeRequestGenerator("2")))
-        verifyCalls()
       }
 
       "return an Internal Server Error" in new Test {

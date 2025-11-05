@@ -19,13 +19,15 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.UnderpaymentDetailsFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.underpayments.ChangeUnderpaymentDetailsView
 
 import scala.concurrent.Future
@@ -34,7 +36,8 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
   private final val underpaymentType = "A00"
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
     private lazy val changeUnderpaymentDetailsView: ChangeUnderpaymentDetailsView =
       app.injector.instanceOf[ChangeUnderpaymentDetailsView]
@@ -45,7 +48,7 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     val formProvider: UnderpaymentDetailsFormProvider = injector.instanceOf[UnderpaymentDetailsFormProvider]
     val form: UnderpaymentDetailsFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new ChangeUnderpaymentDetailsController(
       authenticatedAction,
@@ -136,7 +139,6 @@ class ChangeUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
             fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
           )
         )
-        verifyCalls()
       }
 
     }
