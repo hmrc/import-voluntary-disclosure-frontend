@@ -19,22 +19,24 @@ package base
 import config.{AppConfig, ErrorHandler}
 import controllers.actions.DataRetrievalAction
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.TryValues
+import org.scalatest.{OptionValues, TryValues}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
-import org.scalatestplus.play._
-import org.scalatestplus.play.guice._
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.wordspec.FixtureAnyWordSpec
+import org.scalatestplus.play.{WsScalaTestClient, *}
+import org.scalatestplus.play.guice.*
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.inject.{Injector, bind}
 import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
-import play.api.test.CSRFTokenHelper._
+import play.api.test.CSRFTokenHelper.*
 import play.api.test.FakeRequest
 import repositories.{FileUploadRepository, SessionRepository}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, SessionKeys}
 import uk.gov.hmrc.play.language.LanguageUtils
 
-import scala.concurrent.duration.{Duration, FiniteDuration, _}
+import scala.concurrent.duration.{Duration, FiniteDuration, *}
 import scala.concurrent.{Await, ExecutionContext, Future}
 
 trait SpecBase

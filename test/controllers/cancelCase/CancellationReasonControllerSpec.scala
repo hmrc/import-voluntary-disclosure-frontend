@@ -32,9 +32,9 @@ import views.html.cancelCase.CancellationReasonView
 
 import scala.concurrent.Future
 
-class CancellationReasonControllerSpec extends ControllerSpecBase {
+class CancellationReasonControllerSpec extends ControllerSpecBase with MockSessionRepository {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: CancellationReasonView = app.injector.instanceOf[CancellationReasonView]
 
     val userAnswers: Option[UserAnswers] = Some(

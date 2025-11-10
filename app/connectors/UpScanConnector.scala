@@ -18,9 +18,15 @@ package connectors
 
 import config.AppConfig
 import connectors.httpParsers.UpScanInitiateHttpParser.{UpScanInitiateResponseReads, UpscanInitiateResponse}
+import models.upscan.UpScanInitiateRequest
+import play.api.libs.json.Json
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
+
+import java.net.URI
 import javax.inject.Inject
 import models.upscan.UpScanInitiateRequest
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import scala.concurrent.{ExecutionContext, Future}
 
