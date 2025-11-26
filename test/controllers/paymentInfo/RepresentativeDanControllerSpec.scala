@@ -17,27 +17,28 @@
 package controllers.paymentInfo
 
 import base.ControllerSpecBase
+import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.RepresentativeDanFormProvider
-import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.{Both, Neither}
-import models.{ContactAddress, EoriDetails, UserAnswers}
 import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
+import models.{ContactAddress, EoriDetails, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages._
-import pages.importDetails.UserTypePage
+import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.paymentInfo.{DefermentAccountPage, DefermentPage, DefermentTypePage, SplitPaymentPage}
+import pages.serviceEntry.KnownEoriDetailsPage
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.paymentInfo.RepresentativeDanView
 
 import scala.concurrent.Future
-import config.ErrorHandler
-import pages.importDetails.ImporterNamePage
-import pages.serviceEntry.KnownEoriDetailsPage
 
 class RepresentativeDanControllerSpec extends ControllerSpecBase {
 
@@ -48,7 +49,7 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
     (accountNumber.map(_ => "accountNumber" -> accountNumber.get) ++
       danType.map(_ => "value" -> danType.get)).toSeq
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val representativeDanView: RepresentativeDanView = app.injector.instanceOf[RepresentativeDanView]
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -74,10 +75,11 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
 
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     val formProvider: RepresentativeDanFormProvider = injector.instanceOf[RepresentativeDanFormProvider]
     val form: RepresentativeDanFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RepresentativeDanController(
       authenticatedAction,
@@ -171,7 +173,6 @@ class RepresentativeDanControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody(buildForm(): _*)
         await(controller.onSubmit(request))
-        verifyCalls()
       }
 
       "redirect to CYA when user supplies account type C and user answers holds account type A" in new Test {

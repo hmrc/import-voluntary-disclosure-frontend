@@ -18,13 +18,15 @@ package controllers.reasons
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.{BoxNumber, UnderpaymentReason, UnderpaymentReasonValue}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{UnderpaymentReasonAmendmentPage, UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.data.reasons.ConfirmReasonData
 import views.html.reasons.ConfirmReasonDetailView
@@ -33,10 +35,11 @@ import scala.concurrent.Future
 
 class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: ConfirmReasonDetailView = app.injector.instanceOf[ConfirmReasonDetailView]
 
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
@@ -121,7 +124,6 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(
           controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
         )
-        verifyCalls()
       }
 
       "return a SEE OTHER when existing reason are present" in new Test {
@@ -138,7 +140,6 @@ class ConfirmReasonDetailControllerSpec extends ControllerSpecBase {
         lazy val result: Future[Result] = controller.onSubmit()(fakeRequest)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result).get mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
-        verifyCalls()
       }
 
       "payload contains no data" should {

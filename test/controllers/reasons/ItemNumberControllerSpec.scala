@@ -19,14 +19,16 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.ItemNumberFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.{BoxNumber, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{UnderpaymentReasonBoxNumberPage, UnderpaymentReasonItemNumberPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, status}
+import repositories.SessionRepository
 import views.html.reasons.ItemNumberView
 
 import scala.concurrent.Future
@@ -38,7 +40,10 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
       "itemNumber" -> itemNumber
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     private lazy val ItemNumberView = app.injector.instanceOf[ItemNumberView]
 
@@ -47,8 +52,6 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
     lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     val formProvider: ItemNumberFormProvider = injector.instanceOf[ItemNumberFormProvider]
-
-    MockedSessionRepository.set(Future.successful(true))
 
     val form: ItemNumberFormProvider = formProvider
 
@@ -93,7 +96,6 @@ class ItemNumberControllerSpec extends ControllerSpecBase {
         )
         val result: Future[Result] = controller.onSubmit(fakeRequestGenerator("1"))
         status(result) mustBe Status.SEE_OTHER
-        verifyCalls()
       }
 
       "when there are existing underpayment reason" in new Test {

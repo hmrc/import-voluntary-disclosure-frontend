@@ -19,26 +19,29 @@ package controllers.serviceEntry
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.serviceEntry.CustomsDeclarationFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.serviceEntry.CustomsDeclarationPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.serviceEntry.CustomsDeclarationView
 
 import scala.concurrent.Future
 
 class CustomsDeclarationControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: CustomsDeclarationView = app.injector.instanceOf[CustomsDeclarationView]
 
     val formProvider: CustomsDeclarationFormProvider = injector.instanceOf[CustomsDeclarationFormProvider]
 
-    MockedSessionRepository.set(Future.successful(true))
-    MockedSessionRepository.get(Future.successful(Some(UserAnswers("credId"))))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    when(mockSessionRepository.get(any())(any())).thenReturn(Future.successful(Some(UserAnswers("credId"))))
 
     val userAnswers: Option[UserAnswers] = Some(UserAnswers("credId"))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)

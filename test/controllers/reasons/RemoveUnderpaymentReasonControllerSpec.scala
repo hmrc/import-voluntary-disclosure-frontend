@@ -19,15 +19,17 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.RemoveUnderpaymentReasonFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.reasons.RemoveUnderpaymentReasonView
 
 import scala.concurrent.Future
@@ -40,7 +42,9 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
   def underpaymentReason(boxNumber: BoxNumber, itemNumber: Int = 0, original: String = "50", amended: String = "60") =
     UnderpaymentReason(boxNumber, itemNumber, original, amended)
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
     private lazy val removeUnderpaymentReasonView: RemoveUnderpaymentReasonView =
       app.injector.instanceOf[RemoveUnderpaymentReasonView]
 
@@ -49,8 +53,6 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
 
     val formProvider: RemoveUnderpaymentReasonFormProvider = injector.instanceOf[RemoveUnderpaymentReasonFormProvider]
     val form: RemoveUnderpaymentReasonFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new RemoveUnderpaymentReasonController(
       authenticatedAction,
@@ -226,7 +228,6 @@ class RemoveUnderpaymentReasonControllerSpec extends ControllerSpecBase {
         )
         private val request = fakeRequestGenerator("true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

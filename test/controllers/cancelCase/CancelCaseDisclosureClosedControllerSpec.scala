@@ -18,26 +18,29 @@ package controllers.cancelCase
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.cancelCase.CancelCaseDisclosureClosedView
+
 import scala.concurrent.Future
 
-class CancelCaseDisclosureClosedControllerSpec extends ControllerSpecBase {
+class CancelCaseDisclosureClosedControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository {
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-    MockedSessionRepository.remove(Future.successful("OK"))
+  val view: CancelCaseDisclosureClosedView = injector.instanceOf[CancelCaseDisclosureClosedView]
 
-    val view = injector.instanceOf[CancelCaseDisclosureClosedView]
-
-    lazy val controller = new CancelCaseDisclosureClosedController(
+  def controller(ua: Option[UserAnswers] = userAnswers): CancelCaseDisclosureClosedController = {
+    new CancelCaseDisclosureClosedController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(ua),
       dataRequiredAction,
       messagesControllerComponents,
       mockSessionRepository,
@@ -45,31 +48,30 @@ class CancelCaseDisclosureClosedControllerSpec extends ControllerSpecBase {
       errorHandler,
       ec
     )
-
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-
-    val userAnswers: Option[UserAnswers] = Some(
-      UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, "C182107152124AQYVM6E34").success.value
-    )
-
   }
 
+  val userAnswers: Option[UserAnswers] = Some(
+    UserAnswers("some-cred-id").set(DisclosureReferenceNumberPage, "C182107152124AQYVM6E34").success.value
+  )
+
+  override def beforeEach(): Unit =
+    when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("OK"))
+
   "GET onLoad" should {
-    "return 200" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return 200" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return HTML" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
 
-    "return Internal Server Error (ISE) when failed to find caseId" in new Test {
-
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result]                    = controller.onLoad()(fakeRequest)
+    "return Internal Server Error (ISE) when failed to find caseId" in {
+      val ua: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result]  = controller(ua).onLoad()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }

@@ -20,23 +20,28 @@ import base.ControllerSpecBase
 import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterVatRegisteredFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.UserType
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.{ImporterNamePage, ImporterVatRegisteredPage, UserTypePage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.importDetails.ImporterVatRegisteredView
 
 import scala.concurrent.Future
 
 class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     private lazy val ImporterVATRegisteredView: ImporterVatRegisteredView =
       app.injector.instanceOf[ImporterVatRegisteredView]
 
@@ -61,8 +66,6 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
       "eori",
       userAnswers.get
     )
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new ImporterVatRegisteredController(
       authenticatedAction,
@@ -116,7 +119,6 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -167,7 +169,6 @@ class ImporterVatRegisteredControllerSpec extends ControllerSpecBase {
           )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

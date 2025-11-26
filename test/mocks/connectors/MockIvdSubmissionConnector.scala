@@ -18,30 +18,27 @@ package mocks.connectors
 
 import connectors.IvdSubmissionConnector
 import models._
-import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.JsObject
-import uk.gov.hmrc.http.HeaderCarrier
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockIvdSubmissionConnector extends MockFactory {
+trait MockIvdSubmissionConnector {
 
   val mockIVDSubmissionConnector: IvdSubmissionConnector = mock[IvdSubmissionConnector]
 
   type EoriDetailsResponse = Either[ErrorModel, EoriDetails]
 
   def setupMockGetEoriDetails(response: Either[ErrorModel, EoriDetails]): Unit =
-    (mockIVDSubmissionConnector.getEoriDetails(_: String)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockIVDSubmissionConnector.getEoriDetails(any())(any()))
+      .thenReturn(Future.successful(response))
 
   def setupMockCreateCase(response: Either[ErrorModel, SubmissionResponse]): Unit =
-    (mockIVDSubmissionConnector.createCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockIVDSubmissionConnector.createCase(any())(any()))
+      .thenReturn(Future.successful(response))
 
   def setupMockUpdateCase(response: Either[UpdateCaseError, UpdateCaseResponse]): Unit =
-    (mockIVDSubmissionConnector.updateCase(_: JsObject)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *)
-      .returns(Future.successful(response))
+    when(mockIVDSubmissionConnector.updateCase(any())(any()))
+      .thenReturn(Future.successful(response))
 }

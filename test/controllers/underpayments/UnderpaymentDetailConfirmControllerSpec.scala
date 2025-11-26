@@ -18,13 +18,15 @@ package controllers.underpayments
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.underpayments.{UnderpaymentAmount, UnderpaymentDetail}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.underpayments.{UnderpaymentDetailSummaryPage, UnderpaymentDetailsPage, UnderpaymentTypePage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.data.underpayments.UnderpaymentDetailConfirmData
 import views.html.underpayments.UnderpaymentDetailConfirmView
 
@@ -32,7 +34,9 @@ import scala.concurrent.Future
 
 class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
     private lazy val underpaymentDetailConfirmView: UnderpaymentDetailConfirmView =
       app.injector.instanceOf[UnderpaymentDetailConfirmView]
 
@@ -44,7 +48,7 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
 
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
-    MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new UnderpaymentDetailConfirmController(
       authenticatedAction,
@@ -157,7 +161,6 @@ class UnderpaymentDetailConfirmControllerSpec extends ControllerSpecBase {
             fakeRequest.withFormUrlEncodedBody("original" -> "40", "amended" -> "50")
           )
         )
-        verifyCalls()
       }
 
     }

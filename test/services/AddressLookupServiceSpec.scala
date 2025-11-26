@@ -16,23 +16,29 @@
 
 package services
 
-import base.SpecBase
-import mocks.connectors.MockAddressLookupConnector
-import models.addressLookup.AddressLookupOnRampModel
 import assets.AddressLookupTestConstants._
+import base.SpecBase
+import connectors.AddressLookupConnector
+import models.ErrorModel
+import models.addressLookup.{AddressLookupOnRampModel, AddressModel}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 
-class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector {
+import scala.concurrent.Future
+
+class AddressLookupServiceSpec extends SpecBase {
+
+  type AddressLookupGetAddressResponse = Either[ErrorModel, AddressModel]
+  type AddressLookupInitialiseResponse = Either[ErrorModel, AddressLookupOnRampModel]
+
+  val mockAddressLookupConnector: AddressLookupConnector = mock[AddressLookupConnector]
+  val service = new AddressLookupService(mockAddressLookupConnector, messagesApi, appConfig)
 
   "Calling .getAddress" must {
 
-    def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
-      setupMockGetAddress(addressLookupGetResponse)
-      new AddressLookupService(mockAddressLookupConnector, messagesApi, appConfig)
-    }
-
     "connector call is successful" when {
-      lazy val service = setup(Right(customerAddressMax))
-      lazy val result  = service.retrieveAddress("12345")
+      when(mockAddressLookupConnector.getAddress(any())(any())).thenReturn(Future.successful(Right(customerAddressMax)))
+      val result = service.retrieveAddress("12345")
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) mustBe Right(customerAddressMax)
@@ -42,15 +48,12 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
 
   "Calling initialiseJourney" must {
 
-    def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
-      setupMockInitialiseJourney(addressLookupInitialiseResponse)
-      new AddressLookupService(mockAddressLookupConnector, messagesApi, appConfig)
-    }
-
     "connector call is successful" when {
+      when(mockAddressLookupConnector.initialiseJourney(any())(any())).thenReturn(
+        Future.successful(Right(AddressLookupOnRampModel("redirect-url")))
+      )
 
-      lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result  = service.initialiseJourney("Fast Food ltd")(hc, ec)
+      val result = service.initialiseJourney("Fast Food ltd")(hc, ec)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) mustBe Right(AddressLookupOnRampModel("redirect-url"))
@@ -60,15 +63,12 @@ class AddressLookupServiceSpec extends SpecBase with MockAddressLookupConnector 
 
   "Calling initialiseImporterJourney" must {
 
-    def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
-      setupMockInitialiseJourney(addressLookupInitialiseResponse)
-      new AddressLookupService(mockAddressLookupConnector, messagesApi, appConfig)
-    }
-
     "connector call is successful" when {
+      when(mockAddressLookupConnector.initialiseJourney(any())(any())).thenReturn(
+        Future.successful(Right(AddressLookupOnRampModel("redirect-url")))
+      )
 
-      lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result  = service.initialiseImporterJourney("importer")(hc, ec)
+      val result = service.initialiseImporterJourney("importer")(hc, ec)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) mustBe Right(AddressLookupOnRampModel("redirect-url"))

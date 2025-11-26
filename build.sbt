@@ -3,7 +3,7 @@ import uk.gov.hmrc.DefaultBuildSettings
 val appName = "import-voluntary-disclosure-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
 
@@ -21,7 +21,8 @@ lazy val microservice = Project(appName, file("."))
       "uk.gov.hmrc.hmrcfrontend.views.html.components._"
     ),
     scalacOptions += "-Wconf:src=routes/.*:s",
-    scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
+    scalacOptions += "-Wconf:msg=unused import&src=html/.*:s",
+    scalacOptions += "-Wconf:msg=Flag.*repeatedly:s",
     // turn any warnings into errors
     //  scalastyleFailOnWarning := true,
     // run scalastyle on compile
@@ -42,7 +43,7 @@ lazy val microservice = Project(appName, file("."))
     Assets / pipelineStages := Seq(concat)
   )
   .configs(Test)
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
 
 val codeStyleIntegrationTest = taskKey[Unit]("enforce code style then integration test")
 

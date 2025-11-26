@@ -17,17 +17,15 @@
 package services.submissionService
 
 import base.ServiceSpecBase
-import mocks.connectors.MockIvdSubmissionConnector
-import mocks.services.MockAuditService
+import connectors.IvdSubmissionConnector
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.libs.json.Json
-import services.SubmissionService
+import services.{AuditService, SubmissionService}
 
-class BuildImporterDetailsSpec
-    extends ServiceSpecBase
-    with MockIvdSubmissionConnector
-    with MockAuditService
-    with SubmissionServiceTestData
-    with SubmissionServiceTestJson {
+class BuildImporterDetailsSpec extends ServiceSpecBase with SubmissionServiceTestData with SubmissionServiceTestJson {
+
+  val mockIVDSubmissionConnector: IvdSubmissionConnector = mock[IvdSubmissionConnector]
+  val mockAuditService: AuditService                     = mock[AuditService]
 
   val service = new SubmissionService(mockIVDSubmissionConnector, mockAuditService)
 

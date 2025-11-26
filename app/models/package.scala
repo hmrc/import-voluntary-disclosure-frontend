@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import play.api.libs.json._
+import play.api.libs.json.*
 
 import scala.annotation.nowarn
 import scala.language.implicitConversions
@@ -114,7 +114,6 @@ package object models {
       }
     }
 
-    @nowarn("msg=Exhaustivity analysis reached max recursion depth, not all missing cases are reported")
     @nowarn("msg=match may not be exhaustive")
     def remove(path: JsPath): JsResult[JsValue] = {
 
@@ -127,7 +126,7 @@ package object models {
         case ((_: KeyPathNode) :: Nil, _)              => JsError(s"cannot remove a key on $jsValue")
         case (first :: second :: rest, oldValue) =>
           Reads.optionNoError(Reads.at[JsValue](JsPath(first :: Nil)))
-            .reads(oldValue).flatMap { opt: Option[JsValue] =>
+            .reads(oldValue).flatMap { (opt: Option[JsValue]) =>
               opt.map(JsSuccess(_)).getOrElse {
                 second match {
                   case _: KeyPathNode =>

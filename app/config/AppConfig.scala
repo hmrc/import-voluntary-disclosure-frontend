@@ -19,25 +19,24 @@ package config
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
-import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
+import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
-import java.time.LocalDate
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesConfig) extends AppConfig {
-  private val contactHost  = servicesConfig.getString("contact-frontend.host")
-  private val feedbackHost = servicesConfig.getString("feedback-frontend.host")
-  lazy val surveyUrl       = feedbackHost + servicesConfig.getString("feedback-frontend.url")
+class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig) {
+  private val contactHost    = servicesConfig.getString("contact-frontend.host")
+  private val feedbackHost   = servicesConfig.getString("feedback-frontend.host")
+  lazy val surveyUrl: String = feedbackHost + servicesConfig.getString("feedback-frontend.url")
 
   val footerLinkItems: Seq[String] = config.get[Seq[String]]("footerLinkItems")
 
-  val contactFormServiceIdentifier = servicesConfig.getString("contact-frontend.serviceId")
-  lazy val host                    = servicesConfig.getString("urls.host")
+  val contactFormServiceIdentifier: String = servicesConfig.getString("contact-frontend.serviceId")
+  lazy val host: String                    = servicesConfig.getString("urls.host")
 
   def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${RedirectUrl(host + request.uri)}"
 
   lazy val appName: String                       = servicesConfig.getString("appName")
   lazy val loginUrl: String                      = servicesConfig.getString("urls.login")
@@ -55,7 +54,7 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
     addressLookupCallback
   lazy val importerAddressLookupCallbackUrl: String = servicesConfig.getString("urls.host") +
     importerAddressLookupCallback
-  lazy val cacheTtl = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
+  lazy val cacheTtl: Int = servicesConfig.getInt("mongodb.timeToLiveInSeconds")
 
   lazy val timeoutPeriod: Int = servicesConfig.getInt("timeout.period")
   lazy val countdown: Int     = servicesConfig.getInt("timeout.countdown")
@@ -103,58 +102,4 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
 
   val c18EmailAddress: String = servicesConfig.getString("emails.c18Support")
 
-}
-
-trait AppConfig extends FixedConfig {
-  val footerLinkItems: Seq[String]
-  val contactFormServiceIdentifier: String
-  val surveyUrl: String
-  val host: String
-
-  def feedbackUrl(implicit request: RequestHeader): String
-
-  val appName: String
-  val loginUrl: String
-  val signOutUrl: String
-  val loginContinueUrl: String
-  val addressLookupFrontend: String
-  val addressLookupCallback: String
-  val importerAddressLookupCallback: String
-  val addressLookupInitialise: String
-  val addressLookupFeedbackUrl: String
-  val addressLookupCallbackUrl: String
-  val importerAddressLookupCallbackUrl: String
-  val c2001Url: String
-  val timeoutPeriod: Int
-  val countdown: Int
-  val cacheTtl: Int
-  val upScanCallbackUrlForSuccessOrFailureOfFileUpload: String
-  val upScanSuccessRedirectForUser: String
-  val upScanSuccessRedirectForBulk: String
-  val upScanErrorRedirectForUser: String
-  val upScanErrorRedirectForBulk: String
-  val upScanMinFileSize: Int
-  val upScanMaxFileSize: Int
-  val upScanPollingDelayMilliSeconds: Int
-  val upScanInitiateBaseUrl: String
-  val upScanAcceptedFileTypes: String
-  val upScanAuthoritySuccessRedirectForUser: String
-  val upScanAuthorityErrorRedirectForUser: String
-  val upScanSupportingDocSuccessRedirectForUser: String
-  val upScanSupportingDocErrorRedirectForUser: String
-  val upScanCancelCaseRedirectForUser: String
-  val upScanCancelCaseDocErrorRedirectForUser: String
-  val fileRepositoryTtl: Int
-  val importVoluntaryDisclosureSubmission: String
-  val eccSubscribeUrl: String
-  val en: Lang
-  val cy: Lang
-  val defaultLanguage: Lang
-  val vatReturnAdjustmentsUrl: String
-  val pvaHandoffUrl: String
-  val c18EmailAddress: String
-}
-
-trait FixedConfig {
-  val euExitDate: LocalDate = LocalDate.of(2021, 1, 1)
 }

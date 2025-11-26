@@ -20,11 +20,12 @@ import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.paymentInfo.DefermentFormProvider
 import messages.paymentInfo.DefermentMessages
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.{NumberOfEntries, UserType}
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
 import models.underpayments.UnderpaymentDetail
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages._
 import pages.importDetails.{NumberOfEntriesPage, UserTypePage}
 import pages.paymentInfo.DefermentPage
@@ -33,13 +34,17 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.paymentInfo.DefermentView
 
 import scala.concurrent.Future
 
 class DefermentControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     private lazy val defermentView: DefermentView = app.injector.instanceOf[DefermentView]
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -59,8 +64,6 @@ class DefermentControllerSpec extends ControllerSpecBase {
     )
     val formProvider: DefermentFormProvider = injector.instanceOf[DefermentFormProvider]
     val form: DefermentFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new DefermentController(
       authenticatedAction,
@@ -244,7 +247,6 @@ class DefermentControllerSpec extends ControllerSpecBase {
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

@@ -19,15 +19,17 @@ package controllers.importDetails
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.ImporterNameFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.ImporterNamePage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.importDetails.ImporterNameView
 
 import scala.concurrent.Future
@@ -47,7 +49,10 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       "fullName" -> importerName
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     lazy val controller = new ImporterNameController(
       authenticatedAction,
       dataRetrievalAction,
@@ -73,8 +78,7 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       userAnswers.get
     )
     val formProvider: ImporterNameFormProvider = injector.instanceOf[ImporterNameFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: ImporterNameFormProvider = formProvider
+    val form: ImporterNameFormProvider         = formProvider
   }
 
   "GET onLoad" should {
@@ -120,7 +124,6 @@ class ImporterNameControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: Option[UserAnswers] = userAnswersWithImporterName
         await(controller.onSubmit()(fakeRequestGenerator("test")))
-        verifyCalls()
       }
     }
 

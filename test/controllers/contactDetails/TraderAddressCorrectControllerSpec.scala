@@ -19,28 +19,69 @@ package controllers.contactDetails
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.contactDetails.TraderAddressCorrectFormProvider
-import mocks.repositories.MockSessionRepository
-import models.UserAnswers
 import models.requests._
-import pages.serviceEntry.KnownEoriDetailsPage
+import models.{ContactAddress, EoriDetails, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import pages.CheckModePage
 import pages.contactDetails.TraderAddressCorrectPage
 import pages.importDetails.ImporterNamePage
+import pages.serviceEntry.KnownEoriDetailsPage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import utils.ReusableValues
+import repositories.SessionRepository
 import views.html.contactDetails.TraderAddressCorrectView
 
 import scala.concurrent.Future
 
-class TraderAddressCorrectControllerSpec extends ControllerSpecBase with ReusableValues {
+class TraderAddressCorrectControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository {
-    lazy val controller = new TraderAddressCorrectController(
+  val eoriDetails: EoriDetails = EoriDetails(
+    "GB987654321000",
+    "Fast Food ltd",
+    ContactAddress(
+      addressLine1 = "99 Avenue Road",
+      addressLine2 = None,
+      city = "Anyold Town",
+      postalCode = Some("99JZ 1AA"),
+      countryCode = "GB"
+    ),
+    Some("987654321000")
+  )
+
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
+  val traderAddressCorrectView: TraderAddressCorrectView = app.injector.instanceOf[TraderAddressCorrectView]
+
+  val userAnswers: UserAnswers =
+    UserAnswers("credId")
+      .set(KnownEoriDetailsPage, eoriDetails).success.value
+      .set(ImporterNamePage, "First Last").success.value
+
+  val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
+  val form: TraderAddressCorrectFormProvider         = formProvider
+
+  implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+    OptionalDataRequest(
+      IdentifierRequest(fakeRequest, "credId", "eori"),
+      "credId",
+      "eori",
+      Some(userAnswers)
+    ),
+    "credId",
+    "eori",
+    userAnswers
+  )
+
+  val importerAddressYes: Boolean = true
+
+  def controller(ua: UserAnswers = userAnswers): TraderAddressCorrectController = {
+    new TraderAddressCorrectController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(Some(ua)),
       dataRequiredAction,
       mockSessionRepository,
       errorHandler,
@@ -49,57 +90,32 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
       traderAddressCorrectView,
       ec
     )
-
-    private lazy val traderAddressCorrectView: TraderAddressCorrectView =
-      app.injector.instanceOf[TraderAddressCorrectView]
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(Some(userAnswers))
-
-    val userAnswers: UserAnswers =
-      UserAnswers("credId")
-        .set(KnownEoriDetailsPage, eoriDetails).success.value
-        .set(ImporterNamePage, "First Last").success.value
-    val formProvider: TraderAddressCorrectFormProvider = injector.instanceOf[TraderAddressCorrectFormProvider]
-    val form: TraderAddressCorrectFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
-
-    implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
-      OptionalDataRequest(
-        IdentifierRequest(fakeRequest, "credId", "eori"),
-        "credId",
-        "eori",
-        Some(userAnswers)
-      ),
-      "credId",
-      "eori",
-      userAnswers
-    )
-
-    val importerAddressYes: Boolean = true
-
   }
 
+  override def beforeEach(): Unit =
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
   "GET onLoad" should {
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+    "return OK" in {
+      val result: Future[Result] = controller().onLoad(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return error model" in new Test {
-      override val userAnswers: UserAnswers =
+    "return error model" in {
+      val userAnswers: UserAnswers =
         UserAnswers("some-cred-id").remove(KnownEoriDetailsPage).success.value
           .set(ImporterNamePage, "First Last").success.value
 
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller(userAnswers).onLoad(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
-    "return HTML" in new Test {
-      override val userAnswers: UserAnswers =
+    "return HTML" in {
+      val userAnswers: UserAnswers =
         UserAnswers("some-cred-id").set(TraderAddressCorrectPage, importerAddressYes).success.value
           .set(ImporterNamePage, "First Last").success.value
 
-      val result: Future[Result] = controller.onLoad(fakeRequest)
+      val result: Future[Result] = controller(userAnswers).onLoad(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -108,54 +124,52 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
   "POST onSubmit" when {
     "payload contains valid data" should {
 
-      "redirect to the deferment page if choosing to use the known address and checkMode is false" in new Test {
+      "redirect to the deferment page if choosing to use the known address and checkMode is false" in {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller().onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
       }
 
-      "redirect to the check your answers page if choosing to use the known address and checkMode is true" in new Test {
-        override val userAnswers: UserAnswers =
+      "redirect to the check your answers page if choosing to use the known address and checkMode is true" in {
+        val userAnswers: UserAnswers =
           UserAnswers("some-cred-id")
             .set(KnownEoriDetailsPage, eoriDetails).success.value
             .set(CheckModePage, true).success.value
             .set(ImporterNamePage, "First Last").success.value
 
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller(userAnswers).onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(controllers.cya.routes.CheckYourAnswersController.onLoad().url)
       }
 
-      "handoff to the address lookup frontend if choosing to use a different address" in new Test {
+      "handoff to the address lookup frontend if choosing to use a different address" in {
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        lazy val result: Future[Result]                      = controller.onSubmit(request)
+        lazy val result: Future[Result]                      = controller().onSubmit(request)
         status(result) mustBe Status.SEE_OTHER
         redirectLocation(result) mustBe Some(
           controllers.contactDetails.routes.AddressLookupController.initialiseJourney().url
         )
       }
 
-      "update the UserAnswers in session when Trader Address is correct" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
-        await(controller.onSubmit(request))
-        verifyCalls()
+      "update the UserAnswers in session when Trader Address is correct" in {
+        val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
+        await(controller().onSubmit(request))
       }
 
-      "update the UserAnswers in session Trader Address is incorrect" in new Test {
-        private val request = fakeRequest.withFormUrlEncodedBody("value" -> "false")
-        await(controller.onSubmit(request))
-        verifyCalls()
+      "update the UserAnswers in session Trader Address is incorrect" in {
+        val request = fakeRequest.withFormUrlEncodedBody("value" -> "false")
+        await(controller().onSubmit(request))
       }
 
       "payload contains invalid data" should {
-        "return a BAD REQUEST" in new Test {
-          override val userAnswers: UserAnswers =
+        "return a BAD REQUEST" in {
+          val userAnswers: UserAnswers =
             UserAnswers("some-cred-id").set(KnownEoriDetailsPage, eoriDetails).success.value
               .set(ImporterNamePage, "First Last").success.value
 
-          val result: Future[Result] = controller.onSubmit(fakeRequest)
+          val result: Future[Result] = controller(userAnswers).onSubmit(fakeRequest)
           status(result) mustBe Status.BAD_REQUEST
         }
       }
@@ -165,19 +179,18 @@ class TraderAddressCorrectControllerSpec extends ControllerSpecBase with Reusabl
   "backLink" when {
 
     "not in change mode" should {
-      "when loading page back button should take you to declarant contact details page" in new Test {
-        override val userAnswers: UserAnswers =
+      "when loading page back button should take you to declarant contact details page" in {
+        val ua: UserAnswers =
           UserAnswers("some-cred-id").set(CheckModePage, false).success.value
-        lazy val result: Call = controller.backLink()
+        lazy val result: Call = controller(userAnswers).backLink()(dataRequest.copy(userAnswers = ua))
         result mustBe controllers.contactDetails.routes.DeclarantContactDetailsController.onLoad()
       }
     }
 
     "in change mode" should {
-      "when loading page back button should take you to Check your answers page" in new Test {
-        override val userAnswers: UserAnswers =
-          UserAnswers("some-cred-id").set(CheckModePage, true).success.value
-        lazy val result: Call = controller.backLink()
+      "when loading page back button should take you to Check your answers page" in {
+        val ua: UserAnswers   = UserAnswers("some-cred-id").set(CheckModePage, true).success.value
+        lazy val result: Call = controller(userAnswers).backLink()(dataRequest.copy(userAnswers = ua))
         result mustBe controllers.cya.routes.CheckYourAnswersController.onLoad()
       }
     }

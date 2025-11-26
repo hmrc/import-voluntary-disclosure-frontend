@@ -18,6 +18,7 @@ package repositories
 
 import config.AppConfig
 import models.UserAnswers
+import org.mongodb.scala.SingleObservableFuture
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.libs.json.{JsResult, JsValue, Json}

@@ -41,7 +41,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
   "Rendering the UploadAuthorityFile page" when {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(
+        fakeRequest,
+        MockAppConfig.appConfig,
+        messages
+      )
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct form action" in {
@@ -53,14 +57,18 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct file upload control file types" in {
-      element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.upScanAcceptedFileTypes
+      element(".govuk-file-upload").attr("accept") mustBe MockAppConfig.appConfig.upScanAcceptedFileTypes
     }
 
     s"have the correct text for duty only" in {
       val dutyType           = "duty"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(
+          fakeRequest,
+          MockAppConfig.appConfig,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
@@ -70,7 +78,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       val dutyType           = "vat"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(
+          fakeRequest,
+          MockAppConfig.appConfig,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
@@ -80,7 +92,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       val dutyType           = "both"
       val form: Form[String] = formProvider.apply()
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(
+          fakeRequest,
+          MockAppConfig.appConfig,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       elementText("#main-content p:nth-of-type(1)") mustBe UploadAuthorityMessages.para1(dutyType)
@@ -90,7 +106,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
       val dutyType                = "vat"
       lazy val form: Form[String] = formProvider().withError("file", UploadAuthorityMessages.fileUnknown)
       lazy val view: Html =
-        injectedView(form, initiateResponse, backLink, "importer", dutyType)(fakeRequest, MockAppConfig, messages)
+        injectedView(form, initiateResponse, backLink, "importer", dutyType)(
+          fakeRequest,
+          MockAppConfig.appConfig,
+          messages
+        )
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       checkPageTitle(UploadAuthorityMessages.errorPrefix + UploadAuthorityMessages.title)
@@ -112,7 +132,11 @@ class UploadAuthorityViewSpec extends ViewBaseSpec {
   it should {
     val form: Form[String] = formProvider.apply()
     lazy val view: Html =
-      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(fakeRequest, MockAppConfig, messages)
+      injectedView(form, initiateResponse, backLink, "importer", dutyTypeKey)(
+        fakeRequest,
+        MockAppConfig.appConfig,
+        messages
+      )
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     checkPageTitle(UploadAuthorityMessages.title)

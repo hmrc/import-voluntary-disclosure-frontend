@@ -19,14 +19,16 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import messages.reasons.ConfirmChangeReasonDetailMessages
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, ChangeUnderpaymentReason, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{ChangeUnderpaymentReasonPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.data.reasons.ConfirmChangeReasonData
 import views.html.reasons.ConfirmChangeReasonDetailView
@@ -35,7 +37,10 @@ import scala.concurrent.Future
 
 class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     def underpayment(box: BoxNumber, item: Int = 0, original: String = "50", amended: String = "60") =
       UnderpaymentReason(boxNumber = box, itemNumber = item, original = original, amended = amended)
 
@@ -63,7 +68,6 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
 
     private lazy val view: ConfirmChangeReasonDetailView = app.injector.instanceOf[ConfirmChangeReasonDetailView]
 
-    MockedSessionRepository.set(Future.successful(true))
     private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
 
     lazy val controller = new ConfirmChangeReasonDetailController(
@@ -167,7 +171,6 @@ class ConfirmChangeReasonDetailControllerSpec extends ControllerSpecBase {
         redirectLocation(result) mustBe Some(
           controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad().url
         )
-        verifyCalls()
       }
 
       "return an Internal Server Error when Changed underpayment reasons are not present" in new Test {

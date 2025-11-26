@@ -17,10 +17,7 @@
 package controllers.docUpload
 
 import base.ControllerSpecBase
-import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
-import mocks.config.MockAppConfig
-import mocks.repositories.MockSessionRepository
 import models.{FileUploadInfo, UserAnswers}
 import pages.docUpload.FileUploadPage
 import play.api.http.Status
@@ -33,35 +30,34 @@ import scala.concurrent.Future
 
 class SupportingDocControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+  val dataRetrievalAction              = new FakeDataRetrievalAction(userAnswers)
+  val view: SupportingDocView          = injector.instanceOf[SupportingDocView]
 
-    val testConfig = appConfig
-    lazy val controller = new SupportingDocController(
+  def controller(ua: Option[UserAnswers] = userAnswers): SupportingDocController = {
+    new SupportingDocController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(ua),
       messagesControllerComponents,
       dataRequiredAction,
       view
     )
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
-    val view                             = injector.instanceOf[SupportingDocView]
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
   }
 
   "GET onLoad" should {
-    "return 200" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return 200" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return HTML" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
 
-    "redirect to the summary page when uploaded file already exists" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "redirect to the summary page when uploaded file already exists" in {
+      val userAnswers: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(
             FileUploadPage,
@@ -70,7 +66,7 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
             )
           ).success.value
       )
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+      val result: Future[Result] = controller(userAnswers).onLoad()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(controllers.docUpload.routes.UploadAnotherFileController.onLoad().url)
 
@@ -78,9 +74,8 @@ class SupportingDocControllerSpec extends ControllerSpecBase {
   }
 
   "Back link" should {
-    "return to Underpayment Reason Summary if otherItemEnabled feature switch is on" in new Test {
-      override val testConfig: AppConfig = new MockAppConfig()
-      controller.backLink(
+    "return to Underpayment Reason Summary if otherItemEnabled feature switch is on" in {
+      controller().backLink(
         userAnswers.get
       ) mustBe controllers.reasons.routes.UnderpaymentReasonSummaryController.onLoad()
     }

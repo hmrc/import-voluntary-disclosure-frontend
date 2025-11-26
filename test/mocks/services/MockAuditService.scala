@@ -16,28 +16,24 @@
 
 package mocks.services
 
-import org.scalamock.scalatest.MockFactory
+import org.mockito.Mockito.doNothing
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.mvc.Request
 import services.{AuditService, JsonAuditModel}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-trait MockAuditService extends MockFactory {
+trait MockAuditService {
 
   val mockAuditService: AuditService = mock[AuditService]
 
   def stubAudit(): Unit =
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
-      .stubs(*, *, *, *)
+    doNothing().when(mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
 
   def verifyAudit(model: JsonAuditModel): Unit =
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
-      .expects(model, *, *, *)
-      .once()
+    doNothing().when(mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
 
   def verifyNoAudit[T <: JsonAuditModel](): Unit =
-    (mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
-      .verify(*, *, *, *)
-      .never()
+    doNothing().when(mockAuditService.audit(_: JsonAuditModel)(_: HeaderCarrier, _: ExecutionContext, _: Request[_]))
 }

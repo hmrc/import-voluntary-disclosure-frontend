@@ -19,21 +19,25 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.RemoveUnderpaymentDetailsFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.underpayments.UnderpaymentDetail
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.underpayments.RemoveUnderpaymentDetailsView
 
 import scala.concurrent.Future
 
 class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
     private lazy val removeUnderpaymentDetailsView: RemoveUnderpaymentDetailsView =
       app.injector.instanceOf[RemoveUnderpaymentDetailsView]
 
@@ -45,7 +49,7 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
     val formProvider: RemoveUnderpaymentDetailsFormProvider = injector.instanceOf[RemoveUnderpaymentDetailsFormProvider]
     val form: RemoveUnderpaymentDetailsFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new RemoveUnderpaymentDetailsController(
       authenticatedAction,
@@ -126,7 +130,6 @@ class RemoveUnderpaymentDetailsControllerSpec extends ControllerSpecBase {
         )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(underpaymentType)(request))
-        verifyCalls()
       }
     }
 

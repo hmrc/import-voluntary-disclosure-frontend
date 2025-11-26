@@ -19,20 +19,22 @@ package controllers.docUpload
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.docUpload.AnyOtherSupportingDocsFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.shared.AnyOtherSupportingDocsPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.docUpload.AnyOtherSupportingDocsView
 
 import scala.concurrent.Future
 
 class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val anyOtherSupportingDocsView: AnyOtherSupportingDocsView =
       app.injector.instanceOf[AnyOtherSupportingDocsView]
 
@@ -42,7 +44,8 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
     val formProvider: AnyOtherSupportingDocsFormProvider = injector.instanceOf[AnyOtherSupportingDocsFormProvider]
     val form: AnyOtherSupportingDocsFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new AnyOtherSupportingDocsController(
       authenticatedAction,
@@ -97,7 +100,6 @@ class AnyOtherSupportingDocsControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

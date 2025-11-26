@@ -18,23 +18,26 @@ package controllers.underpayments
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.importDetails.UserType.{Importer, Representative}
 import models.{ContactAddress, EoriDetails, UserAnswers}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.importDetails.{ImporterNamePage, UserTypePage}
 import pages.serviceEntry.KnownEoriDetailsPage
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.reasons.PVAHandoffView
+
 import scala.concurrent.Future
 
 class PVAHandoffControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
-
-    MockedSessionRepository.remove(Future.successful("OK"))
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("OK"))
 
     val view = injector.instanceOf[PVAHandoffView]
 

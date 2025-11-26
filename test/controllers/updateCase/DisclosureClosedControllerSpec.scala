@@ -18,21 +18,25 @@ package controllers.updateCase
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.updateCase.DisclosureClosedView
 
 import scala.concurrent.Future
 
 class DisclosureClosedControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
 
-    MockedSessionRepository.remove(Future.successful("OK"))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
+    when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("OK"))
 
     val view = injector.instanceOf[DisclosureClosedView]
 

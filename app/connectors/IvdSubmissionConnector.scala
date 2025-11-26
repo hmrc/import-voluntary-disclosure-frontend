@@ -17,17 +17,23 @@
 package connectors
 
 import config.AppConfig
-import connectors.httpParsers.IvdHttpParser._
+import connectors.httpParsers.IvdHttpParser.*
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import models.{EoriDetails, SubmissionResponse, UpdateCaseError, UpdateCaseResponse}
 import play.api.libs.json.JsValue
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.client.HttpClientV2
 
+import java.net.URI
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class IvdSubmissionConnector @Inject() (val http: HttpClient, implicit val config: AppConfig) {
+class IvdSubmissionConnector @Inject() (val http: HttpClientV2)(implicit
+  val config: AppConfig,
+  val ec: ExecutionContext
+) {
 
   private[connectors] def getEoriDetailsUrl(id: String) =
     s"${config.importVoluntaryDisclosureSubmission}/api/eoriDetails?id=$id"
@@ -36,17 +42,13 @@ class IvdSubmissionConnector @Inject() (val http: HttpClient, implicit val confi
 
   private[connectors] def updateCaseUrl = s"${config.importVoluntaryDisclosureSubmission}/api/update-case"
 
-  def getEoriDetails(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[EoriDetails]] =
-    http.GET[HttpGetResult[EoriDetails]](getEoriDetailsUrl(id))
+  def getEoriDetails(id: String)(implicit hc: HeaderCarrier): Future[HttpGetResult[EoriDetails]] =
+    http.get(new URI(getEoriDetailsUrl(id)).toURL).execute[HttpGetResult[EoriDetails]]
 
-  def createCase(
-    submission: JsValue
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[SubmissionResponse]] =
-    http.POST[JsValue, HttpPostResult[SubmissionResponse]](createCaseUrl, submission)
+  def createCase(submission: JsValue)(implicit hc: HeaderCarrier): Future[HttpPostResult[SubmissionResponse]] =
+    http.post(new URI(createCaseUrl).toURL).withBody(submission).execute[HttpPostResult[SubmissionResponse]]
 
-  def updateCase(
-    update: JsValue
-  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[UpdateCaseError, UpdateCaseResponse]] =
-    http.POST[JsValue, Either[UpdateCaseError, UpdateCaseResponse]](updateCaseUrl, update)
+  def updateCase(update: JsValue)(implicit hc: HeaderCarrier): Future[Either[UpdateCaseError, UpdateCaseResponse]] =
+    http.post(new URI(updateCaseUrl).toURL).withBody(update).execute[Either[UpdateCaseError, UpdateCaseResponse]]
 
 }

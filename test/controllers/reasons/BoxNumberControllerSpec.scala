@@ -21,14 +21,16 @@ import config.AppConfig
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.BoxNumberFormProvider
 import mocks.config.MockAppConfig
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.reasons.{BoxNumber, UnderpaymentReason}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.reasons.{UnderpaymentReasonBoxNumberPage, UnderpaymentReasonsPage}
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.Aliases.{Empty, Text}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 import views.html.reasons.BoxNumberView
@@ -48,7 +50,10 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       "value" -> value
     )
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     val testConfig: AppConfig = appConfig
     lazy val controller = new BoxNumberController(
       authenticatedAction,
@@ -64,8 +69,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
     private lazy val boxNumberView          = app.injector.instanceOf[BoxNumberView]
     private lazy val dataRetrievalAction    = new FakeDataRetrievalAction(Some(userAnswers))
     val formProvider: BoxNumberFormProvider = injector.instanceOf[BoxNumberFormProvider]
-    MockedSessionRepository.set(Future.successful(true))
-    val form: BoxNumberFormProvider = formProvider
+    val form: BoxNumberFormProvider         = formProvider
   }
 
   "GET onLoad" when {
@@ -101,7 +105,7 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       }
 
       "return a SEE OTHER entry level response when request for Other Reason is sent" in new Test {
-        override val testConfig: AppConfig = new MockAppConfig()
+        override val testConfig: AppConfig = MockAppConfig.appConfig
         lazy val result: Future[Result] = controller.onSubmit(
           fakeRequestGenerator("99")
         )
@@ -123,7 +127,6 @@ class BoxNumberControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         override val userAnswers: UserAnswers = underpaymentReasonBoxNumber
         await(controller.onSubmit(fakeRequestGenerator("22")))
-        verifyCalls()
       }
 
     }

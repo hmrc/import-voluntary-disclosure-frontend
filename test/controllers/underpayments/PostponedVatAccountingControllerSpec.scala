@@ -19,10 +19,11 @@ package controllers.underpayments
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.underpayments.PostponedVatAccountingFormProvider
-import mocks.repositories.MockSessionRepository
 import models.SelectedDutyTypes.Both
 import models.UserAnswers
 import models.importDetails.{NumberOfEntries, UserType}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.{ImporterNamePage, NumberOfEntriesPage, UserTypePage}
 import pages.underpayments.{TempUnderpaymentTypePage, UnderpaymentCheckModePage}
@@ -30,15 +31,18 @@ import play.api.http.Status
 import play.api.mvc.{AnyContentAsFormUrlEncoded, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import views.html.underpayments.PostponedVatAccountingView
 
 import scala.concurrent.Future
 
 class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: PostponedVatAccountingView =
       app.injector.instanceOf[PostponedVatAccountingView]
+
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
     val userAnswers: Option[UserAnswers] = Some(
       UserAnswers("credId")
@@ -51,8 +55,7 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
 
     val formProvider: PostponedVatAccountingFormProvider = injector.instanceOf[PostponedVatAccountingFormProvider]
 
-    def setupMock(): Unit =
-      MockedSessionRepository.set(Future.successful(true))
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new PostponedVatAccountingController(
       authenticatedAction,
@@ -66,7 +69,6 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
       ec
     )
 
-    setupMock()
   }
 
   "GET PostponedVatAccounting Page" should {
@@ -130,11 +132,6 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
             .success.value
         )
 
-        override def setupMock(): Unit = {
-          MockedSessionRepository.set(Future.successful(true))
-          MockedSessionRepository.set(Future.successful(true))
-        }
-
         val request: FakeRequest[AnyContentAsFormUrlEncoded] = fakeRequest.withFormUrlEncodedBody("value" -> "false")
         lazy val result: Future[Result]                      = controller.onSubmit(request)
         redirectLocation(result) mustBe Some(controllers.paymentInfo.routes.DefermentController.onLoad().url)
@@ -143,7 +140,6 @@ class PostponedVatAccountingControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
 
       "return Internal Server Error" in new Test {

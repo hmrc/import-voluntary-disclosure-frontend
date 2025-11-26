@@ -18,7 +18,6 @@ package controllers.underpayments
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.importDetails.UserType.{Importer, Representative}
 import models.requests._
@@ -29,6 +28,7 @@ import pages.underpayments.UnderpaymentDetailSummaryPage
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Call, Result}
 import play.api.test.Helpers._
+import repositories.SessionRepository
 import utils.ReusableValues
 import views.html.underpayments.UnderpaymentStartView
 
@@ -36,7 +36,8 @@ import scala.concurrent.Future
 
 class UnderpaymentStartControllerSpec extends ControllerSpecBase with ReusableValues {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
     implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
       OptionalDataRequest(

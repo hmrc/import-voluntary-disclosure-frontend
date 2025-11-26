@@ -16,24 +16,21 @@
 
 package mocks.connectors
 
-import org.scalamock.handlers.CallHandler
-import org.scalamock.scalatest.MockFactory
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
+import org.scalatestplus.mockito.MockitoSugar.mock
 import uk.gov.hmrc.auth.core.AuthConnector
-import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockAuthConnector extends MockFactory {
+trait MockAuthConnector {
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
   object MockedAuthConnector {
-    def authorise(response: Future[_]): CallHandler[Future[Any]] =
-      (mockAuthConnector.authorise(_: Predicate, _: Retrieval[_])(_: HeaderCarrier, _: ExecutionContext))
-        .expects(*, *, *, *)
-        .returns(response)
+    def authorise(response: Future[_]): OngoingStubbing[Future[Any]] =
+      when(mockAuthConnector.authorise[Any](any(), any())(any(), any())).thenReturn(response)
   }
 
 }

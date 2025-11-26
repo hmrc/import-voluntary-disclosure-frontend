@@ -33,40 +33,38 @@
 package controllers.updateCase
 
 import base.ControllerSpecBase
-import config.ErrorHandler
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
-import mocks.services.MockUpdateCaseService
 import models._
+import models.requests.{DataRequest, IdentifierRequest, OptionalDataRequest}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
-import play.api.mvc.Result
+import play.api.mvc.{AnyContentAsEmpty, Result}
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
+import services.UpdateCaseService
 import views.html.updateCase.{UpdateCaseCheckYourAnswersView, UpdateCaseConfirmationView}
 
 import scala.concurrent.Future
 
-class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
+class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository with MockUpdateCaseService {
+  val mockUpdateCaseService: UpdateCaseService = mock[UpdateCaseService]
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
-    private lazy val updateCaseCheckYourAnswersView: UpdateCaseCheckYourAnswersView =
-      app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
-    private lazy val confirmationView: UpdateCaseConfirmationView = app.injector.instanceOf[UpdateCaseConfirmationView]
-    val errorHandler: ErrorHandler                                = app.injector.instanceOf[ErrorHandler]
+  private lazy val updateCaseCheckYourAnswersView: UpdateCaseCheckYourAnswersView =
+    app.injector.instanceOf[UpdateCaseCheckYourAnswersView]
+  private lazy val confirmationView: UpdateCaseConfirmationView = app.injector.instanceOf[UpdateCaseConfirmationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
 
-    def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] =
-      Right(UpdateCaseResponse("1234"))
-
-    def repositoryExpectation(): Unit =
-      MockedSessionRepository.set(Future.successful(true))
-
-    lazy val controller = new UpdateCaseCheckYourAnswersController(
+  def controller(ua: Option[UserAnswers] = userAnswers): UpdateCaseCheckYourAnswersController =
+    new UpdateCaseCheckYourAnswersController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(ua),
       dataRequiredAction,
       messagesControllerComponents,
       mockSessionRepository,
@@ -77,18 +75,33 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       ec
     )
 
-    setupMockUpdateCase(serviceMock)
-    repositoryExpectation()
+  implicit lazy val dataRequest: DataRequest[AnyContentAsEmpty.type] = DataRequest(
+    OptionalDataRequest(
+      IdentifierRequest(fakeRequest, "credId", "eori"),
+      "credId",
+      "eori",
+      userAnswers
+    ),
+    "credId",
+    "eori",
+    userAnswers.get
+  )
+
+  override def beforeEach(): Unit = {
+    when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+      Future.successful(Right(UpdateCaseResponse("1234")))
+    )
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
   }
 
   "GET onLoad" should {
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return OK" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return HTML" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
@@ -96,46 +109,44 @@ class UpdateCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
 
   "GET onSubmit" should {
 
-    "return Redirect to the confirmation view" in new Test {
-      override def repositoryExpectation(): Unit =
-        MockedSessionRepository.set(Future.successful(true))
-
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return Redirect to the confirmation view" in {
+      val ua: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = controller(ua).onSubmit()(dataRequest.copy(userAnswers = ua.head))
       status(result) mustBe Status.OK
     }
 
-    "return Redirect to DisclosureNotFound on InvalidCaseId error" in new Test {
-      private val caseId = "C181234567890123456789"
-
-      override def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = Left(UpdateCaseError.InvalidCaseId)
-
-      override val userAnswers: Option[UserAnswers] = Some(
-        UserAnswers("some-cred-id")
-          .set(DisclosureReferenceNumberPage, caseId).success.value
+    "return Redirect to DisclosureNotFound on InvalidCaseId error" in {
+      Mockito.reset(mockUpdateCaseService)
+      when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(UpdateCaseError.InvalidCaseId))
       )
 
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val ua: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
+      )
+
+      val result: Future[Result] = controller(ua).onSubmit()(dataRequest.copy(userAnswers = ua.head))
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(controllers.updateCase.routes.DisclosureNotFoundController.onLoad().url)
     }
 
-    "return Internal Server error when user answers incomplete for confirmation view" in new Test {
-      override def repositoryExpectation(): Unit =
-        MockedSessionRepository.set(Future.successful(true))
-
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result]                    = controller.onSubmit()(fakeRequest)
+    "return Internal Server error when user answers incomplete for confirmation view" in {
+      val ua: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result]  = controller().onSubmit()(dataRequest.copy(userAnswers = ua.head))
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
-    "return Internal Server error is update fails" in new Test {
-      override lazy val serviceMock =
-        Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+    "return Internal Server error is update fails" in {
+      Mockito.reset(mockUpdateCaseService)
+      when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working"))))
+      )
+
+      val result: Future[Result] = controller().onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 

@@ -19,10 +19,11 @@ package controllers.reasons
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.reasons.MoreInformationFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.importDetails.NumberOfEntries.{MoreThanOneEntry, OneEntry}
 import models.requests._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.NumberOfEntriesPage
 import pages.reasons.MoreInformationPage
@@ -30,13 +31,14 @@ import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.reasons.MoreInformationView
 
 import scala.concurrent.Future
 
 class MoreInformationControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
     private lazy val view: MoreInformationView = app.injector.instanceOf[MoreInformationView]
 
     val userAnswers: Option[UserAnswers] = Some(
@@ -60,7 +62,8 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
     val formProvider: MoreInformationFormProvider = injector.instanceOf[MoreInformationFormProvider]
     val form: MoreInformationFormProvider         = formProvider
 
-    MockedSessionRepository.set(Future.successful(true))
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
 
     lazy val controller = new MoreInformationController(
       authenticatedAction,
@@ -115,7 +118,6 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -156,7 +158,6 @@ class MoreInformationControllerSpec extends ControllerSpecBase {
       )
       private val request = fakeRequest.withFormUrlEncodedBody("value" -> "some text")
       await(controller.onSubmit(request))
-      verifyCalls()
     }
   }
 

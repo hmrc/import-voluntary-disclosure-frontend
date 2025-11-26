@@ -17,11 +17,13 @@
 package services
 
 import base.ServiceSpecBase
+import connectors.UpScanConnector
 import connectors.httpParsers.UpScanInitiateHttpParser.UpscanInitiateResponse
 import mocks.config.MockAppConfig
-import mocks.connectors.MockUpScanConnector
 import models.InvalidJson
-import models.upscan._
+import models.upscan.*
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.InternalServerException
 
@@ -31,24 +33,23 @@ class UpScanServiceSpec extends ServiceSpecBase {
 
   private val dutyType = "duty"
 
-  private val callBackUrl = MockAppConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
-  private val success     = MockAppConfig.upScanSuccessRedirectForUser
-  private val error       = MockAppConfig.upScanErrorRedirectForUser
-  private val minFileSize = MockAppConfig.upScanMinFileSize
-  private val maxFileSize = MockAppConfig.upScanMaxFileSize
+  private val callBackUrl = MockAppConfig.appConfig.upScanCallbackUrlForSuccessOrFailureOfFileUpload
+  private val success     = MockAppConfig.appConfig.upScanSuccessRedirectForUser
+  private val error       = MockAppConfig.appConfig.upScanErrorRedirectForUser
+  private val minFileSize = MockAppConfig.appConfig.upScanMinFileSize
+  private val maxFileSize = MockAppConfig.appConfig.upScanMaxFileSize
 
   private val upScanAuthoritySuccessRedirectForUser =
-    MockAppConfig.upScanAuthoritySuccessRedirectForUser ++ s"/$dutyType/upscan-response"
+    MockAppConfig.appConfig.upScanAuthoritySuccessRedirectForUser ++ s"/$dutyType/upscan-response"
 
   private val upScanAuthorityErrorRedirectForUser =
-    MockAppConfig.upScanAuthorityErrorRedirectForUser ++ s"/$dutyType/upscan-response"
+    MockAppConfig.appConfig.upScanAuthorityErrorRedirectForUser ++ s"/$dutyType/upscan-response"
 
-  trait Test extends MockUpScanConnector {
-    lazy val service = new UpScanService(mockUpScanConnector, MockAppConfig)
-  }
+  val mockUpScanConnector: UpScanConnector = mock[UpScanConnector]
+  val service                              = new UpScanService(mockUpScanConnector, MockAppConfig.appConfig)
 
   "buildInitiateRequest" should {
-    "return all values from AppConfig" in new Test {
+    "return all values from AppConfig" in {
       service.buildInitiateRequest mustBe UpScanInitiateRequest(
         callBackUrl,
         success,
@@ -60,7 +61,7 @@ class UpScanServiceSpec extends ServiceSpecBase {
   }
 
   "buildAuthorityInitiateRequest" should {
-    "return all correct values from AppConfig including augmented callback" in new Test {
+    "return all correct values from AppConfig including augmented callback" in {
       service.buildAuthorityInitiateRequest("duty") mustBe UpScanInitiateRequest(
         callBackUrl,
         upScanAuthoritySuccessRedirectForUser,
@@ -75,17 +76,17 @@ class UpScanServiceSpec extends ServiceSpecBase {
     val model   = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
     val request = UpScanInitiateRequest(callBackUrl, success, error, minFileSize, maxFileSize)
 
-    "throw exception if Left returned from connector" in new Test {
+    "throw exception if Left returned from connector" in {
       val res: UpscanInitiateResponse = Left(InvalidJson)
 
-      MockedUpScanConnector.postToInitiate(request, Future.successful(res))
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
       intercept[InternalServerException](await(service.initiateNewJourney()))
     }
 
-    "return model if Right model returned from connector" in new Test {
+    "return model if Right model returned from connector" in {
       val res: UpscanInitiateResponse = Right(model)
 
-      MockedUpScanConnector.postToInitiate(request, Future.successful(res))
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
       await(service.initiateNewJourney()) mustBe model
     }
   }
@@ -100,18 +101,114 @@ class UpScanServiceSpec extends ServiceSpecBase {
       maxFileSize
     )
 
-    "throw exception if Left returned from connector" in new Test {
+    "throw exception if Left returned from connector" in {
       val res: UpscanInitiateResponse = Left(InvalidJson)
 
-      MockedUpScanConnector.postToInitiate(request, Future.successful(res))
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
       intercept[InternalServerException](await(service.initiateAuthorityJourney(dutyType)))
     }
 
-    "return model if Right model returned from connector" in new Test {
+    "return model if Right model returned from connector" in {
       val res: UpscanInitiateResponse = Right(model)
 
-      MockedUpScanConnector.postToInitiate(request, Future.successful(res))
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
       await(service.initiateAuthorityJourney(dutyType)) mustBe model
+    }
+  }
+
+  "initiateBulkJourney" should {
+    "return model if Right model returned from connector" in {
+      val model = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanSuccessRedirectForBulk,
+        MockAppConfig.appConfig.upScanErrorRedirectForBulk,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Right(model)
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      await(service.initiateBulkJourney()) mustBe model
+    }
+
+    "throw exception if Left returned from connector" in {
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanSuccessRedirectForBulk,
+        MockAppConfig.appConfig.upScanErrorRedirectForBulk,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Left(InvalidJson)
+
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      intercept[InternalServerException](await(service.initiateBulkJourney()))
+    }
+  }
+
+  "initiateSupportingDocJourney" should {
+    "return model if Right model returned from connector" in {
+      val model = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanSupportingDocSuccessRedirectForUser,
+        MockAppConfig.appConfig.upScanSupportingDocErrorRedirectForUser,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Right(model)
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      await(service.initiateSupportingDocJourney()) mustBe model
+    }
+
+    "throw exception if Left returned from connector" in {
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanSupportingDocSuccessRedirectForUser,
+        MockAppConfig.appConfig.upScanSupportingDocErrorRedirectForUser,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Left(InvalidJson)
+
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      intercept[InternalServerException](await(service.initiateSupportingDocJourney()))
+    }
+  }
+
+  "initiateCancelCaseJourney" should {
+    "return model if Right model returned from connector" in {
+      val model = UpScanInitiateResponse(Reference("foo"), UploadFormTemplate("", Map.empty))
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanCancelCaseRedirectForUser,
+        MockAppConfig.appConfig.upScanCancelCaseDocErrorRedirectForUser,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Right(model)
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      await(service.initiateCancelCaseJourney()) mustBe model
+    }
+
+    "throw exception if Left returned from connector" in {
+      val request = UpScanInitiateRequest(
+        callBackUrl,
+        MockAppConfig.appConfig.upScanCancelCaseRedirectForUser,
+        MockAppConfig.appConfig.upScanCancelCaseDocErrorRedirectForUser,
+        minFileSize,
+        maxFileSize
+      )
+
+      val res: UpscanInitiateResponse = Left(InvalidJson)
+
+      when(mockUpScanConnector.postToInitiate(request)(headerCarrier)).thenReturn(Future.successful(res))
+      intercept[InternalServerException](await(service.initiateCancelCaseJourney()))
     }
   }
 

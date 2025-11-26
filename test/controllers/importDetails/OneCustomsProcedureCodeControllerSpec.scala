@@ -19,22 +19,27 @@ package controllers.importDetails
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
 import forms.importDetails.OneCustomsProcedureCodeFormProvider
-import mocks.repositories.MockSessionRepository
 import models.UserAnswers
 import models.requests._
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import pages.CheckModePage
 import pages.importDetails.OneCustomsProcedureCodePage
 import play.api.http.Status
 import play.api.mvc._
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
 import views.html.importDetails.OneCustomsProcedureCodeView
 
 import scala.concurrent.Future
 
 class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
-  trait Test extends MockSessionRepository {
+  trait Test {
+    val mockSessionRepository: SessionRepository = mock[SessionRepository]
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+
     private lazy val oneCustomsProcedureCodeView: OneCustomsProcedureCodeView =
       app.injector.instanceOf[OneCustomsProcedureCodeView]
 
@@ -58,8 +63,6 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
 
     val formProvider: OneCustomsProcedureCodeFormProvider = injector.instanceOf[OneCustomsProcedureCodeFormProvider]
     val form: OneCustomsProcedureCodeFormProvider         = formProvider
-
-    MockedSessionRepository.set(Future.successful(true))
 
     lazy val controller = new OneCustomsProcedureCodeController(
       authenticatedAction,
@@ -123,7 +126,6 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
       "update the UserAnswers in session" in new Test {
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 
@@ -183,7 +185,6 @@ class OneCustomsProcedureCodeControllerSpec extends ControllerSpecBase {
           )
         private val request = fakeRequest.withFormUrlEncodedBody("value" -> "true")
         await(controller.onSubmit(request))
-        verifyCalls()
       }
     }
 

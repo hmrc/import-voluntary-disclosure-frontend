@@ -21,15 +21,14 @@ import config.AppConfig
 import models.requests.IdentifierRequest
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.*
 import play.api.mvc.Results.{Redirect, Unauthorized}
-import play.api.mvc._
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals._
+import uk.gov.hmrc.auth.core.*
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals.*
 import uk.gov.hmrc.auth.core.retrieve.~
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
-import scala.annotation.nowarn
 import scala.concurrent.{ExecutionContext, Future}
 
 trait IdentifierAction
@@ -41,8 +40,7 @@ class AuthenticatedIdentifierAction @Inject() (
   unauthorisedView: views.html.errors.UnauthorisedView,
   config: AppConfig,
   val parser: BodyParsers.Default,
-  val messagesApi: MessagesApi,
-  val http: HttpClient
+  val messagesApi: MessagesApi
 )(implicit val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions
@@ -55,7 +53,6 @@ class AuthenticatedIdentifierAction @Inject() (
     case None            => false
   }
 
-  @nowarn("msg=match may not be exhaustive")
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     authorised().retrieve(externalId and allEnrolments and affinityGroup) {

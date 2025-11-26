@@ -36,10 +36,6 @@ class DeclarantContactDetailsFormProviderSpec extends FormSpecBase {
   private final val fullNameInvalidCharactersKey = "declarantContactDetails.error.nameAllowableCharacters"
   private final val emailInvalidFormatKey        = "declarantContactDetails.error.emailInvalidFormat"
   private final val phoneNumberInvalidFormatKey  = "declarantContactDetails.error.phoneNumberInvalidFormat"
-  private final val emailRegex =
-    "^[a-zA-Z0-9\\.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
-  private final val phoneRegex = "^(\\+)?[0-9\\(\\)\\- ]{9,16}$"
-  private final val nameRegex  = "^[a-zA-Z '-]+$"
 
   def formBuilder(fullName: String = "", email: String = "", phoneNumber: String = ""): Map[String, String] = Map(
     "fullName"    -> fullName,

@@ -16,27 +16,22 @@
 
 package mocks.services
 
-import models.requests.OptionalDataRequest
 import models.{EoriDetails, ErrorModel}
-import org.scalamock.scalatest.MockFactory
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import services.EoriDetailsService
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockEoriDetailsService extends MockFactory {
+trait MockEoriDetailsService {
 
   val mockEoriDetailsService: EoriDetailsService = mock[EoriDetailsService]
 
   type RetrieveEoriDetailsResponse = Either[ErrorModel, EoriDetails]
 
   def setupMockRetrieveAddress(response: RetrieveEoriDetailsResponse): Unit =
-    (mockEoriDetailsService.retrieveEoriDetails(_: String)(
-      _: OptionalDataRequest[_],
-      _: HeaderCarrier,
-      _: ExecutionContext
-    ))
-      .expects(*, *, *, *)
-      .returns(Future.successful(response))
+    when(mockEoriDetailsService.retrieveEoriDetails(any())(any(), any(), any()))
+      .thenReturn(Future.successful(response))
 
 }

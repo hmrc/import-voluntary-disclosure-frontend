@@ -20,15 +20,12 @@ import forms.mappings.Mappings
 import forms.utils.FormHelpers
 import models.reasons.BoxNumber.BoxNumber
 import models.reasons.{BoxNumber, UnderpaymentReasonValue}
-import play.api.data.Forms._
-import play.api.data.validation._
+import play.api.data.Forms.*
+import play.api.data.validation.*
 import play.api.data.{Form, Forms}
-
-import scala.annotation.nowarn
 
 class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers {
 
-  @nowarn("msg=match may not be exhaustive")
   def apply(boxNumber: BoxNumber): Form[UnderpaymentReasonValue] = {
     boxNumber match {
       case BoxNumber.Box22 | BoxNumber.Box62 | BoxNumber.Box63 | BoxNumber.Box66 | BoxNumber.Box67 | BoxNumber.Box68 =>
@@ -97,7 +94,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
       mapping(
         "original" -> foreignCurrency("amendmentValue.error.original.missing", "amendmentValue.error.original.format"),
         "amended"  -> foreignCurrency("amendmentValue.error.amended.missing", "amendmentValue.error.amended.format")
-      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
+      )(UnderpaymentReasonValue.apply)(u => Some(Tuple.fromProductTyped(u)))
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
@@ -111,7 +108,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         "amended" -> text("amendmentValue.error.amended.missing")
           .transform[String](toUpperNoSpaces(_), toUpperNoSpaces(_))
           .verifying(regexp(regex, "amendmentValue.error.amended.format"))
-      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
+      )(UnderpaymentReasonValue.apply)(u => Some(Tuple.fromProductTyped(u)))
         .verifying(different("amendmentValue.error.amended.different"))
     )
   }
@@ -179,7 +176,7 @@ class UnderpaymentReasonAmendmentFormProvider extends Mappings with FormHelpers 
         "original" -> text("otherReason.error.required")
           .verifying(maxLength(1500, "otherReason.error.maxLength")),
         "amended" -> Forms.text
-      )(UnderpaymentReasonValue.apply)(UnderpaymentReasonValue.unapply)
+      )(UnderpaymentReasonValue.apply)(u => Some(Tuple.fromProductTyped(u)))
     )
   }
 }

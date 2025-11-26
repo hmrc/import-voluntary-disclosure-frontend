@@ -16,33 +16,32 @@
 
 package mocks.repositories
 
-import base.RepositorySpecBase
 import models.UserAnswers
-import org.scalamock.handlers.CallHandler
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.stubbing.OngoingStubbing
+import org.scalatestplus.mockito.MockitoSugar.mock
 import repositories.SessionRepository
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-trait MockSessionRepository extends RepositorySpecBase {
+trait MockSessionRepository {
 
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   object MockedSessionRepository {
 
-    def get(response: Future[Option[UserAnswers]]): CallHandler[Future[Option[UserAnswers]]] =
-      (mockSessionRepository.get(_: String)(_: ExecutionContext))
-        .expects(*, *)
-        .returning(response)
+    def get(response: Future[Option[UserAnswers]]): OngoingStubbing[Future[Option[UserAnswers]]] =
+      when(mockSessionRepository.get(any())(any()))
+        .thenReturn(response)
 
-    def set(response: Future[Boolean]): CallHandler[Future[Boolean]] =
-      (mockSessionRepository.set(_: UserAnswers)(_: ExecutionContext))
-        .expects(*, *)
-        .returning(response)
+    def set(response: Future[Boolean]): OngoingStubbing[Future[Boolean]] =
+      when(mockSessionRepository.set(any())(any()))
+        .thenReturn(response)
 
-    def remove(response: Future[String]): CallHandler[Future[String]] =
-      (mockSessionRepository.remove(_: String)(_: ExecutionContext))
-        .expects(*, *)
-        .returning(response)
+    def remove(response: Future[String]): OngoingStubbing[Future[String]] =
+      when(mockSessionRepository.remove(any())(any()))
+        .thenReturn(response)
 
   }
 

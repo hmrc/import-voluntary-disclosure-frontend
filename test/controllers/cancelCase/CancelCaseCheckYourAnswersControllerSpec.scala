@@ -34,38 +34,40 @@ package controllers.cancelCase
 
 import base.ControllerSpecBase
 import controllers.actions.FakeDataRetrievalAction
-import mocks.repositories.MockSessionRepository
-import mocks.services.MockUpdateCaseService
-import models._
+import models.*
+import models.UpdateCaseError.CaseAlreadyClosed
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{reset, when}
+import org.scalatest.BeforeAndAfterEach
 import pages.updateCase.DisclosureReferenceNumberPage
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{charset, contentType, defaultAwaitTimeout, redirectLocation, status}
+import repositories.SessionRepository
+import services.UpdateCaseService
 import views.html.cancelCase.{CancelCaseCheckYourAnswersView, CancelCaseConfirmationView}
 
 import scala.concurrent.Future
 
-class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
+class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase with BeforeAndAfterEach {
 
-  trait Test extends MockSessionRepository with MockUpdateCaseService {
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val mockUpdateCaseService: UpdateCaseService = mock[UpdateCaseService]
 
-    private lazy val cancelCaseCheckYourAnswersView: CancelCaseCheckYourAnswersView =
-      app.injector.instanceOf[CancelCaseCheckYourAnswersView]
-    private lazy val cancelCaseConfirmationView: CancelCaseConfirmationView =
-      app.injector.instanceOf[CancelCaseConfirmationView]
+  private lazy val cancelCaseCheckYourAnswersView: CancelCaseCheckYourAnswersView =
+    app.injector.instanceOf[CancelCaseCheckYourAnswersView]
+  private lazy val cancelCaseConfirmationView: CancelCaseConfirmationView =
+    app.injector.instanceOf[CancelCaseConfirmationView]
 
-    val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-    private lazy val dataRetrievalAction = new FakeDataRetrievalAction(userAnswers)
+  val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
 
-    def repositoryExpectation(): Unit =
-      MockedSessionRepository.set(Future.successful(true))
+  def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] =
+    Right(UpdateCaseResponse("1234"))
 
-    def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] =
-      Right(UpdateCaseResponse("1234"))
-
-    lazy val controller = new CancelCaseCheckYourAnswersController(
+  def controller(ua: Option[UserAnswers] = userAnswers): CancelCaseCheckYourAnswersController = {
+    new CancelCaseCheckYourAnswersController(
       authenticatedAction,
-      dataRetrievalAction,
+      new FakeDataRetrievalAction(ua),
       dataRequiredAction,
       messagesControllerComponents,
       mockSessionRepository,
@@ -75,66 +77,94 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase {
       errorHandler,
       ec
     )
+  }
 
-    repositoryExpectation()
-    setupMockUpdateCase(serviceMock)
+  override def beforeEach(): Unit = {
+    when(mockSessionRepository.set(any())(any())).thenReturn(Future.successful(true))
+    when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+      Future.successful(Right(UpdateCaseResponse("1234")))
+    )
   }
 
   "GET onLoad" should {
-    "return OK" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return OK" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return HTML" in new Test {
-      val result: Future[Result] = controller.onLoad()(fakeRequest)
+    "return HTML" in {
+      val result: Future[Result] = controller().onLoad()(fakeRequest)
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
     }
   }
 
   "GET onSubmit" should {
-
-    "return Redirect to the confirmation view" in new Test {
-      override val userAnswers: Option[UserAnswers] = Some(
+    "return Redirect to the confirmation view" in {
+      val ua: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
       )
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = controller(ua).onSubmit()(fakeRequest)
       status(result) mustBe Status.OK
     }
 
-    "return Redirect to DisclosureNotFound on InvalidCaseId error" in new Test {
-      private val caseId = "C181234567890123456789"
+    "return Redirect to DisclosureNotFound on InvalidCaseId error" in {
+      val caseId = "C181234567890123456789"
 
-      override def serviceMock: Either[UpdateCaseError, UpdateCaseResponse] = Left(UpdateCaseError.InvalidCaseId)
+      reset(mockUpdateCaseService)
+      when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(UpdateCaseError.InvalidCaseId))
+      )
 
-      override val userAnswers: Option[UserAnswers] = Some(
+      val ua: Option[UserAnswers] = Some(
         UserAnswers("some-cred-id")
           .set(DisclosureReferenceNumberPage, caseId).success.value
       )
 
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+      val result: Future[Result] = controller(ua).onSubmit()(fakeRequest)
       status(result) mustBe Status.SEE_OTHER
       redirectLocation(result) mustBe Some(
         controllers.cancelCase.routes.CancelCaseDisclosureNotFoundController.onLoad().url
       )
     }
 
-    "return Internal Server error when user answers incomplete for confirmation view" in new Test {
-      override def repositoryExpectation(): Unit =
-        MockedSessionRepository.remove(Future.successful("some-cred-id"))
+    "return Internal Server error when user answers incomplete for confirmation view" in {
+      reset(mockSessionRepository)
+      when(mockSessionRepository.remove(any())(any())).thenReturn(Future.successful("some-cred-id"))
 
-      override val userAnswers: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
-      val result: Future[Result]                    = controller.onSubmit()(fakeRequest)
+      val ua: Option[UserAnswers] = Some(UserAnswers("some-cred-id"))
+      val result: Future[Result]  = controller(ua).onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
 
-    "return Internal Server error is update fails" in new Test {
-      override lazy val serviceMock =
-        Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working")))
-      val result: Future[Result] = controller.onSubmit()(fakeRequest)
+    "return Internal Server error is update fails" in {
+      reset(mockUpdateCaseService)
+      when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(UpdateCaseError.UnexpectedError(Status.INTERNAL_SERVER_ERROR, Some("Not Working"))))
+      )
+      val result: Future[Result] = controller().onSubmit()(fakeRequest)
       status(result) mustBe Status.INTERNAL_SERVER_ERROR
+    }
+
+    "return Redirect to CaseDisclosureClosed on CaseAlreadyClosed error" in {
+      val caseId = "C181234567890123456789"
+
+      reset(mockUpdateCaseService)
+      when(mockUpdateCaseService.updateCase(any(), any(), any())).thenReturn(
+        Future.successful(Left(CaseAlreadyClosed))
+      )
+
+      val ua: Option[UserAnswers] = Some(
+        UserAnswers("some-cred-id")
+          .set(DisclosureReferenceNumberPage, caseId).success.value
+      )
+
+      val result: Future[Result] = controller(ua).onSubmit()(fakeRequest)
+      status(result) mustBe Status.SEE_OTHER
+      redirectLocation(result) mustBe Some(
+        controllers.cancelCase.routes.CancelCaseDisclosureClosedController.onLoad().url
+      )
     }
 
   }
