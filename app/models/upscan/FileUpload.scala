@@ -22,7 +22,7 @@ import play.api.libs.json._
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
 import java.time.Instant
-import javax.mail.internet.MimeUtility
+import jakarta.mail.internet.MimeUtility
 import scala.util.Try
 
 case class FileUpload(
