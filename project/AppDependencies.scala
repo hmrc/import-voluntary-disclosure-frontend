@@ -13,7 +13,7 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"                  %% s"bootstrap-frontend-$playVersion" % bootstrapVersion,
-    "uk.gov.hmrc"                  %% s"play-frontend-hmrc-$playVersion" % "12.31.0",
+    "uk.gov.hmrc"                  %% s"play-frontend-hmrc-$playVersion" % "12.32.0",
     "uk.gov.hmrc.mongo"            %% s"hmrc-mongo-$playVersion"         % "2.12.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"             % "2.21.0"
   ) ++ mailDependencies
