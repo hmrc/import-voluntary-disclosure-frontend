@@ -3,7 +3,7 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "10.5.0"
+  private val bootstrapVersion = "10.7.0"
   private val playVersion      = "play-30"
 
   val mailDependencies: Seq[ModuleID] = Seq(
@@ -13,7 +13,7 @@ object AppDependencies {
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"                  %% s"bootstrap-frontend-$playVersion" % bootstrapVersion,
-    "uk.gov.hmrc"                  %% s"play-frontend-hmrc-$playVersion" % "12.31.0",
+    "uk.gov.hmrc"                  %% s"play-frontend-hmrc-$playVersion" % "12.32.0",
     "uk.gov.hmrc.mongo"            %% s"hmrc-mongo-$playVersion"         % "2.12.0",
     "com.fasterxml.jackson.module" %% "jackson-module-scala"             % "2.21.0"
   ) ++ mailDependencies
