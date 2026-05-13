@@ -41,9 +41,8 @@
         hint = hint.map(hintHtml => Hint(
             content = HtmlContent(hintHtml)
         )),
-        value = form(name).value,
         errorMessage = form(name).error.map(err => ErrorMessage(content = Text(messages(err.message, err.args:_*)))),
-        attributes = attributes
+        attributes = attributes ++ form(name).value.map(v => ("value" -> v))
     ))
 
 @{

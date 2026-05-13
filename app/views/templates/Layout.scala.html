@@ -17,19 +17,19 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 @import uk.gov.hmrc.govukfrontend.views.html.components.{Footer, Meta}
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides, Banners}
 @import views.helpers.FooterLinks
-@import views.html.components.{languageSelector, phaseBanner}
 @import views.html.helper.CSPNonce
 
-@this(govukLayout: GovukLayout,
+@this(
+        hmrcStandardPage: HmrcStandardPage,
+        govukLayout: GovukLayout,
         footerLinks: FooterLinks,
         head: partials.Head,
-        backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
         govukFooter: GovukFooter,
-        govukBetaBanner : phaseBanner,
-        languageSelect: languageSelector
+        appConfig: AppConfig
 )
 
 @(pageTitle: String,
@@ -58,21 +58,9 @@
                 Some(controllers.routes.SignOutController.signOut().url)
             } else {
                 Some(controllers.routes.SignOutController.signOutUnidentified.url)
-            },
-            language = messages.lang.language match {
-                case "cy" => Cy
-                case _    => En
             }
         )
     )
-}
-
-@beforeContentBlock = {
-    @govukBetaBanner()
-    @languageSelect()
-    @if(showBackLink) {
-        @backLink(customBackLinkUrl)
-    }
 }
 
 @content = {
@@ -90,20 +78,61 @@
     ))
 }
 
+@betaBanner = @{
+    PhaseBanner(
+        tag = Some(Tag(
+            content = Text(messages("banner.phaseName"))
+        )),
+        content = HtmlContent(
+                s"""${messages("feedback.before")} """ +
+                <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
+                s""" ${messages("feedback.after")}"""
+            ),
+        classes = "govuk-!-display-none-print",
+        attributes = Map(
+            "id" -> "phaseBanner",
+            "role" -> "region"
+        )
+    )
+}
+
+@backLinkShow = @{
+    if(showBackLink) {
+        Some(BackLink(
+            href = customBackLinkUrl.map(_.url).getOrElse("#"),
+            content = Text(messages("common.back")),
+            attributes = Map("id" -> "back-link"),
+            classes = "govuk-!-display-none-print"
+        ))
+    } else {
+        None
+    }
+}
+
 @defining({
     form.collect[String] {
         case f if f.errors.nonEmpty => messages("common.errorPrefix") + pageTitle
     }.orElse(Some(pageTitle))
 }) { title =>
-    @govukLayout(
-        pageTitle = title.map(_ + messages("page.title.suffix")),
-        headBlock = Some(head(headBlock, enableTimeoutDialog)),
-        headerBlock = Some(header),
-        scriptsBlock = Some(scripts),
-        beforeContentBlock = Some(beforeContentBlock),
-        footerBlock = Some(footer)
+    @hmrcStandardPage(
+        HmrcStandardPageParams(
+            serviceURLs = ServiceURLs(
+                serviceUrl = Some(controllers.routes.SignOutController.signOut().url),
+                signOutUrl = Some(controllers.routes.SignOutController.signOutUnidentified.url)
+            ),
+            banners = Banners(phaseBanner = Some(betaBanner)),
+            pageTitle = title.map(_ + messages("page.title.suffix")),
+            templateOverrides = TemplateOverrides(
+                additionalHeadBlock = headBlock,
+                additionalScriptsBlock = Some(scripts)
+            ),
+            isWelshTranslationAvailable = true,
+            backLink = backLinkShow
+        )
     )(content)
 }
+
+
 @{
     //$COVERAGE-OFF$
 }
