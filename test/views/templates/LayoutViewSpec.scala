@@ -48,7 +48,6 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the sign out url" in {
       lazy val markup: Html                = target("")(Html(""))
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
-      //
       element("body > header > div > div > nav > a")
         .attr("href")
         .contains(controllers.routes.SignOutController.signOut().url) mustBe true

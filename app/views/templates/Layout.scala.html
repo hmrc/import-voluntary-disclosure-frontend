@@ -16,19 +16,16 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
-@import uk.gov.hmrc.govukfrontend.views.html.components.{Footer, Meta}
+@import uk.gov.hmrc.govukfrontend.views.html.components.Meta
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides, Banners}
-@import views.helpers.FooterLinks
 @import views.html.helper.CSPNonce
 
 @this(
         hmrcStandardPage: HmrcStandardPage,
         govukLayout: GovukLayout,
-        footerLinks: FooterLinks,
         head: partials.Head,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
-        govukFooter: GovukFooter,
         appConfig: AppConfig
 )
 
@@ -49,33 +46,12 @@
     @scriptsBlock
 }
 
-@header = @{
-    hmrcHeader(
-        Header(
-            serviceName = Some(messages("service.name")),
-            serviceUrl = messages("service.homePageUrl"),
-            signOutHref = if(isAuthorised) {
-                Some(controllers.routes.SignOutController.signOut().url)
-            } else {
-                Some(controllers.routes.SignOutController.signOutUnidentified.url)
-            }
-        )
-    )
-}
-
 @content = {
     @contentBlock
 
     <div class="govuk-!-margin-top-6 govuk-!-display-none-print">
         @hmrcReportTechnicalIssueHelper()
     </div>
-}
-
-@footer = {
-    @govukFooter(Footer(
-        meta = Some(Meta(items = Some(footerLinks.links()))),
-        classes = "govuk-!-display-none-print"
-    ))
 }
 
 @betaBanner = @{
@@ -118,7 +94,11 @@
         HmrcStandardPageParams(
             serviceURLs = ServiceURLs(
                 serviceUrl = Some(controllers.routes.SignOutController.signOut().url),
-                signOutUrl = Some(controllers.routes.SignOutController.signOutUnidentified.url)
+                signOutUrl = if(isAuthorised) {
+                        Some(controllers.routes.SignOutController.signOut().url)
+                    } else {
+                        Some(controllers.routes.SignOutController.signOutUnidentified.url)
+                    }
             ),
             banners = Banners(phaseBanner = Some(betaBanner)),
             pageTitle = title.map(_ + messages("page.title.suffix")),
