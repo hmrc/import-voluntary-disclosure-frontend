@@ -48,7 +48,7 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the sign out url" in {
       lazy val markup: Html                = target("")(Html(""))
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
-      element("body > header > div > div > div.govuk-header__content > nav > a")
+      element("body > header > div > div > nav > a")
         .attr("href")
         .contains(controllers.routes.SignOutController.signOut().url) mustBe true
     }
@@ -56,7 +56,7 @@ class LayoutViewSpec extends ViewBaseSpec with BaseMessages {
     s"have the sign out url for unauthenticated" in {
       lazy val markup: Html                = target("", isAuthorised = false)(Html(""))
       lazy implicit val document: Document = Jsoup.parse(markup.toString)
-      element("body > header > div > div > div.govuk-header__content > nav > a")
+      element("body > header > div > div > nav > a")
         .attr("href")
         .contains(controllers.routes.SignOutController.signOutUnidentified.url) mustBe true
     }

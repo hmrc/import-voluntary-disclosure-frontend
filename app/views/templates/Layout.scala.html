@@ -16,20 +16,17 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.{Header, HmrcHeader}
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
-@import uk.gov.hmrc.govukfrontend.views.html.components.{Footer, Meta}
-@import views.helpers.FooterLinks
-@import views.html.components.{languageSelector, phaseBanner}
+@import uk.gov.hmrc.govukfrontend.views.html.components.Meta
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides, Banners}
 @import views.html.helper.CSPNonce
 
-@this(govukLayout: GovukLayout,
-        footerLinks: FooterLinks,
+@this(
+        hmrcStandardPage: HmrcStandardPage,
+        govukLayout: GovukLayout,
         head: partials.Head,
-        backLink: components.back_link,
         hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
         hmrcHeader : HmrcHeader,
-        govukFooter: GovukFooter,
-        govukBetaBanner : phaseBanner,
-        languageSelect: languageSelector
+        appConfig: AppConfig
 )
 
 @(pageTitle: String,
@@ -49,32 +46,6 @@
     @scriptsBlock
 }
 
-@header = @{
-    hmrcHeader(
-        Header(
-            serviceName = Some(messages("service.name")),
-            serviceUrl = messages("service.homePageUrl"),
-            signOutHref = if(isAuthorised) {
-                Some(controllers.routes.SignOutController.signOut().url)
-            } else {
-                Some(controllers.routes.SignOutController.signOutUnidentified.url)
-            },
-            language = messages.lang.language match {
-                case "cy" => Cy
-                case _    => En
-            }
-        )
-    )
-}
-
-@beforeContentBlock = {
-    @govukBetaBanner()
-    @languageSelect()
-    @if(showBackLink) {
-        @backLink(customBackLinkUrl)
-    }
-}
-
 @content = {
     @contentBlock
 
@@ -83,11 +54,35 @@
     </div>
 }
 
-@footer = {
-    @govukFooter(Footer(
-        meta = Some(Meta(items = Some(footerLinks.links()))),
-        classes = "govuk-!-display-none-print"
-    ))
+@betaBanner = @{
+    PhaseBanner(
+        tag = Some(Tag(
+            content = Text(messages("banner.phaseName"))
+        )),
+        content = HtmlContent(
+                s"""${messages("feedback.before")} """ +
+                <a class="govuk-link" href={appConfig.feedbackUrl}>{messages("feedback.link")}</a> +
+                s""" ${messages("feedback.after")}"""
+            ),
+        classes = "govuk-!-display-none-print",
+        attributes = Map(
+            "id" -> "phaseBanner",
+            "role" -> "region"
+        )
+    )
+}
+
+@backLinkShow = @{
+    if(showBackLink) {
+        Some(BackLink(
+            href = customBackLinkUrl.map(_.url).getOrElse("#"),
+            content = Text(messages("common.back")),
+            attributes = Map("id" -> "back-link"),
+            classes = "govuk-!-display-none-print"
+        ))
+    } else {
+        None
+    }
 }
 
 @defining({
@@ -95,15 +90,29 @@
         case f if f.errors.nonEmpty => messages("common.errorPrefix") + pageTitle
     }.orElse(Some(pageTitle))
 }) { title =>
-    @govukLayout(
-        pageTitle = title.map(_ + messages("page.title.suffix")),
-        headBlock = Some(head(headBlock, enableTimeoutDialog)),
-        headerBlock = Some(header),
-        scriptsBlock = Some(scripts),
-        beforeContentBlock = Some(beforeContentBlock),
-        footerBlock = Some(footer)
+    @hmrcStandardPage(
+        HmrcStandardPageParams(
+            serviceURLs = ServiceURLs(
+                serviceUrl = Some(controllers.routes.SignOutController.signOut().url),
+                signOutUrl = if(isAuthorised) {
+                        Some(controllers.routes.SignOutController.signOut().url)
+                    } else {
+                        Some(controllers.routes.SignOutController.signOutUnidentified.url)
+                    }
+            ),
+            banners = Banners(phaseBanner = Some(betaBanner)),
+            pageTitle = title.map(_ + messages("page.title.suffix")),
+            templateOverrides = TemplateOverrides(
+                additionalHeadBlock = headBlock,
+                additionalScriptsBlock = Some(scripts)
+            ),
+            isWelshTranslationAvailable = true,
+            backLink = backLinkShow
+        )
     )(content)
 }
+
+
 @{
     //$COVERAGE-OFF$
 }
