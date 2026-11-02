@@ -35,7 +35,7 @@
     answers: Seq[CYASummaryList]
 )(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false) {
+@layout(pageTitle = messages("confirmation.pageTitle"), showBackLink = false, displayUserResearchBanner = true) {
     <div class="govuk-!-display-none-print">
         <div class="govuk-panel govuk-panel--confirmation">
             <h1 class="govuk-panel__title">

@@ -17,7 +17,7 @@
 package config
 
 import play.api.Configuration
-import play.api.i18n.Lang
+import play.api.i18n.{Lang, Messages}
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.binders.RedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
@@ -101,5 +101,11 @@ class AppConfig @Inject() (config: Configuration, servicesConfig: ServicesConfig
   lazy val pvaHandoffUrl: String = servicesConfig.getString("urls.pvaHandoffUrl")
 
   val c18EmailAddress: String = servicesConfig.getString("emails.c18Support")
+
+  lazy val userResearchBannerEnabled: Boolean =
+    config.getOptional[Boolean]("features.user-research-banner").getOrElse(false)
+
+  def userResearchBannerUrl(implicit messages: Messages): String =
+    servicesConfig.getString(s"urls.user-research-banner-${messages.lang.code}")
 
 }
