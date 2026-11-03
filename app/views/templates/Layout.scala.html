@@ -18,6 +18,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
 @import uk.gov.hmrc.govukfrontend.views.html.components.Meta
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.{HmrcStandardPageParams, ServiceURLs, TemplateOverrides, Banners}
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.userresearchbanner.UserResearchBanner
 @import views.html.helper.CSPNonce
 
 @this(
@@ -36,7 +37,8 @@
         showBackLink: Boolean = true,
         customBackLinkUrl: Option[Call] = None,
         enableTimeoutDialog: Boolean = true,
-        isAuthorised: Boolean = true
+        isAuthorised: Boolean = true,
+        displayUserResearchBanner: Boolean = false
 )(contentBlock: Html)(implicit request: Request[_], messages: Messages)
 
 @scripts = {
@@ -72,6 +74,12 @@
     )
 }
 
+@userResearchBanner = @{
+    Option.when(displayUserResearchBanner && appConfig.userResearchBannerEnabled)(
+        UserResearchBanner(url = appConfig.userResearchBannerUrl)
+    )
+}
+
 @backLinkShow = @{
     if(showBackLink) {
         Some(BackLink(
@@ -100,7 +108,7 @@
                         Some(controllers.routes.SignOutController.signOutUnidentified.url)
                     }
             ),
-            banners = Banners(phaseBanner = Some(betaBanner)),
+            banners = Banners(phaseBanner = Some(betaBanner), userResearchBanner = userResearchBanner),
             pageTitle = title.map(_ + messages("page.title.suffix")),
             templateOverrides = TemplateOverrides(
                 additionalHeadBlock = headBlock,
