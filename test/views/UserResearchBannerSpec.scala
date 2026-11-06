@@ -82,7 +82,7 @@ class UserResearchBannerSpec extends ViewBaseSpec {
 
   "The user research banner" should {
 
-    "be shown once, directly in the header, with the English link on every confirmation page" in {
+    "be shown once, directly in the header, with the English link and no close button on every confirmation page" in {
       optedInPages(app, messagesFor(app, "en")).foreach { case (name, view) =>
         withClue(s"$name: ") {
           val banner = banners(view)
@@ -90,6 +90,7 @@ class UserResearchBannerSpec extends ViewBaseSpec {
           banner.first.parent.tagName mustBe "header"
           banner.select("a.hmrc-user-research-banner__link").attr("href") mustBe bannerUrlEn
           banner.select("a.hmrc-user-research-banner__link").text mustBe "Join our research panel (opens in new tab)"
+          banner.select(".hmrc-user-research-banner__close").size mustBe 0
         }
       }
     }
