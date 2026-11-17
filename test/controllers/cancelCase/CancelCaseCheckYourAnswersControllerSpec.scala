@@ -106,7 +106,7 @@ class CancelCaseCheckYourAnswersControllerSpec extends ControllerSpecBase with B
           .set(DisclosureReferenceNumberPage, "C181234567890123456789").success.value
       )
       val result: Future[Result] = controller(ua).onSubmit()(fakeRequest)
-      status(result) mustBe Status.OK
+      status(result) mustBe Status.SEE_OTHER
     }
 
     "return Redirect to DisclosureNotFound on InvalidCaseId error" in {

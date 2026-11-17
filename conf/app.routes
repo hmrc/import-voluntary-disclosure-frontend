@@ -445,6 +445,7 @@ POST        /update-disclosure/additional-information                           
 
 GET         /update-disclosure/check-your-answers                                              controllers.updateCase.UpdateCaseCheckYourAnswersController.onLoad()
 GET         /update-disclosure/confirmation                                                    controllers.updateCase.UpdateCaseCheckYourAnswersController.onSubmit()
+GET         /update-disclosure/success/:caseId                                                 controllers.updateCase.UpdateCaseCheckYourAnswersController.onSuccess(caseId: String)
 GET         /update-disclosure/disclosure-not-found                                            controllers.updateCase.DisclosureNotFoundController.onLoad()
 
 GET         /update-disclosure/cannot-add-information                                          controllers.updateCase.DisclosureClosedController.onLoad()
@@ -471,6 +472,7 @@ POST        /cancel-disclosure/confirm-file-removal/:index                      
 
 GET         /cancel-disclosure/check-your-answers                                              controllers.cancelCase.CancelCaseCheckYourAnswersController.onLoad()
 GET         /cancel-disclosure/confirmation                                                    controllers.cancelCase.CancelCaseCheckYourAnswersController.onSubmit()
+GET         /cancel-disclosure/success/:caseId                                                 controllers.cancelCase.CancelCaseCheckYourAnswersController.onSuccess(caseId: String)
 GET         /cancel-disclosure/cannot-add-information                                          controllers.cancelCase.CancelCaseDisclosureClosedController.onLoad()
 
 GET         /cancel-disclosure/disclosure-not-found                                            controllers.cancelCase.CancelCaseDisclosureNotFoundController.onLoad()

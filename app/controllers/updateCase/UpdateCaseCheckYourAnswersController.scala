@@ -68,10 +68,14 @@ class UpdateCaseCheckYourAnswersController @Inject() (
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.UpdateCase))
               _           <- sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage)))
-            } yield Ok(confirmationView(caseId))
+            } yield Redirect(controllers.updateCase.routes.UpdateCaseCheckYourAnswersController.onSuccess(caseId))
         }
       case None =>
         errorHandler.showInternalServerError
     }
+  }
+
+  def onSuccess(caseId: String): Action[AnyContent] = identify.async { implicit request =>
+    Future.successful(Ok(confirmationView(caseId)))
   }
 }
