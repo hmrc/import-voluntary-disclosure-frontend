@@ -72,11 +72,15 @@ class CancelCaseCheckYourAnswersController @Inject() (
             for {
               userAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, SubmissionType.CancelCase))
               _           <- sessionRepository.set(userAnswers.preserve(Seq(KnownEoriDetailsPage, SubmissionTypePage)))
-            } yield Ok(confirmationView(caseId))
+            } yield Redirect(controllers.cancelCase.routes.CancelCaseCheckYourAnswersController.onSuccess(caseId))
 
         }
       case None =>
         errorHandler.showInternalServerError
     }
+  }
+
+  def onSuccess(caseId: String): Action[AnyContent] = identify.async { implicit request =>
+    Future.successful(Ok(confirmationView(caseId)))
   }
 }
